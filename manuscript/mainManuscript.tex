@@ -1,0 +1,77 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Adrien Renaud}
+
+\begin{document}
+\tableofcontents
+	\chapter{Introduction}
+
+	    \section{General introduction}
+	    \section{Numerical methods in solid mechanics}
+	    \section{Goals and purposes}
+                
+	\chapter{Notion of hyperbolic problems -- Analytical developments }
+	        
+		\section{Conservation laws of solid mechanics}
+        % Context, isothermal, thermodynamical framework, standard generalized material etc.
+	        \subsection{Classification of PDE's}
+	        \subsection{System of conservation laws}
+		        \subsubsection{Homogeneous systems}
+		        \subsubsection{Non-homogeneous systems}
+                                   
+        \section{Solution of hyperbolic systems -- Characteristic analysis}
+	        \subsection{Elastic viscoplastic solids}
+            \subsection{Elastoplastic solids}
+	            \subsubsection{Two-dimensional plane strain problem}
+                \subsubsection{Two-dimensional plane stress problem}
+
+            \subsection{Hyperelastic solids}
+	            \subsubsection{One-dimensional Saint-Venant-Kirchhoff material}
+                \subsubsection{Two-dimensional plane strain problems}
+
+                                   
+	\chapter{Extension of the Material Point Method}
+		
+		\section{The material point method}
+		    \subsection{Development of the method}
+            % PIC - FLIP - MPM - GIMP - HOMPM/BSMPM: introduction text 
+			\subsection{Derivation of the mpm}
+	            \subsubsection{MPM discrete equations}
+	            \subsubsection{Solution scheme summary}
+			\subsection{Shortcomings}
+			
+		
+		\section{Derivation of the discontinuous Galerkin material point method}
+			\subsection{The discontinuous Galerkin approximation}
+            % Introduction text, DG approximation, DGFEM, main  idea of the introduction of this approx into MPM, mootivations ?             
+            \subsection{Derivation of the method}
+			% Do not explicit interface flxes yet (not required for numerical analysis) // Also, it is an independant tool used in other methods such as FVM, DGFEM.
+			\subsection{DGMPM solution scheme}
+			
+		\section{Numerical analysis of the DGMPM}
+			\subsection{Convergence analysis}
+			\subsection{One-dimensional stability analysis}
+			\subsection{Two-dimensional stability analysis}
+
+	\chapter{Approximate Riemann solvers for solid mechanics problems}
+	
+		\section{The godunov method}
+		\section{Transverse correction -- The CTU method}
+		\section{Linearized geometrical framework}
+			\subsection{Elastic-viscoplastic solids}
+			\subsection{Elastoplastic solids}
+				\subsubsection{Plane strain problems}
+				\subsubsection{Plane stress problems}
+				
+		\section{Hyperelastic solids}
+		
+		\section{Numerical results}
+		
+	\chapter{Conclusion}
+	
+	
+\end{document}
