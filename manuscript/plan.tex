@@ -8,70 +8,125 @@
 
 \begin{document}
 \tableofcontents
-	\chapter{Introduction}
+\chapter{Introduction}
+\section{General introduction}
+\section{Numerical methods in solid mechanics}
+\section{The class of dynamic problems}
+\section{Challenges for the simulation of dynamic problems}
 
-	    \section{General introduction}
-	    \section{Numerical methods in solid mechanics}
-	    \section{Goals and purposes}
-                
-	\chapter{Notion of hyperbolic problems -- Analytical developments }
-	        
-		\section{Conservation laws of solid mechanics}
-        % Context, isothermal, thermodynamical framework, standard generalized material etc.
-	        \subsection{Classification of PDE's}
-	        \subsection{System of conservation laws}
-		        \subsubsection{Homogeneous systems}
-		        \subsubsection{Non-homogeneous systems}
-                                   
-        \section{Solution of hyperbolic systems -- Characteristic analysis}
-	        \subsection{Elastic viscoplastic solids}
-            \subsection{Elastoplastic solids}
-	            \subsubsection{Two-dimensional plane strain problem}
-                \subsubsection{Two-dimensional plane stress problem}
+\chapter{Hyperbolic partial differential equations}
+\section{Classification of PDE's}
+\section{Conservation laws in solid mechanics}
+% Context, isothermal, thermodynamical framework, standard generalized material etc.
+\subsection{Balance equations}
+\subsection{Compatibility equations}
+\subsection{Thermodynamical framework}
+\subsubsection{Homogeneous systems}
+\subsubsection{Non-homogeneous systems}
+\subsection{The general formulation}
 
-            \subsection{Hyperelastic solids}
-	            \subsubsection{One-dimensional Saint-Venant-Kirchhoff material}
-                \subsubsection{Two-dimensional plane strain problems}
+\section{Characteristic analysis}
+\subsection{Quasilinear form of hyperbolic problems}
+% Look at eigenvalues // eigen vectors // hyperbolicity condition // Legendre-Hadamard condition etc. -> system of scalar advection equations 
+\subsection{Linear problems: contact waves}
+\subsection{Non-linearities: simple and shock waves}
+\subsection{Integral curves}
+\subsection{The Rankine-Hugoniot condition}
+\section{Derivation of one-dimensional solid mechanics solutions}
+\subsection{Elastic and elastic-viscoplastic solids}
+\subsubsection{Linear elastic plane bar}
+\subsubsection{Linear elastic plane wave}
+\subsubsection{Elastoviscoplasic bar and plane wave}
+%\subsubsection{Elastoviscoplasic}
+\subsection{Elastoplastic solids}
+\subsubsection{Linearly hardening media}
+\subsubsection{Decreasingly hardening media}
+\subsection{Saint-Venant-Kirchhoff hyperelastic solids}
+% \subsubsection{General multi-dimensional solution}
+% \subsubsection{One-dimensional Saint-Venant-Kirchhoff material}
 
-                                   
-	\chapter{Extension of the Material Point Method}
-		
-		\section{The material point method}
-		    \subsection{Development of the method}
-            % PIC - FLIP - MPM - GIMP - HOMPM/BSMPM: introduction text 
-			\subsection{Derivation of the mpm}
-	            \subsubsection{MPM discrete equations}
-	            \subsubsection{Solution scheme summary}
-			\subsection{Shortcomings}
-			
-		
-		\section{Derivation of the discontinuous Galerkin material point method}
-			\subsection{The discontinuous Galerkin approximation}
-            % Introduction text, DG approximation, DGFEM, main  idea of the introduction of this approx into MPM, mootivations ?             
-            \subsection{Derivation of the method}
-			% Do not explicit interface flxes yet (not required for numerical analysis) // Also, it is an independant tool used in other methods such as FVM, DGFEM.
-			\subsection{DGMPM solution scheme}
-			
-		\section{Numerical analysis of the DGMPM}
-			\subsection{Convergence analysis}
-			\subsection{One-dimensional stability analysis}
-			\subsection{Two-dimensional stability analysis}
+% \subsection{Elastic viscoplastic solids}
+% \subsection{Elastoplastic solids}
+% \subsubsection{The thin-walled tube problem}
+% \subsubsection{Two-dimensional plane strain problem}
+% \subsubsection{Two-dimensional plane stress problem}
+% \subsection{Hyperelastic solids}
 
-	\chapter{Approximate Riemann solvers for solid mechanics problems}
-	
-		\section{The godunov method}
-		\section{Transverse correction -- The CTU method}
-		\section{Linearized geometrical framework}
-			\subsection{Elastic-viscoplastic solids}
-			\subsection{Elastoplastic solids}
-				\subsubsection{Plane strain problems}
-				\subsubsection{Plane stress problems}
-				
-		\section{Hyperelastic solids}
-		
-		\section{Numerical results}
-		
-	\chapter{Conclusion}
-	
-	
+%% On a un degré de liberté sur l'élastoplasticité:
+%%% Soit on en parle dans le chapitre 2 pour les problème 1D uniquement
+\chapter{Approximate Riemann solvers}
+% Review of existing approximate solver
+\section{The general theory}
+\subsection{The Godunov method}
+\section{Transverse correction -- The CTU method}
+\section{Linearized geometrical framework}
+\subsection{Linear elasticity}
+\subsection{Elasto-plasticity}
+\section{Hyperelastic problems}
+
+
+\chapter{Extension of the Material Point Method}
+\section{The material point method}
+\subsection{Development of the method}
+% PIC - FLIP - MPM - GIMP - HOMPM/BSMPM: introduction text 
+\subsection{Derivation of the mpm}
+\subsubsection{MPM discrete equations}
+\subsubsection{Solution scheme summary}
+\subsection{Shortcomings}
+
+\section{Derivation of the discontinuous Galerkin material point method}
+\subsection{The discontinuous Galerkin approximation}
+% Introduction text, DG approximation, DGFEM, main  idea of the introduction of this approx into MPM, mootivations ?             
+\subsection{Derivation of the method}
+% Do not explicit interface fluxes yet (not required for numerical analysis) // Also, it is an independant tool used in other methods such as FVM, DGFEM.
+\subsection{DGMPM solution scheme}
+
+\section{Numerical analysis of the DGMPM}
+\subsection{Convergence analysis}
+\subsection{One-dimensional stability analysis}
+\subsection{Two-dimensional stability analysis}
+
+\chapter{Numerical Results}
+
+\section{Linear advection problem}
+\subsection{The one-dimensional case}
+\subsection{The two-dimensional case}
+\section{Linearized geometrical framework}
+\subsection{One-dimensional elasticity and elastoviscoplasticity}
+\subsection{One-dimensional elastoplasticity}
+\subsection{Two-dimensional elasticity}
+
+\section{Hyperelastic solids}
+\subsection{One-dimensional problems}
+\subsection{Two-dimensional problems}
+
+\chapter{Contribution to the solution of two-dimensional elastoplastic problems}
+\section{The complexity of elastoplasicity}
+% Bibliography about:
+% - what has been done so far (thin-walled ; plane wave + shear wave ; internal structure of plastic shock)
+% - what is missing (solution of more general problems [i.e plane strain or stress] ; development of approximate Riemann solvers)
+% - what it will allow (comparison with experimental data in order to track plastic shocks)
+% - what is currently done in fluid or solid mechanics numerically
+\section{Known solutions}
+\subsection{The thin-walled tube problem}
+\subsection{Superimposition of plane wave and shear waves}
+\section{Reformulation of the problem}
+\subsection{General multi-dimensional formulation}
+% Based on the tangent modulus -> independant on the hardening model
+\subsection{Plane strain problems}
+\subsection{Plane stress problems}
+\section{Characteristic analysis}
+\subsection{Structure of the solution}
+\subsection{Integral curves and loading paths}
+\subsection{The plane strain case}
+\subsection{The plane stress case}
+
+\chapter{Conclusion}
+
+
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
