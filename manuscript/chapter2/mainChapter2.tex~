@@ -1,0 +1,24 @@
+\chapter{Hyperbolic partial differential equations}
+\abstract{Here is the very first sentence of my PhD Thesis !}
+
+\section{Classification of PDE's}
+%\input{PDEs}
+
+\section{Conservation laws in solid mechanics}
+%\input{conservationLaws}
+
+
+\section{Characteristic analysis}
+%\input{characteristicAnalysis}
+
+
+\section{Derivation of one-dimensional solid mechanics solutions}
+%\input{examples}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
