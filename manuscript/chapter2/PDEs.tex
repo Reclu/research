@@ -1,15 +1,60 @@
 %As in many other physics suh as electromagnetism, thermodynamics or fluid mechanics, solid mechanics is based on \textit{partial differential equations} or \textit{PDEs} in order to desribe phenomena occuring and that leads to the variation of given quantities (\textit{temperature, pressure etc.}) in space and time. Those equations can be classified into three types which governs the nature of the solution. In this section, we focus on this classification in order to reduce the scope of the study to hyperbolic problems and to develop in the following the construction of solutions to those problems.
 
-
-Suppose we are interested in describing the variation of a physical quantity depending on two variables which can be either space or time variables $u(x,y)$.
-
-\cite[Chapter~3]{Courant}
+%%% On se limite aux edp du premier ordre à deux variables indépendantes car comme on le verra dans la suite, sous certainces conditions, les équations de la mécanique des solides se ramènent à ce cas précis. Pour une vue plus générale sur les edp, on peut se référer à [Courant]. Forme générale d'une edp, parler d'un système d'edp pour lequel F et u sont des vecteurs. Définitions de système linéaire, quasi-linéaire et semi-linéaire.
+We consider the first order partial differential equations system written for given quantities $\Uc_i$:
 \begin{equation}
   \label{eq:general_pde}
-  F\(x,y,u_x,u_y,u_{xx},u_{xy},u_{yy},... \) = g
+  \drond{\Uc_i}{t} + \Asf^k_{ij}\drond{\Uc_j}{x_k} + \Bc_i= 0 \quad k=1,...,M \:;\: i=1,...,I
 \end{equation}
-in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. Linear,quasi linear, semi linear 
-General pde form - order ?- linear quasi linear - interior differentiation
+or in matrix form:
+\begin{equation}
+  \label{eq:general_pde_matrix}
+  \drond{\vect{\Uc}}{t} + \tens{\Asf}^k \drond{\vect{\Uc}}{x_k} + \vect{\Bc} = \vect{0}\quad k=1,2,...,M
+\end{equation}
+where $\vect{\Bc}$ and $\tens{\Asf}^k$ respectively a column vector of length $I$ and $I\times I$ matrices. In what follows, bold sans-serif symbols denote matrices while calligraphic symbols stand for column array. In equations \ref{eq:general_pde} and \ref{eq:general_pde_matrix}, $t,x_1,...,x_M$ and $\Uc_i$ are respectively independent and dependent variables. More specifically, $t$ denotes the time variable and the $x_k$ stand for space variable such that $M$ is the space dimension of the problem. Note that the implicit summation convention over repeated indices has been used so that $\Asf^k_{ij}\drond{\Uc_j}{x_k} \equiv \sum_{j}\sum_{k} \Asf^k_{ij}\drond{\Uc_j}{x_k}$. In the general case the matrices $\tens{\Asf}^k$ may be functions of $\vect{\Uc}$ and independent variables, the system is then \textit{quasi-linear}. On the other hand, if $\tens{\Asf}^k=\tens{\Asf}^k(t,x_k)$ and $\vect{\Bc}=\vect{\Bc}(t,x_k)$, the system is \textit{linear with variable coefficients}, otherwise it is \textit{linear with constant coefficients}. The last situation is the one in which $\vect{\Bc}=\vect{\Bc}(\vect{\Uc},t,x_k)$, then if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, the system remains \textit{linear}, but if it depends non-linearly on $\vect{\Uc}$ the system is called \textit{semi-linear} \cite[Chapter~5]{Courant},\cite[Chapter~2]{Toro}.
+
+We now restrict the problem to the case of one space variable in order to introduce the notions of \textit{hyperbolicity} and \textit{characteristics}, system \ref{eq:general_pde_matrix} hence reads:
+\begin{equation}
+  \label{eq:1d_pde_matrix}
+  \drond{\vect{\Uc}}{t} + \tens{\Asf}\drond{\vect{\Uc}}{x} + \vect{\Bc} = \vect{0} 
+\end{equation}
+
+
+
+
+% The complete theory of partial differential equations can be found in \cite{Courant}. In what fillows, we will restrict our attention to first order partial differential equations. 
+% Suppose we are interested in describing the variation of a physical quantity depending on two independant variables which can be either space or time variables $u(x,y)$.
+% \cite[Chapter~3]{Courant};\cite[Chapter~5]{Courant}
+% General form of partial differential equations:
+% \begin{equation}
+%   \label{eq:general_pde}
+%   F\(x,y,...,u,u_x,u_y,...,u_{xx},u_{xy},u_{yy},... \) = 0
+% \end{equation}
+% in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. The partial differential equation \ref{eq:general_pde} is said to be of order $n$ if the highest derivative order is of order $n$. If the function $F$ depends linearly on its variables, the partial differential equation is said to be \textit{linear}. On the other hand, if the funcion $F$ depends linearly on the highest derivatives of $u$ only then the differential equation is \textit{quasi-linear}.
+
+% Definitions: Quasi-linear or Linear equations, order.
+% The same definitions holds if the functions $F$ and $u$ are vectors:
+% \begin{equation}
+%   \label{eq:general_pde_system}
+%   \vect{F}\(x,y,...,\vect{u},\vect{u}_x,\vect{u}_y,...,\vect{u}_{xx},\vect{u}_{xy},\vect{u}_{yy},... \) = 0
+% \end{equation}
+% In matrix form:
+% \begin{equation}
+%   \label{eq:matrix_pde_system}
+%   \tens{A}^x \vect{u}_x + \tens{A}^y \vect{u}_y + \vect{b}= \vect{0}
+% \end{equation}
+% where the $m \times m$ matrices $\tens{A}^i$ may depend on $\vect{u}$ (quasi-linear).
+
+% In what follows we will restrict to first order partial differential equations. Equation \ref{eq:general_pde} may be \textit{semilinear} or \textit{linear} depending on whether the right-hand side depends on the unknown functions or not.
+% Linear,quasi linear, semi linear 
+% General pde form - order ?- linear quasi linear - interior differentiation
+
+
+
+
+%p.172 pour les sytèmes linéaires d'EPD elliptiques et hyperboliques à deux variables indépendantes. (p.173 pour n variables)
+%\cite{Toro},\cite{Leveque} pour la forme générale des systèmes hyperboliques du premier ordre. Voir \cite{Courant} pour l'étude des problèmes à plus de deux variables indépendantes qui pourrait justifier qu'on se ramène systématiquement à un problème à deux variables indépendantes pour l'analyse caractéristique.
+
 
 
 %%% Local Variables:
