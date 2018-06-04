@@ -11,17 +11,47 @@ or in matrix form:
   \label{eq:general_pde_matrix}
   \drond{\vect{\Uc}}{t} + \tens{\Asf}^k \drond{\vect{\Uc}}{x_k} + \vect{\Bc} = \vect{0}\quad k=1,2,...,M
 \end{equation}
-where $\vect{\Bc}$ and $\tens{\Asf}^k$ respectively a column vector of length $I$ and $I\times I$ matrices. In what follows, bold sans-serif symbols denote matrices while calligraphic symbols stand for column array. In equations \ref{eq:general_pde} and \ref{eq:general_pde_matrix}, $t,x_1,...,x_M$ and $\Uc_i$ are respectively independent and dependent variables. More specifically, $t$ denotes the time variable and the $x_k$ stand for space variable such that $M$ is the space dimension of the problem. Note that the implicit summation convention over repeated indices has been used so that $\Asf^k_{ij}\drond{\Uc_j}{x_k} \equiv \sum_{j}\sum_{k} \Asf^k_{ij}\drond{\Uc_j}{x_k}$. In the general case the matrices $\tens{\Asf}^k$ may be functions of $\vect{\Uc}$ and independent variables, the system is then \textit{quasi-linear}. On the other hand, if $\tens{\Asf}^k=\tens{\Asf}^k(t,x_k)$ and $\vect{\Bc}=\vect{\Bc}(t,x_k)$, the system is \textit{linear with variable coefficients}, otherwise it is \textit{linear with constant coefficients}. The last situation is the one in which $\vect{\Bc}=\vect{\Bc}(\vect{\Uc},t,x_k)$, then if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, the system remains \textit{linear}, but if it depends non-linearly on $\vect{\Uc}$ the system is called \textit{semi-linear} \cite[Chapter~5]{Courant},\cite[Chapter~2]{Toro}.
+where $\vect{\Bc}$ and $\tens{\Asf}^k$ respectively a column vector of length $I$ and $I\times I$ matrices. In what follows, bold sans-serif symbols denote matrices while calligraphic symbols stand for column array. In equations \ref{eq:general_pde} and \ref{eq:general_pde_matrix}, $t,x_1,...,x_M$ and $\Uc_i$ are respectively independent and dependent variables. More specifically, $t$ denotes the time variable and the $x_k$ stand for space variable such that $M$ is the space dimension of the problem. In the general case the matrices $\tens{\Asf}^k$ may be functions of $\vect{\Uc}$ and independent variables, the system is then \textit{quasi-linear}. On the other hand, if $\tens{\Asf}^k=\tens{\Asf}^k(t,x_k)$ and $\vect{\Bc}=\vect{\Bc}(t,x_k)$, the system is \textit{linear with variable coefficients}, otherwise it is \textit{linear with constant coefficients}. The last situation is the one in which $\vect{\Bc}=\vect{\Bc}(\vect{\Uc},t,x_k)$, then if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, the system remains \textit{linear}, but if it depends non-linearly on $\vect{\Uc}$ the system is called \textit{semi-linear} \cite[Chapter~5]{Courant},\cite[Chapter~2]{Toro}.
 
-We now restrict the problem to the case of one space variable in order to introduce the notions of \textit{hyperbolicity} and \textit{characteristics}, system \ref{eq:general_pde_matrix} hence reads:
+\paragraph{Notations :} \textit{In equations \ref{eq:general_pde} and \ref{eq:general_pde_matrix} and in the following of the manuscript the implicit summation convention over repeated indices has been used so that $\Asf^k_{ij}\drond{\Uc_j}{x_k} \equiv \sum_{j}\sum_{k} \Asf^k_{ij}\drond{\Uc_j}{x_k}$. Moreover, the partial derivatives of an arbitrary quantity with respect to a given variable $\drond{q}{y}$ may be replaced by $q_y$ when there will be no ambiguity.}
+
+$\newline$
+We now restrict the problem to the case of \textbf{linear systems} in one space variable in order to introduce the notions of \textit{hyperbolicity} and \textit{characteristics}, system \ref{eq:general_pde_matrix} hence reads:
 \begin{equation}
   \label{eq:1d_pde_matrix}
-  \drond{\vect{\Uc}}{t} + \tens{\Asf}\drond{\vect{\Uc}}{x} + \vect{\Bc} = \vect{0} 
+  \vect{\Uc}_t + \tens{\Asf}\vect{\Uc}_x + \vect{\Bc} = \vect{0} 
+\end{equation}
+Let us consider the Cauchy's initial value problem consisting in finding $\vect{\Uc}_x$ for given initial values of $\vect{\Uc}$ (\textit{i.e. $\vect{\Uc}(x,t=0)$ is known}) on a parametrized curve $\Cc$ of the $(x,t)$ plane, namely by the function $\phi(x,t)=0$, such that equation \ref{eq:1d_pde_matrix} is satisfied on $\Cc$. The curve $\Cc$ is assumed to satisfy the following regularity requirement $\norm{\nablav \phi} \ne 0$, where $\nablav (\bullet)$ denotes the gradient operator. Since the unknown vector is viewed as a function of $\phi(x,t)$, the following property holds (also assume $\phi_x\ne 0$):
+\begin{equation}
+  \label{eq:interior_derivative}
+  \vect{\Uc}_x\phi_t - \vect{\Uc}_t\phi_x= \vect{0}
 \end{equation}
 
+\paragraph{Proof :} If we write the unknown vector as $\vect{\Uc}=\vect{\Wc}(\phi(x,t))$, then by using the chain rule the partial derivatives of $\vect{\Uc}$ read:
+\begin{equation*}
+  \vect{\Uc}_t = \vect{\Wc}' \: \phi_t \quad ; \quad \vect{\Uc}_x = \vect{\Wc}' \: \phi_x
+\end{equation*}
+Elimination of $\vect{\Wc}'$ then leads to:
+\begin{equation*}
+  \vect{\Uc}_t = \vect{\Uc}_x \frac{\phi_t}{\phi_x} 
+\end{equation*}
+which can be rewritten:
+\begin{equation*}
+  \vect{\Uc}_t \phi_x = \vect{\Uc}_x \phi_t
+\end{equation*}
+This ends the proof.
 
-
-
+Equation \ref{eq:interior_derivative} defines a relation between $\vect{\Uc}_t$ and $\vect{\Uc}_x$ that allows to write the original system \ref{eq:1d_pde_matrix} with $\vect{\Uc}_x$ only:
+\begin{equation}
+  \label{eq:cauchy_IVP_for_ux}
+  \( \lambda\tens{\Isf} + \tens{\Asf} \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
+\end{equation}
+where $\lambda = \phi_t/\phi_x$ and $\tens{\Isf}$ is the identity matrix. It is then obvious that equation \ref{eq:cauchy_IVP_for_ux} admits a unique solution if and only if the determinant of the system is non-zero, namely:
+\begin{equation}
+  \label{eq:characteristic_determinant}
+  D=\abs{\lambda\tens{\Isf} + \tens{\Asf}} \ne 0
+\end{equation}
+where D is called the \textit{characteristic determinant} of system \ref{eq:1d_pde_matrix}. To follow see \cite[Page~172]{Courant}
 % The complete theory of partial differential equations can be found in \cite{Courant}. In what fillows, we will restrict our attention to first order partial differential equations. 
 % Suppose we are interested in describing the variation of a physical quantity depending on two independant variables which can be either space or time variables $u(x,y)$.
 % \cite[Chapter~3]{Courant};\cite[Chapter~5]{Courant}
