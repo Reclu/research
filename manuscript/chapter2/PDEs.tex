@@ -17,38 +17,72 @@ or equivalently, in matrix form:
 \end{equation}
 In equations \ref{eq:diff_system_matrix_index} and \ref{eq:diff_system_matrix} as in what follows, sans-serif symbols refer to matrices while calligraphic symbols stand for column array. Furthermore, the partial derivatives of an arbitrary quantity with respect to a given variable $\drond{q}{y}$ may be replaced by $q_y$ when there will be no ambiguity. The coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Bc}$ may be functions of independent variables and the unknowns vector ($x_k,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ are not leads respectively to a \textit{linear system with variable coefficients} or to a \textit{linear system with constant coefficients}. the system remains \textit{linear} if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if $\tens{\Asf}^p$ depends on independent variables, $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
-\paragraph{The existence theorem of Cauchy and Kowalewsky}
+\subsection{The existence theorem of Cauchy and Kowalewsky}
 %Due to Cauchy and findable in \cite[Chapter~1]{Courant}
-Let us assumed that a system of $I$ partial differential equations of order $M$ depending on $N$ independant variables can be written in the form:
+Let us assume that a system of $I$ partial differential equations of order $M$ depending on the independant variables $x_1,...,x_N$ can be written in the form:
 \begin{equation}
   \label{eq:normal_form}
-  \drond{^Mu_i}{x_1^M} = f_i\(x_1,...,x_N,u_1,...,u_I,\drond{u_1}{x_1},..., \drond{^Mu_I}{x_N^M} \)
+  \drond{^M\Uc_i}{x_1^M} = \Fc_i\(x_1,...,x_N,\Uc_1,...,\Uc_I,\drond{\Uc_1}{x_1},..., \drond{^M\Uc_I}{x_N^M} \)
 \end{equation}
-% where f_i are functions that depend analytically on its variables (i.e. they can be expanded into power series in all these variables converging in a suitably small domain, which may be assumed to contain the origin x_k=0)
-The \textit{initial value problem} or \textit{Cauchy's problem} consists in constructing a solution $\vect{\Uc}$ of system \ref{eq:normal_form}, that can be seen as a surface of $\Rbb^{N+I}$, for which initial conditions on the other derivatives of $\vect{\Uc}$ in terms of arbitrary functions are satisfied at $x_1=0$. Namely, if one prescribes arbitrary functions $g_i^k(x_2,...,x_N)$ with $(i=1,...,I \: \text{and } k=0,....M-1)$ on the plane $x_1=0$:
+where the functions $\Fc_i$ do not depend on the left-hand side.
+
+% where $\Fc_i$ are functions that depend analytically on its variables (i.e. they can be expanded into power series in all these variables converging in a suitably small domain, which may be assumed to contain the origin x_k=0 \Uc_i=0)
+The \textit{initial value problem} or \textit{Cauchy's problem} consists in constructing a solution $\vect{\Uc}$ of system \ref{eq:normal_form}, that can be seen as a surface of $\Rbb^{N+I}$, for which initial conditions on the other derivatives of $\vect{\Uc}$ in terms of arbitrary functions are satisfied at $x_1=0$. Namely, if one prescribes arbitrary functions $\Gc_i^k(x_2,...,x_N)$ with $(i=1,...,I \: \text{and } k=0,....M-1)$ on the plane $x_1=0$:
 \begin{equation}
   \label{eq:IC_Cauchy}
   \begin{aligned}
-    & u_i(0,x_2,...,x_N) = g_i(x_2,...,x_N) \\
+    & \Uc_i(0,x_2,...,x_N) = \Gc_i(x_2,...,x_N) \\
     & ... \\
-    & \drond{^{M-1}}{x_1^{M-1}}u_i(0,x_2,...,x_N) = g_i^{M-1}(x_2,...,x_N) 
+    & \drond{^{M-1}}{x_1^{M-1}}\Uc_i(0,x_2,...,x_N) = \Gc_i^{M-1}(x_2,...,x_N) 
   \end{aligned}
 \end{equation}
+The theorem states the Cauchy's problem admits one and only one solution $\vect{\Uc}$ providing that the functions $\Fc_i$ and initial data $\Gc_i$ are analytical. The proof of this theorem can be found in \cite[Chapter~1]{Courant}. It is worth noticing that the restrictions assumed on the analytical nature of functions $\Fc_i,\Gc_i$ has been relaxed since the early works of Cauchy and Kowalewsky.
+
+
 %This problem can be seen as the problem of finding a set of solutions depending on constant of integration for ordinary differential equations.
-The Cauchy's theorem states that this problem possesses one and only one analytic solution $\vect{\Uc}$ (for a proof of the theorem, see \cite[Chapter~1]{Courant}).
-% Ecrit + démontré dans [Courant]
-In order to illustrate the aforementioned solving procedure, we consider the first order partial differential equation of two idependant variables:
+Only mention a suitable change of variable that allows to reduce a partial differential equation of order $N$ to a first order quasi-linear system. 
+We now focus on equations of two independant variables $(x,y)$ without loss of generality. In order to illustrate the aforementioned approach, we consider the first order partial differential equation:
 \begin{equation}
   \label{eq:1st_order_pde}
-  F(x_1,x_2,u,\drond{u}{x_1},\drond{u}{x_2})=0
+  F(x,y,u,u_x,u_y)=0
 \end{equation}
-and suppose that equation \ref{eq:1st_order_pde} can be solved for $\drond{u}{x_1}$ with the following form:
+and suppose that equation \ref{eq:1st_order_pde} can be solved for $u_x$ with the following form:
 \begin{equation}
   \label{eq:1st_order_pde_normal}
-  \drond{u}{x_1} = f(x_1,x_2,u,\drond{u}{x_2})
+  u_x = f(x,y,u,u_y)
 \end{equation}
-The Cauchy's problem thus consists in finding a solution $u(x_1,x_2)$ of equation \ref{eq:1st_order_pde_normal} that coincides with a prescribed function $u(x_1,x_2)=g(x_2)$ at $x_1=0$.
-
+The Cauchy's problem thus consists in finding a solution $u(x,y)$ of equation \ref{eq:1st_order_pde_normal} that coincides with a prescribed function $u(x,y)=g(y)$ at $x=0$. It follows that by differenciating $u(0,y)$ with respect to $y$ yields $u_y=g'(y)$. We then introduce the convenient notation $v=u_x\: ; \: w = u_x$ so that equation \ref{eq:1st_order_pde_normal} reads:
+\begin{equation}
+  \label{eq:1st_order_pde_wvu}
+  v = f(x,y,u,w)
+\end{equation}
+Then, noting that partial differential equations \ref{eq:1st_order_pde_wvu} allows to evaluate an initial value for $v$, the differentiation of \ref{eq:1st_order_pde_wvu} leads to the following first order quasi-linear system:
+\begin{equation}
+  \label{eq:1st_order_quasilinear_system}
+  \begin{aligned}
+    u_x & = v \\
+    w_x & = v_y \\
+    v_x &= f_x + f_u v + f_w w_x  
+  \end{aligned}
+\end{equation}
+with associated initial conditions:
+\begin{equation}
+  \label{eq:1st_order_quasilinear_system_IC}
+  \begin{aligned}
+    u(0,y) &= g(y)  \\
+    w(0,y) &= g'(y) \\
+    v(0,y) &= f(0,y,g(y),g'(y))
+  \end{aligned}
+\end{equation}
+which is equivalent to the original problem. Indeed, combination of the two first equations of system \ref{eq:1st_order_quasilinear_system} and integration with respect to $x$ yields:
+\begin{equation*}
+  u_y = w + \alpha(y)  
+\end{equation*}
+The first initial condition in \ref{eq:1st_order_quasilinear_system_IC} then allows to eliminates the function $\alpha(y)$ since $u_y(0,y)=w(0,y)$. Moreover, the integration of the last equation in \ref{eq:1st_order_quasilinear_system} with respect to $x$ leads to:
+\begin{equation*}
+  u_x = f(x,y,u,w) + \beta(y)
+\end{equation*}
+in which the function $\beta$ can also be eliminated by considering that the original partial differnetial equation holds for $x=0$.
 An important result comes form the consideration of a second order partial differential equation of two idenpendant variables:
 \begin{equation}
   \label{eq:2nd_order_pde}
@@ -57,18 +91,18 @@ An important result comes form the consideration of a second order partial diffe
 that can be solved for $\drond{^2u}{x^2_1}$:
 \begin{equation}
   \label{eq:2nd_order_pde_normal}
-  \drond{^2u}{x^2_1} = f(x_1,x_2,u,\drond{u}{x_2},\drond{^2u}{x^2_2},\ddrond{u}{x_1}{ x_2})
+  \drond{^2u}{x^2_1} = f(x_1,x_2,u,\drond{u}{x_1},\drond{u}{x_2},\drond{^2u}{x^2_2},\ddrond{u}{x_1}{ x_2})
 \end{equation}
 The initial value problem consists now in determining a surface $u(x_1,x_2)$ of $\Rbb^3$ that satisfies at $x_1=0$:
 \begin{equation}
   \label{eq:IC_Cauchy_2ndorder}
   u(0,x_1)=g(x_2) \quad \text{and} \quad \drond{u}{x_1}(0,x_2)=g^1(x_2)
 \end{equation}
-In is then obvious that in order to solve the Cauchy's problem in the case of second order pde's, more than one arbitrary function sepcifying the initial data are required. 
-\paragraph{Equivalence of second order pde's and first order quasi-linear systems}
+It is then obvious that in order to solve the Cauchy's problem in the case of second order pde's, more than one arbitrary function sepcifying the initial data are required. 
+\subsection{Equivalence of second order pde's and first order quasi-linear systems}
 \cite[p.43]{Courant}It follows from the generalization of the above problems
 See also paragraph 3. p.47 in [Courant]
-\paragraph{The concept of characteristics}
+\subsection{The notion of characteristics}
 \cite[p.55]{Courant}
 %%% On se limite aux edp du premier ordre à deux variables indépendantes car comme on le verra dans la suite, sous certainces conditions, les équations de la mécanique des solides se ramènent à ce cas précis. Pour une vue plus générale sur les edp, on peut se référer à [Courant]. Forme générale d'une edp, parler d'un système d'edp pour lequel F et u sont des vecteurs. Définitions de système linéaire, quasi-linéaire et semi-linéaire.
 We consider the first order partial differential equations system written for given quantities $\Uc_i$ (for the reduction of high order pde's to a system of 1st order quasi linear equations see \cite[Chapter~1 -- Section~7 -- p.40]{Courant}):
