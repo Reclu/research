@@ -1,13 +1,14 @@
 We will start this chapter with general considerations about systems of partial differential equations (basic definitions, existence theorem and the notion of characteristics). More specifically, it will be seen that partial differential equations of high order can be reduced to first order systems of partial differential equations, in which fall equations of dynamics in solid mechanics (see section \ref{sec:solidMech_equations}). Then, the general concepts introduced in section \ref{sec:PDEs} will be applied in the context of solid mechanics conservation laws (section \ref{sec:characteristic_analysis}) in order to derive analytical solutions of one-dimensional problems in section \ref{sec:analytical_results}.
 \subsection{Generalities}
+
 A \textit{system of partial differential equations} can be written by means of an operator $F$ depending on sets of independent variables $x_1,...,x_N$ and dependent variables $u_1,...,u_I$:
 \begin{equation}
   \label{eq:diff_operator}
   \vect{\Fc}\(x_1,...,x_N,u_1,...,u_I,\drond{u_1}{x_1},..., \drond{^Mu_I}{x_N^M}\) = \vect{0}
 \end{equation}
-The dimension of the system given by the operator \ref{eq:diff_operator} is given by the size of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, also referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system}. 
+The dimension of the system given by the operator \eqref{eq:diff_operator} is given by the size of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, also referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system}. 
 
-\paragraph{Notations:}In equation \ref{eq:diff_operator} as in what follows, sans-serif symbols will refer to matrices while calligraphic symbols stand for column array. Furthermore, the partial derivative of an arbitrary quantity with respect to a given variable $\drond{u}{x}$ may be replaced by $u_x$ when there will be no ambiguity.
+\paragraph{Notations:}In equation \eqref{eq:diff_operator} as in what follows, sans-serif symbols will refer to matrices while calligraphic symbols stand for column array. Furthermore, the partial derivative of an arbitrary quantity with respect to a given variable $\drond{u}{x}$ may be replaced by $u_x$ when there will be no ambiguity.
 
 $\newline$
 Making use of index notation and the convention of implicit summation over repeated indices, a system of partial differential equations can be written:
@@ -21,18 +22,15 @@ or equivalently, in matrix form:
 \end{equation}
 The coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Bc}$ may be functions of independent variables and the unknowns vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ are not leads respectively to a \textit{linear system with variable coefficients} or to a \textit{linear system with constant coefficients}. The system remains \textit{linear} if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if $\tens{\Asf}^p$ depends on independent variables, $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
-Solving the system of partial differential equations means that one seeks an unknown vector $\vect{\Uc}(x_1,...,x_N)$ that satisfies equations of the type of \ref{eq:diff_system_matrix}. Geometrically speaking, the problem of finding the $I$ components of $\vect{\Uc}$ as functions of $N$ independent variables can be seen as the building of an hyper-surface surface in $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Similarly to ordinary differential equations for which a one-parameter family of solutions depending on integration constants can reduce to one unique solution with suitable conditions, the solution of pde's involves arbitrary functions that can be set so that unicity is ensured. This is the object of what follows.
+Solving the system of partial differential equations means that one seeks an unknown vector $\vect{\Uc}(x_1,...,x_N)$ that satisfies equations of the type of \eqref{eq:diff_system_matrix}. Geometrically speaking, the problem of finding the $I$ components of $\vect{\Uc}$ as functions of $N$ independent variables can be seen as the building of an hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Similarly to ordinary differential equations for which a one-parameter family of solutions depending on integration constants can reduce to one unique solution providing suitable conditions are used, the solution of PDEs involves arbitrary functions that can be set so that unicity is ensured. This is the object of what follows.
 
-\subsection{The existence theorem of Cauchy and Kowalewsky}
-%Due to Cauchy and findable in \cite[Chapter~1]{Courant}
-Let us assume that a system of $I$ partial differential equations of order $M$ depending on the independant variables $x_1,...,x_N$ can be written in the form:
+\paragraph{The theorem of Cauchy-Kowalevski:}
+We consider here a partial differential system of dimension $I$ and order $M$ and of $N$ independent variables $x_k$. It is assumed that those system can be written:
 \begin{equation}
   \label{eq:normal_form}
   \drond{^M\Uc_i}{x_1^M} = \Fc_i\(x_1,...,x_N,\Uc_1,...,\Uc_I,\drond{\Uc_1}{x_1},..., \drond{^M\Uc_I}{x_N^M} \)
 \end{equation}
-where the functions $\Fc_i$ do not depend on the left-hand side.
-% where $\Fc_i$ are functions that depend analytically on its variables (i.e. they can be expanded into power series in all these variables converging in a suitably small domain, which may be assumed to contain the origin x_k=0 \Uc_i=0)
-The \textit{initial value problem} or \textit{Cauchy's problem} consists in constructing a solution $\vect{\Uc}$ of system \ref{eq:normal_form} for which initial conditions on the other derivatives of $\vect{\Uc}$ in terms of arbitrary functions are satisfied at $x_1=0$. Namely, if one prescribes arbitrary functions $\Gc_i^k(x_2,...,x_N)$ with $(i=1,...,I \: \text{and } k=0,....M-1)$ on the plane $x_1=0$:
+where the functions $\Fc_i$ do not depend on the left-hand side. In addition, initial conditions are prescribed for the derivatives of $\Uc_i$ with respect to $x_1$ up to order $M-1$ in the plane $x_1=0$, namely:
 \begin{equation}
   \label{eq:IC_Cauchy}
   \begin{aligned}
@@ -41,94 +39,83 @@ The \textit{initial value problem} or \textit{Cauchy's problem} consists in cons
     & \drond{^{M-1}}{x_1^{M-1}}\Uc_i(0,x_2,...,x_N) = \Gc_i^{M-1}(x_2,...,x_N) 
   \end{aligned}
 \end{equation}
-The theorem states the Cauchy's problem admits one and only one solution $\vect{\Uc}$ providing that the functions $\Fc_i$ and initial data $\Gc_i$ are analytical. The proof of this theorem can be found in \cite[Chapter~1]{Courant}. It is worth noticing that the restrictions assumed on the analytical nature of functions $\Fc_i,\Gc_i$ has been relaxed since the early works of Cauchy and Kowalewsky.
+where the $\Gc_i^p$ are arbitrary functions defined in the vicinity of the origin $(x_k=0 \:, \: k\ne 1)$.
+% where $\Fc_i$ are functions that depend analytically on its variables (i.e. they can be expanded into power series in all these variables converging in a suitably small domain, which may be assumed to contain the origin x_k=0 \Uc_i=0)
+The \textit{initial value problem} or \textit{Cauchy problem} consists in constructing a solution $\vect{\Uc}$ of system \eqref{eq:normal_form} that satisfies initial conditions \eqref{eq:IC_Cauchy}. The \textit{Cauchy--Kowalevski theorem} states that if functions $\Fc_i$ and $\Gc_i^p$ are analytic in the vicinity of the origin $x_k=0$, then Cauchy problem admits one and only one solution in the neighborhood of the origin (see \cite[Chapter~1]{Courant} for a proof of the theorem). % +Holmgren theorem
 
-
-%This problem can be seen as the problem of finding a set of solutions depending on constant of integration for ordinary differential equations.
-Only mention a suitable change of variable that allows to reduce a partial differential equation of order $N$ to a first order quasi-linear system. 
-We now focus on equations of two independant variables $(x,y)$ without loss of generality. In order to illustrate the aforementioned approach, we consider the first order partial differential equation:
+\paragraph{Reduction of high order PDEs to first order quasi-linear systems:} The Cauchy problem for a single partial differential equation of order $N$ can be reduced to an initial value problem for a first order quasi-linear system by means of a suitable change of variable. To illustrate this property, let us considers the following second order partial differential equation of two independent variables $(x,y)$ for the unknown $u$ (the result being extendable to more variables):
 \begin{equation}
-  \label{eq:1st_order_pde}
-  F(x,y,u,u_x,u_y)=0
+  \label{eq:2nd_order_pde}
+  F(x,y,u,u_x,u_y,u_{xx},u_{yy},u_{xy})=0
 \end{equation}
-and suppose that equation \ref{eq:1st_order_pde} can be solved for $u_x$ with the following form:
+It is assumed that is equation can be rewritten as:
 \begin{equation}
-  \label{eq:1st_order_pde_normal}
-  u_x = f(x,y,u,u_y)
-\end{equation}
-The Cauchy's problem thus consists in finding a solution $u(x,y)$ of equation \ref{eq:1st_order_pde_normal} that coincides with a prescribed function $u(x,y)=g(y)$ at $x=0$. It follows that by differenciating $u(0,y)$ with respect to $y$ yields $u_y=g'(y)$. We then introduce the convenient notation $v=u_x\: ; \: w = u_x$ so that equation \ref{eq:1st_order_pde_normal} reads:
-\begin{equation}
-  \label{eq:1st_order_pde_wvu}
-  v = f(x,y,u,w)
-\end{equation}
-Then, noting that partial differential equations \ref{eq:1st_order_pde_wvu} allows to evaluate an initial value for $v$, the differentiation of \ref{eq:1st_order_pde_wvu} leads to the following first order quasi-linear system:
-\begin{equation}
-  \label{eq:1st_order_quasilinear_system}
-  \begin{aligned}
-    u_x & = v \\
-    w_x & = v_y \\
-    v_x &= f_x + f_u v + f_w w_x  
-  \end{aligned}
+  \label{eq:2nd_order_pde_normal}
+  u_{xx}= f(x,y,u,u_x,u_y,u_{yy},u_{xy})
 \end{equation}
 with associated initial conditions:
 \begin{equation}
-  \label{eq:1st_order_quasilinear_system_IC}
+  \label{eq:2nd_order_pde_ICs}
+  u(0,y)= g(y) \quad ; \quad u_x(0,y)= g_1(y)
+\end{equation}
+Then, applying the following change of variables:
+\begin{equation*}
+  \label{eq:change_of_variables}
   \begin{aligned}
-    u(0,y) &= g(y)  \\
-    w(0,y) &= g'(y) \\
-    v(0,y) &= f(0,y,g(y),g'(y))
+     p &= u_x\\
+     q &= u_{y} \\
+     r &= u_{xx} \\
+     s &= u_{yy}\\
+     t &= u_{xy}
+  \end{aligned}
+\end{equation*}
+and differentiating equation \eqref{eq:2nd_order_pde_normal} with respect to $x$:
+\begin{equation*}
+  \label{eq:r_x}
+  u_{xxx}= f_x + f_u u_x + f_{u_x}u_{xx} + f_{u_y}u_{yx} + f_{u_{yy}}u_{yyx}+f_{u_{yx}}u_{yxx}
+\end{equation*}
+yields the first order partial differential system:
+\begin{equation}
+  \label{eq:1st_order_quasilinear_system}
+  \begin{aligned}
+    u_x & = p \\
+    q_x & = p_y \\
+    p_x & = r \\
+    t_x & = r_y \\
+    s_x & = t_y \\
+    r_x & = f_x + f_up + f_p r + f_q p_y + f_s t_y + f_t r_y
   \end{aligned}
 \end{equation}
-which is equivalent to the original problem. Indeed, combination of the two first equations of system \ref{eq:1st_order_quasilinear_system} and integration with respect to $x$ yields:
-\begin{equation*}
-  u_y = w + \alpha(y)  
-\end{equation*}
-The first initial condition in \ref{eq:1st_order_quasilinear_system_IC} then allows to eliminates the function $\alpha(y)$ since $u_y(0,y)=w(0,y)$. Moreover, the integration of the last equation in \ref{eq:1st_order_quasilinear_system} with respect to $x$ leads to:
-\begin{equation*}
-  u_x = f(x,y,u,w) + \beta(y)
-\end{equation*}
-in which the function $\beta$ can also be eliminated by considering that the original partial differnetial equation holds for $x=0$.
-An important result comes form the consideration of a second order partial differential equation of two idenpendant variables:
+Furthermore, from \eqref{eq:2nd_order_pde_ICs} and equation \eqref{eq:2nd_order_pde_normal}, initial conditions associated to system \eqref{eq:1st_order_quasilinear_system} can be determined:
 \begin{equation}
-  \label{eq:2nd_order_pde}
-  F(x_1,x_2,u,\drond{u}{x_1},\drond{u}{x_2},\drond{^2u}{x^2_1},\drond{^2u}{x^2_2},\ddrond{u}{x_1}{ x_2})=0
+  \label{eq:1st_order_quasilinear_system_ICs}
+  \begin{aligned}
+    u(0,y) &= g(y)\\
+    p(0,y) &= g_1(y) \\
+    q(0,y) &= g'(y) \\
+    s(0,y) &= g''(y) \\
+    t(0,y) &= g_1'(y) \\
+    r(0,y) &= f(0,y,g(y),g_1(y),g'(y),g''(y),g_1'(y))
+  \end{aligned}
 \end{equation}
-that can be solved for $\drond{^2u}{x^2_1}$:
+The solution of problem \eqref{eq:1st_order_quasilinear_system}--\eqref{eq:1st_order_quasilinear_system_ICs}  is equivalent to that of equation \eqref{eq:2nd_order_pde} \cite{Courant}.
+As a consequence, in what follows we will focus on first order quasi-linear systems of partial differential equations depending on two independent variables $(t,x)$.
+\subsection{The notion of characteristics -- Hyperbolicity}
+The previous discussions are based on the assumption that one can write a system of partial differential equations in a closed form for the highest derivative in one variable as in equation \eqref{eq:normal_form}. For a first order quasi-linear system in independent variables $t$ and $x$
 \begin{equation}
-  \label{eq:2nd_order_pde_normal}
-  \drond{^2u}{x^2_1} = f(x_1,x_2,u,\drond{u}{x_1},\drond{u}{x_2},\drond{^2u}{x^2_2},\ddrond{u}{x_1}{ x_2})
+  \label{eq:1st_order_quasilinear_syst}
+  \Absf^t(x,t)\drond{\vect{\Uc}}{t} + \Absf^x(x,t) \drond{\vect{\Uc}}{x} + \vect{\Bc} = \vect{0}
 \end{equation}
-The initial value problem consists now in determining a surface $u(x_1,x_2)$ of $\Rbb^3$ that satisfies at $x_1=0$:
-\begin{equation}
-  \label{eq:IC_Cauchy_2ndorder}
-  u(0,x_1)=g(x_2) \quad \text{and} \quad \drond{u}{x_1}(0,x_2)=g^1(x_2)
-\end{equation}
-It is then obvious that in order to solve the Cauchy's problem in the case of second order pde's, more than one arbitrary function sepcifying the initial data are required. 
-\subsection{Equivalence of second order pde's and first order quasi-linear systems}
-\cite[p.43]{Courant}It follows from the generalization of the above problems
-See also paragraph 3. p.47 in [Courant]
-\subsection{The notion of characteristics--Hyperbolicity}
-\cite[p.55]{Courant}
-%%% On se limite aux edp du premier ordre à deux variables indépendantes car comme on le verra dans la suite, sous certainces conditions, les équations de la mécanique des solides se ramènent à ce cas précis. Pour une vue plus générale sur les edp, on peut se référer à [Courant]. Forme générale d'une edp, parler d'un système d'edp pour lequel F et u sont des vecteurs. Définitions de système linéaire, quasi-linéaire et semi-linéaire.
-We consider the first order partial differential equations system written for given quantities $\Uc_i$ (for the reduction of high order pde's to a system of 1st order quasi linear equations see \cite[Chapter~1 -- Section~7 -- p.40]{Courant}):
-\begin{equation}
-  \label{eq:general_pde}
-  \drond{\Uc_i}{t} + \Asf^k_{ij}\drond{\Uc_j}{x_k} + \Bc_i= 0 \quad k=1,...,M \:;\: i=1,...,I
-\end{equation}
-or in matrix form:
-\begin{equation}
-  \label{eq:general_pde_matrix}
-  \drond{\vect{\Uc}}{t} + \tens{\Asf}^k \drond{\vect{\Uc}}{x_k} + \vect{\Bc} = \vect{0}\quad k=1,2,...,M
-\end{equation}
-where $\vect{\Bc}$ and $\tens{\Asf}^k$ respectively a column vector of length $I$ and $I\times I$ matrices. In what follows, bold sans-serif symbols denote matrices while calligraphic symbols stand for column array. In equations \ref{eq:general_pde} and \ref{eq:general_pde_matrix}, $t,x_1,...,x_M$ and $\Uc_i$ are respectively independent and dependent variables. More specifically, $t$ denotes the time variable and the $x_k$ stand for space variable such that $M$ is the space dimension of the problem. In the general case the matrices $\tens{\Asf}^k$ may be functions of $\vect{\Uc}$ and independent variables, the system is then \textit{quasi-linear}. On the other hand, if $\tens{\Asf}^k=\tens{\Asf}^k(t,x_k)$ and $\vect{\Bc}=\vect{\Bc}(t,x_k)$, the system is \textit{linear with variable coefficients}, otherwise it is \textit{linear with constant coefficients}. The last situation is the one in which $\vect{\Bc}=\vect{\Bc}(\vect{\Uc},t,x_k)$, then if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, the system remains \textit{linear}, but if it depends non-linearly on $\vect{\Uc}$ the system is called \textit{semi-linear} \cite[Chapter~5]{Courant},\cite[Chapter~2]{Toro}.
+such an expression is possible at a given point ($t_0,x_0$) only if one of the matrices $\Absf^t$ or $\Absf^x$ is non-singular. If for instance the matrix $\Absf^x(t_0,x_0)$ is singular, the line $x=x_0$ is called a \textit{characteristic line} at the point ($t_0,x_0$) otherwise it is a \textit{free} or \textit{non-characteristic} one.
 
+$\Cscr$
 $\newline$
-We now restrict the problem to the case of \textbf{linear systems} in one space variable in order to introduce the notions of \textit{hyperbolicity} and \textit{characteristics}, system \ref{eq:general_pde_matrix} hence reads:
+We now restrict the problem to the case of \textbf{linear systems} in one space variable in order to introduce the notions of \textit{hyperbolicity} and \textit{characteristics}, system \eqref{eq:general_pde_matrix} hence reads:
 \begin{equation}
   \label{eq:1d_pde_matrix}
   \vect{\Uc}_t + \tens{\Asf}\vect{\Uc}_x + \vect{\Bc} = \vect{0} 
 \end{equation}
-Let us consider the Cauchy's initial value problem consisting in finding $\vect{\Uc}_x$ for given initial values of $\vect{\Uc}$ (\textit{i.e. $\vect{\Uc}(x,t=0)$ is known}) on a parametrized curve $\Cc$ of the $(x,t)$ plane, namely by the function $\phi(x,t)=0$, such that equation \ref{eq:1d_pde_matrix} is satisfied on $\Cc$. The curve $\Cc$ is assumed to satisfy the following regularity requirement $\norm{\nablav \phi} \ne 0$, where $\nablav (\bullet)$ denotes the gradient operator. Since the unknown vector is viewed as a function of $\phi(x,t)$, the following property holds (also assume $\phi_x\ne 0$):
+Let us consider the Cauchy initial value problem consisting in finding $\vect{\Uc}_x$ for given initial values of $\vect{\Uc}$ (\textit{i.e. $\vect{\Uc}(x,t=0)$ is known}) on a parametrized curve $\Cc$ of the $(x,t)$ plane, namely by the function $\phi(x,t)=0$, such that equation \eqref{eq:1d_pde_matrix} is satisfied on $\Cc$. The curve $\Cc$ is assumed to satisfy the following regularity requirement $\norm{\nablav \phi} \ne 0$, where $\nablav (\bullet)$ denotes the gradient operator. Since the unknown vector is viewed as a function of $\phi(x,t)$, the following property holds (also assume $\phi_x\ne 0$):
 \begin{equation}
   \label{eq:interior_derivative}
   \vect{\Uc}_x\phi_t - \vect{\Uc}_t\phi_x= \vect{0}
@@ -148,17 +135,17 @@ which can be rewritten:
 \end{equation*}
 This ends the proof.
 
-Equation \ref{eq:interior_derivative} defines a relation between $\vect{\Uc}_t$ and $\vect{\Uc}_x$ that allows to write the original system \ref{eq:1d_pde_matrix} with $\vect{\Uc}_x$ only:
+Equation \eqref{eq:interior_derivative} defines a relation between $\vect{\Uc}_t$ and $\vect{\Uc}_x$ that allows to write the original system \eqref{eq:1d_pde_matrix} with $\vect{\Uc}_x$ only:
 \begin{equation}
   \label{eq:cauchy_IVP_for_ux}
   \( \lambda\tens{\Isf} + \tens{\Asf} \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
 \end{equation}
-where $\lambda = \phi_t/\phi_x$ and $\tens{\Isf}$ is the identity matrix. It is then obvious that equation \ref{eq:cauchy_IVP_for_ux} admits a unique solution if and only if the determinant of the system is non-zero, namely:
+where $\lambda = \phi_t/\phi_x$ and $\tens{\Isf}$ is the identity matrix. It is then obvious that equation \eqref{eq:cauchy_IVP_for_ux} admits a unique solution if and only if the determinant of the system is non-zero, namely:
 \begin{equation}
   \label{eq:characteristic_determinant}
   D=\abs{\lambda\tens{\Isf} + \tens{\Asf}} \ne 0
 \end{equation}
-where D is called the \textit{characteristic determinant} of system \ref{eq:1d_pde_matrix}. \cite[Page~172,Page~77]{Courant}
+where D is called the \textit{characteristic determinant} of system \eqref{eq:1d_pde_matrix}. \cite[Page~172,Page~77]{Courant}
 % The complete theory of partial differential equations can be found in \cite{Courant}. In what fillows, we will restrict our attention to first order partial differential equations. 
 % Suppose we are interested in describing the variation of a physical quantity depending on two independant variables which can be either space or time variables $u(x,y)$.
 % \cite[Chapter~3]{Courant};\cite[Chapter~5]{Courant}
@@ -167,7 +154,7 @@ where D is called the \textit{characteristic determinant} of system \ref{eq:1d_p
 %   \label{eq:general_pde}
 %   F\(x,y,...,u,u_x,u_y,...,u_{xx},u_{xy},u_{yy},... \) = 0
 % \end{equation}
-% in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. The partial differential equation \ref{eq:general_pde} is said to be of order $n$ if the highest derivative order is of order $n$. If the function $F$ depends linearly on its variables, the partial differential equation is said to be \textit{linear}. On the other hand, if the funcion $F$ depends linearly on the highest derivatives of $u$ only then the differential equation is \textit{quasi-linear}.
+% in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. The partial differential equation \eqref{eq:general_pde} is said to be of order $n$ if the highest derivative order is of order $n$. If the function $F$ depends linearly on its variables, the partial differential equation is said to be \textit{linear}. On the other hand, if the funcion $F$ depends linearly on the highest derivatives of $u$ only then the differential equation is \textit{quasi-linear}.
 
 % Definitions: Quasi-linear or Linear equations, order.
 % The same definitions holds if the functions $F$ and $u$ are vectors:
@@ -182,7 +169,7 @@ where D is called the \textit{characteristic determinant} of system \ref{eq:1d_p
 % \end{equation}
 % where the $m \times m$ matrices $\tens{A}^i$ may depend on $\vect{u}$ (quasi-linear).
 
-% In what follows we will restrict to first order partial differential equations. Equation \ref{eq:general_pde} may be \textit{semilinear} or \textit{linear} depending on whether the right-hand side depends on the unknown functions or not.
+% In what follows we will restrict to first order partial differential equations. Equation \eqref{eq:general_pde} may be \textit{semilinear} or \textit{linear} depending on whether the right-hand side depends on the unknown functions or not.
 % Linear,quasi linear, semi linear 
 % General pde form - order ?- linear quasi linear - interior differentiation
 
