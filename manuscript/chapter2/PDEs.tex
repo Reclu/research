@@ -112,60 +112,60 @@ which, according to equation \ref{eq:monge_axis}, corresponds to the partial dif
 %Hence the method of characteristics !!
 
 \subsubsection*{First order quasi-linear systems}
-We now move one the more general case of quasi-linear systems by considering the matrix form:
-\todo{see \cite[p.172]{Courant}, notion of free curves if a matrix is non-singular}
+We now move one the more general case of quasi-linear systems of dimension $I$ by considering the matrix form:
+%\todo{see \cite[p.172]{Courant}, notion of free curves if a matrix is non-singular}
 \begin{equation}
   \label{eq:1st_order_quasilinear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
 \end{equation}
-in which one of the matrices, say $\Absf^x$, is non-singular. Furthermore, the coefficients $\Asf^{(p)}_{ij}$ are supposed to be continuously differentiable. La question sous-jacente au problème de Cauchy est de savoir s'il est possible, en ayant prescrit des conditions nitiales en U le long d'une courbe, de trouver $u_x$ de sorte à ce que la PDE soit satisfaite le long de C (ou plutot sur la bande ainsi définie puisqu'on traite les dérivées)
-
-System \ref{eq:1st_order_quasilinear_syst} can be solved for the $\vect{\Uc}_x$ at a given point $(x_0,t_0)$ providing that the matrix $\Absf^x$ is non-singular at that point. If it is, then the line $x=x_0$ is a characteristic line otherwise it is \textit{non-characteristic}. 
-
-
-the Cauchy initial value problem consisting in finding $\vect{\Uc}_x$ for given initial values of $\vect{\Uc}$ on a parametrized curve $\Cscr:\phi(x,t)=0$, such that equation \ref{eq:1st_order_quasilinear_syst} is satisfied along $\Cscr$ (along a strip plutôt). 
-
-The initial curve is also assumed to satisfy the following regularity requirement $\norm{\nablav \phi} \ne 0$, where $\nablav (\bullet)$ denotes the gradient operator in the $(x,t)$ plane (\textit{i.e. one unique projection $\Cscr_0$ in the $(x,t)$ plane}). Moreover, it is also assumed that  $\phi_x\ne 0$.
-Domain of dependence, uniqueness.\todo{see \cite[p.424]{Courant}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1st version of the section
-$\newline$
-Since the unknown vector is viewed as a function of $\phi(x,t)$ along $\Cscr$, the following property holds:% interior derivative
+Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $\Cscr:\phi(x,t)=0$ with $\phi_x \neq 0$, the Cauchy problem consists in finding a solution $\vect{\Uc}_x$ such that equation \ref{eq:1st_order_quasilinear_syst} holds on the \textit{strip}\todo{strip: curve +family of tangent plane \textit{i.e. $x(\xi),t(\xi),u(\xi),u_x(\xi),u_t(\xi)$} \cite[p.77]{Courant}, so ? that must be useless...}. Along the initial curve, one has $\vect{\Uc} = \vect{\Wc}(\phi(x,t))$, then differentiation of $\vect{\Uc}$ with respect to $x$ and $t$ and substitution of $\vect{\Wc}'$ yields:
 \begin{equation}
-  \label{eq:interior_derivative}
+  \label{eq:interior_diff}
   \vect{\Uc}_x\phi_t - \vect{\Uc}_t\phi_x= \vect{0}
 \end{equation}
-The differentiation of a function $f$ along a curve $\phi(x,t)$ ($\norm{\nablav \phi} \ne 0$, $\phi_x\ne 0$), namely $\alpha f_x + \beta f_t$, is interior if $\alpha \phi_x +\beta\phi_t =0$. In particular:
+The system \ref{eq:1st_order_quasilinear_syst} thus reads:
 \begin{equation}
-  %\label{eq:interior_derivative}
-  \phi_t f_x -\phi_xf_t 
+  \label{eq:normal_form}
+  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
 \end{equation}
-is an interior derivative $\Rightarrow \phi_t \phi_x -\phi_x \phi_t =0$. Determinant of the Jacobian.
-\paragraph{Proof :} If we write the unknown vector as $\vect{\Uc}=\vect{\Wc}(\phi(x,t))$, then by using the chain rule the partial derivatives of $\vect{\Uc}$ read:
-\begin{equation*}
-  \vect{\Uc}_t = \vect{\Wc}' \: \phi_t \quad ; \quad \vect{\Uc}_x = \vect{\Wc}' \: \phi_x
-\end{equation*}
-Elimination of $\vect{\Wc}'$ then leads to:
-\begin{equation*}
-  \vect{\Uc}_t = \vect{\Uc}_x \frac{\phi_t}{\phi_x} 
-\end{equation*}
-which can be rewritten:
-\begin{equation*}
-  \vect{\Uc}_t \phi_x = \vect{\Uc}_x \phi_t
-\end{equation*}
-This ends the proof.
-
-Equation \ref{eq:interior_derivative} defines a relation between $\vect{\Uc}_t$ and $\vect{\Uc}_x$ that allows to write the original system \ref{eq:1st_order_quasilinear_syst} with $\vect{\Uc}_x$ only:
-\begin{equation}
-  \label{eq:cauchy_IVP_for_ux}
-  \( \lambda\tens{\Isf} + \tens{\Asf} \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
-\end{equation}
-where $\lambda = \phi_t/\phi_x$ and $\tens{\Isf}$ is the identity matrix. It is then obvious that equation \ref{eq:cauchy_IVP_for_ux} admits a unique solution if and only if the determinant of the system is non-zero, namely:
+where $\lambda=-\phi_t/\phi_x$. Hence, the Cauchy problem admits an unique solution in terms of space derivatives along $\Cscr$ if the determinant of the system is non-zero, that is:
 \begin{equation}
   \label{eq:characteristic_determinant}
-  D=\abs{\lambda\tens{\Isf} + \tens{\Asf}} \ne 0
+  D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
 \end{equation}
-where D is called the \textit{characteristic determinant} of system \ref{eq:1st_order_quasilinear_syst}. \cite[Page~172,Page~77]{Courant}
+where D is called the \textit{characteristic determinant} of system \ref{eq:1st_order_quasilinear_syst}. In that case where (\textit{i.e. D does not have real roots along $\Cscr$}), the problem is said \textit{elliptic}. On the other hand, if $D$ admits $I$ real roots the problem is \textit{hyperbolic}. If moreover, $\lambda$ is one root of the equation $D=0$, then the curve $\Cscr$ define such that:
+\begin{equation*}
+  d\phi(x,t) = \phi_x dx + \phi_t dt = 0 \Rightarrow \ddroit{x}{t} = \lambda
+\end{equation*}
+is an characteristic curve. As for first order quasilinear PDEs seen above, the system hence admits infinitely many solutions. Nevertheless, each $\lambda^k \: (k=1,...,I)$ is nothing but an eigenvalue of the Quasi-linear system which is associated to a left eigenvector $\vect{\Lc}^k$ such that:
+\begin{equation}
+  \label{eq:left_eigenvector}
+  \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij}
+\end{equation}
+or to a right eigenvector $\vect{\Rc}^k$:
+\begin{equation}
+  \label{eq:right_eigenvector}
+    \Asf^x_{ij}\Rc^k_l = \lambda^k \Asf^t_{ij}\Rc^k_l
+\end{equation}
+where $\delta_{ij}$ is the \textit{Kronecker} symbol. Hyperbolicity of the problem can be formulated more generally as the requirement that the quasi-linear first order system of dimension $p$ possesses $p$ real eigenvalues associated to $p$ linearly independant eigenvectors. The projection of system \ref{eq:1st_order_quasilinear_syst} on the $k-th$ characteristic left direction 
+\begin{equation*}
+  \vect{\Lc}^k \( \Absf^t \vect{\Uc}_t + \Absf^x\vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
+\end{equation*}
+
+\begin{equation}
+  \label{eq:2}
+    \vect{\Lc}^k  \Absf^t \( \vect{\Uc}_t + \lambda^k \vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
+\end{equation}
+We introduce the directional derivative along the $k-th$ characteristic curve $\ddroit{\vect{\Uc}}{t}_{t \in \phi} = \drond{\vect{\Uc}}{t} + \drond{\vect{\Uc}}{x} \ddroit{x}{t} = \drond{\vect{\Uc}}{t} + \lambda^k \drond{\vect{\Uc}}{x}$. Thus, it comes out that a hyperbolic quasi-linear partial differential system can be reduced to a system of \textit{Ordinary Differential Equations} along each of its characteristic curve: 
+\begin{equation}
+  \label{eq:characteristic_equations}
+  \vect{\Lc}^k \cdot (\Absf^t  d\vect{\Uc}) + \vect{\Lc}\cdot\vect{\Bc}=0
+\end{equation}
+Equations \ref{eq:characteristic_equations} are called the \textit{characteristic equations} of the hyperbolic system. 
+\textit{Domain of dependence, uniqueness.\todo{see \cite[p.424]{Courant}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% 1st version of the section
+
 % The complete theory of partial differential equations can be found in \cite{Courant}. In what fillows, we will restrict our attention to first order partial differential equations. 
 % Suppose we are interested in describing the variation of a physical quantity depending on two independant variables which can be either space or time variables $u(x,y)$.
 % \cite[Chapter~3]{Courant};\cite[Chapter~5]{Courant}
