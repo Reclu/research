@@ -107,22 +107,26 @@ If the Jacobian of the mapping function $\varphi:(\xi,\eta) \mapsto (x,t)$ does 
 \begin{equation*}
   \ddroit{u}{\eta}= u_x \ddroit{x}{\eta} + u_t \ddroit{t}{\eta} =  a u_x + b u_t
 \end{equation*}
-which, according to equation \ref{eq:monge_axis}, corresponds to the partial differential equation \ref{eq:1st_order_pde}. If however, $J=0$ along the initial curve, $\Cscr$ is a characteristic curve and infinitely many integral surfaces contain it, which involves that Cauchy problem has infinitely many solutions\todo{ensure uniqueness}. These concepts extend to the case of first order non-linear PDEs with more than two independent variables \cite[Chapter~2]{Courant}.
+which, according to equation \ref{eq:monge_axis}, corresponds to the partial differential equation \ref{eq:1st_order_pde}. If however, $J=0$ along the initial curve, $\Cscr$ is a characteristic curve and infinitely many integral surfaces contain it, which involves that Cauchy problem has infinitely many solutions\todo{ensure uniqueness;reduction of PDE to an ODE -> integration involves arbitrary constant ; \cite{Kythe_PDEs}}. These concepts extend to the case of first order non-linear PDEs with more than two independent variables \cite[Chapter~2]{Courant}.
 
 %Hence the method of characteristics !!
 
 \subsubsection*{First order quasi-linear systems}
 We now move one the more general case of quasi-linear systems by considering the matrix form:
-\todo{see \cite[p.424]{Courant}, notion of free curves if a matrix is non-singular}
+\todo{see \cite[p.172]{Courant}, notion of free curves if a matrix is non-singular}
 \begin{equation}
   \label{eq:1st_order_quasilinear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
 \end{equation}
 in which one of the matrices, say $\Absf^x$, is non-singular. Furthermore, the coefficients $\Asf^{(p)}_{ij}$ are supposed to be continuously differentiable. La question sous-jacente au problème de Cauchy est de savoir s'il est possible, en ayant prescrit des conditions nitiales en U le long d'une courbe, de trouver $u_x$ de sorte à ce que la PDE soit satisfaite le long de C (ou plutot sur la bande ainsi définie puisqu'on traite les dérivées)
 
+System \ref{eq:1st_order_quasilinear_syst} can be solved for the $\vect{\Uc}_x$ at a given point $(x_0,t_0)$ providing that the matrix $\Absf^x$ is non-singular at that point. If it is, then the line $x=x_0$ is a characteristic line otherwise it is \textit{non-characteristic}. 
+
+
 the Cauchy initial value problem consisting in finding $\vect{\Uc}_x$ for given initial values of $\vect{\Uc}$ on a parametrized curve $\Cscr:\phi(x,t)=0$, such that equation \ref{eq:1st_order_quasilinear_syst} is satisfied along $\Cscr$ (along a strip plutôt). 
 
 The initial curve is also assumed to satisfy the following regularity requirement $\norm{\nablav \phi} \ne 0$, where $\nablav (\bullet)$ denotes the gradient operator in the $(x,t)$ plane (\textit{i.e. one unique projection $\Cscr_0$ in the $(x,t)$ plane}). Moreover, it is also assumed that  $\phi_x\ne 0$.
+Domain of dependence, uniqueness.\todo{see \cite[p.424]{Courant}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 1st version of the section
 $\newline$
