@@ -117,7 +117,7 @@ We now move one the more general case of quasi-linear systems of dimension $I$ b
   \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
 \end{equation}
-Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $\Cscr:\phi(x,t)=0$ with $\phi_x \neq 0$, the Cauchy problem consists in finding a solution $\vect{\Uc}_t$ such that equation \eqref{eq:1st_order_quasi-linear_syst} holds along the \textit{strip} defined by $\Cscr$ and the tangent plane ($\vect{\Uc},\vect{\Uc}_x,\vect{\Uc}_t$). Along the initial curve, $\vect{\Uc} = \vect{\Wc}(\phi(x,t))$, then differentiation of $\vect{\Uc}$ with respect to $x$ and $t$ and substitution of $\vect{\Wc}'$ yields:
+Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $\Cscr:\phi(x,t)=0$ with $\phi_x \neq 0$, the Cauchy problem consists in finding a solution $\vect{\Uc}_x$ such that equation \eqref{eq:1st_order_quasi-linear_syst} holds along the \textit{strip} defined by $\Cscr$ and the tangent plane ($\vect{\Uc},\vect{\Uc}_x,\vect{\Uc}_t$). Along the initial curve, $\vect{\Uc} = \vect{\Wc}(\phi(x,t))$, then differentiation of $\vect{\Uc}$ with respect to $x$ and $t$ and substitution of $\vect{\Wc}'$ yields:
 \begin{equation}
   \label{eq:interior_diff}
   \vect{\Uc}_x\phi_t - \vect{\Uc}_t\phi_x= \vect{0}
@@ -125,26 +125,26 @@ Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $
 The system \eqref{eq:1st_order_quasi-linear_syst} thus reads:
 \begin{equation}
   \label{eq:normal_form}
-  \( \Absf^t - \lambda \Absf^x \) \vect{\Uc}_t + \vect{\Bc} = \vect{0} 
+  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
 \end{equation}
 where:
 \begin{equation}
   \label{eq:lambda_slope}
-  \lambda=-\frac{\phi_x}{\phi_t}
+  \lambda=-\frac{\phi_t}{\phi_x}
 \end{equation}
-Hence, the Cauchy problem admits an unique solution $\vect{\Uc}_t$ along $\Cscr$ if the determinant of the system is non-zero, that is:
+Hence, the Cauchy problem admits an unique solution $\vect{\Uc}_x$ along $\Cscr$ if the determinant of the system is non-zero, that is:
 \begin{equation}
   \label{eq:characteristic_determinant}
-  D=\abs{\Absf^t - \lambda \Absf^x} \ne 0
+  D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
 \end{equation}
 where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. In that case (\textit{i.e. D does not have real roots along $\Cscr$}), the problem is said \textit{elliptic} and the Cauchy problem can be solved. 
 
 If $D$ admits $I$ real roots $\lambda^k$ on the other hand, they correspond to eigenvalues of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst}. Those eigenvalues come along with left and right eigenvectors respectively defined as:
 \begin{equation}
   \label{eq:eigenvectors}
-  \Lc^k_i  \Asf^t_{ij} = \lambda^k \Lc^k_i \Asf^x_{ij} \quad ; \quad \Asf^t_{ij}\Rc^k_l = \lambda^k \Asf^x_{ij}\Rc^k_l
+  \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij} \quad ; \quad \Asf^x_{ij}\Rc^k_l = \lambda^k \Asf^t_{ij}\Rc^k_l
 \end{equation}
-Such a problem is called \textit{hyperbolic}. \textit{Hyperbolicity} can be generaly formulated as the requirement for a quasi-linear system of dimension $I$ \todo{regardless of the order?} to possess $I$ real eigenvalues associated to $I$ linearly independent eigenvectors. According to the definition \eqref{eq:lambda_slope}, it appears that the curves $\Cscr$ are characteristic curves which slopes in the $(x,t)$ plane are $-\frac{1}{\lambda^k}$. 
+Such a problem is called \textit{hyperbolic}. \textit{Hyperbolicity} can be generaly formulated as the requirement for a quasi-linear system of dimension $I$ \todo{regardless of the order?} to possess $I$ real eigenvalues associated to $I$ linearly independent eigenvectors. According to the definition \eqref{eq:lambda_slope}, it appears that the curves $\Cscr$ are characteristic curves which slopes in the $(x,t)$ plane are $-\lambda^k$. 
 
 The projection of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis}, that is:
 \begin{equation*}
@@ -152,19 +152,19 @@ The projection of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst}
 \end{equation*}
 can be rewritten by using the definition of left eigenvectors \eqref{eq:eigenvectors}:
 \begin{equation*}
-  \vect{\Lc}^k  \Absf^x \( \lambda^k \vect{\Uc}_t + \vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}=\vect{0}
+  \vect{\Lc}^k  \Absf^t \( \vect{\Uc}_t +\lambda^k \vect{\Uc}_x   \) + \vect{\Lc}^k \vect{\Bc}=\vect{0}
 \end{equation*}
 in which the \textit{directional derivative} of $\vect{\Uc}$ along $\Cscr^k$ arises, namely:
 \begin{equation*}
-  d\phi(x,t) = \phi_x dx + \phi_t dt = 0 \Rightarrow \ddroit{x}{t} = \frac{1}{\lambda}
+  d\phi^k(x,t) = \phi^k_x dx + \phi^k_t dt = 0 \Rightarrow \ddroit{x}{t} = \lambda^k
 \end{equation*}
 \begin{equation*}
- \ddroit{\Ucb}{t}\lvert_{t\in\phi^k} = \Ucb_t + \frac{1}{\lambda^k} \Ucb_x   
+ \ddroit{\Ucb}{t}\lvert_{t\in\phi^k} = \Ucb_t + \lambda^k \Ucb_x   
 \end{equation*}
 Finally, we are left with a system of \textit{Ordinary Differential Equations} written along each characteristic curve:
 \begin{equation}
   \label{eq:PDEs_ODEs}
-  \vect{\Lc}^k  \Absf^x \(\lambda^k \ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
+  \vect{\Lc}^k  \Absf^x \(\ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
 \end{equation}
 Note that in the preceding considerations, the notions of space and time variables $(x,t)$ used in solid mechanics have been introduced.
 
