@@ -5,7 +5,7 @@ A \textit{system of partial differential equations} can be written by means of a
   \label{eq:diff_operator}
   \vect{\Fc}\(x_1,...,x_N,u_1,...,u_I,\drond{u_1}{x_1},..., \drond{^Mu_I}{x_N^M}\) = \vect{0}
 \end{equation}
-The dimension of the system is given by the size of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, also referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system}. In equation \ref{eq:diff_operator} and in what follows, sans-serif symbols refer to matrices while calligraphic symbols stand for column array. Furthermore, the partial derivatives of a quantity $u$ with respect to a variable $x$ may be replaced by $u_x$ when there will be no ambiguity. Making use of index notation and convention of implicit summation over repeated indices, a system of partial differential equations can be written:
+The dimension of the system is given by the size of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, also referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system}. In equation \eqref{eq:diff_operator} and in what follows, sans-serif symbols refer to matrices while calligraphic symbols stand for column array. Furthermore, the partial derivatives of a quantity $u$ with respect to a variable $x$ may be replaced by $u_x$ when there will be no ambiguity. Making use of index notation and convention of implicit summation over repeated indices, a system of partial differential equations can be written:
 \begin{equation*}
   \sum_{k=1}^{N}\Asf_{ij}^p \drond{^p\Uc_j}{x_k^p} + \Bc_i = 0
 \end{equation*}
@@ -17,7 +17,7 @@ or equivalently, in matrix form:
 Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Bc}$ may be functions of independent variables and the unknowns vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ are not leads respectively to a \textit{linear system with variable coefficients} or to a \textit{linear system with constant coefficients}. The system remains \textit{linear} if $\vect{\Bc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if $\tens{\Asf}^p$ depends on independent variables, $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
 
-The \textit{Initial Value Problem (IVP)} or \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \ref{eq:diff_system_matrix} that satisfies a set of given initial conditions. Geometrically speaking, the solution of such a problem can be seen as the building of an hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order IVP by using suitable change of variable. To illustrate this property of PDEs, we consider a second order partial differential equation of two independent variables $(x,y)$ for the unknown $u$:
+The \textit{Initial Value Problem (IVP)} or \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given initial conditions. Geometrically speaking, the solution of such a problem can be seen as the building of an hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order IVP by using suitable change of variable. To illustrate this property of PDEs, we consider a second order partial differential equation of two independent variables $(x,y)$ for the unknown $u$:
 \begin{equation}
   \label{eq:2nd_order_pde}
   F(x,y,u,u_x,u_y,u_{xx},u_{yy},u_{xy})=0
@@ -37,30 +37,30 @@ Then, applying the following change of variables:
   \label{eq:change_of_variables}
   p = u_x \quad  ; \quad   q = u_{y}  \quad   ; \quad    r = u_{xx} \quad   ; \quad  s = u_{yy} \quad;\quad   t = u_{xy} 
 \end{equation*}
-and differentiating equation \ref{eq:2nd_order_pde_normal} with respect to $x$:
+and differentiating equation \eqref{eq:2nd_order_pde_normal} with respect to $x$:
 \begin{equation*}
   \label{eq:r_x}
   u_{xxx}= f_x + f_u u_x + f_{u_x}u_{xx} + f_{u_y}u_{yx} + f_{u_{yy}}u_{yyx}+f_{u_{yx}}u_{yxx}
 \end{equation*}
 yields the following first order partial differential system:
 \begin{equation}
-  \label{eq:1st_order_quasilinear_system}
+  \label{eq:1st_order_quasi-linear_system}
   \begin{aligned}
     u_x  = p \quad & ; \quad    q_x  = p_y \\
     p_x  = r \quad &;\quad     t_x  = r_y \\
     s_x  = t_y \quad &;\quad   r_x  = f_x + f_up + f_p r + f_q p_y + f_s t_y + f_t r_y
   \end{aligned}
 \end{equation}
-Furthermore, from \ref{eq:2nd_order_pde_ICs} and equation \ref{eq:2nd_order_pde_normal}, initial conditions associated to system \ref{eq:1st_order_quasilinear_system} can be determined:
+Furthermore, from \eqref{eq:2nd_order_pde_ICs} and equation \eqref{eq:2nd_order_pde_normal}, initial conditions associated to system \eqref{eq:1st_order_quasi-linear_system} can be determined:
 \begin{equation}
-  \label{eq:1st_order_quasilinear_system_ICs}
+  \label{eq:1st_order_quasi-linear_system_ICs}
   \begin{aligned}
     u(0,y) = g(y) \quad & ; \quad     p(0,y) = g_1(y) \\
     q(0,y) = g'(y) \quad & ; \quad    s(0,y) = g''(y) \\
     t(0,y) = g_1'(y) \quad & ; \quad    r(0,y) = f(0,y,g(y),g_1(y),g'(y),g''(y),g_1'(y))
   \end{aligned}
 \end{equation}
-The solution of problem \ref{eq:1st_order_quasilinear_system}--\ref{eq:1st_order_quasilinear_system_ICs}  is equivalent to that of equation \ref{eq:2nd_order_pde} and the procedure can be extended to more than two variables and higher orders \cite[p.54]{PDEs}. Note that the differentiation of the original PDE leads to a quasi-linear equation. Hence, such a reduction will yield a quasi-linear first order system regardless of the nature of initial equations.
+The solution of problem \eqref{eq:1st_order_quasi-linear_system}--\eqref{eq:1st_order_quasi-linear_system_ICs}  is equivalent to that of equation \eqref{eq:2nd_order_pde} and the procedure can be extended to more than two variables and higher orders \cite[p.54]{PDEs}. Note that the differentiation of the original PDE leads to a quasi-linear equation. Hence, such a reduction will yield a quasi-linear first order system regardless of the nature of initial equations.
 
 \subsection{Notion of characteristics -- Hyperbolic problems}
 The theorem of \textit{Cauchy--Kowalevsky} locally ensures the existence of solutions to a Cauchy problem for partial differential systems and is based on the restrictive requirement of analytic coefficients and initial data (see \cite[p.46]{PDEs}). The case of first order systems, however, only requires continuity and differentiability conditions and lies on the concept of \textit{characteristics}, which makes the developement of a solution procedure more flexible.
@@ -71,12 +71,12 @@ We consider the first order quasi-linear PDE with independent variables $x$ and 
   \label{eq:1st_order_pde}
    a u_x + b u_t  = c
 \end{equation}
-where coefficients $a$ and $b$ are such that $a^2 + b^2 \neq 0$. The solutions $u^{(i)}(x,t)$ of this equations form a set of surfaces in the space $(x,t,u)$ which tangent planes have normal vectors $\vect{n}^{(i)}=[u^{(i)}_x,u^{(i)}_t,-1]$. According to equation \ref{eq:1st_order_pde}, those normal vectors are perpendicular to $\vect{v}=[a,b,c]$. Therefore, the intersection of all those planes is a straight line which direction is given by $\vect{v}$. This defines \textit{characteristic line elements} in the whole space $(x,t,u)$, that is:
+where coefficients $a$ and $b$ are such that $a^2 + b^2 \neq 0$. The solutions $u^{(i)}(x,t)$ of this equations form a set of surfaces in the space $(x,t,u)$ which tangent planes have normal vectors $\vect{n}^{(i)}=[u^{(i)}_x,u^{(i)}_t,-1]$. According to equation \eqref{eq:1st_order_pde}, those normal vectors are perpendicular to $\vect{v}=[a,b,c]$. Therefore, the intersection of all those planes is a straight line which direction is given by $\vect{v}$. This defines \textit{characteristic line elements} in the whole space $(x,t,u)$, that is:
 \begin{equation}
   \label{eq:monge_axis}
   \matrice{dx \\ dt \\ du} = \matrice{a \\ b \\c}
 \end{equation}
-Introduction of a parameter $\xi$ and integration of equation \ref{eq:monge_axis} yields a one-parameter family of \textit{characteristic curves} of the PDE:
+Introduction of a parameter $\xi$ and integration of equation \eqref{eq:monge_axis} yields a one-parameter family of \textit{characteristic curves} of the PDE:
 \begin{equation*}
   x=x(\xi) \quad ; \quad t=t(\xi) \quad ; \quad u=u(\xi)
 \end{equation*}
@@ -90,80 +90,88 @@ With these considerations, it is obvious that a characteristic curve is tangent 
   Every characteristic curve which has one point in common with an integral surface lies entirely on the integral surface.
 \end{theorem}
 
-\subsubsection*{The Cauchy problem}
-An unique solution of equation \ref{eq:1st_order_pde} may be found by solving the initial value problem. Introducing a parameter $\xi$, one defines a curve $\Cscr$ in the space $(x,t,u)$ along which we are given initial conditions that do not need to be analytic. We assume that along $\Cscr$
+%\subsubsection*{The Cauchy problem}
+An unique solution of equation \eqref{eq:1st_order_pde} may be found by solving the initial value problem. Introducing a parameter $\xi$, one defines a curve $\Cscr$ in the space $(x,t,u)$ along which we are given initial conditions that do not need to be analytic. We assume that along $\Cscr$
 \begin{itemize}
 \item the curve is regular, that is $x_\xi^2 + t_\xi^2 \neq 0$
 \item coefficients $x(\xi)$, $t(\xi)$ and $u(\xi)$ are continuously differentiable
 \item it has an unique projection $\Cscr_0$ on the $(x,t)$ plane.
 \end{itemize}
 The unique solution of Cauchy problem is the integral surface $u(x,t)$ that contains $\Cscr$.
-Along that curve, characteristic curves can be built by integrating equation \ref{eq:monge_axis} with respect to a parameter $\eta$, namely:
+Along that curve, characteristic curves can be built by integrating equation \eqref{eq:monge_axis} with respect to a parameter $\eta$, namely:
 \begin{equation}
   \label{eq:charac_on_C}
   x=x(\xi,\eta) \quad ; \quad t=t(\xi,\eta) \quad ; \quad u=u(\xi,\eta) \quad \text{for fixed } \xi
 \end{equation}
-If the Jacobian of the mapping function $\varphi:(\xi,\eta) \mapsto (x,t)$ does not vanish along $\Cscr$ (\textit{i.e. characteristic curves and $\Cscr$ have different projections in the $(x,t)$ plane}\todo{Plots of geometrical considerations about J and characteristics.}), then the set of characteristic curves thus drawn generates the solution $u(x,t)$ of the Cauchy problem. Indeed, if the Jacobian $J=x_\xi t_\eta - x_\eta t_\xi$ is not zero, the mapping $\varphi$ can be inverted so that $u(\xi,\eta)$ becomes a function of $x$ and $t$ that can be differentiated to yield:
+If the Jacobian of the mapping function $\varphi:(\xi,\eta) \mapsto (x,t)$ does not vanish along $\Cscr$ (\textit{i.e. characteristic curves and $\Cscr$ have different projections in the $(x,t)$ plane}\todo{Plots of geometrical considerations about J and characteristics.}), then the set of characteristic curves thus drawn generates the solution $u(x,t)$ of the Cauchy problem\todo{cite theorems}. Indeed, if the Jacobian $J=x_\xi t_\eta - x_\eta t_\xi$ is not zero, the mapping $\varphi$ can be inverted so that $u(\xi,\eta)$ becomes a function of $x$ and $t$ that can be differentiated to yield:
 \begin{equation*}
   \ddroit{u}{\eta}= u_x \ddroit{x}{\eta} + u_t \ddroit{t}{\eta} =  a u_x + b u_t
 \end{equation*}
-which, according to equation \ref{eq:monge_axis}, corresponds to the partial differential equation \ref{eq:1st_order_pde}. If however, $J=0$ along the initial curve, $\Cscr$ is a characteristic curve and infinitely many integral surfaces contain it, which involves that Cauchy problem has infinitely many solutions\todo{ensure uniqueness;reduction of PDE to an ODE -> integration involves arbitrary constant ; \cite{Kythe_PDEs}}. These concepts extend to the case of first order non-linear PDEs with more than two independent variables \cite[Chapter~2]{Courant}.
+which, according to equation \eqref{eq:monge_axis}, corresponds to the partial differential equation \eqref{eq:1st_order_pde}. If however, $J=0$ along the initial curve, $\Cscr$ is a characteristic curve and infinitely many integral surfaces contain it, which involves that Cauchy problem has infinitely many solutions\todo{ensure uniqueness;reduction of PDE to an ODE -> integration involves arbitrary constant ; \cite{Kythe_PDEs}}. These concepts extend to the case of first order non-linear PDEs with more than two independent variables \cite[Chapter~2]{Courant}.
 
-%Hence the method of characteristics !!
 
 \subsubsection*{First order quasi-linear systems}
 We now move one the more general case of quasi-linear systems of dimension $I$ by considering the matrix form:
 %\todo{see \cite[p.172]{Courant}, notion of free curves if a matrix is non-singular}
 \begin{equation}
-  \label{eq:1st_order_quasilinear_syst}
+  \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
 \end{equation}
-Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $\Cscr:\phi(x,t)=0$ with $\phi_x \neq 0$, the Cauchy problem consists in finding a solution $\vect{\Uc}_x$ such that equation \ref{eq:1st_order_quasilinear_syst} holds on the \textit{strip}\todo{strip: curve +family of tangent plane \textit{i.e. $x(\xi),t(\xi),u(\xi),u_x(\xi),u_t(\xi)$} \cite[p.77]{Courant}, so ? that must be useless...}. Along the initial curve, one has $\vect{\Uc} = \vect{\Wc}(\phi(x,t))$, then differentiation of $\vect{\Uc}$ with respect to $x$ and $t$ and substitution of $\vect{\Wc}'$ yields:
+Again, assuming initial conditions on $\vect{\Uc}$ given along regular a curve $\Cscr:\phi(x,t)=0$ with $\phi_x \neq 0$, the Cauchy problem consists in finding a solution $\vect{\Uc}_t$ such that equation \eqref{eq:1st_order_quasi-linear_syst} holds along the \textit{strip} defined by $\Cscr$ and the tangent plane ($\vect{\Uc},\vect{\Uc}_x,\vect{\Uc}_t$). Along the initial curve, $\vect{\Uc} = \vect{\Wc}(\phi(x,t))$, then differentiation of $\vect{\Uc}$ with respect to $x$ and $t$ and substitution of $\vect{\Wc}'$ yields:
 \begin{equation}
   \label{eq:interior_diff}
   \vect{\Uc}_x\phi_t - \vect{\Uc}_t\phi_x= \vect{0}
 \end{equation}
-The system \ref{eq:1st_order_quasilinear_syst} thus reads:
+The system \eqref{eq:1st_order_quasi-linear_syst} thus reads:
 \begin{equation}
   \label{eq:normal_form}
-  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \vect{\Bc} = \vect{0} 
+  \( \Absf^t - \lambda \Absf^x \) \vect{\Uc}_t + \vect{\Bc} = \vect{0} 
 \end{equation}
-where $\lambda=-\phi_t/\phi_x$. Hence, the Cauchy problem admits an unique solution in terms of space derivatives along $\Cscr$ if the determinant of the system is non-zero, that is:
+where:
+\begin{equation}
+  \label{eq:lambda_slope}
+  \lambda=-\frac{\phi_x}{\phi_t}
+\end{equation}
+Hence, the Cauchy problem admits an unique solution $\vect{\Uc}_t$ along $\Cscr$ if the determinant of the system is non-zero, that is:
 \begin{equation}
   \label{eq:characteristic_determinant}
-  D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
+  D=\abs{\Absf^t - \lambda \Absf^x} \ne 0
 \end{equation}
-where D is called the \textit{characteristic determinant} of system \ref{eq:1st_order_quasilinear_syst}. In that case where (\textit{i.e. D does not have real roots along $\Cscr$}), the problem is said \textit{elliptic}. On the other hand, if $D$ admits $I$ real roots the problem is \textit{hyperbolic}. If moreover, $\lambda$ is one root of the equation $D=0$, then the curve $\Cscr$ define such that:
-\begin{equation*}
-  d\phi(x,t) = \phi_x dx + \phi_t dt = 0 \Rightarrow \ddroit{x}{t} = \lambda
-\end{equation*}
-is an characteristic curve. As for first order quasilinear PDEs seen above, the system hence admits infinitely many solutions. Nevertheless, each $\lambda^k \: (k=1,...,I)$ is nothing but an eigenvalue of the Quasi-linear system which is associated to a left eigenvector $\vect{\Lc}^k$ such that:
+where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. In that case (\textit{i.e. D does not have real roots along $\Cscr$}), the problem is said \textit{elliptic} and the Cauchy problem can be solved. 
+
+If $D$ admits $I$ real roots $\lambda^k$ on the other hand, they correspond to eigenvalues of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst}. Those eigenvalues come along with left and right eigenvectors respectively defined as:
 \begin{equation}
-  \label{eq:left_eigenvector}
-  \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij}
+  \label{eq:eigenvectors}
+  \Lc^k_i  \Asf^t_{ij} = \lambda^k \Lc^k_i \Asf^x_{ij} \quad ; \quad \Asf^t_{ij}\Rc^k_l = \lambda^k \Asf^x_{ij}\Rc^k_l
 \end{equation}
-or to a right eigenvector $\vect{\Rc}^k$:
-\begin{equation}
-  \label{eq:right_eigenvector}
-    \Asf^x_{ij}\Rc^k_l = \lambda^k \Asf^t_{ij}\Rc^k_l
-\end{equation}
-where $\delta_{ij}$ is the \textit{Kronecker} symbol. Hyperbolicity of the problem can be formulated more generally as the requirement that the quasi-linear first order system of dimension $p$ possesses $p$ real eigenvalues associated to $p$ linearly independant eigenvectors. The projection of system \ref{eq:1st_order_quasilinear_syst} on the $k-th$ characteristic left direction 
+Such a problem is called \textit{hyperbolic}. \textit{Hyperbolicity} can be generaly formulated as the requirement for a quasi-linear system of dimension $I$ \todo{regardless of the order?} to possess $I$ real eigenvalues associated to $I$ linearly independent eigenvectors. According to the definition \eqref{eq:lambda_slope}, it appears that the curves $\Cscr$ are characteristic curves which slopes in the $(x,t)$ plane are $-\frac{1}{\lambda^k}$. 
+
+The projection of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis}, that is:
 \begin{equation*}
   \vect{\Lc}^k \( \Absf^t \vect{\Uc}_t + \Absf^x\vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
 \end{equation*}
+can be rewritten by using the definition of left eigenvectors \eqref{eq:eigenvectors}:
+\begin{equation*}
+  \vect{\Lc}^k  \Absf^x \( \lambda^k \vect{\Uc}_t + \vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}=\vect{0}
+\end{equation*}
+in which the \textit{directional derivative} of $\vect{\Uc}$ along $\Cscr^k$ arises, namely:
+\begin{equation*}
+  d\phi(x,t) = \phi_x dx + \phi_t dt = 0 \Rightarrow \ddroit{x}{t} = \frac{1}{\lambda}
+\end{equation*}
+\begin{equation*}
+ \ddroit{\Ucb}{t}\lvert_{t\in\phi^k} = \Ucb_t + \frac{1}{\lambda^k} \Ucb_x   
+\end{equation*}
+Finally, we are left with a system of \textit{Ordinary Differential Equations} written along each characteristic curve:
+\begin{equation}
+  \label{eq:PDEs_ODEs}
+  \vect{\Lc}^k  \Absf^x \(\lambda^k \ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
+\end{equation}
+Note that in the preceding considerations, the notions of space and time variables $(x,t)$ used in solid mechanics have been introduced.
 
-\begin{equation}
-  \label{eq:2}
-    \vect{\Lc}^k  \Absf^t \( \vect{\Uc}_t + \lambda^k \vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
-\end{equation}
-We introduce the directional derivative along the $k-th$ characteristic curve $\ddroit{\vect{\Uc}}{t}_{t \in \phi} = \drond{\vect{\Uc}}{t} + \drond{\vect{\Uc}}{x} \ddroit{x}{t} = \drond{\vect{\Uc}}{t} + \lambda^k \drond{\vect{\Uc}}{x}$. Thus, it comes out that a hyperbolic quasi-linear partial differential system can be reduced to a system of \textit{Ordinary Differential Equations} along each of its characteristic curve: 
-\begin{equation}
-  \label{eq:characteristic_equations}
-  \vect{\Lc}^k \cdot (\Absf^t  d\vect{\Uc}) + \vect{\Lc}\cdot\vect{\Bc}=0
-\end{equation}
-Equations \ref{eq:characteristic_equations} are called the \textit{characteristic equations} of the hyperbolic system. 
 \textit{Domain of dependence, uniqueness.\todo{see \cite[p.424]{Courant}}}
 
+
+\subsubsection*{The method of characteristics}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% 1st version of the section
 
 % The complete theory of partial differential equations can be found in \cite{Courant}. In what fillows, we will restrict our attention to first order partial differential equations. 
@@ -174,9 +182,9 @@ Equations \ref{eq:characteristic_equations} are called the \textit{characteristi
 %   \label{eq:general_pde}
 %   F\(x,y,...,u,u_x,u_y,...,u_{xx},u_{xy},u_{yy},... \) = 0
 % \end{equation}
-% in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. The partial differential equation \ref{eq:general_pde} is said to be of order $n$ if the highest derivative order is of order $n$. If the function $F$ depends linearly on its variables, the partial differential equation is said to be \textit{linear}. On the other hand, if the funcion $F$ depends linearly on the highest derivatives of $u$ only then the differential equation is \textit{quasi-linear}.
+% in which $F$ denotes a combination of partial derivatives of $u$ up to a given order $n$, and the subscript on $u$ stands for partial differentiation $u_x=\drond{u}{x}$. The partial differential equation \eqref{eq:general_pde} is said to be of order $n$ if the highest derivative order is of order $n$. If the function $F$ depends linearly on its variables, the partial differential equation is said to be \textit{linear}. On the other hand, if the funcion $F$ depends linearly on the highest derivatives of $u$ only then the differential equation is \textit{quasi-linear}.
 
-% Definitions: Quasi-linear or Linear equations, order.
+% Definitions: quasi-linear or Linear equations, order.
 % The same definitions holds if the functions $F$ and $u$ are vectors:
 % \begin{equation}
 %   \label{eq:general_pde_system}
@@ -189,7 +197,7 @@ Equations \ref{eq:characteristic_equations} are called the \textit{characteristi
 % \end{equation}
 % where the $m \times m$ matrices $\tens{A}^i$ may depend on $\vect{u}$ (quasi-linear).
 
-% In what follows we will restrict to first order partial differential equations. Equation \ref{eq:general_pde} may be \textit{semilinear} or \textit{linear} depending on whether the right-hand side depends on the unknown functions or not.
+% In what follows we will restrict to first order partial differential equations. Equation \eqref{eq:general_pde} may be \textit{semilinear} or \textit{linear} depending on whether the right-hand side depends on the unknown functions or not.
 % Linear,quasi linear, semi linear 
 % General pde form - order ?- linear quasi linear - interior differentiation
 
