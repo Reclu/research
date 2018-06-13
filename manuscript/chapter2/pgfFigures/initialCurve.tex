@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+  \begin{axis}[view={30}{30},ticks=none,xlabel=$x$,ylabel=$t$,zlabel=$u$,zmin=0,ymax=5.2]
+    \addplot3[Orange,very thick,domain=0:10,samples=60,samples y=0]
+    ({x},
+    {4+sin(1.5*x*x)},
+    {4+3.*cos(deg(x))});
+    \addplot3[Duck,dashed,very thick,domain=0:10,samples=60,samples y=0]
+    ({x},{4+sin(1.5*x^2)},{0*x});
+    \legend{$\Cscr$,$\Cscr_0$};
+    % dt/dx = -phi_x/phi_t 
+    \addplot3[thick]  coordinates {(5,4+sin(1.5*25),0) (6.5,4+sin(1.5*25),0)}  node[above] at (axis cs:6.9,4.05+0.6087-0.4,0.) {\large$\phi_t$};
+    \addplot3[thick]  coordinates {(5,4+sin(1.5*25),0) (6.5,4+sin(1.5*25)+0.3,0)};
+    \addplot3[thick]  coordinates {(6.5,4+sin(1.5*25),0) (6.5,4+sin(1.5*25)+0.3,0)} node[right] at (axis cs:6.7,4.05+0.6087+0.,0.) {\large$-\phi_x$};
+  \end{axis}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
