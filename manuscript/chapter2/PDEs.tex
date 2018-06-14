@@ -135,7 +135,7 @@ An interesenting property of characteristic curves will be now highlighted with 
   \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
 \end{equation}
-In a similar manner as what has been done for the general quasi-linear PDE \eqref{eq:1st_order_pde}, initial conditions of $\Ucb$ are given along a regular curve $\Cscr_0:\phi(x,t)=const$ of the $(x,t)$ plane, defining thus the initial curve $\Ucb(\phi(x,t))$ of the $(x,t,\Ucb)$ space. The Cauchy problem consists in finding all the derivatives of $\Ucb(x,t)$ such that equation \eqref{eq:1st_order_quasi-linear_syst} is satisfied in the vicinity of $\Cscr$. We note that along the initial curve, one has
+In a similar manner as what has been done for quasi-linear PDEs, initial conditions of $\Ucb$ are given along a regular curve $\Cscr_0:\phi(x,t)=const$ of the $(x,t)$ plane, defining thus the initial curve $\Ucb(\phi(x,t))$ of the $(x,t,\Ucb)$ space. The Cauchy problem consists in finding all the derivatives of $\Ucb(x,t)$ such that equation \eqref{eq:1st_order_quasi-linear_syst} is satisfied in the vicinity of $\Cscr$. We note that along the initial curve, one has
 \begin{equation*}
   \Ucb_x = \Ucb' \phi_x \quad ; \quad \Ucb_t = \Ucb' \phi_t
 \end{equation*}
@@ -159,13 +159,31 @@ Hence, the Cauchy problem admits an unique solution $\vect{\Uc}_x$ along $\Cscr$
   \label{eq:characteristic_determinant}
   D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
 \end{equation}
-where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. In that case (\textit{i.e. D does not have real roots along $\Cscr_0$}) the problem is said \textit{elliptic} and the Cauchy problem can be solved. If $D$ admits $I$ real roots $\lambda^k$ on the other hand, they correspond to eigenvalues of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst}. Those eigenvalues come along with left and right eigenvectors respectively defined as:
+where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. In that case (\textit{i.e. D does not have real roots along $\Cscr_0$}) the problem is said \textit{elliptic} and the Cauchy problem can be solved. Indeed, in that case the knowledge of $\Ucb$along the initial curve allows the computation of derivatives and hence, the building of an integral strip defined by $\Ucb,\Ucb_x,\Ucb_t$. On the other hand, if $D$ admits $I$ real roots, they correspond to eigenvalues of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst}. Those eigenvalues come along with left and right eigenvectors respectively defined as:
 \begin{equation}
   \label{eq:eigenvectors}
-  \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij} \quad ; \quad \Asf^x_{ij}\Rc^k_l = \lambda^k \Asf^t_{ij}\Rc^k_l
+  \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij} \quad ; \quad \Asf^x_{ij}\Rc^k_j = \lambda^k \Asf^t_{ij}\Rc^k_j
 \end{equation}
-Such a problem is called \textit{hyperbolic}. \textit{Hyperbolicity} can be formulated for first order systems as the requirement for a quasi-linear system of dimension $I$ to possess $I$ real eigenvalues associated to $I$ linearly independent eigenvectors. According to the definition \eqref{eq:lambda_slope}, it appears that a family of curves $\Cscr^k_0$ is a set of characteristic curves which slopes in the $(x,t)$ plane are $\lambda^k$.
+Such a problem is called \textit{hyperbolic}. It then comes that if a first order system of $I$ partial differential equations admits $I$ real eigenvalues associated to independent eigenvectors, the system is said hyperbolic. Hence, for those problems one can draw a set of $I$ one-parameter families of curves in the $(x,t)$ plane by integrating the relation $\lambda^k=dx/dt$.
 
+\paragraph{Example:} Consider the first order system with variabble coefficients
+\begin{equation*}
+ \matrice{x &0 \\0 &-x}  \matrice{u_1 \\ u_2}_t + \matrice{u_1 \\ u_2}_x = \matrice{0 \\0}
+\end{equation*}
+which eigenvalues, according to equation \eqref{eq:characteristic_determinant} satisfy
+\begin{equation*}
+  (1-\lambda x)(1+\lambda x)=0
+\end{equation*}
+Hence, we get $\lambda^1=x \: ; \: \lambda^2=-x$. By integrating relation \eqref{eq:lambda_slope} one can draw two characteristic curves, namely
+\begin{equation*}
+  t^1(x)=\frac{1}{2}x^2+c^1  \quad \text{and} \quad t^2(x)=-\frac{1}{2}x^2+c^2 
+\end{equation*}
+\begin{figure}[h]
+  \centering
+  \input{chapter2/pgfFigures/exampleCharac}
+  \caption{Family of base characteristic curves corresponding to the eigenvalues $\lambda^1=1/x$ and $\lambda^2=-1/x$ of a first order system with constant coefficients.}
+  \label{fig:exampleCharac}
+\end{figure}
 An important property of hyperbolic problems can be highlighted by projecting the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis}, that is:
 \begin{equation*}
   \vect{\Lc}^k \( \Absf^t \vect{\Uc}_t + \Absf^x\vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
@@ -183,6 +201,8 @@ Thus, it appears that along a characteristic curve, a system of partial differen
   \label{eq:PDEs_ODEs}
   \vect{\Lc}^k  \Absf^t \(\ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
 \end{equation}
+\textbf{Thus, with the above considerations we see that unlike for free curves, one cannot prescribe arbitrarily initial conditions along a characteristic curve}
+
 The result that has been obtained in this part is the foundation of the \textit{method of characteristics} that will be developed in what follows. 
 
 
