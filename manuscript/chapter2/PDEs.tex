@@ -165,43 +165,67 @@ where D is called the \textit{characteristic determinant} of system \eqref{eq:1s
   \Lc^k_i  \Asf^x_{ij} = \lambda^k \Lc^k_i \Asf^t_{ij} \quad ; \quad \Asf^x_{ij}\Rc^k_j = \lambda^k \Asf^t_{ij}\Rc^k_j
 \end{equation}
 Such a problem is called \textit{hyperbolic}. It then comes that if a first order system of $I$ partial differential equations admits $I$ real eigenvalues associated to independent eigenvectors, the system is said hyperbolic. Hence, for those problems one can draw a set of $I$ one-parameter families of curves in the $(x,t)$ plane by integrating the relation $\lambda^k=dx/dt$.
-
-\paragraph{Example:} Consider the first order system with variabble coefficients
+\begin{example}
+  \label{ex:charac1}
+  Consider the first order system with variable coefficients
 \begin{equation*}
- \matrice{x &0 \\0 &-x}  \matrice{u_1 \\ u_2}_t + \matrice{u_1 \\ u_2}_x = \matrice{0 \\0}
+ \matrice{x &0 \\0 &-x} \drond{}{t} \matrice{\Uc_1 \\ \Uc_2} + \drond{}{x}\matrice{\Uc_1 \\ \Uc_2} = \matrice{0 \\0}
 \end{equation*}
 which eigenvalues, according to equation \eqref{eq:characteristic_determinant} satisfy
 \begin{equation*}
   (1-\lambda x)(1+\lambda x)=0
 \end{equation*}
-Hence, we get $\lambda^1=x \: ; \: \lambda^2=-x$. By integrating relation \eqref{eq:lambda_slope} one can draw two characteristic curves, namely
+We thus have two solutions $\lambda^{1,2}=\pm 1/x$, leading by integration of \eqref{eq:lambda_slope} to two one-parameter families of characteristic curves:
 \begin{equation*}
-  t^1(x)=\frac{1}{2}x^2+c^1  \quad \text{and} \quad t^2(x)=-\frac{1}{2}x^2+c^2 
+  t_1(x)=\frac{1}{2}x^2+c_1  \quad \text{and} \quad t_2(x)=-\frac{1}{2}x^2+c_2 
 \end{equation*}
+Those families of curves are drawn in figure \ref{fig:exampleCharac} for several values of parameters $c_1$ and $c_2$. We are then left with two curves in the $(x,t)$ plane due to the dependence of the coefficient matrices of the system on independent variables. On the other hand, the characteristics for linear and quasi-linear systems are straight lines in the $(x,t)$ plane.
+\end{example}
+\begin{example}
+  \label{ex:charac2}
+  Consider the first order system with variable coefficients
+\begin{equation*}
+ \matrice{1 &0 \\0 &2} \drond{}{t} \matrice{\Uc_1 \\ \Uc_2} + \drond{}{x}\matrice{\Uc_1 \\ \Uc_2} = \matrice{0 \\0}
+\end{equation*}
+which eigenvalues, according to equation \eqref{eq:characteristic_determinant} satisfy
+\begin{equation*}
+  (1 - \lambda )(1- 2\lambda)=0
+\end{equation*}
+We thus have two solutions $\lambda^1=1 \: ; \: \lambda^2=1/2$, leading by integration of \eqref{eq:lambda_slope} to two one-parameter families of characteristic curves:
+\begin{equation*}
+  t_1(x)=x+c_1  \quad \text{and} \quad t_2(x)=2x+c_2 
+\end{equation*}
+Those families of curves are drawn in figure \ref{fig:exampleCharac} for several values of parameters $c_1$ and $c_2$. We are then left with two curves in the $(x,t)$ plane due to the dependence of the coefficient matrices of the system on independent variables. On the other hand, the characteristics for linear and quasi-linear systems are straight lines in the $(x,t)$ plane.
+\end{example}
 \begin{figure}[h]
   \centering
-  \input{chapter2/pgfFigures/exampleCharac}
-  \caption{Family of base characteristic curves corresponding to the eigenvalues $\lambda^1=1/x$ and $\lambda^2=-1/x$ of a first order system with constant coefficients.}
+  \subfloat[Example \ref{ex:charac1}: $\lambda^{1,2}=\pm 1/x$]{\input{chapter2/pgfFigures/exampleCharac}} \qquad
+  \subfloat[Example \ref{ex:charac2}: $\lambda^{1}=1 \: \lambda^2=1/2$]{\input{chapter2/pgfFigures/exampleCharac_const}}
+  \caption{Family of base characteristic curves corresponding to the eigenvalues of the first order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
   \label{fig:exampleCharac}
 \end{figure}
-An important property of hyperbolic problems can be highlighted by projecting the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis}, that is:
+
+In analogy with partial differential equations, infinitely many solution to Cauchy problem contain the characteristic curves of a first order partial differential system. As a consequence, one cannot find a unique solution by solving system \eqref{eq:normal_form} if initial conditions are prescribed along a characteristic.  However, an important property of hyperbolic problems that allows to circumvent the difficulties mentioned above will be now highlighted. 
+Projecting the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis}
 \begin{equation*}
   \vect{\Lc}^k \( \Absf^t \vect{\Uc}_t + \Absf^x\vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Bc}= \vect{0}
 \end{equation*}
-Then, the definition left eigenvectors \eqref{eq:eigenvectors} leads to:
+and using the definition of left eigenvectors \eqref{eq:eigenvectors} lead to:
 \begin{equation*}
   \vect{\Lc}^k  \Absf^t \( \vect{\Uc}_t +\lambda^k \vect{\Uc}_x   \) + \vect{\Lc}^k \vect{\Bc}=\vect{0}
 \end{equation*}
-in which the \textit{directional derivative} of $\vect{\Uc}$ along $\Cscr^k$ arises, namely:
+In this equation, the \textit{directional derivative} of $\vect{\Uc}$ along the $kth$ characteristic curve arises, namely:
 \begin{equation*}
  \ddroit{\Ucb}{t}\lvert_{t\in\phi^k} = \Ucb_t + \lambda^k \Ucb_x   
 \end{equation*}
-Thus, it appears that along a characteristic curve, a system of partial differential equations reduces to a system of \textit{Ordinary Differential Equations}:
+Thus, along a characteristic curve a system of partial differential equations reduces to a system of \textit{Ordinary Differential Equations}:
 \begin{equation}
   \label{eq:PDEs_ODEs}
   \vect{\Lc}^k  \Absf^t \(\ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
 \end{equation}
-\textbf{Thus, with the above considerations we see that unlike for free curves, one cannot prescribe arbitrarily initial conditions along a characteristic curve}
+This result implies that unlike for non-characteristic, initial conditions can not be prescribed arbitrarily along a characteristic curve but must satisfy equation \eqref{eq:PDEs_ODEs}. 
+
+Use domain of dependence ; theorems \ref{th:integral_surface_generated} and \ref{th:charac_in_integral_surface} to describe the method of characteristic. Then illustrate in with the $3\times 3$ example.
 
 The result that has been obtained in this part is the foundation of the \textit{method of characteristics} that will be developed in what follows. 
 
