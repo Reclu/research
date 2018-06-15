@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 %\usepackage[fleqn]{amsmath} %% Equations left aligned
 \usepackage{amsmath}
-\usepackage[tensorialbold]{mescommandes}
+\usepackage[tensorialbold]{userCommands}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -29,11 +29,18 @@
 	colormap={tol}{[1cm] rgb255(0cm)=(120,28,129) rgb255(1cm)=(63,96,174) rgb255(2cm)=(83,158,182) rgb255(3cm)=(109,179,136) rgb255(4cm)=(202,184,67) rgb255(5cm)=(231,133,50) rgb255(6cm)=(217,33,32)}
 }
 
-\newtheorem{theorem}{Theorem}
-<<<<<<< HEAD
-=======
+%% User colors
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
 
->>>>>>> refs/remotes/origin/master
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+
 \makeatother
 \begin{document}
 \tableofcontents{}
