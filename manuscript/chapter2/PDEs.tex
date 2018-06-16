@@ -109,6 +109,7 @@ Thus, it is obvious that the Cauchy problem admits an unique solution if and onl
 \end{equation}
 If an initial curve satisfies the condition \eqref{eq:non-characteristics}, it is called a \textit{non-characteristic curves} or \textit{free curve}, otherwise it is a \textit{characteristic curve}. 
 
+\subsubsection*{Geometrical representation of characteristic curves}
 The concept of characteristics can be illustrated by looking at the set of solutions of equation \eqref{eq:1st_order_pde}. Indeed, those solutions $u^{(i)}(x,t)$ form a set of surfaces in the space $(x,t,u)$ which tangent planes have normal vectors $\vect{n}^{(i)}=[u^{(i)}_x,u^{(i)}_t,-1]$. According to equation \eqref{eq:1st_order_pde}, we see that these normal vectors are perpendicular to the vector $\vect{v}=[a,b,c]$. Therefore, the intersection of all those planes is a straight line which direction is given by $\vect{v}$. This defines \textit{characteristic line elements} in the whole space $(x,t,u)$, that is:
 \begin{equation}
   \label{eq:monge_axis}
@@ -129,8 +130,8 @@ The following statements then hold \cite[Chapter~1]{Courant}:
 \end{theorem}
 With these considerations, we see that a characteristic curve is tangent at every point to all the integral surfaces. In other words, an infinity of integral surfaces cross one characteristic curve. As a consequence, if the initial curve is a characteristic curve, infinitely many integral surfaces contain it and the Cauchy problem can not be solved.
 
-\subsubsection*{First order quasi-linear systems}
-An interesenting property of characteristic curves will be now highlighted with a more general problem. We consider a quasi-linear system of dimension $I$ given in the matrix form:
+\subsection{The method of characteristic}
+We will now generalize the concept of characteristic curves by considering first order quasi-linear systems of dimension $I$. Then we have in the matrix form:
 \begin{equation}
   \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Bc} = \vect{0}
@@ -223,9 +224,25 @@ Thus, along a characteristic curve a system of partial differential equations re
   \label{eq:PDEs_ODEs}
   \vect{\Lc}^k  \Absf^t \(\ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
 \end{equation}
-This result implies that unlike for non-characteristic, initial conditions can not be prescribed arbitrarily along a characteristic curve but must satisfy equation \eqref{eq:PDEs_ODEs}. 
+Thus, unlike for non-characteristic curves, initial conditions can not be prescribed arbitrarily along a characteristic curve $\Cscr$ but must satisfy equation \eqref{eq:PDEs_ODEs}. Moreover, considering a second characteristic curve $\Cscr'$ that crosses the first one through an arbitrary point, theorem \ref{th:charac_in_integral_surface} states that the integral surfaces containing $\Cscr'$ also contain $\Cscr$. Hence, characteristic curves can be seen as branch curves along which integral surfaces meet. Then, tracing backward characteristic curves of each family of a problem from a point $(x^*,t^*)$ to the initial curve leads by integration of equations \eqref{eq:PDEs_ODEs} to an unique solution of the Cauchy problem. This procedure holds even if the initial curve is a characteristic one.
 
-Use domain of dependence ; theorems \ref{th:integral_surface_generated} and \ref{th:charac_in_integral_surface} to describe the method of characteristic. Then illustrate in with the $3\times 3$ example.
+
+Moreover, the families of characteristic curves are defined such that only one curve of each family passes through a given point of the $(x,t)$ plane. With theorems \ref{th:integral_surface_generated} and \ref{th:charac_in_integral_surface} the set of characteristic curves that cross $(x^*,t^*)$, . Hence, we see that the solution of a hyperbolic system at those given point can be obtained by integrating backward the ODEs to the initial curve. The notion of \textit{domain of dependence} is thus introduced. Indeed, integrations of equations \eqref{eq:PDEs_ODEs} leads to arbitrary constants that can be determined by the knwoledge of $\Ucb$ along the initial curve. For instance, if we are given $\Ucb$ along the curve $t=0$ for the hyperbolic system considered in example \ref{ex:charac1} (see figure \ref{fig:charac_method2x2})
+\begin{figure}[h]
+  \centering
+  \subfloat[Problem of example \ref{ex:charac1}]{\input{chapter2/pgfFigures/characMethod2x2}} \qquad
+  \subfloat[Various problem in dimension 3]{\input{chapter2/pgfFigures/characMethod}}
+  \caption{Domain of dependence of the solution at point $(x^*,t^*)$ for the system of example \ref{ex:charac1} and some problem in dimension $3$.}
+  \label{fig:charac_method2x2}
+\end{figure}
+
+
+% \begin{figure}[h]
+%   \centering
+%   \input{chapter2/pgfFigures/characMethod}
+%   \caption{Example of determination of the solution at a given point for a hyperbolic system of dimension 3 by using the notions of characteristic curves and of domain of dependence.}
+%   \label{fig:charac_method}
+% \end{figure}
 
 The result that has been obtained in this part is the foundation of the \textit{method of characteristics} that will be developed in what follows. 
 
@@ -242,12 +259,6 @@ The result that has been obtained in this part is the foundation of the \textit{
 % If two characteristic curves have a common point, the solution $u(x,t)$ contains those two characteristic curves. 
 %%%%%%%%%%%%%%%%%%%%%%%
 From now on, the independant variables used so far $x$ and $t$ will explicitly represent  space and time variables respectively, introducing thus the mechanical formalism. Suppose that initial conditions in a one-dimensional domain are given by a function $\Ucb(x,0)=\Ucb_0(x)$. Once we know all the characteristic curves involved in the problem, it is possible to determine the solution at a given point $(x^*,t^*)$ by tracing backward all the characteristic from this point to the $x-$axis.
-\begin{figure}[h]
-  \centering
-  \input{chapter2/pgfFigures/characMethod}
-  \caption{Example of determination of the solution at a given point for a hyperbolic system of dimension 3 by using the notions of characteristic curves and of domain of dependence.}
-  \label{fig:charac_method}
-\end{figure}
 We know that at least one integral surface contains the three characteristic base curves and the initial curve \todo{uniqueness ?}$\Ucb_0(x)$.
 %%% Local Variables:
 %%% mode: latex
