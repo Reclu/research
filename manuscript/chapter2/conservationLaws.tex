@@ -1,11 +1,22 @@
 % Context, isothermal, thermodynamical framework, standard generalized material etc.
+In this section, the balance equations of dynamic solid mechanics problems ; Lagrangian laws description
+\cite{Kluth,Simo}
+\subsection{Kinematic laws}
+Deformation of a body between a reference state to a deformed state, smooth function $\vect{\phi}(\X,t)$ or $\phi_i(\X,t)$ where $\X$ is the coordinate vector of a given \textit{material point} or \textit{particle}. The velocity is given by the partial derivative $\drond{\phi_i(\X,t)}{t}=\dot{\phi_i}(\X,t)$ since $\X$ does not depend on $t$. The deformation gradient is $\tens{F} = \drond{\vect{\phi}}{\X}$ $F_{i\alpha} = \drond{\phi_i}{X_\alpha}=\phi_{i,\alpha}$ corresponds to the change of an element vector $\vect{dx}=\tens{F}\vect{dX}$. The displacement vector is $\vect{U}= \vect{\phi}(\X,t)-\vect{X}$ and its gradient $\tens{H}=\tens{F}-\tens{I}$ ; right Cauchy-Green tensor $\tens{C}=\tens{F}\tens{F}^T$ ; Green-Lagrange tensor $\tens{E}=\frac{1}{2}(\tens{C}-\tens{I})$. HPP if $\norm{\U}<<1$ and in that case
+\begin{equation*}
+  \tens{C}=(\H+\I)(\H^T + \I) = \H \H^T +\H + \H^T + \I
+\end{equation*}
+\begin{equation*}
+  \tens{E}=\frac{1}{2}(\H \H^T +\H + \H^T) \approx \frac{1}{2}(\H + \H^T) = \tens{\eps} 
+\end{equation*}
+by neglecting second order terms. Linearized geometrical framework.
 \subsection{Balance equations}
-\subsection{Compatibility equations}
+Either start from Newton an identify terms or introduce duality between strains and stress within thermodynamical framework...
 \subsection{Thermodynamical framework}
-\subsubsection{Homogeneous systems}
-\subsubsection{Non-homogeneous systems}
+% \subsubsection{Homogeneous systems}
+% \subsubsection{Non-homogeneous systems}
 \subsection{The general formulation}
-
+Quasi-linear system
 
 
 
