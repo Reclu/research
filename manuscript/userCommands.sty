@@ -6,7 +6,11 @@
 \typeout{
 ----------------------- }
 \RequirePackage{ifthen}
+<<<<<<< HEAD
 \RequirePackage{amssymb,amsmath,eucal,subeqnarray,stmaryrd,mathrsfs}
+=======
+\RequirePackage{amssymb,amsmath,eucal,stmaryrd,mathrsfs}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 
 \newboolean{mctu}
 \setboolean{mctu}{false}
@@ -19,11 +23,18 @@
 % MATH -----------------------------------------------------------
 \newcommand{\norm}[1]{\left\Vert#1\right\Vert}
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
+<<<<<<< HEAD
 \newcommand{\oE}{\[ \kern -2.pt \vert}
 \newcommand{\cE}{\] \kern -5.2pt \vert}
 \newcommand{\jump}[1]{\oE #1 \kern 1pt \cE}
 \newcommand{\saut}[1]{\llbracket #1 \rrbracket }
 %\newcommand{\saut}[1]{\oE #1 \kern 1pt \cE}
+=======
+\newcommand{\saut}[1]{\llbracket #1 \rrbracket }
+\newcommand{\oE}{\[ \kern -1.pt \vert}
+\newcommand{\cE}{\] \kern -6.8pt \vert}
+%\newcommand{\saut}[1]{\oE #1 \kern 2pt \cE}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\Real}{\mathbb R}
 \newcommand{\eps}{\varepsilon}
@@ -131,7 +142,10 @@
 \newcommand{\Kbsf}{\boldsymbol{\mathsf{K}}}
 \newcommand{\fbsf}{\boldsymbol{\mathsf{f}}}
 \newcommand{\Absf}{\boldsymbol{\mathsf{A}}}
+<<<<<<< HEAD
 \newcommand{\Ibsf}{\boldsymbol{\mathsf{I}}}
+=======
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 \newcommand{\bbsf}{\boldsymbol{\mathsf{b}}}
 \newcommand{\Mbsf}{\boldsymbol{\mathsf{M}}}
 \newcommand{\Pbsf}{\boldsymbol{\mathsf{P}}}
@@ -191,7 +205,10 @@
 \newcommand{\bu}{\mathcal{U}}
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 % LETTRES EN CALI GRAS
 \newcommand{\Acb}{{\boldsymbol{\mathcal{A}}}}
 \newcommand{\Bcb}{{\boldsymbol{\mathcal{B}}}}
@@ -201,15 +218,23 @@
 \newcommand{\Gcb}{{\boldsymbol{\mathcal{G}}}}
 \newcommand{\Icb}{{\boldsymbol{\mathcal{I}}}}
 \newcommand{\Kcb}{{\boldsymbol{\mathcal{K}}}}
+<<<<<<< HEAD
 \newcommand{\Lcb}{{\boldsymbol{\mathcal{L}}}}
 \newcommand{\Jcb}{{\boldsymbol{\mathcal{J}}}}
 \newcommand{\Rcb}{{\boldsymbol{\mathcal{R}}}}
+=======
+\newcommand{\Jcb}{{\boldsymbol{\mathcal{J}}}}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 \newcommand{\Ucb}{{\boldsymbol{\mathcal{U}}}}
 \newcommand{\Vcb}{{\boldsymbol{\mathcal{V}}}}
 \newcommand{\Wcb}{{\boldsymbol{\mathcal{W}}}}
 \newcommand{\Tcb}{{\boldsymbol{\mathcal{T}}}}
 
+<<<<<<< HEAD
 % mathrsfs package
+=======
+% Ralph Smith’s Formal Script Font
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 \newcommand{\Ascr}{\mathscr{A}}
 \newcommand{\Bscr}{\mathscr{B}}
 \newcommand{\Cscr}{\mathscr{C}}
@@ -238,8 +263,11 @@
 \newcommand{\Zscr}{\mathscr{Z}}
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 %% espaces de matrice
 \newcommand{\GL}{{\Gbb\Lbb}}
 \newcommand{\ST}{{\Sbb}}
@@ -270,6 +298,10 @@
 \newcommand{\Vbb}{\mathbb{V}}
 \newcommand{\Sbb}{\mathbb{S}}
 \newcommand{\Tbb}{\mathbb{T}}
+<<<<<<< HEAD
+=======
+\newcommand{\Zbb}{\mathbb{Z}}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 
 
 % PROBABILITES
@@ -361,6 +393,7 @@
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\Div}{div \,}
 \DeclareMathOperator{\Det}{det \,}
+<<<<<<< HEAD
 \DeclareMathOperator{\Divv}{\vect{div} \,}
 \DeclareMathOperator{\Lap}{\Delta \,}
 \DeclareMathOperator{\Lapv}{\vect{\Delta} \,}
@@ -377,6 +410,25 @@
 \newcommand{\rott}{\tens{rot}\,}
 \newcommand{\divv}{\nablav \cdot \,}
 \newcommand{\gradd}{\gradt \gradv,}
+=======
+\DeclareMathOperator{\Dim}{dim \,}
+\DeclareMathOperator{\Ker}{Ker \,}
+\DeclareMathOperator{\rg}{rg \,}
+\DeclareMathOperator{\Supp}{Supp \,}
+\DeclareMathOperator{\Divv}{\vect{div} \,}
+\DeclareMathOperator{\Lap}{\Delta \,}
+\DeclareMathOperator{\Lapv}{\vect{\Delta} \,}
+\newcommand{\Deltav}{\vect{\Delta}}
+\newcommand{\nablat}{\tens{\nabla}}
+\newcommand{\nablav}{\vect{\nabla}}
+\newcommand{\gradv}{\nablav \,}
+\newcommand{\rotv}{\nablav \times \,}
+\newcommand{\gradt}{\nablat \,}
+\newcommand{\rott}{\nablat \tens{\times} \,}
+\newcommand{\divv}{\nablav \cdot \,}
+\newcommand{\gradd}{\gradt \gradv,}
+\newcommand{\divergence}{\vect{\nabla}\cdot \,}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 %\newcommand{\gradd}{grad\kern-.5em{gradv},}
 \newcommand{\gradb}{\textbf{grad}\,}
 \newcommand{\rotb}{\textbf{rot}\,}
@@ -421,9 +473,15 @@
 \renewcommand{\]}{\right]}
 
 %% ENCADRER
+<<<<<<< HEAD
 \newcommand{\boxe}[1]{%
 \begin{center}
 \fbox{\begin{minipage}[t]{0.985\linewidth}%
+=======
+\newcommand{\encad}[1]{%
+\begin{center}
+\fbox{\begin{minipage}[t]{1\linewidth}%
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 #1\end{minipage}}
 \end{center}}
 
@@ -452,10 +510,17 @@
 % Environnement pour les remarques
 \newcommand{\remarque}[1]{
 $\newline$
+<<<<<<< HEAD
 \textsc{Remarque : }\textit{#1} \\}
 \newcommand{\remarques}[1]{
 \\
 \textsc{Remarques : }\textit{#1}\\ \\}
+=======
+\textsc{Remarque : }\textit{#1}}
+\newcommand{\remarques}[1]{
+$\newline$
+\textsc{Remarques : }\textit{#1}}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 
 % Environnement dessin
 \newcommand{\schema}[2][1]{\begin{tikzpicture}[scale=#1] #2 \end{tikzpicture} }
@@ -482,9 +547,15 @@ $\newline$
 \node at #4 [above,left] {4};
 }
 
+<<<<<<< HEAD
 %\newcommand{\Circle}[2]{
 %\draw #1 circle #2;
 %}
+=======
+\newcommand{\Circle}[2]{
+\draw #1 circle #2;
+}
+>>>>>>> 6dfc52310d87b0e6f65fb77d67d4cf13e69a7b93
 
 \newcommand{\cross}[3][black]{
 \draw[#1] (#2,#3) -- (#2 ,#3 + 0.05);
