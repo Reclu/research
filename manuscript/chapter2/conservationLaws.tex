@@ -1,9 +1,39 @@
 % Context, isothermal, thermodynamical framework, standard generalized material etc.
-In this section, the balance equations of dynamic solid mechanics problems ; Lagrangian laws description
-\cite{Kluth,Simo}
+In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} mesure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems.
+
 \subsection{Kinematic laws}
-Deformation of a body between a reference state to a deformed state, smooth function $\vect{\phi}(\X,t)$ or $\phi_i(\X,t)$ where $\X$ is the coordinate vector of a given \textit{material point} or \textit{particle}. The velocity is given by the partial derivative $\drond{\phi_i(\X,t)}{t}=\dot{\phi_i}(\X,t)$ since $\X$ does not depend on $t$. The deformation gradient is $\tens{F} = \drond{\vect{\phi}}{\X}$ $F_{i\alpha} = \drond{\phi_i}{X_\alpha}=\phi_{i,\alpha}$ corresponds to the change of an element vector $\vect{dx}=\tens{F}\vect{dX}$. The displacement vector is $\vect{U}= \vect{\phi}(\X,t)-\vect{X}$ and its gradient $\tens{H}=\tens{F}-\tens{I}$ ; right Cauchy-Green tensor $\tens{C}=\tens{F}\tens{F}^T$ ; Green-Lagrange tensor $\tens{E}=\frac{1}{2}(\tens{C}-\tens{I})$. HPP if $\norm{\U}<<1$ and in that case
+We consider a three-dimensional solid domain bounded by a volume denoted by $\Omega \in \Rbb^3$. This body undergoes external sollicitations that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such sollicitations, the volume may change during a deformation within the time interval $\tau = \[0,T\]$ and will hence be written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial conditions are identical. At a given time $t>0$, the volume $\Omega(t)=\Omega_t$ corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
+\begin{figure}[h]
+  \centering
+  \input{chapter2/pgfFigures/deformationFunction}
+  \caption{Deformation of a solid body between a reference state $\Omega_0$ to a subsequent state $\Omega_t$.}
+  \label{fig:deformationFunction}
+\end{figure}
+
+In the reference configuration, every material particle is located by their position vectors: $\X=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\X$ may have moved and its current location is given by the smooth mapping $\vect{\phi}(\X,t)=\phi_i(\X,t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particle of the solid during the deformation.
+Note that in the above definitions Greek indices are used for quantities evaluated in the reference configuration whereas Latin ones refer to quantities defined in the current configuration. 
+
+The \textit{displacement} and \textit{velocity} vectors of a particle between the reference and the current configuration are respectively:
+\begin{align*}
+  &\u(\X,t)=\vect{\phi}(\X,t) - \X \qquad \forall\:\: \X,t \in \Omega_0\times \tau \\
+  &\v(\X,t)=\drond{\vect{\phi}}{t}(\X,t) = \vect{\dot{\phi}}(\X,t) \qquad  \forall\: \: \X,t \in \Omega_0\times \tau
+\end{align*}
+where the superposed dot denotes the material time derivative. Furthermore, the second-order two-point \textit{deformation gradient} tensor is defined as:
 \begin{equation*}
+  F_{i\alpha}=\drond{\phi_i}{X_{\alpha}}(\X,t) \qquad \forall\:\: \X,t \in \Omega_0\times \tau
+\end{equation*}
+The deformation gradient tensor characterizes the variations of lengths, areas and volumes. Indeed, the infinitesimal vector, oriented surface and volume elements respectively denoted by $\vect{dX},\vect{dS}$ and $dV$ and defined in the reference configuration transorm respectively to:
+\begin{equation}
+  \label{eq:transport_equations}
+  \begin{aligned}
+    & \vect{dx}=\tens{F}\vect{dX} \\
+    & \vect{ds}=J\tens{F}^{-T}\vect{dS} \\
+    & dv=JdV 
+  \end{aligned}
+\end{equation}
+in the current configuration. In the transport equations \eqref{eq:transport_equations}, $J=\det(\tens{F})$ is called the \textit{Jacobian of the deformation}.
+
+Deformation of a body between a reference state to a deformed state, smooth function $\vect{\phi}(\X,t)$ or $\phi_i(\X,t)$ where $\X$ is the coordinate vector of a given \textit{material point} or \textit{particle}. The velocity is given by the partial derivative $\drond{\phi_i(\X,t)}{t}=\dot{\phi_i}(\X,t)$ since $\X$ does not depend on $t$. The deformation gradient is $\tens{F} = \drond{\vect{\phi}}{\X}$ $F_{i\alpha} = \drond{\phi_i}{X_\alpha}=\phi_{i,\alpha}$ corresponds to the change of an element vector $\vect{dx}=\tens{F}\vect{dX}$. The displacement vector is $\vect{U}= \vect{\phi}(\X,t)-\vect{X}$ and its gradient $\tens{H}=\tens{F}-\tens{I}$ ; right Cauchy-Green tensor $\tens{C}=\tens{F}\tens{F}^T$ ; Green-Lagrange tensor $\tens{E}=\frac{1}{2}(\tens{C}-\tens{I})$. HPP if $\norm{\U}<<1$ and in that case\begin{equation*}
   \tens{C}=(\H+\I)(\H^T + \I) = \H \H^T +\H + \H^T + \I
 \end{equation*}
 \begin{equation*}
