@@ -1,5 +1,5 @@
 % Context, isothermal, thermodynamical framework, standard generalized material etc.
-In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} mesure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapter~3,5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
+In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} mesure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
 
 \subsection{Kinematic laws -- Strain mesures}
 We consider a three-dimensional solid domain with volume denoted by $\Omega \subset \Rbb^3$ bounded by the surface $\partial \Omega$. This body undergoes external sollicitations that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such sollicitations, the volume may change during a deformation within the time interval $\tau = \[0,T\]$ and will hence be written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial conditions are identical. At a given time $t>0$, the volume $\Omega(t)=\Omega_t$ corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
@@ -10,19 +10,19 @@ We consider a three-dimensional solid domain with volume denoted by $\Omega \sub
   \label{fig:deformationFunction}
 \end{figure}
 
-In the reference configuration, every material particle is located by their position vectors: $\X=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\X$ may have moved and its current location is given by the smooth mapping $\vect{\phi}(\X,t)=\phi_i(\X,t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particle of the solid during the deformation.
+In the reference configuration, every material particle is located by their position vectors: $\vect{X}=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\vect{X}$ may have moved and its current location is given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particle of the solid during the deformation. In the Lagrangian coordinates system, every particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
 Note that in the above definitions Greek indices are used for quantities evaluated in the reference configuration whereas Latin ones refer to quantities defined in the current configuration. 
 
 The \textit{displacement} and \textit{velocity} vectors of a particle between the reference and the current configuration are respectively:
 \begin{subequations}
   \begin{alignat}{2}
-    &\u(\X,t)=\vect{\phi}(\X,t) - \X \qquad \forall\:\: \X,t \in \Omega_0\times \tau  \label{eq:displacement}\\
-    &\v(\X,t)=\drond{\vect{\phi}}{t}(\X,t) = \vect{\dot{\phi}}(\X,t) \qquad  \forall\: \: \X,t \in \Omega_0\times \tau  \label{eq:velocity}
+    &\vect{u}(\vect{X},t)=\vect{\phi}(\vect{X},t) - \vect{X} \qquad \forall\:\: \vect{X},t \in \Omega_0\times \tau  \label{eq:displacement}\\
+    &\vect{v}(\vect{X},t)=\drond{\vect{\phi}}{t}(\vect{X},t) = \vect{\dot{\phi}}(\vect{X},t) \qquad  \forall\: \: \vect{X},t \in \Omega_0\times \tau  \label{eq:velocity}
   \end{alignat}
 \end{subequations}
 where the superposed dot denotes the material time derivative. Furthermore, the second-order two-point \textit{deformation gradient} tensor is defined as:
 \begin{equation}
-  F_{i\alpha}=\drond{\phi_i}{X_{\alpha}}(\X,t)  \label{eq:F_phi}
+  F_{i\alpha}=\drond{\phi_i}{X_{\alpha}}(\vect{X},t)  \label{eq:F_phi}
 \end{equation}
 or, by using equation \eqref{eq:displacement}:
 \begin{equation}
@@ -44,20 +44,69 @@ in the current configuration. The transport equations \eqref{eq:transport_equati
     & \tens{E}=\frac{1}{2}(\tens{C}-\tens{I})
   \end{aligned}
 \end{equation*}
-where $\tens{I}$ is the second-order identity tensor. %In the above intrinsic notations of second order tensors, the \textit{dot operator} corresponding to the \textit{simple contraction} of tensors has been omitted since there is no ambiguity.
-The Green-Lagrange tensor can also be written by means of equation \eqref{eq:F_displacement}:
+where $\tens{I}$ is the second-order identity tensor. The Green-Lagrange tensor can also be written by means of equation \eqref{eq:F_displacement}:
 \begin{equation*}
-  \tens{E}=\frac{1}{2}(\drond{\u}{\X} + \drond{\u}{\X}^T + \drond{\u}{\X}\drond{\u}{\X}^T)
+  \tens{E}=\frac{1}{2}(\drond{\vect{u}}{\vect{X}} + \drond{\vect{u}}{\vect{X}}^T + \drond{\vect{u}}{\vect{X}}\drond{\vect{u}}{\vect{X}}^T)
 \end{equation*}
-In particular, when the deformation involves displacement vectors such that $\norm{\drond{\u}{\X}} \ll 1$, the last (second-order) term of the previous definition can be neglected leading to:
+In particular, when the deformation involves displacement vectors such that $\norm{\drond{\vect{u}}{\vect{X}}} \ll 1$, the last (second-order) term of the previous definition can be neglected leading to:
 \begin{equation*}
-  \tens{E} \approx \frac{1}{2}(\drond{\u}{\X} + \drond{\u}{\X}^T) = \tens{\eps}
+  \tens{E} \approx \frac{1}{2}(\drond{\vect{u}}{\vect{X}} + \drond{\vect{u}}{\vect{X}}^T) = \tens{\eps}
 \end{equation*}
-with $\tens{\eps}$ the \textit{linearized strain tensor}. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. 
+with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework. 
 
 \subsection{Balance equations}
-Either start from Newton an identify terms or introduce duality between strains and stress within thermodynamical framework...
-\subsection{Thermodynamical framework}
+Recall that these works relate to the numerical simulation of solid mechanics problems with a material descritption of the motion. Thus, we will now focus on Lagrangian local balance laws. The \textit{linear momentum} is defined as $\vect{p}(\vect{X},t)=\rho(\vect{X},t)\vect{v}(\vect{X},t)$ and satifies during a deformation \cite[Chapter~2]{Truesdell}:
+\begin{equation}
+  \label{eq:Lagrangian_linear_momentum}
+  \rho_0(\vect{X}) \vect{\dot{v}}(\vect{X},t) - \nablav_0 \cdot \tens{\Pi}(\vect{X},t) = \rho_0(\vect{X}) \vect{b}(\vect{X},t) \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+where $\nablav_0 (\bullet)$ denotes the divergence operator on the reference configuration, $\tens{\Pi}$ is the second order (two-point) \textit{first Piola--Kirchhoff} stress tensor characterizing surface forces, and $\vect{b}$ denotes the volume forces. Within the small strain framework, the balance of linear momentum \eqref{eq:Lagrangian_linear_momentum} reads:
+\begin{equation}
+  \label{eq:HPP_linear_momentum}
+  \rho(\vect{x}) \vect{\dot{v}}(\vect{x},t) - \nablav \cdot \tens{\sigma}(\vect{x},t) = \rho(\vect{x}) \vect{b}(\vect{x},t)  \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+\end{equation}
+with $\tens{\sigma}$ the second order \textit{Cauchy} stress tensor. Note that since the current and reference configurations are identical, the Eulerian or Lagrangian coordinates systems can be used indifferently.
+
+The next balance law written in the Lagrangian form concerns the \textit{internal energy density} $e$ and is a consequence of the \textit{first law of thermodynamics}. For simplicity, the dependence on $\vect{X}$ and $t$ will be omitted
+% \begin{itemize}
+% \item equivalence des dissipations ou des puissances des efforts internes $\tens{\sigma}:\tens{\dot{\eps}} = \tens{\Pi}:\tens{\dot{F}}$
+% \item derive the conservation of internal energy (1st law of thermodynamics)
+% \item the derivation of constitutive equations requires that we are given an internal energy
+% \item using the free energy $\psi=e-\theta \eta$ allows to deal with temperature instead of entropy
+% \item then for isothermal transformation, the terms $\dot{\theta}$ vanish 
+% \end{itemize}
+
+Conservation of internal energy (1st law of thermodynamics)
+\begin{equation}
+  \label{eq:energy_balance}
+  \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} + \nablav_0 \cdot \vect{q}= r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+where $\vect{q}$ is the heat flux vector and $r$ is a volume heat source.
+Second principle:
+\begin{equation}
+  \label{eq:second_principle}
+  \rho_0 \dot{\eta} \geq \frac{r}{\theta} + \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+$\theta$ and $\eta$ being respectively the temperature and the entropy. By using the 1st law \eqref{eq:energy_balance}, one can substitute the volume heat source in equation \eqref{eq:second_principle}:
+\begin{equation}
+  \label{eq:Clausius-Duhem}
+  \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dc^{int}} \:-\:  \underbrace{\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{-\Dc^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+where $\Dc^{int}$ is the specific intrinsic dissipation and $\Dc^{th}$ the specific thermal dissipation. Introducing the \textit{free energy density}, defined as the \textit{Legendre transform} of the internal energy density $\psi = e - \theta \eta$, in the Clausius-Duhem inequality yields:
+\begin{equation}
+  \label{eq:Clausius-Duhem_psi}
+  \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+The evolution of the system is thus given by the evolution of the deformation gradient and the temperature. Introducing a set of additional internal variables $V_k$ allowing to describe the evolution of the system and on which depends the free energy:
+\begin{equation*}
+  \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{V_k}\dot{V_k}
+\end{equation*}
+Hence, introduction of this relation in equation \eqref{eq:Clausius-Duhem_psi}, we identify that the \textit{thermodynamic forces} associated to $\tens{F}$ and $\theta$ are respectively:
+\begin{equation*}
+  \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi} \quad ; \quad \drond{\psi}{\theta}=-\eta
+\end{equation*}
+\subsection{Constitutive equations}
+The closure of a problem is given by the Constitutive equations that link strain mesures to stress mesures. 
 % \subsubsection{Homogeneous systems}
 % \subsubsection{Non-homogeneous systems}
 \subsection{The general formulation}
