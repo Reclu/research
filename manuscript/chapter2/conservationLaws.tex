@@ -67,14 +67,7 @@ where $\nablav_0 (\bullet)$ denotes the divergence operator on the reference con
 \end{equation}
 with $\tens{\sigma}$ the second order \textit{Cauchy} stress tensor. Note that since the current and reference configurations are identical, the Eulerian or Lagrangian coordinates systems can be used indifferently.
 
-The next balance law written in the Lagrangian form concerns the \textit{internal energy density} $e$ and is a consequence of the \textit{first law of thermodynamics}. For simplicity, the dependence on $\vect{X}$ and $t$ will be omitted
-% \begin{itemize}
-% \item equivalence des dissipations ou des puissances des efforts internes $\tens{\sigma}:\tens{\dot{\eps}} = \tens{\Pi}:\tens{\dot{F}}$
-% \item derive the conservation of internal energy (1st law of thermodynamics)
-% \item the derivation of constitutive equations requires that we are given an internal energy
-% \item using the free energy $\psi=e-\theta \eta$ allows to deal with temperature instead of entropy
-% \item then for isothermal transformation, the terms $\dot{\theta}$ vanish 
-% \end{itemize}
+The next balance law written in the Lagrangian form concerns the \textit{internal energy density} $e$ and is a consequence of the \textit{first law of thermodynamics}. For simplicity, the dependence on $\vect{X}$ and $t$ will be omitted.
 
 Conservation of internal energy (1st law of thermodynamics)
 \begin{equation}
@@ -82,6 +75,8 @@ Conservation of internal energy (1st law of thermodynamics)
   \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} + \nablav_0 \cdot \vect{q}= r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
 where $\vect{q}$ is the heat flux vector and $r$ is a volume heat source.
+\subsection{Constitutive equations}
+The closure of a problem is given by the Constitutive equations that link strain mesures to stress mesures. 
 Second principle:
 \begin{equation}
   \label{eq:second_principle}
@@ -101,16 +96,54 @@ The evolution of the system is thus given by the evolution of the deformation gr
 \begin{equation*}
   \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{V_k}\dot{V_k}
 \end{equation*}
-Hence, introduction of this relation in equation \eqref{eq:Clausius-Duhem_psi}, we identify that the \textit{thermodynamic forces} associated to $\tens{F}$ and $\theta$ are respectively:
+Introduction of this relation in equation \eqref{eq:Clausius-Duhem_psi} yields:
+\begin{equation}
+  \label{eq:Clausius-Duhem_psi_factor}
+  \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_k}\dot{V_k} -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+That must hold regardless of the nature of the transformation, involving that the inequality can be changed to an equality. Moreover, an assumption widely used consists in considering that the intrinsic and thermal dissipations simultaneously vanish:
+\begin{equation}
+  \left\lbrace
+    \begin{aligned}
+      &  \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_k}\dot{V_k}  \geq 0\\
+      & -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0
+    \end{aligned}
+  \right.
+ \qquad, \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+Thus, considering for instance an \textit{isothermal} transformation characterized by $\dot{\theta}=0$ with additional internal variables such that $\dot{V_k}=0 \: \forall k$ leads to:
 \begin{equation*}
-  \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi} \quad ; \quad \drond{\psi}{\theta}=-\eta
+  \( \tens{\Pi} - \rho_0\drond{\psi}{\tens{F}} \): \tens{\dot{F}}\geq 0
 \end{equation*}
-\subsection{Constitutive equations}
-The closure of a problem is given by the Constitutive equations that link strain mesures to stress mesures. 
+which holds regardless of the deformation if:
+\begin{equation}
+  \label{eq:PK1_definition}
+  \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi}
+\end{equation}
+A material is said \textit{hyperelastic} if it satisfies the above relation \cite[p.8]{Foundation_of_elasticity}, meaning that for such material the stress response is characterized in terms of a stored energy function. One shows that the power of internal forces satisfies the following equivalence on the description of the motion:
+\begin{equation*}
+  \frac{1}{\rho_0}\tens{\Pi}:\tens{\dot{F}}=\frac{1}{\rho}\tens{\sigma}:\tens{\dot{\eps}}
+\end{equation*}
+Thus, in terms of the Cauchy stress tensor used for the linearized geometrical framework, one gets:
+\begin{equation}
+  \label{eq:Cauchy_definition}
+  \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
+\end{equation}
+
 % \subsubsection{Homogeneous systems}
 % \subsubsection{Non-homogeneous systems}
 \subsection{The general formulation}
-Quasi-linear system
+Gathering the balance equations introduced above, we are left with the following system
+\begin{equation}
+  \label{eq:Hyp_conservation_laws_system}
+  \left\lvert
+    \begin{aligned}
+      & \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} =  \rho_0 \vect{b} \\
+      & \tens{\dot{F}} - \nablav_0 \cdot \(\tens{I}\otimes \vect{v} \) = \tens{0} \\
+      & \rho_0 \dot{e} - \nablav_0 \cdot \(\tens{\Pi}\cdot\vect{v}-\vect{q} \) = r
+    \end{aligned}
+  \right.
+\end{equation}
 
 
 
