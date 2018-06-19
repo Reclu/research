@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper,notitlepage]{report}
+\documentclass[10pt,a4paper,notitlepage,twoside]{report}
 \usepackage[utf8]{inputenc}
 %\usepackage[fleqn]{amsmath} %% Equations left aligned
 \usepackage{amsmath}
@@ -8,7 +8,6 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{patterns} 
-%\usepackage[hang,tight,scriptsize]{subfigure}
 \usetikzlibrary{shapes}
 \usetikzlibrary{snakes}
 \usepackage{subfig}
@@ -16,9 +15,18 @@
 \usepackage{pgfplots}
 \usepackage{fncylab}
 \usepackage{todonotes}
+\usepackage{fancyhdr}
 
-%% Align equations on the left
+
 \geometry{hmargin=2.cm,vmargin=3.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% The paper headers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE]{\small \rightmark}
+\fancyhead[LO]{\small \leftmark}
+\fancyfoot[CE,CO]{\small \thepage}
+\renewcommand{\headrulewidth}{1pt}
+
 \pgfplotsset{%compat=1.3,
 	compat=1.8,
 	grid=both,
