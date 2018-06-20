@@ -1,4 +1,3 @@
-% Context, isothermal, thermodynamical framework, standard generalized material etc.
 In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} mesure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
 
 \subsection{Kinematic laws -- Strain mesures}
@@ -56,9 +55,9 @@ In particular, when the deformation involves displacement vectors such that $\no
 with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework for which the reference and current configurations are considered as identical.
 
 \subsection{Balance equations}
-The first physical principle that is considered here is the conservation of mass of a conntinuum, stating that deformations do not involve a loss of mass for solids
+In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$. We start the development of balance laws that hold in the continuum during the deformation by the conservation of mass of a conntinuum, which in integral form reads:
 \begin{equation*}
-  \int_\Omega \rho d\Omega = \int_{\Omega_0} \rho_0 d\Omega
+  \int_\Omega \rho d\Omega = \int_{\Omega_0} \rho_0 d\Omega \qquad \forall \: t \in  \tau
 \end{equation*}
 which, with the third transport formula reads:
 \begin{equation}
@@ -68,28 +67,43 @@ which, with the third transport formula reads:
 Leading to the first balance equation, namely the local conservation of mass:
 \begin{equation}
   \label{eq:mass_balance}
-  \rho = \frac{\rho_0}{J}
+  \rho = \frac{\rho_0}{J} \qquad \forall \: \vect{X},t \: \in \Omega_0\times \tau
 \end{equation}
-Equilibrium between acceleration forces, namely \textit{intertia}, and volume and surface forces.
+
+We now move on to the equilibrium between acceleration effects, namely \textit{intertia}, and external forces undergone by a solid $\Omega$. This conservation law corresponds to \textit{Newton's second law}:
 \begin{equation*}
-  \int_\Omega \rho \vect{\dot{v}} d\Omega = \int_{\partial \Omega} \vect{t} dS + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: \vect{x},t \in \Omega \times \tau
+  \int_\Omega \rho \vect{\dot{v}} d\Omega = \int_{\partial \Omega} \vect{t} dS + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: t \in  \tau
 \end{equation*}
-Cauchy's theorem $\vect{t}=\tens{\sigma}\cdot \vect{n}$ where $\tens{\sigma}$ denotes the symetric second-order \textit{Cauchy stress tensor} and $\vect{n}$ is the outwerd normal to the surface element $dS$. By using the divergence theorem:
+where $\vect{t}$ denotes surface forces and $vect{b}$ volume forces in the current configuration. We then introduce the symetric second-order \textit{Cauchy stress tensor} $\tens{\sigma}$ by using Cauchy's theorem $\vect{t}=\tens{\sigma}\cdot \vect{n}$ where $\vect{n}$ is the outwerd normal vector to the surface element $dS$. 
+
+For further developments, the divergence theorem is required:
 \begin{equation}
   \label{eq:Ostrogradski_th}
-  \int_{\partial \Omega} (\bullet)\cdot \vect{dS}=\int_\Omega \nablav \cdot (\bullet) d\Omega
+  \int_{\partial \Omega} (\bullet)\cdot \vect{dS}=\int_\Omega \nablav \cdot (\bullet) \: d\Omega
 \end{equation}
-one writes
+where $\nablav \cdot (\bullet)$ denotes the divergence operator on the current configuration. Introduction of the previous formula in the second law of Newton leads to:
 \begin{equation}
   \label{eq:Linear_momentum_conservation_eulerian}
-  \int_{\Omega} \( \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} -  \rho\vect{b} \) d\Omega = \vect{0} \qquad \forall \: \vect{x},t \in \Omega \times \tau
+  \int_{\Omega} \( \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} -  \rho\vect{b} \) d\Omega = \vect{0} \qquad \forall \:t \in  \tau
 \end{equation}
-Using the transport formula of volume elements and introducing the mass balance equation \eqref{eq:mass_balance} in the last result yields:
+Conservation law \eqref{eq:Linear_momentum_conservation_eulerian} can be mapped to the reference configuration by using the transport formula of volume elements and the mass balance equation \eqref{eq:mass_balance}, thus yielding:
 \begin{equation}
   \label{eq:Linear_momentum_conservation}
-  \int_{\Omega_0} \( \rho_0 \vect{\dot{v}} - J \nablav \cdot \tens{\sigma} -  \rho_0\vect{b} \) d\Omega = \vect{0} \qquad \forall \: \vect{X},t \in \Omega_0 \times \tau
+  \int_{\Omega_0} \( \rho_0 \vect{\dot{v}} - J \nablav \cdot \tens{\sigma} -  \rho_0\vect{b} \) d\Omega = \vect{0} \qquad \forall \: t \in\tau
 \end{equation}
-The \textit{Piola transform $\tens{T}^P$} of a second-order tensor $\tens{T}$ is defined as $\tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}$ and satisfies $\nablav_0\cdot \tens{T}^P = J \nablav \cdot \tens{T}$, where $\nablav_0\cdot (\bullet)$ is the divergence operator on the reference configuration. We thus introduce another stress mesure that corresponds to the Piola transform of Cauchy stress tensor, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. The vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation \textit{of the lagrangian linear momentum}:
+In equation \eqref{eq:Linear_momentum_conservation}, the divergence operator on the current configuration can be transported to the reference one by means of the \textit{Piola transform}:
+\begin{definition}
+  The Piola--Kirchhoff tranform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
+  \begin{equation*}
+    \tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}
+  \end{equation*}
+  and satisfies:
+  \begin{equation*}
+    \nablav_0\cdot \tens{T}^P = J \nablav \cdot \tens{T}
+  \end{equation*}
+  where $\nablav_0\cdot (\bullet)$ is the divergence operator on the reference configuration.
+\end{definition}
+Another stress mesure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. The vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation \textit{of the lagrangian linear momentum}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
