@@ -9,7 +9,7 @@ We consider a three-dimensional solid domain with volume denoted by $\Omega \sub
   \label{fig:deformationFunction}
 \end{figure}
 
-In the reference configuration, every material particle is located by their position vectors: $\vect{X}=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\vect{X}$ may have moved and its current location is given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particle of the solid during the deformation. In the Lagrangian coordinates system, every particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
+In the reference configuration, every material particle is located by their position vectors: $\vect{X}=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\vect{X}$ may have moved and its current location is given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particle of the solid during the deformation. In the lagrangian coordinates system, every particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
 Note that in the above definitions Greek indices are used for quantities evaluated in the reference configuration whereas Latin ones refer to quantities defined in the current configuration. 
 
 The \textit{displacement} and \textit{velocity} vectors of a particle between the reference and the current configuration are respectively:
@@ -103,7 +103,7 @@ In equation \eqref{eq:Linear_momentum_conservation}, the divergence operator on 
   \end{equation*}
   where $\nablav_0\cdot (\bullet)$ is the divergence operator on the reference configuration.
 \end{definition}
-Another stress mesure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. The vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation \textit{of the lagrangian linear momentum}:
+Another stress mesure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. Hence, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -114,109 +114,93 @@ When considering deformations within the small strain framework the balance equa
   \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}  \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
 
-The conservation of the energy of a system (also known as the \textit{first law of thermodynamics}) is a balance equation of \textit{kinetic} and \textit{internal} energies depending on the power of external forces and the amount of heat given to the system as \textit{volume} or \textit{surface heat sources}.
+We complete the set of balance laws by considering the conservation of the energy of a system, also known as the \textit{first law of thermodynamics}. This law relates a balance between the rates of change of \textit{kinetic} and \textit{internal} energies, the power of external forces and the amount of heat entering the system as \textit{volume} or \textit{surface heat sources}.
 \begin{equation*}
-  \ddroit{}{t}\int_{\Omega} \(\frac{1}{2}\rho \vect{v}\cdot\vect{v} + \rho e\) d\Omega = \int_{\partial \Omega} \(\tens{\sigma}\cdot\vect{n}\)\cdot\vect{v} \: dS + \int_{\Omega} \rho\vect{b}\cdot\vect{v} \: d\Omega + \int_{\Omega} r d\Omega - \int_{\partial \Omega} \vect{q}\cdot\vect{n} \: dS
+  \ddroit{}{t}\int_{\Omega} \(\frac{1}{2}\rho \vect{v}\cdot\vect{v} + \rho e\) d\Omega = \int_{\partial \Omega} \(\tens{\sigma}\cdot\vect{n}\)\cdot\vect{v} \: dS + \int_{\Omega} \rho\vect{b}\cdot\vect{v} \: d\Omega + \int_{\Omega} \rho r \:d\Omega - \int_{\partial \Omega} \vect{q}\cdot\vect{n} \: dS \qquad \forall \: t \in  \tau 
 \end{equation*}
-where $\vect{q}$ is the outward heat flux vector and $r$ is a volume heat source. The divergence theorem \eqref{eq:Ostrogradski_th} then yields:
+where $\vect{q}$ is the outward heat flux vector and $r$ is a volume heat source. By using the divergence theorem \eqref{eq:Ostrogradski_th}, the previous equation reads:
 \begin{equation*}
-\ddroit{}{t}\int_{\Omega} \(\frac{1}{2}\rho \vect{v}\cdot\vect{v} + \rho e\) d\Omega = \int_{\Omega} \(\nablav\cdot(\tens{\sigma}\cdot\vect{v}) +  \rho\vect{b}\cdot\vect{v} \) d\Omega + \int_{\Omega} \(r  - \nablav \cdot \vect{q}\) d\Omega
+\ddroit{}{t}\int_{\Omega} \(\frac{1}{2}\rho \vect{v}\cdot\vect{v} + \rho e\) d\Omega = \int_{\Omega} \(\nablav\cdot(\tens{\sigma}\cdot\vect{v}) +  \rho\vect{b}\cdot\vect{v} \) d\Omega + \int_{\Omega} \rho r \: d\Omega  - \int_{\partial \Omega} \vect{q}\cdot\vect{n} \: dS \qquad \forall \: t \in  \tau 
 \end{equation*}
-The transport of this relation on the reference configuration and introduction of linear momentum balance equation \eqref{eq:Lagrangian_linear_momentum} yields, after some algebra, the conservation law of internal energy:
+The transport of this relation on the reference configuration based on \eqref{eq:transport_equations} allows to introduce the time derivative of the left-hand side in the integral
+\begin{equation*}
+\int_{\Omega_0} \(\rho_0 \vect{\dot{v}} + \rho_0 \dot{e}\) d\Omega = \int_{\Omega_0} \(J\nablav\cdot(\tens{\sigma}\cdot\vect{v}) +  \rho_0\vect{b}\cdot\vect{v} \) d\Omega + \int_{\Omega_0} \rho_0 r \:d\Omega- \int_{\partial \Omega_0} J\vect{q}\cdot \tens{F}^{-1}\cdot\vect{n} \: dS \qquad \forall \: t \in  \tau 
+\end{equation*}
+Then, substitution of the linear momentum according to equation \eqref{eq:Lagrangian_linear_momentum} yields, after some algebra, the conservation law of internal energy:
 \begin{equation}
   \label{eq:conservation_law_energy}
-  \int_{\Omega_0} \rho_0 \dot{e} d\Omega = \int_{\Omega_0} \tens{\Pi}:\nablat_0\vect{v}\: d\Omega + \int_{\Omega_0} \(r  - \nablav_0 \cdot \vect{q}\) d\Omega
+  \int_{\Omega_0} \rho_0 \dot{e} d\Omega = \int_{\Omega_0} \tens{\Pi}:\nablat_0\vect{v}\: d\Omega + \int_{\Omega_0} \(\rho_0r  - \nablav_0 \cdot \vect{Q}\) d\Omega \qquad \forall \: t \in  \tau 
 \end{equation}
-We thus deduce the balance equation of internal energy on the reference configuration:
+where $\vect{Q}=J\vect{q}\cdot \tens{F}^{-1}$ is the lagrangian heat flux vector. We thus deduce the balance equation of internal energy on the reference configuration:
 \begin{equation}
   \label{eq:energy_balance}
-  \rho_0 \dot{e} -  \tens{\Pi}:\nablat_0\vect{v}  + \nablav_0 \cdot \vect{q}  = r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+  \rho_0 \dot{e} -  \tens{\Pi}:\nablat_0\vect{v}  + \nablav_0 \cdot \vect{Q}  = r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
 where $\nablat_0\vect{v} = \tens{\dot{F}}$. Finally, the small strain version of equation \eqref{eq:energy_balance} is: 
 \begin{equation}
   \label{eq:energy_balance}
   \rho \dot{e} -  \tens{\sigma}:\nablat^{s} \vect{v}  + \nablav \cdot \vect{q}  = r \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
-in which $\nablat^{s} (\bullet)$ denotes the symetric part of the gradient, in particular: $\nablat^s \vect{v} = \tens{\dot{\eps}}$. Thus, we see that stress mesures are conjugate to strain mesures through the power. In what follows, stress and strain may respectively be refered to as \textit{thermodynamic forces} and \textit{internal variables} according to the thermodynamics framework. The former obey a \textit{state equation} while the latter describe the evolution of the thermodynamic system. 
+in which $\nablat^{s} (\bullet)$ denotes the symetric part of the gradient, in particular: $\nablat^s \vect{v} = \tens{\dot{\eps}}$. Stress mesures are conjugate to strain mesures through the power. In what follows, stress and strain may respectively be refered to as \textit{thermodynamic forces} and \textit{internal variables} according to the thermodynamics framework. The former obey a \textit{state equation} while the latter describe the evolution of the thermodynamic system. 
 \subsection{Constitutive equations}
-The closure of a problem is given by the constitutive equations that are equivalent to state laws for the stress. The starting point of those laws is the \textit{Clausius-Duhem} inequality that combines the first and second laws of thermodynamics: 
-% Second principle:
-% \begin{equation}
-%   \label{eq:second_principle}
-%   \rho_0 \dot{\eta} \: \geq \frac{r}{\theta} + \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
-% \end{equation}
-% $\theta$ and $\eta$ being respectively the temperature and the entropy. By using the 1st law \eqref{eq:energy_balance}, one can substitute the volume heat source in equation \eqref{eq:second_principle}:
+The closure of a problem is given by the constitutive equations (\textit{i.e state laws}) for the stress. Once and for all, we consider here constitutive models within the \textit{Generalized Standard Materials} (GSM) framework \cite{GSM}.
+
+\subsubsection*{The general (hyper)elasticity formulation}
+First, the \textit{Clausius-Duhem} inequality resulting from combination of first and second laws of thermodynamics, reads: 
 \begin{equation}
   \label{eq:Clausius-Duhem}
   \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dc^{int}} \:-\:  \underbrace{\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{-\Dc^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-where $\Dc^{int}$ is the specific intrinsic dissipation and $\Dc^{th}$ the specific thermal dissipation. \textit{Reversible} process correspond deformation for which the dissipation vanishes, the left-hand side in equation \eqref{eq:Clausius-Duhem} thus vanishes. On the other hand, \textit{irreversible} process involves a strictly positive dissipation.
+where $\Dc^{int}$ and $\Dc^{th}$ are respectively the specific mechanical and thermal dissipations, and $\eta, \theta$ denote \textit{entropy} and \textit{temperature}. Equation \eqref{eq:Clausius-Duhem} results in vanishing dissipations for \textit{reversible} processes and in a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that the mechanical and thermal dissipations simultaneously satisfy non-negativeness. Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
+\begin{equation*}
+  \label{eq:Fourier_law}
+  \vect{q}=-\tens{k}\cdot\nablav_0 \theta
+\end{equation*}
 
-Introducing the \textit{free energy density}, defined as the \textit{Legendre transform} of the internal energy density $\psi = e - \theta \eta$, in the Clausius-Duhem inequality yields:
-\begin{equation}
-  \label{eq:Clausius-Duhem_psi}
-  \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
-\end{equation}
-The evolution of the system is thus given by the evolution of the deformation gradient and the temperature. Introducing a set of additional internal variables $V_p$ allowing to describe the evolution of the system and on which depends the free energy:
+
+We assume the existence of a \textit{Helmholtz free energy density potential} $\psi\(\tens{F},\theta,V_p\)$ where the $V_p$ $(1\leq p \leq N)$ are additional state variables describing irreversible processes. The free energy is supposed concave with respect to temperature and convex with respect to other variables. The mechanical dissipation then can be rewritten as:
+\begin{equation*}
+  \Dc^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
+\end{equation*}
+The time derivative of Helmholtz free energy:
 \begin{equation*}
   \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{V_p}\dot{V_p}
 \end{equation*}
-Introduction of this relation in equation \eqref{eq:Clausius-Duhem_psi} yields:
+can be introduced within the mechanical dissipation so that one gets:
 \begin{equation}
-  \label{eq:Clausius-Duhem_psi_factor}
-  \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_p}\dot{V_p} -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
-\end{equation}
-% leading to the following expression of the instrinsic dissipation
-% \begin{equation}
-%   \label{eq:Intrinsic_dissipation}
-%   \Dc^{int}=\(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_p}\dot{V_p}
-% \end{equation}
-An assumption widely used consists in considering that the intrinsic and thermal dissipations simultaneously satisfy:
-\begin{equation}
-  \left\lbrace
-    \begin{aligned}
-      &  \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_p}\dot{V_p}  \geq 0\\
-      & -  \frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta \geq 0
-    \end{aligned}
-  \right.
- \qquad, \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
-\end{equation}
-\textit{Fourier's law} of conduction is based on the second inequality and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
-\begin{equation}
-  \label{eq:Fourier_law}
-  \vect{q}=-\tens{k}\nablav_0 \theta
+  \label{eq:Dint_psi_factor}
+  \Dc^{int} = \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_p}\dot{V_p} 
 \end{equation}
 
-The intrinsic dissipation must be non-negative regardless of the nature of the deformation. In particular, a reversible \textit{isothermal} process, characterized by $\dot{\theta}=0$, and for which every additional internal variables are constant (\textit{i.e. $\dot{V_p}=0 \: \forall \: k$}) leads to:
+
+Since the mechanical dissipation must be non-negative regardless of the nature of the deformation, it must in particular vanish for a reversible isothermal process (\textit{i.e. $\theta=const$}) for which every additional internal variables are constant. With these considerations, we are left with the relation:
 \begin{equation*}
   \( \tens{\Pi} - \rho_0\drond{\psi}{\tens{F}} \): \tens{\dot{F}} = 0
 \end{equation*}
-which holds regardless of the deformation, and hence:
+holding regardless of the deformation, and hence:
 \begin{equation}
   \label{eq:PK1_definition}
   \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi}
 \end{equation}
-A material is said \textit{hyperelastic} if it satisfies the above relation \cite[p.8]{Foundation_of_elasticity}, meaning that for such material the stress response is characterized in terms of a stored energy function. One shows that the power of internal forces satisfies the following equivalence on the description of the motion:
-\begin{equation*}
-  \frac{1}{\rho_0}\tens{\Pi}:\tens{\dot{F}}=\frac{1}{\rho}\tens{\sigma}:\tens{\dot{\eps}}
-\end{equation*}
-% Thus, in terms of the Cauchy stress tensor used for the linearized geometrical framework, one gets:
-% \begin{equation}
-%   \label{eq:Cauchy_definition}
-%   \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
-% \end{equation}
-
-By considering a reversible deformation which does not involve variations of strain and additional variables, the same approach as before yields:
+A material is said \textit{hyperelastic} if the above stress state law is satisfied \cite[p.8]{Foundation_of_elasticity}. Equivalently we have for linear elasticity:
 \begin{equation}
-  \label{eq:entropy_definition}
-  \drond{\psi}{\theta} = - \eta 
+  \label{eq:Cauchy_definition}
+  \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
 \end{equation}
-Similarely, the set of thermodynamic forces $A_p=\drond{\psi}{V_p}$ can be defined.
 
+Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
+\begin{equation*}
+  %\label{eq:entropy_definition}
+  \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{V_p}=A_p
+\end{equation*}
+
+In what follows, we shall consider hyperelastic or linear elastic deformations that do not involve irreversible processes (\textit{e.g. damage or thermal softening}). Hence, additional internal variables and associated thermodynamic forces are not activated in such situations. However, the cases of \textit{elastoplasticity} and \textit{elasto-viscoplasticity}, involving such variables and forces, will be considered in the linearized geometrical framework.
+
+\subsubsection*{History-dependent models in small strain}
 % \subsubsection{Homogeneous systems}
 % \subsubsection{Non-homogeneous systems}
 \subsection{The general formulation}
-We introduced above for the general case the balance equations of linear momentum \eqref{eq:Lagrangian_linear_momentum} and internal energy \eqref{eq:energy_balance}. Moreover, state equations of thermodynamic forces have been derived (equation \eqref{eq:PK1_definition} for stress and equation \eqref{eq:entropy_definition} for entropy). Those thermodynamic forces are dual quantities of internal variables (respectively strain and temperature) which variations govern the evolution of the system. Whereas the evolution of the deformation gradient is given by Lagrangian kinematic law \eqref{eq:F_phi} written in rate form, the evolution of the temperature is governed by the well-known \textit{heat equation}:
+We introduced above for the general case the balance equations of linear momentum \eqref{eq:Lagrangian_linear_momentum} and internal energy \eqref{eq:energy_balance}. Moreover, state equations of thermodynamic forces have been derived (equation \eqref{eq:PK1_definition} for stress and equation \eqref{eq:entropy_definition} for entropy). Those thermodynamic forces are dual quantities of internal variables (respectively strain and temperature) which variations govern the evolution of the system. Whereas the evolution of the deformation gradient is given by lagrangian kinematic law \eqref{eq:F_phi} written in rate form, the evolution of the temperature is governed by the well-known \textit{heat equation}:
 \begin{equation}
   \label{eq:heat_equation}
   \rho_0 C \dot{\theta} = r - \nablav \cdot \vect{q} - \rho_0 \drond{\psi}{V_p}\dot{V_p} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{A_p}{\theta}\dot{V_p} \)
