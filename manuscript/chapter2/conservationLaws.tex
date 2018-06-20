@@ -55,7 +55,45 @@ In particular, when the deformation involves displacement vectors such that $\no
 with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework. 
 
 \subsection{Balance equations}
-Recall that these works relate to the numerical simulation of solid mechanics problems with a material descritption of the motion. Thus, we will now focus on Lagrangian local balance laws. The \textit{linear momentum} is defined as $\vect{p}(\vect{X},t)=\rho(\vect{X},t)\vect{v}(\vect{X},t)$ and satifies during a deformation \cite[Chapter~2]{Truesdell}:
+
+The first physical principle that is considered here is the conservation of mass of a conntinuum, stating that deformations do not involve a loss of mass for solids
+\begin{equation*}
+  \int_\Omega \rho d\Omega = \int_{\Omega_0} \rho_0 d\Omega
+\end{equation*}
+which, with the third transport formula reads:
+\begin{equation}
+  \label{eq:mass_conservation_law}
+  \int_{\Omega_0} \(J\rho - \rho_0\) d\Omega = 0
+\end{equation}
+Leading to the first balance equation, namely the local conservation of mass:
+\begin{equation}
+  \label{eq:mass_balance}
+  \rho = \frac{\rho_0}{J}
+\end{equation}
+Equilibrium between acceleration forces, namely \textit{intertia}, and volume and surface forces.
+\begin{equation*}
+  \int_\Omega \rho \vect{\dot{v}} d\Omega = \int_{\partial \Omega} \vect{t} dS + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: \vect{x},t \in \Omega \times \tau
+\end{equation*}
+Cauchy's theorem $\vect{t}=\tens{\sigma}\cdot \vect{n}$ where $\tens{\sigma}$ denotes the second-order \textit{Cauchy stress tensor} and $\vect{n}$ is the outwerd normal to the surface element $dS$. By using the divergence theorem:
+\begin{equation}
+  \label{eq:Ostrogradski_th}
+  \int_{\partial \Omega} (\bullet)\cdot \vect{dS}=\int_\Omega \nablav \cdot (\bullet) d\Omega
+\end{equation}
+one writes
+\begin{equation*}
+  %\label{eq:Linear_momentum_conservation}
+  \int_{\Omega} \( \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} -  \rho\vect{b} \) d\Omega = \vect{0} \qquad \forall \: \vect{x},t \in \Omega \times \tau
+\end{equation*}
+Using the transport formula of volume elements and introducing the mass balance equation \eqref{eq:mass_balance} in the last result yields:
+\begin{equation*}
+  \int_{\Omega_0} \( \rho_0 \vect{\dot{v}} - J \nablav \cdot \tens{\sigma} -  \rho_0\vect{b} \) d\Omega = \vect{0} \qquad \forall \: \vect{X},t \in \Omega_0 \times \tau
+\end{equation*}
+The \textit{Piola transform $\tens{T}^P$} of a second-order tensor $\tens{T}$ is defined as $\tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}$ and satisfies $\nablav_0\cdot \tens{T}^P = J \nablav \cdot \tens{T}$. We thus introduce another stress mesure that corresponds to the Piola transform of Cauchy stress tensor, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. 
+
+
+
+
+Recall that these works relate to the numerical simulation of solid mechanics problems with a material description of the motion. Thus, we will now focus on Lagrangian local balance laws. The \textit{linear momentum} is defined as $\vect{p}(\vect{X},t)=\rho(\vect{X},t)\vect{v}(\vect{X},t)$ and satifies during a deformation \cite[Chapter~2]{Truesdell}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0(\vect{X}) \vect{\dot{v}}(\vect{X},t) - \nablav_0 \cdot \tens{\Pi}(\vect{X},t) = \rho_0(\vect{X}) \vect{b}(\vect{X},t) \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -165,7 +203,7 @@ For isothermal processes, the heat equation \eqref{eq:heat_equation} yields:
 Also, such a deformation leads to the rate of change of internal energy:
 \begin{align*}
   \rho_0 \dot{e} &= \rho_0 \( \dot{\psi} + \theta\dot{\eta}+\eta\dot{\theta}\) \\
-                 &= \underbrace{\rho_0\drond{\psi}{\tens{F}}}_{=\tens{\Pi}}:\tens{\dot{F}} + \rho_0\underbrace{\drond{\psi}{\theta}}_{=-\eta}\dot{\theta} + \underbrace{\rho_0\drond{\psi}{V_p}}_{r - \nablav \cdot \vect{q}}\dot{V_p} + \rho_0\theta\dot{\eta}+\rho_0\eta\dot{\theta}\) \\
+                 &= \underbrace{\rho_0\drond{\psi}{\tens{F}}}_{=\tens{\Pi}}:\tens{\dot{F}} + \rho_0\underbrace{\drond{\psi}{\theta}}_{=-\eta}\dot{\theta} + \underbrace{\rho_0\drond{\psi}{V_p}}_{r - \nablav \cdot \vect{q}}\dot{V_p} + \rho_0\theta\dot{\eta}+\rho_0\eta\dot{\theta} \\
                  &= \tens{\Pi}:\tens{\dot{F}} +r - \nablav \cdot \vect{q}+ \rho_0\theta\dot{\eta}
 \end{align*}
 Furthermore, with equation \eqref{eq:entropy_definition} we see that for isothermal cases $\eta=0$. 
