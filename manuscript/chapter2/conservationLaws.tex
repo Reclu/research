@@ -238,8 +238,8 @@ According to the GSM framework \cite{GSM} we assume the existence of a dissipati
 
 \begin{itemize}
 \item maximum dissipation principle $\Dscr^{int}=\underset{(\tens{\sigma}^*,\Acb^*)}{\max} \(\tens{\sigma}^*:\tens{\dot{\eps}}^p -\Acb^*\cdot\dot{\Vcb} \), \quad \forall (\tens{\sigma}^*,\Acb^*) \in \Ebb$
-\item minimisation $\rightarrow$ \eqref{eq:flow_hardening_rules}, where $\dot{p}$ determined with the consistancy condition $\dot{f}=0$.We thus see that the plastic flow is normal to the yield function 
-\item Conditions de charge--décharge: K{\"u}hn-tucker compatibility conditions $\dot{p}\geq 0 ; f\leq 0 ; \dot{p}f=0$
+\item \textbf{contraint} minimization $\rightarrow$ \eqref{eq:flow_hardening_rules}, where $\dot{p}$ determined with the consistancy condition $\dot{f}=0$.We thus see that the plastic flow is normal to the yield function 
+\item Conditions de charge--décharge: K{\"u}hn-tucker complementarity conditions $\dot{p}\geq 0 ; f\leq 0 ; \dot{p}f=0$
 \end{itemize}
 Using the chain rule, the \textit{associated flow rules} can be written:
 \begin{equation}
@@ -252,9 +252,9 @@ where $\dot{p}=\drond{\Phi}{f}$ is the \textit{plastic multiplier} giving the in
 Kuhn-tucker
 
 \paragraph*{Rate-dependent plasticity (viscoplasticity)}
-Seen as a regularization of plasticity \cite[p.105]{Simo}Perzina model
+Seen as a regularization of plasticity \cite[p.105]{Simo}, relaxing the constraint $f=0$ in the minimization process Perzina model
 \begin{itemize}
-\item modules tangent (peut-être avant déja)
+\item modules tangent (Tout à la fin, en sous-section. S'intéresser au taux de variation de la contrainte)
 \end{itemize}
 
 
