@@ -226,9 +226,10 @@ such that the mechanical dissipation only involve the plastic part:
 \end{equation*}
 
 A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{\sigma},\Acb)$ so that that the elastic domain $\Ebb$ in stress space $(\tens{\sigma},\Acb)$ corresponds to:
-\begin{equation*}
+\begin{equation}
+  \label{eq:elastic_convex}
   \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
-\end{equation*}
+\end{equation}
 According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi$, convex with respect to thermodynamic forces and vanishing at the origin, which describes the evolution of internal variables as:
 \begin{equation}
   \label{eq:pseudo-potential}
@@ -236,22 +237,20 @@ According to the GSM framework \cite{GSM} we assume the existence of a dissipati
 \end{equation}
 \paragraph*{Rate-independent plasticity}
 
-\begin{itemize}
-\item maximum dissipation principle $\Dscr^{int}=\underset{(\tens{\sigma}^*,\Acb^*)}{\max} \(\tens{\sigma}^*:\tens{\dot{\eps}}^p -\Acb^*\cdot\dot{\Vcb} \), \quad \forall (\tens{\sigma}^*,\Acb^*) \in \Ebb$
-\item minimisation $\rightarrow$ \eqref{eq:flow_hardening_rules}, where $\dot{p}$ determined with the consistancy condition $\dot{f}=0$.We thus see that the plastic flow is normal to the yield function 
-\item Conditions de charge--décharge: K{\"u}hn-tucker compatibility conditions $\dot{p}\geq 0 ; f\leq 0 ; \dot{p}f=0$
-\end{itemize}
-Using the chain rule, the \textit{associated flow rules} can be written:
+The basic assumption underlying rate-independent plasticity is that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. Furthermore, the mechanical dissipation is supposed to be maximum according to \textit{Hill's principle}. The optimization procedure of the mechanical dissipation under the constraint $f(\tens{\sigma},\Acb)\leq 0$ leads to the following flow rule:
 \begin{equation}
   \label{eq:flow_hardening_rules}
   \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \quad ; \quad \dot{\Vcb} = \drond{\Phi}{f}\drond{f}{\Acb}
 \end{equation}
-where $\dot{p}=\drond{\Phi}{f}$ is the \textit{plastic multiplier} giving the instensity of the plastic flow, and $\[\drond{f}{\tens{\sigma}}\:,\:\drond{f}{\Acb}\]$ is the flow direction (normal to the yield function).
-
-
-Kuhn-tucker
+where $\dot{p}=\drond{\Phi}{f}$ is the \textit{plastic multiplier} that ensures the non-positiveness of $f$ and gives the instensity of the plastic flow. The plastic multiplier must obey the following \textit{K{\"u}hn-Tucker compatibility conditions}:
+\begin{equation}
+  \label{eq:Kuhn_Tucker}
+  \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
+\end{equation}
 
 \paragraph*{Rate-dependent plasticity (viscoplasticity)}
+
+On the other hand, viscoplastic admissible thermodynamic forces may lie out of the elastic domain \eqref{eq:elastic_convex} (\textit{i.e. $f(\tens{\sigma},\Acb) > 0$ is possible}). In that sense, viscoplasticity can be seen as a regularization of rate-independent plasticity (penalization function based on the positive part \cite[p.107]{Simo}consequences in terms of dissipation pseudo-potential, etc.). 
 Seen as a regularization of plasticity \cite[p.105]{Simo}Perzina model
 \begin{itemize}
 \item modules tangent (peut-être avant déja)
