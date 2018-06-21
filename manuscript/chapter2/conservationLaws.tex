@@ -221,9 +221,10 @@ While elasticity does not involve dissipation, plasticity is characterized by ir
   \tens{\eps} = \tens{\eps}^e + \tens{\eps}^p
 \end{equation}
 such that the mechanical dissipation only involve the plastic part:
-\begin{equation*}
+\begin{equation}
+  \label{eq:HPP_dissipation}
   \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vc_p}\dot{\Vc}_p \geq 0
-\end{equation*}
+\end{equation}
 
 A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{\sigma},\Acb)$ so that that the elastic domain $\Ebb$ in stress space $(\tens{\sigma},\Acb)$ corresponds to:
 \begin{equation}
@@ -235,27 +236,73 @@ According to the GSM framework \cite{GSM} we assume the existence of a dissipati
   \label{eq:pseudo-potential}
   \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}} \quad ; \quad \dot{\Vcb} = \drond{\Phi}{\Acb}
 \end{equation}
+\remarque{Peut-être qu'au lieu de balancer les lois d'écoulement directement, on ferait mieux de parler du principe de dissipation maximale. Pour le rate-independent, on minimise sous contrainte $f=0$ et ça conduit aux conditions de K{\"u}hn-Tucker, avec $\dot{p}$ donné par $\dot{f}=0$. Pour la viscoplasticté en revanche, on connait explicitement les évolution puisqu'aucun multiplicateur de Lagrange n'intervient. Par contre, il reste à faire le parallèle entre $\Phi$ et la dissipation car:
+  \begin{equation*}
+    \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}} \equiv \dot{p}\drond{f}{\tens{\sigma}} 
+  \end{equation*}
+Il semblerait que soit on utilise l'approche GSM avec un pseudo-potentiel, soit on redémontre la terre entière avec l'approche thermodynamique.
+\textbf{En conclusion:} D'après ma compréhension des lectures du jour, l'approche la plus directe consiste à invoquer le modèle GSM dans le cas général (i.e. history-dependent).
+
+Ensuite, pour la visco, de telles contraintes ne sont pas nécessaires et on connait explicitement les lois d'évolution par la connaissance (analytique) de $\Phi$.
+
+Enfin, les modèles rate-independent nécessitent la contrainte $f=0$ et le pseudo-potentiel doit être contraint (cours de thomas). Donc, on doit introduire le multiplicateur plastique. 
+
+En faisant de cette manière, on s'affranchit du principe de dissipation maximal (éventuellement l'évoquer dans la rate-independent)
+}
 \paragraph*{Rate-independent plasticity}
 
-The basic assumption underlying rate-independent plasticity is that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. Furthermore, the mechanical dissipation is supposed to be maximum according to \textit{Hill's principle}. The optimization procedure of the mechanical dissipation under the constraint $f(\tens{\sigma},\Acb)\leq 0$ leads to the following flow rule:
-\begin{equation}
-  \label{eq:flow_hardening_rules}
-  \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \quad ; \quad \dot{\Vcb} = \drond{\Phi}{f}\drond{f}{\Acb}
-\end{equation}
-where $\dot{p}=\drond{\Phi}{f}$ is the \textit{plastic multiplier} that ensures the non-positiveness of $f$ and gives the instensity of the plastic flow. The plastic multiplier must obey the following \textit{K{\"u}hn-Tucker compatibility conditions}:
+The basic assumption underlying rate-independent plasticity is that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. Following \textit{Hill's principle} of maximum plastic dissipation, the evolution of thermodynamic forces is determined by maximizing the dissipation \eqref{eq:HPP_dissipation} under the constraint $f(\tens{\sigma},\Acb)\leq 0$:
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:flow_rule}
+    & \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \\ 
+    \label{eq:hardening_rule}
+    & \dot{\Vcb} = -\drond{\Phi}{f}\drond{f}{\Acb}
+  \end{alignat}
+\end{subequations}
+The \textit{flow} rule \eqref{eq:flow_rule} and the \textit{hardening} rule \eqref{eq:hardening_rule} show that the rates of change of internal variables are normal to the yield surface $f=0$. Such models are called \textit{associative}. Equations \eqref{eq:flow_rule} and \eqref{eq:hardening_rule} also involve the \textit{plastic multiplier} $\dot{p}=\drond{\Phi}{f}$ that ensures the non-positiveness of $f$ and corresponds to the intensity of the plastic flow. The plastic multiplier must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
 \begin{equation}
   \label{eq:Kuhn_Tucker}
   \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
 \end{equation}
+and is determined by the \textit{consistency condition}:
+\begin{equation}
+  \label{eq:consistency_condition}
+  \dot{f}=0
+\end{equation}
+
 
 \paragraph*{Rate-dependent plasticity (viscoplasticity)}
 
-On the other hand, viscoplastic admissible thermodynamic forces may lie out of the elastic domain \eqref{eq:elastic_convex} (\textit{i.e. $f(\tens{\sigma},\Acb) > 0$ is possible}). In that sense, viscoplasticity can be seen as a regularization of rate-independent plasticity (penalization function based on the positive part \cite[p.107]{Simo}consequences in terms of dissipation pseudo-potential, etc.). 
+Viscoplasticity on the other hand admits thermodynamic forces lying out of the elastic domain \eqref{eq:elastic_convex} (\textit{i.e. $f(\tens{\sigma},\Acb) > 0$ is possible}). In that case, the plastic multiplier is given explicitly by a \textit{penalization} function of the constraint $f(\tens{\sigma},\Acb)\leq 0$ and a penalty parameter $\epsilon>0$, called the \textit{fluidity parameter}. Therefore, the viscoplasticity is often referred to as a regularization of rate-independent plasticity \cite[Section~2.7]{Simo}.
+
+
+ In that sense, viscoplasticity can be seen as a regularization of rate-independent plasticity (penalization function based on the positive part \cite[p.107]{Simo}consequences in terms of dissipation pseudo-potential, etc.). 
 Seen as a regularization of plasticity \cite[p.105]{Simo}Perzina model
 \begin{itemize}
 \item modules tangent (peut-être avant déja)
 \end{itemize}
 
+%%%%%%%%%%
+Constrained optimization of the problème $\Dscr^{int} \textit{ is maximum with f=0}$:
+\begin{equation}
+  \underset{\sigma,A,\lambda}{\min}\( \underbrace{-\sigma:\dot{\eps} + A\dot{V} + \lambda f}_{\text{objective function}}\)
+\end{equation}
+\begin{align*}
+  & -\drond{D}{\sigma} = -\dot{\eps} + \lambda \drond{f}{\sigma} =0 \\
+  & -\drond{D}{A} = \dot{V} + \lambda \drond{f}{A} =0 \\
+  & -\drond{D}{p} = f =0 
+\end{align*}
+
+Regularized version
+\begin{equation*}
+  \underset{\sigma,A,\lambda}{\min}\( -\sigma:\dot{\eps} + A\dot{V} + \underbrace{\frac{1}{\eps} \gamma^+(f)}_{\text{penalization function of the constraint}}\)
+\end{equation*}
+\begin{align*}
+  & -\drond{D}{\sigma} = -\dot{\eps} + \lambda \drond{f}{\sigma} =0 \\
+  & -\drond{D}{A} = \dot{V} + \lambda \drond{f}{A} =0 \\
+  & -\drond{D}{p} = f =0 
+\end{align*}
 
 
 \subsection{The general formulation}
