@@ -134,12 +134,12 @@ Then, substitution of the linear momentum according to equation \eqref{eq:Lagran
 where $\vect{Q}=J\vect{q}\cdot \tens{F}^{-1}$ is the lagrangian heat flux vector. We thus deduce the balance equation of internal energy on the reference configuration:
 \begin{equation}
   \label{eq:energy_balance}
-  \rho_0 \dot{e} -  \tens{\Pi}:\nablat_0\vect{v}  + \nablav_0 \cdot \vect{Q}  = r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+  \rho_0 \dot{e} -  \tens{\Pi}:\nablat_0\vect{v}  + \nablav_0 \cdot \vect{Q}  = \rho_0 r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
 where $\nablat_0\vect{v} = \tens{\dot{F}}$. Finally, the small strain version of equation \eqref{eq:energy_balance} is: 
 \begin{equation}
-  \label{eq:energy_balance}
-  \rho \dot{e} -  \tens{\sigma}:\nablat^{s} \vect{v}  + \nablav \cdot \vect{q}  = r \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+  \label{eq:energy_balance_euler}
+  \rho \dot{e} -  \tens{\sigma}:\nablat^{s} \vect{v}  + \nablav \cdot \vect{q}  = \rho r \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
 in which $\nablat^{s} (\bullet)$ denotes the symetric part of the gradient, in particular: $\nablat^s \vect{v} = \tens{\dot{\eps}}$. Stress mesures are conjugate to strain mesures through the power. In what follows, stress and strain may respectively be refered to as \textit{thermodynamic forces} and \textit{internal variables} according to the thermodynamics framework. The former obey a \textit{state equation} while the latter describe the evolution of the thermodynamic system. 
 \subsection{Constitutive equations}
@@ -149,27 +149,28 @@ The closure of a problem is given by the constitutive equations (\textit{i.e sta
 First, the \textit{Clausius-Duhem} inequality resulting from combination of first and second laws of thermodynamics, reads: 
 \begin{equation}
   \label{eq:Clausius-Duhem}
-  \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dc^{int}} \:-\:  \underbrace{\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{-\Dc^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
+  \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dscr^{int}} \:-\:  \underbrace{\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{-\Dscr^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-where $\Dc^{int}$ and $\Dc^{th}$ are respectively the specific mechanical and thermal dissipations, and $\eta, \theta$ denote \textit{entropy} and \textit{temperature}. Equation \eqref{eq:Clausius-Duhem} results in vanishing dissipations for \textit{reversible} processes and in a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that the mechanical and thermal dissipations simultaneously satisfy non-negativeness. Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
+where $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the specific mechanical and thermal dissipations. Equation \eqref{eq:Clausius-Duhem} results in vanishing dissipations for \textit{reversible} processes and in a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that the mechanical and thermal dissipations simultaneously satisfy non-negativeness. Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
 \begin{equation*}
   \label{eq:Fourier_law}
   \vect{q}=-\tens{k}\cdot\nablav_0 \theta
 \end{equation*}
 
 
-We assume the existence of a \textit{Helmholtz free energy density potential} $\psi\(\tens{F},\theta,V_p\)$ where the $V_p$ $(1\leq p \leq N)$ are additional state variables describing irreversible processes. The free energy is supposed concave with respect to temperature and convex with respect to other variables. The mechanical dissipation then can be rewritten as:
+The internal energy density is a function of strain, \textit{entropy} $\eta$ and additional state variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. It is more convenient to use its \textit{Legendre transform}, the \textit{Helmholtz free energy density potential} $\psi\(\tens{F},\theta,\Vc_p\)=e\(\tens{F},\eta,\Vc_p\)-\theta \eta$ where $\theta$ is the temperature. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation can then be rewritten as:
 \begin{equation*}
-  \Dc^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
+  \Dscr^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
 \end{equation*}
-The time derivative of Helmholtz free energy:
-\begin{equation*}
-  \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{V_p}\dot{V_p}
-\end{equation*}
+The time derivative of Helmholtz free energy density:
+\begin{equation}
+  \label{eq:derivative_psi}
+  \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{\Vc_p}\dot{\Vc}_p
+\end{equation}
 can be introduced within the mechanical dissipation so that one gets:
 \begin{equation}
   \label{eq:Dint_psi_factor}
-  \Dc^{int} = \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{V_p}\dot{V_p} 
+  \Dscr^{int} = \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{\Vc_p}\dot{\Vc}_p 
 \end{equation}
 
 
@@ -190,38 +191,75 @@ A material is said \textit{hyperelastic} if the above stress state law is satisf
 
 Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
 \begin{equation*}
-  %\label{eq:entropy_definition}
-  \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{V_p}=A_p
+  \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vc_p}=\Ac_p
 \end{equation*}
 
 In what follows, we shall consider hyperelastic or linear elastic deformations that do not involve irreversible processes (\textit{e.g. damage or thermal softening}). Hence, additional internal variables and associated thermodynamic forces are not activated in such situations. However, the cases of \textit{elastoplasticity} and \textit{elasto-viscoplasticity}, involving such variables and forces, will be considered in the linearized geometrical framework.
 
+\begin{remark}
+  \label{rq:isothermal_deformation}
+  Temperature has been introduced as an internal variable and requires the introduction of the heat equation for the closure of the system:
+  \begin{equation*}
+    \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Ac_p}{\theta}\dot{\Vc}_p \)
+  \end{equation*}
+  Nevertheless, we will restrict our attention in the following to isothermal deformation so that temperature can be omitted and internal energy balance equation \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} is automatically satisfied. Indeed, for isothermal processes the heat equation leads to:
+  \begin{equation*}
+    \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p
+  \end{equation*}
+  which, once introduced in the energy balance \eqref{eq:energy_balance} yields:
+  \begin{equation*}
+    \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p
+  \end{equation*}
+  By using the free energy density time derivative \eqref{eq:derivative_psi} and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation vanishes.
+\end{remark}
+
+
 \subsubsection*{History-dependent models in small strain}
-% \subsubsection{Homogeneous systems}
-% \subsubsection{Non-homogeneous systems}
-\subsection{The general formulation}
-We introduced above for the general case the balance equations of linear momentum \eqref{eq:Lagrangian_linear_momentum} and internal energy \eqref{eq:energy_balance}. Moreover, state equations of thermodynamic forces have been derived (equation \eqref{eq:PK1_definition} for stress and equation \eqref{eq:entropy_definition} for entropy). Those thermodynamic forces are dual quantities of internal variables (respectively strain and temperature) which variations govern the evolution of the system. Whereas the evolution of the deformation gradient is given by lagrangian kinematic law \eqref{eq:F_phi} written in rate form, the evolution of the temperature is governed by the well-known \textit{heat equation}:
+While elasticity does not involve dissipation, plasticity is characterized by irreversible strain and hardening variables $\Vcb$ that account for the loading history undergone by every material particles. Within the linearized geometrical framework, the infinitesimal strain tensor $\tens{\eps}$ is assume to be additively decomposed into an elastic and a plastic part:
 \begin{equation}
-  \label{eq:heat_equation}
-  \rho_0 C \dot{\theta} = r - \nablav \cdot \vect{q} - \rho_0 \drond{\psi}{V_p}\dot{V_p} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{A_p}{\theta}\dot{V_p} \)
+  \label{eq:additive_plast}
+  \tens{\eps} = \tens{\eps}^e + \tens{\eps}^p
 \end{equation}
-For isothermal processes, the heat equation \eqref{eq:heat_equation} yields:
+such that the mechanical dissipation only involve the plastic part:
 \begin{equation*}
-  r - \nablav \cdot \vect{q} = \rho_0 \drond{\psi}{V_p}\dot{V_p} 
+  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vc_p}\dot{\Vc}_p \geq 0
 \end{equation*}
-Also, such a deformation leads to the rate of change of internal energy:
-\begin{align*}
-  \rho_0 \dot{e} &= \rho_0 \( \dot{\psi} + \theta\dot{\eta}+\eta\dot{\theta}\) \\
-                 &= \underbrace{\rho_0\drond{\psi}{\tens{F}}}_{=\tens{\Pi}}:\tens{\dot{F}} + \rho_0\underbrace{\drond{\psi}{\theta}}_{=-\eta}\dot{\theta} + \underbrace{\rho_0\drond{\psi}{V_p}}_{r - \nablav \cdot \vect{q}}\dot{V_p} + \rho_0\theta\dot{\eta}+\rho_0\eta\dot{\theta} \\
-                 &= \tens{\Pi}:\tens{\dot{F}} +r - \nablav \cdot \vect{q}+ \rho_0\theta\dot{\eta}
-\end{align*}
-Furthermore, with equation \eqref{eq:entropy_definition} we see that for isothermal cases $\eta=0$. 
-Finally we are left with:
+
+A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{\sigma},\Acb)$ so that that the elastic domain $\Ebb$ in stress space $(\tens{\sigma},\Acb)$ corresponds to:
+\begin{equation*}
+  \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
+\end{equation*}
+According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi$, convex with respect to thermodynamic forces and vanishing at the origin, which describes the evolution of internal variables as:
 \begin{equation}
-  \label{eq:isoth_energy_balance}
-  \rho_0 \dot{e} = \tens{\Pi}:\tens{\dot{F}} +r - \nablav \cdot \vect{q}  
+  \label{eq:pseudo-potential}
+  \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}} \quad ; \quad \dot{\Vcb} = \drond{\Phi}{\Acb}
 \end{equation}
-which identifies to the balance equation of internal energy \eqref{eq:energy_balance}. Hence, for isothermal deformation, the balance equation of internal energy is automatically satisfied.
+\paragraph*{Rate-independent plasticity}
+
+\begin{itemize}
+\item maximum dissipation principle $\Dscr^{int}=\underset{(\tens{\sigma}^*,\Acb^*)}{\max} \(\tens{\sigma}^*:\tens{\dot{\eps}}^p -\Acb^*\cdot\dot{\Vcb} \), \quad \forall (\tens{\sigma}^*,\Acb^*) \in \Ebb$
+\item minimisation $\rightarrow$ \eqref{eq:flow_hardening_rules}, where $\dot{p}$ determined with the consistancy condition $\dot{f}=0$.We thus see that the plastic flow is normal to the yield function 
+\item Conditions de charge--décharge: K{\"u}hn-tucker compatibility conditions $\dot{p}\geq 0 ; f\leq 0 ; \dot{p}f=0$
+\end{itemize}
+Using the chain rule, the \textit{associated flow rules} can be written:
+\begin{equation}
+  \label{eq:flow_hardening_rules}
+  \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \quad ; \quad \dot{\Vcb} = \drond{\Phi}{f}\drond{f}{\Acb}
+\end{equation}
+where $\dot{p}=\drond{\Phi}{f}$ is the \textit{plastic multiplier} giving the instensity of the plastic flow, and $\[\drond{f}{\tens{\sigma}}\:,\:\drond{f}{\Acb}\]$ is the flow direction (normal to the yield function).
+
+
+Kuhn-tucker
+
+\paragraph*{Rate-dependent plasticity (viscoplasticity)}
+Seen as a regularization of plasticity \cite[p.105]{Simo}Perzina model
+\begin{itemize}
+\item modules tangent (peut-être avant déja)
+\end{itemize}
+
+
+
+\subsection{The general formulation}
 Gathering the balance equations introduced above, we are left with the following system
 \begin{equation}
   \label{eq:Hyp_conservation_laws_system}
@@ -229,7 +267,6 @@ Gathering the balance equations introduced above, we are left with the following
     \begin{aligned}
       & \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} =  \rho_0 \vect{b} \\
       & \tens{\dot{F}} - \nablav_0 \cdot \(\tens{I}\otimes \vect{v} \) = \tens{0} \\
-      & \rho_0 \dot{e} - \tens{\Pi}:\tens{F}-\vect{q}  = r
     \end{aligned}
   \right.
 \end{equation}
