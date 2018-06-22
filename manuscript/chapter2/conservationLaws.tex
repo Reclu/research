@@ -285,8 +285,7 @@ By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \te
 where $h$ is a material parameter depending on the hardening model.
 
 \subsection{The general formulation}
-Isothermal deformation, hyperelastic material for finite deformation and elastic(viscoplastic)(plastic) for HPP. Plohr et Sharp. Talk about tangent modulus 
-The previous considerations are gathered here for the finite deformation framework:
+We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account for the linearized geomterical framework only. Hence, we are left wil the following conservation laws systems:
 \begin{align}
   \label{eq:HE_conservation_laws}
   & \left\|
@@ -300,31 +299,37 @@ The previous considerations are gathered here for the finite deformation framewo
       \label{eq:hpp_conservation_laws}
   &\left\|
   \begin{aligned}
-    & \tens{\dot{\eps}}=\nablat \vect{v} \\
+    & \tens{\dot{\eps}}=\nablat^s \vect{v} \\
     & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}\phantom{hjhj} \\
-    & \tens{\dot{\sigma}}= \rho \ddrond{\psi}{\tens{\eps}} :\tens{\dot{\eps}} \\
-    & \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\
-    & \dot{\Vcb} = -\drond{\Phi}{\Acb}
+    & \tens{\dot{\sigma}}= \rho \ddrond{\psi}{\tens{\eps}}{\tens{\eps}} :\tens{\dot{\eps}} 
+    % \\
+    %& \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\
+    %& \dot{\Vcb} = -\drond{\Phi}{\Acb}
   \end{aligned}
   \right. \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{align}
-which can be written in quasi-linear form:
+With a cartesian coordinates in dimension $D$, systems \eqref{eq:HE_conservation_laws} and \eqref{eq:hpp_conservation_laws} can be written in conservative form:
 \begin{equation}
   \label{eq:general_quasi}
-  \Qcb_t + \nablat_0 \cdot \Fcb = \vect{0}
+  \Qcb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb
 \end{equation}
-with $\Qcb^T=\[ \rho_0 \vect{v} \: , \: \tens{F}\]$, and $\Fcb^T = \[-\tens{\Pi},-\vect{v}\otimes \tens{I} \]$. Assuming a Cartesian coordonates system in dimension $D$ yields:
+with:
+\begin{align}
+  \label{eq:1}
+  & \Qcb =\matrice{\rho_0 \vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes \vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}} \\
+  & \Qcb =\matrice{\rho \vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ \tens{0}}
+\end{align}
+As proposed in \cite{Trangenstein91}, introduction of the auxiliary vector:
 \begin{equation}
-  \label{eq:general_quasi_cartesian}
-  \Qcb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \vect{0}
+  \label{eq:auxiliary_vector}
+  \Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\] \quad ; \quad \Wcb^T= \[\vect{v}\:,\:\tens{\sigma}\]
 \end{equation}
-where $\(\Fcb\cdot\alpha\)^T=\[-\tens{\Pi}\cdot \vect{e}_\alpha,-\vect{v}\otimes \vect{e}_\alpha \]$ is the flux vector in direction $\vect{e}_\alpha$. Introducing the auxiliary vector (citer Trangenstein) $\Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\]$ and using the chain rule leads to the quasi-linear form:
+leads to the quasi-linear form by using the chain rule:
 \begin{equation}
   \label{eq:quasilinear_pi_v}
-  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \drond{\Wcb}{X_\alpha} = \vect{0}
+  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \cdot \drond{\Wcb}{X_\alpha} = \vect{0}
 \end{equation}
-in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$.
-
+in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$. Equation \eqref{eq:quasilinear_pi_v} enables to apply the tools of characteristic analysis developped in section \ref{sec:PDEs} to solid mechanics. This is the object of the next section.
 
 
 %%% Local Variables:
