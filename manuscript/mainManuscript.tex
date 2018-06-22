@@ -16,7 +16,16 @@
 \usepackage{fncylab}
 \usepackage{todonotes}
 \usepackage{fancyhdr}
-
+\usepackage{ifpdf}
+\ifpdf
+\pdfinfo {
+	/Author (Moi)
+	/Title (Titre du document)
+	/Subject (Titre du document)
+	/Keywords ()
+	/CreationDate (D:20090129171524)
+}
+\fi
 
 \geometry{hmargin=2.cm,vmargin=3.5cm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% The paper headers
@@ -45,6 +54,9 @@
 \definecolor{Yellow}{RGB}{202,184,67}
 \definecolor{Orange}{RGB}{231,133,50}
 \definecolor{Red}{RGB}{217,33,32}
+
+\usepackage[colorlinks,linkcolor=Blue,citecolor=Purple]{hyperref}
+
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{example}{Example}
