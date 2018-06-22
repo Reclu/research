@@ -158,19 +158,19 @@ where $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the specific mechanical an
 \end{equation*}
 
 
-The internal energy density is a function of strain, \textit{entropy} $\eta$ and additional state variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. Recall that calligraphic symbols denote column array. It is more convenient to use its \textit{Legendre transform}, the \textit{Helmholtz free energy density potential} $\psi\(\tens{F},\theta,\Vc_p\)=e\(\tens{F},\eta,\Vc_p\)-\theta \eta$ where $\theta$ is the temperature. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation can then be rewritten as:
+The internal energy density is a function of strain, \textit{entropy} $\eta$ and additional state variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. Recall that calligraphic symbols denote column array. It is more convenient to use its \textit{Legendre transform}, the \textit{Helmholtz free energy density potential} $\psi\(\tens{F},\theta,\Vcb\)=e\(\tens{F},\eta,\Vcb\)-\theta \eta$ where $\theta$ is the temperature. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation can then be rewritten as:
 \begin{equation*}
   \Dscr^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
 \end{equation*}
 The time derivative of Helmholtz free energy density:
 \begin{equation}
   \label{eq:derivative_psi}
-  \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{\Vc_p}\dot{\Vc}_p
+  \dot{\psi} = \drond{\psi}{\tens{F}}:\tens{\dot{F}} + \drond{\psi}{\theta}\dot{\theta} + \drond{\psi}{\Vcb}\dot{\Vcb}
 \end{equation}
 can be introduced within the mechanical dissipation so that one gets:
 \begin{equation}
   \label{eq:Dint_psi_factor}
-  \Dscr^{int} = \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{\Vc_p}\dot{\Vc}_p 
+  \Dscr^{int} = \(\tens{\Pi}- \rho_0 \drond{\psi}{\tens{F}} \):\tens{\dot{F}} - \rho_0 \(\drond{\psi}{\theta} +\eta\) \dot{\theta}  - \rho_0\drond{\psi}{\Vcb}\dot{\Vcb} 
 \end{equation}
 
 
@@ -191,24 +191,24 @@ A material is said \textit{hyperelastic} if the above stress state law is satisf
 
 Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
 \begin{equation*}
-  \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vc_p}=\Ac_p
+  \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vcb}=\Acb
 \end{equation*}
-
+where $\Acb$ are thermodynamic forces associated to internal variables $\Vcb$.
 In what follows, we shall consider hyperelastic or linear elastic deformations that do not involve irreversible processes (\textit{e.g. damage or thermal softening}). Hence, additional internal variables and associated thermodynamic forces are not activated in such situations. However, the cases of \textit{elastoplasticity} and \textit{elasto-viscoplasticity}, involving such variables and forces, will be considered in the linearized geometrical framework.
 
 \begin{remark}
   \label{rq:isothermal_deformation}
   Temperature has been introduced as an internal variable and requires the introduction of the heat equation for the closure of the system:
   \begin{equation*}
-    \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Ac_p}{\theta}\dot{\Vc}_p \)
+    \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Acb}{\theta}\dot{\Vcb} \)
   \end{equation*}
   Nevertheless, we will restrict our attention in the following to isothermal deformation so that temperature can be omitted and internal energy balance equation \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} is automatically satisfied. Indeed, for isothermal processes the heat equation leads to:
   \begin{equation*}
-    \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p
+    \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
   \end{equation*}
   which, once introduced in the energy balance \eqref{eq:energy_balance} yields:
   \begin{equation*}
-    \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vc_p}\dot{\Vc}_p
+    \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
   \end{equation*}
   By using the free energy density time derivative \eqref{eq:derivative_psi} and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation vanishes.
 \end{remark}
@@ -223,7 +223,7 @@ While elasticity does not involve dissipation, plasticity is characterized by ir
 such that the mechanical dissipation only involve the plastic part:
 \begin{equation}
   \label{eq:HPP_dissipation}
-  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vc_p}\dot{\Vc}_p \geq 0
+  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
 \end{equation}
 
 A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{\sigma},\Acb)$ so that that the elastic domain $\Ebb$ in stress space $(\tens{\sigma},\Acb)$ corresponds to:
@@ -232,26 +232,18 @@ A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{
   \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
 \end{equation}
 According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi(\tens{\sigma},\Vcb)$, convex with respect to thermodynamic forces and vanishing at the origin of the $(\tens{\sigma},\Vcb)$ space. This pseudo-potential enables the derivation of the plastic \textit{flow} and \textit{hardening} rules:
-\begin{subequations}
-  \begin{alignat}{2}
-    \label{eq:flow_rule}
-    & \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\%\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \\ 
-    \label{eq:hardening_rule}
-    & \dot{\Vcb} = -\drond{\Phi}{\Acb}
-  \end{alignat}
-\end{subequations}
+\begin{equation}
+  \label{eq:flow_hardening_rule}
+  \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}} \quad ; \quad \quad \dot{\Vcb} = -\drond{\Phi}{\Acb}
+\end{equation}
 Or, by using the chain rule:
-\begin{subequations}
-  \begin{alignat}{2}
-    \label{eq:flow_rule_plast}
-    & \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}}\\
-    \label{eq:hardening_rule_plast}
-    & \dot{\Vcb} = -\drond{\Phi}{f}\drond{f}{\Acb}
-  \end{alignat}
-\end{subequations}
+\begin{equation}
+  \label{eq:flow_hardening_rule_plast}
+  \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \quad ; \quad \quad \dot{\Vcb} = -\drond{\Phi}{f}\drond{f}{\Acb}
+\end{equation}
 where $\drond{\Phi}{f}=\dot{p}$ is the \textit{plastic multiplier}. We then distinguish two cases:
 \begin{itemize}
-\item \textbf{Rate-independent} plasticity is base on the assumption that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. The plastic multiplier is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
+\item \textbf{Rate-independent} plasticity is based on the assumption that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. The plastic multiplier is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
 \begin{equation}
   \label{eq:Kuhn_Tucker}
   \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
@@ -261,46 +253,77 @@ The plastic multiplier, or the \textit{equivalent plastic strain rate} is determ
   \label{eq:consistency_condition}
   \dot{f}=0
 \end{equation}
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity for which thermodynamic forces satisying $f(\tensor{\sigma},\Abc)>0$ are admissible and plastic evolution is completely determined by the knowlegde of the dissipation pseudo-potential.
+\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$). Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential.
 \end{itemize}
 
-% \paragraph*{Rate-independent plasticity}
-
-% The basic assumption underlying rate-independent plasticity is that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. Following \textit{Hill's principle} of maximum plastic dissipation, the evolution of thermodynamic forces is determined by maximizing the dissipation \eqref{eq:HPP_dissipation} under the constraint $f(\tens{\sigma},\Acb)\leq 0$:
-% \begin{subequations}
-%   \begin{alignat}{2}
-%     \label{eq:flow_rule}
-%     & \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \\ 
-%     \label{eq:hardening_rule}
-%     & \dot{\Vcb} = -\drond{\Phi}{f}\drond{f}{\Acb}
-%   \end{alignat}
-% \end{subequations}
-% The \textit{flow} rule \eqref{eq:flow_rule} and the \textit{hardening} rule \eqref{eq:hardening_rule} show that the rates of change of internal variables are normal to the yield surface $f=0$. Such models are called \textit{associative}. Equations \eqref{eq:flow_rule} and \eqref{eq:hardening_rule} also involve the \textit{plastic multiplier} $\dot{p}=\drond{\Phi}{f}$ that ensures the non-positiveness of $f$ and corresponds to the intensity of the plastic flow. The plastic multiplier must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
-% \begin{equation}
-%   \label{eq:Kuhn_Tucker}
-%   \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
-% \end{equation}
-% and is determined by the \textit{consistency condition}:
-% \begin{equation}
-%   \label{eq:consistency_condition}
-%   \dot{f}=0
-% \end{equation}
-
-
-
+\subsubsection*{Tangent moduli}
+The notion of \textit{tangent modulus} is very convenient for dealing with the evolution of stress mesures during the deformation. Their derivation result from time differentiations of state laws \eqref{eq:PK1_definition} and \eqref{eq:Cauchy_definition} \cite[Section~7.1]{Simo}. For hyperelastic materials:
+\begin{equation}
+  \label{eq:HE_tangent}
+  \tens{\dot{\Pi}}=\drond{}{t}\(\rho_0\drond{\psi}{\tens{F}} \) = \rho_0\ddrond{\psi}{\tens{F}}{\tens{F}}:\tens{\dot{F}}= \Hbb : \tens{\dot{F}}
+\end{equation}
+where $H_{i\alpha j \beta}$ is the fourth-order \textit{first elasticity tensor} and presents major symetries. The linearized geometrical elastic is governed by:
+\begin{equation}
+  \label{eq:HPP_tangent_elasticity}
+  \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}} 
+\end{equation}
+for elastic evolutions, and by:
+\begin{equation}
+  \label{eq:HPP_tangent_evp}
+  \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}}^e=\Cbb:\( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) 
+\end{equation}
+for elastic-viscoplastic ones. In equations \eqref{eq:HPP_tangent_elasticity} and \eqref{eq:HPP_tangent_evp}, $\Cbb$ is the \textit{elastic stiffness tensor}. For isotropic elasticity $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, where $(\lambda,\mu)$ are Lamé parameters, has major and minor symetries. Rate-independent plastic evolution are, on the other hand, governed by the \textit{elastplastic tangent modulus}:
+\begin{equation}
+  \label{eq:HPP_tangent_plasticity}
+  \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
+\end{equation}
+By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \tens{\sigma}^H$, with $\tens{s}$ the deviatoric part and $\tens{\sigma}^H$ the spheric part, the elastoplastic tangent modulus reads: 
+\begin{equation}
+  \label{eq:HPP_tangent_plasticity_explicit}
+  \Cbb^{ep}=\Cbb - \frac{6\mu^2}{3\mu +h} \frac{\tens{s}\otimes \tens{s}}{\tens{s}:\tens{s}}
+\end{equation}
+where $h$ is a material parameter depending on the hardening model.
 
 \subsection{The general formulation}
-Gathering the balance equations introduced above, we are left with the following system
+Isothermal deformation, hyperelastic material for finite deformation and elastic(viscoplastic)(plastic) for HPP. Plohr et Sharp. Talk about tangent modulus 
+The previous considerations are gathered here for the finite deformation framework:
+\begin{align}
+  \label{eq:HE_conservation_laws}
+  & \left\|
+  \begin{aligned}
+    & \tens{\dot{F}}=\nablat_0 \vect{v}  \\
+    & \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \\
+    &  \tens{\dot{\Pi}} = \Hbb: \tens{\dot{F}}
+  \end{aligned}
+  \right. \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau \\
+  & \\
+      \label{eq:hpp_conservation_laws}
+  &\left\|
+  \begin{aligned}
+    & \tens{\dot{\eps}}=\nablat \vect{v} \\
+    & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}\phantom{hjhj} \\
+    & \tens{\dot{\sigma}}= \rho \ddrond{\psi}{\tens{\eps}} :\tens{\dot{\eps}} \\
+    & \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\
+    & \dot{\Vcb} = -\drond{\Phi}{\Acb}
+  \end{aligned}
+  \right. \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+\end{align}
+which can be written in quasi-linear form:
 \begin{equation}
-  \label{eq:Hyp_conservation_laws_system}
-  \left\lvert
-    \begin{aligned}
-      & \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} =  \rho_0 \vect{b} \\
-      & \tens{\dot{F}} - \nablav_0 \cdot \(\tens{I}\otimes \vect{v} \) = \tens{0} \\
-    \end{aligned}
-  \right.
+  \label{eq:general_quasi}
+  \Qcb_t + \nablat_0 \cdot \Fcb = \vect{0}
 \end{equation}
-
+with $\Qcb^T=\[ \rho_0 \vect{v} \: , \: \tens{F}\]$, and $\Fcb^T = \[-\tens{\Pi},-\vect{v}\otimes \tens{I} \]$. Assuming a Cartesian coordonates system in dimension $D$ yields:
+\begin{equation}
+  \label{eq:general_quasi_cartesian}
+  \Qcb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \vect{0}
+\end{equation}
+where $\(\Fcb\cdot\alpha\)^T=\[-\tens{\Pi}\cdot \vect{e}_\alpha,-\vect{v}\otimes \vect{e}_\alpha \]$ is the flux vector in direction $\vect{e}_\alpha$. Introducing the auxiliary vector (citer Trangenstein) $\Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\]$ and using the chain rule leads to the quasi-linear form:
+\begin{equation}
+  \label{eq:quasilinear_pi_v}
+  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \drond{\Wcb}{X_\alpha} = \vect{0}
+\end{equation}
+in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$.
 
 
 
