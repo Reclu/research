@@ -6,8 +6,38 @@ Since hyperbolic problems are related to wave propagation phenomena, the quasi-l
   \Absf^t\drond{\Wcb}{t} + N_\alpha \Absf^\alpha \drond{\Wcb}{X_N} = \vect{0}
 \end{equation}
 where $X_N = \vect{X}\cdot \vect{N}$. Give expressions of matrices, find a way to do that in a generic way
-
-
+\begin{equation}
+  \label{eq:2}
+  \Absf^t=\matrice{\rho_0\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}} } \quad ; \quad N_\alpha \Absf^\alpha = -\matrice{ \tens{0}^2 & \tens{I}\otimes\vect{N} \\ \tens{I}\otimes\vect{N} & \tens{0}^4}
+\end{equation}
+where $\tens{0}^p$ is a zero tensor of order $p$. The eigen system of the system is:
+\begin{equation}
+  \label{eq:4}
+  \vect{\Lc}^k\cdot \(N_\alpha \Absf^\alpha - \lambda_k \Absf^t\) = \vect{0}
+\end{equation}
+with $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{\Pi}^K \]$.
+\begin{equation}
+  \label{eq:eigen_left}
+  \left\lbrace
+  \begin{aligned}
+    & -\tens{\Pi}^k \cdot\vect{N} - \rho_0\lambda_k  \vect{v}^k =\vect{0} \\
+    & -\vect{v}^k\otimes\vect{N} - \lambda_k \drond{\tens{F}}{\tens{\Pi}}: \tens{\Pi}^k = \tens{0}
+  \end{aligned}\right.
+\end{equation}
+Inversion of the second equation and subsitution of $\tens{\Pi}^k$ in the first one yields:
+\begin{equation}
+  \label{eq:7}
+  \( \frac{1}{\lambda_k} \drond{\tens{\Pi}}{\tens{F}}: (\vect{v}^k\otimes\vect{N})\) \cdot\vect{N} - \rho_0\lambda_k  \vect{v}^k =\vect{0}
+\end{equation}
+\begin{equation}
+  \label{eq:acousit_eigen_system}
+  \(  N_\alpha H_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \) v_j^k =0
+\end{equation}
+where $N_\alpha H_{i\alpha j \beta}  N_\beta$ is the symetric \textit{acoustic tensor} $\tens{A}=\drond{\tens{\Pi}\cdot\vect{N}}{\tens{F}\cdot\vect{N}}$. Equation \eqref{eq:acousit_eigen_system} hence corresponds to the acoustic tensor eigensystem, which eigenvalues and eigenvectors are $\rho_0 \lambda_k^2$ and $\vect{v}^k$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Then, the stress component of left eigenvectors is determined from the first equation of system \eqref{eq:eigen_left}. Finally the eigenstructure of the quasi-linear form is defined by the eigenfields:
+\begin{equation}
+  \label{eq:9}
+    \left\lbrace \pm \sqrt{\frac{\omega^p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega^p}{\rho_0}} \vect{l}^p , -\frac{\vect{l}^p\otimes \vect{n}+\vect{n}\otimes \vect{l}^p}{2} \:>  \right\rbrace
+\end{equation}
 % Look at eigenvalues // eigen vectors // hyperbolicity condition // Legendre-Hadamard condition etc. -> system of scalar advection equations 
 \subsection{Linear problems: contact waves}
 \subsection{Non-linearities: simple and shock waves}
