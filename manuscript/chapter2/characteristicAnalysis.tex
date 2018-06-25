@@ -3,40 +3,61 @@ The eigenspaces of hyperbolic problems defined in the previous section will be n
 Since hyperbolic problems are related to wave propagation phenomena, the quasi-linear form \eqref{eq:quasilinear_pi_v} will be studied in the direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ for finite and infinitesimal deformations. In this direction, equation \eqref{eq:quasilinear_pi_v} reads \todo{Multidimensional spliting \cite[Chapter~3]{Toro};\cite[p.425-426]{Leveque}}:
 \begin{equation}
   \label{eq:quasilinear_normal}
-  \Absf^t\drond{\Wcb}{t} + N_\alpha \Absf^\alpha \drond{\Wcb}{X_N} = \vect{0}
+  \Absf^t\drond{\Wcb}{t} + N_\alpha \Absf^\alpha \drond{\Wcb}{X_N} = \Scb
 \end{equation}
-where $X_N = \vect{X}\cdot \vect{N}$. Give expressions of matrices, find a way to do that in a generic way
+where $X_N = \vect{X}\cdot \vect{N}$ and the matrices expressions are:
 \begin{equation}
-  \label{eq:2}
   \Absf^t=\matrice{\rho_0\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}} } \quad ; \quad N_\alpha \Absf^\alpha = -\matrice{ \tens{0}^2 & \tens{I}\otimes\vect{N} \\ \tens{I}\otimes\vect{N} & \tens{0}^4}
 \end{equation}
-where $\tens{0}^p$ is a zero tensor of order $p$. The eigen system of the system is:
+with $\tens{0}^p$, a $p-th$ order zero tensor. Alternatively, the system \eqref{eq:quasilinear_normal} can be multiplied by the inverse matrix of $\Absf^t$:
 \begin{equation}
-  \label{eq:4}
-  \vect{\Lc}^k\cdot \(N_\alpha \Absf^\alpha - \lambda_k \Absf^t\) = \vect{0}
+  \label{eq:quasilinear_normal}
+  \drond{\Wcb}{t} + \Jbsf_N \drond{\Wcb}{X_N} = {(\Absf^t)}^{-1}\Scb = \tilde{\Scb}
 \end{equation}
-with $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{\Pi}^K \]$.
+in which the \textit{Jacobian matrix} $\Jbsf_N$ is:
+\begin{equation}
+  \label{eq:jacobian_HE}
+  \Jbsf_N=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{N} & \tens{0}^4 }
+\end{equation}
+for hyperelastic materials and:
+\begin{equation}
+  \label{eq:jacobian_HPP}
+  \Jbsf_N=-\matrice{\tens{0}^2 & \frac{1}{\rho}\(\frac{\tens{I}\otimes \vect{n}+\tens{I}\boxtimes \vect{n}}{2}\) \\  \drond{\tens{\sigma}}{\tens{\eps}}\cdot\vect{n}& \tens{0}^4 }
+\end{equation}
+for the linearized geometrical framework. In equation \eqref{eq:jacobian_HPP}, the operator $\tens{I}\boxtimes\vect{n}$ is the transpose of second and third index of the classical tensor product arising due to the symmetric gradient of $\vect{v}$: $\tens{I}\boxtimes\vect{n}=\delta_{ij}n_k \vect{e}_i\otimes \vect{e}_k\otimes\vect{e}_j$. The characteristic structure of the problem is given by the eigenvalues $\lambda_k$ and left eigenvectors $\Lcb^k$ of the Jacobian matrix:
+\begin{equation}
+  \label{eq:eigen_system}
+  \vect{\Lc}^k\cdot \(\Jbsf_N - \lambda_k \Ibsf\) = \vect{0}
+\end{equation}
+where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{\Pi}^K \]$. 
+\subsubsection*{Hyperelasticity}
+For hyperelastic materials, the eigensystem \eqref{eq:eigen_system} reads:
 \begin{equation}
   \label{eq:eigen_left}
   \left\lbrace
   \begin{aligned}
-    & -\tr(\tens{\Pi}^k)  \vect{N} - \rho_0\lambda_k  \vect{v}^k =\vect{0} \\
-    & -\vect{v}^k\otimes\vect{N} - \lambda_k \tens{\Pi}^k:\drond{\tens{F}}{\tens{\Pi}} = \tens{0}
+    & -\tens{\Pi}^k:\drond{\tens{\Pi}}{\tens{F}}\cdot  \vect{N} - \lambda_k  \vect{v}^k =\vect{0} \\
+    & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{\Pi}^k = \tens{0}
   \end{aligned}\right.
 \end{equation}
-Inversion of the second equation and subsitution of $\tens{\Pi}^k$ in the first one yields:
+Substitution of $\tens{\Pi}$ in the first equation leads to:
+\begin{equation*}
+ (\vect{v}^k\otimes\vect{N}):\drond{\tens{\Pi}}{\tens{F}}\cdot\vect{N} - \rho_0\lambda^2_k \vect{v}^k = \tens{0}
+\end{equation*}
+which is equivalent to the \textit{acoustic tensor} $A_{ij}=N_\alpha H_{i\alpha j \beta}  N_\beta$ left eigensystem:
 \begin{equation}
-  \label{eq:7}
-  \( \frac{1}{\lambda_k} (\vect{v}^k\otimes\vect{N}):\drond{\tens{\Pi}}{\tens{F}}\) - \lambda_k \tens{\Pi}^k = \tens{0}
+  \label{eq:acoustic_eigen_system}
+ v_i^k \(  N_\alpha H_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \)  =0
 \end{equation}
+Equation \eqref{eq:acoutsic_eigen_system} leads in the general case to $3$ couples eigenvalues--eigenvectors $(\omega_p,\vect{l}^p) \: p=1,2,3$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Furthermore, it is obvious that $3$ eigenvalues $\omega$ will yield $6$ eigenvalues $\lambda=\pm\sqrt{\frac{\omega}{\rho_0}}$. In addition, the equation equation of system \eqref{eq:eigen_left} gives the expression of the stress component the Jacobian left eigenvectors:
 \begin{equation}
-  \label{eq:acousit_eigen_system}
-  \(  N_\alpha H_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \) v_j^k =0
+  \label{eq:stress_left_eigen}
+  \tens{\Pi}^k = -\frac{1}{\lambda_k\rho_0}\vect{v}^k\otimes\vect{N}
 \end{equation}
-where $N_\alpha H_{i\alpha j \beta}  N_\beta$ is the symetric \textit{acoustic tensor} $\tens{A}=\drond{\tens{\Pi}\cdot\vect{N}}{\tens{F}\cdot\vect{N}}$. Equation \eqref{eq:acousit_eigen_system} hence corresponds to the acoustic tensor eigensystem, which eigenvalues and eigenvectors are $\rho_0 \lambda_k^2$ and $\vect{v}^k$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Then, the stress component of left eigenvectors is determined from the first equation of system \eqref{eq:eigen_left}. Finally the eigenstructure of the quasi-linear form is defined by the eigenfields:
+Finally the eigenstructure of the quasi-linear form is defined by the eigenfields:
 \begin{equation}
-  \label{eq:9}
-    \left\lbrace \pm \sqrt{\frac{\omega^p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega^p}{\rho_0}} \vect{l}^p , -\frac{\vect{l}^p\otimes \vect{n}+\vect{n}\otimes \vect{l}^p}{2} \:>  \right\rbrace
+  \label{eq:HE_eigenfields}
+    \left\lbrace \pm \sqrt{\frac{\omega^p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega^p}{\rho_0}} \vect{l}^p , -\frac{\vect{l}^p\otimes \vect{n}+\vect{n}\otimes \vect{l}^p}{2} \:>  \right\rbrace ,\quad p=1,2,3
 \end{equation}
 % Look at eigenvalues // eigen vectors // hyperbolicity condition // Legendre-Hadamard condition etc. -> system of scalar advection equations 
 \subsection{Linear problems: contact waves}
