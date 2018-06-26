@@ -184,11 +184,22 @@ holding regardless of the deformation, and hence:
   \label{eq:PK1_definition}
   \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi}
 \end{equation}
-A material is said \textit{hyperelastic} if the above stress state law is satisfied \cite[p.8]{Foundation_of_elasticity}. Equivalently we have for linear elasticity:
+A material is said \textit{hyperelastic} if the above stress state law is satisfied \cite[p.8]{Foundation_of_elasticity}. The time derivative of this relation leads to:
+\begin{equation}
+  \label{eq:HE_tangent}
+  \tens{\dot{\Pi}} = \rho_0\ddrond{\psi}{\tens{F}}{\tens{F}}:\tens{\dot{F}} = \Hbb:\tens{\dot{F}} 
+\end{equation}
+where $\Hbb$ is the $4$th order \textit{tangent modulus} tensor. Equivalently we have for linear elasticity:
 \begin{equation}
   \label{eq:Cauchy_definition}
   \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
 \end{equation}
+and:
+\begin{equation}
+  \label{eq:HPP_tangent}
+  \tens{\dot{\sigma}} = \rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}} 
+\end{equation}
+In equation \eqref{eq:HPP_tangent}, $\Cbb$ is the $4$th order \textit{elastic stiffness} tensor which has major and minor symetries. For isotropic elasticity, $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$ yields \textit{Hook's law} with $(\lambda,\mu)$ are Lamé parameters.
 
 Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
 \begin{equation*}
@@ -254,27 +265,7 @@ The plastic multiplier, or the \textit{equivalent plastic strain rate} is determ
   \label{eq:consistency_condition}
   \dot{f}=0
 \end{equation}
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential.
-\end{itemize}
-
-\subsubsection*{Tangent moduli}
-The notion of \textit{tangent modulus} is very convenient for dealing with the evolution of stress mesures during the deformation. Their derivation result from time differentiations of state laws \eqref{eq:PK1_definition} and \eqref{eq:Cauchy_definition} \cite[Section~7.1]{Simo}. For hyperelastic materials:
-\begin{equation}
-  \label{eq:HE_tangent}
-  \tens{\dot{\Pi}}=\drond{}{t}\(\rho_0\drond{\psi}{\tens{F}} \) = \rho_0\ddrond{\psi}{\tens{F}}{\tens{F}}:\tens{\dot{F}}= \Hbb : \tens{\dot{F}}
-\end{equation}
-where $H_{i\alpha j \beta}$ is the fourth-order \textit{first elasticity tensor} and presents major symetries. The linearized geometrical elasticity and elasto-viscoplasticity are governed by the time derivative of the \textit{elastic law}:
-\begin{equation}
-  \label{eq:HPP_tangent_elast_evp}
-  \tens{\dot{\sigma}}=\Cbb:\tens{\dot{\eps}}^e = \Cbb:\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p \)
-\end{equation}
-% for elastic evolutions, and by: [Only for perzyna models due to the creep law?]
-% \begin{equation}
-%   \label{eq:HPP_tangent_evp}
-%   \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}}^e=\Cbb:\( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) 
-% \end{equation}
-% for elastic-viscoplastic ones.
-In equation \eqref{eq:HPP_tangent_elast_evp}, $\Cbb$ is the \textit{elastic stiffness tensor}. For isotropic elasticity $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, where $(\lambda,\mu)$ are Lamé parameters, has major and minor symetries. Rate-independent plastic evolution are, on the other hand, governed by the \textit{elastplastic tangent modulus}:
+Talk about elastoplastic tangent modulus Rate-independent plastic evolution are, on the other hand, governed by the \textit{elastplastic tangent modulus}:
 \begin{equation}
   \label{eq:HPP_tangent_plasticity}
   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
@@ -285,64 +276,13 @@ By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \te
   \Cbb^{ep}=\Cbb - \frac{6\mu^2}{3\mu +h} \frac{\tens{s}\otimes \tens{s}}{\tens{s}:\tens{s}}
 \end{equation}
 where $h$ is a material parameter depending on the hardening model.
+\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential.
+
+  talk about time derivative of \textit{elastic law}.
+\end{itemize}
 
 \subsection{The general formulation}
-We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account for the linearized geometrical framework only. Hence, we are left with the following conservation laws systems:
-\begin{align}
-  \label{eq:HE_conservation_laws}
-  & \left\|
-  \begin{aligned}
-    & \tens{\dot{F}}=\nablat_0 \vect{v}  \\
-    & \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \\
-    &  \tens{\dot{\Pi}} = \Hbb: \tens{\dot{F}}
-  \end{aligned}
-  \right. \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau \\
-  & \\
-      \label{eq:hpp_conservation_laws}
-  &\left\|
-  \begin{aligned}
-    & \tens{\dot{\eps}}=\nablat^s \vect{v} \\
-    & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}\phantom{hjhj} \\
-    & \tens{\dot{\sigma}}=
-    \left\lbrace\begin{aligned}
-      & \Cbb :\tens{\dot{\eps}}^e\\
-      & \Cbb^{ep} :\tens{\dot{\eps}}
-    \end{aligned}\right.
-    % \\
-    %& \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\
-    %& \dot{\Vcb} = -\drond{\Phi}{\Acb}
-  \end{aligned}
-  \right. \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
-\end{align}
-With a cartesian coordinates in dimension $D$, systems \eqref{eq:HE_conservation_laws} and \eqref{eq:hpp_conservation_laws} can be written in conservative form:
-\begin{equation}
-  \label{eq:general_quasi}
-  \Qcb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb
-\end{equation}
-with:
-\begin{align}
-  \label{eq:1}
-  & \Qcb =\matrice{\rho_0 \vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes \vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}^2} \\
-  %& \Qcb =\matrice{\rho \vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ \tens{0}^2}
-\end{align}
-where $\tens{0}^2$ is a second order null tensor. As proposed in \cite{Trangenstein91}, introduction of the auxiliary vector:
-\begin{equation}
-  \label{eq:auxiliary_vector}
-  \Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\] %\quad ; \quad \Wcb^T= \[\vect{v}\:,\:\tens{\sigma}\]
-\end{equation}
-leads to the quasi-linear form by using the chain rule:
-\begin{equation}
-  \label{eq:quasilinear_pi_v}
-  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \cdot \drond{\Wcb}{X_\alpha} = \Scb
-\end{equation}
-in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$. Equation \eqref{eq:quasilinear_pi_v} enables to apply the tools of characteristic analysis developped in section \ref{sec:PDEs} to solid mechanics. This is the object of the next section.
-
-For the linearized geometrical framework (only elastic or elastic-viscoplastic) one can directly use the elastic law as a conservation law:
-\begin{equation}
-  \label{eq:HPP_conservative_form}
-  \Qcb =\matrice{ \vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
-\end{equation}
-
+We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account for the linearized geometrical framework only. 
 \subsubsection*{Linear elasticity and elasto-viscoplasticity}
 We first summarize the equations of elasticity and elasto-viscoplasticity within the linearized geometrical framework:
 \begin{align}
@@ -353,7 +293,8 @@ We first summarize the equations of elasticity and elasto-viscoplasticity within
   \label{eq:HPP_linear_momentum}
   & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b} \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{align}
-where \eqref{eq:elastic_law} is the \textit{elastic law}. Combination of equations \eqref{eq:strain_split} and \eqref{eq:elastic_law} in which the elastic stiffness tensor is assumed constant yiels the following conservative form:
++ EXPLICIT GRADIENT AS A DIVERGENCE AND CARTESIAN COORDINATES SYSTEM
+Combination of equations \eqref{eq:strain_split} and \eqref{eq:elastic_law} in which the elastic stiffness tensor is assumed constant yiels the following conservative form:
 \begin{equation}
   \label{eq:general_quasi}
   \Qcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
