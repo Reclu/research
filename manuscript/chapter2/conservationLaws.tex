@@ -49,9 +49,10 @@ where $\tens{I}$ is the second-order identity tensor. The Green-Lagrange tensor 
   \tens{E}=\frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T + \nablat_0 \vect{u}\nablat_0 \vect{u}^T)
 \end{equation*}
 In particular, when the deformation involves displacement vectors such that $\norm{\nablat_0 \vect{u}} \ll 1$, the last (second-order) term of the previous definition can be neglected leading to:
-\begin{equation*}
+\begin{equation}
+  \label{eq:epsilon}
   \tens{E} \approx \frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T) = \tens{\eps}
-\end{equation*}
+\end{equation}
 with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework for which the reference and current configurations are considered as identical.
 
 \subsection{Balance equations}
@@ -253,7 +254,7 @@ The plastic multiplier, or the \textit{equivalent plastic strain rate} is determ
   \label{eq:consistency_condition}
   \dot{f}=0
 \end{equation}
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$). Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential.
+\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential.
 \end{itemize}
 
 \subsubsection*{Tangent moduli}
@@ -262,17 +263,18 @@ The notion of \textit{tangent modulus} is very convenient for dealing with the e
   \label{eq:HE_tangent}
   \tens{\dot{\Pi}}=\drond{}{t}\(\rho_0\drond{\psi}{\tens{F}} \) = \rho_0\ddrond{\psi}{\tens{F}}{\tens{F}}:\tens{\dot{F}}= \Hbb : \tens{\dot{F}}
 \end{equation}
-where $H_{i\alpha j \beta}$ is the fourth-order \textit{first elasticity tensor} and presents major symetries. The linearized geometrical elastic is governed by:
+where $H_{i\alpha j \beta}$ is the fourth-order \textit{first elasticity tensor} and presents major symetries. The linearized geometrical elasticity and elasto-viscoplasticity are governed by the time derivative of the \textit{elastic law}:
 \begin{equation}
-  \label{eq:HPP_tangent_elasticity}
-  \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}} 
+  \label{eq:HPP_tangent_elast_evp}
+  \tens{\dot{\sigma}}=\Cbb:\tens{\dot{\eps}}^e = \Cbb:\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p \)
 \end{equation}
-for elastic evolutions, and by: [Only for perzyna models due to the creep law?]
-\begin{equation}
-  \label{eq:HPP_tangent_evp}
-  \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}}^e=\Cbb:\( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) 
-\end{equation}
-for elastic-viscoplastic ones. In equations \eqref{eq:HPP_tangent_elasticity} and \eqref{eq:HPP_tangent_evp}, $\Cbb$ is the \textit{elastic stiffness tensor}. For isotropic elasticity $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, where $(\lambda,\mu)$ are Lamé parameters, has major and minor symetries. Rate-independent plastic evolution are, on the other hand, governed by the \textit{elastplastic tangent modulus}:
+% for elastic evolutions, and by: [Only for perzyna models due to the creep law?]
+% \begin{equation}
+%   \label{eq:HPP_tangent_evp}
+%   \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}}^e=\Cbb:\( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) 
+% \end{equation}
+% for elastic-viscoplastic ones.
+In equation \eqref{eq:HPP_tangent_elast_evp}, $\Cbb$ is the \textit{elastic stiffness tensor}. For isotropic elasticity $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, where $(\lambda,\mu)$ are Lamé parameters, has major and minor symetries. Rate-independent plastic evolution are, on the other hand, governed by the \textit{elastplastic tangent modulus}:
 \begin{equation}
   \label{eq:HPP_tangent_plasticity}
   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
@@ -301,7 +303,11 @@ We now summarize the conservation and constitutive laws obtained previously. Rec
   \begin{aligned}
     & \tens{\dot{\eps}}=\nablat^s \vect{v} \\
     & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}\phantom{hjhj} \\
-    & \tens{\dot{\sigma}}= \rho \ddrond{\psi}{\tens{\eps}}{\tens{\eps}} :\tens{\dot{\eps}} 
+    & \tens{\dot{\sigma}}=
+    \left\lbrace\begin{aligned}
+      & \Cbb :\tens{\dot{\eps}}^e\\
+      & \Cbb^{ep} :\tens{\dot{\eps}}
+    \end{aligned}\right.
     % \\
     %& \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}}\\
     %& \dot{\Vcb} = -\drond{\Phi}{\Acb}
@@ -316,13 +322,13 @@ With a cartesian coordinates in dimension $D$, systems \eqref{eq:HE_conservation
 with:
 \begin{align}
   \label{eq:1}
-  & \Qcb =\matrice{\rho_0 \vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes \vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}} \\
-  & \Qcb =\matrice{\rho \vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ \tens{0}}
+  & \Qcb =\matrice{\rho_0 \vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes \vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}^2} \\
+  %& \Qcb =\matrice{\rho \vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ \tens{0}^2}
 \end{align}
-As proposed in \cite{Trangenstein91}, introduction of the auxiliary vector:
+where $\tens{0}^2$ is a second order null tensor. As proposed in \cite{Trangenstein91}, introduction of the auxiliary vector:
 \begin{equation}
   \label{eq:auxiliary_vector}
-  \Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\] \quad ; \quad \Wcb^T= \[\vect{v}\:,\:\tens{\sigma}\]
+  \Wcb^T= \[\vect{v}\:,\:\tens{\Pi}\] %\quad ; \quad \Wcb^T= \[\vect{v}\:,\:\tens{\sigma}\]
 \end{equation}
 leads to the quasi-linear form by using the chain rule:
 \begin{equation}
@@ -331,7 +337,82 @@ leads to the quasi-linear form by using the chain rule:
 \end{equation}
 in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$. Equation \eqref{eq:quasilinear_pi_v} enables to apply the tools of characteristic analysis developped in section \ref{sec:PDEs} to solid mechanics. This is the object of the next section.
 
+For the linearized geometrical framework (only elastic or elastic-viscoplastic) one can directly use the elastic law as a conservation law:
+\begin{equation}
+  \label{eq:HPP_conservative_form}
+  \Qcb =\matrice{ \vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
+\end{equation}
 
+\subsubsection*{Linear elasticity and elasto-viscoplasticity}
+We first summarize the equations of elasticity and elasto-viscoplasticity within the linearized geometrical framework:
+\begin{align}
+  \label{eq:strain_split}
+  & \tens{\dot{\eps}}=\nablat^s \vect{v} \\
+  \label{eq:elastic_law}
+  & \sigma= \Cbb :\(\tens{\eps}-\tens{\eps}^p\) \\
+  \label{eq:HPP_linear_momentum}
+  & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b} \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+\end{align}
+where \eqref{eq:elastic_law} is the \textit{elastic law}. Combination of equations \eqref{eq:strain_split} and \eqref{eq:elastic_law} in which the elastic stiffness tensor is assumed constant yiels the following conservative form:
+\begin{equation}
+  \label{eq:general_quasi}
+  \Qcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
+\end{equation}
+where the vector of conserved quantities $\Qcb$, fluxes vectors $\Fcb\cdot \vect{e}_i$ and the source term $\Scb$ are:
+\begin{equation}
+  \label{eq:vectors_elasticity}
+  \Qcb =\matrice{\vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
+\end{equation}
+The quasi-linear form of equation \eqref{eq:general_quasi} is written by using the chain rule:
+\begin{equation}
+  \label{eq:HPP_quasi-linear}
+  \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \Scb
+\end{equation}
+where:
+\begin{equation*}
+  \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
+\end{equation*}
+in which symetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor.
+
+\subsubsection*{Elasto-plasticity and hyperelasticity}
+The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws \eqref{eq:epsilon} or \eqref{eq:F_phi}:
+\begin{align}
+  & \tens{\dot{\eps}} - \nablat^s\vect{v}=\tens{0}^2 \\
+  & \tens{F} - \nablat_0 \vect{v} = \tens{0}^2
+\end{align}
+Then, a conservative form \eqref{eq:general_quasi} is written with:
+\begin{equation}
+  \label{eq:vectors_plasticity}
+  \Qcb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\\tens{0}^2}
+\end{equation}
+for elastoplasticity, and:
+\begin{equation}
+  \label{eq:vectors_hyperelasticity}
+  \Qcb =\matrice{\vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\frac{1}{\rho_0}\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes\vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}^2}
+\end{equation}
+for hyperelasticity. A quasi-linear form is then built by introducing an auxiliary vector $\Wcb$ and the chain rule according to \cite{Trangenstein91}:
+\begin{equation}
+  \label{eq:quasi-linear_Trangenstein}
+  \drond{\Wcb}{t} + \(\drond{\Qcb}{\Wcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb} \drond{\Wcb}{X_\alpha} = \(\drond{\Qcb}{\Wcb}\)^{-1}\Scb = \tilde{\Scb}
+\end{equation}
+with the auxiliary vectors for elastoplasticity and hyperelasticity respectively defined as:
+\begin{equation}
+  \label{eq:auxiliary_vectors}
+  \Wcb=\matrice{\vect{v}\\\tens{\sigma}} \quad ; \quad \Wcb=\matrice{\vect{v}\\\tens{\Pi}}
+\end{equation}
+\begin{equation*}
+  \drond{\Qcb}{\Wcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{\eps}}{\tens{\sigma}}} \Rightarrow \(\drond{\Qcb}{\Wcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \Cbb^{ep}}
+\end{equation*}
+\begin{equation*}
+  \drond{\Fcb\cdot\vect{e}_i}{\Wcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i \\  \frac{\tens{I}\otimes \vect{n}+\tens{I}\boxtimes \vect{n}}{2} & \tens{0}^4   }
+\end{equation*}
+in which the operator $\tens{I}\boxtimes\vect{n}$ is the transpose of second and third index of the classical tensor product arising due to the symmetric gradient of $\vect{v}$: $\tens{I}\boxtimes\vect{n}=\delta_{ij}n_k \vect{e}_i\otimes \vect{e}_k\otimes\vect{e}_j$.
+\begin{equation*}
+  \drond{\Qcb}{\Wcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}}}\Rightarrow \(\drond{\Qcb}{\Wcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \Hbb}
+\end{equation*}
+\begin{equation*}
+  \drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\    \tens{I}\otimes \vect{N} & \tens{0}^4}
+\end{equation*}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"
