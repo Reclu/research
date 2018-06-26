@@ -267,7 +267,7 @@ where $H_{i\alpha j \beta}$ is the fourth-order \textit{first elasticity tensor}
   \label{eq:HPP_tangent_elasticity}
   \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}} 
 \end{equation}
-for elastic evolutions, and by:
+for elastic evolutions, and by: [Only for perzyna models due to the creep law?]
 \begin{equation}
   \label{eq:HPP_tangent_evp}
   \tens{\dot{\sigma}}=\drond{}{t}\(\rho\drond{\psi}{\tens{\eps}}\)=\rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}}=\Cbb:\tens{\dot{\eps}}^e=\Cbb:\( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) 
@@ -285,7 +285,7 @@ By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \te
 where $h$ is a material parameter depending on the hardening model.
 
 \subsection{The general formulation}
-We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account for the linearized geomterical framework only. Hence, we are left wil the following conservation laws systems:
+We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account for the linearized geometrical framework only. Hence, we are left with the following conservation laws systems:
 \begin{align}
   \label{eq:HE_conservation_laws}
   & \left\|
@@ -327,7 +327,7 @@ As proposed in \cite{Trangenstein91}, introduction of the auxiliary vector:
 leads to the quasi-linear form by using the chain rule:
 \begin{equation}
   \label{eq:quasilinear_pi_v}
-  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \cdot \drond{\Wcb}{X_\alpha} = \vect{0}
+  \Absf^t \cdot \Wcb_t +  \Absf^\alpha \cdot \drond{\Wcb}{X_\alpha} = \Scb
 \end{equation}
 in which $\Absf^t=\drond{\Qcb}{\Wcb}$ and $\Absf^\alpha=\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}$. Equation \eqref{eq:quasilinear_pi_v} enables to apply the tools of characteristic analysis developped in section \ref{sec:PDEs} to solid mechanics. This is the object of the next section.
 

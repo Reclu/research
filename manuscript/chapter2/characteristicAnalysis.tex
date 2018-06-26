@@ -9,7 +9,7 @@ where $X_N = \vect{X}\cdot \vect{N}$ and the matrices expressions are:
 \begin{equation}
   \Absf^t=\matrice{\rho_0\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}} } \quad ; \quad N_\alpha \Absf^\alpha = -\matrice{ \tens{0}^2 & \tens{I}\otimes\vect{N} \\ \tens{I}\otimes\vect{N} & \tens{0}^4}
 \end{equation}
-with $\tens{0}^p$, a $p-th$ order zero tensor. Alternatively, the system \eqref{eq:quasilinear_normal} can be multiplied by the inverse matrix of $\Absf^t$:
+with $\tens{0}^p$, a $p-th$ order null tensor. Alternatively, the system \eqref{eq:quasilinear_normal} can be multiplied by the inverse matrix of $\Absf^t$:
 \begin{equation}
   \label{eq:quasilinear_normal}
   \drond{\Wcb}{t} + \Jbsf_N \drond{\Wcb}{X_N} = {(\Absf^t)}^{-1}\Scb = \tilde{\Scb}
@@ -49,7 +49,13 @@ which is equivalent to the \textit{acoustic tensor} $A_{ij}=N_\alpha H_{i\alpha 
   \label{eq:acoustic_eigen_system}
  v_i^k \(  N_\alpha H_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \)  =0
 \end{equation}
-Equation \eqref{eq:acoutsic_eigen_system} leads in the general case to $3$ couples eigenvalues--eigenvectors $(\omega_p,\vect{l}^p) \: p=1,2,3$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Furthermore, it is obvious that $3$ eigenvalues $\omega$ will yield $6$ eigenvalues $\lambda=\pm\sqrt{\frac{\omega}{\rho_0}}$. In addition, the equation equation of system \eqref{eq:eigen_left} gives the expression of the stress component the Jacobian left eigenvectors:
+Equation \eqref{eq:acoustic_eigen_system} leads in the general case to $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\} \: (p=1,2,3)$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Furthermore, it is obvious that $3$ eigenvalues $\omega$ will yield $6$ eigenvalues $\lambda=\pm\sqrt{\frac{\omega}{\rho_0}}$. Moreover, one left eigenvector $\vect{l}^p$ is associated to two eigenvalues $\lambda_k$. The existence of non-negative eigenvalues of the acoustic tensor ensures that the Jacobian eigenvalues are real. This condition, also known as the \textit{Legendre--Hadamard condition}:
+\begin{equation}
+  \label{eq:legendre-hadamard}
+  \ddrond{\psi}{F_{i\alpha}}{F_{j\beta}}N_\alpha N_\beta m_i m_j \geq 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
+\end{equation}
+is satisfied for hyperelastic materials if the strain--energy function $\psi$ is \textit{polyconvex} \cite[Read it!]{Ball} that is, it is convex with respect to all of its arguments. A polyconvex strain-energy function leads furthermore to six positive and six null eigenvalues of the Jacobian matrix for three-dimensional problems \cite{Kluth}.
+In addition, the second equation of system \eqref{eq:eigen_left} gives the expression of the stress components of the Jacobian left eigenvectors:
 \begin{equation}
   \label{eq:stress_left_eigen}
   \tens{\Pi}^k = -\frac{1}{\lambda_k\rho_0}\vect{v}^k\otimes\vect{N}
@@ -57,9 +63,12 @@ Equation \eqref{eq:acoutsic_eigen_system} leads in the general case to $3$ coupl
 Finally the eigenstructure of the quasi-linear form is defined by the eigenfields:
 \begin{equation}
   \label{eq:HE_eigenfields}
-    \left\lbrace \pm \sqrt{\frac{\omega^p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega^p}{\rho_0}} \vect{l}^p , -\frac{\vect{l}^p\otimes \vect{n}+\vect{n}\otimes \vect{l}^p}{2} \:>  \right\rbrace ,\quad p=1,2,3
+    \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:>  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-% Look at eigenvalues // eigen vectors // hyperbolicity condition // Legendre-Hadamard condition etc. -> system of scalar advection equations 
+
+\subsubsection*{Linearized geometrical framework}
+% viscoplasticity leads to the same characteristic structure as that of elasticity
+
 \subsection{Linear problems: contact waves}
 \subsection{Non-linearities: simple and shock waves}
 \subsection{Integral curves}
