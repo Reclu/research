@@ -16,14 +16,6 @@ in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modu
   \vect{\Lc}^k\cdot \(\Jbsf - \lambda_k \Ibsf\) = \vect{0}
 \end{equation}
 where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{S}^K \]$, with $\tens{S}$ standing for the suitable stress mesure. Thus, for non-null eigenvalues one gets:
-% \begin{equation}
-%   \label{eq:eigen_left}
-%   \left\lbrace
-%   \begin{aligned}
-%     & -\tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) - \lambda_k  \vect{v}^k =\vect{0} \\
-%     & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{S}^k = \tens{0}
-%   \end{aligned}\right.
-% \end{equation}
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eigen_left_stress}
@@ -57,7 +49,7 @@ If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eige
   \label{eq:eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation of \eqref{eq:eigen_left_stress} for the null eigenvalue\todo{is it always possible to define independent eigenvectors associated to the null eigenvalue ??}:
+At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation of \eqref{eq:eigen_left_stress} for the null eigenvalue:
 \begin{equation}
   \label{eq:null_eigenvectors}
   \tens{S}:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0}
@@ -67,6 +59,7 @@ Note that since the right-hande side of equation \eqref{eq:normal_quasi} is not 
 
 
 \subsection{Linear problems: contact waves}
+read Courant p.427;p.486
 \subsection{Non-linearities: simple and shock waves}
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
