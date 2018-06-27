@@ -1,73 +1,70 @@
-The eigenspaces of hyperbolic problems defined in the previous section will be now investigated. As we shall see, the characteristic structure of those problems may lead to different type of waves propagating within a medium. Finally, existing analytical solutions of one-dimensional problems \cite{Wang} will be reviewed, and that of a one-dimensional problem involving a hyperelastic \textit{Saint-Venant-Kirchhoff} will be developed in order to illustrate the identified wave structures
+The eigenspaces of conservation laws systems defined above will be now investigated. As we shall see, the characteristic structure of those problems may lead to different type of waves propagating within a medium. Finally, existing analytical solutions of one-dimensional problems \cite{Wang} will be reviewed and that of a one-dimensional problem involving a hyperelastic \textit{Saint-Venant-Kirchhoff} material will be developed in order to illustrate the identified wave structures.
 \subsection{Characteristic structure of solutions}
-Since hyperbolic problems are related to wave propagation phenomena, the quasi-linear form \eqref{eq:quasilinear_pi_v} will be studied in the direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ for finite and infinitesimal deformations. In this direction, equation \eqref{eq:quasilinear_pi_v} reads \todo{Multidimensional spliting \cite[Chapter~3]{Toro};\cite[p.425-426]{Leveque}}:
+For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using a generic stress measure $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of studying multi-dimensional conservation laws systems, we will focus without loss of generality on conservative forms \eqref{eq:general_conservative} projected on an arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ \cite[p.425-426]{Leveque}. In this direction, the quasi-linear forms determined above are rewritten as:
 \begin{equation}
-  \label{eq:quasilinear_normal}
-  \Absf^t\drond{\Wcb}{t} + N_\alpha \Absf^\alpha \drond{\Wcb}{X_N} = \Scb
+  \label{eq:normal_quasi}
+  \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
 \end{equation}
-where $X_N = \vect{X}\cdot \vect{N}$ and the matrices expressions are:
+where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ arise. Hence, the characteristic analysis of system \eqref{eq:normal_quasi} is equivalent to that of linear combinations of matrices $\Absf^\alpha$. With the previous developments, the Jacobian matrix reads:
 \begin{equation}
-  \Absf^t=\matrice{\rho_0\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}} } \quad ; \quad N_\alpha \Absf^\alpha = -\matrice{ \tens{0}^2 & \tens{I}\otimes\vect{N} \\ \tens{I}\otimes\vect{N} & \tens{0}^4}
+  \label{eq:jacobian_generic}
+  \Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \tilde{\Hbb}\cdot\vect{N} & \tens{0}^4 }
 \end{equation}
-with $\tens{0}^p$, a $p$th order null tensor. Alternatively, the system \eqref{eq:quasilinear_normal} can be multiplied by the inverse matrix of $\Absf^t$:
-\begin{equation}
-  \label{eq:quasilinear_normal}
-  \drond{\Wcb}{t} + \Jbsf_N \drond{\Wcb}{X_N} = {(\Absf^t)}^{-1}\Scb = \tilde{\Scb}
-\end{equation}
-in which the \textit{Jacobian matrix} $\Jbsf_N$ is:
-\begin{equation}
-  \label{eq:jacobian_HE}
-  \Jbsf_N=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{N} & \tens{0}^4 }
-\end{equation}
-for hyperelastic materials and:
-\begin{equation}
-  \label{eq:jacobian_HPP}
-  \Jbsf_N=-\matrice{\tens{0}^2 & \frac{1}{\rho}\(\frac{\tens{I}\otimes \vect{n}+\tens{I}\boxtimes \vect{n}}{2}\) \\  \drond{\tens{\sigma}}{\tens{\eps}}\cdot\vect{n}& \tens{0}^4 }
-\end{equation}
-for the linearized geometrical framework. In equation \eqref{eq:jacobian_HPP}, the operator $\tens{I}\boxtimes\vect{n}$ is the transpose of second and third index of the classical tensor product arising due to the symmetric gradient of $\vect{v}$: $\tens{I}\boxtimes\vect{n}=\delta_{ij}n_k \vect{e}_i\otimes \vect{e}_k\otimes\vect{e}_j$. The characteristic structure of the problem is given by the eigenvalues $\lambda_k$ and left eigenvectors $\Lcb^k$ of the Jacobian matrix:
+in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stifness tensor depending on the case considered. For general three-dimensional case, the characteristic structure of the problem is given by the $12$ eigenvalues $\lambda_k$ and associated left eigenvectors $\Lcb^k$ of the Jacobian matrix:
 \begin{equation}
   \label{eq:eigen_system}
-  \vect{\Lc}^k\cdot \(\Jbsf_N - \lambda_k \Ibsf\) = \vect{0}
+  \vect{\Lc}^k\cdot \(\Jbsf - \lambda_k \Ibsf\) = \vect{0}
 \end{equation}
-where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{\Pi}^K \]$. 
-\subsubsection*{Hyperelasticity}
-For hyperelastic materials, the eigensystem \eqref{eq:eigen_system} reads:
+where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{S}^K \]$, with $\tens{S}$ standing for the suitable stress mesure. Thus, for non-null eigenvalues one gets:
+% \begin{equation}
+%   \label{eq:eigen_left}
+%   \left\lbrace
+%   \begin{aligned}
+%     & -\tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) - \lambda_k  \vect{v}^k =\vect{0} \\
+%     & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{S}^k = \tens{0}
+%   \end{aligned}\right.
+% \end{equation}
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:eigen_left_stress}
+    & -\tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) - \lambda_k  \vect{v}^k =\vect{0} \\
+    \label{eq:eigen_left_velo}
+    & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{S}^k = \tens{0}
+  \end{alignat}
+\end{subequations}
+Substitution of $\tens{S}$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq:eigen_left_stress} leads to:
 \begin{equation}
-  \label{eq:eigen_left}
-  \left\lbrace
-  \begin{aligned}
-    & -\tens{\Pi}^k:\drond{\tens{\Pi}}{\tens{F}}\cdot  \vect{N} - \lambda_k  \vect{v}^k =\vect{0} \\
-    & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{\Pi}^k = \tens{0}
-  \end{aligned}\right.
+  \label{eq:acoustic_eigen}
+ (\vect{v}^k\otimes\vect{N}):\(\tilde{\Hbb}\cdot  \vect{N}\) - \rho_0\lambda^2_k \vect{v}^k = \tens{0}
 \end{equation}
-Substitution of $\tens{\Pi}$ in the first equation leads to:
-\begin{equation*}
- (\vect{v}^k\otimes\vect{N}):\drond{\tens{\Pi}}{\tens{F}}\cdot\vect{N} - \rho_0\lambda^2_k \vect{v}^k = \tens{0}
-\end{equation*}
-which is equivalent to the \textit{acoustic tensor} $A_{ij}=N_\alpha H_{i\alpha j \beta}  N_\beta$ left eigensystem:
+System \eqref{eq:acoustic_eigen} is the \textit{acoustic tensor} $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$ left eigensystem which, due to the symmetry of $\tens{A}$ is equivalent to the right eigensystem:
+\begin{equation}
+  \label{eq:acoustic_eigen_system_lambda}
+  \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \) v_j^k =0
+\end{equation}
+or atlernatively with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
 \begin{equation}
   \label{eq:acoustic_eigen_system}
- v_i^k \(  N_\alpha H_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \)  =0
+  \( \tens{A} - \omega_p \tens{I} \) \vect{l}^p = \vect{0}
 \end{equation}
-Equation \eqref{eq:acoustic_eigen_system} leads in the general case to $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\} \: (p=1,2,3)$. Note that the symetry of the acoustic tensor implies that its left and right eigenvectors are identical. Furthermore, it is obvious that $3$ eigenvalues $\omega$ will yield $6$ eigenvalues $\lambda=\pm\sqrt{\frac{\omega}{\rho_0}}$. Moreover, one left eigenvector $\vect{l}^p$ is associated to two eigenvalues $\lambda_k$. The existence of non-negative eigenvalues of the acoustic tensor ensures that the Jacobian eigenvalues are real. This condition, also known as the \textit{Legendre--Hadamard condition}:
+The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real eigenvalues and associated eigenvectors is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}\todo{Peut-être juste parler de la condition de forte ellipticité et faire du cas par cas plus tard + Elastoplastic ones ??}:
 \begin{equation}
-  \label{eq:legendre-hadamard}
-  \ddrond{\psi}{F_{i\alpha}}{F_{j\beta}}N_\alpha N_\beta m_i m_j \geq 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
+  \label{eq:strong_ellipticity}
+  (\vect{m}\otimes \vect{N}): \tilde{\Hbb}: (\vect{m}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
 \end{equation}
-is satisfied for hyperelastic materials if the strain--energy function $\psi$ is \textit{polyconvex} \cite[Read it!]{Ball} that is, it is convex with respect to all of its arguments. A polyconvex strain-energy function leads furthermore to six positive and six null eigenvalues of the Jacobian matrix for three-dimensional problems \cite{Kluth}.
-In addition, the second equation of system \eqref{eq:eigen_left} gives the expression of the stress components of the Jacobian left eigenvectors:
+If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{\lambda_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
-  \label{eq:stress_left_eigen}
-  \tens{\Pi}^k = -\frac{1}{\lambda_k\rho_0}\vect{v}^k\otimes\vect{N}
+  \label{eq:eigenfields}
+    \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-Finally the eigenstructure of the quasi-linear form is defined by the eigenfields:
+At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation of \eqref{eq:eigen_left_stress} for the null eigenvalue\todo{is it always possible to define independent eigenvectors associated to the null eigenvalue ??}:
 \begin{equation}
-  \label{eq:HE_eigenfields}
-    \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad <\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:>  \right\rbrace ,\quad p=1,2,3
+  \label{eq:null_eigenvectors}
+  \tens{S}:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0}
 \end{equation}
 
-\subsubsection*{Linearized geometrical framework}
-% viscoplasticity leads to the same characteristic structure as that of elasticity
+Note that since the right-hande side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure.
+
 
 \subsection{Linear problems: contact waves}
 \subsection{Non-linearities: simple and shock waves}

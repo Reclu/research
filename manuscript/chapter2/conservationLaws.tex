@@ -1,6 +1,6 @@
-In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} mesure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
+In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} measure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
 
-\subsection{Kinematic laws -- Strain mesures}
+\subsection{Kinematic laws -- Strain measures}
 We consider a three-dimensional solid domain with volume denoted by $\Omega \subset \Rbb^3$ bounded by the surface $\partial \Omega$. This body undergoes external forces that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such sollicitations, the volume may change during a deformation within the time interval $\tau = \[0,T\]$ and will hence be written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial conditions are identical. At a given time $t>0$, the volume $\Omega(t)=\Omega_t$ corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
 \begin{figure}[h]
   \centering
@@ -13,12 +13,10 @@ In the reference configuration, every material particle is located by their posi
 Note that in the above definitions Greek indices are used for quantities evaluated in the reference configuration whereas Latin ones refer to quantities defined in the current configuration. 
 
 The \textit{displacement} and \textit{velocity} vectors of a particle between the reference and the current configuration are respectively:
-\begin{subequations}
-  \begin{alignat}{2}
+\begin{align}
     &\vect{u}(\vect{X},t)=\vect{\phi}(\vect{X},t) - \vect{X} \qquad \forall\:\: \vect{X},t \in \Omega_0\times \tau  \label{eq:displacement}\\
     &\vect{v}(\vect{X},t)=\drond{\vect{\phi}}{t}(\vect{X},t) = \vect{\dot{\phi}}(\vect{X},t) \qquad  \forall\: \: \vect{X},t \in \Omega_0\times \tau  \label{eq:velocity}
-  \end{alignat}
-\end{subequations}
+\end{align}
 where the superposed dot denotes the material time derivative. Then, the second-order two-point \textit{deformation gradient} tensor is defined as:
 \begin{equation}
   \label{eq:F_phi}
@@ -37,7 +35,7 @@ with $\tens{I}$, the second-order identity tensor. The deformation gradient tens
     & dv=JdV 
   \end{aligned}
 \end{equation}
-in the current configuration. The transport equations \eqref{eq:transport_equations} involve the determinant of the deformation gradient $J=\det(\tens{F})>0$, also called the \textit{Jacobian of the deformation}. The deformation gradient is a strain mesure since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}). Other strain mesures can be used as the \textit{right Cauchy-Green} or the \textit{Green-Lagrange} tensors, respectively defined as:
+in the current configuration. The transport equations \eqref{eq:transport_equations} involve the determinant of the deformation gradient $J=\det(\tens{F})>0$, also called the \textit{Jacobian of the deformation}. The deformation gradient is a strain measure since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}). Other strain measures can be used as the \textit{right Cauchy-Green} or the \textit{Green-Lagrange} tensors, respectively defined as:
 \begin{equation*}
   \begin{aligned}
     & \tens{C}=\tens{F}^T\tens{F} \\
@@ -53,7 +51,7 @@ In particular, when the deformation involves displacement vectors such that $\no
   \label{eq:epsilon}
   \tens{E} \approx \frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T) = \tens{\eps}
 \end{equation}
-with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework for which the reference and current configurations are considered as identical.
+with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} or \textit{infinitesimal theory} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework for which the reference and current configurations are considered as identical.
 
 \subsection{Balance equations}
 In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$. According to the formulation adopted in \cite{Plohr}, the time derivatives of geometrical relations \eqref{eq:F_phi} and \eqref{eq:epsilon} yields kinematic conservations laws for finite strain and the linearized geometrical framework. Those conservation laws reads respectively:
@@ -77,6 +75,7 @@ Leading to the first balance equation, namely the local conservation of mass:
   \label{eq:mass_balance}
   \rho = \frac{\rho_0}{J} \qquad \forall \: \vect{X},t \: \in \Omega_0\times \tau
 \end{equation}
+In particular, the linearised geometrical framework automatically satisfies this relation since current and reference configurations are the same (\textit{i.e.} $\rho=\rho_0 \: \forall t\in\tau$).
 
 We now move on to the equilibrium between acceleration effects, namely \textit{intertia}, and external forces undergone by a solid $\Omega$. This conservation law corresponds to \textit{Newton's second law}:
 \begin{equation*}
@@ -111,7 +110,7 @@ In equation \eqref{eq:Linear_momentum_conservation}, the divergence operator on 
   \end{equation*}
   where $\nablav_0\cdot (\bullet)$ is the divergence operator on the reference configuration.
 \end{definition}
-Another stress mesure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. Hence, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
+Another stress measure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. Hence, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -119,7 +118,7 @@ Another stress mesure that corresponds to the Piola transform of Cauchy stress t
 When considering deformations within the small strain framework the balance equation of linear momentum can be deduced from equation \eqref{eq:Linear_momentum_conservation_eulerian}, leading to:
 \begin{equation}
   \label{eq:HPP_linear_momentum}
-  \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}  \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+  \rho_0 \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho_0 \vect{b}  \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
 
 We complete the set of balance laws by considering the conservation of the energy of a system, also known as the \textit{first law of thermodynamics}. This law relates a balance between the rates of change of \textit{kinetic} and \textit{internal} energies, the power of external forces and the amount of heat entering the system as \textit{volume} or \textit{surface heat sources}.
@@ -147,9 +146,9 @@ where $\vect{Q}=J\vect{q}\cdot \tens{F}^{-1}$ is the lagrangian heat flux vector
 where $\nablat_0\vect{v} = \tens{\dot{F}}$. Finally, the small strain version of equation \eqref{eq:energy_balance} is: 
 \begin{equation}
   \label{eq:energy_balance_euler}
-  \rho \dot{e} -  \tens{\sigma}:\nablat^{s} \vect{v}  + \nablav \cdot \vect{q}  = \rho r \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
+  \rho_0 \dot{e} -  \tens{\sigma}:\nablat^{s} \vect{v}  + \nablav \cdot \vect{q}  = \rho_0 r \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
-in which $\nablat^{s} (\bullet)$ denotes the symmetric part of the gradient, in particular: $\nablat^s \vect{v} = \tens{\dot{\eps}}$. Stress mesures are conjugate to strain mesures through the power. In what follows, stress and strain may respectively be refered to as \textit{thermodynamic forces} and \textit{internal variables} according to the thermodynamics framework. The former obey a \textit{state equation} while the latter describe the evolution of the thermodynamic system. 
+in which $\nablat^{s} (\bullet)$ denotes the symmetric part of the gradient, in particular: $\nablat^s \vect{v} = \tens{\dot{\eps}}$. Stress measures are conjugate to strain measures through the power. In what follows, stress and strain may respectively be refered to as \textit{thermodynamic forces} and \textit{internal variables} according to the thermodynamics framework. The former obey a \textit{state equation} while the latter describe the evolution of the thermodynamic system. 
 \subsection{Constitutive equations -- Thermodynamics}
 The closure of a problem is given by the constitutive equations (\textit{i.e state laws}) for the stress. Once and for all, we consider here constitutive models within the \textit{Generalized Standard Materials} (GSM) framework \cite{GSM}.
 
@@ -199,12 +198,12 @@ A material is said \textit{hyperelastic} if the above stress state law is satisf
 where $\Hbb$ is the $4$th order \textit{tangent modulus} tensor. Equivalently we have for linear elasticity:
 \begin{equation}
   \label{eq:Cauchy_definition}
-  \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
+  \rho_0 \drond{\psi}{\tens{\eps}} = \tens{\sigma}
 \end{equation}
 and:
 \begin{equation}
   \label{eq:HPP_tangent}
-  \tens{\dot{\sigma}} = \rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}} 
+  \tens{\dot{\sigma}} = \rho_0\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}} 
 \end{equation}
 In equation \eqref{eq:HPP_tangent}, $\Cbb$ is the $4$th order \textit{elastic stiffness} tensor which has major and minor symmetries. For isotropic elasticity, $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$ yields \textit{Hook's law} with $(\lambda,\mu)$ are Lamé parameters.
 
@@ -242,7 +241,7 @@ While elasticity does not involve dissipation, plasticity is characterized by ir
 such that the mechanical dissipation only involve the plastic part:
 \begin{equation}
   \label{eq:HPP_dissipation}
-  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
+  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
 \end{equation}
 
 A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{\sigma},\Acb)$ so that that the elastic domain $\Ebb$ in stress space $(\tens{\sigma},\Acb)$ corresponds to:
@@ -291,13 +290,16 @@ where $h$ is a material parameter depending on the hardening model and $\Cbb$ th
   \end{equation}
   in which both strain rates are known.
 \end{itemize}
+\subsubsection*{Examples of constitutive laws}
+Neo-Hookean + Saint-Venant-Kirchhoff hyperelastic ; Linear elastic + elastic-viscoplastic + J2 plastic HPP \todo{A faire!}
+
 
 \subsection{The general formulation}
 We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account within linearized geometrical framework only. 
 \subsubsection*{Linear elasticity and elasto-viscoplasticity}
 We first gather the governing equations of elasticity and elasto-viscoplasticity within the linearized geometrical framework namely, the elastic law \eqref{eq:HPP_tangent}, the balance equation of linear momentum \eqref{eq:HPP_linear_momentum} and the kinematic law \eqref{eq:HPP_kinematic} which are repeated here for convenience:
 \begin{align*}
-  & \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b} \\
+  & \rho_0 \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho_0 \vect{b} \\
   & \tens{\dot{\sigma}} - \Cbb :\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p\) =\tens{0}\\
   & \tens{\dot{\eps}}-\nablat^s \vect{v} =\tens{0} \quad \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{align*}
@@ -308,22 +310,22 @@ Note that the gradient operator of a vector $\vect{a}$ can be rewritten as a div
 \end{equation}
 Hence, introduction of kinematic laws in the linear momentum balance yields, by assuming a cartesian coordinates system, the following \textit{conservative form}:
 \begin{equation}
-  \label{eq:general_quasi}
+  \label{eq:general_conservative}
   \Qcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
 \end{equation}
 where the vector of conserved quantities $\Qcb$, fluxes vectors $\Fcb\cdot \vect{e}_i$ and the source term $\Scb$ are:
 \begin{equation}
   \label{eq:vectors_elasticity}
-  \Qcb =\matrice{\vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
+  \Qcb =\matrice{\vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
 \end{equation}
-The quasi-linear form of equation \eqref{eq:general_quasi} is written by using the chain rule:
+The quasi-linear form of equation \eqref{eq:general_conservative} is written by using the chain rule:
 \begin{equation}
   \label{eq:HPP_quasi-linear}
   \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \Scb
 \end{equation}
 where:
 \begin{equation*}
-  \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
+  \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
 in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor.
 \subsubsection*{Elasto-plasticity and hyperelasticity}
@@ -332,46 +334,54 @@ The non-linear constitutive equations of elastoplasticity and hyperelasticity pr
   & \tens{F} - \nablat_0 \vect{v} = \tens{0} \\
   & \tens{\dot{\eps}} - \nablat^s\vect{v}=\tens{0} 
 \end{align}
-Then, a conservative form \eqref{eq:general_quasi} is written with:
+Then, a conservative form \eqref{eq:general_conservative} is also written:
 \begin{equation}
+  \label{eq:general_conservative2}
+  \Wcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb
+\end{equation}
+ with:
+\begin{alignat}{4}
   \label{eq:vectors_hyperelasticity}
-  \Qcb =\matrice{\vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\frac{1}{\rho_0}\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes\vect{e}_\alpha } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}}
-\end{equation}
-for hyperelasticity, and:
-\begin{equation}
-  \label{eq:vectors_plasticity}
-  \Qcb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho \vect{b} \\\tens{0}}
-\end{equation}
-for elastoplasticity
-Quasi-linear form are then built by introducing an auxiliary vector $\Wcb$ and using the chain rule according to \cite{Trangenstein91}:
+  &\Wcb =\matrice{\vect{v} \\ \tens{F}} \quad &&; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\frac{1}{\rho_0}\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes\vect{e}_\alpha } \quad &&; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}} \quad &&\text{ for hyperelasticity}\\
+  &\label{eq:vectors_plasticity}
+  \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad &&; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad &&; \quad \Scb = \matrice{\rho_0 \vect{b} \\\tens{0}} \quad &&\text{ for elastoplasticity}
+\end{alignat}
+% for hyperelasticity, and:
+% \begin{equation}
+%   \label{eq:vectors_plasticity}
+%   \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\\tens{0}}
+% \end{equation}
+% for elastoplasticity.
+
+Quasi-linear form are then built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:
 \begin{equation}
   \label{eq:quasi-linear_Trangenstein}
-  \drond{\Wcb}{t} + \(\drond{\Qcb}{\Wcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb} \drond{\Wcb}{X_\alpha} = \(\drond{\Qcb}{\Wcb}\)^{-1}\Scb = \tilde{\Scb}
+  \drond{\Qcb}{t} + \(\drond{\Wcb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb} \drond{\Qcb}{X_\alpha} = \(\drond{\Wcb}{\Qcb}\)^{-1}\Scb = \tilde{\Scb}
 \end{equation}
 with the auxiliary vectors for elastoplasticity and hyperelasticity respectively defined as:
 \begin{equation}
   \label{eq:auxiliary_vectors}
-  \Wcb=\matrice{\vect{v}\\\tens{\sigma}} \quad ; \quad \Wcb=\matrice{\vect{v}\\\tens{\Pi}}
+  \Qcb=\matrice{\vect{v}\\\tens{\sigma}} \quad ; \quad \Qcb=\matrice{\vect{v}\\\tens{\Pi}}
 \end{equation}
 
-Denoting momentarily and generically the stress mesures by $\tens{S}$ and the strain mesures by $\tens{P}$ so that $\Qcb^T=\[\vect{v},\tens{P}\]$ and $\Wcb^T=\[\vect{v},\tens{S}\]$, the matrix $\drond{\Qcb}{\Wcb}$ and its inverse are:
+Denoting momentarily and generically the stress measures by $\tens{S}$ and the strain measures by $\tens{P}$ so that $\Wcb^T=\[\vect{v},\tens{P}\]$ and $\Qcb^T=\[\vect{v},\tens{S}\]$, the matrix $\drond{\Wcb}{\Qcb}$ and its inverse are:
 \begin{equation*}
-  \drond{\Qcb}{\Wcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{P}}{\tens{S}}} \Rightarrow \(\drond{\Qcb}{\Wcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{S}}{\tens{P}}}
+  \drond{\Wcb}{\Qcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{P}}{\tens{S}}} \Rightarrow \(\drond{\Wcb}{\Qcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{S}}{\tens{P}}}
 \end{equation*}
 in which $\drond{\tens{S}}{\tens{P}}$ is the tangent modulus of the considered constitutive model. Moreover, the derivative of the flux vectors with respect to the auxiliary vector has two different expressions depending on the constitutive model due to the symmetric gradient used for the linearized geometrical framework. On gets for hyperelastic materials:
 \begin{equation}
-  \drond{\Fcb\cdot\vect{e}_\alpha}{\Wcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\    \tens{I}\otimes \vect{e}_\alpha & \tens{0}^4}
+  \drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\    \tens{I}\boxtimes \vect{e}_\alpha & \tens{0}^4}
 \end{equation}
 while elastoplasticity leads to:
 \begin{equation}
-  \drond{\Fcb\cdot\vect{e}_i}{\Wcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i \\  \frac{\tens{I}\otimes \vect{e}_i+\tens{I}\boxtimes \vect{e}_i}{2} & \tens{0}^4   }
+  \drond{\Fcb\cdot\vect{e}_i}{\Qcb}=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i \\  \frac{\tens{I}\boxtimes \vect{e}_i+\vect{e}_i\otimes\tens{I}}{2} & \tens{0}^4   }
 \end{equation}
-in which the operator $\tens{I}\boxtimes\vect{e}_i$ is the transpose on second and third indices of the classical tensor product arising due to the symmetric gradient of $\vect{v}$: $\tens{I}\boxtimes\vect{e}_i=\delta_{jk} \vect{e}_j\otimes \vect{e}_i\otimes\vect{e}_k$.
+in which the operator $\tens{I}\boxtimes\vect{e}_i$ is the transpose on second and third indices of the classical tensor product: $\tens{I}\boxtimes\vect{e}_i=\delta_{jk} \vect{e}_j\otimes \vect{e}_i\otimes\vect{e}_k$.
 
-Finally, the Quasi-linear forms associated to hyperelastic problems and elastoplastic ones are respectively:
-\begin{alignat}{3}
-  & \Wcb_t + \Absf^\alpha \drond{\Wcb}{X_\alpha} = \tilde{\Scb} \qquad &&\text{with: }\Absf^\alpha = -\matrice{ \tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\ \Hbb\cdot\vect{e}_\alpha & \tens{0}^4} \label{eq:HE_quasilinear}\\
-  & \Wcb_t + \Absf^i \drond{\Wcb}{x_i} = \tilde{\Scb} \qquad &&\text{with: }\Absf^i = -\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\ \Cbb\cdot\vect{e}_i & \tens{0}^4} \label{eq:EP_quasilinear}
+Finally, the quasi-linear forms associated to hyperelastic problems and elastoplastic ones are respectively:
+\begin{alignat}{2}
+  & \Qcb_t + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \tilde{\Scb} \qquad &&\text{with: }\Absf^\alpha = -\matrice{ \tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\ \Hbb\cdot\vect{e}_\alpha & \tens{0}^4} \label{eq:HE_quasilinear}\\
+  & \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \tilde{\Scb} \qquad &&\text{with: }\Absf^i = -\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\ \Cbb^{ep}\cdot \vect{e}_i & \tens{0}^4} \label{eq:EP_quasilinear}
 \end{alignat}
 where the symmetries of the elastic stiffness tensor have been used.
 
