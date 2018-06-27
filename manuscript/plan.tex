@@ -10,36 +10,40 @@
 \tableofcontents
 \chapter{Introduction}
 \section{General introduction}
-\section{Numerical methods in solid mechanics}
+Applications + motivations + industrial context
 \section{The class of dynamic problems}
+Biblio
+\section{Numerical methods in solid mechanics}
+Biblio
 \section{Challenges for the simulation of dynamic problems}
-
+Puproses + Objectives
 \chapter{Hyperbolic partial differential equations}
 \section{Partial differential equations}
 \subsection{General concepts}
 \subsection{Notion of characteristics -- Hyperbolic problems}
+\subsection{The method of characteristics}
 
-\section{Conservation laws in solid mechanics}
+\section{Governing equations of solid mechanics}
 % Context, isothermal, thermodynamical framework, standard generalized material etc.
+\subsection{Kinematic laws -- Strain measures}
 \subsection{Balance equations}
-\subsection{Compatibility equations}
-\subsection{Thermodynamical framework}
-\subsubsection{Homogeneous systems}
-\subsubsection{Non-homogeneous systems}
+\subsection{Constitutive equations -- Thermodynamics}
+GSM
+\subsubsection{Examples of constitutive laws}
+Neo-Hookean + Saint-Venant-Kirchhoff hyperelastic ; Linear elastic + elastic-viscoplastic + elastoplastic HPP 
 \subsection{The general formulation}
 
 \section{Characteristic analysis}
-\subsection{Quasilinear form of hyperbolic problems}
-% Look at eigenvalues // eigen vectors // hyperbolicity condition // Legendre-Hadamard condition etc. -> system of scalar advection equations 
+\subsection{Characteristic structure of the solution}
 \subsection{Linear problems: contact waves}
 \subsection{Non-linearities: simple and shock waves}
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
-\section{Derivation of one-dimensional solid mechanics solutions}
-\subsection{Elastic and elastic-viscoplastic solids}
+\section{Review and derivation of one-dimensional analytical solutions}
+\subsection{Linear elastic solids}
 \subsubsection{Linear elastic plane bar}
 \subsubsection{Linear elastic plane wave}
-\subsubsection{Elastoviscoplasic bar and plane wave}
+%\subsubsection{Elastoviscoplasic bar and plane wave}
 %\subsubsection{Elastoviscoplasic}
 \subsection{Elastoplastic solids}
 \subsubsection{Linearly hardening media}
@@ -63,17 +67,16 @@
 % See Toro ch.4
 \subsection{Exact solution of Riemann problems}
 \subsection{Approximate-state Riemann solver}
-\subsection{The Godunov method}
-\section{Transverse correction for multidimensional problems}
-%The CTU method
+\subsection{The Godunov flux}
 \section{Linearized geometrical framework}
 \subsection{Linear elasticity}
 \subsection{Elasto-plasticity}
 \section{Hyperelastic problems}
 
 
-\chapter{Extension of the Material Point Method}
+\chapter{The Discontinuous Galerkin Material Point Method}
 \section{The material point method}
+Biblio MPM 
 \subsection{Development of the method}
 % PIC - FLIP - MPM - GIMP - HOMPM/BSMPM: introduction text 
 \subsection{Derivation of the mpm}
@@ -81,25 +84,27 @@
 \subsubsection{Solution scheme summary}
 \subsection{Shortcomings}
 
-\section{Derivation of the discontinuous Galerkin material point method}
+\section{Extension to discontinuous Galerkin approximation}
 \subsection{The discontinuous Galerkin approximation}
+Biblio DG
 % Introduction text, DG approximation, DGFEM, main  idea of the introduction of this approx into MPM, mootivations ?             
 \subsection{Derivation of the method}
 % Do not explicit interface fluxes yet (not required for numerical analysis) // Also, it is an independant tool used in other methods such as FVM, DGFEM.
 \subsection{DGMPM solution scheme}
 
+\section{Transverse corrections for multidimensional problems}
+%The CTU method
 \section{Numerical analysis of the DGMPM}
 \subsection{Convergence analysis}
 \subsection{One-dimensional stability analysis}
+Euler + RK2
 \subsection{Two-dimensional stability analysis}
 
 \chapter{Numerical Results}
-
-\section{Linear advection problem}
-\subsection{The one-dimensional case}
-\subsection{The two-dimensional case}
+Study the influence of the number of material points per cell in simulations + comparison MPM
 \section{Linearized geometrical framework}
 \subsection{One-dimensional elasticity and elastoviscoplasticity}
+Splitting method for EVP
 \subsection{One-dimensional elastoplasticity}
 \subsection{Two-dimensional elasticity}
 
@@ -107,17 +112,18 @@
 \subsection{One-dimensional problems}
 \subsection{Two-dimensional problems}
 
-\chapter{Contribution to the solution of two-dimensional elastoplastic problems}
-\section{The complexity of elastoplasicity}
+\chapter{Contribution to the solution of plane-strain and plane-stress elastoplastic problems}
+\section{The complexity of elastoplasticity}
 % Bibliography about:
 % - what has been done so far (thin-walled ; plane wave + shear wave ; internal structure of plastic shock)
 % - what is missing (solution of more general problems [i.e plane strain or stress] ; development of approximate Riemann solvers)
 % - what it will allow (comparison with experimental data in order to track plastic shocks)
 % - what is currently done in fluid or solid mechanics numerically
-\section{Known solutions}
+Biblio, 
+\section{State of the art}
 \subsection{The thin-walled tube problem}
 \subsection{Superimposition of plane wave and shear waves}
-\section{Reformulation of the problem}
+\section{Formulation of the problem}
 \subsection{General multi-dimensional formulation}
 % Based on the tangent modulus -> independant on the hardening model
 \subsection{Plane strain problems}
@@ -127,6 +133,7 @@
 \subsection{Integral curves and loading paths}
 \subsection{The plane strain case}
 \subsection{The plane stress case}
+\section{Towards an elastoplastic approximate Riemann solver}
 
 \chapter{Conclusion}
 
