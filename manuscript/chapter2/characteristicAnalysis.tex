@@ -44,23 +44,63 @@ The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real 
   \label{eq:strong_ellipticity}
   (\vect{m}\otimes \vect{N}): \tilde{\Hbb}: (\vect{m}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
 \end{equation}
-If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{\lambda_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
+If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{\lambda_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{\lambda_k,\Lcb^k\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
-  \label{eq:eigenfields}
+  \label{eq:left_eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
 At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation of \eqref{eq:eigen_left_stress} for the null eigenvalue:
 \begin{equation}
-  \label{eq:null_eigenvectors}
-  \tens{S}:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0}
+  \label{eq:left_null_eigenvectors}
+  \tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0},\quad k=1,...,6
+\end{equation}
+Following the same procedure for right eigenvectors $\Rcb^k=\matrice{\vect{v}^k \\ \tens{S}^k}$, the Jacobian matrix right eigensystem reads:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:eigen_right_stress}
+    & -\frac{1}{\rho_0}\tens{S}^k\cdot  \vect{N} - \lambda_k  \vect{v}^k =\vect{0} \\
+    \label{eq:eigen_right_velo}
+    & -\tilde{\Hbb}:\(\vect{v}^k\otimes\vect{N}\) - \lambda_k \tens{S}^k = \tens{0}
+  \end{alignat}
+\end{subequations}
+which leads to the \textit{right eigen fields} associated to the non-null eigenvalues:
+\begin{equation}
+  \label{eq:right_eigenfields}
+  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\tilde{\Hbb}:\( \vect{l}^p\otimes \vect{N}\) \:\]  \right\rbrace ,\quad p=1,2,3
+\end{equation}
+In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denotes the eigenfields of the acoustic tensor. Moreover, the $6$ independent right eigenvectors associated to the zero eigenvalue required to complete the set of right characteristic fields must satisfy:
+\begin{equation}
+  \label{eq:right_null_eigenvectors}
+  \tens{S}^k \cdot  \vect{N} =\vect{0},\quad k=1,...,6
 \end{equation}
 
-Note that since the right-hande side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure.
+Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure.
+\begin{definition}
+  A characteristic field $i$ is said to be \textbf{linearly degenerate} if it satisfies
+  \begin{equation}
+    \label{eq:linearly-degenerate}
+    \nablav_\Ucb \lambda_i \cdot \Rcb^i = \vect{0},\quad \forall \Ucb \in \Rbb^m
+  \end{equation}
+  where $\nablav_\Ucb (\bullet)$ is the gradient in the \textit{phase plane} $\(\Uc_1,...,\Uc_m \)$. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields.
+\end{definition}
 
+\begin{definition} A characteristic field $i$ is said to be \textbf{genuinely non-linear} if
+  \begin{equation}
+    \label{eq:linearly-degenerate}
+    \nablav_\Ucb \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Ucb \in \Rbb^m
+  \end{equation}
+\end{definition}
 
-\subsection{Linear problems: contact waves}
-read Courant p.427;p.486
 \subsection{Non-linearities: simple and shock waves}
+Rankine-Hugoniot conditions: Given a system of hyperbolic conservation laws $\Ucb_t + \Fcb(\Ucb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the Rankine-Hugoniot condition reads:
+\begin{equation}
+  \label{eq:rankine-hugoniot}
+  \saut{ \Fcb} = s_i \saut{ \Ucb}
+\end{equation}
+where $\saut{\bullet}$ denotes the jump operator across the discontinuity. For non-linear discontinuities (shocks) the celerity $s_i$ is not known whereas in the linear case $s_i=\lambda_i$.
+\subsection{Linear problems: contact waves}
+Use the method of characteristic (with a one-dimensional problem) to show that linear waves lead, for a Riemann problemm, to discontinuous waves. See the Rankine-Hugoniot as a particular case of discontinuous waves ?
+
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
 

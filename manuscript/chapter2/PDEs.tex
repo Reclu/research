@@ -137,7 +137,7 @@ We thus have two solutions $\lambda^{1,2}=\pm 1/x$, leading by integration of \e
 \begin{equation*}
   t_1(x)=\frac{1}{2}x^2+c_1  \quad \text{and} \quad t_2(x)=-\frac{1}{2}x^2+c_2 
 \end{equation*}
-Those families of curves are drawn in figure \ref{fig:exampleCharac} for several values of parameters $c_1$ and $c_2$. We are then left with two curves in the $(x,t)$ plane due to the dependence of the coefficient matrices of the system on independent variables. On the other hand, the characteristics for linear and quasi-linear systems are straight lines in the $(x,t)$ plane.
+We are then left with two families of curves in the $(x,t)$ plane due to the dependence of the coefficient matrices of the system on independent variables. Those curves are drawn in figure \ref{fig:exampleCharac}\subref{subfig:curve_lines} for several values of parameters $c_1$ and $c_2$.
 \end{example}
 \begin{example}
   \label{ex:charac2}
@@ -149,16 +149,16 @@ which eigenvalues, according to equation \eqref{eq:characteristic_determinant} s
 \begin{equation*}
   (1 - \lambda )(1- 2\lambda)=0
 \end{equation*}
-We thus have two solutions $\lambda^1=1 \: ; \: \lambda^2=1/2$, leading by integration of \eqref{eq:lambda_slope} to two one-parameter families of characteristic curves:
+We thus have two solutions $\lambda^1=1 \: ; \: \lambda^2=1/2$, leading by integration of \eqref{eq:lambda_slope} to two one-parameter families of straight lines:
 \begin{equation*}
   t_1(x)=x+c_1  \quad \text{and} \quad t_2(x)=2x+c_2 
 \end{equation*}
-Those families of curves are drawn in figure \ref{fig:exampleCharac} for several values of parameters $c_1$ and $c_2$. We are then left with two curves in the $(x,t)$ plane due to the dependence of the coefficient matrices of the system on independent variables. On the other hand, the characteristics for linear and quasi-linear systems are straight lines in the $(x,t)$ plane.
+Note that since linear and quasi-linear systems have coefficients matrices which do not depend on independent variables, their characteristics are straight lines in the $(x,t)$ plane (see \ref{fig:exampleCharac}\subref{subfig:straight_lines}).  
 \end{example}
 \begin{figure}[h]
   \centering
-  \subfloat[Example \ref{ex:charac1}: $\lambda^{1,2}=\pm 1/x$]{\input{chapter2/pgfFigures/exampleCharac}} \qquad
-  \subfloat[Example \ref{ex:charac2}: $\lambda^{1}=1 \:\text{and} \: \lambda^2=1/2$]{\input{chapter2/pgfFigures/exampleCharac_const}}
+  \subfloat[Example \ref{ex:charac1}: $\lambda^{1,2}=\pm 1/x$\label{subfig:curve_lines}]{\input{chapter2/pgfFigures/exampleCharac}} \qquad
+  \subfloat[Example \ref{ex:charac2}: $\lambda^{1}=1 \:\text{and} \: \lambda^2=1/2$\label{subfig:straight_lines}]{\input{chapter2/pgfFigures/exampleCharac_const}}
   \caption{Family of base characteristic curves corresponding to the eigenvalues of the first order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
   \label{fig:exampleCharac}
 \end{figure}
