@@ -110,7 +110,7 @@ In equation \eqref{eq:Linear_momentum_conservation}, the divergence operator on 
   \end{equation*}
   where $\nablav_0\cdot (\bullet)$ is the divergence operator on the reference configuration.
 \end{definition}
-Another stress measure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. Hence, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
+Another stress measure that corresponds to the Piola transform of Cauchy stress tensor is thus introduced, the \textit{first Piola-Kirchhoff stress tensor (PK1)} $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$. Hence, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -190,7 +190,7 @@ holding regardless of the deformation, and hence:
   \label{eq:PK1_definition}
   \rho_0\drond{\psi}{\tens{F}} = \tens{\Pi}
 \end{equation}
-A material is said \textit{hyperelastic} if the above stress state law is satisfied \cite[p.8]{Foundation_of_elasticity}. The time derivative of this relation leads to:
+A material is said \textit{hyperelastic} if there exist a \textit{stored energy function} $\rho_0\psi$ from which can be derived the first Piola-Kirchhoff stress tensor \cite[p.8]{Foundation_of_elasticity}. The time derivative of this relation leads to:
 \begin{equation}
   \label{eq:HE_tangent}
   \tens{\dot{\Pi}} = \rho_0\ddrond{\psi}{\tens{F}}{\tens{F}}:\tens{\dot{F}} = \Hbb:\tens{\dot{F}} 
@@ -277,12 +277,7 @@ In analogy with the elastic law \eqref{eq:HPP_tangent}, rate-independent plastic
   \label{eq:HPP_tangent_plasticity}
   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
 \end{equation}
-By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \tens{\sigma}^H$, with $\tens{s}$ the deviatoric part and $\tens{\sigma}^H$ the spheric part, the elastoplastic tangent modulus reads: 
-\begin{equation}
-  \label{eq:HPP_tangent_plasticity_explicit}
-  \Cbb^{ep}=\Cbb - \frac{6\mu^2}{3\mu +h} \frac{\tens{s}\otimes \tens{s}}{\tens{s}:\tens{s}}
-\end{equation}
-where $h$ is a material parameter depending on the hardening model and $\Cbb$ the elastic stiffness tensor.
+
 \item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential. In that case, the elastic law \eqref{eq:HPP_tangent} is rewritten as:
   \begin{equation}
     \label{eq:evp_law}
@@ -291,8 +286,118 @@ where $h$ is a material parameter depending on the hardening model and $\Cbb$ th
   in which both strain rates are known.
 \end{itemize}
 \subsubsection*{Examples of constitutive laws}
-Neo-Hookean + Saint-Venant-Kirchhoff hyperelastic ; Linear elastic + elastic-viscoplastic + J2 plastic HPP \todo{A faire!}
+We now specify the above discussion to constitutive models that will be used in the following of the manuscript.
 
+$\newline$
+\textbf{The neo-Hookean hyperelastic model} is well-suited to describe rubber-like materials and is based on the polyconvex stored energy function:
+\begin{equation}
+  \label{eq:neo-hook_energy}
+  \rho_0 \psi(J,\tens{F})= \frac{\kappa}{2}(J-1)^2 + \frac{\mu}{2}\[J^{-2/3} (\tens{F}:\tens{F})-3 \]
+\end{equation}
+where $\kappa$ is the bulk modulus and $\mu$ the Lam\'e shear modulus. We then introduce the \textit{tensor cross product} \cite{cross_tensor_product} of two second order two-point tensors $\tens{a}$ and $\tens{c}$, defined as:
+\begin{equation}
+  \label{eq:cross_tensor_product}
+  \(\tens{a} \tens{\times} \tens{c}\)_{i\alpha}= \Ec_{ijk} \Ec_{\alpha \beta \gamma} a_{j\beta}b_{k\gamma}
+\end{equation}
+where $\Ec_{ijk}$ is the \textit{Levi-Civita} permutation symbol. By making use of this operator, the Jacobian $J$ can be written:
+\begin{equation*}
+  J=\frac{1}{6}\(\tens{F}\ttimes\tens{F}\):\tens{F}
+\end{equation*}
+or equivalently 
+\begin{equation*}
+  J=\frac{1}{3}\tens{H}:\tens{F}
+\end{equation*}
+in which $\tens{H}=\frac{1}{3}\tens{F}\ttimes\tens{F}=J\tens{F}^{-T}$ is the \textit{adjoint tensor} of the deformation gradient. Note that by using the tensor cross product operator, one can easily show that $\drond{J}{\tens{F}}=\tens{H}$. With these definitions, the derivative of the stored energy function \eqref{eq:neo-hook_energy} with respect to the deformation gradient can be computed so that the PK1 tensor can be derived:
+\begin{equation}
+  \label{eq:PK1_neo-hook}
+  \tens{\Pi} = \mu J^{-2/3} \[\tens{F}- \frac{1}{3}\(\tens{F}:\tens{F}\) \tens{F}^{-T}\] + \kappa \(J-1\)\tens{H}
+\end{equation}
+
+The acoustic tensor $A_{ij}=N_\alpha H_{i\alpha j\beta} N_\beta$ for the neo-Hookean hyperelastic model is \cite{Haider_FVM}:
+\begin{equation}
+  \label{eq:neo-hook_acoustic}
+  \begin{split}
+      \tens{A}=\[\frac{5}{9}\mu J^{-8/3}\(\tens{F}:\tens{F}\)   + \kappa \]&(\tens{H}\cdot\vect{N})\otimes\(\tens{H}\cdot\vect{N} \)  + \mu J^{-2/3} \tens{I}  \\ &-\frac{2}{3}\mu J^{-5/3}\[(\tens{H}\cdot\vect{N})\otimes\(\tens{F}\cdot\vect{N} \)	+  (\tens{F}\cdot\vect{N})\otimes\(\tens{H}\cdot\vect{N} \)\]
+  \end{split}
+\end{equation}
+
+$\newline$
+\textbf{The Saint-Venant-Kirchhoff hyperelastic model} is an extension of linear elastic Hook's law to hyperelasticity with a stored energy function that takes the form:
+\begin{equation}
+  \label{eq:SVK_energy}
+  \rho_0\psi=\frac{1}{8}\(\tens{F}^T\tens{F}- \tens{I}\):\Cbb:\(\tens{F}^T\tens{F}- \tens{I}\)
+\end{equation}
+where $\Cbb$ is the elasticity tensor. In a similar manner as for the neo-Hookean model, the expression of the PK1 tensor is:
+\begin{equation}
+  \label{eq:SVK_PK1}
+  \tens{\Pi} = \frac{1}{2}\lambda \(\tens{F}:\tens{F}- 3\) \tens{F} + \mu\tens{F}\(\tens{F}^T\tens{F}- \tens{I}\)
+\end{equation}
+The tangent modulus is then obtained by deriving this stress tensor:
+\begin{equation}
+  \label{eq:SVK_tangent}
+  \Hbb = \lambda \[\tens{F}\otimes\tens{F} + \frac{1}{2} (\tens{F}:\tens{F}- 3)\Ibb\]+ \mu\(\Abb- \Ibb \)
+\end{equation}
+with $A_{i\alpha j \beta}=F_{k\alpha}F_{k\beta}\delta_{ij} + F_{j\alpha}F_{i\beta} +F_{i\mu} F_{j\mu}\delta_{\alpha\beta}$ and the fourth order identity tensor $I_{i\alpha j \beta}=\delta_{ij}\delta_{\alpha \beta}$. The previous tangent modulus finally leads to the acoustic tensor:
+\begin{equation}
+  \label{eq:SVK_acoustic}
+  \begin{split}
+    \tens{A} = \lambda \[\vphantom{\frac{1}{2}} (\tens{F}\cdot\vect{N})\otimes(\tens{F}\cdot\vect{N}) \right.+ &\left.\frac{1}{2} (\tens{F}:\tens{F}- 3)\tens{I}\] \\
+    + & \mu\((\tens{F}\cdot\vect{N})\cdot(\tens{F}\cdot\vect{N})\tens{I} + (\tens{F}\cdot\vect{N})\otimes(\tens{F}\cdot\vect{N}) + \tens{F}\cdot\tens{F}^T- \tens{I} \)
+  \end{split}
+\end{equation}
+Even though it is known that this model can lead to non-physical solutions for very large deformation, it will be used for a one-dimensional strain problem for it enables to easily develop an analytical solution.  
+
+
+$\newline$
+\textbf{The plastic $J_2$ flow theory}, generally used to model metals, involves a yield function $f$ based on the second invariant of Cauchy stress deviatoric part $J_2=\tens{s}:\tens{s}$, where $\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma}$. We will consider here \textit{isotropic} and \textit{kinematic} linear hardening through internal variables and associated forces:
+\begin{itemize}
+\item $\{\Vcb,\Acb\}=\{(\tens{\eps}^p,\tens{s}),(p,-R(p))\}$ for isotropic hardening
+\item $\{\Vcb,\Acb\}=\{(\tens{\eps}^p,\tens{s}-\tens{\eta})\}$ for kinematic hardening
+\end{itemize}
+where $R'(p)$ is the isotropic hardening modulus and $\tens{\eta}$ describes the evolution of the elastic domain center in stress deviator space.
+The Helmoltz free energy density reads:
+\begin{equation}
+  \label{eq:EP_helmoltz}
+  \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(p)
+\end{equation}
+
+\begin{equation}
+  \label{eq:forces}
+  \tens{s}-\tens{\eta}=\rho \drond{\psi}{(\tens{s}-\tens{\eta})}\quad \Rightarrow\quad \tens{\eta}=\frac{2}{3}C\tens{\eps}^p \quad ; \quad R = \rho \drond{\psi}{p} = H'(p)
+\end{equation}
+Furthermore, the \textit{von-Mises yield surface} is defined as:
+\begin{equation}
+  \label{eq:von-Mises_yield}
+  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{\eta}} - R(p) -\sigma^y \equiv 0
+\end{equation}
+$\sigma^y$ being the traction yield stress. The specialization of equations \eqref{eq:flow_hardening_rule_plast} leads to:
+\begin{equation}
+  \label{eq:plastic_strain_rate}
+  \tens{\dot{\eps}}^p=\dot{p}\drond{f}{(\tens{s}-\tens{\eta})}=\dot{p}\sqrt{\frac{3}{2}}\frac{\tens{s}-\tens{\eta}}{\norm{\tens{s}-\tens{\eta}}}=\dot{p}\:\sqrt{\frac{3}{2}}\tens{m}
+\end{equation}
+For rate-independent plasticity with kinematic hardening ($R(p)=0$), the condition $\dot{f}=0$ yields:
+\begin{equation*}
+  \drond{f}{(\tens{s}-\tens{\eta})}:(\tens{\dot{s}}-\tens{\dot{\eta}}) =0 \quad \Rightarrow \quad \tens{m}:\tens{\dot{\eta}}=\tens{m}:\tens{\dot{s}}
+\end{equation*}
+and with $\tens{\eta}=\frac{2}{3}C\tens{\eps}^p$:
+\begin{equation*}
+  \tens{m}:\tens{\dot{\eta}}=\frac{2}{3}C\tens{m}:\tens{\dot{\eps}}^p = \dot{p}\sqrt{\frac{2}{3}}C\tens{m}:\tens{m}
+\end{equation*}
+and hence:\todo{similar but strain driven}
+\begin{equation*}
+  \dot{p}=\sqrt{\frac{3}{2}}\frac{\tens{m}:\tens{\dot{s}}}{C}
+\end{equation*}
+For isotropic hardening ($\tens{\eta}=\tens{0}$):
+\begin{equation*}
+  \drond{f}{\tens{s}}:\tens{\dot{s}} - \drond{f}{R}:\dot{R}=0\quad  \Rightarrow \quad\dot{R}=\sqrt{\frac{3}{2}}\tens{m}:\tens{\dot{\sigma}}
+\end{equation*}
+. By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \tens{\sigma}^H$, with $\tens{s}$ the deviatoric part and $\tens{\sigma}^H$ the spheric part, the elastoplastic tangent modulus reads: 
+\begin{equation}
+  \label{eq:HPP_tangent_plasticity_explicit}
+  \Cbb^{ep}=\Cbb - \frac{6\mu^2}{3\mu +h} \frac{\tens{s}\otimes \tens{s}}{\tens{s}:\tens{s}}
+\end{equation}
+where $h$ is a material parameter depending on the hardening model and $\Cbb$ the elastic stiffness tensor.
+(gather plasticity and visco sinc they are based on the same yield function. Develop hardening rules...)
 
 \subsection{The general formulation}
 We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account within linearized geometrical framework only. 
@@ -327,7 +432,8 @@ where:
 \begin{equation*}
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
-in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor.
+in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule
+\eqref{eq:flow_hardening_rule}.
 \subsubsection*{Elasto-plasticity and hyperelasticity}
 The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws:
 \begin{align}
@@ -346,12 +452,6 @@ Then, a conservative form \eqref{eq:general_conservative} is also written:
   &\label{eq:vectors_plasticity}
   \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad &&; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad &&; \quad \Scb = \matrice{\rho_0 \vect{b} \\\tens{0}} \quad &&\text{ for elastoplasticity}
 \end{alignat}
-% for hyperelasticity, and:
-% \begin{equation}
-%   \label{eq:vectors_plasticity}
-%   \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\\tens{0}}
-% \end{equation}
-% for elastoplasticity.
 
 Quasi-linear form are then built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:
 \begin{equation}
@@ -383,7 +483,7 @@ Finally, the quasi-linear forms associated to hyperelastic problems and elastopl
   & \Qcb_t + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \tilde{\Scb} \qquad &&\text{with: }\Absf^\alpha = -\matrice{ \tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_\alpha \\ \Hbb\cdot\vect{e}_\alpha & \tens{0}^4} \label{eq:HE_quasilinear}\\
   & \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \tilde{\Scb} \qquad &&\text{with: }\Absf^i = -\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\ \Cbb^{ep}\cdot \vect{e}_i & \tens{0}^4} \label{eq:EP_quasilinear}
 \end{alignat}
-where the symmetries of the elastic stiffness tensor have been used.
+where the symmetries of the elastic stiffness tensor have been used. Note that the dependence on $\Qcb$ of matrices $\Absf(\Qcb)$ has been omitted for simplicity
 
 %%% Local Variables:
 %%% mode: latex
