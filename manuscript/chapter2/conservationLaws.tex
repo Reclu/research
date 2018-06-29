@@ -324,6 +324,7 @@ The acoustic tensor $A_{ij}=N_\alpha H_{i\alpha j\beta} N_\beta$ for the neo-Hoo
       \tens{A}=\[\frac{5}{9}\mu J^{-8/3}\(\tens{F}:\tens{F}\)   + \kappa \]&(\tens{H}\cdot\vect{N})\otimes\(\tens{H}\cdot\vect{N} \)  + \mu J^{-2/3} \tens{I}  \\ &-\frac{2}{3}\mu J^{-5/3}\[(\tens{H}\cdot\vect{N})\otimes\(\tens{F}\cdot\vect{N} \)	+  (\tens{F}\cdot\vect{N})\otimes\(\tens{H}\cdot\vect{N} \)\]
   \end{split}
 \end{equation}
+The polyconvexity of this model ensures the positive definiteness of the acoustic tensor \eqref{eq:neo-hook_acoustic} \cite{Kluth}.
 
 $\newline$
 \textbf{The Saint-Venant-Kirchhoff hyperelastic model} is an extension of linear elastic Hook's law to hyperelasticity with a stored energy function that takes the form:
@@ -346,7 +347,7 @@ with $A_{i\alpha j \beta}=F_{k\alpha}F_{k\beta}\delta_{ij} + F_{j\alpha}F_{i\bet
   \label{eq:SVK_acoustic}
   \begin{split}
     \tens{A} = \lambda \[\vphantom{\frac{1}{2}} (\tens{F}\cdot\vect{N})\otimes(\tens{F}\cdot\vect{N}) \right.+ &\left.\frac{1}{2} (\tens{F}:\tens{F}- 3)\tens{I}\] \\
-    + & \mu\((\tens{F}\cdot\vect{N})\cdot(\tens{F}\cdot\vect{N})\tens{I} + (\tens{F}\cdot\vect{N})\otimes(\tens{F}\cdot\vect{N}) + \tens{F}\cdot\tens{F}^T- \tens{I} \)
+    + & \mu\[(\tens{F}\cdot\vect{N})\cdot(\tens{F}\cdot\vect{N})\tens{I} + (\tens{F}\cdot\vect{N})\otimes(\tens{F}\cdot\vect{N}) + \tens{F}\cdot\tens{F}^T- \tens{I} \]
   \end{split}
 \end{equation}
 Even though it is known that this model can lead to non-physical solutions for very large deformation, it will be used for a one-dimensional strain problem for it enables to easily develop an analytical solution.  
@@ -400,7 +401,7 @@ Viscoplasticity on the other hand, leads to an explicit definition of the equiva
   \label{eq:EVP_creep_law}
   \dot{p}=\left\langle \frac{f}{\eta}\right\rangle^n
 \end{equation}
-where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$,$\eta$ are parameters arrising from the relaxation of the condition $f\leq 0$. Hence, rate-dependent plasticity is driven by the elastic law in which $\tens{\dot{\eps}^p}$ is given by \eqref{eq:flow_rule_plast} and \eqref{eq:EVP_creep_law}. 
+where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters arrising from the relaxation of the condition $f\leq 0$. Hence, rate-dependent plasticity is driven by the elastic law in which $\tens{\dot{\eps}^p}$ is given by \eqref{eq:flow_rule_plast} and \eqref{eq:EVP_creep_law}. 
 
 \subsection{The general formulation}
 We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account within linearized geometrical framework only. 
@@ -424,7 +425,7 @@ Hence, introduction of kinematic laws in the linear momentum balance yields, by 
 where the vector of conserved quantities $\Qcb$, fluxes vectors $\Fcb\cdot \vect{e}_i$ and the source term $\Scb$ are:
 \begin{equation}
   \label{eq:vectors_elasticity}
-  \Qcb =\matrice{\vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{\rho_0 \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
+  \Qcb =\matrice{\vect{v} \\ \tens{\sigma}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\Cbb:\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{ \vect{b} \\ -\Cbb:\tens{\dot{\eps}}^p}
 \end{equation}
 The quasi-linear form of equation \eqref{eq:general_conservative} is written by using the chain rule:
 \begin{equation}
@@ -451,9 +452,9 @@ Then, a conservative form \eqref{eq:general_conservative} is also written:
  with:
 \begin{alignat}{4}
   \label{eq:vectors_hyperelasticity}
-  &\Wcb =\matrice{\vect{v} \\ \tens{F}} \quad &&; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\frac{1}{\rho_0}\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes\vect{e}_\alpha } \quad &&; \quad \Scb = \matrice{\rho_0 \vect{b} \\ \tens{0}} \quad &&\text{ for hyperelasticity}\\
+  &\Wcb =\matrice{\vect{v} \\ \tens{F}} \quad &&; \quad \Fcb\cdot\vect{e}_\alpha = \matrice{-\frac{1}{\rho_0}\tens{\Pi}\cdot\vect{e}_\alpha\\-\vect{v}\otimes\vect{e}_\alpha } \quad &&; \quad \Scb = \matrice{ \vect{b} \\ \tens{0}} \quad &&\text{ for hyperelasticity}\\
   &\label{eq:vectors_plasticity}
-  \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad &&; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad &&; \quad \Scb = \matrice{\rho_0 \vect{b} \\\tens{0}} \quad &&\text{ for elastoplasticity}
+  \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad &&; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho_0}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad &&; \quad \Scb = \matrice{ \vect{b} \\\tens{0}} \quad &&\text{ for elastoplasticity}
 \end{alignat}
 
 Quasi-linear form are then built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:

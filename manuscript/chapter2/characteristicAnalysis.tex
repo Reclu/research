@@ -39,7 +39,7 @@ or atlernatively with the eigenvalues $\omega_p$ and associated left eigenvector
   \label{eq:acoustic_eigen_system}
   \( \tens{A} - \omega_p \tens{I} \) \vect{l}^p = \vect{0}
 \end{equation}
-The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real eigenvalues and associated eigenvectors is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}\todo{Peut-être juste parler de la condition de forte ellipticité et faire du cas par cas plus tard + Elastoplastic ones ??}:
+The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real eigenvalues and associated eigenvectors is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
 \begin{equation}
   \label{eq:strong_ellipticity}
   (\vect{m}\otimes \vect{N}): \tilde{\Hbb}: (\vect{m}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
@@ -75,8 +75,113 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
 \end{equation}
 
 Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure.
+
+The notions highlighted so far will be illustrated in the two following sections. The method of characteristics will lead to:
+\begin{itemize}
+\item[(i)] the well-known solution to the \textit{Riemann problem} on a elastic bar
+\item[(ii)] the development of the solution the Riemann problem of a hyperelastic Saint-Venant-Kirchhoff medium undergoing a one-dimensional strain state
+\end{itemize}
+Furthermore, the \textit{Rankine-Hugoniot condition} for discontinuous waves, and the concept of \textit{shock} and \textit{simple} waves will be introduced.
+
+\subsection{Linear problems}
+A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecewise constant initial data on both sides of an interface. In the arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$, the Riemann problem reads:
+\begin{equation}
+  \label{eq:Riemann_problem}
+  \begin{aligned}
+  &\Qcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \Scb, \\
+  &\left\lbrace 
+    \begin{aligned}
+      & \Qcb(X_N,t=0) = \Qcb_L \quad \text{if } X_N< 0\\
+      & \Qcb(X_N,t=0) = \Qcb_R \quad \text{if } X_N> 0
+    \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+
+We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{N}=\vect{e}_1$.
+
+Neglecting body forces without loss of generality and introducing \textit{Yound's modulus E} such that $\sigma = E\eps$, conserved quantities and flux vector are:
+\begin{equation*}
+  \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
+\end{equation*}
+The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
+\begin{equation*}
+  \lambda_{1,2} = \pm \sqrt{\frac{E}{\rho}}=\pm c \quad ; \quad \Lcb^p=\[\rho \lambda_p \:,\: -1\]
+\end{equation*}
+The system of ODE along the characteristic curves is then:
+\begin{equation}
+  \label{eq:elast_charac_equation}
+  \Lcb^p \cdot d\Qcb = 0 \quad \Rightarrow
+  \left\lbrace
+    \begin{aligned}
+      & \rho c\: dv - d\sigma = 0\\
+      -& \rho c\: dv - d\sigma = 0
+    \end{aligned} \right.
+\end{equation}
+Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (see dashed lines in figure \ref{fig:elasticity_example}).  
+\begin{figure}[h]
+  \centering
+  \input{chapter2/pgfFigures/example_elasticity}
+  \caption{Solution to Riemann problem \eqref{eq:Riemann_problem} for an elastic bar.}
+  \label{fig:elasticity_example}
+\end{figure}
+Integration of characteristic equations \eqref{eq:elast_charac_equation} respectively along $AP$ and $BP$ yields:
+\begin{equation}
+  \label{eq:elastic_integral_curves}
+  \left\lbrace
+    \begin{aligned}
+      & \rho c \(v_P - v_A \) - \(\sigma_P - \sigma_A \) = 0\\
+      -& \rho c \(v_P - v_B \) - \(\sigma_P - \sigma_B \) = 0
+    \end{aligned}
+    \right.
+\end{equation}
+which solution is:
+\begin{equation}
+  \label{eq:elastic_solution_P}
+  v_P = \frac{\sigma_B - \sigma_A}{2\rho c} + \frac{v_A+v_B}{2} \quad ; \quad \sigma_P = \rho c\frac{v_B - v_A}{2} + \frac{\sigma_A+\sigma_B}{2}
+\end{equation}
+On the other hand, the same procedure for point $P'$ leads to the solution:
+\begin{equation}
+  \label{eq:elastic_solution_Q}
+  v_{P'} = \frac{\sigma_B - \sigma_{A'}}{2\rho c} + \frac{v_{A'}+v_B}{2} \quad ; \quad \sigma_{P'} = \rho c\frac{v_B - v_{A'}}{2} + \frac{\sigma_{A'}+\sigma_B}{2}
+\end{equation}
+With initial data given for the Riemann problem, it appears that $\Qcb_{A'}=\Qcb_{B}$ and hence, $\Qcb_{P'}=\Qcb_{R} \ne \Qcb_{P}$. Let's assume now that points $P$ and $P'$ are still on each side of the right characteristic straight line emanating from the origin but infinitely close to it. It is obvious that the previous results hold and that the a jump discontinuity propagates in the bar with speed $c$. Hence, we are left with the following condition across a discontinuous wave \cite{Toro} that generalizes to all linear Riemann problems:
 \begin{definition}
-  A characteristic field $i$ is said to be \textbf{linearly degenerate} if it satisfies
+Given a system of hyperbolic conservation laws $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the \textbf{Rankine-Hugoniot condition} reads:
+\begin{equation}
+  \label{eq:rankine-hugoniot}
+  \saut{ \Fcb} = s_i \saut{ \Qcb}
+\end{equation}
+where $\saut{\bullet}$ denotes the jump operator across the discontinuity.  
+\end{definition}
+
+
+\textcolor{Red}{For non-linear discontinuities (shocks) the celerity $s_i$ is not known whereas in the linear case $s_i=\lambda_i$. (Then in the non-linear part, says that in that case the celerity of the shock is not known unlike for linear problems)}
+\subsection{Non-linear problems}
+We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium undergoes a load at $x_1=x=0$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
+\begin{align*}
+  &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
+  & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{e}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \)
+\end{align*}
+which corresponds to a plane wave solution. Once again, the Riemann problem considered is \eqref{eq:Riemann_problem} in which $\vect{N}=\vect{e}_1$ and:
+\begin{equation*}
+ \Qcb = \matrice{v \\ F} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho_0}\Pi_{11} \\ -v}
+\end{equation*}
+with neglected body forces. \todo{rewrite the good quasilinear form}The specialization of the left eigensystem \eqref{eq:eigen_left_stress}-\eqref{eq:eigen_left_velo} with left eigenvectors $\Lcb^k=\[v^k,F^k\]$ and the acoustic tensor \eqref{eq:SVK_tangent}, yields the following left characteristic fields:
+\begin{equation}
+  \label{eq:SVK_charac_fields}
+  \lambda_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[\rho_0 \lambda_p \:,\: -1\] 
+\end{equation}
+
+
+\begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
+  \begin{equation}
+    \label{eq:linearly-degenerate}
+    \nablav_\Ucb \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Ucb \in \Rbb^m
+  \end{equation}
+\end{definition}
+\begin{definition}
+  A characteristic field is said to be \textbf{linearly degenerate} if it satisfies
   \begin{equation}
     \label{eq:linearly-degenerate}
     \nablav_\Ucb \lambda_i \cdot \Rcb^i = \vect{0},\quad \forall \Ucb \in \Rbb^m
@@ -84,22 +189,7 @@ Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not i
   where $\nablav_\Ucb (\bullet)$ is the gradient in the \textit{phase plane} $\(\Uc_1,...,\Uc_m \)$. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields.
 \end{definition}
 
-\begin{definition} A characteristic field $i$ is said to be \textbf{genuinely non-linear} if
-  \begin{equation}
-    \label{eq:linearly-degenerate}
-    \nablav_\Ucb \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Ucb \in \Rbb^m
-  \end{equation}
-\end{definition}
 
-\subsection{Non-linearities: simple and shock waves}
-Rankine-Hugoniot conditions: Given a system of hyperbolic conservation laws $\Ucb_t + \Fcb(\Ucb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the Rankine-Hugoniot condition reads:
-\begin{equation}
-  \label{eq:rankine-hugoniot}
-  \saut{ \Fcb} = s_i \saut{ \Ucb}
-\end{equation}
-where $\saut{\bullet}$ denotes the jump operator across the discontinuity. For non-linear discontinuities (shocks) the celerity $s_i$ is not known whereas in the linear case $s_i=\lambda_i$.
-\subsection{Linear problems: contact waves}
-Use the method of characteristic (with a one-dimensional problem) to show that linear waves lead, for a Riemann problemm, to discontinuous waves. See the Rankine-Hugoniot as a particular case of discontinuous waves ?
 
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
