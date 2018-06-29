@@ -251,15 +251,15 @@ A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{
   \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
 \end{equation}
 According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi(\tens{\sigma},\Vcb)$, convex with respect to thermodynamic forces and vanishing at the origin of the $(\tens{\sigma},\Vcb)$ space. This pseudo-potential enables the derivation of the plastic \textit{flow} and \textit{hardening} rules:
-\begin{subequations}
-  \begin{alignat}{2}
-    \label{eq:flow_rule}
-     \tens{\dot{\eps}}^p&=&&\drond{\Phi}{\tens{\sigma}}  \\
-    \label{eq:hardening_rule}
-     \dot{\Vcb} &= -&&\drond{\Phi}{\Acb}
-  \end{alignat}
-\end{subequations}
-Or, by using the chain rule:
+% \begin{subequations}
+%   \begin{alignat}{2}
+%     \label{eq:flow_rule}
+%      \tens{\dot{\eps}}^p&=&&\drond{\Phi}{\tens{\sigma}}  \\
+%     \label{eq:hardening_rule}
+%      \dot{\Vcb} &= -&&\drond{\Phi}{\Acb}
+%   \end{alignat}
+% \end{subequations}
+% Or, by using the chain rule:
 \begin{subequations}
   \begin{alignat}{2}
     \label{eq:flow_rule_plast}
@@ -287,13 +287,7 @@ The plastic multiplier, or the \textit{equivalent plastic strain rate} is determ
 %   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
 % \end{equation}
 
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential. 
-% In that case, the elastic law \eqref{eq:HPP_tangent} is rewritten as:
-%   \begin{equation}
-%     \label{eq:evp_law}
-%     \tens{\dot{\sigma}} = \Cbb : \( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)
-%   \end{equation}
-%   in which both strain rates are known.
+\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity can be seen as a regularization of rate-independent plasticity that relaxes the condition $f(\tens{\sigma},\Acb)\leq 0$ and thus leads to admissible thermodynamic forces outside the elastic domain \cite[p.58]{Simo}. Furthermore, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential. 
 \end{itemize}
 \subsubsection*{Examples of constitutive laws}
 We now specify the above discussion to constitutive models that will be used in the following of the manuscript.
@@ -442,7 +436,7 @@ where:
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
 in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule
-\eqref{eq:flow_rule}.
+\eqref{eq:flow_rule_plast}.
 \subsubsection*{Elasto-plasticity and hyperelasticity}
 The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws:
 \begin{align}
