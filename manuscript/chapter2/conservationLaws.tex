@@ -281,18 +281,19 @@ The plastic multiplier, or the \textit{equivalent plastic strain rate} is determ
   \dot{f}=0
 \end{equation}
 
-In analogy with the elastic law \eqref{eq:HPP_tangent}, rate-independent plastic evolutions are governed by the \textit{elastoplastic tangent modulus}:
-\begin{equation}
-  \label{eq:HPP_tangent_plasticity}
-  \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
-\end{equation}
+% In analogy with the elastic law \eqref{eq:HPP_tangent}, rate-independent plastic evolutions are governed by the \textit{elastoplastic tangent modulus}:
+% \begin{equation}
+%   \label{eq:HPP_tangent_plasticity}
+%   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
+% \end{equation}
 
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential. In that case, the elastic law \eqref{eq:HPP_tangent} is rewritten as:
-  \begin{equation}
-    \label{eq:evp_law}
-    \tens{\dot{\sigma}} = \Cbb : \( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)
-  \end{equation}
-  in which both strain rates are known.
+\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity is characterized by thermodynamic forces admissible outside the elastic domain (\textit{i.e.} $f(\tens{\sigma},\Acb)>0$) according to \textit{Perzyna type} solids model \cite[p.58]{Simo}. Hence, unlike rate-independent plasticity, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by the knowlegde of the dissipation pseudo-potential. 
+% In that case, the elastic law \eqref{eq:HPP_tangent} is rewritten as:
+%   \begin{equation}
+%     \label{eq:evp_law}
+%     \tens{\dot{\sigma}} = \Cbb : \( \tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)
+%   \end{equation}
+%   in which both strain rates are known.
 \end{itemize}
 \subsubsection*{Examples of constitutive laws}
 We now specify the above discussion to constitutive models that will be used in the following of the manuscript.
@@ -359,17 +360,17 @@ Even though it is known that this model can lead to non-physical solutions for v
 
 $\newline$
 \textbf{The plastic $J_2$ flow theory}, generally used to model metals, involves a yield function $f$ based on the second invariant of Cauchy stress deviatoric part $J_2=\tens{s}:\tens{s}$, where $\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma}$.
-By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{\eta},-R(p)\]\}$, one defines the following Helmoltz free energy density:
-%can describe \textit{isotropic} linear hardening by setting $\tens{\eta}=\tens{0}$, and \textit{kinematic} linear hardening with $R(p)=0$.The Helmoltz free energy density here reads:
+By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{Y},-R(p)\]\}$, one defines the following Helmoltz free energy density:
+%can describe \textit{isotropic} linear hardening by setting $\tens{Y}=\tens{0}$, and \textit{kinematic} linear hardening with $R(p)=0$.The Helmoltz free energy density here reads:
 \begin{equation}
   \label{eq:EP_helmoltz}
   \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(r)
 \end{equation}
-In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hardening} modulus and $\tens{\eta}$ describes the evolution of the elastic domain center in stress deviator space and is related to \textit{kinematic hardening}. Linear hardenings will be considered here by setting either $\tens{\eta}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening. The definition of thermodynamic forces \eqref{eq:thermodynamic_forces} leads to:
+In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hardening} modulus and $\tens{Y}$ describes the evolution of the elastic domain center in stress deviator space and is related to \textit{kinematic hardening}. Linear hardenings will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening. The definition of thermodynamic forces \eqref{eq:thermodynamic_forces} leads to:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eta}
-    \tens{\eta}&=\frac{2}{3}C\tens{\eps}^p \\
+    \tens{Y}&=\frac{2}{3}C\tens{\eps}^p \\
     \label{eq:isotropic_hardening}
     R &=H'(r)
   \end{alignat}
@@ -377,39 +378,35 @@ In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hard
 Furthermore, the \textit{von-Mises yield surface} is defined as:
 \begin{equation}
   \label{eq:von-Mises_yield}
-  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{\eta}} - \(R(r)+\sigma^y\) \equiv 0
+  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(R(r)+\sigma^y\) \equiv 0
 \end{equation}
 $\sigma^y$ being the traction yield stress. The specialization of flow rules \eqref{eq:flow_rule_plast}-\eqref{eq:hardening_rule_plast} leads to:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:plastic_strain_rate}
-    &\tens{\dot{\eps}}^p=\dot{p}\sqrt{\frac{3}{2}}\frac{\tens{s}-\tens{\eta}}{\norm{\tens{s}-\tens{\eta}}}=\dot{p}\:\sqrt{\frac{3}{2}}\tens{m} \\
+    &\tens{\dot{\eps}}^p=\dot{p}\sqrt{\frac{3}{2}}\frac{\tens{s}-\tens{Y}}{\norm{\tens{s}-\tens{Y}}}=\dot{p}\:\sqrt{\frac{3}{2}}\tens{m} \\
     \label{eq:equiv_plastic_strain_rate}
     &\dot{r}=\dot{p}
   \end{alignat}
 \end{subequations}
-where $r$ is identified as the equivalent plastic strain. The condition $\dot{f}=0$ yields the following evolution laws for isotropic and kinematic hardening respectively:
-\begin{subequations}
-  \begin{alignat}{2}
-    \label{eq:evoluion_isotropic}
-    & \drond{f}{\tens{s}}:\tens{\dot{s}} + \drond{f}{R}:\dot{R} = 0\quad &&\Rightarrow \quad \dot{R}= \sqrt{\frac{3}{2}}\tens{m}:\tens{\dot{s}} \\
-    \label{eq:evoluion_kinematic}
-    & \drond{f}{(\tens{s}-\tens{\eta})}:(\tens{\dot{s}}-\tens{\dot{\eta}}) =0 \quad &&\Rightarrow \quad \tens{m}:\tens{\dot{\eta}}=\tens{m}:\tens{\dot{s}} 
-  \end{alignat}
-\end{subequations}
-which, combined with the elastic law: $\tens{\dot{\sigma}}=\Cbb:\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)$ and equations \eqref{eq:eta}-\eqref{eq:isotropic_hardening} leads to:
+where $r$ is identified from \eqref{eq:equiv_plastic_strain_rate} as the equivalent plastic strain. Considering rate-independent plasticity and combining the elastic law $\tens{\dot{\sigma}}=\Cbb:\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)$ yields the following evolution law:
 \begin{equation}
-  \label{eq:dp_kinematic}
+  \label{eq:p_evolution}
   \dot{p}=\sqrt{\frac{3}{2}}\frac{2\mu}{3\mu+\beta}\tens{m}:\tens{\dot{\eps}}
 \end{equation}
-where $\beta=C$ for kinematic hardening and $\beta=R'(p)$ for isotropic hardening. Finally, the definition of the plastic strain rate can be substituted in the elastic law where $\dot{p}$ is given by \eqref{eq:dp_kinematic}, thus:
+where $\beta=C$ for kinematic hardening and $\beta=R'(p)$ for isotropic hardening. Finally, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution}can be sequencially introduced in the elastic law so that one gets \cite[eq (2.2.22)]{Simo}:
 \begin{equation}
   \label{eq:elastoplastic_tangent}
-  \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +\beta}\tens{}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
+  \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +\beta}\tens{m}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
 \end{equation}
-with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}.
+with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}. Note that (positive) linear hardenings ensure the positive definiteness of the elastoplastic acoustic tensor $\tens{A}^{ep}=\tens{A}^{elast} -  \frac{6\mu^2}{3\mu +\beta} (\tens{m}\cdot{n})\otimes(\tens{m}\cdot{n})$.  
 
-(gather plasticity and visco sinc they are based on the same yield function. Develop hardening rules...)
+Viscoplasticity on the other hand, leads to an explicit definition of the equivalent plastic strain:
+\begin{equation}
+  \label{eq:EVP_creep_law}
+  \dot{p}=\left\langle \frac{f}{\eta}\right\rangle^n
+\end{equation}
+where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$,$\eta$ are parameters arrising from the relaxation of the condition $f\leq 0$. Hence, rate-dependent plasticity is driven by the elastic law in which $\tens{\dot{\eps}^p}$ is given by \eqref{eq:flow_rule_plast} and \eqref{eq:EVP_creep_law}. 
 
 \subsection{The general formulation}
 We now summarize the conservation and constitutive laws obtained previously. Recall that the deformations considered here are isothermal and that history-dependent materials will be taken into account within linearized geometrical framework only. 
