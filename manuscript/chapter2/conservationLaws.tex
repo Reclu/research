@@ -208,9 +208,10 @@ and:
 In equation \eqref{eq:HPP_tangent}, $\Cbb$ is the $4$th order \textit{elastic stiffness} tensor which has major and minor symmetries. For isotropic elasticity, $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$ yields \textit{Hook's law} with $(\lambda,\mu)$ are Lamé parameters.
 
 Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
-\begin{equation*}
+\begin{equation}
+  \label{eq:thermodynamic_forces}
   \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vcb}=\Acb
-\end{equation*}
+\end{equation}
 where $\Acb$ are thermodynamic forces associated to internal variables $\Vcb$.
 In what follows, we shall consider hyperelastic or linear elastic deformations that do not involve irreversible processes (\textit{e.g. damage or thermal softening}). Hence, additional internal variables and associated thermodynamic forces are not activated in such situations. However, the cases of \textit{elastoplasticity} and \textit{elasto-viscoplasticity}, involving such variables and forces, will be considered in the linearized geometrical framework.
 
@@ -250,15 +251,23 @@ A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{
   \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
 \end{equation}
 According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi(\tens{\sigma},\Vcb)$, convex with respect to thermodynamic forces and vanishing at the origin of the $(\tens{\sigma},\Vcb)$ space. This pseudo-potential enables the derivation of the plastic \textit{flow} and \textit{hardening} rules:
-\begin{equation}
-  \label{eq:flow_hardening_rule}
-  \tens{\dot{\eps}}^p=\drond{\Phi}{\tens{\sigma}} \quad ; \quad \quad \dot{\Vcb} = -\drond{\Phi}{\Acb}
-\end{equation}
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:flow_rule}
+     \tens{\dot{\eps}}^p&=&&\drond{\Phi}{\tens{\sigma}}  \\
+    \label{eq:hardening_rule}
+     \dot{\Vcb} &= -&&\drond{\Phi}{\Acb}
+  \end{alignat}
+\end{subequations}
 Or, by using the chain rule:
-\begin{equation}
-  \label{eq:flow_hardening_rule_plast}
-  \tens{\dot{\eps}}^p=\drond{\Phi}{f}\drond{f}{\tens{\sigma}} \quad ; \quad \quad \dot{\Vcb} = -\drond{\Phi}{f}\drond{f}{\Acb}
-\end{equation}
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:flow_rule_plast}
+     \tens{\dot{\eps}}^p&=&&\drond{\Phi}{f}\drond{f}{\tens{\sigma}}\\
+    \label{eq:hardening_rule_plast}
+     \dot{\Vcb}& = -&&\drond{\Phi}{f}\drond{f}{\Acb}
+  \end{alignat}
+\end{subequations}
 where $\drond{\Phi}{f}=\dot{p}$ is the \textit{plastic multiplier}. We then distinguish two cases:
 \begin{itemize}
 \item \textbf{Rate-independent} plasticity is based on the assumption that admissible thermodynamic forces lie within the elastic domain \eqref{eq:elastic_convex}. The plastic multiplier is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
@@ -349,54 +358,57 @@ Even though it is known that this model can lead to non-physical solutions for v
 
 
 $\newline$
-\textbf{The plastic $J_2$ flow theory}, generally used to model metals, involves a yield function $f$ based on the second invariant of Cauchy stress deviatoric part $J_2=\tens{s}:\tens{s}$, where $\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma}$. We will consider here \textit{isotropic} and \textit{kinematic} linear hardening through internal variables and associated forces:
-\begin{itemize}
-\item $\{\Vcb,\Acb\}=\{(\tens{\eps}^p,\tens{s}),(p,-R(p))\}$ for isotropic hardening
-\item $\{\Vcb,\Acb\}=\{(\tens{\eps}^p,\tens{s}-\tens{\eta})\}$ for kinematic hardening
-\end{itemize}
-where $R'(p)$ is the isotropic hardening modulus and $\tens{\eta}$ describes the evolution of the elastic domain center in stress deviator space.
-The Helmoltz free energy density reads:
+\textbf{The plastic $J_2$ flow theory}, generally used to model metals, involves a yield function $f$ based on the second invariant of Cauchy stress deviatoric part $J_2=\tens{s}:\tens{s}$, where $\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma}$.
+By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{\eta},-R(p)\]\}$, one defines the following Helmoltz free energy density:
+%can describe \textit{isotropic} linear hardening by setting $\tens{\eta}=\tens{0}$, and \textit{kinematic} linear hardening with $R(p)=0$.The Helmoltz free energy density here reads:
 \begin{equation}
   \label{eq:EP_helmoltz}
-  \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(p)
+  \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(r)
 \end{equation}
-
-\begin{equation}
-  \label{eq:forces}
-  \tens{s}-\tens{\eta}=\rho \drond{\psi}{(\tens{s}-\tens{\eta})}\quad \Rightarrow\quad \tens{\eta}=\frac{2}{3}C\tens{\eps}^p \quad ; \quad R = \rho \drond{\psi}{p} = H'(p)
-\end{equation}
+In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hardening} modulus and $\tens{\eta}$ describes the evolution of the elastic domain center in stress deviator space and is related to \textit{kinematic hardening}. Linear hardenings will be considered here by setting either $\tens{\eta}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening. The definition of thermodynamic forces \eqref{eq:thermodynamic_forces} leads to:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:eta}
+    \tens{\eta}&=\frac{2}{3}C\tens{\eps}^p \\
+    \label{eq:isotropic_hardening}
+    R &=H'(r)
+  \end{alignat}
+\end{subequations}
 Furthermore, the \textit{von-Mises yield surface} is defined as:
 \begin{equation}
   \label{eq:von-Mises_yield}
-  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{\eta}} - R(p) -\sigma^y \equiv 0
+  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{\eta}} - \(R(r)+\sigma^y\) \equiv 0
 \end{equation}
-$\sigma^y$ being the traction yield stress. The specialization of equations \eqref{eq:flow_hardening_rule_plast} leads to:
+$\sigma^y$ being the traction yield stress. The specialization of flow rules \eqref{eq:flow_rule_plast}-\eqref{eq:hardening_rule_plast} leads to:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:plastic_strain_rate}
+    &\tens{\dot{\eps}}^p=\dot{p}\sqrt{\frac{3}{2}}\frac{\tens{s}-\tens{\eta}}{\norm{\tens{s}-\tens{\eta}}}=\dot{p}\:\sqrt{\frac{3}{2}}\tens{m} \\
+    \label{eq:equiv_plastic_strain_rate}
+    &\dot{r}=\dot{p}
+  \end{alignat}
+\end{subequations}
+where $r$ is identified as the equivalent plastic strain. The condition $\dot{f}=0$ yields the following evolution laws for isotropic and kinematic hardening respectively:
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:evoluion_isotropic}
+    & \drond{f}{\tens{s}}:\tens{\dot{s}} + \drond{f}{R}:\dot{R} = 0\quad &&\Rightarrow \quad \dot{R}= \sqrt{\frac{3}{2}}\tens{m}:\tens{\dot{s}} \\
+    \label{eq:evoluion_kinematic}
+    & \drond{f}{(\tens{s}-\tens{\eta})}:(\tens{\dot{s}}-\tens{\dot{\eta}}) =0 \quad &&\Rightarrow \quad \tens{m}:\tens{\dot{\eta}}=\tens{m}:\tens{\dot{s}} 
+  \end{alignat}
+\end{subequations}
+which, combined with the elastic law: $\tens{\dot{\sigma}}=\Cbb:\(\tens{\dot{\eps}}-\tens{\dot{\eps}}^p\)$ and equations \eqref{eq:eta}-\eqref{eq:isotropic_hardening} leads to:
 \begin{equation}
-  \label{eq:plastic_strain_rate}
-  \tens{\dot{\eps}}^p=\dot{p}\drond{f}{(\tens{s}-\tens{\eta})}=\dot{p}\sqrt{\frac{3}{2}}\frac{\tens{s}-\tens{\eta}}{\norm{\tens{s}-\tens{\eta}}}=\dot{p}\:\sqrt{\frac{3}{2}}\tens{m}
+  \label{eq:dp_kinematic}
+  \dot{p}=\sqrt{\frac{3}{2}}\frac{2\mu}{3\mu+\beta}\tens{m}:\tens{\dot{\eps}}
 \end{equation}
-For rate-independent plasticity with kinematic hardening ($R(p)=0$), the condition $\dot{f}=0$ yields:
-\begin{equation*}
-  \drond{f}{(\tens{s}-\tens{\eta})}:(\tens{\dot{s}}-\tens{\dot{\eta}}) =0 \quad \Rightarrow \quad \tens{m}:\tens{\dot{\eta}}=\tens{m}:\tens{\dot{s}}
-\end{equation*}
-and with $\tens{\eta}=\frac{2}{3}C\tens{\eps}^p$:
-\begin{equation*}
-  \tens{m}:\tens{\dot{\eta}}=\frac{2}{3}C\tens{m}:\tens{\dot{\eps}}^p = \dot{p}\sqrt{\frac{2}{3}}C\tens{m}:\tens{m}
-\end{equation*}
-and hence:\todo{similar but strain driven}
-\begin{equation*}
-  \dot{p}=\sqrt{\frac{3}{2}}\frac{\tens{m}:\tens{\dot{s}}}{C}
-\end{equation*}
-For isotropic hardening ($\tens{\eta}=\tens{0}$):
-\begin{equation*}
-  \drond{f}{\tens{s}}:\tens{\dot{s}} - \drond{f}{R}:\dot{R}=0\quad  \Rightarrow \quad\dot{R}=\sqrt{\frac{3}{2}}\tens{m}:\tens{\dot{\sigma}}
-\end{equation*}
-. By using the decomposition of Cauchy stress tensor $\tens{\sigma}=\tens{s} + \tens{\sigma}^H$, with $\tens{s}$ the deviatoric part and $\tens{\sigma}^H$ the spheric part, the elastoplastic tangent modulus reads: 
+where $\beta=C$ for kinematic hardening and $\beta=R'(p)$ for isotropic hardening. Finally, the definition of the plastic strain rate can be substituted in the elastic law where $\dot{p}$ is given by \eqref{eq:dp_kinematic}, thus:
 \begin{equation}
-  \label{eq:HPP_tangent_plasticity_explicit}
-  \Cbb^{ep}=\Cbb - \frac{6\mu^2}{3\mu +h} \frac{\tens{s}\otimes \tens{s}}{\tens{s}:\tens{s}}
+  \label{eq:elastoplastic_tangent}
+  \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +\beta}\tens{}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
 \end{equation}
-where $h$ is a material parameter depending on the hardening model and $\Cbb$ the elastic stiffness tensor.
+with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}.
+
 (gather plasticity and visco sinc they are based on the same yield function. Develop hardening rules...)
 
 \subsection{The general formulation}
@@ -433,7 +445,7 @@ where:
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho_0}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
 in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule
-\eqref{eq:flow_hardening_rule}.
+\eqref{eq:flow_rule}.
 \subsubsection*{Elasto-plasticity and hyperelasticity}
 The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws:
 \begin{align}
