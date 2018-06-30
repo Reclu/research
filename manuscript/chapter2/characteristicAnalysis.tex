@@ -66,7 +66,7 @@ Following the same procedure for right eigenvectors $\Rcb^k=\matrice{\vect{v}^k 
 which leads to the \textit{right eigen fields} associated to the non-null eigenvalues:
 \begin{equation}
   \label{eq:right_eigenfields}
-  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\tilde{\Hbb}:\( \vect{l}^p\otimes \vect{N}\) \:\]  \right\rbrace ,\quad p=1,2,3
+  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\tilde{\Hbb}:\( \vect{l}^p\otimes \vect{N}\) \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
 In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denotes the eigenfields of the acoustic tensor. Moreover, the $6$ independent right eigenvectors associated to the zero eigenvalue required to complete the set of right characteristic fields must satisfy:
 \begin{equation}
@@ -108,7 +108,7 @@ The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
   \lambda_{1,2} = \pm \sqrt{\frac{E}{\rho}}=\pm c \quad ; \quad \Lcb^p=\[\rho \lambda_p \:,\: -1\]
 \end{equation*}
-The system of ODE along the characteristic curves is then:
+The system of ODE along the characteristic curves, given by characteristic equations \eqref{eq:PDEs_ODEs}, is:
 \begin{equation}
   \label{eq:elast_charac_equation}
   \Lcb^p \cdot d\Qcb = 0 \quad \Rightarrow
@@ -167,29 +167,37 @@ which corresponds to a plane wave solution. Once again, the Riemann problem cons
 \begin{equation*}
  \Qcb = \matrice{v \\ F} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho_0}\Pi_{11} \\ -v}
 \end{equation*}
-with neglected body forces. \todo{rewrite the good quasilinear form}The specialization of the left eigensystem \eqref{eq:eigen_left_stress}-\eqref{eq:eigen_left_velo} with left eigenvectors $\Lcb^k=\[v^k,F^k\]$ and the acoustic tensor \eqref{eq:SVK_tangent}, yields the following left characteristic fields:
+with neglected body forces. Since the tangent modulus and the acoustic tensor of Saint-Venant-Kirchhoff model \eqref{eq:SVK_tangent},\eqref{eq:SVK_acoustic} depend on the deformation gradient, the integration of characteristic equations \eqref{eq:PDEs_ODEs} is simpler with the quasi-linear form: $\Qcb_t + \drond{\Fcb}{\Qcb}\drond{\Qcb}{X_N}=\vect{0}$ which Jacobian matrix is:
+\begin{equation}
+  \label{eq:quasi_SVK}
+  \Jbsf=\drond{\Fcb}{\Qcb}=-\matrice{0 & -\frac{H_{1111}}{\rho_0} \\ 1 & 0}
+\end{equation}
+The eigenvalues of this system are similar to that of the general case \eqref{eq:left_eigenfields} but the left eigenvectors are different and yield the following characteristic fields:
 \begin{equation}
   \label{eq:SVK_charac_fields}
-  \lambda_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[\rho_0 \lambda_p \:,\: -1\] 
+  \lambda_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[1\:,\:- \lambda_p \] \quad ; \quad \Rcb^p=\matrice{- \lambda_p \\1} 
 \end{equation}
-
-
+The non-linearity of the problem thus appears in characteristic speeds and eigenvectors.
 \begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
   \begin{equation}
     \label{eq:linearly-degenerate}
-    \nablav_\Ucb \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Ucb \in \Rbb^m
+    \nablav_\Qc \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Qcb \in \Rbb^m
   \end{equation}
 \end{definition}
 \begin{definition}
   A characteristic field is said to be \textbf{linearly degenerate} if it satisfies
   \begin{equation}
     \label{eq:linearly-degenerate}
-    \nablav_\Ucb \lambda_i \cdot \Rcb^i = \vect{0},\quad \forall \Ucb \in \Rbb^m
+    \nablav_\Qc \lambda_i \cdot \Rcb^i = \vect{0},\quad \forall \Qcb \in \Rbb^m
   \end{equation}
   where $\nablav_\Ucb (\bullet)$ is the gradient in the \textit{phase plane} $\(\Uc_1,...,\Uc_m \)$. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields.
 \end{definition}
 
-
+For the Saint-Venant-Kirchhoff material, equations \eqref{eq:SVK_charac_fields} lead to:
+\begin{equation*}
+  \nablav_\Qc \lambda_p = \matrice{0\\ \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} } \quad \Rightarrow \nablav_\Qc \lambda_p \cdot \Rcb^p = \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} 
+\end{equation*}
+with is not zero since $F>0$. The two characteristic fields are hence genuinely non-linear. However one must pay attention to the vanishing of characteristic speeds that can occur for $F=\frac{1}{\sqrt{3}}$. Indeed, we see that strain states for which $F \leq \frac{1}{\sqrt{3}}$ lead to a loss of hyperbolicity of the system for in such cases the eigenvalues of the Jacobian are non longer real.
 
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
