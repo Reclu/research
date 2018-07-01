@@ -177,7 +177,8 @@ The eigenvalues of this system are similar to that of the general case \eqref{eq
   \label{eq:SVK_charac_fields}
   \lambda_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[1\:,\:- \lambda_p \] \quad ; \quad \Rcb^p=\matrice{- \lambda_p \\1} 
 \end{equation}
-The non-linearity of the problem thus appears in characteristic speeds and eigenvectors.
+We see that the eigenvalues can become complex, leading to a loss of hyperbolicity of the problem. Nevertheless, we assume in what follows that $F>\sqrt{\frac{1}{3}}$.
+
 \begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
   \begin{equation}
     \label{eq:linearly-degenerate}
@@ -197,7 +198,8 @@ For the Saint-Venant-Kirchhoff material, equations \eqref{eq:SVK_charac_fields} 
 \begin{equation*}
   \nablav_\Qc \lambda_p = \matrice{0\\ \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} } \quad \Rightarrow \nablav_\Qc \lambda_p \cdot \Rcb^p = \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} 
 \end{equation*}
-with is not zero since $F>0$. The two characteristic fields are hence genuinely non-linear. However one must pay attention to the vanishing of characteristic speeds that can occur for $F=\frac{1}{\sqrt{3}}$. Indeed, we see that strain states for which $F \leq \frac{1}{\sqrt{3}}$ lead to a loss of hyperbolicity of the system for in such cases the eigenvalues of the Jacobian are non longer real.
+with is not zero since $F>\sqrt{\frac{1}{3}}$. The two characteristic fields are hence genuinely non-linear. The dependence of characteristic speeds on the deformation gradient make the structure of the solution dependent on initial data. Indeed, assuming intitial conditions such that $F_L<F_R$ yields the following characteristic speeds in the $(x,t)$ plane:
+
 
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
