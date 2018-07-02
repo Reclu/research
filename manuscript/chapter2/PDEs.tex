@@ -176,12 +176,13 @@ In this equation, the \textit{directional derivative} of $\vect{\Uc}$ along the 
 \begin{equation*}
  \ddroit{\Ucb}{t}\lvert_{t\in\varphi^k} = \Ucb_t + \lambda^k \Ucb_x   
 \end{equation*}
-Thus, along a characteristic curve a system of partial differential equations reduces to a system of \textit{Ordinary Differential Equations}:
+Thus, along a characteristic curve a system of partial differential equations reduces to a system of \textit{Ordinary Differential Equations} composed of the following \textit{characteristic equations}:
 \begin{equation}
   \label{eq:PDEs_ODEs}
   \vect{\Lc}^k  \Absf^t \(\ddroit{\Ucb}{t} + \Bcb \)=\vect{0}
 \end{equation}
-% (if initial data are given along a free curve,)
+Integration of equations \eqref{eq:PDEs_ODEs} yields a set of \textit{integral curves}.
+
 It then comes out that the Cauchy problem can be solved as the system of Ordinary differential equations \eqref{eq:PDEs_ODEs}. Indeed, the solution at a point of the $(x,t)$ plane can be determined by tracing backward the characteristic curves to the initial curve and integrating ODEs \eqref{eq:PDEs_ODEs} along those paths according to the \textit{method of characteristics}. Note that if the right-hand side of equation \eqref{eq:1st_order_quasi-linear_syst} is zero, then $\Ucb$ is constant along the characteristic curves.
 
 To illustrate the method, let us consider again the quasi-linear system of example \ref{ex:charac1} for which the Cauchy problem is built by prescribing initial conditions along the $x$-axis. Through a point $(x^*,t^*)$ pass two characteristic curves, each belonging to a different one-parameter family. The solution at this point can be determined by integrating the ODE corresponding to the first (\textit{resp. second}) eigenvalue of the system between $(x^1,0)$ (\textit{resp. $(x^2,0)$}) and $(x^*,t^*)$. It then appears that only a segment of the initial curve has an infuence on the solution at a given point. Namely, the intersections of the initial curve and characteristic curves with the highest and the lowest slopes define the \textit{domain of dependence} of the solution at this point (see figure \ref{fig:charac_method2x2}). 
