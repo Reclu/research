@@ -1,27 +1,27 @@
-The eigenspaces of conservation laws systems defined above will be now investigated. As we shall see, the characteristic structure of those problems may lead to different type of waves propagating within a medium. Finally, existing analytical solutions of one-dimensional problems \cite{Wang} will be reviewed and that of a one-dimensional problem involving a hyperelastic \textit{Saint-Venant-Kirchhoff} material will be developed in order to illustrate the identified wave structures.
+The eigenspaces of conservation laws systems defined above will be now investigated. As we shall see, the characteristic structure of those problems may lead to different type of waves propagating within a medium. Finally, existing analytical solutions of one-dimensional problems \cite{Wang} will be reviewed and that of a one-dimensional problem involving a hyperelastic \textit{Saint-Venant--Kirchhoff} material will be developed in order to illustrate the identified wave structures.
 \subsection{Characteristic structure of solutions}
 For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using a generic stress measure $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of studying multi-dimensional conservation laws systems, we will focus without loss of generality on conservative forms \eqref{eq:general_conservative} projected on an arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ \cite[p.425-426]{Leveque}. In this direction, the quasi-linear forms determined above are rewritten as:
 \begin{equation}
   \label{eq:normal_quasi}
   \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
 \end{equation}
-where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ arise. Hence, the characteristic analysis of system \eqref{eq:normal_quasi} is equivalent to that of linear combinations of matrices $\Absf^\alpha$. With the previous developments, the Jacobian matrix reads:
+where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ of dimension $m$ arise. Hence, the characteristic analysis of system \eqref{eq:normal_quasi} is equivalent to that of linear combinations of matrices $\Absf^\alpha$. With the previous developments, the Jacobian matrix reads:
 \begin{equation}
   \label{eq:jacobian_generic}
   \Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \tilde{\Hbb}\cdot\vect{N} & \tens{0}^4 }
 \end{equation}
-in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stifness tensor depending on the case considered. For general three-dimensional case, the characteristic structure of the problem is given by the $12$ eigenvalues $\lambda_k$ and associated left eigenvectors $\Lcb^k$ of the Jacobian matrix:
+in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stifness tensor depending on the case considered. For general three-dimensional case, the characteristic structure of the problem is given by the $12$ eigenvalues $c_k$ and associated left eigenvectors $\Lcb^k$ of the Jacobian matrix:
 \begin{equation}
   \label{eq:eigen_system}
-  \vect{\Lc}^k\cdot \(\Jbsf - \lambda_k \Ibsf\) = \vect{0}
+  \vect{\Lc}^k\cdot \(\Jbsf - c_k \Ibsf\) = \vect{0}
 \end{equation}
 where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{S}^K \]$, with $\tens{S}$ standing for the suitable stress mesure. Thus, for non-null eigenvalues one gets:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eigen_left_stress}
-    & -\tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) - \lambda_k  \vect{v}^k =\vect{0} \\
+    & -\tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) - c_k  \vect{v}^k =\vect{0} \\
     \label{eq:eigen_left_velo}
-    & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - \lambda_k \tens{S}^k = \tens{0}
+    & -\frac{1}{\rho_0}\vect{v}^k\otimes\vect{N} - c_k \tens{S}^k = \tens{0}
   \end{alignat}
 \end{subequations}
 Substitution of $\tens{S}$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq:eigen_left_stress} leads to:
@@ -32,7 +32,7 @@ Substitution of $\tens{S}$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq
 System \eqref{eq:acoustic_eigen} is the \textit{acoustic tensor} $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$ left eigensystem which, due to the symmetry of $\tens{A}$ is equivalent to the right eigensystem:
 \begin{equation}
   \label{eq:acoustic_eigen_system_lambda}
-  \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 \lambda_k^2 \delta_{ij} \) v_j^k =0
+  \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 c_k^2 \delta_{ij} \) v_j^k =0
 \end{equation}
 or atlernatively with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
 \begin{equation}
@@ -44,7 +44,7 @@ The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real 
   \label{eq:strong_ellipticity}
   (\vect{m}\otimes \vect{N}): \tilde{\Hbb}: (\vect{m}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
 \end{equation}
-If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{\lambda_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{\lambda_k,\Lcb^k\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
+If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_k,\Lcb^k\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
   \label{eq:left_eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
@@ -58,9 +58,9 @@ Following the same procedure for right eigenvectors $\Rcb^k=\matrice{\vect{v}^k 
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eigen_right_stress}
-    & -\frac{1}{\rho_0}\tens{S}^k\cdot  \vect{N} - \lambda_k  \vect{v}^k =\vect{0} \\
+    & -\frac{1}{\rho_0}\tens{S}^k\cdot  \vect{N} - c_k  \vect{v}^k =\vect{0} \\
     \label{eq:eigen_right_velo}
-    & -\tilde{\Hbb}:\(\vect{v}^k\otimes\vect{N}\) - \lambda_k \tens{S}^k = \tens{0}
+    & -\tilde{\Hbb}:\(\vect{v}^k\otimes\vect{N}\) - c_k \tens{S}^k = \tens{0}
   \end{alignat}
 \end{subequations}
 which leads to the \textit{right eigen fields} associated to the non-null eigenvalues:
@@ -74,8 +74,19 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
   \tens{S}^k \cdot  \vect{N} =\vect{0},\quad k=1,...,6
 \end{equation}
 
-Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure.
+Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure. Furthermore, the specialization of characteristic equations along characteristic curves \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
+\begin{equation}
+  \label{eq:characteristic_equations_homogeneous}
+  \Lcb^k \cdot d\Qcb = \vect{0},\quad k=1,...,6
+\end{equation}
+meaning that the solution is constant along each ray $\xi = x/t$ through the origin. Solutions $\Qcb(\xi)$ are then called \textit{similarity solutions} and allow to rewrite the quasi-linear form as:
+\begin{equation}
+  \label{eq:quasi-linear_similarity}
+  -\frac{x}{t^2}\Qcb'(\xi) + \Jbsf \frac{1}{t}\Qcb'(\xi) = \vect{0} \quad \Rightarrow \quad \(\Jbsf- \xi \:\Ibsf \) \Qcb'(\xi) = \vect{0}
+\end{equation}
+By looking at characteristic curves $\xi=c_k$, system \eqref{eq:quasi-linear_similarity} implies that $\Qcb'$ is equivalent to the right eigenvector $\Rcb^k$ and integration of $\Qcb'$ yields an \textit{integral curve} that is tangent at every point of the \textit{phase plane} $\(\Qcb_1,...,\Qcb_{m}\)$ to this eigenvector.
 
+$\newline$
 The notions highlighted so far will be illustrated in the two following sections. The method of characteristics will lead to:
 \begin{itemize}
 \item[(i)] the well-known solution to the \textit{Riemann problem} on a elastic bar
@@ -98,7 +109,7 @@ A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecew
   \end{aligned}
 \end{equation}
 
-We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{N}=\vect{e}_1$.
+We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{N}=\vect{n}=\vect{e}_1$ and $X_N=x$.
 
 Neglecting body forces without loss of generality and introducing \textit{Yound's modulus E} such that $\sigma = E\eps$, conserved quantities and flux vector are:
 \begin{equation*}
@@ -106,8 +117,10 @@ Neglecting body forces without loss of generality and introducing \textit{Yound'
 \end{equation*}
 The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
-  \lambda_{1,2} = \pm \sqrt{\frac{E}{\rho}}=\pm c \quad ; \quad \Lcb^p=\[\rho \lambda_p \:,\: -1\]
+  c_{1,2} = \pm \sqrt{\frac{E}{\rho}}=\pm c \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
+
+\subsubsection*{The method of characteristics}
 The system of ODE along the characteristic curves, given by characteristic equations \eqref{eq:PDEs_ODEs}, is:
 \begin{equation}
   \label{eq:elast_charac_equation}
@@ -118,7 +131,7 @@ The system of ODE along the characteristic curves, given by characteristic equat
       -& \rho c\: dv - d\sigma = 0
     \end{aligned} \right.
 \end{equation}
-Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (see dashed lines in figure \ref{fig:elasticity_example}).  
+Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (dashed lines in figure \ref{fig:elasticity_example}).  
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/example_elasticity}
@@ -155,51 +168,146 @@ Given a system of hyperbolic conservation laws $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$ 
 where $\saut{\bullet}$ denotes the jump operator across the discontinuity.  
 \end{definition}
 
+\subsubsection*{Characteristic variables -- Waves solution}
+By introducing a set of \textbf{characteristic variables} $\Hcb=\Rbsf^{-1}\Qcb$, where $\Rsf_{ij}=\Rc^j_i$ is the matrix of right eigenvectors, the quasi-linear form of system \eqref{eq:Riemann_problem} can be rewritten as a system of decoupled scalar linear advection equations.
+% \begin{equation}
+%   \label{eq:scalar_1st_order_pdes}
+%   \Hcb_t + \Cbsf\Hcb_x = \vect{0}
+% \end{equation}
+The Riemann problem can then be formulated in terms of characteristic variables:
+\begin{equation*}
+  \begin{aligned}
+    &\Hcb_t + \Cbsf\Hcb_x = \vect{0} \\
+    &\left\lbrace 
+      \begin{aligned}
+        & \Hcb(x,t=0) = \Hcb_L \quad \text{if } x< 0\\
+        & \Hcb(x,t=0) = \Hcb_R \quad \text{if } x> 0
+      \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation*}
+with $\Csf_{ij}=c_i\delta_{ij}$ so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. 
 
-\textcolor{Red}{For non-linear discontinuities (shocks) the celerity $s_i$ is not known whereas in the linear case $s_i=\lambda_i$. (Then in the non-linear part, says that in that case the celerity of the shock is not known unlike for linear problems)}
+The solution to such a problem is straightforward since it can be seen as the superposition of problems involving only one wave.
+\begin{equation*}
+  \Hc_i(x,t)=\left\lbrace
+    \begin{aligned}
+      & {\Hc_i}_L \quad \text{if } \:x <c_i t\\
+      & {\Hc_i}_R \quad \text{if } \:x>c_i t
+    \end{aligned}
+  \right. %= \Hc_i(x-c_it,0)
+\end{equation*}
+Hence, by inverting the relation:
+\begin{equation*}
+  \Qcb = \Rcb^j \Hc_j(x,t) = \Rcb^j\Hc_j(x-c_jt,0)
+\end{equation*}
+where the $\Hc_j(x-c_jt,0)$ appear as coefficients of an eigenvector expansion.
+
+\todo{Have to introduce the eigenvector expension so the shock wave solution can be developed}
 \subsection{Non-linear problems}
-We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium undergoes a load at $x_1=x=0$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
+We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium undergoes a load at $X_1=X=0$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
 \begin{align*}
   &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
   & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{e}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \)
 \end{align*}
 which corresponds to a plane wave solution. Once again, the Riemann problem considered is \eqref{eq:Riemann_problem} in which $\vect{N}=\vect{e}_1$ and:
 \begin{equation*}
- \Qcb = \matrice{v \\ F} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho_0}\Pi_{11} \\ -v}
+ \Qcb = \matrice{v \\ F} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho_0}\Pi \\ -v}
 \end{equation*}
-with neglected body forces. Since the tangent modulus and the acoustic tensor of Saint-Venant-Kirchhoff model \eqref{eq:SVK_tangent},\eqref{eq:SVK_acoustic} depend on the deformation gradient, the integration of characteristic equations \eqref{eq:PDEs_ODEs} is simpler with the quasi-linear form: $\Qcb_t + \drond{\Fcb}{\Qcb}\drond{\Qcb}{X_N}=\vect{0}$ which Jacobian matrix is:
+with neglected body forces and $\Pi=\Pi_{11}$. With tangent modulus and acoustic tensor of Saint-Venant-Kirchhoff model \eqref{eq:SVK_tangent},\eqref{eq:SVK_acoustic} depending on the deformation gradient, the integration of characteristic equations is simpler with the quasi-linear form: $\Qcb_t + \drond{\Fcb}{\Qcb}\drond{\Qcb}{X}=\vect{0}$ where:
 \begin{equation}
   \label{eq:quasi_SVK}
   \Jbsf=\drond{\Fcb}{\Qcb}=-\matrice{0 & -\frac{H_{1111}}{\rho_0} \\ 1 & 0}
 \end{equation}
-The eigenvalues of this system are similar to that of the general case \eqref{eq:left_eigenfields} but the left eigenvectors are different and yield the following characteristic fields:
+The characteristic fields of this system are:
 \begin{equation}
   \label{eq:SVK_charac_fields}
-  \lambda_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[1\:,\:- \lambda_p \] \quad ; \quad \Rcb^p=\matrice{- \lambda_p \\1} 
+  c_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[1\:,\:- c_p \] \quad ; \quad \Rcb^p=\matrice{- c_p \\1} 
 \end{equation}
-We see that the eigenvalues can become complex, leading to a loss of hyperbolicity of the problem. Nevertheless, we assume in what follows that $F>\sqrt{\frac{1}{3}}$.
+The non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant--Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
+\begin{figure}[h]
+  \centering
+  \subfloat[Left-going shock \label{subfig:1S}]{\input{chapter2/pgfFigures/1-shock}}
+  \subfloat[Right-going simple wave \label{subfig:2R}]{\input{chapter2/pgfFigures/2-rarefaction}}
+  \caption{Wave pattern generated by initial data of the Riemann problem such that $F_L<F_R$: 1--shock ; 2--rarefaction.}
+  \label{fig:1S2R}
+\end{figure}
 
-\begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
-  \begin{equation}
-    \label{eq:linearly-degenerate}
-    \nablav_\Qc \lambda_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Qcb \in \Rbb^m
-  \end{equation}
-\end{definition}
-\begin{definition}
-  A characteristic field is said to be \textbf{linearly degenerate} if it satisfies
-  \begin{equation}
-    \label{eq:linearly-degenerate}
-    \nablav_\Qc \lambda_i \cdot \Rcb^i = \vect{0},\quad \forall \Qcb \in \Rbb^m
-  \end{equation}
-  where $\nablav_\Ucb (\bullet)$ is the gradient in the \textit{phase plane} $\(\Uc_1,...,\Uc_m \)$. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields.
-\end{definition}
+Initial conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $F_L < F_R$, the resulting characteristic speeds satisfy $c_1(F_L)<c_1(F_R) \: ; \: c_2(F_L)<c_2(F_R)$. Hence, the 1-characteristic fields move away from each other in the right region of the ($x,t$) plane (figure \ref{fig:1S2R}\subref{subfig:2R}) while the 2-characteristic fields collide in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}). Those two situations respectively correspond to simple and shock waves.
 
-For the Saint-Venant-Kirchhoff material, equations \eqref{eq:SVK_charac_fields} lead to:
-\begin{equation*}
-  \nablav_\Qc \lambda_p = \matrice{0\\ \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} } \quad \Rightarrow \nablav_\Qc \lambda_p \cdot \Rcb^p = \frac{3(\lambda+2\mu)F}{2\rho_0\lambda_p} 
-\end{equation*}
-with is not zero since $F>\sqrt{\frac{1}{3}}$. The two characteristic fields are hence genuinely non-linear. The dependence of characteristic speeds on the deformation gradient make the structure of the solution dependent on initial data. Indeed, assuming intitial conditions such that $F_L<F_R$ yields the following characteristic speeds in the $(x,t)$ plane:
+\subsubsection*{Shock waves}
+By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. Assuming that a shock wave separates a region of the ($x,t$) plane in which $\Qcb=\bar{\Qcb}$ is known (initial conditions) from another where $\Qcb=\tilde{\Qcb}$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
+\begin{align}
+  \label{eq:RH_velocity}
+  & -\frac{1}{\rho_0}\(\tilde{\Pi} - \bar{\Pi} \) = s \( \tilde{v} - \bar{v} \)\\
+  \label{eq:RH_F}
+  & - \( \tilde{v}-\bar{v}\)=s\( \tilde{F} - \bar{F}\)
+\end{align}
+Substitution of $s$ from equation \eqref{eq:RH_F} and introduction in equation \eqref{eq:RH_velocity} where $\Pi=\frac{\lambda+2\mu}{2}\(F^3-F\)$ yield:
+\begin{align}
+  \label{eq:shock_speed}
+  & s=-\frac{\tilde{v}-\bar{v}}{\tilde{F} - \bar{F}}\\
+  \label{eq:v_jump}
+  & \tilde{v}-\bar{v}= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-\bar{F})\[ \tilde{F}^3-\tilde{F} - (\bar{F}^3-\bar{F})\]}
+\end{align}
+Equation \eqref{eq:v_jump} yields two families of curves in the phase plane associated to either $\Rcb^1$ or $\Rcb^2$
 
+
+In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied:
+\begin{equation}
+  \label{eq:Lax_entropy}
+  \lambda(\bar{F})<s<\lambda(\tilde{F})
+\end{equation}
+For a Saint-Venant--Kirchhoff material, the Lax condition leads to $\bar{F} > \tilde{F}$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
+
+\subsubsection*{Simple waves}
+
+
+\begin{figure}[h]
+  \centering
+  \subfloat[Left-going simple wave \label{subfig:1R}]{\input{chapter2/pgfFigures/1-rarefaction}}
+  \subfloat[Right-going shock \label{subfig:2S}]{\input{chapter2/pgfFigures/2-shock}}
+  \caption{Wave pattern generated by initial data of the Riemann problem such that $F_L>F_R$: 1--rarefaction ; 2--shock.}
+  \label{fig:1R2S}
+\end{figure}
+the negative eigenvalue will be lower for $X<0$ than for $X>0$, leading to colliding characteristic fields in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}), generating thus a \textit{shock wave}. Applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined.
+
+On the other hand, those initial conditions lead to right-going characteristics moving away from each other. Such a characteristic structure corresponds to a \textit{simple wave} (see figure \ref{fig:1S2R}\subref{subfig:2R}), which in case of a vanishing right-hand side of the hyperbolic system becomes a \textit{rarefaction wave} (\textit{i.e. a simple wave propagating a self-similar solution $\Qcb(\xi)$}). The characteristic structure of the solution corresponding to initial data such that $F_L > F_R$, depicted in figure \ref{fig:1R2S}, consists in a left-going rarefaction and a right-going shock waves. 
+
+$\newline$
+Note that the above discussion holds for concave flux functions which is not the case for the neo-Hookean model for instance. Indeed, such a model yields a monotonically decreasing positive characteristic speeds with the gradient of deformation (see figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_speeds}). Hence, initial data considered previously will lead to opposite situations (\textit{i.e. $F_L<F_R \rightarrow $ 1--rarefaction ; 2--shock, and $F_L>F_R \rightarrow $ 1--shock ; 2--rarefaction}). Moreover, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the system so that the problem does not suffer any limitation on the deformation gradient.
+\begin{figure}[h]
+  \centering
+  \subfloat[Stress $\Pi_{11}$ \label{subfig:SVK_NH_Pi}]{\input{chapter2/pgfFigures/SVK_NH_Pi_F}}
+  \subfloat[Characteristic speeds\label{subfig:SVK_NH_speeds}]{\input{chapter2/pgfFigures/SVK_NH_speeds}}
+  \caption{Comparison of neo--Hookean and Saint-Venant--Kirchhoff hyperelastic models.}
+  \label{fig:SVK-NH}
+\end{figure}\todo{Give parameters values}
+At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} highlights the non-physical behaviour of Saint-Venant-Kirchhoff model for high compression loads that lead to a stress tensor tending to zero.
+
+% Furthermore, the evolution of a characteristic speed along the associated integral curve is related to the following definitions:
+% \begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
+%   \begin{equation}
+%     \label{eq:linearly-degenerate}
+%     \nablav_\Qc c_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Qcb \in \Rbb^m
+%   \end{equation}
+% \end{definition}
+% \begin{definition}
+%   A characteristic field is said to be \textbf{linearly degenerate} if it satisfies
+%   \begin{equation}
+%     \label{eq:linearly-degenerate}
+%     \nablav_\Qc c_i \cdot \Rcb^i = \vect{0},\quad \forall \Qcb \in \Rbb^m
+%   \end{equation}
+%   where $\nablav_\Ucb (\bullet)$ is the gradient in the phase plane. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields. An example of linearly degenerate field in a non-linear problem is that of contact discontinuities \cite[Chapter~13]{Leveque}.
+% \end{definition}
+
+% For the Saint-Venant-Kirchhoff material, equations \eqref{eq:SVK_charac_fields} lead to:
+% \begin{equation*}
+%   \nablav_\Qc c_p = \matrice{0\\ \frac{3(\lambda+2\mu)F}{2\rho_0c_p} } \quad \Rightarrow \nablav_\Qc c_p \cdot \Rcb^p = \frac{3(\lambda+2\mu)F}{2\rho_0c_p} 
+% \end{equation*}
+% with is not zero since $F>\sqrt{\frac{1}{3}}$.
+
+While the solution through a shock wave can be determined with the Rankine-Hugoniot condition, the states connected to initial data through a rarefaction wave are given by integral curves. Indeed, since one seeks a similarity solution, the evolution of $\Qcb$ through a rarefaction wave obeys
 
 \subsection{Integral curves}
 \subsection{The Rankine-Hugoniot condition}
