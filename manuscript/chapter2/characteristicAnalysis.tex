@@ -74,7 +74,7 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
   \tens{S}^k \cdot  \vect{N} =\vect{0},\quad k=1,...,6
 \end{equation}
 
-Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure. Furthermore, the specialization of characteristic equations along characteristic curves \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
+Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure. Furthermore, the specialization of characteristic equations \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
 \begin{equation}
   \label{eq:characteristic_equations_homogeneous}
   \Lcb^k \cdot d\Qcb = \vect{0},\quad k=1,...,6
@@ -84,7 +84,7 @@ meaning that the solution is constant along each ray $\xi = x/t$ through the ori
   \label{eq:quasi-linear_similarity}
   -\frac{x}{t^2}\Qcb'(\xi) + \Jbsf \frac{1}{t}\Qcb'(\xi) = \vect{0} \quad \Rightarrow \quad \(\Jbsf- \xi \:\Ibsf \) \Qcb'(\xi) = \vect{0}
 \end{equation}
-By looking at characteristic curves $\xi=c_k$, system \eqref{eq:quasi-linear_similarity} implies that $\Qcb'$ is equivalent to the right eigenvector $\Rcb^k$ and integration of $\Qcb'$ yields an \textit{integral curve} that is tangent at every point of the \textit{phase plane} $\(\Qcb_1,...,\Qcb_{m}\)$ to this eigenvector.
+By looking at characteristic curves $\xi=c_k$, system \eqref{eq:quasi-linear_similarity} implies that $\Qcb'$ is proportional to the right eigenvector $\Rcb^k$ and integration of $\Qcb'$ yields an \textit{integral curve} that is tangent at every point of the \textit{phase plane} $\(\Qcb_1,...,\Qcb_{m}\)$ to this eigenvector.
 
 $\newline$
 The notions highlighted so far will be illustrated in the two following sections. The method of characteristics will lead to:
@@ -102,8 +102,8 @@ A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecew
   &\Qcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \Scb, \\
   &\left\lbrace 
     \begin{aligned}
-      & \Qcb(X_N,t=0) = \Qcb_L \quad \text{if } X_N< 0\\
-      & \Qcb(X_N,t=0) = \Qcb_R \quad \text{if } X_N> 0
+      & \Qcb(X_N,t=0) = \Qcb^L \quad \text{if } X_N< 0\\
+      & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0
     \end{aligned}
     \right.
   \end{aligned}
@@ -117,7 +117,13 @@ Neglecting body forces without loss of generality and introducing \textit{Yound'
 \end{equation*}
 The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
-  c_{1,2} = \pm \sqrt{\frac{E}{\rho}}=\pm c \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
+  % c_{1,2} = \mp \sqrt{\frac{E}{\rho}}=\pm c
+  \left\lbrace
+    \begin{aligned}
+      & c_1=- \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=-c\\
+      & c_2= \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=c
+    \end{aligned}\right.
+ \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
 
 \subsubsection*{The method of characteristics}
@@ -127,8 +133,8 @@ The system of ODE along the characteristic curves, given by characteristic equat
   \Lcb^p \cdot d\Qcb = 0 \quad \Rightarrow
   \left\lbrace
     \begin{aligned}
-      & \rho c\: dv - d\sigma = 0\\
-      -& \rho c\: dv - d\sigma = 0
+      -& \rho c\: dv - d\sigma = 0\\
+      & \rho c\: dv - d\sigma = 0
     \end{aligned} \right.
 \end{equation}
 Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (dashed lines in figure \ref{fig:elasticity_example}).  
@@ -143,8 +149,8 @@ Integration of characteristic equations \eqref{eq:elast_charac_equation} respect
   \label{eq:elastic_integral_curves}
   \left\lbrace
     \begin{aligned}
-      & \rho c \(v_P - v_A \) - \(\sigma_P - \sigma_A \) = 0\\
-      -& \rho c \(v_P - v_B \) - \(\sigma_P - \sigma_B \) = 0
+      -& \rho c \(v_P - v_A \) - \(\sigma_P - \sigma_A \) = 0\\
+      & \rho c \(v_P - v_B \) - \(\sigma_P - \sigma_B \) = 0
     \end{aligned}
     \right.
 \end{equation}
@@ -169,43 +175,68 @@ where $\saut{\bullet}$ denotes the jump operator across the discontinuity.
 \end{definition}
 
 \subsubsection*{Characteristic variables -- Waves solution}
-By introducing a set of \textbf{characteristic variables} $\Hcb=\Rbsf^{-1}\Qcb$, where $\Rsf_{ij}=\Rc^j_i$ is the matrix of right eigenvectors, the quasi-linear form of system \eqref{eq:Riemann_problem} can be rewritten as a system of decoupled scalar linear advection equations.
-% \begin{equation}
-%   \label{eq:scalar_1st_order_pdes}
-%   \Hcb_t + \Cbsf\Hcb_x = \vect{0}
-% \end{equation}
-The Riemann problem can then be formulated in terms of characteristic variables:
+Consider a quasi-linear form of dimension $m$ $\Qcb_t + \Jbsf \Qcb_x=\vect{0}$. 
+By introducing a set of \textbf{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$, where $\Rsf_{ij}=\Rc^j_i$ is the matrix of right eigenvectors, the quasi-linear form of system \eqref{eq:Riemann_problem} can be rewritten in terms of characteristic the variables:
 \begin{equation*}
   \begin{aligned}
-    &\Hcb_t + \Cbsf\Hcb_x = \vect{0} \\
+    &\drond{\Pc_i}{t} + c_i\drond{\Pc_i}{x} = 0 \\
     &\left\lbrace 
       \begin{aligned}
-        & \Hcb(x,t=0) = \Hcb_L \quad \text{if } x< 0\\
-        & \Hcb(x,t=0) = \Hcb_R \quad \text{if } x> 0
+        & \Pc_i(x,t=0) = \Pc_i^L \quad \text{if } x< 0\\
+        & \Pc_i(x,t=0) = \Pc_i^R \quad \text{if } x> 0
       \end{aligned}
     \right.
   \end{aligned}
 \end{equation*}
-with $\Csf_{ij}=c_i\delta_{ij}$ so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. 
+with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profil $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, at a given point $(x,t)$, the solution $\Pc_i(x,t)$ is simply given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$. 
+\begin{figure}[h]
+  \centering
+  \subfloat{\input{chapter2/pgfFigures/advection_solution}}
+  \subfloat{\input{chapter2/pgfFigures/advection_P}}
+  \caption{Solution to linear advection equation on the quantity $\Pc_i$ with characteristic speed $c_i$.}
+  \label{fig:advection}
+\end{figure}
+The vector $\Qcb$ is then determined by inverting the relation:
+\begin{equation}
+  \Qcb = \Rcb^i \Pc_i(x-c_it,0)
+\end{equation}
+or in terms of the initial data:
+\begin{equation}
+  \label{eq:Q_expansion}
+  \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
+\end{equation}
+where $m$ is $I$ is such that $x-c_I t >0$ and $x-c_{I+1} t <0$. This equation can be seen as an eigenvector expansion of $\Qcb$ with coefficients\todo{introduce the notion of waves} $\Pc_i^{R,L}$ and in particular:
+\begin{equation}
+  \label{eq:Qside_expansion}
+  \Qcb^L = \sum_{i=1}^{m}\Rcb^i \Pc_i^L \quad ; \quad \Qcb^R = \sum_{i=1}^{m}\Rcb^i \Pc_i^R
+\end{equation}
+By rewritting expansion \eqref{eq:Q_expansion}:
+\begin{align}
+  &\Qcb = \sum_{i=1}^m \Rcb^i \Pc_i^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\) \\
+  &\Qcb= \sum_{i=1}^{m}\Rcb^i \Pc_i^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\) 
+\end{align}
+Jump conditions can thus be derived:
+\begin{align}
+  \label{eq:jump_star_R}
+  &  \Qcb-\Qcb^R = -\sum_{i=I+1}^{m} \Rcb^i\delta^i \\
+  \label{eq:jump_star_L}
+  &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i \\
+\end{align}
+where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics. In equations \eqref{eq:jump_star_R} and \eqref{eq:jump_star_L}, coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from \eqref{eq:Qside_expansion} by solving $\Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}$.
 
-The solution to such a problem is straightforward since it can be seen as the superposition of problems involving only one wave.
-\begin{equation*}
-  \Hc_i(x,t)=\left\lbrace
-    \begin{aligned}
-      & {\Hc_i}_L \quad \text{if } \:x <c_i t\\
-      & {\Hc_i}_R \quad \text{if } \:x>c_i t
-    \end{aligned}
-  \right. %= \Hc_i(x-c_it,0)
-\end{equation*}
-Hence, by inverting the relation:
-\begin{equation*}
-  \Qcb = \Rcb^j \Hc_j(x,t) = \Rcb^j\Hc_j(x-c_jt,0)
-\end{equation*}
-where the $\Hc_j(x-c_jt,0)$ appear as coefficients of an eigenvector expansion.
-
-\todo{Have to introduce the eigenvector expension so the shock wave solution can be developed}
+For the linear elastic case considered above, the wave strengths coeeficients are:
+\begin{equation}
+  \label{eq:elastic_wave_strengths}
+  \vect{\delta} = \matrice{\frac{\rho c \(v_B - v_A\) + \(\sigma_B-\sigma_A\)}{2\rho c} \\\frac{\rho c \(v_B - v_A\) - \(\sigma_B-\sigma_A\)}{2\rho c}}
+\end{equation}
+leading, with equation \eqref{eq:jump_star_L} to:
+\begin{equation}
+  \label{eq:solution_charac_variables}
+  \Qcb = \Qcb^L +\Rcb^1 \delta^1 = \matrice{\frac{\sigma_B - \sigma_A}{2\rho c} + \frac{v_A+v_B}{2} \\ \rho c\frac{v_B - v_A}{2} + \frac{\sigma_A+\sigma_B}{2}} 
+\end{equation}
+which is the solution found by using the method of characteristics \eqref{eq:elastic_solution_P}.
 \subsection{Non-linear problems}
-We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium undergoes a load at $X_1=X=0$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
+We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}).\todo{Picard problem ?} This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
 \begin{align*}
   &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
   & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{e}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \)
@@ -222,7 +253,13 @@ with neglected body forces and $\Pi=\Pi_{11}$. With tangent modulus and acoustic
 The characteristic fields of this system are:
 \begin{equation}
   \label{eq:SVK_charac_fields}
-  c_{1,2}=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) } \quad ; \quad \Lcb^p=\[1\:,\:- c_p \] \quad ; \quad \Rcb^p=\matrice{- c_p \\1} 
+  % c_{1,2}=\mp \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }
+  \left\lbrace
+    \begin{aligned}
+      & c_1=- \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }\\
+      &c_2= \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }
+    \end{aligned}\right.
+ \quad ; \quad \Lcb^p=\[1\:,\:- c_p \] \quad ; \quad \Rcb^p=\matrice{- c_p \\1} 
 \end{equation}
 The non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant--Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
 \begin{figure}[h]
@@ -233,35 +270,54 @@ The non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yie
   \label{fig:1S2R}
 \end{figure}
 
-Initial conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $F_L < F_R$, the resulting characteristic speeds satisfy $c_1(F_L)<c_1(F_R) \: ; \: c_2(F_L)<c_2(F_R)$. Hence, the 1-characteristic fields move away from each other in the right region of the ($x,t$) plane (figure \ref{fig:1S2R}\subref{subfig:2R}) while the 2-characteristic fields collide in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}). Those two situations respectively correspond to simple and shock waves.
+Initial conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $F_L < F_R$, the resulting characteristic speeds satisfy $c_2(F_L)<c_2(F_R) \: ; \: c_1(F_L)<c_1(F_R)$. Hence, the 1-characteristic fields collide in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}) while the 2-characteristic fields move away from each other in the right region of the ($x,t$) plane (figure \ref{fig:1S2R}\subref{subfig:2R}). Those two situations respectively correspond to shock and simple waves.
 
 \subsubsection*{Shock waves}
-By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. Assuming that a shock wave separates a region of the ($x,t$) plane in which $\Qcb=\bar{\Qcb}$ is known (initial conditions) from another where $\Qcb=\tilde{\Qcb}$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
+By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. Assuming that a shock wave separates a region of the ($x,t$) plane in which $\Qcb$ is known (initial conditions) from another where $\Qcb=\tilde{\Qcb}$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
 \begin{align}
   \label{eq:RH_velocity}
-  & -\frac{1}{\rho_0}\(\tilde{\Pi} - \bar{\Pi} \) = s \( \tilde{v} - \bar{v} \)\\
+  & -\frac{1}{\rho_0}\(\tilde{\Pi} - \Pi \) = s \( \tilde{v} - v \)\\
   \label{eq:RH_F}
-  & - \( \tilde{v}-\bar{v}\)=s\( \tilde{F} - \bar{F}\)
+  & - \( \tilde{v}-v\)=s\( \tilde{F} - F\)
 \end{align}
 Substitution of $s$ from equation \eqref{eq:RH_F} and introduction in equation \eqref{eq:RH_velocity} where $\Pi=\frac{\lambda+2\mu}{2}\(F^3-F\)$ yield:
 \begin{align}
   \label{eq:shock_speed}
-  & s=-\frac{\tilde{v}-\bar{v}}{\tilde{F} - \bar{F}}\\
+  & s=-\frac{\tilde{v}-v}{\tilde{F} - F}\\
   \label{eq:v_jump}
-  & \tilde{v}-\bar{v}= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-\bar{F})\[ \tilde{F}^3-\tilde{F} - (\bar{F}^3-\bar{F})\]}
+  & \tilde{v}-v= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F)\[ \tilde{F}^3-\tilde{F} - (F^3-F)\]}
 \end{align}
-Equation \eqref{eq:v_jump} yields two families of curves in the phase plane associated to either $\Rcb^1$ or $\Rcb^2$
-
-
-In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied:
+In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied \cite[p.268]{Leveque}:
 \begin{equation}
   \label{eq:Lax_entropy}
   \lambda(\bar{F})<s<\lambda(\tilde{F})
 \end{equation}
 For a Saint-Venant--Kirchhoff material, the Lax condition leads to $\bar{F} > \tilde{F}$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
 
-\subsubsection*{Simple waves}
 
+Equation \eqref{eq:v_jump} yields two families of curves in the phase plane, each of which must lead to the jump conditions derived for the linear case \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L} when considering an infinitesimal jump (\textit{i.e. $\tilde{F}=F+\epsilon$ with $\epsilon \rightarrow 0$}). Thus, equation \eqref{eq:v_jump} reads:
+\begin{equation}
+  \label{eq:linearization}
+  \tilde{v}-v= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\epsilon\[ (F+\epsilon)^3-(F+\epsilon) - (F^3-F)\]}
+\end{equation}
+where, with $\epsilon \rightarrow 0$:
+\begin{equation*}
+  (F+\epsilon)^3\approx F^3(1+\frac{3\epsilon}{F})
+\end{equation*}
+and hence,
+\begin{equation*}
+  \tilde{v}-v= \pm \epsilon \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F^2-1\]}
+\end{equation*}
+In this equation, $\Rcb^1$ and $\Rcb^2$ are respectively identified with the positive and the negative sign. Hence, for left-going and right-going shocks, the Rankine-Hugoniot condition respectively yields:
+\begin{align}
+  \label{eq:left-going_shock}
+  &\tilde{v}-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F_L)\[ \tilde{F}^3-\tilde{F} - (F_L^3-F_L)\]} \\
+  \label{eq:right-going_shock}
+  &\tilde{v}-v_R= -\sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F_R)\[ \tilde{F}^3-\tilde{F} - (F_R^3-F_R)\]}
+\end{align}
+\todo{Finish the solution no ?}
+\subsubsection*{Simple waves}
+The situation depicted in figure \ref{fig:1S2R}\subref{subfig:2R} corresponds to a smooth evolution of fields
 
 \begin{figure}[h]
   \centering
@@ -270,7 +326,7 @@ For a Saint-Venant--Kirchhoff material, the Lax condition leads to $\bar{F} > \t
   \caption{Wave pattern generated by initial data of the Riemann problem such that $F_L>F_R$: 1--rarefaction ; 2--shock.}
   \label{fig:1R2S}
 \end{figure}
-the negative eigenvalue will be lower for $X<0$ than for $X>0$, leading to colliding characteristic fields in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}), generating thus a \textit{shock wave}. Applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined.
+
 
 On the other hand, those initial conditions lead to right-going characteristics moving away from each other. Such a characteristic structure corresponds to a \textit{simple wave} (see figure \ref{fig:1S2R}\subref{subfig:2R}), which in case of a vanishing right-hand side of the hyperbolic system becomes a \textit{rarefaction wave} (\textit{i.e. a simple wave propagating a self-similar solution $\Qcb(\xi)$}). The characteristic structure of the solution corresponding to initial data such that $F_L > F_R$, depicted in figure \ref{fig:1R2S}, consists in a left-going rarefaction and a right-going shock waves. 
 
