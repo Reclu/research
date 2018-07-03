@@ -95,21 +95,21 @@ The notions highlighted so far will be illustrated in the two following sections
 Furthermore, the \textit{Rankine-Hugoniot condition} for discontinuous waves, and the concept of \textit{shock} and \textit{simple} waves will be introduced.
 
 \subsection{Linear problems}
-A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecewise constant initial data on both sides of an interface. In the arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$, the Riemann problem reads:
+A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecewise constant initial data on both sides of an interface. In the arbitrary direction $\vect{n}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$, the Riemann problem reads:
 \begin{equation}
   \label{eq:Riemann_problem}
   \begin{aligned}
-  &\Qcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \Scb, \\
+  &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \Scb, \\
   &\left\lbrace 
     \begin{aligned}
-      & \Qcb(X_N,t=0) = \Qcb^L \quad \text{if } X_N< 0\\
-      & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0
+      & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
+      & \Qcb(x_n,t=0) = \Qcb^R \quad \text{if } x_n> 0
     \end{aligned}
     \right.
   \end{aligned}
 \end{equation}
 
-We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{N}=\vect{n}=\vect{e}_1$ and $X_N=x$.
+We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{n}=\vect{e}_1$ and $X_n=x$.
 
 Neglecting body forces without loss of generality and introducing \textit{Yound's modulus E} such that $\sigma = E\eps$, conserved quantities and flux vector are:
 \begin{equation*}
@@ -205,11 +205,14 @@ or in terms of the initial data:
   \label{eq:Q_expansion}
   \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
 \end{equation}
-where $m$ is $I$ is such that $x-c_I t >0$ and $x-c_{I+1} t <0$. This equation can be seen as an eigenvector expansion of $\Qcb$ with coefficients\todo{introduce the notion of waves} $\Pc_i^{R,L}$ and in particular:
+where $m$ is $I$ is such that $x-c_I t >0$ and $x-c_{I+1} t <0$. This equation can be seen as an eigenvector expansion of $\Qcb$ with coefficients $\Pc_i^{R,L}$ and in particular:
 \begin{equation}
   \label{eq:Qside_expansion}
   \Qcb^L = \sum_{i=1}^{m}\Rcb^i \Pc_i^L \quad ; \quad \Qcb^R = \sum_{i=1}^{m}\Rcb^i \Pc_i^R
 \end{equation}
+\begin{remark}
+  The above discussion highlight the wave nature of the solution to hyperbolic problems. Indeed, since $\Qcb(x,t)$ can be expended into an eigenvector basis with coefficients $\Pc_i$ obeying a linear advection... 
+\end{remark}
 By rewritting expansion \eqref{eq:Q_expansion}:
 \begin{align}
   &\Qcb = \sum_{i=1}^m \Rcb^i \Pc_i^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\) \\
@@ -236,24 +239,36 @@ leading, with equation \eqref{eq:jump_star_L} to:
 \end{equation}
 which is the solution found by using the method of characteristics \eqref{eq:elastic_solution_P}.
 \subsection{Non-linear problems}
-We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}).\todo{Picard problem ?} This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
+We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
 \begin{align*}
   &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
   & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{e}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \)
 \end{align*}
-which corresponds to a plane wave solution. Once again, the Riemann problem considered is \eqref{eq:Riemann_problem} in which $\vect{N}=\vect{e}_1$ and:
+which corresponds to a plane wave solution. We assume that $F(0,t)=\bar{F}$ is given, leading to a \textit{Picard problem} involving both initial and boundary conditions with neglected body forces:
+\begin{equation}
+  \label{eq:Picard_problem}
+  \begin{aligned}
+  &\Qcb_t + \drond{\Fcb\cdot \vect{X}}{X_N} = \vect{0}, \\
+  &\left\lbrace 
+    \begin{aligned}
+      & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0 \\
+      & F(0,t) = \bar{F} 
+    \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+with $\vect{N}=\vect{e}_1$ and:
 \begin{equation*}
  \Qcb = \matrice{v \\ F} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho_0}\Pi \\ -v}
 \end{equation*}
-with neglected body forces and $\Pi=\Pi_{11}$. With tangent modulus and acoustic tensor of Saint-Venant-Kirchhoff model \eqref{eq:SVK_tangent},\eqref{eq:SVK_acoustic} depending on the deformation gradient, the integration of characteristic equations is simpler with the quasi-linear form: $\Qcb_t + \drond{\Fcb}{\Qcb}\drond{\Qcb}{X}=\vect{0}$ where:
+where $\Pi=\Pi_{11}$. Since the tangent modulus and the acoustic tensor of Saint-Venant-Kirchhoff model \eqref{eq:SVK_tangent},\eqref{eq:SVK_acoustic} depend on the deformation gradient, the quasi-linear form: $\Qcb_t + \drond{\Fcb}{\Qcb}\drond{\Qcb}{X}=\vect{0}$ is more convenient. The Jacobian matrix is then:
 \begin{equation}
   \label{eq:quasi_SVK}
   \Jbsf=\drond{\Fcb}{\Qcb}=-\matrice{0 & -\frac{H_{1111}}{\rho_0} \\ 1 & 0}
 \end{equation}
-The characteristic fields of this system are:
+which leads to the characteristic fields:
 \begin{equation}
   \label{eq:SVK_charac_fields}
-  % c_{1,2}=\mp \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }
   \left\lbrace
     \begin{aligned}
       & c_1=- \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }\\
@@ -261,112 +276,186 @@ The characteristic fields of this system are:
     \end{aligned}\right.
  \quad ; \quad \Lcb^p=\[1\:,\:- c_p \] \quad ; \quad \Rcb^p=\matrice{- c_p \\1} 
 \end{equation}
-The non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant--Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
+Note that the non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant--Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
+
+Initial and boundary conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $\bar{F} > F_R$, the resulting characteristic speeds satisfy $c_2(\bar{F})>c_2(F_R)$ leading to characteristics colliding in the right region of the ($x,t$) plane (figure \ref{fig:Picard_problem}\subref{subfig:2S}). On the other hand, $\bar{F} < F_R$ yields characteristic moving away from each other in the right region according to $c_2(\bar{F})<c_2(F_R)$ (figure \ref{fig:Picard_problem}\subref{subfig:2R}). Those two situations, respectively corresponding to a shock wave and a simple wave, will be studied in what follows.
 \begin{figure}[h]
   \centering
-  \subfloat[Left-going shock \label{subfig:1S}]{\input{chapter2/pgfFigures/1-shock}}
-  \subfloat[Right-going simple wave \label{subfig:2R}]{\input{chapter2/pgfFigures/2-rarefaction}}
-  \caption{Wave pattern generated by initial data of the Riemann problem such that $F_L<F_R$: 1--shock ; 2--rarefaction.}
-  \label{fig:1S2R}
+  \subfloat[Right-going shock wave\label{subfig:2S}]{\input{chapter2/pgfFigures/picard_2_shock}}
+  \subfloat[Right-going simple wave\label{subfig:2R}]{\input{chapter2/pgfFigures/picard_2_rarefaction}}
+  \caption{Solutions to Picard problem \eqref{eq:Picard_problem} depending on initial and boundary data.}
+  \label{fig:Picard_problem}
 \end{figure}
 
-Initial conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $F_L < F_R$, the resulting characteristic speeds satisfy $c_2(F_L)<c_2(F_R) \: ; \: c_1(F_L)<c_1(F_R)$. Hence, the 1-characteristic fields collide in the left region (figure \ref{fig:1S2R}\subref{subfig:1S}) while the 2-characteristic fields move away from each other in the right region of the ($x,t$) plane (figure \ref{fig:1S2R}\subref{subfig:2R}). Those two situations respectively correspond to shock and simple waves.
-
 \subsubsection*{Shock waves}
-By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. Assuming that a shock wave separates a region of the ($x,t$) plane in which $\Qcb$ is known (initial conditions) from another where $\Qcb=\tilde{\Qcb}$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
+By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
 \begin{align}
   \label{eq:RH_velocity}
-  & -\frac{1}{\rho_0}\(\tilde{\Pi} - \Pi \) = s \( \tilde{v} - v \)\\
+  & -\frac{1}{\rho_0}\(\bar{\Pi} - \Pi_R \) = s \( \bar{v} - v_R \)\\
   \label{eq:RH_F}
-  & - \( \tilde{v}-v\)=s\( \tilde{F} - F\)
+  & - \( \bar{v}-v_R\)=s\( \bar{F} - F_R\)
 \end{align}
+For the sake of generality, $\bar{F}$ is considered as an unknown so that a relation connecting $\Qcb^R$ to a set of solutions $\Qcb$ through a shock wave can be developed.
+
 Substitution of $s$ from equation \eqref{eq:RH_F} and introduction in equation \eqref{eq:RH_velocity} where $\Pi=\frac{\lambda+2\mu}{2}\(F^3-F\)$ yield:
 \begin{align}
   \label{eq:shock_speed}
-  & s=-\frac{\tilde{v}-v}{\tilde{F} - F}\\
+  & s=-\frac{v-v_R}{F - F_R}\\
   \label{eq:v_jump}
-  & \tilde{v}-v= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F)\[ \tilde{F}^3-\tilde{F} - (F^3-F)\]}
+  & v-v_R= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(F-F_R)\[ F^3-F - (F_R^3-F_R)\]}
 \end{align}
 In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied \cite[p.268]{Leveque}:
 \begin{equation}
   \label{eq:Lax_entropy}
-  \lambda(\bar{F})<s<\lambda(\tilde{F})
+  \lambda(F)<s<\lambda(F_R)
 \end{equation}
-For a Saint-Venant--Kirchhoff material, the Lax condition leads to $\bar{F} > \tilde{F}$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
+For a Saint-Venant--Kirchhoff material, the Lax condition leads to $F > F_R$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
 
 
-Equation \eqref{eq:v_jump} yields two families of curves in the phase plane, each of which must lead to the jump conditions derived for the linear case \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L} when considering an infinitesimal jump (\textit{i.e. $\tilde{F}=F+\epsilon$ with $\epsilon \rightarrow 0$}). Thus, equation \eqref{eq:v_jump} reads:
+Equation \eqref{eq:v_jump} yields two families of curves in the phase plane, one of which is expected to identify with the jump conditions derived for the linear case \eqref{eq:jump_star_R} when considering an infinitesimal jump (\textit{i.e. $F=F_R+\epsilon$ with $\epsilon \rightarrow 0$}). Thus, equation \eqref{eq:v_jump} reads:
 \begin{equation}
   \label{eq:linearization}
-  \tilde{v}-v= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\epsilon\[ (F+\epsilon)^3-(F+\epsilon) - (F^3-F)\]}
+  v-v_R= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\epsilon\[ (F_R+\epsilon)^3-(F_R+\epsilon) - (F_R^3-F_R)\]}
 \end{equation}
 where, with $\epsilon \rightarrow 0$:
 \begin{equation*}
-  (F+\epsilon)^3\approx F^3(1+\frac{3\epsilon}{F})
+  (F_R+\epsilon)^3\approx F_R^3(1+\frac{3\epsilon}{F_R})
 \end{equation*}
 and hence,
 \begin{equation*}
-  \tilde{v}-v= \pm \epsilon \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F^2-1\]}
+  \matrice{v \\ F}=\matrice{v_R \\ F_R} + \epsilon \matrice{1 \\\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F_R^2-1\]}}
 \end{equation*}
-In this equation, $\Rcb^1$ and $\Rcb^2$ are respectively identified with the positive and the negative sign. Hence, for left-going and right-going shocks, the Rankine-Hugoniot condition respectively yields:
+Hence, the \textit{minus} sign yields the linearized expression \eqref{eq:jump_star_R} for a right-going shock, the \textit{plus} sign holds, on the other hand, for left-going shocks. Finally, the Rankine-Hugoniot condition across a left-going shock and a right-going shock respectively yields:
 \begin{align}
   \label{eq:left-going_shock}
-  &\tilde{v}-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F_L)\[ \tilde{F}^3-\tilde{F} - (F_L^3-F_L)\]} \\
+  &v-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(F-F_L)\[ F^3-F - (F_L^3-F_L)\]} \\
   \label{eq:right-going_shock}
-  &\tilde{v}-v_R= -\sqrt{\frac{\lambda+2\mu}{2\rho_0}(\tilde{F}-F_R)\[ \tilde{F}^3-\tilde{F} - (F_R^3-F_R)\]}
+  &v-v_R= -\sqrt{\frac{\lambda+2\mu}{2\rho_0}(F-F_R)\[ F^3-F - (F_R^3-F_R)\]}
 \end{align}
-\todo{Finish the solution no ?}
+
 \subsubsection*{Simple waves}
-The situation depicted in figure \ref{fig:1S2R}\subref{subfig:2R} corresponds to a smooth evolution of fields
+In order to study the evolution of fields within the void region in figure \ref{fig:Picard_problem}\subref{subfig:2R}, let's write the left-going characteristic equation through it with $\Lcb^1=[1,-c_1]$:
+\begin{equation}
+  \label{eq:SVK_rarefaction}
+  dv -c_1  dF = 0 %+\sqrt{\frac{\lambda + 2\mu}{2\rho_0}\(3F^2-1\)}
+\end{equation}
+
+\begin{remark}
+  If one was seeking a similarity solution in this region, the conserved quantity vector would be looked for so that $\Qcb'(x/t)$ is proportional to the right eigenvector $\Rcb^2$ asrequired by equation \eqref{eq:quasi-linear_similarity}. By denoting the ray $\xi=x/t$, this proportionality condition is:
+  \begin{equation*}
+    \matrice{\ddroit{v}{\xi} \\ \ddroit{F}{\xi}} = \matrice{ -c_2 \\ 1}
+  \end{equation*}
+  Combining these equations and noting that $c_2=-c_1$ allows to recover equation \eqref{eq:SVK_rarefaction}:
+  \begin{equation}
+    \label{eq:rarefaction}
+    \begin{aligned}
+      & dv -c_1 d\xi = 0\\
+      & dF = d\xi
+    \end{aligned}
+  \end{equation}
+Hence, the structure depicted in figure \ref{fig:Picard_problem}\subref{subfig:2R} corresponds to a rarefaction wave. Fields evolve smoothly within the void region according to equations \eqref{eq:rarefaction}, leading to a characteristic fan since $c_2=c_2(F)$ and $F$ decreases from $F_R$ to $\bar{F}$.
+\end{remark}
+
+
+As for shock waves, the complete set of states $\Qcb$ connected to $\Qcb^R$ through a rarefaction wave will be derived. To do so, the following change of variable is introduced: $F \mapsto ch(x)/\sqrt{3}$, so that equation \eqref{eq:SVK_rarefaction} becomes:
+\begin{equation}
+  \label{eq:charac_equation_sh}
+  dv=-\sqrt{\frac{\lambda + 2\mu}{6\rho_0}}sh(x)^2 dx
+\end{equation}
+where, the hyperbolic cosine $ch(x)$ and sine $sh(x)$ satisfy: $ch(x)^2-sh(x)^2=1$. Equation \eqref{eq:charac_equation_sh} can be easily integrated with the exponential form of hyperbolic sine: $sh(x)=\frac{e^x - e^{-x}}{2}$. Thus, one gets:
+\begin{equation*}
+  v-v_R=-\frac{1}{4}\sqrt{\frac{\lambda + 2\mu}{6\rho_0}}\[sh(2x)-2x -(sh(2x_R)-2x_R)\]
+\end{equation*}
+At last, the inverse change of variable:
+\begin{align*}
+  &sh(2x)=2ch(x)sh(x)=2\sqrt{3}F\sqrt{3F^2-1} \\
+  &2x=2\arg\(ch(\sqrt{3}F)\)=2\ln\(\sqrt{3}F + \sqrt{3F^2-1}\)
+\end{align*}
+yields the relation:
+\begin{equation}
+  \label{eq:integral_curve_right}
+  v-v_R=-\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F\sqrt{3F^2-1} -F_R\sqrt{3F_R^2-1}\)-\ln\(\frac{\sqrt{3}F + \sqrt{3F^2-1}}{\sqrt{3}F_R + \sqrt{3F_R^2-1}}\) \]
+\end{equation}
+In a similar manner, the following condition must hold through a left-going rarefaction wave:
+\begin{equation*}
+  dv -c_2  dF = 0
+\end{equation*}
+which leads to:
+\begin{equation}
+  \label{eq:integral_curve_left}
+  v-v_L=\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F\sqrt{3F^2-1} -F_L\sqrt{3F_L^2-1}\)-\ln\(\frac{\sqrt{3}F + \sqrt{3F^2-1}}{\sqrt{3}F_L + \sqrt{3F_L^2-1}}\) \]
+\end{equation}
+
+
+
+\subsubsection*{Solution to the Riemann problem}
+Now the solution to Picard's problems have been derived, the solution to the Riemann problem can be developed. Once again, the problem is formulated as:
+\begin{equation}
+  \begin{aligned}
+    &\Qcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \vect{0}, \\
+    &\left\lbrace 
+      \begin{aligned}
+        & \Qcb(X_N,t=0) = \Qcb^L \quad \text{if } X_N< 0\\
+        & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0
+      \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+As for the Picard problem, initial conditions influence the characteristic structure of the solution. Indeed, if initial conditions are given such that $F_L<F_R$, left-going characteristics will collide while right-going ones will move away from one another (see figure \ref{fig:RP_solution}\subref{subfig:1S2R}). In that case, the first and second characteristic fields will respectively be refered to as a \textit{1-shock} and a \textit{2-rarefaction}. Conversely, if $F_L>F_R$, the solution will correspond to a \textit{1-rarefaction} and a \textit{2-shock} (figure \ref{fig:RP_solution}\subref{subfig:1R2S}). 
 
 \begin{figure}[h]
   \centering
-  \subfloat[Left-going simple wave \label{subfig:1R}]{\input{chapter2/pgfFigures/1-rarefaction}}
-  \subfloat[Right-going shock \label{subfig:2S}]{\input{chapter2/pgfFigures/2-shock}}
-  \caption{Wave pattern generated by initial data of the Riemann problem such that $F_L>F_R$: 1--rarefaction ; 2--shock.}
-  \label{fig:1R2S}
+  \subfloat[$F_L < F_R$\label{subfig:1S2R}]{\input{chapter2/pgfFigures/1S2R}}
+  \subfloat[$F_L > F_R$\label{subfig:1R2S}]{\input{chapter2/pgfFigures/1R2S}}
+  \caption{General wave patterns arrising in the solution to Riemann problem depending on intial data. (a): 1-shock, 2-rarefaction. (b): 1-rarefaction, 2-shock.}
+  \label{fig:RP_solution}
+\end{figure}
+
+For the 1-shock,2-rarefaction solution one then seeks a state $\Qcb^*$ that is connected to $\Qcb^L$ and $\Qcb^R$ through respectively a shock wave and a rarefaction wave. Hence, $\Qcb^*$ must satisfy equations \eqref{eq:left-going_shock} and \eqref{eq:integral_curve_right}, namely:
+\begin{equation}
+  \label{eq:1S2R_solution}
+  \left\lbrace
+  \begin{aligned}
+    &v_*-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(F_*-F_L)\[ F_*^3-F_* - (F_L^3-F_L)\]} \\
+    &v_*-v_R=-\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F_*\sqrt{3F_*^2-1} -F_R\sqrt{3F_R^2-1}\)-\ln\(\frac{\sqrt{3}F_* + \sqrt{3F_*^2-1}}{\sqrt{3}F_R + \sqrt{3F_R^2-1}}\) \]
+  \end{aligned}
+  \right.
+\end{equation}
+Analogously, the 1-rarefaction,2-shock solution is given by the solution of equations \eqref{eq:integral_curve_left} and \eqref{eq:right-going_shock}:
+\begin{equation}
+  \label{eq:1R2S_solution}
+  \left\lbrace
+  \begin{aligned}
+    &v_*-v_L=\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F_*\sqrt{3F_*^2-1} -F_L\sqrt{3F_L^2-1}\)-\ln\(\frac{\sqrt{3}F_* + \sqrt{3F_*^2-1}}{\sqrt{3}F_L + \sqrt{3F_L^2-1}}\) \]\\
+    &v_*-v_R= -\sqrt{\frac{\lambda+2\mu}{2\rho_0}(F_*-F_R)\[ F_*^3-F_* - (F_R^3-F_R)\]}
+  \end{aligned}
+  \right.
+\end{equation}
+Once one of this system is solved, the solution $\Qcb$ is known everywhere except inside the rarefaction fan. Nevertheless, in this region $\Qcb$ only varies with the ray $\xi=c_i(F)$ and hence, the solution inside an $i$-rarefaction wave satisfies:
+\begin{equation}
+  \label{eq:rarefaction_fan}
+  \xi = \pm \sqrt{\frac{\lambda + 2\mu}{2\rho_0}\(3F^2-1 \)} \quad \Rightarrow \quad F(\xi)= \sqrt{\frac{2\rho_0}{3(\lambda + 2\mu)}\xi^2-1}
+\end{equation}
+\begin{figure}[h]
+  \centering
+  \subfloat[Initial data: $F_L=1 ; F_R=2$ \label{subfig:1S2R_curves}]{\input{chapter2/pgfFigures/1S2R_solution}}
+  \subfloat[Initial data: $F_L=2 ; F_R=1$ \label{subfig:1S2R_curves}]{\input{chapter2/pgfFigures/1R2S_solution}}
+  \caption{Set of connected states $\Qcb$ to initial data through shock and rarefaction waves with $v_L=v_R=0$ in both cases: (a) 1-shock,2-rarefaction solution ; (b) 1-rarefaction, 2-shock.}
+  \label{fig:solutions_RP}
 \end{figure}
 
 
-On the other hand, those initial conditions lead to right-going characteristics moving away from each other. Such a characteristic structure corresponds to a \textit{simple wave} (see figure \ref{fig:1S2R}\subref{subfig:2R}), which in case of a vanishing right-hand side of the hyperbolic system becomes a \textit{rarefaction wave} (\textit{i.e. a simple wave propagating a self-similar solution $\Qcb(\xi)$}). The characteristic structure of the solution corresponding to initial data such that $F_L > F_R$, depicted in figure \ref{fig:1R2S}, consists in a left-going rarefaction and a right-going shock waves. 
-
-$\newline$
-Note that the above discussion holds for concave flux functions which is not the case for the neo-Hookean model for instance. Indeed, such a model yields a monotonically decreasing positive characteristic speeds with the gradient of deformation (see figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_speeds}). Hence, initial data considered previously will lead to opposite situations (\textit{i.e. $F_L<F_R \rightarrow $ 1--rarefaction ; 2--shock, and $F_L>F_R \rightarrow $ 1--shock ; 2--rarefaction}). Moreover, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the system so that the problem does not suffer any limitation on the deformation gradient.
-\begin{figure}[h]
-  \centering
-  \subfloat[Stress $\Pi_{11}$ \label{subfig:SVK_NH_Pi}]{\input{chapter2/pgfFigures/SVK_NH_Pi_F}}
-  \subfloat[Characteristic speeds\label{subfig:SVK_NH_speeds}]{\input{chapter2/pgfFigures/SVK_NH_speeds}}
-  \caption{Comparison of neo--Hookean and Saint-Venant--Kirchhoff hyperelastic models.}
-  \label{fig:SVK-NH}
-\end{figure}\todo{Give parameters values}
-At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} highlights the non-physical behaviour of Saint-Venant-Kirchhoff model for high compression loads that lead to a stress tensor tending to zero.
-
-% Furthermore, the evolution of a characteristic speed along the associated integral curve is related to the following definitions:
-% \begin{definition} A characteristic field is said to be \textbf{genuinely non-linear} if
-%   \begin{equation}
-%     \label{eq:linearly-degenerate}
-%     \nablav_\Qc c_i \cdot \Rcb^i \neq \vect{0},\quad \forall \Qcb \in \Rbb^m
-%   \end{equation}
-% \end{definition}
-% \begin{definition}
-%   A characteristic field is said to be \textbf{linearly degenerate} if it satisfies
-%   \begin{equation}
-%     \label{eq:linearly-degenerate}
-%     \nablav_\Qc c_i \cdot \Rcb^i = \vect{0},\quad \forall \Qcb \in \Rbb^m
-%   \end{equation}
-%   where $\nablav_\Ucb (\bullet)$ is the gradient in the phase plane. In particular, linear systems for which eigenvalues are constant, admit only linearly degenerate characteristic fields. An example of linearly degenerate field in a non-linear problem is that of contact discontinuities \cite[Chapter~13]{Leveque}.
-% \end{definition}
-
-% For the Saint-Venant-Kirchhoff material, equations \eqref{eq:SVK_charac_fields} lead to:
-% \begin{equation*}
-%   \nablav_\Qc c_p = \matrice{0\\ \frac{3(\lambda+2\mu)F}{2\rho_0c_p} } \quad \Rightarrow \nablav_\Qc c_p \cdot \Rcb^p = \frac{3(\lambda+2\mu)F}{2\rho_0c_p} 
-% \end{equation*}
-% with is not zero since $F>\sqrt{\frac{1}{3}}$.
-
-While the solution through a shock wave can be determined with the Rankine-Hugoniot condition, the states connected to initial data through a rarefaction wave are given by integral curves. Indeed, since one seeks a similarity solution, the evolution of $\Qcb$ through a rarefaction wave obeys
-
-\subsection{Integral curves}
-\subsection{The Rankine-Hugoniot condition}
+\begin{remark}
+  The above discussion holds for concave flux functions which is not the case for the neo-Hookean model for instance. Indeed, such a model yields a monotonically decreasing positive characteristic speeds with the gradient of deformation (see figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_speeds}). Hence, initial data considered previously will lead to opposite situations (\textit{i.e. $F_L<F_R \rightarrow $ 1--rarefaction ; 2--shock, and $F_L>F_R \rightarrow $ 1--shock ; 2--rarefaction}). Moreover, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the system so that the problem does not suffer any limitation on the deformation gradient.
+  \begin{figure}[h]
+    \centering
+    \subfloat[Stress $\Pi_{11}$ \label{subfig:SVK_NH_Pi}]{\input{chapter2/pgfFigures/SVK_NH_Pi_F}}
+    \subfloat[Characteristic speeds\label{subfig:SVK_NH_speeds}]{\input{chapter2/pgfFigures/SVK_NH_speeds}}
+    \caption{Comparison of neo--Hookean and Saint-Venant--Kirchhoff hyperelastic models.}
+    \label{fig:SVK-NH}
+  \end{figure}
+  At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} highlights the non-physical behaviour of Saint-Venant-Kirchhoff model for high compression loads that lead to a stress tensor tending to zero.
+\end{remark}
 
 
 %%% Local Variables:
