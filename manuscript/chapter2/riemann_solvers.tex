@@ -1,0 +1,69 @@
+As we saw in the previous section, a suitable quasi-linear system enables the computation of the complete solution of a Riemann problems in solid dynamics. However, such a procedure may become complicated due to the non-linearity of the Jacobian matrix. Indeed, some problems can lead to the inability to derive explicit conditions as those developed for the Saint-Venant-Kirchhoff material \eqref{eq:left-going_shock},\eqref{eq:right-going_shock},\eqref{eq:integral_curve_right} and \eqref{eq:integral_curve_left}.
+
+Numerical methods such as Finite Volume Methods \cite{Leveque} require the solution of many Riemann problems within a discretized medium. When dealing with non-linear problems, the exact solution of those problems may increase drastically the comptational cost, making the numerical scheme prohibitive. In that context, alternative procedures have been developed in order to take into account the characteristic structure of a hyperbolic system by computing an approximate solution of the Riemann problems. Approximate Riemann solvers allow to extract information for either flux functions (\textit{HLL, HLLC, Roe} and \textit{Osher} approximate Riemann solvers \cite{Trangenstein}, \cite{Toro}) or approximate conserved quantities vectors. The latter class of solvers, namely the approximate-state Riemann solvers, is the purpose of this section. As a consequence, after presenting general ideas, approximate-state Riemann solvers will be developed for hyperelastic media and elastoplastic bars. While the former constitutive models are non-linear, the latter is linear-by-part due to the change of tangent modulus between elastic and plastic evolutions.
+
+\subsection{General approach -- Approximation}
+As in previous the section, we consider a Riemann solver in a direction $\vect{N}$ of the space:
+\begin{equation}
+  \label{eq:RP_approx}
+  \begin{aligned}
+  &\Qcb_t + \Jbsf\(\Qcb\) \drond{\Qcb}{X_N} = \vect{0}, \\
+  &\left\lbrace 
+    \begin{aligned}
+      & \Qcb(X_N,t=0) = \Qcb^L \quad \text{if } X_N< 0\\
+      & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0
+    \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+The classical approach for developing an approximate-state Riemann solver is to first linearized the problem \eqref{eq:RP_approx} by assuming that $\Jbsf\approx \Jbsf\(\Qcb^L,\Qcb^R\)$ in the vicinity of $\Qcb^L$ and $\Qcb^R$ \cite[Chapter~15]{Leveque}. The constant matrix thus obtained $\bar{\Jbsf}=\Jbsf\(\Qcb^L,\Qcb^R\)$ must however ensure the hyperbolicity of the system ($\bar{\Jbsf}$ has real eigenvalues and a complete set of independent eigenvectors) and satisfy the consistency condition:
+\begin{equation}
+  \label{eq:approx_constistency}
+  \bar{\Jbsf}\(\Qcb,\Qcb\)=\Jbsf\(\Qcb\)
+\end{equation}
+The eigenvalues $c_p$ and right eigenvectors $\Rcb^p$ of the Jacobian matrix are defined so that $\Jbsf \Rbsf = \Rbsf \Cbsf$ where $\Rbsf_{ij}=\Rcb^j_i$. In the general case, the characteristic speeds depend on $\Qcb$ so that one can assume that left-going (\textit{resp. right-going}) characteristics depend on $\Qcb^L$ (\textit{resp. on} $\Qcb^R$) only. In addition, the corresponding eigenvectors are also taken as function of $\Qcb$ on each side of the initial discontinuity. With matrices $\Rbsf$ defined as mentioned previously, the constant Jacobian matrix is $\Jbsf = \Rbsf \Cbsf \Rbsf^{-1}$ which obviously satisfy the consistency condition \eqref{eq:approx_constistency}.
+
+At last, every state vector $\Qcb(x,t)$ can be determined by following the procedure described in section \ref{subsec:charac_Linear_problems}, namely by solving either equation \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L}.
+
+\begin{remark}
+  The linearization approach developed above amounts to considering a heterogeneous medium where $\Qcb^{L}$ and $\Qcb^R$ act as material parameters.
+\end{remark}
+
+\subsection{Plane wave problem -- Saint-Venant-Kirchhoff material}
+We consider again the non-linear problem of section \ref{subsec:charac_nonlinear_problems} in order to see the influence of the approximation and the amount of information lost. Recall that for a one-dimensional problem in a solid made of a Saint-Venant-Kirchhoff material, the eigenvalues and right eigenvectors matrices reads:
+\begin{equation}
+  \label{eq:SVK_matrices}
+  \Cbsf = \matrice{-\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F^2-1)} & 0 \\ 0 & \sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F^2-1)}} \quad ; \quad \Rbsf = \matrice{\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F^2-1)} & -\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F^2-1)}\\ 1&1}
+\end{equation}
+Hence, the linearized problem is written with:
+\begin{equation}
+  \label{eq:SVK_matrices_linear}
+  \Cbsf = \matrice{-\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F_L^2-1)} & 0 \\ 0 & \sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F_R^2-1)}} \quad ; \quad \Rbsf = \matrice{\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F_L^2-1)} & -\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F_R^2-1)}\\ 1&1}
+\end{equation}
+The solution that lies in the region between the two discontinuous waves is then computed:
+\begin{equation*}
+  \Qcb=\Qcb^L + \delta^1 \Rcb^1
+\end{equation*}
+where $\vect{\delta}$ satisfies:
+\begin{equation*}
+  \Qcb^R-\Qcb^L = \Rbsf \vect{\delta}
+\end{equation*}
+\subsection{Elastoplastic solids}
+
+\begin{itemize}
+\item Comparison of integral curves and approximate ones for SVK material
+\end{itemize}
+% \subsection{Elastic and elastic-viscoplastic solids}
+% \subsubsection{Linear elastic plane bar}
+% \subsubsection{Linear elastic plane wave}
+% \subsubsection{Elastoviscoplasic bar and plane wave}
+% %\subsubsection{Elastoviscoplasic}
+% \subsection{Elastoplastic solids}
+% \subsubsection{Linearly hardening media}
+% \subsubsection{Decreasingly hardening media}
+% \subsection{Saint-Venant-Kirchhoff hyperelastic solids}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

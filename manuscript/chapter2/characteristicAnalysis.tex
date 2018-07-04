@@ -1,4 +1,5 @@
-The eigenspaces of conservation laws systems defined above will be now investigated. As we shall see, the characteristic structure of those problems may lead to different type of waves propagating within a medium. Finally, existing analytical solutions of one-dimensional problems \cite{Wang} will be reviewed and that of a one-dimensional problem involving a hyperelastic \textit{Saint-Venant--Kirchhoff} material will be developed in order to illustrate the identified wave structures.
+The theory of first order quasi-linear system is now applied to solid dynamics. First, the characteristic analysis of systems \eqref{eq:HPP_quasi-linear}, \eqref{eq:HE_quasilinear} and \eqref{eq:EP_quasilinear} is performed. Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves can propagate within a solid.
+
 \subsection{Characteristic structure of solutions}
 For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using a generic stress measure $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of studying multi-dimensional conservation laws systems, we will focus without loss of generality on conservative forms \eqref{eq:general_conservative} projected on an arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ \cite[p.425-426]{Leveque}. In this direction, the quasi-linear forms determined above are rewritten as:
 \begin{equation}
@@ -86,15 +87,16 @@ meaning that the solution is constant along each ray $\xi = x/t$ through the ori
 \end{equation}
 By looking at characteristic curves $\xi=c_k$, system \eqref{eq:quasi-linear_similarity} implies that $\Qcb'$ is proportional to the right eigenvector $\Rcb^k$ and integration of $\Qcb'$ yields an \textit{integral curve} that is tangent at every point of the \textit{phase plane} $\(\Qcb_1,...,\Qcb_{m}\)$ to this eigenvector.
 
-$\newline$
+\boxe{USEFULL ?:
 The notions highlighted so far will be illustrated in the two following sections. The method of characteristics will lead to:
 \begin{itemize}
 \item[(i)] the well-known solution to the \textit{Riemann problem} on a elastic bar
 \item[(ii)] the development of the solution the Riemann problem of a hyperelastic Saint-Venant-Kirchhoff medium undergoing a one-dimensional strain state
 \end{itemize}
-Furthermore, the \textit{Rankine-Hugoniot condition} for discontinuous waves, and the concept of \textit{shock} and \textit{simple} waves will be introduced.
+Furthermore, the \textit{Rankine-Hugoniot condition} for discontinuous waves, and the concept of \textit{shock} and \textit{simple} waves will be introduced.}
 
 \subsection{Linear problems}
+\label{subsec:charac_Linear_problems}
 A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecewise constant initial data on both sides of an interface. In the arbitrary direction $\vect{n}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$, the Riemann problem reads:
 \begin{equation}
   \label{eq:Riemann_problem}
@@ -164,7 +166,7 @@ On the other hand, the same procedure for point $P'$ leads to the solution:
   \label{eq:elastic_solution_Q}
   v_{P'} = \frac{\sigma_B - \sigma_{A'}}{2\rho c} + \frac{v_{A'}+v_B}{2} \quad ; \quad \sigma_{P'} = \rho c\frac{v_B - v_{A'}}{2} + \frac{\sigma_{A'}+\sigma_B}{2}
 \end{equation}
-With initial data given for the Riemann problem, it appears that $\Qcb_{A'}=\Qcb_{B}$ and hence, $\Qcb_{P'}=\Qcb_{R} \ne \Qcb_{P}$. Let's assume now that points $P$ and $P'$ are still on each side of the right characteristic straight line emanating from the origin but infinitely close to it. It is obvious that the previous results hold and that the a jump discontinuity propagates in the bar with speed $c$. Hence, we are left with the following condition across a discontinuous wave \cite{Toro} that generalizes to all linear Riemann problems:
+With initial data given for the Riemann problem, it appears that $\Qcb_{A'}=\Qcb_{B}$ and hence, $\Qcb_{P'}=\Qcb_{R} \ne \Qcb_{P}$. Let's assume now that points $P$ and $P'$ are still on each side of the right characteristic straight line emanating from the origin but infinitely close to it. The previous results obviously hold along the characteristics so that a jump discontinuity propagates in the bar with speed $c$ The solutions of Riemann problem \eqref{eq:Riemann_problem} therefore consist in waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
 \begin{definition}
 Given a system of hyperbolic conservation laws $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the \textbf{Rankine-Hugoniot condition} reads:
 \begin{equation}
@@ -175,7 +177,7 @@ where $\saut{\bullet}$ denotes the jump operator across the discontinuity.
 \end{definition}
 
 \subsubsection*{Characteristic variables -- Waves solution}
-Consider a quasi-linear form of dimension $m$ $\Qcb_t + \Jbsf \Qcb_x=\vect{0}$. 
+Consider a quasi-linear form $\Qcb_t + \Jbsf \Qcb_x=\vect{0}$ of dimension $m$. 
 By introducing a set of \textbf{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$, where $\Rsf_{ij}=\Rc^j_i$ is the matrix of right eigenvectors, the quasi-linear form of system \eqref{eq:Riemann_problem} can be rewritten in terms of characteristic the variables:
 \begin{equation*}
   \begin{aligned}
@@ -188,7 +190,6 @@ By introducing a set of \textbf{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$,
     \right.
   \end{aligned}
 \end{equation*}
-with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profil $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, at a given point $(x,t)$, the solution $\Pc_i(x,t)$ is simply given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$. 
 \begin{figure}[h]
   \centering
   \subfloat{\input{chapter2/pgfFigures/advection_solution}}
@@ -196,36 +197,36 @@ with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \R
   \caption{Solution to linear advection equation on the quantity $\Pc_i$ with characteristic speed $c_i$.}
   \label{fig:advection}
 \end{figure}
+with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profil $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, at a given point $(x,t)$, the solution $\Pc_i(x,t)$ is simply given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$. 
 The vector $\Qcb$ is then determined by inverting the relation:
 \begin{equation}
-  \Qcb = \Rcb^i \Pc_i(x-c_it,0)
-\end{equation}
-or in terms of the initial data:
-\begin{equation}
   \label{eq:Q_expansion}
+  \Qcb(x,t) = \sum_{i=1}^m \Rcb^i \Pc_i(x-c_it,0) \quad \Rightarrow
+  \left\lbrace
+    \begin{aligned}
+      & \Qcb(x<0,0)=\Qcb^L=\sum_{i=1}^{m}\Rcb^i \Pc_i^L\\
+      & \Qcb(x>0,0)=\Qcb^R= \sum_{i=1}^{m}\Rcb^i \Pc_i^R
+    \end{aligned}
+    \right.
+\end{equation}
+Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is a superposition of $m$ waves, each of which having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_I t >0$ and $x-c_{I+1} t <0$, equation \eqref{eq:Q_expansion} can be rewritten:
+\begin{equation}
+  \label{eq:Q_expansion_sides}
   \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
 \end{equation}
-where $m$ is $I$ is such that $x-c_I t >0$ and $x-c_{I+1} t <0$. This equation can be seen as an eigenvector expansion of $\Qcb$ with coefficients $\Pc_i^{R,L}$ and in particular:
-\begin{equation}
-  \label{eq:Qside_expansion}
-  \Qcb^L = \sum_{i=1}^{m}\Rcb^i \Pc_i^L \quad ; \quad \Qcb^R = \sum_{i=1}^{m}\Rcb^i \Pc_i^R
-\end{equation}
-\begin{remark}
-  The above discussion highlight the wave nature of the solution to hyperbolic problems. Indeed, since $\Qcb(x,t)$ can be expended into an eigenvector basis with coefficients $\Pc_i$ obeying a linear advection... 
-\end{remark}
-By rewritting expansion \eqref{eq:Q_expansion}:
+or, introducing the expansions of initial data \eqref{eq:Q_expansion_sides}:
 \begin{align}
   &\Qcb = \sum_{i=1}^m \Rcb^i \Pc_i^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\) \\
   &\Qcb= \sum_{i=1}^{m}\Rcb^i \Pc_i^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\) 
 \end{align}
-Jump conditions can thus be derived:
+Those equations are equivalent to jump conditions across mutliple discontinuous waves:
 \begin{align}
   \label{eq:jump_star_R}
   &  \Qcb-\Qcb^R = -\sum_{i=I+1}^{m} \Rcb^i\delta^i \\
   \label{eq:jump_star_L}
   &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i \\
 \end{align}
-where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics. In equations \eqref{eq:jump_star_R} and \eqref{eq:jump_star_L}, coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from \eqref{eq:Qside_expansion} by solving $\Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}$.
+where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from the expensions of initial conditions by solving $\Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}$.
 
 For the linear elastic case considered above, the wave strengths coeeficients are:
 \begin{equation}
@@ -239,6 +240,7 @@ leading, with equation \eqref{eq:jump_star_L} to:
 \end{equation}
 which is the solution found by using the method of characteristics \eqref{eq:elastic_solution_P}.
 \subsection{Non-linear problems}
+\label{subsec:charac_nonlinear_problems}
 We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
 \begin{align*}
   &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
@@ -276,9 +278,9 @@ which leads to the characteristic fields:
     \end{aligned}\right.
  \quad ; \quad \Lcb^p=\[1\:,\:- c_p \] \quad ; \quad \Rcb^p=\matrice{- c_p \\1} 
 \end{equation}
-Note that the non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant--Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
+Note that the non-linear flux function (\textit{i.e.} $\ddrond{\Pi_{11}}{F}{F}\neq 0$) yields characteristic fields depending on the strain state and, for the Saint-Venant-Kirchhoff model, possibly complex celerities leading to a loss of hyperbolicity of the problem for $F>\sqrt{\frac{1}{3}}$.
 
-Initial and boundary conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $\bar{F} > F_R$, the resulting characteristic speeds satisfy $c_2(\bar{F})>c_2(F_R)$ leading to characteristics colliding in the right region of the ($x,t$) plane (figure \ref{fig:Picard_problem}\subref{subfig:2S}). On the other hand, $\bar{F} < F_R$ yields characteristic moving away from each other in the right region according to $c_2(\bar{F})<c_2(F_R)$ (figure \ref{fig:Picard_problem}\subref{subfig:2R}). Those two situations, respectively corresponding to a shock wave and a simple wave, will be studied in what follows.
+Initial and boundary conditions have an influence on the characteristic structure of the solution due to the dependence of characteristic speeds on the deformation gradient. Indeed, if initial data are given so that $\bar{F} > F_R$, the resulting characteristic speeds satisfy $c_2(\bar{F})>c_2(F_R)$ leading to characteristics colliding in the right region of the ($x,t$) plane (figure \ref{fig:Picard_problem}\subref{subfig:2S}). On the other hand, $\bar{F} < F_R$ yields characteristic moving away from each other in the right region according to $c_2(\bar{F})<c_2(F_R)$ (figure \ref{fig:Picard_problem}\subref{subfig:2R}). Those two situations, respectively corresponding to a shock wave and a simple wave, will be studied in what follows. \todo{\cite{Leveque} and shallow water equations}
 \begin{figure}[h]
   \centering
   \subfloat[Right-going shock wave\label{subfig:2S}]{\input{chapter2/pgfFigures/picard_2_shock}}
@@ -288,7 +290,7 @@ Initial and boundary conditions have an influence on the characteristic structur
 \end{figure}
 
 \subsubsection*{Shock waves}
-By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantity vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
+By applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines allows to show that a shock wave carry a jump discontinuity of the conserved quantities vector and hence, satisfy the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot} where the shock speed $s_i$ is to be defined. According to Rankine-Hugoniot conditions, those states obey:
 \begin{align}
   \label{eq:RH_velocity}
   & -\frac{1}{\rho_0}\(\bar{\Pi} - \Pi_R \) = s \( \bar{v} - v_R \)\\
@@ -309,7 +311,7 @@ In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition
   \label{eq:Lax_entropy}
   \lambda(F)<s<\lambda(F_R)
 \end{equation}
-For a Saint-Venant--Kirchhoff material, the Lax condition leads to $F > F_R$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
+For a Saint-Venant-Kirchhoff material, the Lax condition leads to $F > F_R$ ensuring thus that the square root in equation \eqref{eq:v_jump} is real.
 
 
 Equation \eqref{eq:v_jump} yields two families of curves in the phase plane, one of which is expected to identify with the jump conditions derived for the linear case \eqref{eq:jump_star_R} when considering an infinitesimal jump (\textit{i.e. $F=F_R+\epsilon$ with $\epsilon \rightarrow 0$}). Thus, equation \eqref{eq:v_jump} reads:
@@ -341,7 +343,7 @@ In order to study the evolution of fields within the void region in figure \ref{
 \end{equation}
 
 \begin{remark}
-  If one was seeking a similarity solution in this region, the conserved quantity vector would be looked for so that $\Qcb'(x/t)$ is proportional to the right eigenvector $\Rcb^2$ asrequired by equation \eqref{eq:quasi-linear_similarity}. By denoting the ray $\xi=x/t$, this proportionality condition is:
+  If one was seeking a similarity solution in this region, the conserved quantities vector would be looked for so that $\Qcb'(x/t)$ is proportional to the right eigenvector $\Rcb^2$ asrequired by equation \eqref{eq:quasi-linear_similarity}. By denoting the ray $\xi=x/t$, this proportionality condition is:
   \begin{equation*}
     \matrice{\ddroit{v}{\xi} \\ \ddroit{F}{\xi}} = \matrice{ -c_2 \\ 1}
   \end{equation*}
@@ -385,7 +387,6 @@ which leads to:
   \label{eq:integral_curve_left}
   v-v_L=\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F\sqrt{3F^2-1} -F_L\sqrt{3F_L^2-1}\)-\ln\(\frac{\sqrt{3}F + \sqrt{3F^2-1}}{\sqrt{3}F_L + \sqrt{3F_L^2-1}}\) \]
 \end{equation}
-
 
 
 \subsubsection*{Solution to the Riemann problem}
@@ -440,24 +441,24 @@ Once one of this system is solved, the solution $\Qcb$ is known everywhere excep
   \centering
   \subfloat[Initial data: $F_L=1 ; F_R=2$ \label{subfig:1S2R_curves}]{\input{chapter2/pgfFigures/1S2R_solution}}
   \subfloat[Initial data: $F_L=2 ; F_R=1$ \label{subfig:1S2R_curves}]{\input{chapter2/pgfFigures/1R2S_solution}}
-  \caption{Set of connected states $\Qcb$ to initial data through shock and rarefaction waves with $v_L=v_R=0$ in both cases: (a) 1-shock,2-rarefaction solution ; (b) 1-rarefaction, 2-shock.}
+  \caption{Set of connected states $\Qcb$ to initial data through shock and rarefaction waves with $v_L=v_R=0$ in both cases: (a) 1-shock, 2-rarefaction solution ; (b) 1-rarefaction, 2-shock.}
   \label{fig:solutions_RP}
-\end{figure}
+\end{figure} \todo{parameters value !}
 
 
-\begin{remark}
-  The above discussion holds for concave flux functions which is not the case for the neo-Hookean model for instance. Indeed, such a model yields a monotonically decreasing positive characteristic speeds with the gradient of deformation (see figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_speeds}). Hence, initial data considered previously will lead to opposite situations (\textit{i.e. $F_L<F_R \rightarrow $ 1--rarefaction ; 2--shock, and $F_L>F_R \rightarrow $ 1--shock ; 2--rarefaction}). Moreover, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the system so that the problem does not suffer any limitation on the deformation gradient.
+\begin{remark} \todo{rephrase this block}
+  The above discussion holds for concave flux functions which is not the case for the neo-Hookean model for instance. Indeed, such a model yields a monotonically decreasing positive characteristic speeds with the gradient of deformation (see figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_speeds}). Hence, initial data considered previously will lead to opposite situations (\textit{i.e. $F_L<F_R \rightarrow $ 1-rarefaction ; 2-shock, and $F_L>F_R \rightarrow $ 1-shock ; 2-rarefaction}). Moreover, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the system so that the problem does not suffer any limitation on the deformation gradient.
   \begin{figure}[h]
     \centering
     \subfloat[Stress $\Pi_{11}$ \label{subfig:SVK_NH_Pi}]{\input{chapter2/pgfFigures/SVK_NH_Pi_F}}
     \subfloat[Characteristic speeds\label{subfig:SVK_NH_speeds}]{\input{chapter2/pgfFigures/SVK_NH_speeds}}
-    \caption{Comparison of neo--Hookean and Saint-Venant--Kirchhoff hyperelastic models.}
+    \caption{Comparison of neo-Hookean and Saint-Venant-Kirchhoff hyperelastic models.}
     \label{fig:SVK-NH}
   \end{figure}
   At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} highlights the non-physical behaviour of Saint-Venant-Kirchhoff model for high compression loads that lead to a stress tensor tending to zero.
 \end{remark}
 
-
+\todo[inline]{comment the elastoviscoplastic case ?}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

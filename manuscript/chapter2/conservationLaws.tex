@@ -1,4 +1,4 @@
-In this section, the mathematical laws allowing the description of the deformation of a solid body will be derived. First, the kinematic laws governing the motion of each material point belonging to a solid will be considered. The variations of lengths and shapes of a continuum, described by the \textit{strain} measure will then be associated to internal forces through thermodynamic framework. Finally, the theory of first order quasi-linear partial differential system will be applied to solid dynamics in order to deliver analytical solutions for specific problems. The literature on the subject being very rich (see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}), the governing equations of mechanics will be developed non-exhaustively.
+The mathematical laws describing the deformation of a solid body are summarized in this section. First, the kinematic laws governing the motion of each material point belonging to a solid are considered. Then \textit{strain} measures are associated to internal forces through the thermodynamic framework so that \textit{constitutive equations} are derived. For a more exhaustive review of governing equations, see for instance \cite[Chapters~1-3]{Foundation_of_elasticity}, \cite{Truesdell}, \cite[Chapter~7]{Simo}, \cite[Chapters~3 \& 5]{Belytschko}.
 
 \subsection{Kinematic laws -- Strain measures}
 We consider a three-dimensional solid domain with volume denoted by $\Omega \subset \Rbb^3$ bounded by the surface $\partial \Omega$. This body undergoes external forces that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such sollicitations, the volume may change during a deformation within the time interval $\tau = \[0,T\]$ and will hence be written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial conditions are identical. At a given time $t>0$, the volume $\Omega(t)=\Omega_t$ corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
@@ -35,12 +35,9 @@ with $\tens{I}$, the second-order identity tensor. The deformation gradient tens
     & dv=JdV 
   \end{aligned}
 \end{equation}
-in the current configuration. The transport equations \eqref{eq:transport_equations} involve the determinant of the deformation gradient $J=\det(\tens{F})>0$, also called the \textit{Jacobian of the deformation}. The deformation gradient is a strain measure since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}). Other strain measures can be used as the \textit{right Cauchy-Green} or the \textit{Green-Lagrange} tensors, respectively defined as:
+in the current configuration. The transport equations \eqref{eq:transport_equations} involve the determinant of the deformation gradient $J=\det(\tens{F})>0$, also called the \textit{Jacobian of the deformation}. The deformation gradient is a strain measure since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}). Other strain measures can be used such as the \textit{right Cauchy-Green} or the \textit{Green-Lagrange} tensors, respectively defined as:
 \begin{equation*}
-  \begin{aligned}
-    & \tens{C}=\tens{F}^T\tens{F} \\
-    & \tens{E}=\frac{1}{2}(\tens{C}-\tens{I})
-  \end{aligned}
+   \tens{C}=\tens{F}^T\tens{F} \quad ; \quad \tens{E}=\frac{1}{2}(\tens{C}-\tens{I})
 \end{equation*}
 where $\tens{I}$ is the second-order identity tensor. The Green-Lagrange tensor can also be written by means of equation \eqref{eq:F_displacement}:
 \begin{equation*}
@@ -54,7 +51,7 @@ In particular, when the deformation involves displacement vectors such that $\no
 with $\tens{\eps}$ the \textit{linearized strain tensor}, the symmetric part of the displacement gradient. Such deformations fall in the \textit{linearized geometrical framework} or \textit{infinitesimal theory} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$ reference and current configurations are considered as indentical. These situations correspond to the \textit{small strain} framework for which the reference and current configurations are considered as identical.
 
 \subsection{Balance equations}
-In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$. According to the formulation adopted in \cite{Plohr}, the time derivatives of geometrical relations \eqref{eq:F_phi} and \eqref{eq:epsilon} yields kinematic conservations laws for finite strain and the linearized geometrical framework. Those conservation laws reads respectively:
+In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$. According to the formulation adopted in \cite{Plohr}, time derivatives of geometrical relations \eqref{eq:F_phi} and \eqref{eq:epsilon} combined to the definition of the velocity field \eqref{eq:velocity} yields kinematic conservations laws. Those conservation laws reads respectively:
 \begin{align}
   & \tens{\dot{F}} - \nablat_0\vect{v} = \tens{0} \label{eq:HE_kinematic}\\
   & \tens{\dot{\eps}} - \nablat^s\vect{v} = \tens{0} \label{eq:HPP_kinematic}
@@ -100,7 +97,7 @@ Conservation law \eqref{eq:Linear_momentum_conservation_eulerian} can be mapped 
 \end{equation}
 In equation \eqref{eq:Linear_momentum_conservation}, the divergence operator on the current configuration can be transported to the reference one by means of the \textit{Piola transform}:
 \begin{definition}
-  The Piola--Kirchhoff tranform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
+  The Piola-Kirchhoff tranform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
   \begin{equation*}
     \tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}
   \end{equation*}
@@ -251,15 +248,6 @@ A \textit{yield condition} is defined with the \textit{yield function} $f(\tens{
   \Ebb = \{ (\tens{\sigma},\Acb)\: | \: f(\tens{\sigma},\Acb) \leq 0\}
 \end{equation}
 According to the GSM framework \cite{GSM} we assume the existence of a dissipation pseudo-potential $\Phi(\tens{\sigma},\Vcb)$, convex with respect to thermodynamic forces and vanishing at the origin of the $(\tens{\sigma},\Vcb)$ space. This pseudo-potential enables the derivation of the plastic \textit{flow} and \textit{hardening} rules:
-% \begin{subequations}
-%   \begin{alignat}{2}
-%     \label{eq:flow_rule}
-%      \tens{\dot{\eps}}^p&=&&\drond{\Phi}{\tens{\sigma}}  \\
-%     \label{eq:hardening_rule}
-%      \dot{\Vcb} &= -&&\drond{\Phi}{\Acb}
-%   \end{alignat}
-% \end{subequations}
-% Or, by using the chain rule:
 \begin{subequations}
   \begin{alignat}{2}
     \label{eq:flow_rule_plast}
@@ -361,7 +349,7 @@ By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\
   \label{eq:EP_helmoltz}
   \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(r)
 \end{equation}
-In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hardening} modulus and $\tens{Y}$ describes the evolution of the elastic domain center in stress deviator space and is related to \textit{kinematic hardening}. Linear hardenings will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening. The definition of thermodynamic forces \eqref{eq:thermodynamic_forces} leads to:
+In this expression, $r$ is to be defined, $H''(r)$ is the \textit{isotropic hardening} modulus and $\tens{Y}$ describes the evolution of the elastic domain center in stress deviator space and is related to \textit{kinematic hardening}. Linear hardenings will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening. The definition of thermodynamic forces \eqref{eq:thermodynamic_forces} leads to:\todo[inline]{$\tens{\alpha}$ conjugated to $\tens{Y}$ for non-linear kinematic hardening}
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eta}
@@ -439,11 +427,11 @@ where:
 in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order null tensor. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule
 \eqref{eq:flow_rule_plast}.
 \subsubsection*{Elasto-plasticity and hyperelasticity}
-The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws:
-\begin{align}
-  & \tens{F} - \nablat_0 \vect{v} = \tens{0} \\
-  & \tens{\dot{\eps}} - \nablat^s\vect{v}=\tens{0} 
-\end{align}
+The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the straightforward writing of a conservative form. Indeed, such a conservation laws system is instead based on kinematic laws \eqref{eq:HE_kinematic} or \eqref{eq:HPP_kinematic}.
+% \begin{align}
+%   & \tens{\dot{F}} - \nablat_0 \vect{v} = \tens{0} \\
+%   & \tens{\dot{\eps}} - \nablat^s\vect{v}=\tens{0} 
+% \end{align}
 Then, a conservative form \eqref{eq:general_conservative} is also written:
 \begin{equation}
   \label{eq:general_conservative2}
