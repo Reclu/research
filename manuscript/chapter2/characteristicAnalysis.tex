@@ -247,10 +247,11 @@ which, combined to equation \eqref{eq:jump_star_L}, yields the solution found by
 \subsection{Non-linear problems}
 \label{subsec:charac_nonlinear_problems}
 We now consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{e}_2$ and $\vect{e}_3$, and semi-infinite in direction $\vect{e}_1$ (\textit{i.e. $x_1 \in [0,+\infty[$}). This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{e}_1$ so that the deformation gradient and the PK1 tensor are respectively:
-\begin{align*}
+\begin{align}
+  \label{eq:SVK_plane_wave}
   &\tens{F}=F\vect{e}_1\otimes\vect{e}_1 + \vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \\
   & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{e}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{e}_2 + \vect{e}_3\otimes\vect{e}_3 \)
-\end{align*}
+\end{align}
 which corresponds to a plane wave solution. We assume that $F(0,t)=\bar{F}$ is given, leading to a \textit{Picard problem} involving both initial and boundary conditions with neglected body forces:
 \begin{equation}
   \label{eq:Picard_problem}
@@ -362,11 +363,11 @@ In order to study the evolution of fields within the void region in figure \ref{
 \end{equation}
 
 \begin{remark}
-  If one was seeking a similarity solution in this region, the conserved quantities vector would be looked for so that $\Qcb'(x/t)$ is proportional to the right eigenvector $\Rcb^2$ asrequired by equation \eqref{eq:quasi-linear_similarity}. By denoting the ray $\xi=x/t$, this proportionality condition is:
+  If one was seeking a similarity solution in this region, the conserved quantities vector would be looked for so that $\Qcb'(x/t)$ is proportional to the right eigenvector $\Rcb^2$ as required by equation \eqref{eq:quasi-linear_similarity}. By denoting the ray $\xi=x/t$, this proportionality condition is:
   \begin{equation*}
-    \matrice{\ddroit{v}{\xi} \\ \ddroit{F}{\xi}} = \matrice{ -c_2 \\ 1}
+    \matrice{\ddroit{v}{\xi} \\ \ddroit{F}{\xi}} = \alpha(\xi) \matrice{ -c_2 \\ 1}
   \end{equation*}
-  Combining \todo{Caution to $\alpha(\xi)$ \cite{Leveque}} these equations and noting that $c_2=-c_1$ allows to recover equation \eqref{eq:SVK_rarefaction}:
+  Setting $\alpha(\xi)\equiv 1$, combining these equations and noting that $c_2=-c_1$ allows to recover equation \eqref{eq:SVK_rarefaction}:
   \begin{equation}
     \label{eq:rarefaction}
     \begin{aligned}
@@ -409,32 +410,24 @@ which leads to:
 
 
 \subsubsection*{Solution of the Riemann problem}
-Now the solution to Picard's problems have been derived, the solution of the Riemann problem can be developed. Once again, the problem is formulated as:
+The above devolepments are now generalized by considering the Riemann problem in an infinite medium:
+%Now the solution to Picard's problems have been derived, the solution of the Riemann problem can be developed. Once again, the problem is formulated as:
 \begin{equation}
   \begin{aligned}
     &\Qcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \vect{0}, \\
     &\left\lbrace 
       \begin{aligned}
-        & \Qcb(X_N,t=0) = \Qcb^L \quad \text{if } X_N< 0\\
-        & \Qcb(X_N,t=0) = \Qcb^R \quad \text{if } X_N> 0
+        & \Qcb(X_N,t=0) = \Qcb^L = \matrice{v=0 \\ F_L} \quad \text{if } X_N< 0\\
+        & \Qcb(X_N,t=0) = \Qcb^R = \matrice{v=0 \\ F_R}\quad \text{if } X_N> 0
       \end{aligned}
     \right.
   \end{aligned}
 \end{equation}
+such that the plane wave state \eqref{eq:SVK_plane_wave} holds.
 As for the Picard problem, initial conditions influence the characteristic structure of the solution. Indeed, if initial conditions are given such that $F_L<F_R$, left-going characteristics will collide while right-going ones will move away from one another (see figure \ref{fig:RP_solution}\subref{subfig:1S2R}). In that case, the first and second characteristic fields will respectively be refered to as a \textit{1-shock} and a \textit{2-rarefaction}. Conversely, if $F_L>F_R$, the solution will correspond to a \textit{1-rarefaction} and a \textit{2-shock} (figure \ref{fig:RP_solution}\subref{subfig:1R2S}). 
 
 \begin{figure}[h]
   \centering
-  % \begin{subfigure}[t]{0.49\linewidth}
-  %   \centering
-  %   \caption{$F_L < F_R$\label{subfig:1S2R}}
-  %   \input{chapter2/pgfFigures/1S2R}
-  % \end{subfigure}
-  % \begin{subfigure}[t]{0.49\linewidth}
-  %   \centering
-  %   \caption{$F_L > F_R$\label{subfig:1R2S}}
-  %   \input{chapter2/pgfFigures/1R2S}
-  % \end{subfigure}
   \subcaptionbox{$F_L < F_R$\label{subfig:1S2R}}{\input{chapter2/pgfFigures/1S2R}}
   \subcaptionbox{$F_L > F_R$\label{subfig:1R2S}}{\input{chapter2/pgfFigures/1R2S}}
   \caption{General wave patterns arrising in the solution to Riemann problem depending on intial data. (a): 1-shock, 2-rarefaction. (b): 1-rarefaction, 2-shock.}
