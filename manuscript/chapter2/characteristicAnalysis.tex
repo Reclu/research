@@ -1,7 +1,7 @@
-The theory of first order quasi-linear system is now applied to solid dynamics. First, the characteristic analysis of systems \eqref{eq:HPP_quasi-linear}, \eqref{eq:HE_quasilinear} and \eqref{eq:EP_quasilinear} is performed. Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves can propagate within a solid.
+The theory of first order quasi-linear system is now applied to solid dynamics. First, the characteristic analysis of systems \eqref{eq:HPP_quasi-linear}, \eqref{eq:HE_quasilinear} and \eqref{eq:EP_quasilinear} is performed. Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves may propagate within solids.
 
 \subsection{Characteristic structure of solutions}
-For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using a generic stress measure $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of studying multi-dimensional conservation laws systems, we will focus without loss of generality on conservative forms \eqref{eq:general_conservative} projected on an arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ \cite[p.425-426]{Leveque}. In this direction, the quasi-linear forms determined above are rewritten as:
+For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using the generic notation of stress $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of considering multi-dimensional conservation laws systems, we will focus without loss of generality on conservative forms \eqref{eq:general_conservative} projected on an arbitrary direction $\vect{N}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$ \cite[p.425-426]{Leveque}. In this direction, the quasi-linear forms determined above are rewritten as:
 \begin{equation}
   \label{eq:normal_quasi}
   \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
@@ -11,12 +11,12 @@ where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Abs
   \label{eq:jacobian_generic}
   \Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \tilde{\Hbb}\cdot\vect{N} & \tens{0}^4 }
 \end{equation}
-in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stifness tensor depending on the case considered. For general three-dimensional case, the characteristic structure of the problem is given by the $12$ eigenvalues $c_k$ and associated left eigenvectors $\Lcb^k$ of the Jacobian matrix:
+in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stiffness tensor depending on the case considered. For general three-dimensional cases, the characteristic structure of the problem is given by the $12$ eigenvalues $c_k$ and associated left eigenvectors $\Lcb^k$ of the Jacobian matrix satisfying:
 \begin{equation}
   \label{eq:eigen_system}
   \vect{\Lc}^k\cdot \(\Jbsf - c_k \Ibsf\) = \vect{0}
 \end{equation}
-where $\Ibsf$ is the identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{S}^K \]$, with $\tens{S}$ standing for the suitable stress mesure. Thus, for non-null eigenvalues one gets:
+where $\Ibsf$ is the $m\times m$ identity matrix and $\vect{\Lc}^k= \[ \vect{v}^K \: , \: \tens{S}^K \]$. Thus, for non-zero eigenvalues one gets:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eigen_left_stress}
@@ -30,27 +30,27 @@ Substitution of $\tens{S}$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq
   \label{eq:acoustic_eigen}
  (\vect{v}^k\otimes\vect{N}):\(\tilde{\Hbb}\cdot  \vect{N}\) - \rho_0\lambda^2_k \vect{v}^k = \tens{0}
 \end{equation}
-System \eqref{eq:acoustic_eigen} is the \textit{acoustic tensor} $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$ left eigensystem which, due to the symmetry of $\tens{A}$ is equivalent to the right eigensystem:
+which is the \textit{acoustic tensor} $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$ left eigensystem. Due to the symmetry of $\tens{A}$, system \eqref{eq:acoustic_eigen} is equivalent to the right eigensystem:
 \begin{equation}
   \label{eq:acoustic_eigen_system_lambda}
   \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 c_k^2 \delta_{ij} \) v_j^k =0
 \end{equation}
-or atlernatively with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
+or atlernatively, with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
 \begin{equation}
   \label{eq:acoustic_eigen_system}
   \( \tens{A} - \omega_p \tens{I} \) \vect{l}^p = \vect{0}
 \end{equation}
-The condition for system \eqref{eq:normal_quasi} to be hyperbolic and have real eigenvalues and associated eigenvectors is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
+The condition for system \eqref{eq:normal_quasi} to be hyperbolic (real eigenvalues and independent eigenvectors) is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
 \begin{equation}
   \label{eq:strong_ellipticity}
-  (\vect{m}\otimes \vect{N}): \tilde{\Hbb}: (\vect{m}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{m} \in \Rbb^3 \: ; \: \vect{N},\vect{m} \ne \vect{0}
+  (\vect{n}\otimes \vect{N}): \tilde{\Hbb}: (\vect{n}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{n} \in \Rbb^3 \: ; \: \vect{N},\vect{n} \ne \vect{0}
 \end{equation}
-If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_k,\Lcb^k\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of quasi-linear form \eqref{eq:normal_quasi} can be defined:
+If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_k,\Lcb^k\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_k,\Lcb^k\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
   \label{eq:left_eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation of \eqref{eq:eigen_left_stress} for the null eigenvalue:
+At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation \eqref{eq:eigen_left_stress} for the null eigenvalue:
 \begin{equation}
   \label{eq:left_null_eigenvectors}
   \tens{S}^k:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0},\quad k=1,...,6
@@ -64,7 +64,7 @@ Following the same procedure for right eigenvectors $\Rcb^k=\matrice{\vect{v}^k 
     & -\tilde{\Hbb}:\(\vect{v}^k\otimes\vect{N}\) - c_k \tens{S}^k = \tens{0}
   \end{alignat}
 \end{subequations}
-which leads to the \textit{right eigen fields} associated to the non-null eigenvalues:
+which leads to the \textit{right characteristic fields} associated to the non-null eigenvalues:
 \begin{equation}
   \label{eq:right_eigenfields}
   \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\tilde{\Hbb}:\( \vect{l}^p\otimes \vect{N}\) \:\]  \right\rbrace ,\quad p=1,2,3
@@ -75,33 +75,22 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
   \tens{S}^k \cdot  \vect{N} =\vect{0},\quad k=1,...,6
 \end{equation}
 
-Note that since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure. Furthermore, the specialization of characteristic equations \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
+\begin{remark}
+  Since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elaso-viscoplasticity leads to the same characteristic structure. Furthermore, the specialization of characteristic equations \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads in that case to:
 \begin{equation}
   \label{eq:characteristic_equations_homogeneous}
   \Lcb^k \cdot d\Qcb = \vect{0},\quad k=1,...,6
 \end{equation}
-meaning that the solution is constant along each ray $\xi = x/t$ through the origin. Solutions $\Qcb(\xi)$ are then called \textit{similarity solutions} and allow to rewrite the quasi-linear form as:
-\begin{equation}
-  \label{eq:quasi-linear_similarity}
-  -\frac{x}{t^2}\Qcb'(\xi) + \Jbsf \frac{1}{t}\Qcb'(\xi) = \vect{0} \quad \Rightarrow \quad \(\Jbsf- \xi \:\Ibsf \) \Qcb'(\xi) = \vect{0}
-\end{equation}
-By looking at characteristic curves $\xi=c_k$, system \eqref{eq:quasi-linear_similarity} implies that $\Qcb'$ is proportional to the right eigenvector $\Rcb^k$ and integration of $\Qcb'$ yields an \textit{integral curve} that is tangent at every point of the \textit{phase plane} $\(\Qcb_1,...,\Qcb_{m}\)$ to this eigenvector.
-
-\boxe{USEFULL ?:
-The notions highlighted so far will be illustrated in the two following sections. The method of characteristics will lead to:
-\begin{itemize}
-\item[(i)] the well-known solution to the \textit{Riemann problem} on a elastic bar
-\item[(ii)] the development of the solution the Riemann problem of a hyperelastic Saint-Venant-Kirchhoff medium undergoing a one-dimensional strain state
-\end{itemize}
-Furthermore, the \textit{Rankine-Hugoniot condition} for discontinuous waves, and the concept of \textit{shock} and \textit{simple} waves will be introduced.}
+meaning that the solution is constant along each characteristic straight line  through the origin of slope $\xi = 1/c_k$ in the ($x,t$) plane. Such solutions $\Qcb(\xi)$ that only depend on the ray $\xi$ are then called \textit{similarity solutions}.
+\end{remark}
 
 \subsection{Linear problems}
 \label{subsec:charac_Linear_problems}
-A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecewise constant initial data on both sides of an interface. In the arbitrary direction $\vect{n}=\[\vect{e}_1,\vect{e}_2,\vect{e}_3\]$, the Riemann problem reads:
+We propose here to apply the characteristic analysis developed above to linear problem by considering a Riemann problem for linear elastic solids. Futhermore, a homogeneous hyperbolic system of dimension $m$ is considered so that the Riemann problem in the arbitrary direction $\vect{n}$ reads:
 \begin{equation}
-  \label{eq:Riemann_problem}
+  \label{eq:Linear_Riemann_problem}
   \begin{aligned}
-  &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \Scb, \\
+  &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \vect{0}, \\
   &\left\lbrace 
     \begin{aligned}
       & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
@@ -111,74 +100,8 @@ A Riemann problem is a Cauchy problem composed of a hyperbolic system and piecew
   \end{aligned}
 \end{equation}
 
-We consider a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. The Riemann problem consists then of problem \eqref{eq:Riemann_problem} for $\vect{n}=\vect{e}_1$ and $X_n=x$.
-
-Neglecting body forces without loss of generality and introducing \textit{Yound's modulus E} such that $\sigma = E\eps$, conserved quantities and flux vector are:
-\begin{equation*}
-  \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
-\end{equation*}
-The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
-\begin{equation*}
-  % c_{1,2} = \mp \sqrt{\frac{E}{\rho}}=\pm c
-  \left\lbrace
-    \begin{aligned}
-      & c_1=- \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=-c\\
-      & c_2= \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=c
-    \end{aligned}\right.
- \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
-\end{equation*}
-
-\subsubsection*{The method of characteristics}
-The system of ODE along the characteristic curves, given by characteristic equations \eqref{eq:PDEs_ODEs}, is:
-\begin{equation}
-  \label{eq:elast_charac_equation}
-  \Lcb^p \cdot d\Qcb = 0 \quad \Rightarrow
-  \left\lbrace
-    \begin{aligned}
-      -& \rho c\: dv - d\sigma = 0\\
-      & \rho c\: dv - d\sigma = 0
-    \end{aligned} \right.
-\end{equation}
-Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (dashed lines in figure \ref{fig:elasticity_example}).  
-\begin{figure}[h]
-  \centering
-  \input{chapter2/pgfFigures/example_elasticity}
-  \caption{Solution to Riemann problem \eqref{eq:Riemann_problem} for an elastic bar.}
-  \label{fig:elasticity_example}
-\end{figure}
-Integration of characteristic equations \eqref{eq:elast_charac_equation} respectively along $AP$ and $BP$ yields:
-\begin{equation}
-  \label{eq:elastic_integral_curves}
-  \left\lbrace
-    \begin{aligned}
-      -& \rho c \(v_P - v_A \) - \(\sigma_P - \sigma_A \) = 0\\
-      & \rho c \(v_P - v_B \) - \(\sigma_P - \sigma_B \) = 0
-    \end{aligned}
-    \right.
-\end{equation}
-which solution is:
-\begin{equation}
-  \label{eq:elastic_solution_P}
-  v_P = \frac{\sigma_B - \sigma_A}{2\rho c} + \frac{v_A+v_B}{2} \quad ; \quad \sigma_P = \rho c\frac{v_B - v_A}{2} + \frac{\sigma_A+\sigma_B}{2}
-\end{equation}
-On the other hand, the same procedure for point $P'$ leads to the solution:
-\begin{equation}
-  \label{eq:elastic_solution_Q}
-  v_{P'} = \frac{\sigma_B - \sigma_{A'}}{2\rho c} + \frac{v_{A'}+v_B}{2} \quad ; \quad \sigma_{P'} = \rho c\frac{v_B - v_{A'}}{2} + \frac{\sigma_{A'}+\sigma_B}{2}
-\end{equation}
-With initial data given for the Riemann problem, it appears that $\Qcb_{A'}=\Qcb_{B}$ and hence, $\Qcb_{P'}=\Qcb_{R} \ne \Qcb_{P}$. Let's assume now that points $P$ and $P'$ are still on each side of the right characteristic straight line emanating from the origin but infinitely close to it. The previous results obviously hold along the characteristics so that a jump discontinuity propagates in the bar with speed $c$ The solutions of Riemann problem \eqref{eq:Riemann_problem} therefore consist in waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
-\begin{definition}
-Given a system of hyperbolic conservation laws $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the \textbf{Rankine-Hugoniot condition} reads:
-\begin{equation}
-  \label{eq:rankine-hugoniot}
-  \saut{ \Fcb} = s_i \saut{ \Qcb}
-\end{equation}
-where $\saut{\bullet}$ denotes the jump operator across the discontinuity.  
-\end{definition}
-
 \subsubsection*{Characteristic variables -- Waves solution}
-Consider a quasi-linear form $\Qcb_t + \Jbsf \Qcb_x=\vect{0}$ of dimension $m$. 
-By introducing a set of \textbf{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$, where $\Rsf_{ij}=\Rc^j_i$ is the matrix of right eigenvectors, the quasi-linear form of system \eqref{eq:Riemann_problem} can be rewritten in terms of characteristic the variables:
+By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ ($\Rsf_{ij}=\Rc^j_i$), the quasi-linear form of system \eqref{eq:Linear_Riemann_problem} can be rewritten:
 \begin{equation*}
   \begin{aligned}
     &\drond{\Pc_i}{t} + c_i\drond{\Pc_i}{x} = 0 \\
@@ -199,7 +122,7 @@ By introducing a set of \textbf{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$,
   \caption{Solution to linear advection equation on the quantity $\Pc_i$ with characteristic speed $c_i$.}
   \label{fig:advection}
 \end{figure}
-with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profil $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, at a given point $(x,t)$, the solution $\Pc_i(x,t)$ is simply given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$. 
+with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_k = \Rc^k_i\Csf_{kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profil $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, the solution  $\Pc_i(x,t)$ at a given point is simply given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$. 
 The vector $\Qcb$ is then determined by inverting the relation:
 \begin{equation}
   \label{eq:Q_expansion}
@@ -228,21 +151,96 @@ Those equations are equivalent to jump conditions across mutliple discontinuous 
   \label{eq:jump_star_L}
   &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i \\
 \end{align}
-where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from the expensions of initial conditions by solving:
+where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from the expansions of initial conditions by solving:
 \begin{equation}
   \label{eq:delta_system}
   \Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}
 \end{equation}
-Writing $\Qcb^R-\Qcb^L=\Delta \Qcb$, linear systems of dimension $2$ lead to wave strengths coefficients:
+
+We see that the solutions of Riemann problem \eqref{eq:Linear_Riemann_problem} consist in discontinuous waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
+\begin{definition}
+Given a system of hyperbolic conservation laws $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$ and a discontinuous wave solution of speed $s_i$ associated to the $i$th characteristic field, the \textbf{Rankine-Hugoniot condition} reads:
+\begin{equation}
+  \label{eq:rankine-hugoniot}
+  \saut{ \Fcb} = s_i \saut{ \Qcb}
+\end{equation}
+where $\saut{\bullet}$ denotes the jump operator across the discontinuity.  
+\end{definition}
+
+\subsubsection*{Solution of the elastic bar problem}
+The above discussion is now specified to a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$, so that the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. Neglecting body forces and introducing \textit{Yound's modulus E} such that $\sigma = E\eps$, the Riemann problem takes the form \eqref{eq:Linear_Riemann_problem} with conserved quantities and flux vector:
+\begin{equation*}
+  \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
+\end{equation*}
+where $v=\vect'v}\cdot{e}_1$. The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
+\begin{equation*}
+  \left\lbrace
+    \begin{aligned}
+      & c_1=- \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=-c\\
+      & c_2= \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }=c
+    \end{aligned}\right.
+ \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
+\end{equation*}
+For a system of dimenson $2$, the solution in terms of wave strengths coefficients of system \eqref{eq:delta_system} is, by writing $\Qcb^R-\Qcb^L=\Delta \Qcb$:
+%Writing $\Qcb^R-\Qcb^L=\Delta \Qcb$, linear systems of dimension $2$ lead to wave strengths coefficients:
 \begin{equation}
   \label{eq:wave_strengths}
-  \vect{\delta} = \frac{1}{\Rc_1^2-\Rc^1_1}\matrice{\Rc^2_1 \Delta \Qc_2 - \Delta \Qc_1 \\ \Delta \Qc_1 - \Rc_1^1\Delta \Qc_1}
+  \vect{\delta} = \frac{1}{\Rc^1_1\Rc^2_2 -\Rc_1^2\Rc^1_2}\matrice{\Rc^2_2\Rc^1_1 \Delta \Qc_1 - \Rc^1_1\Rc^2_1\Delta \Qc_2 \\ \Rc^1_1\Delta \Qc_2 - \Rc_2^1\Delta \Qc_1}
 \end{equation}
-which, combined to equation \eqref{eq:jump_star_L}, yields the solution found by using the method of characteristics \eqref{eq:elastic_solution_P} for linear elasticity:
+More specifically for a bar:
+\begin{equation}
+  \label{eq:wave_strengths_bar}
+  \vect{\delta} = \frac{1}{2\rho c}\matrice{\rho c \Delta v + \Delta \sigma \\  \rho c \Delta v -\Delta \sigma }
+\end{equation}
+Hence, equation \eqref{eq:jump_star_L} yields the solution:
 \begin{equation}
   \label{eq:solution_charac_variables}
-  \Qcb = \Qcb^L +\Rcb^1 \delta^1 = \matrice{\frac{\sigma_B - \sigma_A}{2\rho c} + \frac{v_A+v_B}{2} \\ \rho c\frac{v_B - v_A}{2} + \frac{\sigma_A+\sigma_B}{2}} 
+  \Qcb = \Qcb^L +\Rcb^1 \delta^1 = \matrice{\frac{\sigma_R - \sigma_L}{2\rho c} + \frac{v_R+v_L}{2} \\ \rho c\frac{v_R - v_L}{2} + \frac{\sigma_R+\sigma_L}{2}} 
 \end{equation}
+
+
+% \subsubsection*{The method of characteristics}
+% The system of ODE along the characteristic curves, given by characteristic equations \eqref{eq:PDEs_ODEs}, is:
+% \begin{equation}
+%   \label{eq:elast_charac_equation}
+%   \Lcb^p \cdot d\Qcb = 0 \quad \Rightarrow
+%   \left\lbrace
+%     \begin{aligned}
+%       -& \rho c\: dv - d\sigma = 0\\
+%       & \rho c\: dv - d\sigma = 0
+%     \end{aligned} \right.
+% \end{equation}
+% Consider now a point $P$ of the ($x,t$) plane at which we are looking for the solution. Applying the method of characteristic, we trace the two characteristic straight lines starting from the $x$-axis (along which $\Qcb$ is given) and passing through $P$ (dashed lines in figure \ref{fig:elasticity_example}).  
+% \begin{figure}[h]
+%   \centering
+%   \input{chapter2/pgfFigures/example_elasticity}
+%   \caption{Solution to Riemann problem \eqref{eq:Riemann_problem} for an elastic bar.}
+%   \label{fig:elasticity_example}
+% \end{figure}
+% Integration of characteristic equations \eqref{eq:elast_charac_equation} respectively along $AP$ and $BP$ yields:
+% \begin{equation}
+%   \label{eq:elastic_integral_curves}
+%   \left\lbrace
+%     \begin{aligned}
+%       -& \rho c \(v_P - v_A \) - \(\sigma_P - \sigma_A \) = 0\\
+%       & \rho c \(v_P - v_B \) - \(\sigma_P - \sigma_B \) = 0
+%     \end{aligned}
+%     \right.
+% \end{equation}
+% which solution is:
+% \begin{equation}
+%   \label{eq:elastic_solution_P}
+%   v_P = \frac{\sigma_B - \sigma_A}{2\rho c} + \frac{v_A+v_B}{2} \quad ; \quad \sigma_P = \rho c\frac{v_B - v_A}{2} + \frac{\sigma_A+\sigma_B}{2}
+% \end{equation}
+% On the other hand, the same procedure for point $P'$ leads to the solution:
+% \begin{equation}
+%   \label{eq:elastic_solution_Q}
+%   v_{P'} = \frac{\sigma_B - \sigma_{A'}}{2\rho c} + \frac{v_{A'}+v_B}{2} \quad ; \quad \sigma_{P'} = \rho c\frac{v_B - v_{A'}}{2} + \frac{\sigma_{A'}+\sigma_B}{2}
+% \end{equation}
+% With initial data given for the Riemann problem, it appears that $\Qcb_{A'}=\Qcb_{B}$ and hence, $\Qcb_{P'}=\Qcb_{R} \ne \Qcb_{P}$. Let's assume now that points $P$ and $P'$ are still on each side of the right characteristic straight line emanating from the origin but infinitely close to it. The previous results obviously hold along the characteristics so that a jump discontinuity propagates in the bar with speed $c$.
+
+
+
 
 \subsection{Non-linear problems}
 \label{subsec:charac_nonlinear_problems}
