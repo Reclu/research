@@ -1,13 +1,5 @@
-It has been seen in the previous section that a suitable quasi-linear system enables the computation of the complete solution of a Riemann problems in solid dynamics. However, such a procedure may become complicated due to the non-linearity of the Jacobian matrix. Indeed, some problems can lead to the inability to derive explicit conditions as those developed for the Saint-Venant-Kirchhoff material \eqref{eq:1S2R_solution} and \eqref{eq:1R2S_solution}.
-
-Numerical methods such as Finite Volume Methods \cite{Leveque} require the solution of many Riemann problems within a discretized medium. When dealing with non-linear problems, the exact solution of those problems may increase drastically the computational cost, making the numerical scheme prohibitive. Moreover numerical procedures often require little information about the solution of Riemann problems only and do not need the complete resolution. In that context, alternative procedures have been developed in order to take into account the characteristic structure of a hyperbolic system by computing an approximate solution of the Riemann problems. Approximate Riemann solvers developed for Computational Fluid Dynamics allow to extract information for either flux functions (\textit{HLL, HLLC, Roe} and \textit{Osher} approximate Riemann solvers \cite{Trangenstein}, \cite{Toro}) or approximate conserved quantities vectors. Some of those have been applied to specific solid mechanics problems such as the Osher \cite{LEE_FVM}, \cite{Haider_FVM} or the HLLC \cite{Ortega_HLLD} approximate solvers for hyperelasticity .
-
-We recall here the formulation of the approximate-state Riemann solver \cite[Ch.9]{Toro}, applied to solid mechanics \cite[Ch.22]{Leveque}. Two examples are considered as illustrations
-\begin{itemize}
-\item[(i)] an elastoplastic medium, although linear, which constitutive model involves a particular procedure in the Riemann solver in order to manage the jump of characteristic speeds due to the crossing of the plastic threshold \cite{Fogarty}.
-\item[(ii)] a hyperelastic Saint-Venant-Kirchhoff medium so that the comparison with the analytical solution developed in section \ref{subsec:charac_nonlinear_problems} can be made
-\end{itemize}
-
+It has been seen in the previous section that the complete solution of a Riemann problems in solid dynamics is possible for simple problems. However, such a solution may become complicated for multi-dimensional problems or for other non-linear problems. 
+Numerical methods such as Finite Volume Methods \cite{Leveque} require the solution of many Riemann problems within a discretized medium. When dealing with non-linear problems, the exact solution of those problems may increase drastically the computational cost, making the numerical scheme prohibitive. Moreover, numerical procedures often require only little information about the solution of Riemann problems and do not need the complete resolution. In that context, alternative procedures have been developed in order to take into account the characteristic structure of a hyperbolic system by computing an approximate solution of Riemann problems. Approximate Riemann solvers developed for Computational Fluid Dynamics allow to extract information for either flux functions (\textit{HLL, HLLC, Roe} and \textit{Osher} approximate Riemann solvers \cite{Trangenstein}, \cite{Toro}) or for vectors of conserved quantities (\textit{approximate--state Riemann solver} \cite[Ch.9]{Toro}, \cite[Ch.22]{Leveque}). Some of those have been applied to specific problems in solid mechanics problems such as the Osher approximate solver (see \cite{LEE_FVM} and \cite{Haider_FVM}) or the HLLC approximate solver (see \cite{Ortega_HLLD}) for hyperelasticity . We recall here the formulation of the approximate-state Riemann solver for solid mechanics. The approach is then applied to the non-linear problem of section \ref{subsec:charac_nonlinear_problems}.
 
 \subsection{General ideas}
 As in the previous section, we consider the Riemann problem in the space direction $\vect{N}$:
@@ -23,25 +15,20 @@ As in the previous section, we consider the Riemann problem in the space directi
     \right.
   \end{aligned}
 \end{equation}
-The approach for developping an approximate-state Riemann solver consists in linearizing the problem \eqref{eq:RP_approx} by approximating $\Jbsf$ in the vicinity of $\Qcb^L$ and $\Qcb^R$ by a constant matrix $\bar{\Jbsf}=\Jbsf\(\Qcb^L,\Qcb^R\)$ \cite[Ch.15]{Leveque}. Note that this approximation is valid for small jumps in initial data (\textit{i.e }$\Qcb^L\approx\Qcb^R$) and that $\bar{\Jbsf}$ must ensure hyperbolicity of the system, namely $\bar{\Jbsf}$ has real eigenvalues and a complete set of independent eigenvectors. The approximate matrix also satisfies the consistency condition:
+The approach for developing an approximate-state Riemann solver consists in linearizing the problem \eqref{eq:RP_approx} by approximating $\Jbsf$ in the vicinity of $\Qcb^L$ and $\Qcb^R$ by a constant matrix $\bar{\Jbsf}=\Jbsf\(\Qcb^L,\Qcb^R\)$ \cite[Ch.15]{Leveque}. Note that this approximation is valid for small jumps in initial data (\textit{i.e }$\Qcb^L\approx\Qcb^R$) and that $\bar{\Jbsf}$ must ensure hyperbolicity of the system, namely $\bar{\Jbsf}$ has real eigenvalues and a complete set of independent eigenvectors. The approximate matrix also satisfies the consistency condition:
 \begin{equation}
   \label{eq:approx_constistency}
   \bar{\Jbsf}\(\Qcb,\Qcb\)=\Jbsf\(\Qcb\)
 \end{equation}
 
-% The classical approach for developping an approximate-state Riemann solver is to first linearized the problem \eqref{eq:RP_approx} by assuming small jumps in initial data so that the Jacobian matrix can be supposed constant $\bar{\Jbsf}=\Jbsf\(\Qcb^L,\Qcb^R\)$ \cite[Ch.15]{Leveque}. must however ensure the hyperbolicity of the system ($\bar{\Jbsf}$ has real eigenvalues and a complete set of independent eigenvectors) and satisfy the consistency condition:
-% \begin{equation}
-%   \label{eq:approx_constistency}
-%   \bar{\Jbsf}\(\Qcb,\Qcb\)=\Jbsf\(\Qcb\)
-% \end{equation}
-Such a matrix can be defined by using the definition of right eigenvectors and characteristic speeds $\Jbsf \Rbsf = \Rbsf \Cbsf \Rightarrow \Jbsf = \Rbsf \Cbsf \Rbsf^{-1}$ in which left-going (\textit{resp. right-going}) characteristics and associated eigenvectores are assumed to depend on $\Qcb^L$ (\textit{resp. on} $\Qcb^R$) only. Namely, one writes:
+Such a matrix can be defined by using the definition of right eigenvectors and characteristic speeds $\Jbsf \Rbsf = \Rbsf \Cbsf \Rightarrow \Jbsf = \Rbsf \Cbsf \Rbsf^{-1}$ in which left-going (\textit{resp. right-going}) characteristics and associated eigenvectors are assumed to depend on $\Qcb^L$ (\textit{resp. on} $\Qcb^R$) only. Namely, one writes:
 \begin{align*}
   &\Rbsf = \matrice{\Rcb^1(\Qcb^L),\cdots,\Rcb^I(\Qcb^L),\Rcb^{I+1}(\Qcb^R),\cdots,\Rcb^m(\Qcb^R)} \\
   &\Cbsf=\matrice{c_1(\Qcb^L) & & & & & \\ & \cdots & & && \\ & &c_I(\Qcb^L) & & &\\ & & &c_{I+1}(\Qcb^R)& & \\ & & & &\cdots &\\ &&&&&c_m(\Qcb^R)} 
 \end{align*}
-where $c_I(\Qcb)$ and $m$ are the highest negative eigenvalue the dimension of the Jacobian matrix. %While one can define a complete set of independent eigenvectors of the Jacobian matrix, the matrix $\Rbsf$ is non-singular and can hence be inverted. 
+where $c_I(\Qcb)$ and $m$ are the highest negative eigenvalue and the dimension of the Jacobian matrix. 
 
-At last, the linearized Riemann problem thus written enables the determination of every state vector $\Qcb(x,t)$ by following the procedure described in section \ref{subsec:charac_Linear_problems} for linear problems, recalled here for convenience for a system of dimension $m$:%namely by solving either equation \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L}.
+At last, the linearized Riemann problem thus written enables the determination of every state vectors $\Qcb(x,t)$ by following the procedure described in section \ref{subsec:charac_Linear_problems} for linear problems, recalled here for convenience for a system of dimension $m$:
 \begin{equation}
   \label{eq:approx_RS}
   \begin{aligned}
@@ -50,41 +37,15 @@ At last, the linearized Riemann problem thus written enables the determination o
     &  \Qcb(x,t) =\Qcb^L+ \sum_{i=1}^{I} \Rcb^i\delta^i
   \end{aligned}
 \end{equation}
-where the ($x,t$) lies in the region bounded by the $I$th and $I+1$th characteristics.
+where the point ($x,t$) lies in the region bounded by the $I$th and $I+1$th characteristics.
 
 \begin{remark}
-  Note that the matrix $\Rbsf$ is non-singular and can hence be inverted while one can define a complete set of independent eigenvectors of the Jacobian matrix. Moreover, the linearization proposed amounts to considering a heterogeneous medium where $\Qcb^{L}$ and $\Qcb^R$ act as material parameters.
-\end{remark}
-
-\subsection{Elastoplastic plane waves}
-Consider a plane wave problem in an infinite elastoplastic medium with linear hardening due for intstance to Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) so that plastic flow may occur.
-The exact solution of such a linear problem being known \cite{Wang} an exact Riemann solver, which however requires a particular procedure, may be used. Indeed, the discontinuity of the tangent modulus through the plastic threshold yields two sets of charactersitic speeds and associated eigenvectors: $\{\pm c , \: \Rcb^i_E\}$ for elastic evolutions and $\{\pm c_P, \: \Rcb^i_P\}$ for plastic ones.  Thus, we see that whether a plastic wave appears or not depends on the tangent modulus and hence, on the nature of the evolution that depends the yield function. In that sense, a prediction-correction procedure must be followed by first solving an elastic Riemann problem which resulting (trial) solution $\Qcb$ is tested against the yield criterion on both sides $x<0$ or $x>0$. With possibly different yield stresses, plastic strains and hardening parameters in left and right regions,
-% ($\{\sigma^y_L,\sigma^y_R\},\{\eps^p_L,\eps^p_R\},\{\beta_L,\beta_R\}$)
-the yield criterion may be violated or not leading to one, two or null plastic wave that must be added as a correction of the original problem. Figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves} shows a solution involving two plastic waves while plastic flow only occur in the right region in figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_3waves}.
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{4-waves solution\label{subfig:ep_bar_charac_4waves}}{\input{chapter2/pgfFigures/elastoplastic_bar}}
-  \subcaptionbox{Stress profiles for 4-waves\label{subfig:ep_bar_stress_4waves}}{\input{chapter2/pgfFigures/elastoplastic_stress}}\\
-  \subcaptionbox{3-waves solution\label{subfig:ep_bar_charac_3waves}}{\input{chapter2/pgfFigures/elastoplastic_bar_1plast}}
-  \subcaptionbox{Stress profiles for 3-waves\label{subfig:ep_bar_stress_3waves}}{\input{chapter2/pgfFigures/elastoplastic_stress_1plast}}
-  \caption{Solution of Riemann problem in a homogenous elastoplastic medium with linear hardening and initial plastic strain $\eps^p=0$.}
-  \label{fig:EP_bar_solution}
-\end{figure}
-If neither $f_L$ nor $f_R$ leads to a violation of the criterion, the trial state is the solution. Otherwise, the plastic correction is performed by computing the stress in regions of the ($x,t$) plane bounded by elastic and plastic waves ($\tilde{\Qcb}^{L,R}$ in figures \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves} and \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_3waves}), so that the yield function satisfies $f=0$. Then, elastic wave strengths in yielding regions are given by solving:
-\begin{align}
-  & \tilde{\Qcb}^R = \Qcb^R - \delta^1_E \Rcb^1_E\\
-  & \tilde{\Qcb}^L = \Qcb^L + \delta^2_E \Rcb^2_E
-\end{align}
-from which the velocity can be subsequently determined, providing thus $\tilde{\Qcb}^{L,R}$. At last a plastic Riemann solver leading to the solution of the problem $\Qcb(x,t)$ by solving system \eqref{eq:approx_RS} where initial data lie in the yielding regions, and the eigenvectors are associated to plastic characteristics.
-
-\begin{remark}
-  Note that the above solver also applies to bar problems characterized by stress and strain such that $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\eps}=\eps \vect{e}_1\otimes \vect{e}_1$, and different wave speeds.
+  Note that since one can define a complete set of independent eigenvectors of the Jacobian matrix, the matrix $\Rbsf$ is non-singular so that $\bar{\Jbsf}$ can be uniquely determined. Moreover, the linearization proposed amounts to considering a heterogeneous medium where $\Qcb^{L}$ and $\Qcb^R$ act as material parameters.
 \end{remark}
 
 \subsection{Hyperelastic plane wave}
 We finish this section with an illustration of the approximate Riemann solver by considering the plane wave problem in a Saint-Venant-Kirchhoff of section \ref{subsec:charac_nonlinear_problems}.
-%We consider again the non-linear problem of section \ref{subsec:charac_nonlinear_problems} in order to see the influence of the approximation and the amount of information lost.
-Recall that the eigenvalues and right eigenvectors matrices reads for that problem:
+Recall that the eigenvalues and right eigenvectors matrices read for that problem:
 \begin{equation}
   \label{eq:SVK_matrices}
   \Cbsf = \matrice{-c & 0 \\ 0 & c} \quad ; \quad \Rbsf = \matrice{c & -c\\ 1&1} \:,\quad c=\sqrt{\frac{\lambda + 2\mu}{2\rho_0}(3F^2-1)}
@@ -94,19 +55,19 @@ Hence, the linearized problem is written with:
   \label{eq:SVK_matrices_linear}
   \Cbsf = \matrice{-c_L & 0 \\ 0 & c_R} \quad ; \quad \Rbsf = \matrice{c_L & -c_R\\ 1&1}
 \end{equation}
-In section \ref{subsec:charac_Linear_problems}, the expression of the wave strength vector $\vect{\delta}$ has been established for general linear systems of dimension $2$ (see equation \eqref{eq:wave_strengths}):
+In section \ref{subsec:charac_Linear_problems}, the expression of the wave strengths vector $\vect{\delta}$ has been established for general linear systems of dimension $2$ (see equation \eqref{eq:wave_strengths}):
 \begin{equation}
   \vect{\delta}=\frac{1}{c_R+c_L}\matrice{c_R \Delta F +\Delta v\\ c_L \Delta F -\Delta v}
 \end{equation}
-leading to the solution $\Qcb^*$ between the two discontinuous waves:
+leading to the solution $\Qcb $ between the two discontinuous waves:
 \begin{equation}
   \label{eq:SVK_approx_solution}
-  \Qcb^* = \Qcb^L + \delta^1 \Rcb^1 = \matrice{v_L \\F_L} +\delta^1 \matrice{c_L \\1} \quad \text{or} \quad \Qcb^* = \Qcb^R - \delta^2 \Rcb^2 = \matrice{v_R \\F_R} -\delta^2 \matrice{-c_R \\1}
+  \Qcb  = \Qcb^L + \delta^1 \Rcb^1 = \matrice{v_L \\F_L} +\delta^1 \matrice{c_L \\1} \quad \text{or} \quad \Qcb  = \Qcb^R - \delta^2 \Rcb^2 = \matrice{v_R \\F_R} -\delta^2 \matrice{-c_R \\1}
 \end{equation}
 Substitutions of $\delta^{1,2}$ from second equations in first ones provide straight lines equations in the phase plane ($F,v$):
 \begin{equation}
   \label{eq:approx_straight}
-  v_* = v_L + c_L(F_*-F_L) \quad ; \quad v_* = v_R + c_R(F_R-F_*)
+  v  = v_L + c_L(F -F_L) \quad ; \quad v  = v_R + c_R(F_R-F )
 \end{equation}
 \begin{figure}[h!]
   \centering
@@ -115,7 +76,7 @@ Substitutions of $\delta^{1,2}$ from second equations in first ones provide stra
   \caption{Comparison of approximate (dashed lines) and exact (solid lines) solution for a one-dimensional strain problem in a Saint-Venant-Kirchhoff hyperelastic material}
   \label{fig:comparison_exact_approx}
 \end{figure}
-The intersection of those straight lines in the phase plane provides the approximate solution. Figure \ref{fig:comparison_exact_approx} shows comparisons of approximate and exact solutions for various initial data, all leading to a $1$-shock, $2$-rarefaction solution. As expected, approximate and exact solutions are different and get closer for small initial discontinuities, falling in the linearization assumption $\Qcb^L\approx \Qcb^R$. As a consequence, in figures \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx1} a big initial discontinuity is considered so that the approximation error in larger than that of figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx4} for which initial data are based on a weak jump.
+The intersection of those straight lines in the phase plane corresponds to the approximate solution. Figure \ref{fig:comparison_exact_approx} shows comparisons of approximate and exact solutions for various initial data, all leading to a $1$-shock--$2$-rarefaction exact solution. As expected, approximate and exact solutions are different and get closer for small initial discontinuities, falling in the linearization assumption $\Qcb^L\approx \Qcb^R$. As a consequence, in figures \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx1} a big initial discontinuity is considered so that the approximation error is larger than that of figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx4} for which initial data are based on a weak jump.
 
 
 %%% Local Variables:

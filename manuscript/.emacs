@@ -21,6 +21,9 @@
 (add-hook 'LaTeX-mode-hook
       '(lambda ()
          (TeX-add-symbols '("eqref" TeX-arg-ref (ignore)))))
+(add-hook 'LaTeX-mode-hook
+      '(lambda ()
+         (TeX-add-symbols '("subref" TeX-arg-ref (ignore)))))
 
 (setq reftex-label-alist
   '((nil ?s nil nil nil ("Kapitel" "Kap." "Abschnitt" "Teil"))

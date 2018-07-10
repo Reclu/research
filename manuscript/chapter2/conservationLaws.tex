@@ -9,7 +9,7 @@ Consider a three-dimensional solid with volume denoted by $\Omega \subset \Rbb^3
   \label{fig:deformationFunction}
 \end{figure}
 
-In the reference configuration, every material particles are located by their position vectors: $\vect{X}=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\vect{X}$ may have moved to a different location given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particles of the solid during the deformation. In the lagrangian coordinates system, particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
+In the reference configuration, every material particles are located by their position vectors: $\vect{X}=X_\alpha \vect{e}_\alpha$, where $X_\alpha$ denotes the \textit{Lagrangian coordinates} and $\vect{e}_\alpha$ the basis vectors. At a subsequent time $t$, the particle initially located at $\vect{X}$ may have moved to a different location given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$. Thus, the mapping $\vect{\phi}$ provides the paths of every particles of the solid during the deformation. In the Lagrangian coordinates system, particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
 Note that in the above definitions Greek indices are used for quantities evaluated in the reference configuration whereas Latin ones refer to quantities defined in the current configuration. 
 
 The \textit{displacement} and \textit{velocity} vectors of a particle at time $t$ are respectively:
@@ -26,7 +26,7 @@ where $\nablat_0 (\bullet)$ is the gradient operator in the reference configurat
 \begin{equation}
   \tens{F}= \nablat_0 \vect{u}(\vect{X},t) + \tens{I} \label{eq:F_displacement}
 \end{equation}
-with $\tens{I}$, the second-order identity tensor. The deformation gradient tensor characterizes the variations of lengths, areas and volumes. Indeed, the infinitesimal vector, oriented surface and volume elements in the reference configuration, respectively denoted by $\vect{dX},\vect{dS}$ and $dV$, transorm respectively to:
+with $\tens{I}$, the second-order identity tensor. The deformation gradient tensor characterizes the variations of lengths, areas and volumes. Indeed, the infinitesimal vector, oriented surface and volume elements in the reference configuration, respectively denoted by $\vect{dX},\vect{dS}$ and $dV$, transform respectively to:
 \begin{equation}
   \label{eq:transport_equations}
   \begin{aligned}
@@ -77,7 +77,7 @@ Since equation \eqref{eq:mass_conservation_law} holds regardless of the volume $
 \end{equation}
 In particular, equation \eqref{eq:mass_balance} is automatically satisfies within the infinitesimal theory since current and reference configurations are the same (\textit{i.e.} $\rho=\rho_0 \: \forall\: \vect{x},t \: \in \Omega\times \tau$).
 
-Furthermore, \textit{Newton's second law} states thet equilibrium between inertia and external forces undergone by a solid $\Omega$. In the current configuration, this conservation law reads:
+Furthermore, \textit{Newton's second law} states that equilibrium between inertia and external forces undergone by a solid $\Omega$. In the current configuration, this conservation law reads:
 \begin{equation*}
   \int_\Omega \rho \vect{\dot{v}} d\Omega = \int_{\partial \Omega} \vect{t} ds + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: t \in  \tau,\: \forall \:\Omega
 \end{equation*}
@@ -94,7 +94,7 @@ where $\nablav \cdot (\bullet)$ denotes the divergence operator in the current c
 \end{theorem}
 \begin{definition}
   \label{def:Piola_transform}
-  The Piola tranform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
+  The Piola transform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
   \begin{equation*}
     \tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}
   \end{equation*}
@@ -120,7 +120,7 @@ or, by using definition \ref{def:Piola_transform}:
   \label{eq:Linear_momentum_conservation}
   \int_{\Omega_0} \( \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} -  \rho_0\vect{b} \) d\Omega = \vect{0} \qquad \forall \: t \in\tau,\: \forall \:\Omega_0
 \end{equation}
-where the \textit{first Piola-Kirchhoff stress tensor} (PK1) $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$ is the Piola transform of Cauchy stress tensor. Thus, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{lagrangian linear momentum}:
+where the \textit{first Piola-Kirchhoff stress tensor} (PK1) $\tens{\Pi}=J\tens{\sigma}\cdot\tens{F}^{-1}$ is the Piola transform of Cauchy stress tensor. Thus, the vanishing of the integrand in equation \eqref{eq:Linear_momentum_conservation} yields the balance equation of the \textit{Lagrangian linear momentum}:
 \begin{equation}
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -139,16 +139,16 @@ where $\vect{q}$ is the outward heat flux vector, $r$ is a volume heat source an
 \begin{equation*}
 \ddroit{}{t}\int_{\Omega} \(\frac{1}{2}\rho \vect{v}\cdot\vect{v} + \rho e\) d\Omega = \int_{\Omega} \(\nablav\cdot(\tens{\sigma}\cdot\vect{v}) +  \rho\vect{b}\cdot\vect{v} \) d\Omega + \int_{\Omega} \rho r \: d\Omega  - \int_{\partial \Omega} \vect{q}\cdot\vect{n} \: dS \qquad \forall \: t \in  \tau ,\: \forall \:\Omega
 \end{equation*}
-The transport of this relation in the reference configuration and introduction of the lagrangian linear momentum \eqref{eq:Lagrangian_linear_momentum} and of kinetic conservation laws \eqref{eq:HE_kinematic} lead to:
+The transport of this relation in the reference configuration and introduction of the Lagrangian linear momentum \eqref{eq:Lagrangian_linear_momentum} and of kinetic conservation laws \eqref{eq:HE_kinematic} lead to:
 % \begin{equation*}
 % \int_{\Omega_0} \(\rho_0 \vect{\dot{v}} + \rho_0 \dot{e}\) d\Omega = \int_{\Omega_0} \(J\nablav\cdot(\tens{\sigma}\cdot\vect{v}) +  \rho_0\vect{b}\cdot\vect{v} \) d\Omega + \int_{\Omega_0} \rho_0 r \:d\Omega- \int_{\partial \Omega_0} J\vect{q}\cdot \tens{F}^{-1}\cdot\vect{n} \: dS \qquad \forall \: t \in  \tau ,\: \forall \:\Omega_0
 % \end{equation*}
 % Then, substitution of the linear momentum according to equation \eqref{eq:Lagrangian_linear_momentum} yields, after some algebra, the conservation law of internal energy:
 \begin{equation}
   \label{eq:conservation_law_energy}
-  \int_{\Omega_0} \rho_0 \dot{e} d\Omega = \int_{\Omega_0} \tens{\Pi}:\tens{\dot{F}}\: d\Omega + \int_{\Omega_0} \(\rho_0r  - \nablav_0 \cdot \vect{Q}\) d\Omega \qquad \forall \: t \in  \tau 
+  \int_{\Omega_0} \rho_0 \dot{e} d\Omega = \int_{\Omega_0} \tens{\Pi}:\tens{\dot{F}}\: d\Omega + \int_{\Omega_0} \(\rho_0 r  - \nablav_0 \cdot \vect{Q}\) d\Omega \qquad \forall \: t \in  \tau 
 \end{equation}
-where $\vect{Q}=J\vect{q}\cdot \tens{F}^{-1}$ is the lagrangian heat flux vector. One thus deduces the balance equation of internal energy in the reference configuration:
+where $\vect{Q}=J\vect{q}\cdot \tens{F}^{-1}$ is the Lagrangian heat flux vector. One thus deduces the balance equation of internal energy in the reference configuration:
 \begin{equation}
   \label{eq:energy_balance}
   \rho_0 \dot{e} -  \tens{\Pi}:\tens{\dot{F}}  + \nablav_0 \cdot \vect{Q}  = \rho_0 r \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
@@ -176,7 +176,7 @@ where $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the specific mechanical an
 \end{equation*}
 
 
-We assume that the internal energy density is a function of strain, \textit{entropy} $\eta$ and additional state variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. The Helmoltz free energy density on the other hand, defined as the \textit{Legendre transform} of internal energy, is a function of temperature $\theta$ and not of entropy: $\psi\(\tens{F},\theta,\Vcb\)=e\(\tens{F},\eta,\Vcb\)-\theta \eta$. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation thus reads:
+We assume that the internal energy density is a function of strain, \textit{entropy} $\eta$ and additional state variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. The Helmholtz free energy density on the other hand, defined as the \textit{Legendre transform} of internal energy, is a function of temperature $\theta$ and not of entropy: $\psi\(\tens{F},\theta,\Vcb\)=e\(\tens{F},\eta,\Vcb\)-\theta \eta$. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation thus reads:
 \begin{equation*}
   \Dscr^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
 \end{equation*}
@@ -231,7 +231,7 @@ In what follows, we shall only consider additional internal variables that descr
   \begin{equation*}
     \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
   \end{equation*}
-  By using thef time derivative of free energy density and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation simplify.
+  By using the time derivative of free energy density and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation simplify.
 \end{remark}
 
 
@@ -333,7 +333,7 @@ $\newline$
   \label{eq:von-Mises_yield}
   f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(R(r)+\sigma^y\) \equiv 0
 \end{equation}
-where $\sigma^y$ is the traction yield stress and $r$ is to be defined. In deviatoric stress space, the von-Mises yield surface is a circle which center and radius are $\tens{Y}$ and $R(r)$. Those thermodynamic forces hence respectively describe the displacement of the elastic domain center due to \textit{kinematic hardening}, and the evolution of its radius due to \textit{isotropic hardening}. In the following, linear hardenings will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening.
+where $\sigma^y$ is the traction yield stress and $r$ is to be defined. In deviatoric stress space, the von-Mises yield surface is a circle which center and radius are $\tens{Y}$ and $R(r)$. Those thermodynamic forces hence respectively describe the displacement of the elastic domain center due to \textit{kinematic hardening}, and the evolution of its radius due to \textit{isotropic hardening}. In the following, linear hardening will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening.
 The specialization of flow rules \eqref{eq:flow_rule_plast},\eqref{eq:hardening_rule_plast} to the yield function \eqref{eq:von-Mises_yield} leads to:
 \begin{subequations}
   \begin{alignat}{1}
@@ -345,8 +345,8 @@ The specialization of flow rules \eqref{eq:flow_rule_plast},\eqref{eq:hardening_
 \end{subequations}
 where $r$ is identified from \eqref{eq:equiv_plastic_strain_rate} as the equivalent plastic strain and $\tens{m}$ is referred to as the \textit{plastic flow direction}.
 
-Next, the Helmoltz free energy density takes the form: 
-%By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{Y},-R(p)\]\}$, one defines the following Helmoltz free energy density:
+Next, the Helmholtz free energy density takes the form: 
+%By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{Y},-R(p)\]\}$, one defines the following Helmholtz free energy density:
 \begin{equation}
   \label{eq:EP_helmoltz}
   \rho \psi = \frac{1}{2}\tens{\eps}^e:\Cbb:\tens{\eps}^e + \frac{2}{3}C\tens{\eps}^p:\tens{\eps}^p + H(p)
@@ -372,12 +372,12 @@ which, combined to the elastic law $\tens{\dot{\sigma}}=\Cbb:\(\tens{\dot{\eps}}
   \label{eq:p_evolution}
   \dot{p}=\sqrt{\frac{3}{2}}\frac{2\mu}{3\mu+C}\tens{m}:\tens{\dot{\eps}}
 \end{equation}
-At last, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution} can be sequencially introduced in the elastic law so that one gets \cite[eq (2.2.22)]{Simo}:
+At last, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution} can be successively introduced in the elastic law so that one gets \cite[eq (2.2.22)]{Simo}:
 \begin{equation}
   \label{eq:elastoplastic_tangent}
   \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +C}\tens{m}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
 \end{equation}
-with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}. Note that (positive) linear hardenings ensure the positive definiteness of the elastoplastic acoustic tensor $\tens{A}^{ep}=\tens{A}^{elast} -  \frac{6\mu^2}{3\mu +C} (\tens{m}\cdot{n})\otimes(\tens{m}\cdot{n})$.  
+with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}. Note that (positive) linear hardening ensure the positive definiteness of the elastoplastic acoustic tensor $\tens{A}^{ep}=\tens{A}^{elast} -  \frac{6\mu^2}{3\mu +C} (\tens{m}\cdot{n})\otimes(\tens{m}\cdot{n})$.  
 
 $\newline$
 According to Perzyna model \cite{Perzyna}, viscoplasticity leads on the other hand to an explicit definition of the equivalent plastic strain:
@@ -385,7 +385,7 @@ According to Perzyna model \cite{Perzyna}, viscoplasticity leads on the other ha
   \label{eq:EVP_creep_law}
   \dot{p}=\left\langle \frac{f}{\eta}\right\rangle^n
 \end{equation}
-where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters arrising from the relaxation of the condition $f\leq 0$. Hence, rate-dependent plasticity is driven by the elastic law in which $\tens{\dot{\eps}^p}$ is given by \eqref{eq:flow_rule_plast} and \eqref{eq:EVP_creep_law}, namely:
+where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters arising from the relaxation of the condition $f\leq 0$. Hence, rate-dependent plasticity is driven by the elastic law in which $\tens{\dot{\eps}^p}$ is given by \eqref{eq:flow_rule_plast} and \eqref{eq:EVP_creep_law}, namely:
 \begin{equation}
   \label{eq:EVP_plastic_strain_rate}
   \tens{\dot{\eps}}^p=\left\langle \frac{f}{\eta}\right\rangle^n\:\sqrt{\frac{3}{2}}\tens{m}
@@ -406,7 +406,7 @@ Note that the gradient operator of a vector $\vect{a}$ can be rewritten in terms
   \label{eq:grad_div}
   \nablat \vect{a} = \nablav \cdot \(\vect{a}\otimes\tens{I} \)
 \end{equation}
-Hence, introduction of kinematic laws in the elastic law yields, by assuming a cartesian coordinates system and homogeneous media (\textit{i.e. $\rho=const$}), the following \textit{conservative form}:
+Hence, introduction of kinematic laws in the elastic law yields, by assuming a Cartesian coordinates system and homogeneous media (\textit{i.e. $\rho=const$}), the following \textit{conservative form}:
 \begin{equation}
   \label{eq:general_conservative}
   \Qcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
@@ -426,13 +426,9 @@ where:
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
 in which symmetries of the elastic stiffness tensor have been used and $\tens{0}^p$ is a $p$th order zero tensor. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule \eqref{eq:flow_rule_plast}.
-\subsubsection*{Elasto-plasticity and hyperelasticity}
-The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the writing of a conservative form with the previous approach. Such conservation laws systems are instead based on kinematic laws \eqref{eq:HE_kinematic} or \eqref{eq:HPP_kinematic}.
-% \begin{align}
-%   & \tens{\dot{F}} - \nablat_0 \vect{v} = \tens{0} \\
-%   & \tens{\dot{\eps}} - \nablat^s\vect{v}=\tens{0} 
-% \end{align}
-Then, a conservative form \eqref{eq:general_conservative} is also written:
+\subsubsection*{Elastoplasticity and hyperelasticity}
+%The non-linear constitutive equations of elastoplasticity and hyperelasticity prevent the writing of a conservative form with the previous approach.
+The system of conservation laws for non-linear problems are based on kinematic laws \eqref{eq:HE_kinematic} or \eqref{eq:HPP_kinematic} so that a conservative form \eqref{eq:general_conservative} is also written:
 \begin{equation}
   \label{eq:general_conservative2}
   \Wcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb
@@ -445,7 +441,8 @@ Then, a conservative form \eqref{eq:general_conservative} is also written:
   \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad &&; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad &&; \quad \Scb = \matrice{ \vect{b} \\\tens{0}} \quad &&\text{ for elastoplasticity}
 \end{alignat}
 
-Quasi-linear form are then built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:
+%Quasi-linear form are then built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:
+A quasi-linear system of the form \eqref{eq:HPP_quasi-linear} may then be built by introducing an auxiliary vector $\Qcb$ and using the chain rule according to \cite{Trangenstein91}:
 \begin{equation}
   \label{eq:quasi-linear_Trangenstein}
   \drond{\Qcb}{t} + \(\drond{\Wcb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb} \drond{\Qcb}{X_\alpha} = \(\drond{\Wcb}{\Qcb}\)^{-1}\Scb = \tilde{\Scb}
