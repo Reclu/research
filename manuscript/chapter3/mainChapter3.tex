@@ -1,8 +1,8 @@
 %% MPM "survey"
-
+MPM = collocation method ?
 \begin{itemize}
-\item MPM = collocation method ?
-\item \cite{FLIP}: mapping of changes in momentum (see \cite{PIC_Nishiguchi}) ; finite volume for each particle (not a dirac) ; Make use of grid velocity and not material point velocity to update particles kinematic by direct interpolation 
+\item \cite{PIC}: Analogy with FVM since mean values of fields are defined in cells
+\item \cite{FLIP}: mapping in momentum when particles cross a cell (see \cite{PIC_Nishiguchi}) ; finite volume for each particle (not a dirac) ; Make use of grid velocity and not material point velocity to update particles kinematic by direct interpolation to model \textit{collisional fluids} $\vect{v}_p=S_{ip}\vect{v}_i$
 \item \cite{Mass_Flip}: "coarse-grained" (see \cite{Brackbill_PIC}), better to have a \textit{sub-grid-scale motion} and no additional diffusion ; mapp changes of fields instead of fields 
 \end{itemize}
 
