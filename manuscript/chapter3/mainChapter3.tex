@@ -2,12 +2,17 @@
 MPM = collocation method ?
 \begin{itemize}
 \item \cite{PIC}: Analogy with FVM since mean values of fields are defined in cells
-\item \cite{FLIP}: mapping in momentum when particles cross a cell (see \cite{PIC_Nishiguchi}) ; finite volume for each particle (not a dirac) ; Make use of grid velocity and not material point velocity to update particles kinematic by direct interpolation to model \textit{collisional fluids} $\vect{v}_p=S_{ip}\vect{v}_i$
+\item \cite{FLIP}: mapping in momentum when particles cross a cell (see \cite{PIC_Nishiguchi}) ; finite volume for each particle (i.e. not a dirac) ; Make use of grid velocity and not material point velocity to update particles kinematic by direct interpolation to model \textit{collisional fluids} $\vect{v}_p=S_{ip}\vect{v}_i$ \textbf{two different velocity fields}
 \item \cite{Mass_Flip}: "coarse-grained" (see \cite{Brackbill_PIC}), better to have a \textit{sub-grid-scale motion} and no additional diffusion ; mapp changes of fields instead of fields 
+\item \cite{DDMP0}: use another form of gradient of shape functions.
+\item \cite{DDMP}: shock capturing techniques ?
+  \item \cite[Ch.8?,p.54]{MPMB_BSpline1}: oscillations due to quadrature rule (pas évident).
+\item \cite{BsplineMPM}: ?
 \end{itemize}
+Le mapping des variations est évoqué dans \cite[p.26]{Love} qui cite lui-même \cite{FLIP} soit-disant que ça limite la dissipation quand on utilise une matrice lumpée. En réalité, c'est plutôt dit dans \cite{FLIP0} qui cite \cite{PIC}
+Dire qu'un champ est défini dans les cellules grâce aux fonctions de forme (notamment dans la forme faible) $q(x)=N_iq_i(x)$, ce qui sous-entend que le mapping inverse doit être fait ainsi.
 
-
-%%% Local Variables:
+%%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"
 %%% End:
