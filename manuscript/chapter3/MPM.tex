@@ -1,0 +1,38 @@
+\subsection{Historical review}
+
+The early developments that led to the original MPM started with the \textbf{Particle-In-Cell} method (PIC) formulated for fluid dynamics problems \cite{PIC}. The novelty brought by PIC was the representation of a fluid by a collection of moving particles inside a background control volume subdivided into cells. Every single particle is given a constant mass and a position which is updated based on the velocity field resulting from the solution of linear momentum balance equation on the fixed background mesh. On the other hand, velocity, energy and pressure are stored at cells during the whole computation ($C^0$ approximation). A \textit{convective phase}, which consists in a weighting procedure, must be followed when a particle leaves a cell and enters a new one \cite{PIC}. Thus, the PIC enables the merging of Lagrangian and Eulerian techniques since the moving particles with ascribed masses enables the simulation of problems involving several highly deformed fluids without mesh distortion.
+
+In spite of the good results provided by the PIC, the numerical diffusion it suffers from has been addressed by two different ways. First the method has been extended to a \textit{fully Lagrangian} approach \cite{McCrory_FLIP} by storing not only mass and position but all the fields at particles. Next, a new projection procedure has been proposed between the grid and the particles in order to reach second-order accuracy in space of the convective phase \cite{PIC_Nishiguchi}. The merging of those two improvements yielded the so-called \textbf{FLuid Implicit Particle} method (FLIP) \cite{FLIP}. In this new PIC formulation, every quantities are stored at particles so that the grid is only used for solving balance equations and hence provides an adaptive feature to the numerical scheme. The projection of fields from Lagrangian particles to the Eulerian mesh is made as in PIC while the backward mapping models the \textit{collisional} behavior of the fluid and leads to a double definition of the velocity. Indeed, the linear momentum resulting from the solution of balance equations on the grid is used to update the position of particles, whereas the change of linear momentum is used to update their velocity \cite{Mass_Flip}. This procedure yields a time derivative of particles displacement that is different from their velocity which, although it introduces oscillations in the vicinity of discontinuities, provides better results in terms of numerical diffusion \cite{Mass_Flip}.
+
+
+
+
+
+
+\subsection{Derivation of the mpm}
+\subsubsection{MPM discrete equations}
+\subsubsection{Solution scheme summary}
+\subsection{Shortcomings}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter3/pgfFigures/mpm_diffusion20} \phantomsubcaption \label{subfig:mpm_diffusion_20}}
+  {\input{chapter3/pgfFigures/mpm_diffusion50} \phantomsubcaption \label{subfig:mpm_diffusion_50}}\\
+  {\input{chapter3/pgfFigures/mpm_energies} \phantomsubcaption \label{subfig:mpm_energies}}
+  \caption{MPM solutions of a bar impact problem.}
+  \label{fig:mpm_diffusion}
+\end{figure}
+%CFL=0.7;length = 6.0;Nelem = 150;E = 2.0e11;Sigy = 400.0e7;rho = 7800.0;v0=0.5*Sigy/(2*rho*c)
+
+Even though particles carry the whole history of the problem, FLIP has been essentialy used until the 90's to model history-independent constitutive models wich were dealt with on the grid. The first application of the method to history-dependent materials was made in the context of solid mechanics and yields the \textbf{Material Point Method} (MPM) \cite{Sulsky94}. Since this formulation was based on a weak formulation for which \textit{material points} plays the role of integration points, the MPM may be seen as an extension of the Finite Element Method with moving Gauss points. Indeed, each material point is ascribed a volume by means of a delta Dirac \textit{characteristic function} which allows to approximate the volume integrals of the weak form by discrete sums over the Lagrangian particles. However, when material points move from one cell to another, the discontinuity of the gradient of first-order shape functions yields the \textit{grid-crossing} instability \cite{Gimp}. The \textbf{Generalized Interpolation Material Point Method} (GIMP) addressed this numerical issue by modifying the particles characteristic function, thus widening the domain of influence of material points \cite{Gimp}. Although this approach enables a drastic reduction of the grid-crossing instability, it does not eliminate the oscillations in the neighborhood of discontinuous solutions (see for instance the numerical results of dynamic problems in \cite[Sec.~4.2]{Gimp}). An other way followed to tackle this issue is the direct modification of the approximation basis. In this direction, the \textbf{B-Spline Material Point Method} (BSMPM) \cite{Steffen_quadError} proposes an enrichement of the approximation basis by using quadratic or cubic B-Spline functions which provide continuous gradients and hence, the ability to circumvent the grid-crossing instability \cite{MPM_BSpline2}. Alternatively, the \textbf{Dual Domain Material Point Method} (DDMPM) \cite{DDMPM0} combined a modified gradient to classical linear shape functions so that the aforementioned instability can be eliminated as well.
+
++ Dire un mot sur le HighOrder MPM qui n'est pas forcément désiré car on cherche à approcher des discontinuités.
+
+
+Dire qu'un champ est défini dans les cellules grâce aux fonctions de forme (notamment dans la forme faible) $q(x)=N_iq_i(x)$, ce qui sous-entend que le mapping inverse doit être fait ainsi.
+
+We propose here an alternative way for reducing diffusion by using the DG approximation. Mapping from particles to node identical to that of MPM whil nodes to particles is the same than this of PIC but element wise due to the discontinuous approximation. Since the mapping procedure of \cite{PIC_Nishiguchi} has been identified to be responsible for oscillations \cite{Mass_Flip}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
