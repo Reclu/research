@@ -10,13 +10,16 @@
 \usetikzlibrary{patterns} 
 \usetikzlibrary{shapes}
 \usetikzlibrary{snakes}
-%\usepackage{subfig}
-\usepackage[font=small]{caption}
-\usepackage[font=small]{subcaption}
+
+\usetikzlibrary{external} % avoid the systematic compilation of figures
+\tikzexternalize[prefix=external/]
+
+\usepackage[font=normal]{caption}
+\usepackage[font=normal]{subcaption}
 \usepackage{geometry}
 \usepackage{pgfplots}
 \usepackage{fncylab}
-\usepackage{todonotes}
+% \usepackage{todonotes}
 \usepackage{fancyhdr}
 \usepackage{mathtools}
 \usepackage{ifpdf}
@@ -86,7 +89,7 @@
 %\input{chapter1/mainChapter1}
 
 %% Chapter 2: Hyperbolic partial differential equations
-%\input{chapter2/mainChapter2}
+\input{chapter2/mainChapter2}
 
 %% Chapter 3: Extension of the Material Point Method
 \input{chapter3/mainChapter3}
