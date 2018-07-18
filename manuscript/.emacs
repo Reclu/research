@@ -12,6 +12,12 @@
 ; Make RefTeX interact with AUCTeX, http://www.gnu.org/s/auctex/manual/reftex/AUCTeX_002dRefTeX-Interface.html
 (setq reftex-plug-into-AUCTeX t)
 
+;; LaTeX with tikz external
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list 
+		'("LaTeX-Ext" "pdflatex -shell-escape %s" TeX-run-TeX nil t :help "Run LaTeX with tikz external")))
+
+
 ;; (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode) ;turn on pdf-mode.  AUCTeX
 (add-hook 'LaTeX-mode-hook 'LaTeX-PDF-mode) ;turn on pdf-mode.  AUCTeX
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode) ;turn on math-mode by default
