@@ -1,0 +1,8 @@
+Latex > Customize Auctex > Browse Options
+- Tex Command
+- Above LaTex, INS:
+  Name: LaTeX-Ext
+  Command: %`%l -shell-escape %(mode)%' %t
+  How: Value Menu Tex-run-Tex
+  Modes, Menu elements(i): same as LaTex
+  Menu elements(ii):"Run LaTeX with tikz external"
