@@ -1,5 +1,4 @@
 % \subsection{Historical review}
-
 The early developments that led to the original MPM started with the \textbf{Particle-In-Cell} method (PIC) formulated for fluid dynamics problems \cite{PIC}. The novelty brought by PIC was the representation of a fluid by a collection of moving particles inside a background control volume subdivided into cells. Every single particle is given a constant mass and a position which is updated based on the velocity field resulting from the solution of linear momentum balance equation on the fixed background mesh. On the other hand, velocity, energy and pressure are stored at cells during the whole computation ($C^0$ approximation). A \textit{convective phase}, which consists in a weighting procedure, must be followed when a particle leaves a cell and enters a new one \cite{PIC}. Thus, the PIC enables the merging of Lagrangian and Eulerian techniques since the moving particles with ascribed masses enables the simulation of problems involving several highly deformed fluids without mesh distortion.
 
 In spite of the good results provided by the PIC, the numerical diffusion it suffers from has been addressed by two different ways. First the method has been extended to a \textit{fully Lagrangian} approach \cite{McCrory_FLIP} by storing not only mass and position but all the fields at particles. Next, a new projection procedure has been proposed between the grid and the particles in order to reach second-order accuracy in space of the convective phase \cite{PIC_Nishiguchi}. The merging of those two improvements yielded the so-called \textbf{FLuid Implicit Particle} method (FLIP) \cite{FLIP}. In this new PIC formulation, every quantities are stored at particles so that the grid is only used for solving balance equations and hence provides an adaptive feature to the numerical scheme. The projection of fields from Lagrangian particles to the Eulerian mesh is made as in PIC while the backward mapping models the \textit{collisional} behavior of the fluid and leads to a double definition of the velocity. Indeed, the linear momentum resulting from the solution of balance equations on the grid is used to update the position of particles, whereas the change of linear momentum is used to update their velocity \cite{Mass_Flip}. This procedure yields a time derivative of particles displacement that is different from their velocity which, although it introduces oscillations in the vicinity of discontinuities, provides better results in terms of numerical diffusion \cite{Mass_Flip}.
@@ -9,8 +8,8 @@ Even though particles carry the whole history of the problem, FLIP has been esse
 \subsection{Derivation of the MPM}
 Consider a solid domain with volume $\Omega_t$ bounded by the surface $\partial \Omega_t$, subject to traction forces and prescribed velocity on its boundaries within the time interval $\tau$:
 \begin{align}
-  & \tens{\sigma}\cdot\vect{n}=\vect{T}^d \quad \text{on } \partial \Omega_t^\sigma\\
-  & \vect{v} = \vect{v}^d \quad \text{on } \partial \Omega_t^v
+  & \tens{\sigma}\cdot\vect{n}=\vect{T}_d \quad \text{on } \partial \Omega_t^\sigma\\
+  & \vect{v} = \vect{\tilde{v}} \quad \text{on } \partial \Omega_t^v
 \end{align}
 where $\vect{n}$ is the outward normal vector to $\partial \Omega_t$ and the set of boundaries satisfies $\partial \Omega_t =\partial \Omega^\sigma_t \cap \partial \Omega^v_t$.
 %We seek an approximate solution of the eulerian balance equation of linear momentum \eqref{eq:HPP_linear_momentum} in a finite-dimensional function space using Galerkin approach. 
@@ -18,15 +17,15 @@ where $\vect{n}$ is the outward normal vector to $\partial \Omega_t$ and the set
 \subsubsection*{Weak formulation of the continuum problem}
 The weak form of the eulerian balance equation of linear momentum \eqref{eq:HPP_linear_momentum} is written based on the Galerkin approach and the following function spaces:
 \begin{equation}
-\Vscr^1 = \{ \vect{u} \in H^1(\Omega_t) \}  \quad ; \quad \Vscr^1_{h} = \{\vect{u} \in \Vscr^1 | \vect{u}=\vect{v}^d \text{ on } \partial \Omega_t^v \}  \quad ; \quad \Vscr^1_{h,0} = \{\vect{u} \in \Vscr_h^1 | \vect{u}=\vect{0} \text{ on } \partial \Omega_t^v \} 
+\Vscr^1 = \{ \vect{u} \in H^1(\Omega_t) \}  \quad ; \quad \Vscr^1_{h} = \{\vect{u} \in \Vscr^1 | \vect{u}=\vect{\tilde{v}} \text{ on } \partial \Omega_t^v \}  \quad ; \quad \Vscr^1_{h,0} = \{\vect{u} \in \Vscr_h^1 | \vect{u}=\vect{0} \text{ on } \partial \Omega_t^v \} 
 \end{equation}
-where $H^1(\Omega_t)$ denotes the \textit{Sobolev} space in $\Omega_t$ \cite{DiPietro}. Thus, multiplication of equation \eqref{eq:HPP_linear_momentum} by a test function $\vect{w} \in \Vscr^1_{h,0}$ and integration over $\Omega_t$ yields, after integration by parts, the following weak form:
+where $H^1(\Omega_t)$ denotes the \textit{Sobolev} space in $\Omega_t$ \cite{Belytschko}. Thus, multiplication of equation \eqref{eq:HPP_linear_momentum} by a test function $\vect{w} \in \Vscr^1_{h,0}$ and integration over $\Omega_t$ yields, after integration by parts, the following weak form:
 \begin{equation}
   \label{eq:linear_momentum_weak_form}
   \begin{aligned}
     &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
     &\int_{\Omega_t}  \rho  \vect{\dot{v}} \cdot \vect{w}\: dv + \int_{\Omega_t}\tens{\sigma}: 
-    \nablat \vect{w} \:dv - \int_{\partial \Omega^\sigma_t} \vect{T}^d\cdot\vect{w}\: ds= \int_{\Omega_t} \rho \vect{b}\cdot \vect{w} \: dv  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1
+    \nablat \vect{w} \:dv - \int_{\partial \Omega^\sigma_t} \vect{T}_d\cdot\vect{w}\: ds= \int_{\Omega_t} \rho \vect{b}\cdot \vect{w} \: dv  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
   \end{aligned}
 \end{equation}
 
@@ -47,15 +46,15 @@ Analogously to the Finite Element Method (FEM) \cite{Belytschko}, the velocity i
 where $\vect{v}^{i}$ is the velocity of the $i$th grid node, and $S_i(\vect{x})$ the (linear) shape function attached to it. One feature of the MPM is that the mass density is approximated on the grid based on the mass carried by each material point:
 \begin{equation}
   \label{eq:density_approx}
-  \rho\(\vect{x},t\)=\sum_{p=1}^{N_p} m_p \delta(\vect{x}_p-\vect{x})
+  \rho\(\vect{x},t\)=\sum_{p=1}^{N_p} m_p \delta(\vect{x}^p-\vect{x})
 \end{equation}
-where the delta Dirac distribution $\delta$ is often referred to as the \textit{characteristic function} of material points, and $\vect{x}_p$ is the position of the $p$th particle. In what follows, the dependence on time will be omitted for simplicity and $p$ and $i$ or $j$ stand respectively for material points and nodes.
+where the delta Dirac distribution $\delta$ is often referred to as the \textit{characteristic function} of material points, and $\vect{x}^p$ is the position of the $p$th particle. In what follows, the dependence on time will be omitted for simplicity and $p$ and $i$ or $j$ stand respectively for material points and nodes.
 
 By introducing a specific Cauchy tensor $\rho \tens{\bar{\sigma}}=\tens{\sigma}$ and the approximation of mass density \eqref{eq:density_approx} in the weak form \eqref{eq:linear_momentum_weak_form}, the property of the delta Dirac distribution yields:
 \begin{equation}
   \begin{aligned}
     &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
-    & \sum_{p=1}^{N_p} m_p  \[\vect{\dot{v}}(\vect{x}_p) \cdot \vect{w}(\vect{x}_p) + \tens{\bar{\sigma}}(\vect{x}_p):\nablat \vect{w}(\vect{x}_p) \]  = \sum_{p=1}^{N_p}m_p \vect{b}(\vect{x}_p)\cdot \vect{w}(\vect{x}_p) + \int_{\partial \Omega^\sigma_t} \vect{T}^d\cdot\vect{w}\: ds  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1
+    & \sum_{p=1}^{N_p} m_p  \[\vect{\dot{v}}(\vect{x}^p) \cdot \vect{w}(\vect{x}^p) + \tens{\bar{\sigma}}(\vect{x}^p):\nablat \vect{w}(\vect{x}^p) \]  = \sum_{p=1}^{N_p}m_p \vect{b}(\vect{x}^p)\cdot \vect{w}(\vect{x}^p) + \int_{\partial \Omega^\sigma_t} \vect{T}^d\cdot\vect{w}\: ds  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
   \end{aligned}
 \end{equation}
 Then, with the approximation \eqref{eq:approximation_basis}, the weak form reads:
@@ -63,18 +62,18 @@ Then, with the approximation \eqref{eq:approximation_basis}, the weak form reads
   \label{eq:mpm_discrete_weak}
     \begin{aligned}
       &\text{Find $\vect{v} \in \Vscr_h^1$ such that} \\
-      & \vect{w}^j \sum_{p=1}^{N_p} m_p  \[ S_{jp} S_{ip} \vect{\dot{v}}^i + \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^j\( \sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^i  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1
+      & \vect{w}^j \sum_{p=1}^{N_p} m_p  \[ S_{jp} S_{ip} \vect{\dot{v}}^i + \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^j\( \sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^i  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall \: t \in \tau
   \end{aligned}
 \end{equation}
-in which $S_{ip}=S_i(\vect{x}_p)$ and $\tens{\bar{\sigma}}^p=\tens{\bar{\sigma}}(\vect{x}_p)$. Next, the arbitrariness of the test function $\vect{w}$ yields the semi-discrete equation in matrix form:
+in which $S_{ip}=S_i(\vect{x}^p)$ and $\tens{\bar{\sigma}}^p=\tens{\bar{\sigma}}(\vect{x}^p)$. Next, the arbitrariness of the test function $\vect{w}$ yields the semi-discrete equation in matrix form:
 \begin{equation}
   \label{eq:mpm_semi-discrete}
-  m_{ji} \vect{\dot{v}}^i = \vect{f}_{int}^j + \vect{f}_{ext}^j 
+  M_{ji} \vect{\dot{v}}^i = \vect{f}_{int}^j + \vect{f}_{ext}^j 
 \end{equation}
-where the definition of the mass matrix $m_{ij}$ and the internal and external force vectors $\vect{f}_{int}^j $ and $\vect{f}_{ext}^j$ are:
+where the definition of the mass matrix $M_{ij}$ and the internal and external force vectors $\vect{f}_{int}^j $ and $\vect{f}_{ext}^j$ are:
 \begin{subequations}
   \begin{alignat}{1}
-    & m_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \label{eq:mass_matrix}\\
+    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \label{eq:mass_matrix}\\
     & \vect{f}_{int}^j = - \sum_{p=1}^{N_p} m_p \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \label{eq:int_forces}\\
     & \vect{f}_{ext}^j =\sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^i  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds \label{eq:ext_forces}
   \end{alignat}
@@ -86,13 +85,13 @@ The system \eqref{eq:mpm_semi-discrete} can be solved for the nodal acceleration
 \end{equation}
 where the superscripts $\bullet^{k,l}$ denote the time step $l$ at which the $k$th nodal field is evaluated. 
 
-Note that in the weak form, the particles play the role of integration points so that the mass matrix depends on the positions of material points in the grid and must be computed at each time step. Hence, the MPM can be seen as an extension of the Finite Element Method with moving Gauss points. However, a consequence of this quadrature rule is that the consistent mass matrix $m_{ji}$ may be singular when only one material point lies in an element due to the reduced integration. The use of a linear combination of the diagonally lumped mass matrix $m^L_i=\sum_p S_{ip}m_p$ (positive-definite), and the constitent mass matrix (positive semi-definite) is then recommended \cite{Love}. Nevertheless, since no parameter value is prescribed for this combination, the lumped mass matrix is widely used in MPM simulations, though it introduces some dissipation of kinetic energy \cite{Mass_Flip}.  
+Note that in the weak form, the particles play the role of integration points so that the mass matrix depends on the positions of material points in the grid and must be computed at each time step. Hence, the MPM can be seen as an extension of the Finite Element Method with moving Gauss points. However, a consequence of this quadrature rule is that the consistent mass matrix $M_{ji}$ may be singular when only one material point lies in an element due to the reduced integration. The use of a linear combination of the diagonally lumped mass matrix $M^L_i=\sum_p S_{ip}m_p$ (positive-definite), and the constitent mass matrix (positive semi-definite) is then recommended \cite{Love}. Nevertheless, since no parameter value is prescribed for this combination, the lumped mass matrix is widely used in MPM simulations, though it introduces some dissipation of kinetic energy \cite{Mass_Flip}.  
 
 Recall that the background grid inherited from FLIP is arbitrary and that the fields must be projected from particles to the nodes to solve the linear system \eqref{eq:mpm_discrete} and back so that the material points advect the solution. The first mapping step, required to build the discrete form,
 aims at satify the conservation of linear momentum from particles to the grid:
 \begin{equation}
   \label{eq:particles2nodes}
-  m^{L,n}_i \vect{v}^{i,n} = \sum_{p=1}^{N_p} S_{ip}m_p \vect{v}^{p,n}
+  M^{L,n}_i \vect{v}^{i,n} = \sum_{p=1}^{N_p} S_{ip}m_p \vect{v}^{p,n}
 \end{equation}
 to be solved for each $\vect{v}^i$. Once the nodal accelerations are calculeted for system \eqref{eq:mpm_semi-discrete}, the velocity of each material points is \textbf{updated} as:
 \begin{equation}
@@ -182,8 +181,6 @@ Thus, the PIC projection \eqref{eq:PIC_Back-mapping} has been implemented into t
 \subsection{Strategy for reducing oscillations and diffusion}
 In this, we are concerned here with the accurate solution of hyperbolic problems in solid undergoing finite deformations. Although the MPM enables an efficient management of large strains, the oscillations it suffers from do not allow to accurately capture waves propagating in a medium. The above numerical results however suggest that the numerical noise can be removed by using an interpolation instead of an update of material points velocity, at the cost of additional diffusion. The point of view adopted in this thesis is that the numerical diffusion is essentially due to the projection of fields from particles to nodes and back tha spread the information. Hence, a reduction of the domain of influence of material points is preferred to a widening, as GIMP, BSMPM and DDMPM propose. 
 As a consequence, a combination of the  \textit{Discontinuous Galerkin} approximation (DG) and the transfer of velocity from nodes to particles originally developed for PIC is proposed within the MPM. These two features are expected to respectively enable numerical diffusion and spurious osccilations. It is worth noticing that attention is paid to impact problems which solutions are mostly unregular so that high-order approximations, as investigated in \cite{MPM_BSpline2} or \cite{BsplineMPM}, are not considered here. 
- 
-% Dire un mot sur le HighOrder MPM qui n'est pas forcément désiré car on cherche à approcher des discontinuités.
 
 
 %%% Local Variables: 
