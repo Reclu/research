@@ -62,7 +62,7 @@ Then, with the approximation \eqref{eq:approximation_basis}, the weak form reads
   \label{eq:mpm_discrete_weak}
     \begin{aligned}
       &\text{Find $\vect{v} \in \Vscr_h^1$ such that} \\
-      & \vect{w}^j \sum_{p=1}^{N_p} m_p  \[ S_{jp} S_{ip} \vect{\dot{v}}^i + \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^j\( \sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^i  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall \: t \in \tau
+      & \vect{w}^j \sum_{p=1}^{N_p} m_p  \[ S_{jp} S_{ip} \vect{\dot{v}}^i + \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^j\( \sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall \: t \in \tau
   \end{aligned}
 \end{equation}
 in which $S_{ip}=S_i(\vect{x}^p)$ and $\tens{\bar{\sigma}}^p=\tens{\bar{\sigma}}(\vect{x}^p)$. Next, the arbitrariness of the test function $\vect{w}$ yields the semi-discrete equation in matrix form:
@@ -75,7 +75,7 @@ where the definition of the mass matrix $M_{ij}$ and the internal and external f
   \begin{alignat}{1}
     & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \label{eq:mass_matrix}\\
     & \vect{f}_{int}^j = - \sum_{p=1}^{N_p} m_p \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \label{eq:int_forces}\\
-    & \vect{f}_{ext}^j =\sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^i  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds \label{eq:ext_forces}
+    & \vect{f}_{ext}^j =\sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds \label{eq:ext_forces}
   \end{alignat}
 \end{subequations}
 The system \eqref{eq:mpm_semi-discrete} can be solved for the nodal accelerations $\vect{\dot{v}}^i$, and advanced in time by using an explicit time discretization so that the nodal velocities can be updated. Hence, the time interval $\tau$ is discretized in $N_T$ sub-intervals of size $\Delta t^n$ such that $\sum_{n=1}^{N_T} \Delta t^n = T$ and time integration is performed with an explicit forward Euler algorithm leading to discrete equations:
@@ -96,12 +96,12 @@ aims at satify the conservation of linear momentum from particles to the grid:
 to be solved for each $\vect{v}^i$. Once the nodal accelerations are calculeted for system \eqref{eq:mpm_semi-discrete}, the velocity of each material points is \textbf{updated} as:
 \begin{equation}
   \label{eq:mp_velocity_update}
-  \vect{v}^{p,n+1}= \vect{v}^{p,n}+ \Delta t\sum_{i=1}^{N_n} S_{ip}\vect{\dot{v}}^{i}
+  \vect{v}^{p,n+1}= \vect{v}^{p,n}+ \Delta t^n \sum_{i=1}^{N_n} S_{ip}\vect{\dot{v}}^{i}
 \end{equation}
 while the updated nodal velocities resulting from the solution of \eqref{eq:mpm_discrete} are used to update the particles positions:
 \begin{equation}
   \label{eq:position_update}
-  \vect{x}^{p,n+1}=\vect{x}^{p,n} + \Delta t\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1} 
+  \vect{x}^{p,n+1}=\vect{x}^{p,n} + \Delta t^n\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1} 
 \end{equation}
 
 The integration of constitutive equations is performed at material points based on the nodal velocity field and the gradient of shape functions. Hence, one has some freedom in the way in which the stress is computed since it can be done right after either the resolution of \eqref{eq:mpm_discrete} or the projection \eqref{eq:particles2nodes}. The first option yields the \textit{Update Stress Last} (USL) algorithm while the second implementation is called \textit{Update Stress First} (USF) \cite{Bardenhagen_USF_USL}. 

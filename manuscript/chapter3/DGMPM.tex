@@ -1,14 +1,13 @@
-The extension of the material point method to the DG approximation has been motivated in the previous section and is developed hereinafter. After a brief historical review of DG methods, the Discontinuous Galerkin Material Point Method (DGMPM) is derived within the large strain framework. It will then be seen that this new numerical approach uses the approximate-state Riemann solver developed in section \ref{sec:riemann_solvers} to compute terms at elements interfaces which purpose is to connect elements together. At last, the DGMPM solution scheme will be provided for hyperbolic problems.
+The extension of the material point method to the DG approximation has been motivated in the previous section and is developed hereinafter. After a brief historical review of DG methods, the Discontinuous Galerkin Material Point Method (DGMPM) is derived within the large strain framework with a total Lagrangian formulation. It will then be seen that this new numerical approach uses the approximate-state Riemann solver developed in section \ref{sec:riemann_solvers} to compute terms at elements interfaces which purpose is to connect elements together. At last, the DGMPM solution scheme will be provided for hyperbolic problems.
 
 \subsection{The discontinuous Galerkin approximation}
 The DG approximation was first introduced in the context of the finite element method for the solution of the neutron transport equation \cite{NeutronDG}. This hyperbolic equation describes the advection of the angular flux which quantifies the amount of neutrons at a given location. Since neutrons can lie in a cell of a finite element mesh while its neighbors are empty, the need of describing discontinuities of the primal field across elements interfaces within a FEM context arised. Hence, an approximate solution was seeked by the Galerkin method, in a domain discretized with triangular elements by means of Lagrange polynomials that can be discontinuous across the cells. This approach amounts to duplicate the nodes of the mesh so that the support of each shape function reduces to one finite element. Those early works have launched a series of developed of the Discontinuous Galerkin Finite Element Method (DGFEM) for parabolic \cite{Arnold_IPM}, elliptic \cite{Hansbo_DGsolid,Noel_HEDG}, and hyperbolic problems \cite{Cockburn}. Indeed, the DGFEM gained more and more popularity since the 80's due to its ability to locally handle high-order approximation and its highly parallelizable nature. 
 %However, the increase of the dimension of the discrete it implies led more recently to the formulation of Hibridizable Discontinuous Galerkin methods (HDG) \cite{Cockburn_HDG0,Cockburn_HDG1,Cockburn_HDG2}.
-For application to hyperbolic problems, of particular interest here, researches enabled the introduction of numerical tools developed for the Finite Volume Method (FVM) within finite element schemes. Namely, the use of suitable \textit{slope limiters} based on the \textit{total variation} \cite{vanLeer_Limiters} allowed the formulation of flexible numerical methods in which high resolution of discontinuities, without destroying the accuracy in smooth regions, is possible.
+For application to hyperbolic problems, of particular interest here, researches enabled the introduction of numerical tools developed for Finite Volume Methods (FVM) within finite element schemes. Namely, the use of suitable \textit{slope limiters} based on the \textit{total variation} \cite{vanLeer_Limiters} allowed the formulation of flexible numerical methods in which high resolution of discontinuities, without destroying the accuracy in smooth regions, is possible. Furthermore, this approach can easily handle mesh-adaption strategies due to the relaxation of fields continuity. Nevertheles the mesh tangling problems do not vanish.
 
-Ensuite, parler des tentatives d'application à la PIC: 
-A similar approach based on the particle-in-cell method has already been developed in \cite{DGPIC_maxwell}. However in the latter work, the particles are not viewed as quadrature points that carry all the fields and this method can not be considered as a fully Lagrangian approach.
+An extension of PIC to DG approximation for the solution of Maxwell's equations is proposed in \cite{DGPIC_maxwell} and \cite{Stindl_DGPIC} in which different projections of fields between the grid and particles are used. Although those methods allow local high-order approximation, particles do not carry all th fields and the DGPIC, as the original PIC, cannot be considered as a fully Lagrangian approach.
 
-Although this approach can easily handle mesh-adaption strategies due to the relaxation of fields continuity, the mesh tangling problems do not vanish. We hope that the following developments will be the starting point of a DG-method enabling the solution of problems involving finite deformation in solid dynamics. 
+Considering the prior discussion, the development of the DGMPM may lead to a numerical method that benefits from both FEM and FVM features, enables local high-order approximation and avoids mesh entanglement instabilities. 
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,36 +41,38 @@ Although this approach can easily handle mesh-adaption strategies due to the rel
 
 
 \subsection{The DGMPM discretization}
-As for MPM, a continuum body $\Omega_t$ is discretized into a set of $N_p$ material points in an arbitrary Cartesian grid made of  $N_n$ nodes and $E$ non-overlapping cells of volume $\Omega^e$, with the boundary of the domain defined by boundary material points (recall the two-dimensional example in figure \ref{fig:domain}).
+As for MPM, a continuum body $\Omega_t$ is discretized within the time interval $\tau$ into a set of $N_p$ material points in an arbitrary Cartesian grid made of  $N_n$ nodes and $E$ non-overlapping cells of volume $\Omega^e$. The boundary of the domain is defined, as in section \ref{sec:MPM} (see the two-dimensional example in figure \ref{fig:domain}), by boundary particles.
 
-The DGMPM is also based on a weak formulation. Indeed, we seek an approximate solution of a Lagrangian system of conservation laws in conservative form written with a Cartesian coordinates system within the time interval $\tau$:
+Since the DGMPM is expected to provide a material description of a deformation, we seek an approximate solution of a Lagrangian system of conservation laws written in conservative form, by means of a weak form. Recall that such a conservative form, in Cartesian coordinates system, reads:
+%The DGMPM is also based on a weak formulation. Indeed, we seek an approximate solution of a Lagrangian system of conservation laws written in conservative form with a Cartesian coordinates system:
 \begin{equation}
   \label{eq:conservative_form}
   \drond{\Qcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb \quad \forall \vect{X},t \in \Omega_0 \times \tau
 \end{equation}
-The key idea of DG methods is to allow jump of fields across mesh elements faces by using broken polynomials spaces \cite{DiPietro,Hesthaven,DG_survey}, for a first order approximation:
+The key idea of DG methods is to allow jump of fields across mesh elements faces by using broken polynomials spaces \cite[Sec.~1.2.4]{DiPietro}:
 \begin{equation}
-\Vscr^1 = \{ \Vcb \in H^1(\Omega^e) \} \quad ;\quad \Vscr_h^1 = \{\Vcb \in \Pscr^1(\Omega^e) \} \subset \Vscr^1
+\Vscr^k = \{ \Vcb \in H^k\Omega^e) \} \quad ;\quad \Vscr_h^k = \{\Vcb \in \Pscr^k(\Omega^e) \} \subset \Vscr^k
 \end{equation}
-with $H^1(\Omega^e)$, the Sobolev space and $\Pscr^1(\Omega^e)$, the linear (Lagrange) polynomials space in $\Omega^e$. Those broken polynomials spaces yield a weak form of equation \eqref{eq:conservative_form} written element per element. After integration by part:
+with $H^k(\Omega^e)$, the Sobolev space and $\Pscr^k(\Omega^e)$, the space of polynomials of degree $k$ in $\Omega^e$. We restrict our attention here to linear polynomials, that is $k=1$. Those broken polynomials spaces yield a weak form of equation \eqref{eq:conservative_form} written element-wise. After integration by part, one gets:
 \begin{equation}
   \label{eq:DGMPM_weak_form}
   \begin{aligned}
     &\text{Find $\Qcb \in \Vscr_h^1$ such that} \\
-    &\int_{\Omega^e} \drond{\Qcb}{t} \vect{\Vc} \: d\Omega - \int_{\Omega^e} \Fcb_\alpha  \drond{\vect{\Vc}}{X_\alpha} \: d\Omega   + \int_{\partial \Omega^e} \(\Fcb\cdot \vect{N}\)  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc} \in \Vscr_h^1, \forall\: e \in \[1,E\] , \forall\: t \in \tau
+    &\int_{\Omega^e} \drond{\Qcb}{t} \vect{\Vc} \: d\Omega - \int_{\Omega^e} \Fcb_\alpha  \drond{\vect{\Vc}}{X_\alpha} \: d\Omega   + \int_{\partial \Omega^e} \(\Fcb\cdot \vect{N}\)  \vect{\Vc} \: d\Gamma = \int_{\Omega^e} \Scb \vect{\Vc} \: d\Omega \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
   \end{aligned}
 \end{equation}
 where $\partial \Omega^e$ is the boundary of the $e$th element with outward normal vector $\vect{N}$. 
 %Those numerical fluxes can be computed from the solution of an approximate Riemann solver \cite{Trangenstein} (see section \ref{}). In particular, the stationary solution of Riemann problems defined at element boundaries $\Gamma_i$ such that $\cup_i \Gamma_i = \Gamma_e $  gives the well-known \textit{Godunov's method}.
-As in MPM, the use of the delta Dirac characteristic function is made for material points so that specific quantities are introduced:
+The introduction of the delta Dirac characteristic function for material points density, combined to the writing of specific quantities:
 \begin{align}
-& \Qcb = \rho_0 \bar{\Qcb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha \\
-& \rho_0\(\vect{X}\) =  \sum_{p=1}^{N_p} m_p \delta\(\vect{X}^p - \vect{X}\)
+& \rho_0\(\vect{X}\) =  \sum_{p=1}^{N_p} m_p \delta\(\vect{X}^p - \vect{X}\) \\
+& \Qcb = \rho_0 \bar{\Qcb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha \quad ; \quad \Scb = \rho_0 \bar{\Scb}
 \end{align}
-where $m_p$ is the mass of the $p$th material point. Such a discretization of the reference mass density combined with the writing of Lagrangian conservation laws \eqref{eq:conservative_form} yields a total Lagrangian formulation, and equation \eqref{eq:DGMPM_weak_form} thus reads:
+leads to the following weak form of the total Lagrangian formulation:
+%Such a discretization of the reference mass density combined with the writing of Lagrangian conservation laws \eqref{eq:conservative_form} yields a total Lagrangian formulation, and equation \eqref{eq:DGMPM_weak_form} thus reads:
 \begin{equation} 
   \label{eq:DGMPM_discrete_weak}
-  \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Qcb}}{t}  \vect{\Vc} - \bar{\Fcb}_{\alpha} \drond{\vect{\Vc}}{X_\alpha} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \(\Fcb\cdot\vect{N}\)  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc} \in \Vsf_h^1, \forall\: e \in \[1,E\], \forall\: t \in \tau  
+  \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Qcb}}{t}  \vect{\Vc} - \bar{\Fcb}_{\alpha} \drond{\vect{\Vc}}{X_\alpha} -\bar{\Scb}  \vect{\Vc} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \(\Fcb\cdot\vect{N}\)  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
 \end{equation}
 
 Material points are viewed as interpolation points so that the fields of the weak form \eqref{eq:DGMPM_discrete_weak} are evaluated from nodal values with the shape functions $S(\vect{X})$:
@@ -81,37 +82,77 @@ Material points are viewed as interpolation points so that the fields of the wea
 \end{equation}
 $\bar{\Qcb}^i$ hence denotes the specific vector of conserved quantities at node $i$. In the following, the same convention than before, consisting in denoting particles values by index $p$ and nodal ones by $i$ or $j$, is used. 
 
-Combination of equations \eqref{eq:DGMPM_discrete_weak}-\eqref{eq:DGMPMnode2points} and arbitrariness of the test field yield the semi-discrete system that must be solved on the grid:
+Combination of equations \eqref{eq:DGMPM_discrete_weak}-\eqref{eq:DGMPM_node2points} and arbitrariness of the test field yield the semi-discrete system that must be solved on the grid:
 \begin{equation}
   \label{eq:DGMPM_semi_discrete}
-  \sum_{p=1}^{N_p}\[ S_{ip} m_p S_{jp} \drond{\bar{\Qcb}_j}{t}  - \drond{S_{ip}}{X_\alpha} m_p S_{jp} \bar{\Fcb}_{\alpha,j}\] + \int_{\Gamma_e} S_i(\vect{X}) \(\Fcb\cdot\vect{N}\)  \: d\Gamma =  0  \quad \forall\: e \in \[1,E\] , \forall\: t \in \tau
+  \sum_{p=1}^{N_p}\[ S_{ip} m_p S_{jp} \drond{\bar{\Qcb}^j}{t}  - \drond{S_{ip}}{X_\alpha} m_p S_{jp} \bar{\Fcb}^j_{\alpha} - S_{ip} m_p \bar{\Scb}^p\] + \int_{\Gamma_e} S_i(\vect{X}) \(\Fcb\cdot\vect{N}\)  \: d\Gamma =  0  \quad \forall \: e,t \in  \times \[1,E\]\times \tau
 \end{equation}
 or, in matrix form:
 \begin{equation}
   \label{eq:DGMPM_semi_discrete_matrix}
-   M_{ij} \drond{\bar{\Qcb}_j}{t} - K^\alpha_{ij} \bar{\Fcb}^j_{\alpha} + \vect{\hat{\Fc}}^i = \vect{0}  
+   M_{ij} \drond{\bar{\Qcb}_j}{t} - K^\alpha_{ij} \bar{\Fcb}^j_{\alpha} - \Scb^i + \vect{\hat{\Fc}}^i = \vect{0}  
 \end{equation}
-In system \eqref{eq:DGMPM_semi_discrete_matrix}, the consistent mass matrix and the \textit{pseudo-stiffness} matrix are respectively defined as:
-\begin{subequations}
-  \begin{alignat}{1}
-    \label{eq:DGMPM_mass_matrix}
-    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \\
-    \label{eq:DGMPM_pseudo-stiffness}
-    & K^\alpha_{ij} = \sum_{p=1}^{N_p} m_p\drond{S_{ip}}{X_\alpha} S_{jp} \bar{\Fcb}_{\alpha,j}
-  \end{alignat}
-\end{subequations}
 Note that the consistent mass matrix $M_{ij}$ may also be singular when only one material point lies in an element due to reduced integration. Hence, the diagonally lumped mass matrix $M^L_i$ is used.
+%% remark environment for the above remark
+% \begin{remark}
+% The consistent mass matrix $M_{ij}$ may also be singular when only one material point lies in an element due to reduced integration. Hence, the diagonally lumped mass matrix $M^L_i$ is used. 
+% \end{remark}
 
-Finally, the explicit forward Euler time discretization is perfomed, leading to the discrete system:
+%% Expression of matrices
+% In system \eqref{eq:DGMPM_semi_discrete_matrix}, the consistent mass matrix and the \textit{pseudo-stiffness} matrix are respectively defined as:
+% \begin{subequations}
+%   \begin{alignat}{1}
+%     \label{eq:DGMPM_mass_matrix}
+%     & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \\
+%     \label{eq:DGMPM_pseudo-stiffness}
+%     & K^\alpha_{ij} = \sum_{p=1}^{N_p} m_p\drond{S_{ip}}{X_\alpha} S_{jp} \bar{\Fcb}_{\alpha,j}
+%   \end{alignat}
+% \end{subequations}
+
+
+Finally, the explicit forward Euler time discretization of $\tau$ in $N_t$ subinterval is perfomed, leading to the discrete system:
 \begin{equation}
   \label{eq:DGMPM_discrete}
-  M^L_i \frac{\bar{\Qcb}^{i,n+1} - \bar{\Qcb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n}- \vect{\hat{\Fc}}^{i,n}  
+  M^L_i \frac{\bar{\Qcb}^{i,n+1} - \bar{\Qcb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} + \Scb^{i,n}- \vect{\hat{\Fc}}^{i,n}  
 \end{equation}
-where the superscripts denotes the time step at which a field is evaluated.
-
+where again, the superscripts $\bullet^{k,l}$ denote a field evaluated at node $k$ and time step $l$.
+Note that in general the source term $\Scb$ in equation \eqref{eq:conservative_form} may depend on the vector of conserved quantities, hence the superscript $n$ in equation \eqref{eq:DGMPM_discrete}. 
+%The computation of interface fluxes $\hat{\Fcb}^i$ is now developed.
 
 \subsection{Numerical fluxes}
-\subsubsection*{The Godunov's fluxes}
+
+
+\subsection{Non-homogeneous hyperbolic system}
+Even for neglected body forces, met for cylindrical and spherical (examples), and elasto-viscoplasticity, of particular interest here since such constitutive models will be considered.
+This is the case for rate-dependent plasticity (see $\Scb$ in equation \eqref{eq:vectors_elasticity}) or for cylindrical and spherical coordinates systems, which gradients do not only involve derivatives (see \cite[Ch.~17]{Leveque}). 
+
+\cite[p.548]{Toro}, \cite{Thomas_EVP}
+Fractional-step or operator-splitting methods. $\Scb$ depends on $\Qcb$ (and eventually $\vect{X}$) only (and not on its derivatives) 
+
+Before developing the computation of boundary integrals in the semi-discrete equation \eqref{eq:DGMPM_semi_discrete}, we want to highlight a property of numerical schemes that motivates the choice of flux functions. Consider a first order hyperbolic scalar equation $\Qc_t + \drond{\Fc_\alpha}{X_\alpha}=\Sc$. A numerical scheme based on a space-time discretization, as those derived above, provides an approximate solution $\Qc(\vect{X}^i,t^n)= \Qc^{i,n}$ with $i=1,...,N_n$ and $n=1,...,N_T$. This solution depends on the value of $\Qc$ at other points and subsequent time step (only the previous time step for forward Euler time discretization). Namely:
+\begin{equation}
+  \label{eq:general_scheme}
+  \Qc^{i,n+1}= \Gc \(\Qc^{j,n}\) \quad j=1...,N_n
+\end{equation}
+where $\Gc$ represents the scheme operator, and the set of nodes $j$ having an influence on $\Qc^i$ defines the \textit{stencil} of the method.
+\begin{definition}
+  \label{def:monotonicity}
+  The numerical scheme is said \textbf{monotone} if it satisfies:
+  \begin{equation}
+    \drond{\Gc(\Qc^i)}{\Qc^j} \geq 0 \quad \forall i,j= 1,...,N_n
+  \end{equation}
+\end{definition}
+\begin{theorem}[Godunov]
+  \label{th:Godunov}
+  Monotone linear numerical schemes can be at most first-order accurate.
+\end{theorem}
+DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximation \cite{Cockburn}. That condition is satisfied for flux functions $\Fcb \cdot \vect{N}$ that are Lipschitz continuous, consistent and monotone, also called \textit{E-fluxes} \cite[Read!]{Osher}. One possibility, which is widely used, is the \textit{Godunov flux function}.
+
+\subsubsection*{The Godunov flux}
+The Godunov method \cite{Godunov_method} has been proposed in the context of finite difference schemes in which the piecewise constant approximation of the solution naturally allowed the definition of local Riemann problems a cells interfaces. Hence, the intercell numerical flux $\Fcb \cdot \vect{N}$ is that of the stationary solution, that is, the similarity solution of the Riemann problem along the vertical straight line in the $(x,t)$ plane $\Qcb(x/t=0)$.
+
+Godunov's original approach for finite differences with piecewise constant field which leads naturally to Riemann problem
+The relaxation of fields continuity introduced by DG approximation amounts to 
 
 Discontinuity of stationary solution across stationary waves so, discontinuity of flux so, two fluxes are used (discontinuity of flux means loss of information. Does it correspond to transverse correction ?).
 \subsubsection*{Transverse corrections}

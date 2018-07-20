@@ -377,6 +377,19 @@
   Timestamp                = {2018.07.05}
 }
 
+@Article{Godunov_method,
+  Title                    = {Finite difference method for numerical computation of discontinuous solutions of the equations of fluid dynamics},
+  Author                   = {Godunov, S. K.},
+  Journal                  = {Mathematicheskii Sbornik},
+  Year                     = {1959},
+  Number                   = {3},
+  Pages                    = {271--306},
+  Volume                   = {47(89)},
+
+  Owner                    = {adrien},
+  Timestamp                = {2018.07.20}
+}
+
 @Article{Haider_FVM,
   Title                    = {A first-order hyperbolic framework for large strain computational solid dynamics: An upwind cell centred Total Lagrangian scheme},
   Author                   = {Haider, Jibran and Lee, Chun Hean and Gil, Antonio J and Bonet, Javier},
@@ -460,29 +473,23 @@
   Year                     = {2007}
 }
 
-@Article{Thomas,
+@Article{Thomas_EVP,
+  Title                    = {Simulation of impacts on elastic--viscoplastic solids with the flux-difference splitting finite volume method applied to non-uniform quadrilateral meshes},
+  Author                   = {Heuz{\'e}, Thomas},
+  Journal                  = {Advanced Modeling and Simulation in Engineering Sciences},
+  Year                     = {2018},
+
+  Owner                    = {adrien},
+  Timestamp                = {2018.07.20},
+}
+
+@Article{Thomas_EP,
   Title                    = {Lax{\textendash}{W}endroff and {TVD} finite volume methods for unidimensional thermomechanical numerical simulations of impacts on elastic–plastic solids },
   Author                   = {Thomas Heuz\'e},
   Journal                  = {Journal of Computational Physics },
   Year                     = {2017},
   Pages                    = {369 - 388},
   Volume                   = {346}
-}
-
-@Article{Thomas_EP,
-  Title                    = {Lax–Wendroff and TVD finite volume methods for unidimensional thermomechanical numerical simulations of impacts on elastic–plastic solids},
-  Author                   = {Thomas Heuzé},
-  Journal                  = {Journal of Computational Physics},
-  Year                     = {2017},
-  Pages                    = {369 - 388},
-  Volume                   = {346},
-
-  Doi                      = {https://doi.org/10.1016/j.jcp.2017.06.027},
-  ISSN                     = {0021-9991},
-  Keywords                 = {Thermo-elastic–plastic solids, Finite volume method, Impacts, Lax–Wendroff, High order TVD method},
-  Owner                    = {adrien},
-  Timestamp                = {2018.07.05},
-  Url                      = {http://www.sciencedirect.com/science/article/pii/S0021999117304722}
 }
 
 @Book{Hirsch,
@@ -891,6 +898,21 @@
   Number                   = {2},
   Pages                    = {107--127},
   Volume                   = {32}
+}
+
+@Article{Stindl_DGPIC,
+  Title                    = {Comparison of coupling techniques in a high-order discontinuous Galerkin-based particle-in-cell solver},
+  Author                   = {T Stindl and J Neudorfer and A Stock and M Auweter-Kurtz and C-D Munz and S Roller and R Schneider},
+  Journal                  = {Journal of Physics D: Applied Physics},
+  Year                     = {2011},
+  Number                   = {19},
+  Pages                    = {194004},
+  Volume                   = {44},
+
+  Abstract                 = {Highly rarefied plasma flows in technical devices are physically modelled by the Maxwell–Lorentz equations. They combine the solution of the Maxwell equations, where the electric field E and magnetic induction B are determined, with the Lorentz system, accounting for the movement of charged particles due to the electromagnetic forces. To solve these equations for complex-shaped domains, a fully electromagnetic particle-in-cell (PIC) code has been developed using high-order discontinuous Galerkin methods for the Maxwell equations on a computational mesh, coupled with a Lorentz solver on the basis of a second-order leapfrog scheme, acting on the particles at their current positions. Since the particles move freely in space, the mesh-based and the mesh-free values have to be coupled. This coupling includes the deposition of the charge and current densities from the current particle positions onto the mesh as well as the interpolation of the electromagnetic fields from the mesh to the actual particle positions. Both steps have to be computed with appropriate accuracy. Different approaches to particle-grid coupling within the PIC solver have been investigated. In this paper, these concepts are described and corresponding simulation results with respect to accuracy and computational demand are presented.},
+  Owner                    = {adrien},
+  Timestamp                = {2018.07.20},
+  Url                      = {http://stacks.iop.org/0022-3727/44/i=19/a=194004}
 }
 
 @Article{Sulsky94,
