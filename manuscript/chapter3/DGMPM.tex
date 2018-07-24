@@ -119,42 +119,92 @@ where again, the superscripts $\bullet^{k,l}$ denote a field evaluated at node $
 Note that in general the source term $\Scb$ in equation \eqref{eq:conservative_form} may depend on the vector of conserved quantities, hence the superscript $n$ in equation \eqref{eq:DGMPM_discrete}. 
 %The computation of interface fluxes $\hat{\Fcb}^i$ is now developed.
 
-\subsection{Numerical fluxes}
-
+\subsection{Source terms and interface fluxes}
+The computation of interface fluxes $\hat{\Fcb}^{i,n}$ in the DGMPM system of discrete equations \eqref{eq:DGMPM_discrete} is now developed. We can here benefit from the finite volume technologies which are essentially based on the way those fluxes are computed. In addition, efficient procedures for the treatment of source terms $\Scb$ in non-homogeneous hyperbolic systems have been developed for finite volume methods that we propose here to take advantage of. The two points mentioned above are now studied, starting with the treatment of the source terms.
 
 \subsection{Non-homogeneous hyperbolic system}
-Even for neglected body forces, met for cylindrical and spherical (examples), and elasto-viscoplasticity, of particular interest here since such constitutive models will be considered.
-This is the case for rate-dependent plasticity (see $\Scb$ in equation \eqref{eq:vectors_elasticity}) or for cylindrical and spherical coordinates systems, which gradients do not only involve derivatives (see \cite[Ch.~17]{Leveque}). 
+Solid mechanics equations may lead to source terms in the conservative form even for neglected body forces. This is for instance the case for time-dependent plasticity (see $\Scb$ in equation \eqref{eq:vectors_elasticity}), or for cylindrical or spherical coordinates systems. In the latter siuationss, the gradient operators invlove not only derivatives leading to a right-hand side in system \eqref{eq:conservative_form} that depends on $\Qcb$ and called a geometric source term \cite[Ch.~17]{Leveque}. 
 
-\cite[p.548]{Toro}, \cite{Thomas_EVP}
-Fractional-step or operator-splitting methods. $\Scb$ depends on $\Qcb$ (and eventually $\vect{X}$) only (and not on its derivatives) 
+A commonly used approach to solve non-homogeneous systems consists in solving alternatively a homogeneous system and a system of ODEs, namely:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:Splitting_advec} 
+    & \drond{\Qcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \vect{0}\\
+    \label{eq:Splitting_ODE}
+    & \ddroit{\Qcb}{t} = \Scb
+  \end{alignat}
+\end{subequations}
+Equation \eqref{eq:Splitting_advec} is solved by applying the DGMPM discretization \eqref{eq:DGMPM_discrete}, while the solution of equation \eqref{eq:Splitting_ODE} is determined by using well-known ODEs solvers. If we denote by $H^{(\Delta t)}$ and $F^{(\Delta t)}$ the discrete solution operators associated to equations \eqref{eq:Splitting_advec} and \eqref{eq:Splitting_ODE} respectively for one time step, the discrete solution reads \cite{Toro}:
+\begin{equation}
+  \label{eq:godunov_splitting}
+  \Qcb^{n+1} = F^{(\Delta t)} H^{(\Delta t)} (\Qcb^n)
+\end{equation}
+Two sub-problems are thus solved separately at each time step, the solution of the first one being used as initial conditions for the second one. Hence, \textit{Fractional-step} or \textit{Splitting} methods enable to taking advantage of efficient tools already developed both for homogeneous systems of conservation laws and for ODEs. 
 
-Before developing the computation of boundary integrals in the semi-discrete equation \eqref{eq:DGMPM_semi_discrete}, we want to highlight a property of numerical schemes that motivates the choice of flux functions. Consider a first order hyperbolic scalar equation $\Qc_t + \drond{\Fc_\alpha}{X_\alpha}=\Sc$. A numerical scheme based on a space-time discretization, as those derived above, provides an approximate solution $\Qc(\vect{X}^i,t^n)= \Qc^{i,n}$ with $i=1,...,N_n$ and $n=1,...,N_T$. This solution depends on the value of $\Qc$ at other points and subsequent time step (only the previous time step for forward Euler time discretization). Namely:
+\begin{remark}
+  The fractional-step method \eqref{eq:godunov_splitting}, known as Godunov's splitting, is only first–order accurate in time, when S and C are at least first–order accurate solution operators. On the other hand, Strang splitting:
+  \begin{equation}
+    \label{eq:Strang_splitting}
+    \Qcb^{n+1} = F^{(\Delta t/2)} H^{(\Delta t)} F^{(\Delta t/2)} (\Qcb^n)
+  \end{equation}
+is second-order accurate if each solution operator is at least second-order accurate \cite{Leveque}.
+\end{remark}
+%\cite[p.548]{Toro}, \cite{Thomas_EVP}
+
+Note that the DGMPM solution scheme reduces to the discrete solution oparator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at find approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}). For a DGMPM space-time discretization made of $N_p$ material points and $N_T$ time increments, those solutions can be written:
+% It has been established so far that the DGMPM scheme provides an approximate solution $\Qc(\vect{X}^i,t^{n,+1})= \Qc^{i,n+1}$,  with $i=1,...,N_n$ and $n=1,...,N_T$, that depends on the value of $\Qc$ at other points and previous time step, that is:
 \begin{equation}
   \label{eq:general_scheme}
-  \Qc^{i,n+1}= \Gc \(\Qc^{j,n}\) \quad j=1...,N_n
+  \Qc^{i,n+1}= H \(\Qc^{j,n}\) \quad j=1...,N_n \: ; \: n=1,...,N_T
 \end{equation}
-where $\Gc$ represents the scheme operator, and the set of nodes $j$ having an influence on $\Qc^i$ defines the \textit{stencil} of the method.
+where the set of nodes $j$ having an influence on $\Qc^i$ defines the \textit{stencil} of the method. 
 \begin{definition}
   \label{def:monotonicity}
-  The numerical scheme is said \textbf{monotone} if it satisfies:
+  A numerical scheme is said \textbf{monotone} if it satisfies:
   \begin{equation}
-    \drond{\Gc(\Qc^i)}{\Qc^j} \geq 0 \quad \forall i,j= 1,...,N_n
+    \drond{H}{\Qc^j} \geq 0 \quad \forall j
   \end{equation}
 \end{definition}
+The following statement then holds:
 \begin{theorem}[Godunov]
   \label{th:Godunov}
   Monotone linear numerical schemes can be at most first-order accurate.
 \end{theorem}
-DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximation \cite{Cockburn}. That condition is satisfied for flux functions $\Fcb \cdot \vect{N}$ that are Lipschitz continuous, consistent and monotone, also called \textit{E-fluxes} \cite[Read!]{Osher}. One possibility, which is widely used, is the \textit{Godunov flux function}.
+
+DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximation \cite{Cockburn} (first order accuracy in space). This condition is satisfied for flux functions $\Fcb$ that are Lipschitz continuous, consistent and monotone, namely, they must be \textit{E-fluxes} \cite{Osher}. One possibility, which is widely used and adopted here, is the \textit{Godunov flux function}.
 
 \subsubsection*{The Godunov flux}
-The Godunov method \cite{Godunov_method} has been proposed in the context of finite difference schemes in which the piecewise constant approximation of the solution naturally allowed the definition of local Riemann problems a cells interfaces. Hence, the intercell numerical flux $\Fcb \cdot \vect{N}$ is that of the stationary solution, that is, the similarity solution of the Riemann problem along the vertical straight line in the $(x,t)$ plane $\Qcb(x/t=0)$.
+The Godunov method \cite{Godunov_method} has been proposed in the context of finite difference schemes in which the piecewise constant approximation of the solution naturally allowed the definition of local Riemann problems at cells interfaces. That is, two cells $i$ and $i+1$ with interface having normal vector $\vect{N}$ define a Riemann problem in the direction $X_N=\vect{X}\cdot{N}$, which \textit{stationary solution} is used to compute the intercell numerical flux $\Fcb \cdot \vect{N}$. The stationary solution, denoted by $\Qcb^*$, is the similarity solution along the vertical characteristic in the $(X_N,t)$ plane of the Riemann problem:
+% Hence, the intercell numerical flux $\Fcb \cdot \vect{N}()$ is that of the stationary solution, that is, the similarity solution along the vertical straight line in the $(x,t)$ plane $\Qcb(x/t=0)$, of the Riemann problem:
+\begin{equation}
+  \label{eq:RP_mesh}
+  \begin{aligned}
+    &\drond{\Qcb}{t} + \drond{\Fcb \cdot \vect{N}}{X_N} = \vect{0}  \\
+    & \Qcb(X_N,0)= \left\lbrace 
+      \begin{aligned}
+        & \Qcb_{X_N^-} \text{ if } X_N <0 \\
+        & \Qcb_{X_N^{+}} \text{ if } X_N \geq 0
+      \end{aligned}
+        \right.
+  \end{aligned}
+\end{equation}
+where $\Qcb_{X_N^-}$ and $\Qcb_{X_N^{+}}$ are the states lying infinitely close to the interface in cells $i$ and $i+1$. 
+Godunov's method hence allows to account for the complete wave structure of the solution within the numerical scheme. Since this method is known to based on E-fluxes, intercell fluxes involved in boundary integrals of DG-methods weak forms are computed as Godunov's ones. To this end, Riemann problems are defined at cells faces by considering that initial data are piecewise constant even for high-order approximations. Note that this strategy is also followed in FVM when high-order reconstruction technics of the fields are used on the grid.
 
-Godunov's original approach for finite differences with piecewise constant field which leads naturally to Riemann problem
-The relaxation of fields continuity introduced by DG approximation amounts to 
+Let us consider as an illustration of the computation of interface fluxes within the DGMPM, the two-dimensional case depicted in figure \ref{fig:2D_edge}. Since intercell fluxes must be calculated in addition to the solution discrete equations \eqref{eq:DGMPM_discrete}, only one Riemann problem per interface is considered rather than nodal ones, in order to avoid a dramatical increase in computational time. Thus, by averaging the nodal values on each side of the interface, one obtains mean \textit{Left} and \textit{Right} states $\Qcb_L$ and $\Qcb_R$ that correspond to the initial conditions of the Riemann problem (see figure \ref{fig:2D_edge}).
+\begin{figure}[h!]
+  \centering
+  \input{chapter3/pgfFigures/2DEdge}
+  \caption{Duplication of nodes at an interface and building of initial conditions of the Riemann problem (2D).}
+  \label{fig:2D_edge}
+\end{figure}
+Furthermore, as mentioned in section \ref{sec:riemann_solvers}, the exact (time consuming) solution of the Riemann problem is not necessarily desired since only the stationary solution matters. As a consequence, the stationary states are approximated here by means of an approximate-state Riemann solver, and the corresponding Godunov fluxes can be determined.
+\begin{remark}
+A hyperbolic system having zero eigenvalues leads to stationary waves, propagating at zero celerity, across which the solution of the Riemann problem may have discontinuities. In that case, the associated Godunov flux is also discontinuous and it is then necessary to consider one left and one right stationary states so that each corresponding flux contributes to the correct side only. 
+\end{remark}
+At last, solid mechanics conservative forms involve for hyperelasticity and elastoplasticity (equations \eqref{eq:vectors_hyperelasticity} and \eqref{eq:vectors_plasticity}), strains in the vector of conserved quantities, and stresses in the flux vector. Hence, the computation of Godunov's fluxes from the stationary solution requires the integration of constitutive laws that can be costly for nonlinear problems. Nevertheless, the introduction of an auxiliary vector of conserved quantities \eqref{eq:auxiliary_vectors}, and the quasilinear form it provides, avoid the computation of constistutive equations. Indeed, the stationary solution of the Riemann problem will be computed in terms of the auxiliary vector, which is a rearrangement of the flux components. 
 
-Discontinuity of stationary solution across stationary waves so, discontinuity of flux so, two fluxes are used (discontinuity of flux means loss of information. Does it correspond to transverse correction ?).
+
 \subsubsection*{Transverse corrections}
 The method derived above for the computation of normal fluxes can be viewed as the \textit{Donor-Cell Upwind (DCU)} method \cite{Leveque} meaning that only contributions from the upwind cells sharing an edge (in two dimensions) with the current one are considered. For multidimensional problems waves can travel in several directions such that contributions coming from corner cells must be taken into account in order to improve accuracy and stability of the numerical scheme. The \textit{Corner Transport Upwind (CTU)} method \cite{Colella_CTU} consists in considering contributions coming from upwind cells sharing only a node (in two dimensions) with the considered grid cell and propagating in bias. This approach allows to improve the Courant condition especially for solid mechanics problems for which strain components are coupled through Poisson's effect. One can define at each cell interface left-going and right-going fluctuations defined as:
 \begin{equation}
