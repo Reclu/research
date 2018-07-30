@@ -5,7 +5,7 @@ Consider a three-dimensional solid with volume denoted by $\Omega \subset \Rbb^3
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/deformationFunction}
-  \caption{Deformation of a solid body between a reference state $\Omega_0$ to a subsequent state $\Omega_t$.}
+  \caption{\thomas{Deformation of a solid body between a reference state $\Omega_0$ to a subsequent state $\Omega_t$.}}
   \label{fig:deformationFunction}
 \end{figure}
 
@@ -26,7 +26,7 @@ where $\nablat_0 (\bullet)$ is the gradient operator in the reference configurat
 \begin{equation}
   \tens{F}= \nablat_0 \vect{u}(\vect{X},t) + \tens{I} \label{eq:F_displacement}
 \end{equation}
-with $\tens{I}$, the second-order identity tensor. The deformation gradient tensor characterizes the variations of lengths, areas and volumes. Indeed, the infinitesimal vector, oriented surface and volume elements in the reference configuration, respectively denoted by $\vect{dX},\vect{dS}$ and $dV$, transform respectively to:
+with $\tens{I}$, the second-order identity tensor. The deformation gradient tensor characterizes the variations of lengths, angles, areas and volumes. Indeed, the infinitesimal vector, oriented surface and volume elements in the reference configuration, respectively denoted by $\vect{dX},\vect{dS}$ and $dV$, transform respectively to:
 \begin{equation}
   \label{eq:transport_equations}
   \begin{aligned}
@@ -43,25 +43,36 @@ Since it accounts for changes in lengths and angles (\textit{i.e. the change of 
 \end{equation*}
 respectively. Making use of equation \eqref{eq:F_displacement}, the Green-Lagrange tensor reads:
 \begin{equation*}
-  \tens{E}=\frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T + \nablat_0 \vect{u}\nablat_0 \vect{u}^T)
+  \tens{E}=\frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T + \nablat_0 \vect{u}^T \nablat_0 \vect{u})
 \end{equation*}
 In particular, when a deformation involves displacement vectors such that $\norm{\nablat_0 \vect{u}} \ll 1$, the last (second-order) term of the previous definition can be neglected, leading to:
 \begin{equation}
   \label{eq:epsilon}
   \tens{E} \approx \frac{1}{2}(\nablat_0 \vect{u} + \nablat_0 \vect{u}^T) = \tens{\eps}
 \end{equation}
-with $\tens{\eps}$ the symmetric \textit{linearized strain tensor}. Such deformations fall in the \textit{linearized geometrical framework} or \textit{infinitesimal theory} and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\norm{\vect{u}} \ll 1$, reference and current configurations are considered as indentical. The aforementioned situations correspond to the \textit{small strain} framework.
+with $\tens{\eps}$ the symmetric \textit{linearized strain tensor}. Such deformations fall in the \textit{small strain } framework and are characterized by small strain but possibly large displacements. Furthermore, when the deformation leads to a displacement vector $\frac{\norm{\vect{u}}}{L} \ll 1$, where $L$ is a characteristic length of the domain, reference and current configurations are considered as identical within equations of the Initial Boundary Value Problem (IBVP). The aforementioned situations correspond to the \textit{linearized geometrical} framework  or \textit{infinitesimal theory}.
 
 \subsection{Balance equations}
 % In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$.
 The time derivative of equations \eqref{eq:F_phi} and \eqref{eq:epsilon} combined with the definition of the velocity field \eqref{eq:velocity} yields respectively:
+\begin{equation}
+  \begin{aligned}
+    & \tens{\dot{F}} - \nablat_0\vect{v} = \tens{0} \\
+    & \tens{\dot{\eps}} - \nablat^s\vect{v} = \tens{0}
+  \end{aligned} \label{eq:geometrical_conservation}
+\end{equation}
+where $\nablat^s(\bullet)$ denotes the symmetric gradient operator. By rewriting the gradient operators as:
 \begin{align}
-  & \tens{\dot{F}} - \nablat_0\vect{v} = \tens{0} \label{eq:HE_kinematic}\\
-  & \tens{\dot{\eps}} - \nablat^s\vect{v} = \tens{0} \label{eq:HPP_kinematic}
+  & \nablat_0 \vect{v} = \nablav_0 \cdot \(\vect{v}\otimes\tens{I}\) \\
+  & \nablat^s \vect{v} = \frac{1}{2}\nablav \cdot \(\vect{v}\otimes\tens{I}+\tens{I}\otimes \vect{v}\)
 \end{align}
-where $\nablat^s(\bullet)$ denotes the symmetric gradient operator. Those equations can be seen as kinematic or geometrical balance laws \cite{Plohr}.
+with $\nablav_0 \cdot \(\bullet\)$ and $\nablav \cdot\(\bullet\)$, the right divergence operators in the reference and current configurations respectively. With those forms of gradient operators, geometrical relations \eqref{eq:geometrical_conservation} can be written as kinematic or geometrical balance laws \cite{Plohr,Haider_FVM}:
+\begin{align}
+  & \tens{\dot{F}} - \nablav_0 \cdot \(\vect{v}\otimes\tens{I}\) = \tens{0} \label{eq:HE_kinematic} \\
+  & \tens{\dot{\eps}} - \frac{1}{2}\nablav \cdot \(\vect{v}\otimes\tens{I}+\tens{I}\otimes \vect{v}\) = \tens{0} \label{eq:HPP_kinematic}
+\end{align}
 
-Then, assuming that the amount of matter remains constant during a deformation, one writes the conservation of mass in integral form:
+Then, assuming that the mass of some amount of matter remains constant during the deformation, one writes the conservation of mass in integral form:
 \begin{equation*}
   \int_\Omega \rho d\Omega = \int_{\Omega_0} \rho_0 d\Omega \qquad \forall \: t \in  \tau,\: \forall \:\Omega_0
 \end{equation*}
@@ -75,11 +86,11 @@ Since equation \eqref{eq:mass_conservation_law} holds regardless of the volume $
   \label{eq:mass_balance}
   \rho\(\vect{\phi}(\vect{X},t),t\) = \frac{\rho_0\(\vect{X}\)}{J} \qquad \forall \: \vect{X},t \: \in \Omega_0\times \tau
 \end{equation}
-In particular, equation \eqref{eq:mass_balance} is automatically satisfies within the infinitesimal theory since current and reference configurations are the same (\textit{i.e.} $\rho=\rho_0 \: \forall\: \vect{x},t \: \in \Omega\times \tau$).
+\thomas{In particular, equation \eqref{eq:mass_balance} is automatically satisfies within the infinitesimal theory since current and reference configurations are the same (\textit{i.e.} $\rho=\rho_0 \: \forall\: \vect{x},t \: \in \Omega\times \tau$).}
 
 Furthermore, \textit{Newton's second law} states that equilibrium between inertia and external forces undergone by a solid $\Omega$. In the current configuration, this conservation law reads:
 \begin{equation*}
-  \int_\Omega \rho \vect{\dot{v}} d\Omega = \int_{\partial \Omega} \vect{t} ds + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: t \in  \tau,\: \forall \:\Omega
+  \ddroit{}{t}\int_\Omega \rho \vect{v} d\Omega = \int_{\partial \Omega} \vect{t} ds + \int_{\Omega} \rho\vect{b}d\Omega \qquad \forall \: t \in  \tau,\: \forall \:\Omega
 \end{equation*}
 where $\vect{t}$ and $\vect{b}$ denote surface and volume forces respectively. The symmetric second-order \textit{Cauchy stress tensor} $\tens{\sigma}$ is then introduced by using Cauchy's theorem $\vect{t}=\tens{\sigma}\cdot \vect{n}$ where $\vect{n}$ is the outward normal vector to the surface element $ds$. 
 
@@ -90,22 +101,25 @@ For further developments, the divergence theorem and definition are required:
   \label{eq:Ostrogradski_th}
   \int_{\partial \Omega} (\bullet)\cdot \vect{ds}=\int_\Omega \nablav \cdot (\bullet) \: d\Omega \qquad \forall\:\Omega
 \end{equation}
-where $\nablav \cdot (\bullet)$ denotes the divergence operator in the current configuration.  
 \end{theorem}
 \begin{definition}
   \label{def:Piola_transform}
-  The Piola transform $\tens{T}^P$ of a second-order tensor $\tens{T}$ is defined as:
+  The Piola transform $\tens{A}^P$ of a second-order tensor $\tens{A}$ is defined as:
   \begin{equation*}
-    \tens{T}^P=J\tens{T}\cdot\tens{F}^{-1}
+    \tens{A}^P=J\tens{A}\cdot\tens{F}^{-T}
   \end{equation*}
   and satisfies:
   \begin{equation*}
-    \nablav_0\cdot \tens{T}^P = J \nablav \cdot \tens{T}
+    \nablav_0\cdot \tens{A}^P = J \nablav \cdot \tens{A}
   \end{equation*}
-  where $\nablav_0\cdot (\bullet)$ is the divergence operator in the reference configuration.
 \end{definition}
 
-Thus, by using the divergence theorem \eqref{eq:Ostrogradski_th} in the second law of Newton, one gets:
+The second law of Newton, combined with the volume transport theorem \eqref{eq:transport_equations}, reads in the reference configuration:
+\begin{equation}
+  \label{eq:1}
+    \ddroit{}{t}\int_{\Omega_0} \rho_0 \vect{v} \: d\Omega = \int_{\Omega_0} J\nablav \cdot\tens{\sigma} \: d\Omega + \int_{\Omega_0} \rho_0\vect{b}\:d\Omega \qquad \forall \: t \in  \tau,\: \forall \:\Omega_0
+\end{equation}
+Thus, by using the divergence theorem \eqref{eq:Ostrogradski_th} in the second law of Newton combined with the conservation of mass and the transport theorem, one gets:
 \begin{equation}
   \label{eq:Linear_momentum_conservation_eulerian}
   \int_{\Omega} \( \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} -  \rho\vect{b} \) d\Omega = \vect{0} \qquad \forall \:t \in  \tau,\: \forall \:\Omega
