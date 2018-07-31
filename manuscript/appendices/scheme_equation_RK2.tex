@@ -1,0 +1,123 @@
+The DGMPM scheme using the Runge-Kutta two-steps time discretization is derived here for the one-dimensional scalar linear advection equation. Again, a homogeneous one-dimensional medium is considered so that the equation studied for an arbitrary quantity $q=\rho \bar{q}$ reads:
+\begin{equation}
+\drond{\bar{q}}{t} + a\drond{\bar{q}}{X} = 0 %\label{eq:scalar_advection}
+\end{equation}
+with $a \in \Rbb^{+*}$. The solid domain is then discretized with $N_p$ material points in an arbitrary grid made of $E$ regular cells $c$ of length $\Delta X$, each containing $N_p^c$ particles (see figure~\ref{fig:1Dmesh}). Results established in section \ref{subsec:scheme_Euler} for the Euler time discretization are used hereinafter and recalled for convenience. First, the udpated solution at a material point $I$ at time $n+1$ results from the interpolation of the updated nodal quantities $\bar{q}_{i}^{n+1}$ according to:
+\begin{equation}
+\bar{Q}^{n+1}_I = S_{2c(I)-1,I}\bar{q}_{2c(I)-1}^{n+1} + S_{2c(I),I}\bar{q}_{2c(I)}^{n+1} \label{eq:MP_update}
+\end{equation}  
+where $2c(I)-1$ and $2c(I)$ are respectively the upwinstream and downstream nodes of the cell that contains the particle $I$, and $S_{i,I}$ the shape function attached to node $i$ evaluated at $X^I$. The discrete equation of the scheme using the Euler time discretization:
+\begin{equation}
+  \bar{q}^{n+1}_{i}  =\bar{q}^{n}_{i} + \frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^n_{j} - q^{*,n}_{i}N_i \) \quad \text{(no sum on $i$)}
+\end{equation}
+yields the following updated nodal quantities:
+\begin{align}
+  \label{eq:discrete_Euler}
+  \bar{q}_{2c(I)-1}^{n+1}= &\bar{q}_{2c(I)-1}^{n} - \frac{a\Delta t}{\Delta X}\( \frac{\sum_{L=1}^{N_p^{c(I)}} \[S_{2c(I)-1,L}\bar{q}_{2c(I)-1}^{n}+ S_{2c(I),L}\bar{q}_{2c(I)}^{n}\] - N_p^{c( I)} \bar{q}^{n}_{2c(I)-2}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I)-1,J}}\) \\
+   \bar{q}_{2c(I)}^{n+1}= &\bar{q}_{2c(I)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{\sum_{L=1}^{N_p^{c(I)}}\[S_{2c(I)-1,L}\bar{q}_{2c(I)-1}^{n}+ S_{2c(I),L}\bar{q}_{2c(I)}^{n}\]- N_p^{c( I)}  \bar{q}^{n}_{2c(I)}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I),J}} \)
+\end{align}
+Those expressions are generalized to the RK2 time discretization:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:RK2_stage1}& \bar{q}^{n+1/2}_{i}  =\bar{q}^{n}_{i} + \frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^n_{j} - q^{*,n}_{i}N_i \) \quad \text{(no sum on $i$)} \\
+    \label{eq:RK2_stage2}& \bar{q}^{n+1}_{i}  =\bar{q}^{n}_{i} + \frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^{n+1/2}_{j} - q^{*,n+1/2}_{i}N_i \) \quad \text{(no sum on $i$)}
+  \end{alignat}
+\end{subequations}
+The first step of the algorithm \eqref{eq:RK2_stage1} leads for the nodes considered above to:
+\begin{equation}
+  \label{eq:discrete_RK2_step1}
+  \left\lbrace
+  \begin{aligned}
+    &\bar{q}_{2c(I)-1}^{n+1/2}= \bar{q}_{2c(I)-1}^{n} - \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(I)}^{n} - N_p^{c( I)} \bar{q}^n_{2c(I)-2}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I)-1,J}}\)\\
+    &\bar{q}_{2c(I)}^{n+1/2}= \bar{q}_{2c(I)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(I)}^{n}- N_p^{c( I)}  \bar{q}^n_{2c(I)}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I),J}} \)
+  \end{aligned}\right.
+\end{equation}
+where $f_{c}^{n}=\sum_{L=1}^{N_p^{c}}\[S_{2c-1,L}\bar{q}_{2c-1}^{n}+ S_{2c,L}\bar{q}_{2c}^{n}\]$ is related to the volumic fluxes contributions. On the other hand, the second one (equation \eqref{eq:RK2_stage2}) yields:
+\begin{equation}
+  \label{eq:discrete_RK2_step2}
+  \left\lbrace
+  \begin{aligned}
+    &\bar{q}_{2c(I)-1}^{n+1}= \bar{q}_{2c(I)-1}^{n} - \frac{a\Delta t}{\Delta X}\( \frac{\sum_{L=1}^{N_p^{c(I)}}\[S_{2c(I)-1,L}\bar{q}_{2c(I)-1}^{n+1/2}+ S_{2c(I),L}\bar{q}_{2c(I)}^{n+1/2}\] - N_p^{c( I)} \bar{q}^{n+1/2}_{2c(I)-2}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I)-1,J}}\)\\
+    &\bar{q}_{2c(I)}^{n+1}= \bar{q}_{2c(I)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{\sum_{L=1}^{N_p^{c(I)}}\[S_{2c(I)-1,L}\bar{q}_{2c(I)-1}^{n+1/2}+ S_{2c(I),L}\bar{q}_{2c(I)}^{n+1/2}\]- N_p^{c( I)}  \bar{q}^{n+1/2}_{2c(I)}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I),J}} \)
+  \end{aligned}\right.
+\end{equation}
+Combination of equations \eqref{eq:MP_update} and \eqref{eq:discrete_RK2_step2} leads, after some simplifications, to the solution at material points at time step $n+1$:
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  &S_{2c(I)-1,I}\bar{q}_{2c(I)-1}^{n} - \(\frac{a\Delta t}{\Delta X}\[S_{2c(I)-1,I} - S_{2c(I),I}\frac{\sum_{L} S_{2c(I)-1,L}}{\sum_{J}  S_{2c(I),J}}\] \)\bar{q}_{2c(I)-1}^{n+1/2} \\ & +S_{2c(I),I}\bar{q}_{2c(I)}^{n} + \frac{a\Delta t}{\Delta X}\[S_{2c(I),I} - S_{2c(I)-1,I}\frac{\sum_{L} S_{2c(I),L}}{\sum_{J}  S_{2c(I)-1,J}}- N_p^{c(I)}\frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\] \bar{q}_{2c(I)}^{n+1/2}\\
+    &+N_p^{c(I)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\bar{q}_{2c(I)-2}^{n+1/2}
+  \end{split}
+\end{equation}
+Then, the first stage of RK2 procedure \eqref{eq:discrete_RK2_step1} allows to substitute the expressions of intermediate solutions $q^{n+1/2}_i$ in the previous equation:
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I &=  S_{2c(I)-1,I}\bar{q}_{2c(I)-1}^{n} +S_{2c(I),I}\bar{q}_{2c(I)}^{n} \\
+    &- \frac{a\Delta t}{\Delta X}\[S_{2c(I)-1,I} - S_{2c(I),I}\frac{\sum_{L} S_{2c(I)-1,L}}{\sum_{J}  S_{2c(I),J}}\] \(\bar{q}_{2c(I)-1}^{n} - \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(I)}^{n} - N_p^{c( I)} \bar{q}^n_{2c(I)-2}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I)-1,J}}\)\) \\
+    &  + \frac{a\Delta t}{\Delta X}\[S_{2c(I),I}\(1- \frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\) - S_{2c(I)-1,I}\frac{\sum_{L} S_{2c(I),L}}{\sum_{J}  S_{2c(I)-1,J}}\] \(\bar{q}_{2c(I)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(I)}^{n}- N_p^{c( I)}  \bar{q}^n_{2c(I)}}{\sum_{J=1}^{N_p^{c(I)}}  S_{2c(I),J}} \)\)\\
+    &+N_p^{c(I)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(\bar{q}_{2c(I)-2}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(I)-1}^{n}- N_p^{c( I)-1}  \bar{q}^n_{2c(I)-2}}{\sum_{J=1}^{N_p^{c(I)}-1}  S_{2c(I)-2,J}} \)\) \label{eq:Mp_before_mapping}
+  \end{split}
+\end{equation}
+Note that the second equation of the set \eqref{eq:discrete_RK2_step1} is used for $q^{n+1/2}_{2c(I)-2}$ since it is the downwstream node of the adjacent cell $c(I)-1$. Hence, the formula now involves the numer of material points lying in that cell $N_p^{c(I)-1}$. Recall that the nodal quantities at the begining of the first stage of the update results from the convective phase:
+\begin{equation}
+  \bar{q}^{n}_{i} = \frac{\sum_K S_{iK} \bar{Q}^n_{K}}{\sum_P S_{iP}} \label{eq:mapping_RK2}
+\end{equation}
+In particular, the volume fluxes contridutions can be written:
+\begin{equation}
+  f_{c}^{n}=\sum_{L=1}^{N_p^{c}}\[S_{2c-1,L}\frac{\sum_K S_{2c-1,K}\bar{Q}^n_{K}}{\sum_P S_{2c-1,P}}+ S_{2c,L}\frac{\sum_K S_{2c,K} \bar{Q}^n_{K}}{\sum_P S_{2c(L),P}} \]=\sum_{K=1}^{N_p^{c}}\bar{Q}^n_{K} \label{eq:volume_fluxes_mapped}
+\end{equation}
+Thus, by rearranging formula \eqref{eq:Mp_before_mapping} as:
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  &\(S_{2c(I)-1,I} -\frac{a\Delta t}{\Delta X}\[S_{2c(I)-1,I} - S_{2c(I),I}\frac{\sum_{L} S_{2c(I)-1,L}}{\sum_{J}  S_{2c(I),J}}\]\)\bar{q}_{2c(I)-1}^{n} \\
+    +&\(S_{2c(I),I} + \frac{a\Delta t}{\Delta X}\[S_{2c(I),I}\(1-\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\) - S_{2c(I)-1,I}\frac{\sum_{L} S_{2c(I),L}}{\sum_{J}  S_{2c(I)-1,J}}\]\) \bar{q}_{2c(I)}^{n} \\
+    -&\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(I)}\frac{S_{2c(I),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} f_{c(I)}^{n} \\
+    -&\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\(N_p^{c( I)} \bar{q}^n_{2c(I)-2} - N_p^{c( I)}  \bar{q}^n_{2c(I)}\)  \[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
+    +& \frac{1}{2}S_{2c(I),I}\(\frac{a\Delta t}{\Delta X}\)^2 \(\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\)^2\bar{q}^n_{2c(I)}\\
+    +&N_p^{c(I)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(\bar{q}_{2c(I)-2}^{n} - N_p^{c( I)-1}  \frac{a\Delta t}{2\Delta X}\frac{ \bar{q}^n_{2c(I)-2}}{\sum_{J}  S_{2c(I)-2,J}} \) \\
+    +&\frac{N_p^{c(I)}}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\frac{ f_{c(I)-1}^{n}}{\sum_{J}  S_{2c(I)-2,J}}
+  \end{split}
+\end{equation}
+introduction of equations \eqref{eq:mapping_RK2} and \eqref{eq:volume_fluxes_mapped} leads, after some algebra to the one-dimensional scheme equation of the DGMPM using RK2 time integration:
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n & \left\lbrace \frac{S_{2c(I)-1,K}}{\sum_P S_{2c(I)-1,P}}\(S_{2c(I)-1,I} -\frac{a\Delta t}{\Delta X}\[S_{2c(I)-1,I} - S_{2c(I),I}\frac{\sum_{L} S_{2c(I)-1,L}}{\sum_{J}  S_{2c(I),J}}\]\)  \right. \\
+    +\frac{S_{2c(I),K}}{\sum_P S_{2c(I),P}}&\(S_{2c(I),I} + \frac{a\Delta t}{\Delta X}\[S_{2c(I),I}\(1-\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\) - S_{2c(I)-1,I}\frac{\sum_{L} S_{2c(I),L}}{\sum_{J}  S_{2c(I)-1,J}}\]\)  \\
+    -\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 &N_p^{c(I)}\frac{S_{2c(I),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} \\
+    -\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2&N_p^{c( I)}\(\frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} - \frac{S_{2c(I),K} }{\sum_{J} S_{2c(I),J}}\)  \[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
+    +  \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& S_{2c(I),I}\(\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\)^2\frac{S_{2c(I),K}}{\sum_P S_{2c(I),P}}\\
+    + \frac{a\Delta t}{\Delta X}N_p^{c(I)}&\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} - N_p^{c( I)}\frac{a\Delta t}{2\Delta X} \frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} \) \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2&N_p^{c(I)}\left.\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} +S_{2c(I)-3,K} \) \right\rbrace
+  \end{split}
+\end{equation}
+% Simplifications:
+% \begin{equation}
+%   \begin{split}
+%     \bar{Q}^{n+1}_I =  \sum_{K\in c(I)} Q_K^n  &\left\lbrace S_{2c(I)-1,K}\(\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}-\frac{S_{2c(I)-1,I}}{\sum_P S_{2c(I)-1,P}}\]+\frac{S_{2c(I)-1,I}}{\sum_P S_{2c(I)-1,P}} \)  \right. \\
+%     +&S_{2c(I),K}\(\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(I),I}}{\sum_P S_{2c(I),P}}\(1-\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\) - \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\]+\frac{S_{2c(I),I}}{\sum_P S_{2c(I),P}} \)  \\
+%     -&\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(I)}\frac{S_{2c(I),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} \\
+%     -&\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( I)}\(\frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} - \frac{S_{2c(I),K} }{\sum_{J} S_{2c(I),J}}\)  \[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
+%     +&  \frac{1}{2}S_{2c(I),I}\(\frac{a\Delta t}{\Delta X}\)^2 \(\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\)^2\frac{S_{2c(I),K}}{\sum_P S_{2c(I),P}}\\
+%     +&\left.\frac{a\Delta t}{\Delta X}\frac{ N_p^{c(I)}S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} + \frac{a\Delta t}{2\Delta X}\(1- N_p^{c( I)-1}  \frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} \)\) \right\rbrace
+%   \end{split}
+% \end{equation}
+
+%%%%%%%%%%%%%%%%%% OLD VERSION
+% \begin{equation}
+%   \begin{split}
+%     \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
+%     + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
+%      + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\left.\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_{L}  S_{2c(I)-1,L}}\[1-\frac{a\Delta t}{2\Delta X}\(\frac{N_p^{c(I)-1}}{\sum_{L}  S_{2c(I)-2,L}}+1\)\] + \frac{a\Delta t}{2\Delta X}\frac{S_{2c(I),I}}{\sum_{L}  S_{2c(I),L}}\)\right\rbrace
+%    \end{split}
+% \end{equation}
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
+    + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
+     + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_{L}  S_{2c(I)-1,L}}\[1-\frac{a\Delta t}{2\Delta X}\(\frac{N_p^{c(I)-1}}{\sum_{L}  S_{2c(I)-2,L}}+1\)\] + \frac{a\Delta t}{2\Delta X}\frac{S_{2c(I),I}}{\sum_{L}  S_{2c(I),L}}\) \\  + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\left. \right\rbrace
+   \end{split}
+\end{equation}
+
+%%%Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

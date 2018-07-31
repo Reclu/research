@@ -1,0 +1,170 @@
+Dans cette partie, on utilise directement l'approche condensée telle qu'explicitée pour le cas unidimensionnel. 
+
+\subsubsection*{Forme discrète}
+Pour ce type de problème, l'équation discrète pour un noeud $i$ est :
+
+\begin{equation}
+  q_i^{k+1} = q_i^k + \frac{\Delta t}{m_i} \(k_{ij}^x {F_j^x}^k + k_{ij}^y {F_j^y}^k - {f_i^*}^k\) \label{discrete2D}
+\end{equation}
+
+On considère une grille constituée d'éléments quadrangulaires dans laquelle on repère les points matériels par les coordonnées spatiales $(x,y)$ reliées aux coordonnées de l'élément parent $(\xi,\eta)$ par le changement de variable :
+\begin{align}
+  &\xi = 2\frac{x-x_1}{\Delta x} -1 \quad ; \quad d\xi = 2\frac{dx}{\Delta x} \label{ref_elemx}\\
+  &\eta = 2\frac{y-y_1}{\Delta y} -1 \quad ; \quad d\eta = 2\frac{dy}{\Delta y} \label{ref_elemy}
+\end{align}
+Comme précédemment, la solution actualisée aux points matériels est obtenue par interpolation des solutions actualisées nodales :
+
+\begin{equation}
+  Q^{k+1}_I = \sum_{i=1}^{N_n} S_{iI} q_i^{k+1} 
+\end{equation}
+et l'équation discrète bidimensionnelle \eqref{discrete2D} donne alors :
+\begin{equation}
+  Q^{k+1}_I = \sum_{i=1}^{N_n} S_{iI} \( q_i^{k} + \frac{\Delta t}{m_i} \[  \sum_{j=1}^{N_n} ( k^x_{ij} {F^x_j}^{k} + k^y_{ij} {F^y_j}^{k} )  - f_i^* \] \)
+\end{equation}
+
+
+\subsubsection*{Expression des flux en fonction des valeurs matérielles}
+\paragraph{Flux volumiques :} Dans l'équation \eqref{discrete2D} ${F^x_j}^{k}= c_x q_j^k$ et ${F^y_j}^{k} = c_y q_j^k$, avec $c_x$ et $c_y$ les célérités des ondes horizontale et verticale. Le mapping \eqref{mapping} donne ensuite :
+\begin{equation}
+  Q^{k+1}_I = \sum_{i=1}^{N_n} S_{iI} \( \frac{\sum_p S_{ip} Q_p^k}{\sum_l S_{il}} + \frac{\Delta t}{m_i} \[ \sum_{j=1}^{N_n} \(c_x k_{ij}^x +c_y k_{ij}^y\) \frac{\sum_p S_{jp} Q_p^k}{\sum_l S_{jl}}  - f_i^* \] \) \label{with_flux_2D}
+\end{equation}
+On note de plus avec \eqref{ref_elemx} et \eqref{ref_elemy} que :
+\begin{equation}
+  c_d \frac{k^d_{ij}}{m_i} = c_d \frac{\sum_q \nabla_{d} S_{iq} m_q S_{jq}}{\sum_l S_{il} m_l} = c_d \frac{\sum_q \nabla_{d} S_{iq} S_{jq}}{\sum_l S_{il}} = 2\frac{c_d}{\Delta d }\frac{\sum_q \nabla_{\xi_d} S_{iq} S_{jq}}{ \sum_l S_{il}} 
+\end{equation}
+où $d$ est une des deux directions de l'espace, $\Delta d$ est la taille des cellules dans cette direction (supposée constante), et $\xi_d$ la coordonnée parente reliée à la $d^{\text{ième}}$ coordonnée de l'espace. En introduisant les rapports $\alpha_x = c_x \Delta t /\Delta x $ et $\alpha_y = c_y \Delta t /\Delta y $, on peut écrire :
+
+\begin{equation}
+  \begin{split}
+    Q^{k+1}_I &= \sum_{i=1}^{N_n} S_{iI}  \frac{\sum_p S_{ip} Q_p^k}{\sum_l S_{il}} -  \sum_{i=1}^{N_n} S_{iI} \Delta t \frac{f_i^*}{m_i} \\
+    &+ 2 \sum_{i=1}^{N_n} S_{iI} \sum_{j=1}^{N_n} \frac{\alpha_x \sum_q \nabla_{\xi} S_{iq} S_{jq} + \alpha_y \sum_q \nabla_{\eta} S_{iq} S_{jq}}{\sum_l S_{il}} \frac{\sum_p S_{jp} Q_p^k}{\sum_l S_{jl}}  
+  \end{split} \label{inter}
+\end{equation}
+
+
+\paragraph*{Flux aux interfaces :} On propose ici de calculer les flux $f_i^*$ de manière littérale en passant sur l'élément parent grâce aux relations \eqref{ref_elemx} et \eqref{ref_elemy} :
+\begin{equation}
+  \begin{aligned}
+    f_i^*  = \int_{\Gamma} N_i(x,y) F^* d\Gamma   &=  \int_{\xi=-1}^{\xi=1}  N_i(\xi,-1) F^* \frac{\Delta x}{2}d\xi  +  \int_{\eta=-1}^{\eta=1}  N_i(1,\eta) F^* \frac{\Delta y}{2}d\eta \\
+    & +  \int_{\xi=-1}^{\xi=1}  N_i(\xi,1) F^*\frac{\Delta x}{2}d\xi  +  \int_{\eta=-1}^{\eta=1}  N_i(-1,\eta) F^* \frac{\Delta y}{2}d\eta 
+  \end{aligned}
+\end{equation}
+où $F^*$ représente le \textit{flux normal sortant} de la cellule que l'on peut également exprimer comme
+
+\begin{equation}
+F^* = \pm F\( \Rc\[\bar{q}^L,\bar{q}^R; 0 \]\)
+\end{equation}
+avec $\Rc\[q^L,q^R; 0 \]$ la solution stationnaire du problème de Riemann résolu entre les états $q^L$ et $q^R$. Dans l'équation précédente, $\bar{q}^L$ (resp. $\bar{q}^R$) est obtenu par moyennation des valeurs nodales du côté gauche (resp. droit) d'une arête. On rappelle que dans le cas d'une arête horizontale, la cellule de gauche dans le repère local est la cellule située en dessous dans le repère global. Le signe de ce flux peut varier puisque pour la première arrête de la cellule par exemple, le flux sortant n'est pas calculé comme étant $F\( \Rc\[\bar{q}^L,\bar{q}^R; 0 \]\)$ car l'état $q_L$ est situé à l'intérieur (il en sera de même pour la dernière arête de l'élément). Finalement, on aura
+
+\begin{equation}
+  \begin{aligned}
+    f_i^* & = \int_{\Gamma} N_i(x,y) F^* d\Gamma  \\
+    = &\color{red}- \color{black}\int_{\xi=-1}^{\xi=1}  N_i(\xi,-1) F\( \Rc\[\bar{q}^L(\xi,\eta=-1),\bar{q}^R(\xi,\eta=-1) ; 0 \]\) \frac{\Delta x}{2}d\xi \\
+    & +  \int_{\eta=-1}^{\eta=1}  N_i(1,\eta) F\( \Rc\[\bar{q}^L(\xi=1,\eta),\bar{q}^R(\xi=1,\eta) ; 0 \]\) \frac{\Delta y}{2}d\eta \\
+    & +  \int_{\xi=-1}^{\xi=1}  N_i(\xi,1) F\( \Rc\[\bar{q}^L(\xi,\eta=1),\bar{q}^R(\xi,\eta=1) ; 0 \]\) \frac{\Delta x}{2}d\xi \\
+    & \color{red}- \color{black}  \int_{\eta=-1}^{\eta=1}  N_i(-1,\eta) F\( \Rc\[\bar{q}^L(\xi=-1,\eta),\bar{q}^R(\xi=-1,\eta) ; 0 \]\) \frac{\Delta y}{2}d\eta \\
+  \end{aligned}
+\end{equation}
+Après intégration des fonctions de forme sur les différents bords en sortant les flux des intégrales, on a
+\begin{align}
+  f_1^* & =  -F_I \frac{\Delta x}{2} - F_{IV} \frac{\Delta y}{2} \\
+  f_2^* & = -F_I \frac{\Delta x}{2} + F_{II} \frac{\Delta y}{2} \\
+  f_3^* & =  F_{II} \frac{\Delta y}{2} + F_{III} \frac{\Delta x}{2} \\
+  f_4^* & = F_{III} \frac{\Delta x}{2} - F_{IV} \frac{\Delta y}{2} 
+\end{align}
+Pour le cas simple de l'équation d'advection linéaire, le flux calculé après résolution du problème de Riemann est :
+
+\begin{equation}
+F\( \Rc\[\bar{q}^L,\bar{q}^R; 0 \] \) = c_n \bar{q}^L = \underbrace{c_n\bar{q}^R}_{F(q_R)} - \underbrace{c_n (\bar{q}^R -\bar{q}^L)}_{\Ac^+(q^*)} 
+\end{equation}
+avec $c_n$ la célérité des ondes se propageant normalement à l'arête. En injectant l'expression des flux : 
+\begin{align*}
+  & f_1^*= - \rho c_x \Delta y \frac{q^k_{2L} + q^k_{3L}}{4} - \rho c_y \Delta x \frac{q^k_{3B} + q^k_{4B}}{4}  \\
+  & f_2^*=  \rho c_x \Delta y \frac{q^k_{2} + q^k_{3}}{4} - \rho c_y \Delta x  \frac{q^k_{3B} + q^k_{4B}}{4}  \\
+  & f_3^*= \rho c_x \Delta y \frac{q^k_{2} + q^k_{3}}{4} + \rho c_y \Delta x \frac{q^k_{3} + q^k_{4}}{4}  \\
+  & f_4^*=  -\rho c_x \Delta y \frac{q^k_{2L} + q^k_{3L}}{4}+\rho c_y \Delta x  \frac{q^k_{3} + q^k_{4}}{4}  \\
+\end{align*}
+Les indices $L$ et $B$ donnent une information sur l'élément possédant les nœuds considérés avec un $L$ pour $Left$ et un $B$ pour $Bottom$. Tous ces flux peuvent se mettre sous la même forme en utilisant le transfert \eqref{mapping} :
+
+\begin{equation}
+\frac{f^*_i}{m_i} = \sum_{p=1}^{N_p} \frac{Q_p^k}{\sum_l S_{il}} \frac{N}{4} \[ \frac{c_y}{\Delta y} \phi^y_{ip} + \frac{c_x}{\Delta x} \phi^x_{ip} \]
+\end{equation}
+avec :
+\begin{align*}
+& \phi_{1p}^x = -  \frac{S^L_{2p}}{\sum_l S^L_{2l}} - \frac{S^L_{3p}}{\sum_l S^L_{3l}} \quad \phi_{1p}^y =  -\frac{S^B_{3p}}{\sum_l S^B_{3l}} - \frac{S^B_{4p}}{\sum_l S^B_{4l}} \\
+& \phi_{2p}^x =  +\frac{S_{2p}}{\sum_l S_{2l}} + \frac{S_{3p}}{\sum_l S_{3l}}  \quad \phi_{2p}^y =  -\frac{S^B_{3p}}{\sum_l S^B_{3l}} - \frac{S^B_{4p}}{\sum_l S^B_{4l}}  \\
+& \phi_{3p}^x =  +\frac{S_{2p}}{\sum_l S_{2l}} + \frac{S_{3p}}{\sum_l S_{3l}} \quad  \phi_{3p}^y = +  \frac{S_{3p}}{\sum_l S_{3l}} + \frac{S_{4p}}{\sum_l S_{4l}} \\
+& \phi_{4p}^x =- \frac{S^L_{2p}}{\sum_l S^L_{2l}} - \frac{S^L_{3p}}{\sum_l S^L_{3l}} \quad \phi_{4p}^y = +  \frac{S_{3p}}{\sum_l S_{3l}} + \frac{S_{4p}}{\sum_l S_{4l}}
+\end{align*}
+
+\paragraph*{Prise en compte du solveur transverse :} Si on tient dompte d'une éventuelle propagation transverse des ondes afin de stabiliser la méthode numérique comme c'est fait en volumes finis [Leveque], les flux aux interfaces déterminés plus haut doivent être corrigés. Cette correction est calculée à partir des fluctuations émanant des arêtes orthogonales. Supposons le maillage suivant sur lequel on s'intéresse pour le calcul des flux dans la cellule $i$.
+% \begin{figure}[h]
+%   \centering
+%   \begin{tikzpicture}[scale=1.]
+%     \draw (0.0,.0) -- (4.,0) -- (4,4) --(0,4)--(0,0);
+%     \draw (0,2)-- (4,2) ;\draw (2,0)-- (2,4) ;
+%     \node at (3,3) {$\ovalbox{i}$};
+%     \node at (1,1) {$\ovalbox{BL}$};
+%     \node at (3,1) {$\ovalbox{B}$};
+%     \node at (1,3) {$\ovalbox{L}$};
+%     \draw[->,thick] (2,1) -- (2.75,1.75) node [midway,right] {$\Bc^+\Ac^+_{BL/B}$};
+%     \draw[->,thick] (1,2) -- (1.75,2.75) node [midway,left] {$\Bc^+\Ac^+_{BL/L}$};
+%     \draw[->,thick] (3,2) -- (3.75,2.75) node [midway,left] {$\Bc^+\Ac^+_{i/B}$};
+%     \draw[->,thick] (2,3) -- (2.75,3.75) node [midway,right] {$\Bc^+\Ac^+_{i/L}$};
+%   \end{tikzpicture}
+% \end{figure}
+
+Si les edges de la cellule $i$ sont numérotés de $I$ à $IV$, alors
+\begin{align}
+  & F_I = F_I - \Bc^+\Ac^+_{BL/B} \\
+  & F_{II} = F_{II} - \Bc^+\Ac^+_{i/B} \\
+  & F_{III} = F_{III} - \Bc^+\Ac^+_{i/L} \\
+  & F_{IV} = F_{IV} - \Bc^+\Ac^+_{L/BL} 
+\end{align}
+avec $\Ac^+ = c_n (q_R-q_L) $ et $\Bc^+\Ac^+ = c_t \frac{\Delta t}{4\Delta x} c_n (q_R - q_L)$, et $c_t$ est la vitesse de propagation normale à $c_n$. Finalement, les flux aux interfaces corrigés s'écrivent
+\begin{align*}
+  & \phi_{1p}^x = \phi_{1p}^x +  \frac{\alpha_y}{2}\( \frac{S^L_{1p}}{\sum_l S^L_{1l}} + \frac{S^L_{2p}}{\sum_l S^L_{2l}} - \frac{S^{BL}_{3p}}{\sum_l S^{BL}_{3l}} - \frac{S^{BL}_{4p}}{\sum_l S^{BL}_{4l}}\) =  \phi_{1p}^x + \phi_{1p}^{xT} \\
+  & \phi_{2p}^x = \phi_{2p}^x - \frac{\alpha_y}{2}\( \frac{S_{1p}}{\sum_l S_{1l}} + \frac{S_{2p}}{\sum_l S_{2l}} - \frac{S^{B}_{3p}}{\sum_l S^{B}_{3l}} - \frac{S^{B}_{4p}}{\sum_l S^{B}_{4l}}\) =  \phi_{2p}^x + \phi_{2p}^{xT} \\
+  & \phi_{3p}^x = \phi_{3p}^x - \frac{\alpha_y}{2}\( \frac{S_{1p}}{\sum_l S_{1l}} + \frac{S_{2p}}{\sum_l S_{2l}} - \frac{S^{B}_{3p}}{\sum_l S^{B}_{3l}} - \frac{S^{B}_{4p}}{\sum_l S^{B}_{4l}}\)=  \phi_{3p}^x + \phi_{3p}^{xT} \\
+  & \phi_{4p}^x = \phi_{4p}^x +  \frac{\alpha_y}{2}\( \frac{S^L_{1p}}{\sum_l S^L_{1l}} + \frac{S^L_{2p}}{\sum_l S^L_{2l}} - \frac{S^{BL}_{3p}}{\sum_l S^{BL}_{3l}} - \frac{S^{BL}_{4p}}{\sum_l S^{BL}_{4l}}\) =  \phi_{4p}^x + \phi_{4p}^{xT} \\
+  & \phi_{1p}^y = \phi_{1p}^y  +  \frac{\alpha_x}{2}\( \frac{S^B_{1p}}{\sum_l S^B_{1l}} + \frac{S^B_{4p}}{\sum_l S^B_{4l}} - \frac{S^{BL}_{2p}}{\sum_l S^{BL}_{2l}} - \frac{S^{BL}_{3p}}{\sum_l S^{BL}_{3l}}\)=\phi_{1p}^y  + \phi_{1p}^{yT}\\
+  & \phi_{2p}^y = \phi_{2p}^y +  \frac{\alpha_x}{2}\( \frac{S^B_{1p}}{\sum_l S^B_{1l}} + \frac{S^B_{4p}}{\sum_l S^B_{4l}} - \frac{S^{BL}_{2p}}{\sum_l S^{BL}_{2l}} - \frac{S^{BL}_{3p}}{\sum_l S^{BL}_{3l}}\) =\phi_{2p}^y  + \phi_{2p}^{yT}  \\
+  & \phi_{3p}^y = \phi_{3p}^y -  \frac{\alpha_x}{2}\( \frac{S_{1p}}{\sum_l S_{1l}} + \frac{S_{4p}}{\sum_l S_{4l}} - \frac{S^{L}_{2p}}{\sum_l S^{L}_{2l}} - \frac{S^{L}_{3p}}{\sum_l S^{L}_{3l}}\) =\phi_{3p}^y  + \phi_{3p}^{yT} \\
+  & \phi_{4p}^y = \phi_{4p}^y -  \frac{\alpha_x}{2}\( \frac{S_{1p}}{\sum_l S_{1l}} + \frac{S_{4p}}{\sum_l S_{4l}} - \frac{S^{L}_{2p}}{\sum_l S^{L}_{2l}} - \frac{S^{L}_{3p}}{\sum_l S^{L}_{3l}}\) =\phi_{4p}^y  + \phi_{4p}^{yT} \\
+\end{align*}
+
+\subsection*{Expression finale du schéma aux différences finies}
+Avec l'introduction des expressions intermédiaires dans l'équation \eqref{inter}, on a :
+ \begin{equation}
+ \begin{split}
+ Q^{k+1}_I &= \sum_{i=1}^{N_n} S_{iI}  \frac{\sum_p S_{ip} Q_p^k}{\sum_l S_{il}} - \sum_{i=1}^{N_n} S_{iI}  \frac{\sum_{p}Q_p^k}{\sum_l S_{il}} \frac{N}{4} \[ \alpha_y (\phi^y_{ip} + \phi^{yT}_{ip}) + \alpha_x (\phi^x_{ip}+\phi^{xT}_{ip}) \] \\
+ &+ 2 \sum_{i=1}^{N_n} S_{iI} \sum_{j=1}^{N_n} \frac{\alpha_x \sum_q \nabla_{\xi} S_{iq} S_{jq} + \alpha_y \sum_q \nabla_{\eta} S_{iq} S_{jq}}{\sum_l S_{il}} \frac{\sum_p S_{jp} Q_p^k}{\sum_l S_{jl}}  \\ 
+ &
+ \end{split} 
+ \end{equation}
+ en permutant les sommes, on obtient :
+ \begin{equation}
+ \begin{split}
+ Q^{k+1}_I = &\sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n}  \frac{S_{iI}  }{\sum_l S_{il}} S_{ip} - \sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n} \frac{S_{iI}}{\sum_l S_{il}}  \frac{N\[  \alpha_y (\phi^y_{ip} + \phi^{yT}_{ip}) + \alpha_x (\phi^x_{ip}+\phi^{xT}_{ip})  \]}{4}   \\
+ &+ 2 \sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n} \frac{S_{iI}}{\sum_l S_{il}} \sum_{j=1}^{N_n} \(\alpha_x \sum_q \nabla_{\xi} S_{iq} S_{jq} + \alpha_y \sum_r \nabla_{\eta} S_{iq} S_{jq}\) \frac{S_{jp}}{\sum_l S_{jl}} \\
+  = &\sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n}  \frac{S_{iI}  }{\sum_l S_{il}} S_{ip} - \sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n} \frac{S_{iI}}{\sum_l S_{il}}  \frac{N\[  \alpha_y (\phi^y_{ip} + \phi^{yT}_{ip}) + \alpha_x (\phi^x_{ip}+\phi^{xT}_{ip})  \]}{4}   \\
+ &+ 2 \sum_{p=1}^{N_p} Q_p^k \sum_{i=1}^{N_n} \frac{S_{iI}}{\sum_l S_{il}} \sum_{j=1}^{N_n}  \sum_{q=1}^{N_p} S_{jq} \(\alpha_x \nabla_{\xi} S_{iq} + \alpha_y \nabla_{\eta} S_{iq}\)\frac{S_{jp}}{\sum_l S_{jl}}
+ \end{split} 
+ \end{equation}
+ et en factorisant, on obtient l'équation aux différences finies :
+\begin{equation}
+\begin{aligned}
+&\begin{split}
+Q^{k+1}_I = \sum_p Q_p^k  \sum_{i=1}^{N_n} \frac{S_{iI}}{\sum_l S_{il}} &\[ \vphantom{\sum_{i=1}^{N_n^{e(I)}}} S_{ip} - \frac{N\[  \alpha_y (\phi^y_{ip} + \phi^{yT}_{ip}) + \alpha_x (\phi^x_{ip}+\phi^{xT}_{ip})  \]}{4} \right. \\  &  +  2 \left.\sum_{j=1}^{N_n}  \sum_{q=1}^{N_p} S_{jq} \(\alpha_x \nabla_{\xi} S_{iq} + \alpha_y \nabla_{\eta} S_{iq}\)\frac{S_{jp}}{\sum_l S_{jl}}  \right] 
+\end{split} \\
+& Q^{k+1}_I = \sum_p Q_p^k D_{pI}
+\end{aligned}
+\end{equation}
+
+Voici un aperçu de l'allure du résidu dans le cas de un point par cellule sans le solveur transverse. On voit que dans ce cas particulier la condition de stabilité est assurée par $\alpha_x + \alpha_y =1 $, c'est la droite superposée au graphe 3D.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
