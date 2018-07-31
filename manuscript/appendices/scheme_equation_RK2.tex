@@ -85,7 +85,7 @@ introduction of equations \eqref{eq:mapping_RK2} and \eqref{eq:volume_fluxes_map
     -\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 &N_p^{c(I)}\frac{S_{2c(I),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} \\
     -\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2&N_p^{c( I)}\(\frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} - \frac{S_{2c(I),K} }{\sum_{J} S_{2c(I),J}}\)  \[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
     +  \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& S_{2c(I),I}\(\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\)^2\frac{S_{2c(I),K}}{\sum_P S_{2c(I),P}}\\
-    + \frac{a\Delta t}{\Delta X}N_p^{c(I)}&\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} - N_p^{c( I)}\frac{a\Delta t}{2\Delta X} \frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} \) \\
+    + \frac{a\Delta t}{\Delta X}N_p^{c(I)}&\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} - N_p^{c( I)-1}\frac{a\Delta t}{2\Delta X} \frac{S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}} \) \\
     + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2&N_p^{c(I)}\left.\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}\sum_{L}  S_{2c(I)-2,L}}\(S_{2c(I)-2,K} +S_{2c(I)-3,K} \) \right\rbrace
   \end{split}
 \end{equation}
@@ -113,8 +113,32 @@ introduction of equations \eqref{eq:mapping_RK2} and \eqref{eq:volume_fluxes_map
   \begin{split}
     \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
     + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
-     + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_{L}  S_{2c(I)-1,L}}\[1-\frac{a\Delta t}{2\Delta X}\(\frac{N_p^{c(I)-1}}{\sum_{L}  S_{2c(I)-2,L}}+1\)\] + \frac{a\Delta t}{2\Delta X}\frac{S_{2c(I),I}}{\sum_{L}  S_{2c(I),L}}\) \\  + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\left. \right\rbrace
+    + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\( \frac{a\Delta t}{\Delta X}N_p^{c(I)}\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(I)-1}}{\sum_J S_{2c(I)-2,J}}\] - \frac{N_p^{c(I)}}{2}\(\frac{a\Delta t}{\Delta X}\)^2\[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]     \) \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2&\frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(K)-1,K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \right\rbrace
+    % \\\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_{L}  S_{2c(I)-1,L}}\[1-\frac{a\Delta t}{2\Delta X}\(\frac{N_p^{c(I)-1}}{\sum_{L}  S_{2c(I)-2,L}}+1\)\] + \frac{a\Delta t}{2\Delta X}\frac{S_{2c(I),I}}{\sum_{L}  S_{2c(I),L}}\)
+     %+ \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_{L}  S_{2c(I)-1,L}}\[1-\frac{a\Delta t}{2\Delta X}\(\frac{N_p^{c(I)-1}}{\sum_{L}  S_{2c(I)-2,L}}+1\)\] + \frac{a\Delta t}{2\Delta X}\frac{S_{2c(I),I}}{\sum_{L}  S_{2c(I),L}}\) \\  + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\left. \right\rbrace
    \end{split}
+\end{equation}
+
+Test
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
+    + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
+    + \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}&\( \frac{a\Delta t}{\Delta X}N_p^{c(I)}\frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(K)}}{\sum_J S_{2c(K),J}}\] - \frac{N_p^{c(I)}}{2}\(\frac{a\Delta t}{\Delta X}\)^2\[\cancel{\frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}} - \frac{S_{2c(K)+2,I}}{\sum_{J}  S_{2c(K)+2,J}}\]     \) \\
+    + \frac{ N_p^{c(I)}}{2}&\( \frac{a\Delta t}{\Delta X}\)^2\cancel{ \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}}} \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(K)-1,K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \right\rbrace
+  \end{split}
+\end{equation}
+Then
+\begin{equation}
+  \begin{split}
+    \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
+    + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
+    + \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(K)}}{\sum_J S_{2c(K),J}}\] + \frac{a\Delta t}{2\Delta X} \frac{S_{2c(K)+2,I}}{\sum_{J}  S_{2c(K)+2,J}}     \) \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(K)-1,K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \right\rbrace
+  \end{split}
 \end{equation}
 
 %%%Local Variables: 
