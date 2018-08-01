@@ -126,9 +126,9 @@ Test
   \begin{split}
     \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
     + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
-    + \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}&\( \frac{a\Delta t}{\Delta X}N_p^{c(I)}\frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(K)}}{\sum_J S_{2c(K),J}}\] - \frac{N_p^{c(I)}}{2}\(\frac{a\Delta t}{\Delta X}\)^2\[\cancel{\frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}} - \frac{S_{2c(K)+2,I}}{\sum_{J}  S_{2c(K)+2,J}}\]     \) \\
-    + \frac{ N_p^{c(I)}}{2}&\( \frac{a\Delta t}{\Delta X}\)^2\cancel{ \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}}} \\
-    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(K)-1,K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \right\rbrace
+    + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\( \frac{a\Delta t}{\Delta X}N_p^{c(I)}\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(I)-1}}{\sum_J S_{2c(I)-2,J}}\] - \frac{N_p^{c(I)}}{2}\(\frac{a\Delta t}{\Delta X}\)^2\[\cancel{\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]     \) \\
+    + \frac{ N_p^{c(I)}}{2}&\( \frac{a\Delta t}{\Delta X}\)^2\cancel{ \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}} \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(I)-3,K}}{\sum_{J}  S_{2c(I)-1,J}} N_p^{c(I)}\frac{ S_{2c(I)-2,I}}{\sum_{J}  S_{2c(I)-1,J}} \right\rbrace
   \end{split}
 \end{equation}
 Then
@@ -136,8 +136,8 @@ Then
   \begin{split}
     \bar{Q}^{n+1}_I =  \sum_{K} Q_K^n  & \left\lbrace \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(S_{2c(I)-1,K}-\frac{a\Delta t}{\Delta X} + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(I)}\frac{S_{2c(I),K} }{\sum_{J}  S_{2c(I),J}}\) \right. \\
     + \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}&\(S_{2c(I),K} + \frac{a\Delta t}{\Delta X}\[1-N_p^{c(I)}\frac{S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\] - \frac{N_p^{c(I)}\(\frac{a\Delta t}{\Delta X}\)^2}{2\sum_{J}  S_{2c(I),J}}\[1+S_{2c(I),K}-\frac{N_p^{c(I)}S_{2c(I),K}}{\sum_{J}  S_{2c(I),J}}\]\)\\
-    + \frac{S_{2c(K),K}}{\sum_{J}  S_{2c(K),J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(K)+1,I}}{\sum_J S_{2c(K)+1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(K)}}{\sum_J S_{2c(K),J}}\] + \frac{a\Delta t}{2\Delta X} \frac{S_{2c(K)+2,I}}{\sum_{J}  S_{2c(K)+2,J}}     \) \\
-    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(K)-1,K}}{\sum_{J}  S_{2c(K),J}} N_p^{c(I)}\frac{ S_{2c(K)+1,I}}{\sum_{J}  S_{2c(K)+1,J}} \right\rbrace
+    + \frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}&\frac{a\Delta t}{\Delta X}N_p^{c(I)}\( \frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}}\[1-\frac{a\Delta t}{2\Delta X}\frac{N_p^{c(I)-1}}{\sum_J S_{2c(I)-2,J}}\] + \frac{a\Delta t}{2\Delta X} \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}     \) \\
+    + \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2& \left. \frac{S_{2c(I)-3,K}}{\sum_{J}  S_{2c(I)-2,J}} N_p^{c(I)}\frac{ S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}} \right\rbrace
   \end{split}
 \end{equation}
 
