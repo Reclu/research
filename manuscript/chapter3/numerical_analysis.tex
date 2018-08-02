@@ -160,8 +160,8 @@ the use of convective phase equations \eqref{eq:stab_mapping} and \eqref{eq:volu
     \bar{Q}^{n+1}_I =  &\sum_{K} Q_K^n  \left\lbrace \frac{S_{2c(I)-1,K}}{\sum_J S_{2c(I)-1,J}}\(S_{2c(I)-1,I} -\frac{a\Delta t}{\Delta X}\[S_{2c(I)-1,I} - S_{2c(I),I}\frac{\sum_{L} S_{2c(I)-1,L}}{\sum_{J}  S_{2c(I),J}}\]\)  \right. \\
     &+\frac{S_{2c(I),K}}{\sum_J S_{2c(I),J}}\(S_{2c(I),I} + \frac{a\Delta t}{\Delta X}\[S_{2c(I),I}\(1-\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\) - S_{2c(I)-1,I}\frac{\sum_{L} S_{2c(I),L}}{\sum_{J}  S_{2c(I)-1,J}}\]\)  \\
     &+\frac{S_{2c(I),K}}{\sum_J S_{2c(I),J}}\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\(N_p^{c( I)}\[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\] +S_{2c(I),I} \(\frac{N_p^{c(I)}}{\sum_{J}  S_{2c(I),J}}\)^2\)  \\
-    &+\frac{N_p^{c( I)} S_{2c(I)-2,K}}{\sum_P S_{2c(I)-2,P}}\frac{a\Delta t}{\Delta X} \[ \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(1 -   \frac{a\Delta t}{2\Delta X}\(1+\frac{N_p^{c( I)-1} }{\sum_{J}  S_{2c(I)-2,J}} \)\)+\frac{a\Delta t}{2\Delta X} \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
-    &-\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(I)}\left.\(\frac{\[S_{2c(I)-1,K} +S_{2c(I),K} \]}{\(\sum_{J}  S_{2c(I),J}\)^2} S_{2c(I),I}- \frac{\[S_{2c(I)-2,K} +S_{2c(I)-3,K} \]}{\sum_{J}  S_{2c(I)-1,J}\sum_{J}  S_{2c(I)-2,J}} S_{2c(I)-1,I}\) \right\rbrace
+    &+\frac{N_p^{c( I)} S_{2c(I)-2,K}}{\sum_J S_{2c(I)-2,J}}\frac{a\Delta t}{\Delta X} \[ \frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\(1 -   \frac{a\Delta t}{2\Delta X}\(1+\frac{N_p^{c( I)-1} }{\sum_{J}  S_{2c(I)-2,J}} \)\)+\frac{a\Delta t}{2\Delta X} \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
+    &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(I)}\left.\( \frac{\[S_{2c(I)-2,K} +S_{2c(I)-3,K} \]}{\sum_{J}  S_{2c(I)-1,J}\sum_{J}  S_{2c(I)-2,J}} S_{2c(I)-1,I}-\frac{\[S_{2c(I)-1,K} +S_{2c(I),K} \]}{\(\sum_{J}  S_{2c(I),J}\)^2} S_{2c(I),I}\)  \right\rbrace
   \end{split}
 \end{equation}
 % \begin{equation}
@@ -182,8 +182,9 @@ Once the previous formula is simplified, the one-dimensional scheme equation of 
       +\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(K),I}}{\sum_{J}  S_{2c(K),J}} - \frac{S_{2c(K)-1,I}}{\sum_{J}  S_{2c(K)-1,J}}\] \right.\\
     &+\frac{a\Delta t}{\Delta X}N_p^{c( I)}\[\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\frac{S_{2c(I)-2,K}}{\sum_J S_{2c(I)-2,J}}-\frac{S_{2c(I),I}S_{2c(I),K}}{\(\sum_J S_{2c(I),J}\)^2}\] \\
     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( I)} \(\frac{S_{2c(I),K}}{\sum_J S_{2c(I),J}}-\frac{S_{2c(I)-2,K}}{\sum_J S_{2c(I)-2,J}}\)\[\frac{S_{2c(I)-1,I}}{\sum_J S_{2c(I)-1,J}} - \frac{S_{2c(I),I}}{\sum_{J}  S_{2c(I),J}}\]\\
-    &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( I)}\frac{S_{2c(I),K}}{\(\sum_{J}  S_{2c(I),J}\)^2} \[N_p^{c( I)}\frac{S_{2c(I),I} }{\sum_J S_{2c(I),J}}-1\]\\
-    &- \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(K)+1,I}N_p^{c(I)}}{\sum_{J}  S_{2c(I)-1,J}\sum_{J}  S_{2c(I)-2,J}} \left.\[ 1 - N_p^{c( I)-1}\frac{S_{2c(I)-2,K} }{\sum_{J}  S_{2c(I)-2,J}}\] \right\rbrace
+    %&+\frac{1}{2}\(N_p^{c( I)}\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(I),K}}{\(\sum_{J}  S_{2c(I),J}\)^2}\frac{S_{2c(I),I} }{\sum_J S_{2c(I),J}} - \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( I)}\frac{S_{2c(K),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} \\
+    &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( I)}\frac{S_{2c(K),I}}{\(\sum_{J}  S_{2c(I),J}\)^2} \[N_p^{c( I)}\frac{S_{2c(I),K} }{\sum_J S_{2c(I),J}}-1\]\\
+    &+ \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(K)+1,I}N_p^{c(I)}}{\sum_{J}  S_{2c(I)-1,J}\sum_{J}  S_{2c(I)-2,J}} \left.\[ 1 - N_p^{c( I)-1}\frac{S_{2c(I)-2,K} }{\sum_{J}  S_{2c(I)-2,J}}\] \right\rbrace
     \end{split}
 \end{equation}
 The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two stage time integration.
