@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+  \draw[step=2.9,black,thin] (-3.,-1.) grid (3,3.);
+  \draw[ultra thick,Red] (0,3.) -- (0,0) -- (3.,0);
+  % \draw[very thick,white] (0,0)--(0,-1.);
+  % \draw[very thick,white] (0,0)--(-3.,-0.);
+  \draw[very thick,dashed] (0,0)--(0,-1.);
+  \draw[very thick,dashed] (0,0)--(-3.,-0.);
+  \fill[white] (-0.2,-0.2) circle (0.1) node [below left] {$G_c$};
+  \fill[white] (0.2,-0.2) circle (0.1) node [below right] {$G_B$};
+  \fill[white] (-0.2,0.2) circle (0.1) node [above left] {$G_L$};
+  \fill[white] (0.2,0.2) circle (0.1) node [above right] {$N$};    
+  \draw[black] (-0.2,-0.2) circle (0.1) node [below left] {$G_c$};
+  \draw[black] (0.2,-0.2) circle (0.1) node [below right] {$G_B$};
+  \draw[black] (-0.2,0.2) circle (0.1) node [above left] {$G_L$};
+  \draw[black] (0.2,0.2) circle (0.1) node [above right] {$N$};    
+  \cross{0.3}{1.5};\cross{1.}{0.75};\cross{2.}{0.5};\cross{1.}{2.};
+  \cross{2.5}{1.75};
+  \draw (4.0,0.5) rectangle (7.5,1.5);
+  \fill[white] (4.3,0.8) circle (0.1) node [right] {\: \text{Mesh nodes}};
+  \draw[black] (4.3,0.8) circle (0.1);
+  \cross{4.3}{1.2};
+  \node[right] at (4.3,1.2) {\: \text{Material points}};
+\end{tikzpicture}

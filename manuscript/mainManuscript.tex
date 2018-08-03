@@ -9,6 +9,7 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{cancel}
+\usepackage{array}
 \usetikzlibrary{patterns} 
 \usetikzlibrary{shapes}
 \usetikzlibrary{snakes}
@@ -46,6 +47,9 @@
 \fancyfoot[CE,CO]{\small \thepage}
 \newcommand{\thomas}[1]{\color{Red}#1\color{black}}
 \newcommand{\laurent}[1]{\color{Green}#1\color{black}}
+
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
 
 \renewcommand{\headrulewidth}{1pt}
 
@@ -110,15 +114,15 @@
 %\input{chapter6/mainChapter6}
 
 %% Appendix numerical analysis RK2
-\appendix{
-  \chapter{DGMPM scheme equation with RK2 time discretization}
-  \label{sec:RK2_scheme}
-  \input{appendices/scheme_equation_RK2}
+% \appendix{
+%   \chapter{DGMPM scheme equation with RK2 time discretization}
+%   \label{sec:RK2_scheme}
+%   \input{appendices/scheme_equation_RK2}
 
-  \chapter{DGMPM two-dimensional scheme equation with Euler time discretization}
-  \label{sec:2D_scheme}
-  \input{appendices/scheme_equation_2D}
-}
+%   \chapter{DGMPM two-dimensional scheme equation with Euler time discretization}
+%   \label{sec:2D_scheme}
+%   \input{appendices/scheme_equation_2D}
+% }
 
 %\bibliographystyle{apalike}
 \bibliographystyle{ieeetr}

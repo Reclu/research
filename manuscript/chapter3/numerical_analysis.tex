@@ -4,9 +4,13 @@ Following \cite{Hirsch}, the DGMPM discretization of linear advection problems a
 \subsubsection*{Model equation - Space discretization}
 We consider the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at the constant speed $a \in \Rbb^{+*}$ in a homogeneous one-dimensional medium of length $l$:
 \begin{equation}
+\drond{\bar{q}}{t} + \drond{\bar{f}}{X} = 0 
+\end{equation}
+The specific flux function being $\bar{f} = a\bar{q}$, the quasi-linear form reads:
+\begin{equation}
 \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} = 0 \label{eq:scalar_advection}
 \end{equation}
-The specific flux function is $\bar{\Fc} = a\bar{q}$ and equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, it is assumed that the medium has been divided with $N_p$ material points arbitrarily distributed in $E$ two-nodes elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid mesh is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
+Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, it is assumed that the medium has been divided with $N_p$ material points arbitrarily distributed in $E$ two-nodes elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid mesh is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
 \begin{figure}[h!]
   \centering
 \input{chapter3/pgfFigures/1D_domain}
@@ -98,7 +102,8 @@ Note that the last term of formula \eqref{eq:scheme_euler1} is non-zero if parti
 The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $K$ and $I$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for scalar linear advection with covers two cells regardless of the number of material points. Moreover, the particular case of one material point lying in every cell leads to the simplified form: 
 \begin{equation}
   \begin{split}
-    \bar{Q}^{n+1}_I = \bar{Q}^{n}_I\(1-\frac{a\Delta t}{\Delta X}\) +\frac{a\Delta t}{\Delta X} \bar{Q}^{n}_{I-1} %\sum_{K=1}^{N_p} \bar{Q}^{n}_K  &\left\lbrace 1  + N_p^{c(I)}\frac{a\Delta t}{\Delta X} \[\frac{S_{2c(I)-1,I}}{\sum_{J}  S_{2c(I)-1,J}}\frac{S_{2c(I)-2,K}}{\sum_{J}  S_{2c(I)-2,J}}-\frac{S_{2c(I),I}S_{2c(I),K}}{\(\sum_{J}  S_{2c(I),J}\)^2}\]\right\rbrace
+    \label{eq:Godunov}
+    \bar{Q}^{n+1}_I = \bar{Q}^{n}_I\(1-\frac{a\Delta t}{\Delta X}\) +\frac{a\Delta t}{\Delta X} \bar{Q}^{n}_{I-1} 
   \end{split}
 \end{equation}
 which corresponds to the Godunov scheme. This result is due to the convective phase from particles to nodes \eqref{eq:DGMPM_points2nodes} which in the case of a one particle-per-cell discretization leads to a piecewise constant reconstruction of fields on the grid. However, the previous identification no longer holds for other distributions of material points within the computational grid. 
@@ -187,14 +192,14 @@ Once the previous formula is simplified, the one-dimensional scheme equation of 
     &+ \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(K)+1,I}N_p^{c(I)}}{\sum_{J}  S_{2c(I)-1,J}\sum_{J}  S_{2c(I)-2,J}} \left.\[ 1 - N_p^{c( I)-1}\frac{S_{2c(I)-2,K} }{\sum_{J}  S_{2c(I)-2,J}}\] \right\rbrace
     \end{split}
 \end{equation}
-The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two stage time integration.
+The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two-stages time integration.
 
 \subsubsection*{The von Neumann linear stability analysis}
 The scheme equations obtained above are written for simplicity:
 \begin{equation}
 \bar{Q}^{n+1}_I = \sum_{K=1}^{N_p} \bar{Q}^n_{K} D_{IK} \label{eq:scheme_Dpi}
 \end{equation}
-The computational domain is now repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $J$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
+Moreover, the computational domain is repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $J$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
 \begin{equation}
 \bar{Q}^{n}_J = \sum_{j=-E}^{E}A_j^n e^{I J k_j \Delta X}
 \end{equation}
@@ -204,32 +209,150 @@ A_j^{n+1} e^{I I k_j \Delta X} = \sum_{K=1}^{N_p} A_j^n D_{IK}e^{I K k_j \Delta 
 \end{equation}
 The amplification factor between two time steps at a given point is defined as:
 \begin{equation}
-\frac{A_j^{n+1}}{A_j^n} = \sum_{K=1}^{N_p} e^{I (K -I)k_j \Delta X} D_{IK} \quad \forall j=-E,...,E \label{eq:fourier}
+\frac{A_j^{n+1}}{A_j^n} = \sum_{K=1}^{N_p} e^{I (K -I)k_j \Delta X} D_{IK} \quad \forall j=-E,...,E \label{eq:fourier_expansion}
 \end{equation}
-A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than one in modulus: $\abs{A^{n+1}/A^n} < 1$. This upper bound allows to ensure that eventual errors do not increase during the computation. For expression \eqref{eq:fourier}, this leads to:
+A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than one in modulus: $\abs{A^{n+1}/A^n} < 1$. This upper bound allows to ensure that eventual errors do not increase during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
 \begin{equation}
  \abs{\sum_{K=1}^{N_p} e^{I (K -I)k_j \Delta X} D_{IK}} \leq \sum_{K=1}^{N_p} \abs{e^{I (K -I)k_j \Delta X} D_{IK}} = \sum_{K=1}^{N_p} \abs{D_{IK}}
 \end{equation}
 where the triangle inequality, and the unit modulus of the complex number $e^{I (K -I)k_j \Delta X}$ have been used.
-Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied:
+Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied for all material points:
 \begin{equation}
-\sum_{K=1}^{N_p} \abs{D_{IK}} \leq 1 \label{eq:stability}
+  \label{eq:stability} \sum_{K=1}^{N_p} \abs{D_{IK}} \leq 1 \quad \forall \: I = 1,...,N_p
 \end{equation}
-According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to deal with analytically for general discretizations. However, the particular configuration that corresponds to Godunov's scheme mentioned at the end of section \ref{subsec:scheme_Euler} leads to the respect of the stability condition \eqref{eq:stability} for all $a\frac{\Delta t}{\Delta X} \leq 1$ regardless of the positions of particles.
+Hence, the stability of the scheme is ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to deal with analytically for general discretizations. However, the particular configuration for which one single particle (equation \eqref{eq:Godunov}) lies in each cell can be studied analytically. In this case, condition \eqref{eq:stability} reads:
+\begin{equation}
+\sum_{K=1}^{N_p} \abs{D_{IK}} = \abs{1 - a\frac{\Delta t}{\Delta X} } +  \abs{ a\frac{\Delta t}{\Delta X} } \leq 1 \label{1ppc_stab}
+\end{equation}
+which is satisfied for all $a\frac{\Delta t}{\Delta X} \leq 1$ regardless of the positions of particles. As it as been seen in section \ref{subsec:scheme_Euler}, the combination of DGMPM and first order Euler discretizations yields Godunov's scheme that is characterized by this stability condition. 
+\begin{table}[h]
+  \centering
+  \input{chapter3/tabular/CFL_comparison_figures}
+  \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
+  \label{tab:CFL_comparison}
+\end{table}
+Although the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in equation \eqref{eq:stability} can be find numerically. Some configurations are studied in table \ref{tab:CFL_comparison} and the critical Courant number resulting from the two time discretizations studied above are compared for each. Those results have been obtained by assuming that the particle distribution is the same in every element of a one-dimensional regular mesh so that a material point $I$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. First, the DGMPM scheme is stable for all CFL number lower to or equal one when cells contain one particle only regardless of their Positions. Then, when many material points share the same element, several configurations are considered:
+\begin{itemize}
+\item[(i)] particles are positioned symmetrically with respect to cells centers and regularly spaced in the mesh. This space discretization is referred to as the natural configuration in the following.
+\item[(ii)] particles initially symmetrically positioned are shifted of $\delta=\Delta X/10$ with respect to cells centers and regularly spaced in the mesh.
+\item[(iii)] the same than (ii) with $\delta$ so that the first material point overlaps the left node.
+\item[(iv)] the same than (ii) with $\delta$ so that the last material point overlaps the right node.
+\item[(v)] particles are placed symmetrically with respect to cells centers but not regularly spaced in the mesh.
+\item[(vi)] the same than (v) with the first and last particles overlapping left and right nodes of cells respectively.
+\end{itemize}
+RK2 results bad when the upwind material point move to the right
+One can see in table \ref{tab:CFL_comparison} that the RK2 time discretization provides better results in terms of CFL number for the distributions of particles considered. However, a uniform translation of material points in the mesh leads to a decrease in the Courant number for both time integrations. Furthermore the impact of such a translation is more significant in the stream direction (\textit{i.e. cases (ii) and (iv)}) in such a way that the decline in CFL number is bigger than for an inverse stream direction (\textit{i.e. cases (iii)}). In the latter situation, the Euler algorithm provides even better results than in the natural configuration. One the other hand, particles distributions that conserve the symmetry with respect to cells centers lead to the optimal stability condition when using the RK2 time integration while the Euler CFL depends on the spacing between material points. More specifically, Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation. Therefore, the distribution of material points, and hence the resulting quadrature, has an influence on the stability of the scheme. As a consequence, the optimal Courant number can be reached even with the Euler discretization, while the classical DGFEM scheme developed in \cite{Chavent_Salzano} is restricted to condition $\Delta t / \Delta X = \Oc(\sqrt{\Delta X})$. This limitation has been addressed by introducing slope limiters in order to remove non-physical oscillations in the vicinity of sharp solutions while providing high-order accuracy in smooth regions \cite{Chavent_Cockburn}. However, the stability of the method was still bounded by $CFL\leq 1/2$ and the scheme was first-order accurate. The use of a second-order Runge kutta \cite{DGFEM_CFL} allowed to achieve second-order accuracy of the scheme, but the stability condition then reduced to $CFL\leq1/3$. More recently, space–time DGFEM formulations \cite{ST_DGFEM1,ST_DGFEM2} provided the ability to relax constraints of pure space DGFEM and obtain a critical CFL at 1.
 
-Hence, this space discretization leads to a stable scheme for the optimal Courant condition while the classical DGFEM scheme developed in \cite{Chavent_Salzano} is restricted to condition $\Delta t / \Delta X = \Oc(\sqrt{\Delta X})$. Recall that this DGMPM space discretization can be viewed as a DGFEM with reduced integration of the weak form (see section \ref{section:discretization}). Hence, combination of reduced integration with projections between mesh nodes and integration points allows to improve the restrictive stability condition of original DGFEM \cite{Chavent_Salzano,NeutronDG}. However, this optimal condition is no longer valid for discretizations involving more than one material point per cell. Indeed, figure \ref{figure:Amplification_factor} shows the evolution of the amplification factor with respect to the Courant number for several (regular) discretizations. Since the scheme equation \eqref{Dalpha_mu} depends on the particle considered, those curves are plotted for each material point contained in a given cell. In figures \ref{figure:Amplification_factor}\subref{subfig:CFL_2ppc} and \ref{figure:Amplification_factor}\subref{subfig:CFL_3ppc} we can see that the amplification factor satisfies the stability condition \eqref{stability} for CFL numbers lower than one.
+%%%
+The von Neumann linear stability analysis performed in this section provides an explicit (nonlinear) condition \eqref{eq:stability} that must be satisfied in order to ensure the stability of the DGMPM schemes based on both Euler and RK2 time discretizations. First, this relation allows to fully exploit the ability of the method to rebuild the grid mesh arbitrarily. Indeed, after such a procedure, the number and positions of material points in grid cells can change and one must be able to adapt properly the CFL number so that the scheme remains stable. An advantage on the original MPM is hence highlighted since no stability condition exists for the method. Second, it has been shown that some DGMPM discretizations provide an improvement of the restrictive CFL number that applies to the DGFEM scheme. In particular, the optimal condition allowing to capture discontinuities ($CFL=1$) can be reached for several space-time discretizations. This property turns out to be a strength for the DGMPM since it aims at follow waves accurately.
 
-%%% Table of CFL that can be reached depending on the discretization
-Two material points in each cell are considered in figure \ref{figure:Amplification_factor}\subref{subfig:CFL_2ppc}, with either a symmetrical or an offset configuration, respectively shown in figures \ref{figure:Amplification_factor}\subref{subfig:conf1} and \ref{figure:Amplification_factor}\subref{subfig:conf2}. It also appears that the more restrictive condition on CFL number is given by the upwind (first) material point ($CFL=0.43$ for symmetrical configuration and $CFL=0.34$ for shifted one). Moreover, the material points positions influence the stability condition as shown by the shifted configuration for which the result is more restrictive. Similar observations can be made with figure \ref{figure:Amplification_factor}\subref{subfig:CFL_3ppc} in which three particles are considered. In that case, Courant number decreases to $CFL=0.29$ for configuration \ref{figure:Amplification_factor}\subref{subfig:conf3} and $CFL=0.26$ for configuration \ref{figure:Amplification_factor}\subref{subfig:conf4}. 
-
-The von Neumann linear stability analysis performed in this section provides an explicit (nonlinear) condition \eqref{stability} that must be satisfied in order to ensure the stability of the DGMPM scheme. First, this relation allows to fully exploit the ability of the method to rebuild the grid mesh arbitrarily. Indeed, after such a procedure, the number and positions of material points in grid cells can change and one must be able to adapt properly the CFL number in order to ensure stability. An advantage on the original MPM is hence highlighted since no stability condition exists for the latter scheme. Second, it has been shown that some DGMPM discretizations provide an improvement of the restrictive CFL number that applies to the DGFEM scheme. In particular, the optimal condition allowing to capture discontinuities ($CFL=1$) can be reached when one particle lies in each cell of the grid mesh. This property turns out to be a strength for the DGMPM since it aims at follow waves accurately as shown with the following numerical results.
-
-\subsubsection*{2D Euler CTU}
-
-
+One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional contrained with the description of material boundaries.
 
 \subsection{Two-dimensional stability analysis}
+Euler + CTU
+\subsubsection*{Model equation - Space discretization}
 
+We consider the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at constant speeds $a,b \in \Rbb^{+*}$ in $X$ and $Y$ directions respectively in a homogeneous one-dimensional medium:
+\begin{equation}
+  \label{eq:2D_model_equation}
+  \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
+\end{equation}
+Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta Y$ as depicted in figure \ref{fig:2Dmesh}. Again, there is no empty cell inside the physical so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis. Thus, equation \eqref{eq:2D_model_equation} is discretized with the discontinuous Galerkin material point method using Euler time integration.
+\begin{figure}[h!]
+  \centering
+  \input{chapter3/pgfFigures/2D_domain}
+  \caption{Two-dimensional mesh made of $E$ elements of constant size $\Delta X \times \Delta Y$.}\label{fig:2Dmesh}
+\end{figure}
+
+\subsubsection*{Two-dimensional scheme equation}
+\begin{equation}
+  \bar{q}_i^{n+1} = \bar{q}_i^n + \frac{\Delta t}{M^L_i} \(K_{ij}^X a\bar{q}_j^n + K_{ij}^Y b\bar{q}_j^n - \hat{f}_i^{*}\) \label{eq:discrete2D}
+\end{equation}
+The interface flux at a given node $\hat{f}_i^{*}$ results from integration of Godunov's flux along the edge it belongs to, according to the weak form \eqref{eq:DGMPM_semi_discrete}. Considering egde $(i)$, equation \eqref{eq:2D_model_equation} yields the following Godunov's fluxes:
+\begin{equation}
+  \label{eq:2d_Godunov_fluxes}
+  f^{*,(i)}= c_n q^{(i)}_L = \underbrace{c_nq^{(i)}_R}_{f_N(q^{(i)}_R)} - \underbrace{c_n (q^{(i)}_R -q^{(i)}_L)}_{A^{+}_{L/R}} 
+\end{equation}
+where $c_n$ is the speed in the direction normal to the edge (\textit{i.e. b for horizontal and a for vertical edges}), $q^{(i)}_L$ and $q^{(i)}_R$ denote state vectors obtained by averaging nodal values on upwind and downwind sides respectively, and $A_{L/R}^+$ is the right-going fluctuation at the edge shared by Left and Right cells. Transverse corrections are considered through fluctuations $B^+A^+_{i/j}$ according to equation \eqref{eq:transverse_fluctuations}:
+\begin{equation}
+  \label{eq:2D_transverse_corrections}
+  B^+A^+_{i/j}=c_t c_n (q^{(i)}_R -q^{(i)}_L)
+\end{equation}
+with $c_t$ the speed in the direction tangent to the edge.
+Consider the edge $(1)$ of cell $C$:
+\begin{equation}
+  f^{*,(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} + a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\)
+\end{equation}
+where the first term corresponds to the flux of the upwind state and the second one in the transverse contribution of the right-going fluctuation at the edge between by Bottom ($B$) and Bottom-Left ($BL$) cells. Similarly, the other interface fluxes of that cell are:
+\begin{align}
+  & f^{*,(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
+  & f^{*,(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
+  & f^{*,(4)} = a \frac{q_3^{C,n} + q_4^{C,n}}{2} + a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
+\end{align}
+Introduction of the convective phase where $Q_I=\rho \bar{Q}_I= \frac{m_I N_p}{\Delta X \Delta Y}\bar{Q}_I$ with no sum on $I$:
+\begin{align}
+  & f^{*,(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_p m_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{3J}^{B} }{\sum_P S_{3P}^{B}} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B}}\) + a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1J}^{B}}{\sum_P S_{1P}^B} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B} }-\frac{S_{2J}^{BL}}{\sum_P S_{2P}^{BL}} + \frac{S_{3J}^{BL}}{\sum_PS_{3P}^{BL}}\) \right\rbrace\\
+  & f^{*,(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^n\frac{a N_pm_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}} + \frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}}-\frac{S_{3J}^{B}}{\sum_P S_{3P}^{B}} +\frac{S_{4J}^{B}}{\sum_P S_{4P}^{B}}\) \right\rbrace\\
+  & f^{*,(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_pm_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}} + \frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
+  & f^{*,(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a N_pm_J }{2\Delta X \Delta Y}  \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) + b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} + \frac{S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
+\end{align}
+which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p}{2\Delta X \Delta Y}\( \phi^{(i)} +\phi^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
+
+Thus, considering the cartesian grid shown in figure \ref{fig:2Dmesh}, the interface flux contribution at node $i$ is:
+\begin{equation}
+  \label{eq:nodal_fluxes}
+  \hat{f}_i^{*} = \sum_j \int_{(j)}S_i(X,Y) f^{*,(j)}  N_j dY =
+  \left\lbrace
+  \begin{aligned}
+    & N_j \frac{\Delta Y}{2} f^{*,(j)} \quad \text{if (j) is vertical}\\
+    & N_j \frac{\Delta X}{2} f^{*,(j)} \quad \text{if (j) is horizontal}
+  \end{aligned}
+  \right.
+\end{equation}
+where $N_j$ is the outward normal vector to the edge $(j)$. Hence, the nodal interface fluxes in cell $C$ are:
+\begin{subequations}
+  \begin{alignat}{3}
+    &\hat{f}_1^{*}=-&\frac{\Delta X}{2}f^{*,(1)} -\frac{\Delta Y}{2}f^{*,(4)}=-&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} \( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace \\
+    &\hat{f}_2^{*}=-&\frac{\Delta X}{2}f^{*,(1)} +\frac{\Delta Y}{2}f^{*,(2)}= -&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(1)} + \phi^{(1),T} \) - a\frac{\Delta t}{\Delta X} \( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
+    &\hat{f}_3^{*}= &\frac{\Delta X}{2}f^{*,(3)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} \( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
+    &\hat{f}_4^{*}= &\frac{\Delta X}{2}f^{*,(3)} -\frac{\Delta Y}{2}f^{*,(4)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(3)} + \phi^{(3),T} \) - a\frac{\Delta t}{\Delta X} \( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
+  \end{alignat}
+\end{subequations}
+Or, by using the normal vector to edge:
+\begin{subequations}
+  \begin{alignat}{3}
+    &\hat{f}_1^{*}=-&\frac{\Delta X}{2}f^{*,(1)} -\frac{\Delta Y}{2}f^{*,(4)}=&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^1_Y\( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace \\
+    &\hat{f}_2^{*}=-&\frac{\Delta X}{2}f^{*,(1)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^1_Y\( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} N^2_X\( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
+    &\hat{f}_3^{*}= &\frac{\Delta X}{2}f^{*,(3)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^2_X\( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
+    &\hat{f}_4^{*}= &\frac{\Delta X}{2}f^{*,(3)} -\frac{\Delta Y}{2}f^{*,(4)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
+  \end{alignat}
+\end{subequations}
+Making use of parent coordinates $(\xi,\eta)$, defined in cell $C$ as:
+\begin{align}
+  &\xi = 2\frac{X-X^C_1}{\Delta X} -1 \quad ; \quad d\xi = 2\frac{dX}{\Delta X} \label{ref_elemx}\\
+  &\eta = 2\frac{Y-Y^C_1}{\Delta X} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta Y} \label{ref_elemy}
+\end{align}
+and the chain rule, the pseudo-stiffness matrices read:
+\begin{align}
+  & K_{ij}^X = \sum_J \drond{S_{iJ}}{X}m_JS_{jJ}=\frac{2}{\Delta X}\sum_J\drond{S_{iJ}}{\xi}m_JS_{jJ} =\frac{2}{\Delta X}\sum_J\nabla_\xi S_{iJ} m_J S_{jJ}\\
+  &K_{ij}^Y = \sum_J\drond{S_{iJ}}{Y}m_JS_{jJ}=\frac{2}{\Delta Y}\sum_J\drond{S_{iJ}}{\eta}m_JS_{jJ} =\frac{2}{\Delta Y}\sum_J\nabla_\eta S_{iJ}m_J S_{jJ}
+\end{align}
+Then, the discrete equation \eqref{eq:discrete2D} can be rewritten by introducing:
+\begin{align}
+  & \frac{K_{ij}^X}{M_i^L}  =  \frac{2}{\Delta X} \frac{\sum_J\nabla_\xi S_{iJ}  S_{jJ}}{\sum_P  S_{iP}}=\frac{2}{\Delta X} k^X_{ij} \\
+  & \frac{K_{ij}^Y}{M_i^L} = \frac{2}{\Delta X} \frac{\sum_J\nabla_\eta S_{iJ} S_{jJ}}{\sum_P S_{iP}} = \frac{2}{\Delta Y}  k^Y_{ij}
+\end{align}
+The solution at material points contained in cell $C$ at time step $n+1$ result from the interpolation of updated nodal quantities:
+\begin{equation}
+  \label{eq:2Dupdated_MP}
+  \bar{Q}_I^{n+1}= S_{iI}\bar{q}_i^n + \Delta t S_{iI} \(  2\frac{a\Delta}{\Delta X} k^X_{ij}\bar{q}_j^n +  2\frac{b\Delta t}{\Delta Y} k^Y_{ij}\bar{q}_j^n - \frac{\hat{f}_i^{*}}{M_i^L}\)
+\end{equation}
+where:
+\begin{equation}
+  \frac{\hat{f}_i^{*}}{M_i^L}=\sum_J \frac{\bar{Q}_J^n}{\sum_P S_{iP}}  \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
+\end{equation}
+
+\subsubsection*{The von Neumann linear stability analysis}
 
 \subsection{Non-linear stability analysis}
 Convergence to entropy solution ; Non-linear stability ; entropy inequality

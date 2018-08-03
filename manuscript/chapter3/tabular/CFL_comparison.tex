@@ -1,0 +1,28 @@
+\begin{tabular}[ht]{cccccN}
+  \hline
+  \multicolumn{2}{c}{Number of particles} & Position of $I$th particle in cell $c$ & Euler CFL & RK2 CFL &\\[6pt]
+  \hline
+  \hline
+  (--) &1 &$X^1 \in \[X^{2c-1},X^{2c}\]$  &  1 & 1&\\[8pt]
+  \hline
+  (i)& 2 & $ X^I= X^{2c-1}+(2I-1)\frac{\Delta X}{4}$ &  0.43 & 1&\\[8pt]
+  (ii)& 2 & $X^I= X^{2c-1}+(2I-1)\frac{\Delta X}{4} +\frac{\Delta X}{10} $ &  0.40 & 0.50 &\\[8pt]
+  (iii)& 2 & $X^I= X^{2c-1}+(2I-1)\frac{\Delta X}{4} +(I-2)\frac{\Delta X}{10} $ &  0.27 & 1 &\\[8pt]
+  (iii)'& 2 & $X^I= X^{2c-1}+(2I-1)\frac{\Delta X}{4} +(I-2)\frac{\Delta X}{4} $ &  0 & 1 &\\[8pt]
+  \hline
+  (i)& 3 & $ X^I= X^{2c-1}+2I\frac{\Delta X}{8}$ &  0.43 & 1&\\[8pt]
+  (ii)& 3 & $X^I= X^{2c-1}+2I\frac{\Delta X}{8} +\frac{\Delta X}{10} $ &  0.40 & 0.50 &\\[8pt]
+  (iii)& 3 & $X^I= X^{2c-1}+2I\frac{\Delta X}{8} +(I-2)\frac{\Delta X}{10} $ &  0.27 & 1 &\\[8pt]
+  (iii)'& 3 & $X^I= X^{2c-1}+2I\frac{\Delta X}{8} +(I-2)\frac{\Delta X}{4} $ &  0 & 1 &\\[8pt]
+  \hline
+  (i)& 4 & $ X^I= X^{2c-1}+I\frac{\Delta X}{5}$ &  0.35 & 1&\\[8pt]
+  (ii)& 4 & $X^I= X^{2c-1}+I\frac{\Delta X}{5} +\frac{\Delta X}{10} $ &  0.31 & 0.40 &\\[8pt]
+  (iii)& 4 & $X^I= X^{2c-1}+I\frac{\Delta X}{5} +\frac{2I-5}{\abs{2I-5}}\frac{\Delta X}{10} $ &  0.18 & 1 &\\[8pt]
+  (iii)'& 4 & $X^I= X^{2c-1}+I\frac{\Delta X}{5} +\frac{2I-5}{\abs{2I-5}}\frac{\Delta X}{5} $ &  0 & 1 &\\[8pt]
+  \hline
+\end{tabular}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
