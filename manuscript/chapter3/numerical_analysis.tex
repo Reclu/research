@@ -78,7 +78,7 @@ In equation \eqref{eq:euler_before_mapping} the solutions at nodes result from t
 \begin{equation}
 \bar{q}^{n}_{i} = \frac{\sum_K S_{iK}m_K \bar{Q}^n_{K}}{\sum_P S_{iP}m_P} = \frac{\sum_K S_{iK} \bar{Q}^n_{K}}{\sum_P S_{iP}} \label{eq:stab_mapping}
 \end{equation}
-In particular, the volume fluxes contridutions can be written:
+In particular, the volume fluxes contributions can be written:
 \begin{equation}
   f_{c}^{n}=\sum_{L=1}^{N_p^{c}}\[S_{2c-1,L}\frac{\sum_K S_{2c-1,K}\bar{Q}^n_{K}}{\sum_P S_{2c-1,P}}+ S_{2c,L}\frac{\sum_K S_{2c,K} \bar{Q}^n_{K}}{\sum_P S_{2c(L),P}} \]=\sum^{N_p}_{K=1}\(S_{2c-1,K} +S_{2c,K} \)\bar{Q}^n_{K} \label{eq:volume_fluxes_mapped}
 \end{equation}
@@ -257,7 +257,7 @@ We consider the scalar linear advection equation for an arbitrary quantity $q=\r
   \label{eq:2D_model_equation}
   \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
 \end{equation}
-Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta Y$ as depicted in figure \ref{fig:2Dmesh}. Again, there is no empty cell inside the physical so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis. Thus, equation \eqref{eq:2D_model_equation} is discretized with the discontinuous Galerkin material point method using Euler time integration.
+Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta Y$. In analogy with the one-dimensional case, DG approximation amounts to duplicate nodes and hence edges connected to them as depicted in figure \ref{fig:2Dmesh}. Again, there is no empty cell inside the physical so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis. Thus, equation \eqref{eq:2D_model_equation} is discretized with the discontinuous Galerkin material point method using Euler time integration.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2D_domain}
@@ -296,37 +296,34 @@ Introduction of the convective phase where $Q_I=\rho \bar{Q}_I= \frac{m_I N_p}{\
   & f^{*,(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_pm_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}} + \frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
   & f^{*,(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a N_pm_J }{2\Delta X \Delta Y}  \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) + b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} + \frac{S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
 \end{align}
-which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p}{2\Delta X \Delta Y}\( \phi^{(i)} +\phi^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
+which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p m_J}{2\Delta X \Delta Y}\( \phi_J^{(i)} +\phi_J^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
 
 Thus, considering the cartesian grid shown in figure \ref{fig:2Dmesh}, the interface flux contribution at node $i$ is:
 \begin{equation}
   \label{eq:nodal_fluxes}
-  \hat{f}_i^{*} = \sum_j \int_{(j)}S_i(X,Y) f^{*,(j)}  N_j dY =
+  \hat{f}_i^{*} = \sum_j \int_{(j)}S_i(X,Y) f^{*,(j)}  \(N^{(j)}_X+N^{(j)}_Y\) dY =
   \left\lbrace
   \begin{aligned}
-    & N_j \frac{\Delta Y}{2} f^{*,(j)} \quad \text{if (j) is vertical}\\
-    & N_j \frac{\Delta X}{2} f^{*,(j)} \quad \text{if (j) is horizontal}
+    & N^{(j)}_X \frac{l^{(j)}}{2} f^{*,(j)} \quad \text{if (j) is vertical}\\
+    & N^{(j)}_Y \frac{l^{(j)}}{2} f^{*,(j)} \quad \text{if (j) is horizontal}
   \end{aligned}
   \right.
 \end{equation}
-where $N_j$ is the outward normal vector to the edge $(j)$. Hence, the nodal interface fluxes in cell $C$ are:
-\begin{subequations}
-  \begin{alignat}{3}
-    &\hat{f}_1^{*}=-&\frac{\Delta X}{2}f^{*,(1)} -\frac{\Delta Y}{2}f^{*,(4)}=-&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} \( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace \\
-    &\hat{f}_2^{*}=-&\frac{\Delta X}{2}f^{*,(1)} +\frac{\Delta Y}{2}f^{*,(2)}= -&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(1)} + \phi^{(1),T} \) - a\frac{\Delta t}{\Delta X} \( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
-    &\hat{f}_3^{*}= &\frac{\Delta X}{2}f^{*,(3)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} \( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
-    &\hat{f}_4^{*}= &\frac{\Delta X}{2}f^{*,(3)} -\frac{\Delta Y}{2}f^{*,(4)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} \( \phi^{(3)} + \phi^{(3),T} \) - a\frac{\Delta t}{\Delta X} \( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
-  \end{alignat}
-\end{subequations}
-Or, by using the normal vector to edge:
-\begin{subequations}
-  \begin{alignat}{3}
-    &\hat{f}_1^{*}=-&\frac{\Delta X}{2}f^{*,(1)} -\frac{\Delta Y}{2}f^{*,(4)}=&\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^1_Y\( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace \\
-    &\hat{f}_2^{*}=-&\frac{\Delta X}{2}f^{*,(1)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^1_Y\( \phi^{(1)} + \phi^{(1),T} \) + a\frac{\Delta t}{\Delta X} N^2_X\( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
-    &\hat{f}_3^{*}= &\frac{\Delta X}{2}f^{*,(3)} +\frac{\Delta Y}{2}f^{*,(2)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^2_X\( \phi^{(2)} + \phi^{(2),T} \) \right\rbrace\\
-    &\hat{f}_4^{*}= &\frac{\Delta X}{2}f^{*,(3)} -\frac{\Delta Y}{2}f^{*,(4)}= &\sum_J \bar{Q}_J^n m_J \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
-  \end{alignat}
-\end{subequations}
+where $N^{(j)}_X$ and $N^{(j)}_Y$ are the components of the outwerd normal vector to edge $(j). $Note that in the Cartesian grid, $N^{(j)}_X+N^{(j)}_Y = \pm 1$ gives the sign of the contribution of the interface flux to the node. In order to write a generic form of the nodal fluxes \eqref{eq:nodal_fluxes} that uses sums over every edge of the domain, the use of the shape function attached to node $i$ evaluated at edge centroids $S_{i}(\vect{X}^{(j)}_c)$ is made. Then, denoting the length of edge $(j)$ by $l^{(j)}$, it comes:
+\begin{equation}
+  \label{eq:nodal_flux_sum}
+  \hat{f}^*_i = \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(N_X^{(j)}+N^{(j)}_Y\) f^{*,(j)}
+\end{equation}
+\begin{equation}
+  \label{eq:nodal_fluxe_mapped}
+  \hat{f}_i^{*}=\sum_P \bar{Q}_P^n  \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(a N_X^{(j)}+ bN^{(j)}_Y\)\frac{N^C_p m_J}{2\Delta X \Delta Y}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
+\end{equation}
+In the discrete form, those terms are divided by the lumped mass matrix:
+\begin{equation}
+  \hat{f}_i^{*}=\sum_P \frac{\bar{Q}_P^n}{\sum_J S_{iJ}}   \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(aN_X^{(j)}+bN^{(j)}_Y\)\frac{N_p^C }{2\Delta X \Delta Y}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
+\end{equation}
+Si la grille n'est pas régulière, on ne garde qu'un $1/\Delta X$ et les contributions transverses approtent une correction d'ordre 2 en temps.
+
 Making use of parent coordinates $(\xi,\eta)$, defined in cell $C$ as:
 \begin{align}
   &\xi = 2\frac{X-X^C_1}{\Delta X} -1 \quad ; \quad d\xi = 2\frac{dX}{\Delta X} \label{ref_elemx}\\
