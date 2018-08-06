@@ -199,21 +199,21 @@ The scheme equations obtained above are written for simplicity:
 \begin{equation}
 \bar{Q}^{n+1}_I = \sum_{K=1}^{N_p} \bar{Q}^n_{K} D_{IK} \label{eq:scheme_Dpi}
 \end{equation}
-Moreover, the computational domain is repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $J$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
+Moreover, the computational domain is repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $I$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
 \begin{equation}
-\bar{Q}^{n}_J = \sum_{j=-E}^{E}A_j^n e^{I J k_j \Delta X}
+\bar{Q}^{n}_I = \sum_{j=-E}^{E}A_j^n e^{i I k_j \Delta X}
 \end{equation}
-with $A^n_j$, the magnitude of the $j$th harmonic at time step $n$, $I = \sqrt{-1}$, and $k_j$ a wave number. Introduction of this expansion in equation \eqref{eq:scheme_Dpi} yields:
+with $A^n_j$, the magnitude of the $j$th harmonic at time step $n$, $i = \sqrt{-1}$, and $k_j$ a wave number. Introduction of this expansion in equation \eqref{eq:scheme_Dpi} yields:
 \begin{equation}
-A_j^{n+1} e^{I I k_j \Delta X} = \sum_{K=1}^{N_p} A_j^n D_{IK}e^{I K k_j \Delta X}\quad \forall j=-E,...,E
+A_j^{n+1} e^{iI k_j \Delta X} = \sum_{K=1}^{N_p} A_j^n D_{IK}e^{i K k_j \Delta X}\quad \forall j=-E,...,E
 \end{equation}
 The amplification factor between two time steps at a given point is defined as:
 \begin{equation}
-\frac{A_j^{n+1}}{A_j^n} = \sum_{K=1}^{N_p} e^{I (K -I)k_j \Delta X} D_{IK} \quad \forall j=-E,...,E \label{eq:fourier_expansion}
+\frac{A_j^{n+1}}{A_j^n} = \sum_{K=1}^{N_p} e^{i (K -I)k_j \Delta X} D_{IK} \quad \forall j=-E,...,E \label{eq:fourier_expansion}
 \end{equation}
 A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than one in modulus: $\abs{A^{n+1}/A^n} < 1$. This upper bound allows to ensure that eventual errors do not increase during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
 \begin{equation}
- \abs{\sum_{K=1}^{N_p} e^{I (K -I)k_j \Delta X} D_{IK}} \leq \sum_{K=1}^{N_p} \abs{e^{I (K -I)k_j \Delta X} D_{IK}} = \sum_{K=1}^{N_p} \abs{D_{IK}}
+ \abs{\sum_{K=1}^{N_p} e^{i (K -I)k_j \Delta X} D_{IK}} \leq \sum_{K=1}^{N_p} \abs{e^{i (K -I)k_j \Delta X} D_{IK}} = \sum_{K=1}^{N_p} \abs{D_{IK}}
 \end{equation}
 where the triangle inequality, and the unit modulus of the complex number $e^{I (K -I)k_j \Delta X}$ have been used.
 Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied for all material points:
@@ -257,11 +257,11 @@ We consider the scalar linear advection equation for an arbitrary quantity $q=\r
   \label{eq:2D_model_equation}
   \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
 \end{equation}
-Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta Y$. In analogy with the one-dimensional case, DG approximation amounts to duplicate nodes and hence edges connected to them as depicted in figure \ref{fig:2Dmesh}. Again, there is no empty cell inside the physical so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis. Thus, equation \eqref{eq:2D_model_equation} is discretized with the discontinuous Galerkin material point method using Euler time integration.
+Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta X$. In analogy with the one-dimensional case, DG approximation amounts to duplicate nodes and hence edges connected to them as depicted in figure \ref{fig:2Dmesh}. Again, there is no empty cell inside the physical so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis. Thus, equation \eqref{eq:2D_model_equation} is discretized with the discontinuous Galerkin material point method using Euler time integration.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2D_domain}
-  \caption{Two-dimensional mesh made of $E$ elements of constant size $\Delta X \times \Delta Y$.}\label{fig:2Dmesh}
+  \caption{Two-dimensional mesh made of $E$ elements of constant size $\Delta X \times \Delta X$.}\label{fig:2Dmesh}
 \end{figure}
 
 \subsubsection*{Two-dimensional scheme equation}
@@ -281,75 +281,74 @@ where $c_n$ is the speed in the direction normal to the edge (\textit{i.e. b for
 with $c_t$ the speed in the direction tangent to the edge.
 Consider the edge $(1)$ of cell $C$:
 \begin{equation}
-  f^{*,(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} + a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\)
+  f^{*,(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} + a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\)
 \end{equation}
 where the first term corresponds to the flux of the upwind state and the second one in the transverse contribution of the right-going fluctuation at the edge between by Bottom ($B$) and Bottom-Left ($BL$) cells. Similarly, the other interface fluxes of that cell are:
 \begin{align}
   & f^{*,(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
-  & f^{*,(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
+  & f^{*,(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
   & f^{*,(4)} = a \frac{q_3^{C,n} + q_4^{C,n}}{2} + a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
 \end{align}
-Introduction of the convective phase where $Q_I=\rho \bar{Q}_I= \frac{m_I N_p}{\Delta X \Delta Y}\bar{Q}_I$ with no sum on $I$:
+Introduction of the convective phase where $Q_I=\rho \bar{Q}_I= \frac{m_I N_p}{\Delta X^2}\bar{Q}_I$ with no sum on $I$:
 \begin{align}
-  & f^{*,(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_p m_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{3J}^{B} }{\sum_P S_{3P}^{B}} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B}}\) + a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1J}^{B}}{\sum_P S_{1P}^B} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B} }-\frac{S_{2J}^{BL}}{\sum_P S_{2P}^{BL}} + \frac{S_{3J}^{BL}}{\sum_PS_{3P}^{BL}}\) \right\rbrace\\
-  & f^{*,(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^n\frac{a N_pm_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}} + \frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}}-\frac{S_{3J}^{B}}{\sum_P S_{3P}^{B}} +\frac{S_{4J}^{B}}{\sum_P S_{4P}^{B}}\) \right\rbrace\\
-  & f^{*,(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_pm_J }{2\Delta X \Delta Y} \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}} + \frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
-  & f^{*,(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a N_pm_J }{2\Delta X \Delta Y}  \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) + b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} + \frac{S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
+  & f^{*,(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_p m_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{3J}^{B} }{\sum_P S_{3P}^{B}} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B}}\) + a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{B}}{\sum_P S_{1P}^B} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B} }-\frac{S_{2J}^{BL}}{\sum_P S_{2P}^{BL}} + \frac{S_{3J}^{BL}}{\sum_PS_{3P}^{BL}}\) \right\rbrace\\
+  & f^{*,(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^n\frac{a N_pm_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}} + \frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}}-\frac{S_{3J}^{B}}{\sum_P S_{3P}^{B}} +\frac{S_{4J}^{B}}{\sum_P S_{4P}^{B}}\) \right\rbrace\\
+  & f^{*,(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_pm_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}} + \frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
+  & f^{*,(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a N_pm_J }{2\Delta X^2}  \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) + b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} + \frac{S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
 \end{align}
-which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p m_J}{2\Delta X \Delta Y}\( \phi_J^{(i)} +\phi_J^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
+which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p m_J}{2\Delta X^2}\( \phi_J^{(i)} + \phi_J^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
 
-Thus, considering the cartesian grid shown in figure \ref{fig:2Dmesh}, the interface flux contribution at node $i$ is:
+Node $i$ being connected to two edges, summing over every edges of the grid and weigthing the nodal fluxes with the shape function attached to the node evaluated at edge centroids denoted by $\vect{X}^{(j)}_c$, the nodal interface flux contribution is:
 \begin{equation}
   \label{eq:nodal_fluxes}
-  \hat{f}_i^{*} = \sum_j \int_{(j)}S_i(X,Y) f^{*,(j)}  \(N^{(j)}_X+N^{(j)}_Y\) dY =
-  \left\lbrace
-  \begin{aligned}
-    & N^{(j)}_X \frac{l^{(j)}}{2} f^{*,(j)} \quad \text{if (j) is vertical}\\
-    & N^{(j)}_Y \frac{l^{(j)}}{2} f^{*,(j)} \quad \text{if (j) is horizontal}
-  \end{aligned}
-  \right.
+  \hat{f}_i^{*} = \sum_{j=1}^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_c) \int_{\Delta X} S_i(X,Y) f^{*,(j)}  \vect{N}^{(j)}\cdot \vect{dX} = \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c)\(N^{(j)}_X+N^{(j)}_Y\)\Delta X f^{*,(j)}
 \end{equation}
-where $N^{(j)}_X$ and $N^{(j)}_Y$ are the components of the outwerd normal vector to edge $(j). $Note that in the Cartesian grid, $N^{(j)}_X+N^{(j)}_Y = \pm 1$ gives the sign of the contribution of the interface flux to the node. In order to write a generic form of the nodal fluxes \eqref{eq:nodal_fluxes} that uses sums over every edge of the domain, the use of the shape function attached to node $i$ evaluated at edge centroids $S_{i}(\vect{X}^{(j)}_c)$ is made. Then, denoting the length of edge $(j)$ by $l^{(j)}$, it comes:
-\begin{equation}
-  \label{eq:nodal_flux_sum}
-  \hat{f}^*_i = \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(N_X^{(j)}+N^{(j)}_Y\) f^{*,(j)}
-\end{equation}
+where $N^{(j)}_X$ and $N^{(j)}_Y$ are the components of the outward normal vector to edge $(j)$. Note that in the Cartesian grid, $N^{(j)}_X+N^{(j)}_Y = \pm 1$ gives the sign of the contribution of the interface flux to the node.
 \begin{equation}
   \label{eq:nodal_fluxe_mapped}
-  \hat{f}_i^{*}=\sum_P \bar{Q}_P^n  \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(a N_X^{(j)}+ bN^{(j)}_Y\)\frac{N^C_p m_J}{2\Delta X \Delta Y}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
+  \hat{f}_i^{*}=\sum_P \bar{Q}_P^n  \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) \(a N_X^{(j)}+ bN^{(j)}_Y\)\frac{N^C_p m_J}{2\Delta X}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
 \end{equation}
 In the discrete form, those terms are divided by the lumped mass matrix:
 \begin{equation}
-  \hat{f}_i^{*}=\sum_P \frac{\bar{Q}_P^n}{\sum_J S_{iJ}}   \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) l^{(j)}\(aN_X^{(j)}+bN^{(j)}_Y\)\frac{N_p^C }{2\Delta X \Delta Y}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
+  \frac{\hat{f}_i^{*}}{M_i^L}=\sum_P \frac{\bar{Q}_P^n}{\sum_J S_{iJ}}   \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) \(aN_X^{(j)}+bN^{(j)}_Y\)\frac{N_p^C }{2 \Delta X}\[\phi_P^{(j)} + \phi_P^{(j),T}\] 
 \end{equation}
-Si la grille n'est pas régulière, on ne garde qu'un $1/\Delta X$ et les contributions transverses approtent une correction d'ordre 2 en temps.
 
 Making use of parent coordinates $(\xi,\eta)$, defined in cell $C$ as:
 \begin{align}
   &\xi = 2\frac{X-X^C_1}{\Delta X} -1 \quad ; \quad d\xi = 2\frac{dX}{\Delta X} \label{ref_elemx}\\
-  &\eta = 2\frac{Y-Y^C_1}{\Delta X} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta Y} \label{ref_elemy}
+  &\eta = 2\frac{Y-Y^C_1}{\Delta X} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta X} \label{ref_elemy}
 \end{align}
 and the chain rule, the pseudo-stiffness matrices read:
 \begin{align}
   & K_{ij}^X = \sum_J \drond{S_{iJ}}{X}m_JS_{jJ}=\frac{2}{\Delta X}\sum_J\drond{S_{iJ}}{\xi}m_JS_{jJ} =\frac{2}{\Delta X}\sum_J\nabla_\xi S_{iJ} m_J S_{jJ}\\
-  &K_{ij}^Y = \sum_J\drond{S_{iJ}}{Y}m_JS_{jJ}=\frac{2}{\Delta Y}\sum_J\drond{S_{iJ}}{\eta}m_JS_{jJ} =\frac{2}{\Delta Y}\sum_J\nabla_\eta S_{iJ}m_J S_{jJ}
+  &K_{ij}^Y = \sum_J\drond{S_{iJ}}{Y}m_JS_{jJ}=\frac{2}{\Delta X}\sum_J\drond{S_{iJ}}{\eta}m_JS_{jJ} =\frac{2}{\Delta X}\sum_J\nabla_\eta S_{iJ}m_J S_{jJ}
 \end{align}
 Then, the discrete equation \eqref{eq:discrete2D} can be rewritten by introducing:
 \begin{align}
   & \frac{K_{ij}^X}{M_i^L}  =  \frac{2}{\Delta X} \frac{\sum_J\nabla_\xi S_{iJ}  S_{jJ}}{\sum_P  S_{iP}}=\frac{2}{\Delta X} k^X_{ij} \\
-  & \frac{K_{ij}^Y}{M_i^L} = \frac{2}{\Delta X} \frac{\sum_J\nabla_\eta S_{iJ} S_{jJ}}{\sum_P S_{iP}} = \frac{2}{\Delta Y}  k^Y_{ij}
+  & \frac{K_{ij}^Y}{M_i^L} = \frac{2}{\Delta X} \frac{\sum_J\nabla_\eta S_{iJ} S_{jJ}}{\sum_P S_{iP}} = \frac{2}{\Delta X}  k^Y_{ij}
 \end{align}
 The solution at material points contained in cell $C$ at time step $n+1$ result from the interpolation of updated nodal quantities:
 \begin{equation}
   \label{eq:2Dupdated_MP}
-  \bar{Q}_I^{n+1}= S_{iI}\bar{q}_i^n + \Delta t S_{iI} \(  2\frac{a\Delta}{\Delta X} k^X_{ij}\bar{q}_j^n +  2\frac{b\Delta t}{\Delta Y} k^Y_{ij}\bar{q}_j^n - \frac{\hat{f}_i^{*}}{M_i^L}\)
+  \bar{Q}_I^{n+1}= \sum_{i=1}^{N_n}\[S_{iI}\bar{q}_i^n + \Delta t S_{iI} \(  \frac{2 a}{\Delta X} k^X_{ij}\bar{q}_j^n + \frac{2b}{\Delta X} k^Y_{ij}\bar{q}_j^n - \frac{\hat{f}_i^{*}}{M_i^L}\) \]
 \end{equation}
-where:
 \begin{equation}
-  \frac{\hat{f}_i^{*}}{M_i^L}=\sum_J \frac{\bar{Q}_J^n}{\sum_P S_{iP}}  \frac{N_p}{4}\left\lbrace b\frac{\Delta t}{\Delta Y} N^3_Y\( \phi^{(3)} + \phi^{(3),T} \) + a\frac{\Delta t}{\Delta X} N^4_X\( \phi^{(4)} + \phi^{(4),T} \) \right\rbrace
+  \label{eq:2Dscheme_equation}
+  \bar{Q}_I^{n+1}= \sum_{i=1}^{N_N} \frac{\sum_P^{N_p}\bar{Q}_P^nS_{iI}}{\sum_J S_{iJ}} \left\lbrace  S_{iP} +  \frac{\Delta t}{\Delta X} \( 2\[ a k^X_{ij} + b k^Y_{ij} \]S_{jP} - \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) N_p^C\frac{ \(aN_X^{(j)}+bN^{(j)}_Y\)}{2}\[\phi_P^{(j)} + \phi_P^{(j),T}\] \) \right\rbrace
 \end{equation}
+where, $\phi_P^{(j),T}$ depends on $\Delta t$, leading to second order corrections brought by the CTU. Equation \eqref{eq:2Dscheme_equation} can also be rewritten as:
+\begin{equation}
+  \label{eq:2Dscheme_DPI}
+  \bar{Q}_I^{n+1}= \sum_P^{N_p}\bar{Q}_P^n D_{PI}
+\end{equation}
+This expression is much more complicated than in the one-dimensional case. It allows however to perform the von Neumann linear stability analysis. 
 
 \subsubsection*{The von Neumann linear stability analysis}
+Analogously to the one-dimensonal case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$:
+\begin{equation}
+\bar{Q}^{n}_I = \sum_{j=-E}^{E}A_j^n e^{i (I k_j +)\Delta X}
+\end{equation}
 
 \subsection{Non-linear stability analysis}
 Convergence to entropy solution ; Non-linear stability ; entropy inequality
