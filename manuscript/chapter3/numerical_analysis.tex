@@ -246,7 +246,7 @@ One can see in table \ref{tab:CFL_comparison} that the RK2 time discretization p
 %%%
 The von Neumann linear stability analysis performed in this section provides an explicit (nonlinear) condition \eqref{eq:stability} that must be satisfied in order to ensure the stability of the DGMPM schemes based on both Euler and RK2 time discretizations. First, this relation allows to fully exploit the ability of the method to rebuild the grid mesh arbitrarily. Indeed, after such a procedure, the number and positions of material points in grid cells can change and one must be able to adapt properly the CFL number so that the scheme remains stable. An advantage on the original MPM is hence highlighted since no stability condition exists for the method. Second, it has been shown that some DGMPM discretizations provide an improvement of the restrictive CFL number that applies to the DGFEM scheme. In particular, the optimal condition allowing to capture discontinuities ($CFL=1$) can be reached for several space-time discretizations. This property turns out to be a strength for the DGMPM since it aims at follow waves accurately.
 
-One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional contrained with the description of material boundaries.
+One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional constrained with the description of material boundaries.
 
 \subsection{Two-dimensional stability analysis}
 \subsubsection*{Model equation - Space discretization}
@@ -290,7 +290,7 @@ Referring to a quantity defined at an interface by means of parenthesis superscr
   \label{eq:2d_Godunov_fluxes}
   f^{*,(i)}= c_n q^{(i)}_U = \underbrace{c_nq^{(i)}_D}_{f_N(q^{(i)}_D)} - \underbrace{c_n (q^{(i)}_D -q^{(i)}_U)}_{A^{+}_{U/D}} 
 \end{equation}
-where $c_n$ is the speed in the direction normal to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
+where $c_n$ is the speed in the direction normal to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves states $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
 The CTU is adopted by accounting for the transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
 \begin{equation}
   \label{eq:2D_transverse_corrections}
@@ -307,40 +307,45 @@ The CTU is adopted by accounting for the transverse corrections based on those f
 %   \label{eq:2D_transverse_corrections}
 %   B^+A^+_{U/D}=c_t c_n (q_D -q_U)
 % \end{equation}
-with $c_t$ the speed in the direction tangent to the edge. The final expression of intercell fluxes is then:
-\begin{equation}
-  \label{eq:intercell_flux}
-  f^{*,(i)}=c_nq^{(i)}_U - \frac{c_t\Delta t}{2\Delta X} c_n (q^{(i)}_D -q^{(i)}_U)
-\end{equation}
-
-Figure \ref{fig:2Dmesh} shows an exemple of such transverse corrections resulting from fluctuations between Bottom ($B$), Left ($L$), Bottom Left ($BL$) elements and a given cell $C$. A numbering of nodes and interfaces within a cell can also be in the figure.
-\begin{figure}[h!]
+with $c_t$ the speed in the direction tangent to the edge. 
+% The final expression of intercell fluxes is then:
+% \begin{equation}
+%   \label{eq:intercell_flux}
+%   f^{(i)}=c_n\( q^{(i)}_U - c_t\frac{\Delta t}{2\Delta X} (q^{(i)}_D -q^{(i)}_U)\)
+% \end{equation}
+\begin{figure}[ht]
   \centering
   \input{chapter3/pgfFigures/2D_domain}
   \caption{Two-dimensional patch of elements of constant size $\Delta X \times \Delta X$.}\label{fig:2Dmesh}
 \end{figure}
-Hence, the specialization of the above formula for intercell fluxes to the cell $C$ of figure \ref{fig:2Dmesh} yields:
+Figure \ref{fig:2Dmesh} illustrates transverse corrections coming from Bottom ($B$), Left ($L$), Bottom Left ($BL$) neighbor elements of a given cell $C$ to intercell fluxes of that cell.
+Then, by using the numbering of nodes and interfaces within a cell also depicted in figure \ref{fig:2Dmesh}, the above formula for normal fluxes can be specialized to interfaces of cell $C$:
 \begin{align}
-  & f^{*,(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\) \\
-    & f^{*,(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
-  & f^{*,(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
-  & f^{*,(4)} = a \frac{q_3^{L,n} + q_4^{L,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
+  & f^{(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\) \\
+    & f^{(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
+  & f^{(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
+  & f^{(4)} = a \frac{q_3^{L,n} + q_4^{L,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
 \end{align}
-% where the first term corresponds to the flux of the upwind state and the second one in the transverse contribution of the right-going fluctuation at the edge between by Bottom ($B$) and Bottom-Left ($BL$) cells. Similarly, the other interface fluxes of that cell are:
+where $q^{C,n}_i$ denotes the quantity evaluated at the $i$th node of cell $C$ at time step $n$ that results from the material points solutions through the convective phase. Analogously to the one-dimensional case, the mass density is defined in the cell of the homogeneous medium containing the $I$th particle as $\rho = \frac{m_I N^{c(I)}_p}{\Delta X^2}$ so that the convective phase yields:
+\begin{equation}
+  \bar{q}^{C,n}_i = \rho q^{C,n}_i =  \frac{N^{C}_p}{\Delta X^2} \frac{\sum_J m_J S_{iJ}\bar{Q}^n_J}{\sum_P S_{ip}} 
+\end{equation}
 
 Introduction of the convective phase where $Q_I=\rho \bar{Q}_I= \frac{m_I N_p}{\Delta X^2}\bar{Q}_I$ with no sum on $I$:
 \begin{align}
-  & f^{*,(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_p m_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{3J}^{B} }{\sum_P S_{3P}^{B}} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B}}\) + a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{B}}{\sum_P S_{1P}^B} + \frac{S_{4J}^{B}}{\sum_PS_{4P}^{B} }-\frac{S_{2J}^{BL}}{\sum_P S_{2P}^{BL}} - \frac{S_{3J}^{BL}}{\sum_PS_{3P}^{BL}}\) \right\rbrace\\
-  & f^{*,(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^n\frac{a N_pm_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}} + \frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{2J}^{C}}{\sum_P S_{2P}^{C}}-\frac{S_{3J}^{B}}{\sum_P S_{3P}^{B}} -\frac{S_{4J}^{B}}{\sum_P S_{4P}^{B}}\) \right\rbrace\\
-  & f^{*,(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b N_pm_J }{2\Delta X^2} \left\lbrace  \(\frac{S_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}} - \frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
-  & f^{*,(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a N_pm_J }{2\Delta X^2}  \left\lbrace  \(\frac{S_{3J}^{L}}{\sum_P S_{3P}^{L}} + \frac{ S_{4J}^{L}}{\sum_P S_{4P}^{L}}\) + b \frac{\Delta t}{2\Delta X}\(\frac{S_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} - \frac{S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
+  & f^{(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b m_J }{2\Delta X^2} \left\lbrace  \(\frac{N_p^B S_{3J}^{B} }{\sum_P S_{3P}^{B}} + \frac{N_p^BS_{4J}^{B}}{\sum_PS_{4P}^{B}}\) + a  \frac{\Delta t}{2\Delta X}\(\frac{N_p^BS_{1J}^{B}}{\sum_P S_{1P}^B} + \frac{N_p^BS_{4J}^{B}}{\sum_PS_{4P}^{B} }-\frac{N_p^{BL}S_{2J}^{BL}}{\sum_P S_{2P}^{BL}} - \frac{N_p^{BL}S_{3J}^{BL}}{\sum_PS_{3P}^{BL}}\) \right\rbrace\\
+  & f^{(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^n\frac{a m_J }{2\Delta X^2} \left\lbrace  \(\frac{ N_p^CS_{2J}^{C}}{\sum_P S_{2P}^{C}} + \frac{N_p^CS_{3J}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{N_p^CS_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{N_p^CS_{2J}^{C}}{\sum_P S_{2P}^{C}}-\frac{N_p^BS_{3J}^{B}}{\sum_P S_{3P}^{B}} -\frac{N_p^BS_{4J}^{B}}{\sum_P S_{4P}^{B}}\) \right\rbrace\\
+  & f^{(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^n\frac{b m_J }{2\Delta X^2} \left\lbrace  \(\frac{N_p^CS_{3J}^{C}}{\sum_P S_{3P}^{C}} + \frac{N_p^C S_{4J}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta X}\(\frac{N_p^CS_{1J}^{C}}{\sum_P S_{1P}^{C}} + \frac{N_p^CS_{4J}^{C}}{\sum_P S_{4P}^{C}}-\frac{N_p^LS_{2J}^{L}}{\sum_P S_{2P}^{L}} - \frac{N_p^LS_{3J}^{L}}{\sum_P S_{3P}^{L}}\) \right\rbrace\\
+  & f^{(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^n\frac{a m_J }{2\Delta X^2}  \left\lbrace  \(\frac{N_p^LS_{3J}^{L}}{\sum_P S_{3P}^{L}} + \frac{N_p^L S_{4J}^{L}}{\sum_P S_{4P}^{L}}\) - b \frac{\Delta t}{2\Delta X}\(\frac{N_p^LS_{1J}^{L}}{\sum_P S_{1P}^{L}} + \frac{N_p^LS_{2J}^{L}}{\sum_P S_{2P}^{L}}-\frac{N_p^{BL}S_{3J}^{BL}}{\sum_P S_{3P}^{BL}} - \frac{N_p^{BL}S_{4J}^{BL}}{\sum_P S_{4P}^{L}}\)\right\rbrace
 \end{align}
-which will be written for simplicity: $f^{*,(i)}=\sum_J \bar{Q}_J^n \frac{c_n N_p m_J}{2\Delta X^2}\( \phi_J^{(i)} + \phi_J^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse fluxes contribution at edge $(i)$.
+Note that as for nodal solutions, the support of shape functions in the above fluxes is given by the cell in sperscript. For the sake of simplicity, these interface fluxes will be written: $f^{(i)}=\su\bar{Q}_J^n \frac{c_n m_J}{2\Delta X^2}\( \phi_J^{(i)} + \phi_J^{(i),T} \)$ where $\phi^{(i)}$ and $\phi^{(i),T}$ stand for normal and transverse contributions.
+
+minuscules pour noeuds, majuscules pour edges et grec pour particules.
 
 Node $i$ being connected to two edges, summing over every edges of the grid and weigthing the nodal fluxes with the shape function attached to the node evaluated at edge centroids denoted by $\vect{X}^{(j)}_c$, the nodal interface flux contribution is:
 \begin{equation}
   \label{eq:nodal_fluxes}
-  \hat{f}_i^{*} = \sum_{j=1}^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_c) \int_{\Delta X} S_i(X,Y) f^{*,(j)}  \vect{N}^{(j)}\cdot \vect{dX} = \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c)\(N^{(j)}_X+N^{(j)}_Y\)\Delta X f^{*,(j)}
+  \hat{f}_i^{*} = \sum_{j=1}^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_c) \int_{\Delta X} S_i(X,Y) f^{(j)}  \vect{N}^{(j)}\cdot \vect{dX} = \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c)\(N^{(j)}_X+N^{(j)}_Y\)\Delta X f^{(j)}
 \end{equation}
 where $N^{(j)}_X$ and $N^{(j)}_Y$ are the components of the outward normal vector to edge $(j)$. Note that in the Cartesian grid, $N^{(j)}_X+N^{(j)}_Y = \pm 1$ gives the sign of the contribution of the interface flux to the node.
 \begin{equation}
