@@ -181,6 +181,7 @@ The following statement then holds:
 
 
 \subsection{Interface fluxes}
+\label{subsec:interface_fluxes}
 DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximation \cite{Cockburn}, namely, when the discrete system identifies with a finite volume one. Such a numerical method is monotone for flux functions $\Fcb_N$ that are Lipschitz continuous, consistent and monotone, namely, they must be \textit{E-fluxes} \cite{Osher}. One possibility, which is widely used and adopted here, is the \textit{Godunov flux function}. 
 %The computation of interface fluxes $\hat{\Fcb}^{i,n}$ in the DGMPM system of discrete equations \eqref{eq:DGMPM_discrete} is now developed. We can here benefit from the finite volume technologies which are essentially based on the way those fluxes are computed.
 \subsubsection*{The Godunov flux}
@@ -228,6 +229,7 @@ At last, solid mechanics conservative forms involve for hyperelasticity and elas
 with $\Qcb=\matrice{\vect{v} \\ \tens{\sigma}}$ for the infinitesimal theory and $\Qcb = \matrice{\vect{v} \\ \tens{\Pi}}$ for finite deformations.
 
 \subsubsection*{Transverse corrections}
+
 The method derived above for the computation of normal fluxes can be viewed as the \textit{Donor-Cell Upwind (DCU)} method \cite{Leveque} meaning that only contributions from the upwind cells sharing an edge (in two dimensions) with the current one are considered. For multidimensional problems waves can travel in several directions such that contributions coming from corner cells must be taken into account in order to improve accuracy and stability of the numerical scheme. The \textit{Corner Transport Upwind (CTU)} method \cite{Colella_CTU} consists in considering contributions coming from upwind cells sharing only a node (in two dimensions) with the considered grid cell and propagating in bias. This approach allows to improve the Courant condition especially for solid mechanics problems for which strain components are coupled through Poisson's effect. At each cell interface, one defines left-going and right-going fluctuations defined as:
 \begin{equation}
   \Acb^-(\Delta \Wcb) = \Fcb_N(\Wcb^*) - \Fcb_N(\Wcb_{X_N^-}) \qquad ;  \qquad \Acb^+(\Delta \Wcb) = \Fcb_N(\Wcb_{X_N^+})-\Fcb_N(\Wcb^*) 
@@ -248,9 +250,9 @@ where $\vect{\Rc}_\Wc^{j,m}$ is based on the normal vector $\vect{N}^j$ but also
 \end{equation}
 An additional numerical flux defined at edges is hence built from these transverse fluctuations:
 \begin{equation}
-\Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^+ \Acb^-(\Delta \Wcb) \label{eq:transverse_corrections}
+\Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^{j,+} \Acb^{i,-}(\Delta \Wcb) \label{eq:transverse_corrections}
 \end{equation}
-which contributes to the grid cell T ($\Delta X^j$ being the length of edge $(j)$). With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
+which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the length of edge $(j)$). Every corrections must be removed from intercell fluxes that can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
 
 \begin{remark} 
   For linear elasticity, there is no need of an auxiliary vector of conserved quantity so that transverse contributions are computed with the same eigenbasis than that of the approximate-state Riemann solver.
