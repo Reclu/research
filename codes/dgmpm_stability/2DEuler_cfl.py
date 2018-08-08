@@ -160,7 +160,7 @@ Yp=np.array([-0.25,-0.25,0.25,0.25])
 Xp=np.array([0.])
 Yp=np.array([0.])
 
-cx=5.;cy=2.
+cx=1.;cy=1.
 
 CFL=np.linspace(0.,1.,100.)
 
@@ -171,6 +171,29 @@ print "**************************************************************"
 solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
 CFL=max(cx,cy)*solution/2.
 print "Solution DCU is: ",CFL,cx*solution/2. + cy*solution/2.
-solution=optimize.root(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.,method='hybr',options={'xtol':1.e-4}).x
+
+Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+CFL=np.linspace(0.,1.,100.)
+solus=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    solus[i]=Residual(2.*CFL[i])
+plt.plot(CFL,solus)
+plt.grid()
+plt.show()
+
+
+
+Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solution=optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12})
+# print solution
+solution=optimize.newton(Residual,1.)
 CFL=max(cx,cy)*solution/2.
+
 print "Solution CTU is: ",CFL
+CFL=np.linspace(0.,1.,100.)
+solus=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    solus[i]=Residual(2.*CFL[i])
+plt.plot(CFL,solus)
+plt.grid()
+plt.show()
