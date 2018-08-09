@@ -36,16 +36,22 @@
   \node at (1,3.5) {$\textbf{L}$};
 
   %% Transverse corrections
-  \draw[->, very thick,Blue] (3,3.75) -- (3,4.25) node [above] {$B^+A^+_{L/C}$}; % Top
-  \draw[->, very thick,Blue] (3.75,3.) -- (4.25,3.) node [right] {$B^+A^+_{B/C}$}; % Right
-  \draw[<-, very thick,Blue] (3.,2.25) -- (3.,1.75) node [below] {$B^+A^+_{BL/B}$}; % Bottom
-  \draw[<-, very thick,Blue] (2.25,3.) -- (1.75,3.) node [left] {$B^+A^+_{BL/L}$}; % Left
+  \draw[->, very thick,Blue] (2.875,3.75) -- (2.875,4.25) node [above] {$B^+A^+_{L/C}$}; % Top
+  \draw[->, very thick,Blue] (3.75,3.125) -- (4.25,3.125) node [right] {$B^+A^+_{B/C}$}; % Right
+  \draw[<-, very thick,Blue] (3.125,2.25) -- (3.125,1.75) node [below] {$B^+A^+_{BL/B}$}; % Bottom
+  \draw[<-, very thick,Blue] (2.25,2.875) -- (1.75,2.875) node [left] {$B^+A^+_{BL/L}$}; % Left
 
-  %% Edges numbers
-  \node[above] at (1,-0.1) {$(1)$};
-  \node[left] at (2,1.) {$(2)$};
-  \node[below] at (1,1.95) {$(3)$};
-  \node[right] at (-0.1,1.) {$(4)$};
+  %% Normal fluxes
+  \draw[<->, very thick,Red] (3.125,3.75) node [below right] {$f^{(3)}$} -- (3.125,4.25) ; % Top
+  \draw[<->, very thick,Red] (3.75,2.875) node [left] {$f^{(2)}$}-- (4.25,2.875) ; % Right
+  \draw[<->, very thick,Red] (2.875,2.25) node [above left] {$f^{(1)}$}-- (2.875,1.75); % Bottom
+  \draw[<->, very thick,Red] (2.25,3.125) node [right] {$f^{(4)}$} -- (1.75,3.125); % Left
+
+  % %% Edges numbers
+  % \node[above] at (1,-0.1) {$(1)$};
+  % \node[left] at (2,1.) {$(2)$};
+  % \node[below] at (1,1.95) {$(3)$};
+  % \node[right] at (-0.1,1.) {$(4)$};
 \end{tikzpicture}
 
 
