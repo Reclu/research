@@ -94,7 +94,7 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
     ## 4         2
     ## |         |
     ## o -- 1 -- o
-    weights=shape_functions(np.array([0.,1.,0.,-1.]),np.array([-1.,0.,1.,0.]))
+    shapeOnEdge=shape_functions(np.array([0.,1.,0.,-1.]),np.array([-1.,0.,1.,0.]))
     ## Define the normal to edges
     Nx=np.array([0.,1.,0.,-1.])
     Ny=np.array([-1.,0.,1.,0.])
@@ -106,94 +106,267 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
         D_PI=0.
         for i in range(Nnodes):
             # 0th-order contributions
-            D_PI+=shapesC[i,point]*shapesC[i,P]/np.sum(shapesC[i,:])
+            wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
+            D_PI+=wheightings*shapesC[i,P]
             # 1st-order contributions
             for j in range(Nnodes):
-                D_PI+=dt*shapesC[i,point]*shapesC[j,P]*(cx*np.dot(dSxi_C[i,:],shapesC[j,:]) + cy*np.dot(dSeta_C[i,:],shapesC[j,:]))/(np.sum(shapesC[i,:])*np.sum(shapesC[j,:]))
-            for j in range(Nedges)[1:3]:
-                D_PI-=0.25*dt*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,j]*NmpC*(cx*Nx[j]+cy*Ny[j])*(shapesC[j,P]/np.sum(shapesC[j,:])+shapesC[j+1,P]/np.sum(shapesC[j+1,:]))
-                # Transverse contributions
-                if transverse:
-                    D_PI+= (0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,j]*NmpC*cx*cy*(shapesC[(j-1)/2,P]/np.sum(shapesC[(j-1)/2,:])+shapesC[2*(j%2)-1,P]/np.sum(shapesC[2*(j%2)-1,:]))
+                D_PI+=dt*wheightings*(shapesC[j,P]/np.sum(shapesC[j,:]))*(cx*np.dot(dSxi_C[i,:],shapesC[j,:]) + cy*np.dot(dSeta_C[i,:],shapesC[j,:]))
+            # Contributions of edges 2 and 3
+            D_PI-=0.25*dt*wheightings*shapeOnEdge[i,1]*NmpC*cx*(shapesC[1,P]/np.sum(shapesC[1,:])+shapesC[2,P]/np.sum(shapesC[2,:]))
+            D_PI-=0.25*dt*wheightings*shapeOnEdge[i,2]*NmpC*cx*(shapesC[2,P]/np.sum(shapesC[2,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
+            # Transverse contributions
+            if transverse:
+                D_PI+= (0.25*dt)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[1,P]/np.sum(shapesC[1,:]))
+                D_PI+= (0.25*dt)**2*wheightings*shapeOnEdge[i,2]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of left cell
     for P in range(NmpL):
         D_PI=0.
         for i in range(Nnodes):
+            wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 4 contribution
-            D_PI+= 0.25*dt*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,3]*NmpC*cx*(shapesL[2,P]/np.sum(shapesL[2,:])+shapesL[3,P]/np.sum(shapesL[3,:]))
+            D_PI+= 0.25*dt*wheightings*shapeOnEdge[i,3]*NmpC*cx*(shapesL[2,P]/np.sum(shapesL[2,:])+shapesL[3,P]/np.sum(shapesL[3,:]))
             if transverse:
-                #D_PI+=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,3]*NmpC*cx*cy*(shapesL[0,P]/np.sum(shapesL[0,:])+shapesL[1,P]/np.sum(shapesL[1,:]))
-                D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,3]*NmpC*cx*cy*(shapesL[0,P]/np.sum(shapesL[0,:])+shapesL[1,P]/np.sum(shapesL[1,:]))
+                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesL[0,P]/np.sum(shapesL[0,:])+shapesL[1,P]/np.sum(shapesL[1,:]))
                 ## edge 3 contribution
-                D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,2]*NmpC*cy*cx*(shapesL[1,P]/np.sum(shapesL[1,:])+shapesL[2,P]/np.sum(shapesL[2,:]))
+                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,2]*NmpC*cy*cx*(shapesL[1,P]/np.sum(shapesL[1,:])+shapesL[2,P]/np.sum(shapesL[2,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of bottom cell            
     for P in range(NmpB):
         D_PI=0.
         for i in range(Nnodes):
+            wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 1 contribution
-            D_PI+= 0.25*dt*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,0]*NmpC*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+            D_PI+= 0.25*dt*wheightings*shapeOnEdge[i,0]*NmpC*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
             if transverse:
-                #D_PI+=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,0]*NmpC*cy*cx*(shapesB[0,P]/np.sum(shapesB[0,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
-                D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,0]*NmpC*cy*cx*(shapesB[0,P]/np.sum(shapesB[0,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
-                D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,1]*NmpC*cx*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesB[0,P]/np.sum(shapesB[0,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+                ## edge 2 contribution
+                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of bottom-left cell
     for P in range(NmpBL):
         D_PI=0.
         for i in range(Nnodes):
+            wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 1 contribution
-            #D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,0]*NmpC*cy*cx*(shapesBL[1,P]/np.sum(shapesBL[1,:])+shapesBL[2,P]/np.sum(shapesBL[2,:]))
-            D_PI+=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,0]*NmpC*cy*cx*(shapesBL[1,P]/np.sum(shapesBL[1,:])+shapesBL[2,P]/np.sum(shapesBL[2,:]))
+            D_PI+=(0.25*dt)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesBL[1,P]/np.sum(shapesBL[1,:])+shapesBL[2,P]/np.sum(shapesBL[2,:]))
             ## edge 4 contribution
-            #D_PI-=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,3]*NmpC*cx*cy*(shapesBL[2,P]/np.sum(shapesBL[2,:])+shapesBL[3,P]/np.sum(shapesBL[3,:]))
-            D_PI+=(0.25*dt)**2*(shapesC[i,point]/np.sum(shapesC[i,:]))*weights[i,3]*NmpC*cx*cy*(shapesBL[2,P]/np.sum(shapesBL[2,:])+shapesBL[3,P]/np.sum(shapesBL[3,:]))
+            D_PI+=(0.25*dt)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesBL[2,P]/np.sum(shapesBL[2,:])+shapesBL[3,P]/np.sum(shapesBL[3,:]))
         Res+=np.abs(D_PI)
     Residual = lambdify((dt),Res-1.)
     return Residual
 
+def rootFinder(function,tol=1.e-12):
+    NiterMax=1000
+    # Find the bigest root of the residual by dichotomy algorithm
+    a0=function(0.)
+    a1=function(1.)
+    it=0
+    #pdb.set_trace()
+    if a0*a1>tol:
+        print "No solution can be found within the [0,1]"
+    while (a1-a0)>tol:
+        it+=1
+        a2=0.5*(a0+a1)
+        if function(a2)>1.e-4 or function(a2)==0.:
+            a0=a2
+        else:
+            a1=a2
+        if (a1-a0)<tol:
+            return a0
+        if it == NiterMax :
+            print "Solution not converged yet"
+            return a0
 
-# Local coordinates of material points in current element
-Xp=np.array([-0.25,0.25,0.25,-0.25])
-Yp=np.array([-0.25,-0.25,0.25,0.25])
-Xp=np.array([0.])
-Yp=np.array([0.])
-
+def gridSearch(function,tol=1.e-7):
+    samples=100000
+    # Find the bigest root of the residual by grid search algorithm
+    CFL=np.linspace(0.,1.,samples)
+    for i in CFL:
+        if i==samples-1:return i
+        a0=function(i)
+        if a0<tol:
+            continue
+        else:
+            return i
 cx=1.;cy=1.
-
 CFL=np.linspace(0.,1.,100.)
 
 ############### 1PPC
+# print "**************************************************************"
+# print "******************  1PPC discretization **********************"
+# print "**************************************************************"
+# # Local coordinates of material points in current element
+# Xp=np.array([0.])
+# Yp=np.array([0.])
+
+# solution=optimize.fsolve(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL,cx*solution/2. + cy*solution/2.
+
+# Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# CFL=np.linspace(0.,1.,100.)
+# res=np.zeros(len(CFL))
+# for i in range(len(CFL)):
+#     res[i]=Residual(2.*CFL[i]/max(cx,cy))
+# plt.plot(CFL,res)
+# plt.grid()
+# plt.show()
+
+
+
+# Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# # solution=optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12})
+# # print solution
+# solution=optimize.fsolve(Residual,1.)
+# CFL=max(cx,cy)*solution/2.
+
+# print "Solution CTU is: ",CFL
+# CFL=np.linspace(0.,1.,100.)
+# res=np.zeros(len(CFL))
+# for i in range(len(CFL)):
+#     res[i]=Residual(2.*CFL[i]/max(cx,cy))
+# plt.plot(CFL,res)
+# plt.grid()
+# plt.show()
+
+############### 2PPC
 print "**************************************************************"
-print "******************  4PPC discretization **********************"
+print "******************  2PPC discretization **********************"
 print "**************************************************************"
+print "=== Symmetric horizontal ==="
+Xp=np.array([-0.5,0.5])
+Yp=np.array([0.,0.])
+
 solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
 CFL=max(cx,cy)*solution/2.
-print "Solution DCU is: ",CFL,cx*solution/2. + cy*solution/2.
+print "Solution DCU is: ",CFL
 
-Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-CFL=np.linspace(0.,1.,100.)
-solus=np.zeros(len(CFL))
-for i in range(len(CFL)):
-    solus[i]=Residual(2.*CFL[i])
-plt.plot(CFL,solus)
-plt.grid()
-plt.show()
-
-
-
-Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# solution=optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12})
-# print solution
-solution=optimize.newton(Residual,1.)
+residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+solution=gridSearch(residual)
+solution1=optimize.root(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.,method='hybr',options={'xtol':1.e-12}).x
+solution2=rootFinder(residual)
 CFL=max(cx,cy)*solution/2.
-
 print "Solution CTU is: ",CFL
-CFL=np.linspace(0.,1.,100.)
-solus=np.zeros(len(CFL))
-for i in range(len(CFL)):
-    solus[i]=Residual(2.*CFL[i])
-plt.plot(CFL,solus)
-plt.grid()
-plt.show()
+
+print "   "
+print "=== Symmetric vertical ==="
+Yp=np.array([-0.5,0.5])
+Xp=np.array([0.,0.])
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
+
+
+residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+solution=rootFinder2(residual)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
+
+
+print "   "
+print "=== Shifted ==="
+print "=== Symmetric horizontal ==="
+Xp=np.array([-0.25,0.25])
+Yp=np.array([0.,0.])
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
+
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
+
+print "   "
+print "=== Symmetric vertical ==="
+Yp=np.array([-0.25,0.25])
+Xp=np.array([0.,0.])
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
+
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
+
+
+
+# ############### 4PPC
+# print "**************************************************************"
+# print "******************  4PPC discretization **********************"
+# print "**************************************************************"
+# print "=== Symmetric ==="
+# Xp=np.array([-0.25,0.25,0.25,-0.25])
+# Yp=np.array([-0.25,-0.25,0.25,0.25])
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL
+
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL
+
+# print "    "
+# print "=== Shiffted right ==="
+# shift=+0.45
+# Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
+# Yp=np.array([-0.25,-0.25,0.25,0.25])
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL
+
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL
+
+# print "    "
+# print "=== Shiffted above ==="
+# Xp=np.array([-0.25,0.25,0.25,-0.25])
+# Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL
+
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL
+
+# print "    "
+# print "=== Shiffted left ==="
+# shift=-0.25
+# Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
+# Yp=np.array([-0.25,-0.25,0.25,0.25])
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL
+
+# print "    "
+# print "=== Shiffted below ==="
+# Xp=np.array([-0.25,0.25,0.25,-0.25])
+# Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL
+
+# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL
+

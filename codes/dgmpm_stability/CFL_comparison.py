@@ -79,6 +79,17 @@ def residualEuler(point,S,Sp):
     Residual = lambdify((CFL),Res-1.)
     return Residual
 
+def gridSearch(function,tol=1.e-7):
+    samples=100000
+    # Find the bigest root of the residual by grid search algorithm
+    CFL=np.linspace(0.,1.,samples)
+    for i in CFL:
+        if i==CFL[samples-1]: return i
+        a0=function(i)
+        if a0<tol:
+            continue
+        else:
+            return i
 # Symbolic function to evaluate shape functions
 shape_functions=lambda x: np.matrix([(1-x)/DX,x/DX])
 
@@ -112,8 +123,10 @@ eulerSolution=[]
 rk2Solution=[]
     
 for i in range(np.shape(shapes)[0]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-12}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-12}).x[0])
+    # eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-12}).x[0])
+    # rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-12}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -124,8 +137,8 @@ shapes=shape_functions(np.array([0.25+shift,0.75+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -136,8 +149,8 @@ shapes=shape_functions(np.array([0.25+shift,0.75+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -148,8 +161,8 @@ shapes=shape_functions(np.array([0.25+shift,0.75+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -160,8 +173,8 @@ shapes=shape_functions(np.array([0.25-shift,0.75+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -172,8 +185,8 @@ shapes=shape_functions(np.array([0.25-shift,0.75+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -187,8 +200,8 @@ shapes=shape_functions(np.array([DX/6.,0.5,1-DX/6.]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -199,8 +212,8 @@ shapes=shape_functions(np.array([0.5*DX/3.+shift,0.5+shift,1.-0.5*DX/3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ",(eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -211,8 +224,8 @@ shapes=shape_functions(np.array([0.5*DX/3.+shift,0.5+shift,1.-0.5*DX/3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ",(eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -223,8 +236,8 @@ shapes=shape_functions(np.array([0.5*DX/3.+shift,0.5+shift,1.-0.5*DX/3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ",(eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -235,8 +248,8 @@ shapes=shape_functions(np.array([0.5*DX/3.-shift,0.5,1.-0.5*DX/3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -247,8 +260,8 @@ shapes=shape_functions(np.array([0.5*DX/3.-shift,0.5,1-0.5*DX/3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -262,8 +275,8 @@ shapes=shape_functions(np.array([0.5*DX/4.,3*DX/8.,5*DX/8.,7*DX/8.]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -274,8 +287,8 @@ shapes=shape_functions(np.array([0.5*DX/4.+shift,3*DX/8.+shift,5*DX/8.+shift,7*D
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -286,8 +299,8 @@ shapes=shape_functions(np.array([0.5*DX/4.+shift,3*DX/8.+shift,5*DX/8.+shift,7*D
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -298,8 +311,8 @@ shapes=shape_functions(np.array([0.5*DX/4.+shift,3*DX/8.+shift,5*DX/8.+shift,7*D
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -311,8 +324,8 @@ shapes=shape_functions(np.array([0.5*DX/4.-shift,3*DX/8.-shift,5*DX/8.+shift,7*D
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
 
@@ -323,7 +336,7 @@ shapes=shape_functions(np.array([0.5*DX/4.-shift,3*DX/8.-shift,5*DX/8.+shift,7*D
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[1]):
-    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
-    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    eulerSolution.append(gridSearch(residualEuler(i,shapes,shapes)))
+    rk2Solution.append(gridSearch(residualRK2(i,shapes,shapes)))
 print "Euler solution, CFL= ", (eulerSolution)
 print "RK2 solution, CFL= ", (rk2Solution)
