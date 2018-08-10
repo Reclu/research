@@ -91,7 +91,7 @@ where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar
 \end{equation}
 In equation \eqref{eq:euler_before_mapping} the solutions at nodes result from the convection step \eqref{eq:DGMPM_points2nodes}:
 \begin{equation}
-\bar{q}^{n}_{i} = \frac{\sum_\beta S_{i\beta}m_\beta \bar{q}^n_{\beta}}{\sum_\gamma S_{i\gamma}m_\gamma} = \frac{\sum_\beta S_{i\beta} \bar{q}^n_{\beta}}{\sum_\beta S_{i\beta}} \label{eq:stab_mapping}
+\bar{q}^{n}_{i} = \frac{\sum_\beta S_{i\beta}m_\beta \bar{Q}^n_{\beta}}{\sum_\gamma S_{i\gamma}m_\gamma} = \frac{\sum_\beta S_{i\beta} \bar{q}^n_{\beta}}{\sum_\beta S_{i\beta}} \label{eq:stab_mapping}
 \end{equation}
 In particular, the volume fluxes contributions can be written:
 \begin{equation}
@@ -100,7 +100,7 @@ In particular, the volume fluxes contributions can be written:
 Thus, introduction of mappings \eqref{eq:stab_mapping} and \eqref{eq:volume_fluxes_mapped} in equation \eqref{eq:euler_before_mapping} and permutation of sums over $\beta$ and $i$ lead after some simplifications to the scheme equation:
 \begin{equation}
   \begin{split}
-    \bar{q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p} \bar{q}^{n}_\beta & \left\lbrace \vphantom{\frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}}}S_{2c(\alpha)-1,\alpha}\frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}} + S_{2c(\alpha),\alpha}\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}} \right. \\
+    \bar{Q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p} \bar{Q}^{n}_\beta & \left\lbrace \vphantom{\frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}}}S_{2c(\alpha)-1,\alpha}\frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}} + S_{2c(\alpha),\alpha}\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}} \right. \\
     & -\frac{a\Delta t}{\Delta X}N_p^{c(\alpha)}\frac{S_{2c(\alpha),\alpha}}{\sum_\mu S_{2c(\alpha),\mu}}\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}}\\
     & + \frac{a\Delta t}{\Delta X}N_p^{c(\alpha)} \frac{S_{2c(\alpha)-1,\alpha}}{\sum_\mu S_{2c(\alpha)-1,\mu}}\frac{S_{2c(\alpha)-2,\beta}}{\sum_\mu S_{2c(\alpha)-2,\mu}} \\
     &\left.+ \frac{a\Delta t}{\Delta X}\[\frac{S_{2c(\alpha),\alpha}}{\sum_\mu S_{2c(\alpha),\mu}}-\frac{S_{2c(\alpha)-1,\alpha}}{\sum_\mu S_{2c(\alpha)-1,\mu}}\]\(S_{2c(\alpha)-1,\beta} +S_{2c(\alpha),\beta}\) \right\rbrace \label{eq:scheme_euler1}
@@ -110,18 +110,20 @@ Note that the last term of formula \eqref{eq:scheme_euler1} is non-zero if parti
 \begin{equation}
   \label{eq:Euler_scheme}
   \begin{split}
-    \bar{q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p} \bar{q}^{n}_\beta  &\left\lbrace\sum_{i=1}^{2E}S_{i\beta}\frac{S_{i\alpha}}{\sum_\mu S_{i\mu}}  + N_p^{c(\alpha)}\frac{a\Delta t}{\Delta X} \[\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\frac{S_{2c(\alpha)-2,\beta}}{\sum_{\mu}  S_{2c(\alpha)-2,\mu}}-\frac{S_{2c(\alpha),\alpha}S_{2c(\alpha),\beta}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2}\]\right.\\
+    \bar{Q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p} \bar{Q}^{n}_\beta  &\left\lbrace\sum_{i=1}^{2E}S_{i\beta}\frac{S_{i\alpha}}{\sum_\mu S_{i\mu}}  + N_p^{c(\alpha)}\frac{a\Delta t}{\Delta X} \[\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\frac{S_{2c(\alpha)-2,\beta}}{\sum_{\mu}  S_{2c(\alpha)-2,\mu}}-\frac{S_{2c(\alpha),\alpha}S_{2c(\alpha),\beta}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2}\]\right.\\
     & + \left.   \frac{a\Delta t}{\Delta X} \[\frac{S_{2c(\beta),\alpha}}{\sum_{\mu}  S_{2c(\beta),\mu}}-\frac{S_{2c(\beta)-1,\alpha}}{\sum_\mu S_{2c(\beta)-1,\mu}}\] \vphantom{\sum_{i=1}^{2E}}\right\rbrace
   \end{split}
 \end{equation}
-The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for scalar linear advection with covers two cells regardless of the number of material points. Moreover, the particular case of one material point lying in every cell leads to the simplified form: 
-\begin{equation}
-  \begin{split}
-    \label{eq:Godunov}
-    \bar{q}^{n+1}_\alpha = \bar{q}^{n}_\alpha\(1-\frac{a\Delta t}{\Delta X}\) +\frac{a\Delta t}{\Delta X} \bar{q}^{n}_{\alpha-1} 
-  \end{split}
-\end{equation}
-which corresponds to the Godunov scheme. This result is due to the convective phase from particles to nodes \eqref{eq:DGMPM_points2nodes} which in the case of a one particle-per-cell discretization leads to a piecewise constant reconstruction of fields on the grid. However, the previous identification no longer holds for other distributions of material points within the computational grid. 
+The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for scalar linear advection with covers two cells regardless of the number of material points. It is worth noticing that in the particular case of one material point lying in every cells, convective phase \eqref{eq:stab_mapping} simplifies to: $\bar{q}^n_i = \bar{Q}^n_\alpha$ for $c(i)=c(\alpha)$. The mapping hence amounts to a piece-wise constant reconstruction of the field on the background grid that makes the DGMPM equivalent to the \textit{First Order Upwind (FOU)} method.
+% Moreover, the particular case of one material point lying in every cell leads to the simplified form: 
+% \begin{equation}
+%   \begin{split}
+%     \label{eq:Godunov}
+%     \bar{Q}^{n+1}_\alpha = \bar{Q}^{n}_\alpha\(1-\frac{a\Delta t}{\Delta X}\) +\frac{a\Delta t}{\Delta X} \bar{Q}^{n}_{\alpha-1} 
+%   \end{split}
+% \end{equation}
+% which corresponds to the Godunov scheme. This result is due to the convective phase from particles to nodes \eqref{eq:DGMPM_points2nodes} which in the case of a one particle-per-cell discretization leads to a piecewise constant reconstruction of fields on the grid.
+However, this no longer holds for other distributions of material points within the computational grid. 
 
 \subsubsection*{Scheme equation: RK2 time discretization}
 
@@ -184,16 +186,6 @@ the use of convective phase equations \eqref{eq:stab_mapping} and \eqref{eq:volu
     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(\alpha)}\left.\( \frac{\[S_{2c(\alpha)-2,\beta} +S_{2c(\alpha)-3,\beta} \]}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}\sum_{\mu}  S_{2c(\alpha)-2,\mu}} S_{2c(\alpha)-1,\alpha}-\frac{\[S_{2c(\alpha)-1,\beta} +S_{2c(\alpha),\beta} \]}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} S_{2c(\alpha),\alpha}\)  \right\rbrace
   \end{split}
 \end{equation}
-% \begin{equation}
-%   \begin{split}
-%     \bar{Q}^{n+1}_\alpha =  &\sum_{\beta} q_\beta^n  \left\lbrace \sum_i S_{i\beta}\frac{S_{i\alpha}}{\sum_\mu S_{i\mu}}
-%       +\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}}S_{2c(\alpha),\alpha}\(1-\frac{N_p^{c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\) -\frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}}S_{2c(\alpha)-1,\alpha}\] \right.\\
-%     &+\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(\alpha)-1,\beta}S_{2c(\alpha),\alpha}}{\sum_{\mu}  S_{2c(\alpha),\mu}} - \frac{S_{2c(\alpha),\beta}S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}} + N_p^{c( \alpha)} \frac{S_{2c(\alpha)-2,\beta}}{\sum_\mu S_{2c(\alpha)-2,\mu}}\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\] \\
-%     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}}N_p^{c( \alpha)}\[ \frac{S_{2c(\alpha)-1,\alpha}}{\sum_\mu S_{2c(\alpha)-1,\mu}} - \frac{S_{2c(\alpha),\alpha}}{\sum_{\mu}  S_{2c(\alpha),\mu}} +N_p^{c(\alpha)}\frac{S_{2c(\alpha),\alpha} }{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} \]\\
-%     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 \frac{S_{2c(\alpha)-2,\beta}}{\sum_\mu S_{2c(\alpha)-2,\mu}}N_p^{c( \alpha)}\[ \frac{S_{2c(\alpha),\alpha}}{\sum_{\mu}  S_{2c(\alpha),\mu}} - \frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\(1+\frac{N_p^{c( \alpha)-1} }{\sum_{\mu}  S_{2c(\alpha)-2,\mu}} \)\] \\
-%     &-\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(\alpha)}\left.\(\frac{\[ S_{2c(\beta),\alpha} \]}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} + \frac{S_{2c(\beta)+1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}\sum_{\gamma}  S_{2c(\alpha)-2,\gamma}} \) \right\rbrace
-%   \end{split}
-% \end{equation}
 Once the previous formula is simplified, the one-dimensional scheme equation of the DGMPM with the RK2 time discretization can be written as:
 \begin{equation}
   \label{eq:RK2_scheme}
@@ -202,12 +194,11 @@ Once the previous formula is simplified, the one-dimensional scheme equation of 
       +\frac{a\Delta t}{\Delta X}\[\frac{S_{2c(\beta),\alpha}}{\sum_{\mu}  S_{2c(\beta),\mu}} - \frac{S_{2c(\beta)-1,\alpha}}{\sum_{\mu}  S_{2c(\beta)-1,\mu}}\] \right.\\
     &+\frac{a\Delta t}{\Delta X}N_p^{c( \alpha)}\[\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\frac{S_{2c(\alpha)-2,\beta}}{\sum_\mu S_{2c(\alpha)-2,\mu}}-\frac{S_{2c(\alpha),\alpha}S_{2c(\alpha),\beta}}{\(\sum_\mu S_{2c(\alpha),\mu}\)^2}\] \\
     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( \alpha)} \(\frac{S_{2c(\alpha),\beta}}{\sum_\mu S_{2c(\alpha),\mu}}-\frac{S_{2c(\alpha)-2,\beta}}{\sum_\mu S_{2c(\alpha)-2,\mu}}\)\[\frac{S_{2c(\alpha)-1,\alpha}}{\sum_\mu S_{2c(\alpha)-1,\mu}} - \frac{S_{2c(\alpha),\alpha}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\]\\
-    %&+\frac{1}{2}\(N_p^{c( \alpha)}\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(\alpha),\beta}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2}\frac{S_{2c(\alpha),\alpha} }{\sum_\mu S_{2c(\alpha),\mu}} - \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( \alpha)}\frac{S_{2c(\beta),\alpha}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} \\
     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c( \alpha)}\frac{S_{2c(\beta),\alpha}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} \[N_p^{c( \alpha)}\frac{S_{2c(\alpha),\beta} }{\sum_\mu S_{2c(\alpha),\mu}}-1\]\\
     &+ \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(\beta)+1,\alpha}N_p^{c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}\sum_{\mu}  S_{2c(\alpha)-2,\mu}} \left.\[ 1 - N_p^{c( \alpha)}\frac{S_{2c(\alpha)-2,\beta} }{\sum_{\mu}  S_{2c(\alpha)-2,\mu}}\] \right\rbrace
     \end{split}
 \end{equation}
-The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two-stages time integration. The brackets in those higher order corrections vanish when only one point is in each cell of the grid, so that the scheme is, as that of the previous section, equivalent to the first order upwind method.
+The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two-stages time integration. The brackets in those higher order corrections vanish when only one point is in each cell of the grid, so that the scheme is, as that of the previous section, equivalent to the FOU method.
 
 \subsubsection*{The von Neumann linear stability analysis}
 The scheme equations obtained above are written for simplicity:
@@ -235,14 +226,10 @@ Hence, the DGMPM scheme is stable for a given discretization if the Courant numb
 \begin{equation}
   \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: I = 1,...,N_p
 \end{equation}
-Hence, the stability of the scheme is ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to deal with analytically for general discretizations. However, the particular configuration for which one single particle (equation \eqref{eq:Godunov}) lies in each cell can be studied analytically. In this case, condition \eqref{eq:stability} reads:
-\begin{equation}
-\sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} = \abs{1 - a\frac{\Delta t}{\Delta X} } +  \abs{ a\frac{\Delta t}{\Delta X} } \leq 1 \label{1ppc_stab}
-\end{equation}
-which is satisfied for all $a\frac{\Delta t}{\Delta X} \leq 1$ regardless of the positions of particles. As it as been seen, the DGMPM discretization using one particle per cell yields Godunov's scheme that is characterized by this stability condition. 
+Hence, the stability of the scheme is ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to deal with analytically for general discretizations. 
 \begin{table}[h]
   \centering
-  \input{chapter3/tabular/CFL_comparison_figures}
+  \input{chapter3/tabular/CFL_comparison}
   \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
   \label{tab:CFL_comparison}
 \end{table}
@@ -263,174 +250,22 @@ The von Neumann linear stability analysis performed in this section provides an 
 
 One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional contrained with the description of material boundaries.
 
-\subsection{Two-dimensional stability analysis}
-\subsubsection*{Model equation - Space discretization}
-We now focus on the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at constant speeds $a,b \in \Rbb^{+*}$ in $X$ and $Y$ directions respectively in a homogeneous two-dimensional medium:
-\begin{equation}
-  \label{eq:2D_model_equation}
-  \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
-\end{equation}
-Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain $[0,l]\times[0,h]$ is discretized with $N_p$ material points arbitrarily distributed in $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta X$. Again, there is no empty cell inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
+\subsection{Convergence analysis of the one-dimensonal scheme}
+We now propose to focus on convergence properties in order to define the order accuracy of one-dimensional DGMPM schemes. For the one-dimensonal scalar linear advecton equation with $a>0$, the following theorem holds: 
+\begin{theorem}[Roe \cite{Toro}]
+  A numerical scheme of the form:
+  \begin{equation}
+    \label{eq:2}
+    q^{n+1}_\alpha=\sum_{\beta=-\infty}^{\infty} D_{\beta} q^{n}_{\alpha+\beta}
+  \end{equation}
+  is $p$th order accurate ($p\geq 0$) in space and time if and only if
+  \begin{equation}
+    \label{eq:3}
+    \sum_\beta \beta^q D_{\beta} = \(-a\frac{\Delta t}{\Delta X}\)^q \quad 0 \leq q \leq p
+  \end{equation}
+\end{theorem}
+However, the complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} prevent from a straightforward proof of accuracy beyond order zero. As a consequence, the convergence analysis is carried out here numerically unlike the stability analysis. To this end, we still consider the homogeneous one-dimensional medium of the previous section, submitted to an enforced level 
 
-\subsubsection*{Two-dimensional scheme equation}
-Although one can imagine to combine the DGMPM discretization with a multi-stages time integration, as proposed for one-dimensional problems, the analysis of the DGMPM scheme for two-dimensional problems carried out here only consider the Euler time discretization. As we shall see, the use of the CTU method (see section \ref{subsec:interface_fluxes}) introduces second-order corrections in time to the orginial DCU approach. Therefore, the updated solution at material point $\alpha$ is obtained by interpolation of nodal solutions satisfiying equation \eqref{eq:2D_model_equation}, discretized as:
-\begin{equation}
-  \bar{q}_i^{n+1} = \bar{q}_i^n + \frac{\Delta t}{M^L_i} \(K_{ij}^X a\bar{q}_j^n + K_{ij}^Y b\bar{q}_j^n - \hat{f}_i^{*}\) \label{eq:discrete2D}
-\end{equation}
-so that:
-\begin{equation}
-  \label{eq:2D_updatedMP}
-  \bar{Q}^{n+1}_\alpha = \sum_{i=1}^{4E}S_{_\alpha} \bar{q}_i^{n+1}
-\end{equation}
-The lumped mass matrix in equation \eqref{eq:discrete2D} has the same expression as in the one-dimensional case, that depends on the shape functions of the four-nodes bilinear element: $M_i^L=\sum_\mu m_\mu S_{i\mu}$. Next, the position of the $i$th node of cell $C$, denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y_i^C}$, maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
-\begin{align}
-  &\xi = 2\frac{X-X^C_1}{\Delta X} -1 \quad ; \quad d\xi = 2\frac{dX}{\Delta X} \\
-  &\eta = 2\frac{Y-Y^C_1}{\Delta X} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta X} 
-\end{align}
-% \begin{align}
-%   & S_1(\xi,\eta) = \frac{(1-\xi)(1-\eta)}{4} \quad ; \quad S_2(\xi,\eta) = \frac{(1+\xi)(1-\eta)}{4} \\
-%   & S_3(\xi,\eta) = \frac{(1+\xi)(1+\eta)}{4}\quad ; \quad S_4(\xi,\eta) = \frac{(1-\xi)(1+\eta)}{4}
-% \end{align}
-\begin{figure}[ht]
-  \centering
-  \input{chapter3/pgfFigures/2Dparent}
-  \caption{Parent and current configuration of a four-nodes bilinear element}
-  \label{fig:2Dparent}
-\end{figure}
-Therefore, the pseudo-stiffness matrices read:
-\begin{equation}
-  \begin{aligned}
-    & K_{ij}^X = \sum_\beta \drond{S_{i\beta}}{X}m_\beta S_{j\beta}=\frac{2}{\Delta X}\sum_\beta\drond{S_{i\beta}}{\xi}m_\beta S_{j\beta} =\frac{2}{\Delta X}\sum_\beta\nabla_\xi S_{i\beta} m_\beta S_{j\beta}\\
-    &K_{ij}^Y = \sum_\beta\drond{S_{i\beta}}{Y}m_\beta S_{j\beta}=\frac{2}{\Delta X}\sum_\beta\drond{S_{i\beta}}{\eta}m_\beta S_{j\beta} =\frac{2}{\Delta X}\sum_\beta\nabla_\eta S_{i\beta}m_\beta S_{j\beta}
-  \end{aligned}
-\end{equation}
-and subsequently:
-\begin{equation}
-  \label{eq:2Dpseudo_stiffness}
-  \begin{aligned}
-    & \frac{K_{ij}^X}{M_i^L}  =  \frac{2}{\Delta X} \frac{\sum_\beta\nabla_\xi S_{i\beta}  S_{j\beta}}{\sum_\gamma  S_{i\gamma}}=\frac{2}{\Delta X} \frac{k^X_{ij}}{\sum_\gamma  S_{i\gamma}} \\
-    & \frac{K_{ij}^Y}{M_i^L} = \frac{2}{\Delta X} \frac{\sum_\beta\nabla_\eta S_{i\beta} S_{j\beta}}{\sum_\gamma S_{i\gamma}} = \frac{2}{\Delta X}  \frac{k^Y_{ij}}{\sum_\gamma  S_{i\gamma}}
-  \end{aligned}
-\end{equation}
-The nodal solutions at time $n$ being given by the convective phase $\bar{q}^{C,n}_i=\frac{\sum_\beta S_{i\beta}\bar{Q}^n_\beta}{\sum_\gamma S_{i\gamma}}$, the volume fluxes of the discrete form can be rewritten as:
-\begin{equation}
-  \label{eq:2Dvolume_fluxes}
-  \begin{aligned}
-    & a\frac{K_{ij}^X}{M_i^L}\bar{q}^n_j  = \sum_\beta \bar{Q}^n_\beta} \frac{2}{\Delta X} \frac{a k^X_{ij}}{\sum_\gamma  S_{i\gamma}\sum_\mu S_{j\mu}}S_{j\beta} \\
-    & b\frac{K_{ij}^Y}{M_i^L}\bar{q}^n_j = \sum_\beta \bar{Q}^n_\beta}\frac{2}{\Delta X}  \frac{b k^Y_{ij}}{\sum_\gamma  S_{i\gamma}\sum_\mu S_{j\mu}}S_{j\beta}
-  \end{aligned}
-\end{equation}
-Moreover, nodal interface flux $\hat{f}_i^{*}$ results from the integration of Godunov's flux along the edges it belongs to, according to the weak form \eqref{eq:DGMPM_semi_discrete}.
-Referring to a quantity defined at an interface by means of parenthesis superscripts, the Godunov's flux corresponding to equation \eqref{eq:2D_model_equation} at interface $(i)$ is:
-\begin{equation}
-  \label{eq:2d_Godunov_fluxes}
-  f^{(i)}= c_n q^{(i)}_U = \underbrace{c_nq^{(i)}_D}_{f_N(q^{(i)}_D)} - \underbrace{c_n (q^{(i)}_D -q^{(i)}_U)}_{A^{+}_{U/D}} 
-\end{equation}
-where $c_n$ is the speed in the direction normal to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
-The CTU is adopted by accounting for transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
-\begin{equation}
-  \label{eq:2D_transverse_corrections}
-  B^+A^+_{U/D}=c_t c_n (q^{(i)}_D -q^{(i)}_U)
-\end{equation}
-with $c_t$ the speed in the direction tangent to the edge.
-\begin{figure}[h!]
-  \centering
-  \input{chapter3/pgfFigures/2D_domain}
-  \caption{Two-dimensional patch of cells of constant size $\Delta X \times \Delta X$.}\label{fig:2Dmesh}
-\end{figure}
-Figure \ref{fig:2Dmesh} shows transverse corrections in the cell $C$ which are based on fluctuations coming from Bottom ($B$), Left ($L$), Bottom Left ($BL$) neighor elements of that cell. The use of the numbering of interfaces and nodes adopted in figure \ref{fig:2Dmesh} allows the specialization of the above formula to intercell fluxes of cell $C$:
-\begin{align}
-  & f^{(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\) \\
-  & f^{(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
-  & f^{(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
-  & f^{(4)} = a \frac{q_3^{L,n} + q_4^{L,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
-\end{align}
-where $q^{C,n}_i= \rho \bar{q}^{C,n}_i$ is the value at time step $n$ and node $i$ of cell $C$ in which the uniform mass density is defined as $\rho = \frac{N_p^{C} m^C}{\Delta X^2}$ with $N_p^C$, the total number of particles in that element, and $m^C$ the mass they carry. Thus, introduction of the convective phase yields the following expressions for interface fluxes:
-\begin{align}
-  & f^{(1)} = \sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{b N^C_p m^C }{2\Delta X^2} \[  \(\frac{S_{3\beta}^{B} }{\sum_P S_{3P}^{B}} + \frac{S_{4\beta}^{B}}{\sum_PS_{4P}^{B}}\) - a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{B}}{\sum_P S_{1P}^B} + \frac{S_{4\beta}^{B}}{\sum_PS_{4P}^{B} }-\frac{S_{2\beta}^{BL}}{\sum_P S_{2P}^{BL}} - \frac{S_{3\beta}^{BL}}{\sum_PS_{3P}^{BL}}\) \]\\
-  & f^{(2)} = \sum_{\beta=1}^{N_p} \bar{q}_\beta^n\frac{a N^C_p m^C }{2\Delta X^2} \[  \(\frac{S_{2\beta}^{C}}{\sum_P S_{2P}^{C}} + \frac{S_{3\beta}^{C}}{\sum_P S_{3P}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{2\beta}^{C}}{\sum_P S_{2P}^{C}}-\frac{S_{3\beta}^{B}}{\sum_P S_{3P}^{B}} -\frac{S_{4\beta}^{B}}{\sum_P S_{4P}^{B}}\) \]\\
-  & f^{(3)} =\sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{b N^C_p m^C}{2\Delta X^2} \[  \(\frac{S_{3\beta}^{C}}{\sum_P S_{3P}^{C}} + \frac{ S_{4\beta}^{C}}{\sum_P S_{4P}^{C}}\) - a  \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{C}}{\sum_P S_{1P}^{C}} + \frac{S_{4\beta}^{C}}{\sum_P S_{4P}^{C}}-\frac{S_{2\beta}^{L}}{\sum_P S_{2P}^{L}} - \frac{S_{3\beta}^{L}}{\sum_P S_{3P}^{L}}\) \]\\
-  & f^{(4)} = \sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{a N^C_p m^C }{2\Delta X^2}  \[  \(\frac{S_{3\beta}^{L}}{\sum_P S_{3P}^{L}} + \frac{ S_{4\beta}^{L}}{\sum_P S_{4P}^{L}}\) - b \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{L}}{\sum_P S_{1P}^{L}} + \frac{S_{2\beta}^{L}}{\sum_P S_{2P}^{L}}-\frac{S_{3\beta}^{BL}}{\sum_P S_{3P}^{BL}} - \frac{S_{4\beta}^{BL}}{\sum_P S_{4P}^{L}}\)\]
-\end{align}
-written for simplicity:
-\begin{equation}
-  \label{eq:interface_flux_mapped}
-  f^{(i)}=\sum^{N_p}_\beta \bar{Q}_\beta^n \frac{c_n N^C_p m^C}{2\Delta X^2}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
-\end{equation}
-In the latter expressions, $\phi^{(i)}$ is devoted to normal contributions while $\phi^{(i),T}$ stands for transverse corrections at interface $(i)$.
-Fluxes contribute to nodes through the boundary integrals of the discrete form:
-\begin{equation}
-  \hat{f}_i^{*} = \int_{\Gamma_C} S_i(\vect{X}) f^*_N  \: d\Gamma
-\end{equation}
-where $f^*_N$ is the intercell flux in the direction of the outward normal vector to the boundary. However, interface fluxes computed so far are based on the stream directions so that $f^{(1)}$ and $f^{(4)}$ must be counted negatively in integrals in order to fit outgoing fluxes. Hence, nodal interface fluxes can be computed analytically by using parent coordinates and read for cell $C$ \cite[p.494]{Trangenstein}: 
-\begin{equation}
-  \hat{f}_i^{*} =  -\int_{X^C_1}^{X_2^C} S_i(\vect{X}) f^{(1)}  dX + \int_{Y^C_2}^{Y_3^C} S_i(\vect{X}) f^{(2)}  dY +\int_{X^C_2}^{X_3^C} S_i(\vect{X}) f^{(3)}  dX -\int_{Y^C_1}^{Y_4^C} S_i(\vect{X}) f^{(4)}  dY 
-\end{equation}
-so that edges $(1)$ and $(4)$ corresponds to ingoing flux regions while $(2)$ and $(3)$ are outgoing boundaries of the element. Those integrals can be computed analytically by mapping them to parent coordinates leading thus to:
-\begin{subequations}
-  \begin{alignat}{4}
-    &\hat{f}_1^{*} = -&\frac{\Delta X}{2}\[f^{(1)} +f^{(4)}\] \quad;\quad &\hat{f}_2^{*} = -&\frac{\Delta X}{2}\[f^{(1)} -f^{(2)}\] \\
-    &\hat{f}_3^{*} = &\frac{\Delta X}{2}\[f^{(2)}+ f^{(3)}\]  \quad;\quad &\hat{f}_4^{*} = &\frac{\Delta X}{2}\[f^{(3)} -f^{(4)}\] 
-  \end{alignat}
-\end{subequations}
-Those expression are then condensed by introducing the middle point of edges with coordinates denoted by $\vect{X}^{(i)}_{1/2}$, at which the shape functions are:
-\begin{equation*}
-  S_i(\vect{X}^{(j)}_{1/2}) =
-  \left\lbrace
-  \begin{aligned}
-    & \frac{1}{2} \quad \text{if node i belongs to edge (j)} \\
-    & 0 \quad \text{otherwise.}
-  \end{aligned}
-  \right.
-\end{equation*}
-In addition, the component of the outward normal vector of the edge $N^{(i)}_X$ and $N^{(i)}_Y$ are considered in order to take into account the different signs of intercell fluxes in the Cartesian grid. One thus writes:
-\begin{equation}
-  \hat{f}_i^{*}= \frac{\Delta X}{2}\sum_j^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_{1/2})\(N^{(j)}_X + N^{(j)}_Y\) f^{(j)}
-\end{equation}
-which, combined to equation \eqref{eq:interface_flux_mapped} leads to:
-\begin{equation}
-  \hat{f}_i^{*}= \sum^{N_p}_\beta \bar{Q}_\beta^n \sum_j^{\text{edges}} S_{i}(\vect{X}^{(j)}_{1/2})\(aN^{(j)}_X + bN^{(j)}_Y\)  \frac{ N^C_p m^C}{2\Delta X}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
-\end{equation}
-These terms are divided by the lumped mass matrix in the discrete form:
-\begin{equation}
-  \label{eq:nodal_fluxes}
-  \frac{\hat{f}_i^{*}}{M_i^L}=\sum_\beta \frac{\bar{Q}_\beta^n}{\sum_\mu S_{i\mu}}   \sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_{1/2}) \(aN_X^{(j)}+bN^{(j)}_Y\)\frac{N_p^C }{2 \Delta X}\[\phi_\beta^{(j)} + \phi_\beta^{(j),T}\] 
-\end{equation}
-
-At last, gathering the mapping of updated nodal quantities to the particle \eqref{eq:2D_updatedMP}, expressions of volume fluxes \eqref{eq:2Dvolume_fluxes} and intercell ones \eqref{eq:nodal_fluxes}, the updated value at material point $\alpha$ contained in cell $C$ reads:
-\begin{equation}
-  \label{eq:2Dscheme_equation}
-  \begin{split}
-    \bar{Q}_\alpha^{n+1}= \sum_{i=1}^{4E} &\frac{\sum_{\beta=1}^{N_p}\bar{Q}_\beta^nS_{i\alpha}}{\sum_\mu S_{i\mu}}  \left\lbrace \vphantom{\sum_{j=1}^{\text{edges}} } S_{i\beta} +  2\frac{\Delta t}{\Delta X}  \[ a k^X_{ij} + b k^Y_{ij} \]\frac{S_{j\beta}}{\sum_\gamma S_{i\gamma}} \right.\\ - & \frac{\Delta t}{2\Delta X}\left.\sum_{j=1}^{\text{edges}} S_{i}(\vect{X}^{(j)}_c) N_p^C(aN_X^{(j)}+bN^{(j)}_Y)\[\phi_\beta^{(j)} + \phi_\beta^{(j),T}\] \right\rbrace
-  \end{split}
-\end{equation}
-Recall that in the two-dimensional scheme equation \eqref{eq:2Dscheme_equation}, transverse contributions $\phi_\beta^{(j),T}$ depend on $\Delta t$, providing thus second order corrections. Equation \eqref{eq:2Dscheme_equation} can also be rewritten as:
-\begin{equation}
-  \label{eq:2Dscheme_D_alphabeta}
-  \bar{Q}_\alpha^{n+1}= \sum_{\beta=1}^{N_p}\bar{Q}_\beta^n D_{\alpha\beta}
-\end{equation}
-It allows however to perform the von Neumann linear stability analysis. 
-
-\subsubsection*{The von Neumann linear stability analysis}
-Analogously to the one-dimensonal case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured discretization made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material points indices. For one arbitrary Fourier mode, one has:
-\begin{equation}
-\bar{Q}^{n}_{\alpha \beta} = A_{jp}^n e^{i (\alpha k_j + \beta k_p)\Delta X}
-\end{equation}
-Then, the amplification factor reads:
-\begin{equation}
-\frac{A_{jp}^{n+1}}{A_{jp}^n} =  \sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} e^{i ([\alpha-\gamma]k_j + [\beta-\mu]k_p)\Delta X}D_{\alpha\beta,\gamma\mu}
-\end{equation}
-The requirement that the absolute value of the amplification factor is lower than or equal one leads to the following stability condition which is similar to that of one-dimensional problems:
-\begin{equation}
-\frac{A_{jp}^{n+1}}{A_{jp}^n} = \abs{\sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} e^{i ([\alpha-\gamma]k_j + [\beta-\mu]k_p)\Delta X}D_{\alpha\beta,\gamma\mu}} \leq 1 \Leftrightarrow  \sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} \abs{D_{\alpha\beta,\gamma\mu}} \leq 1
-\end{equation}
-or more generally:
-\begin{equation}
-\sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \alpha=1,...,N_p
-\end{equation}
-
-
-\subsection{Convergence analysis}
 One material point per cell
 $\bar{\sigma} \sin\(\frac{4\pi t}{T}\)$
 CFL for mpm set to 0.5
@@ -453,19 +288,192 @@ CFL for mpm set to 0.5
   \caption{Velocity convergence curves}
   \label{fig:convergence_4ppc}
 \end{figure}
-\begin{theorem}[Roe \cite{Toro}]
-  A numerical scheme of the form:
-  \begin{equation}
-    \label{eq:2}
-    q^{n+1}_\alpha=\sum_\beta D_{\alpha\beta} q^{n}_\beta
-  \end{equation}
-  is $p$th order accurate ($p\geq 0$) in space and time if and only if
-  \begin{equation}
-    \label{eq:3}
-    \sum_\beta \beta^q D_{\alpha\beta} = \(-a\frac{\Delta t}{\Delta X}\)^q \quad 0 \leq q \leq p
-  \end{equation}
-\end{theorem}
+
 Therefore one can imagine to adapt the material points discretization so that a givan order of accuracy is achieved. Such an adaption of the particles positions must be however made by keeping fixed boundary material points.
+
+\subsection{Two-dimensional stability analysis}
+\subsubsection*{Model equation - Space discretization}
+We now focus on the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at constant speeds $a,b \in \Rbb^{+*}$ in $X$ and $Y$ directions respectively in a homogeneous two-dimensional medium:
+\begin{equation}
+  \label{eq:2D_model_equation}
+  \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
+\end{equation}
+Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain $[0,l]\times[0,h]$ is discretized with $N_p$ material points arbitrarily distributed in a Cartesian grid made of $E$ four-nodes bilinear elements with constant size $\Delta X \times \Delta Y$. Horizontal and vertical edges lengths are distinguished here in spite of the Cartesian nature of the grid in order to easily extend the following study to rectilinear grids. Again, there is no empty cell inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
+
+\subsubsection*{Two-dimensional scheme equation}
+One can imagine to combine the DGMPM discretization with a multi-stages time integration as proposed for one-dimensional problems The analysis of the DGMPM scheme for two-dimensional problems carried out here however only consider the Euler time discretization. As we shall see, the use of the CTU method (see section \ref{subsec:interface_fluxes}) introduces second-order corrections in time to the orginial DCU approach. Therefore, the updated solution at material point $\alpha$ is obtained by interpolation of nodal solutions satisfiying equation \eqref{eq:2D_model_equation}, discretized as:
+\begin{equation}
+  \bar{q}_i^{n+1} = \bar{q}_i^n + \frac{\Delta t}{M^L_i} \(K_{ij}^X a\bar{q}_j^n + K_{ij}^Y b\bar{q}_j^n - \hat{f}_i^{*}\) \label{eq:discrete2D}
+\end{equation}
+so that:
+\begin{equation}
+  \label{eq:2D_updatedMP}
+  \bar{Q}^{n+1}_\alpha = \sum_{i=1}^{4E}S_{_\alpha} \bar{q}_i^{n+1}
+\end{equation}
+\begin{figure}[ht]
+  \centering
+  \input{chapter3/pgfFigures/2Dparent}
+  \caption{Parent and current configuration of a four-nodes bilinear element}
+  \label{fig:2Dparent}
+\end{figure}
+The lumped mass matrix in equation \eqref{eq:discrete2D} has the same expression as in the one-dimensional case, that depends on the shape functions of the four-nodes bilinear element: $M_i^L=\sum_\mu m_\mu S_{i\mu}$. Next, the position of the $i$th node of cell $C$, denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y_i^C}$, maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
+\begin{equation}
+  \label{eq:parentCoordinates}
+  \begin{aligned}
+      &\xi = 2\frac{X-X^C_1}{\Delta X} -1 \quad ; \quad d\xi = 2\frac{dX}{\Delta X} \\
+      &\eta = 2\frac{Y-Y^C_1}{\Delta Y} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta Y} 
+  \end{aligned}
+\end{equation}
+
+Therefore, the pseudo-stiffness matrices read:
+\begin{equation}
+  \begin{aligned}
+    & K_{ij}^X = \sum_\beta \drond{S_{i\beta}}{X}m_\beta S_{j\beta}=\frac{2}{\Delta X}\sum_\beta\drond{S_{i\beta}}{\xi}m_\beta S_{j\beta} \\
+    &K_{ij}^Y = \sum_\beta\drond{S_{i\beta}}{Y}m_\beta S_{j\beta}=\frac{2}{\Delta Y}\sum_\beta\drond{S_{i\beta}}{\eta}m_\beta S_{j\beta} \\
+  \end{aligned}
+\end{equation}
+and subsequently, by writing $\drond{(\bullet)}{\xi}=\partial_\xi(\bullet)$:
+\begin{equation}
+  \label{eq:2Dpseudo_stiffness}
+  \begin{aligned}
+    & \frac{K_{ij}^X}{M_i^L}  =  \frac{2}{\Delta X} \frac{\sum_\lambda\partial_\xi S_{i\lambda}  S_{j\lambda}}{\sum_\gamma  S_{i\gamma}} \\
+    & \frac{K_{ij}^Y}{M_i^L} = \frac{2}{\Delta Y} \frac{\sum_\lambda\partial_\eta S_{i\lambda} S_{j\lambda}}{\sum_\gamma S_{i\gamma}}
+  \end{aligned}
+\end{equation}
+The nodal solutions at time $n$ being given by the convective phase $\bar{q}^{C,n}_i=\frac{\sum_\beta S_{i\beta}\bar{Q}^n_\beta}{\sum_\gamma S_{i\gamma}}$, the volume fluxes of the discrete form can be rewritten as:
+\begin{equation}
+  \label{eq:2Dvolume_fluxes}
+  \begin{aligned}
+    & a\frac{K_{ij}^X}{M_i^L}\bar{q}^n_j  = \sum_\beta \bar{Q}^n_\beta \frac{2}{\Delta X} \frac{a\sum_\lambda\partial_\xi S_{i\lambda}  \sum_j S_{j\lambda} S_{j\beta}}{\sum_\gamma  S_{i\gamma}\sum_\mu S_{j\mu}}\\
+    & b\frac{K_{ij}^Y}{M_i^L}\bar{q}^n_j = \sum_\beta \bar{Q}^n_\beta\frac{2}{\Delta Y}  \frac{b \sum_\lambda\partial_\eta S_{i\lambda}  \sum_j S_{j\lambda} S_{j\beta}}{\sum_\gamma  S_{i\gamma}\sum_\mu S_{j\mu}}
+  \end{aligned}
+\end{equation}
+Moreover, nodal interface flux $\hat{f}_i^{*}$ results from the integration of Godunov's flux along the edges it belongs to, according to the weak form \eqref{eq:DGMPM_semi_discrete}.
+Referring to a quantity defined at an interface by means of parenthesis superscripts, the Godunov's flux corresponding to equation \eqref{eq:2D_model_equation} at interface $(i)$ is:
+\begin{equation}
+  \label{eq:2d_Godunov_fluxes}
+  f^{(i)}= c_n q^{(i)}_U = \underbrace{c_nq^{(i)}_D}_{f_N(q^{(i)}_D)} - \underbrace{c_n (q^{(i)}_D -q^{(i)}_U)}_{A^{+}_{U/D}} 
+\end{equation}
+where $c_n$ is the speed in the direction normal to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
+The CTU is adopted by accounting for transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
+\begin{equation}
+  \label{eq:2D_transverse_corrections}
+  B^+A^+_{U/D}=c_t c_n (q^{(i)}_D -q^{(i)}_U)
+\end{equation}
+with $c_t$ the speed in the direction tangent to the edge.
+\begin{figure}[h!]
+  \centering
+  \input{chapter3/pgfFigures/2D_domain}
+  \caption{Two-dimensional patch of cells of constant size $\Delta X \times \Delta Y$.}\label{fig:2Dmesh}
+\end{figure}
+Figure \ref{fig:2Dmesh} shows transverse corrections in the cell $C$ which are based on fluctuations coming from Bottom ($B$), Left ($L$), Bottom Left ($BL$) neighor elements of that cell. The use of the numbering of interfaces and nodes adopted in figure \ref{fig:2Dmesh} allows the specialization of the above formula to intercell fluxes of cell $C$:
+\begin{align}
+  & f^{(1)} = b \frac{q_3^{B,n} + q_4^{B,n}}{2} - a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{B,n}+q_4^{B,n}}{2}-\frac{q_2^{BL,n}+q_3^{BL,n}}{2}\) \\
+  & f^{(2)} = a \frac{q_2^{C,n} + q_3^{C,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{C,n}+q_2^{C,n}}{2}-\frac{q_3^{B,n}+q_4^{B,n}}{2}\) \\
+  & f^{(3)} = b \frac{q_3^{C,n} + q_4^{C,n}}{2} - a b \frac{\Delta t}{2\Delta Y}\(\frac{q_1^{C,n}+q_4^{C,n}}{2}-\frac{q_2^{L,n}+q_3^{L,n}}{2}\) \\
+  & f^{(4)} = a \frac{q_3^{L,n} + q_4^{L,n}}{2} - a b \frac{\Delta t}{2\Delta X}\(\frac{q_1^{L,n}+q_2^{L,n}}{2}-\frac{q_3^{BL,n}+q_4^{BL,n}}{2}\)
+\end{align}
+where $q^{C,n}_i= \rho \bar{q}^{C,n}_i$ is the value at time step $n$ and node $i$ of cell $C$ in which the uniform mass density is defined as $\rho = \frac{N_p^{C} m^C}{\Delta X \Delta Y}$ with $N_p^C$, the total number of particles in that element, and $m^C$ the mass they carry. Thus, introduction of the convective phase yields the following expressions for interface fluxes:
+\begin{align}
+  & f^{(1)} = \sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{b N^C_p m^C }{2\Delta X \Delta Y} \[  \(\frac{S_{3\beta}^{B} }{\sum_\gamma S_{3\gamma}^{B}} + \frac{S_{4\beta}^{B}}{\sum_\gamma S_{4\gamma}^{B}}\) - a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1\beta}^{B}}{\sum_\gamma S_{1\gamma}^B} + \frac{S_{4\beta}^{B}}{\sum_\gamma S_{4\gamma}^{B} }-\frac{S_{2\beta}^{BL}}{\sum_\gamma S_{2\gamma}^{BL}} - \frac{S_{3\beta}^{BL}}{\sum_\gamma S_{3\gamma}^{BL}}\) \]\\
+  & f^{(2)} = \sum_{\beta=1}^{N_p} \bar{q}_\beta^n\frac{a N^C_p m^C }{2\Delta X \Delta Y} \[  \(\frac{S_{2\beta}^{C}}{\sum_\gamma S_{2\gamma}^{C}} + \frac{S_{3\beta}^{C}}{\sum_\gamma S_{3\gamma}^{C}} \)- b \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{C}}{\sum_\gamma S_{1\gamma}^{C}} + \frac{S_{2\beta}^{C}}{\sum_\gamma S_{2\gamma}^{C}}-\frac{S_{3\beta}^{B}}{\sum_\gamma S_{3\gamma}^{B}} -\frac{S_{4\beta}^{B}}{\sum_\gamma S_{4\gamma}^{B}}\) \]\\
+  & f^{(3)} =\sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{b N^C_p m^C}{2\Delta X \Delta Y} \[  \(\frac{S_{3\beta}^{C}}{\sum_\gamma S_{3\gamma}^{C}} + \frac{ S_{4\beta}^{C}}{\sum_\gamma S_{4\gamma}^{C}}\) - a  \frac{\Delta t}{2\Delta Y}\(\frac{S_{1\beta}^{C}}{\sum_\gamma S_{1\gamma}^{C}} + \frac{S_{4\beta}^{C}}{\sum_\gamma S_{4\gamma}^{C}}-\frac{S_{2\beta}^{L}}{\sum_\gamma S_{2\gamma}^{L}} - \frac{S_{3\beta}^{L}}{\sum_\gamma S_{3\gamma}^{L}}\) \]\\
+  & f^{(4)} = \sum_{\beta=1}^{N_p}\bar{q}_\beta^n\frac{a N^C_p m^C }{2\Delta X \Delta Y}  \[  \(\frac{S_{3\beta}^{L}}{\sum_\gamma S_{3\gamma}^{L}} + \frac{ S_{4\beta}^{L}}{\sum_\gamma S_{4\gamma}^{L}}\) - b \frac{\Delta t}{2\Delta X}\(\frac{S_{1\beta}^{L}}{\sum_\gamma S_{1\gamma}^{L}} + \frac{S_{2\beta}^{L}}{\sum_\gamma S_{2\gamma}^{L}}-\frac{S_{3\beta}^{BL}}{\sum_\gamma S_{3\gamma}^{BL}} - \frac{S_{4\beta}^{BL}}{\sum_\gamma S_{4\gamma}^{L}}\)\]
+\end{align}
+written for simplicity:
+\begin{equation}
+  \label{eq:interface_flux_mapped}
+  f^{(i)}=\sum^{N_p}_\beta \bar{Q}_\beta^n \frac{c_n N^C_p m^C}{2\Delta X \Delta Y}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
+\end{equation}
+In the latter expressions, $\phi^{(i)}$ is devoted to normal contributions while $\phi^{(i),T}$ stands for transverse corrections at interface $(i)$. Numerical fluxes considered above are based on normal vectors oriented in the direction of the stream (see figure \ref{fig:2Dmesh}). Nodal interface fluxes on the other hand, as defined in the semi-discrete system:
+%Fluxes contribute to nodes through the boundary integrals of the discrete form:
+\begin{equation}
+  \hat{f}_i^{*} = \int_{\Gamma} S_i(\vect{X}) f^*_N  \: d\Gamma
+\end{equation}
+are based on the outgoing flux to an element so that $f^{(1)}$ and $f^{(4)}$ must be counted negatively. The integral then reads for cell $C$:
+\begin{equation}
+  \hat{f}_i^{*} =  -\int_{X^C_1}^{X_2^C} S_i(X,Y^C_{1}) f^{(1)}  dX + \int_{Y^C_2}^{Y_3^C} S_i(X^C_{2},Y) f^{(2)}  dY +\int_{X^C_2}^{X_3^C} S_i(X,Y^C_{3}) f^{(3)}  dX -\int_{Y^C_1}^{Y_4^C} S_i(X^C_{1},Y) f^{(4)}  dY 
+\end{equation}
+which can be computed analytically by using parent coordinates \eqref{eq:parentCoordinates}:
+\begin{subequations}
+  \begin{alignat}{4}
+    &\hat{f}_1^{*} = -&\frac{1}{2}\[\Delta X f^{(1)} + \Delta Y f^{(4)}\] \quad;\quad &\hat{f}_2^{*} = -&\frac{1}{2}\[\Delta X f^{(1)} - \Delta Y f^{(2)}\]\\
+    &\hat{f}_3^{*} =  &\frac{1}{2}\[\Delta X f^{(3)} + \Delta Y f^{(2)}\] \quad;\quad &\hat{f}_4^{*} = &\frac{1}{2}\[\Delta X f^{(3)} - \Delta Y f^{(4)}\]
+  \end{alignat}
+\end{subequations}
+A condensed way of writing the fluxes can be adopted by introducing the middle point of edges, with coordinates denoted by $\vect{X}^{(i)}_{1/2}$, at which the shape functions are:
+\begin{equation*}
+  S_i(\vect{X}^{(j)}_{1/2}) =
+  \left\lbrace
+  \begin{aligned}
+    & \frac{1}{2} \quad \text{if node i belongs to edge (j)} \\
+    & 0 \quad \text{otherwise.}
+  \end{aligned}
+  \right.
+\end{equation*}
+In addition, components of the outward normal vector to edges $N^{(i)}_X$ and $N^{(i)}_Y$ allows to take into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
+\begin{equation}
+  \hat{f}_i^{*}= \frac{1}{2}\sum_j^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_{1/2})\(\Delta Y N^{(j)}_X + \Delta X N^{(j)}_Y\) f^{(j)}
+\end{equation}
+which, combined to equation \eqref{eq:interface_flux_mapped} leads to:
+\begin{equation}
+  \hat{f}_i^{*}= \sum^{N_p}_\beta \bar{Q}_\beta^n \sum_j^{\text{edges}} S_{i}(\vect{X}^{(j)}_{1/2})\(a\Delta Y N^{(j)}_X + b\Delta X N^{(j)}_Y\)  \frac{ N^C_p m^C}{2\Delta X\Delta Y}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
+\end{equation}
+These terms are divided by the lumped mass matrix in the discrete form:
+\begin{equation}
+  \label{eq:nodal_fluxes}
+  \frac{\hat{f}_i^{*}}{M_i^L}=\sum_\beta \frac{\bar{Q}_\beta^n}{\sum_\mu S_{i\mu}}   \sum_{j=1}^{\text{edges}}\frac{1}{2} S_{i}(\vect{X}^{(j)}_{1/2}) N^C_p m^C \(\frac{aN^{(j)}_X}{\Delta X}  + \frac{bN^{(j)}_Y}{\Delta Y} \) \[\phi_\beta^{(j)} + \phi_\beta^{(j),T}\] 
+\end{equation}
+
+At last, gathering the mapping of updated nodal quantities to the particle \eqref{eq:2D_updatedMP}, expressions of volume fluxes \eqref{eq:2Dvolume_fluxes} and intercell ones \eqref{eq:nodal_fluxes}, the updated value at material point $\alpha$ contained in cell $C$ reads:
+\begin{equation}
+  \label{eq:2Dscheme_equation}
+  \begin{split}
+    \bar{Q}_\alpha^{n+1}=  \sum_{\beta=1}^{N_p}\bar{Q}_\beta^n\sum_{i=1}^{4E}\frac{S_{i\alpha}}{\sum_\mu S_{i\mu}}  \left\lbrace \vphantom{\sum_{j=1}^{\text{edges}} } \right.& S_{i\beta} +  2  \sum_{j=1}^{4E} \frac{ S_{j\beta}}{\sum_\gamma S_{j\gamma}}\sum_{\lambda=1}^{N_p}S_{j\lambda}\[ a\frac{\Delta t}{\Delta X}\partial_\xi S_{i\lambda}  + b\frac{\Delta t}{\Delta Y} \partial_\eta S_{i\lambda} \] \\ - & \frac{1}{2}\left.\sum_{k=1}^{\text{edges}} S_{i}(\vect{X}^{(k)}_{1/2}) N_p^C \(a\frac{\Delta t}{\Delta X}N^{(j)}_X  + b\frac{\Delta t}{\Delta Y}N^{(j)}_Y \)\[\phi_\beta^{(k)} + \phi_\beta^{(k),T}\] \right\rbrace
+  \end{split}
+\end{equation}
+Recall that in the two-dimensional scheme equation \eqref{eq:2Dscheme_equation}, transverse contributions $\phi_\beta^{(j),T}$ depend on $\Delta t$, providing thus second order corrections in time. Equation \eqref{eq:2Dscheme_equation} can also be rewritten as:
+\begin{equation}
+  \label{eq:2Dscheme_D_alphabeta}
+  \bar{Q}_\alpha^{n+1}= \sum_{\beta=1}^{N_p}\bar{Q}_\beta^n D_{\alpha\beta}
+\end{equation}
+
+\subsubsection*{The von Neumann linear stability analysis}
+Analogously to the one-dimensonal case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured discretization made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material points indices. For one arbitrary Fourier mode, one has \cite{Leveque}:
+\begin{equation}
+\bar{Q}^{n}_{\alpha \beta} = A_{jq}^n e^{i (\alpha k_j + \beta k_q)\Delta X}
+\end{equation}
+where $k_j$ and $k_q$ are wave numbers. Then, the amplification factor reads:
+\begin{equation}
+\frac{A_{jq}^{n+1}}{A_{jq}^n} =  \sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} e^{i ([\alpha-\gamma]k_j + [\beta-\mu]k_q)\Delta X}D_{\alpha\beta,\gamma\mu}
+\end{equation}
+with $i=\sqrt{-1}$. The requirement that the absolute value of the amplification factor is lower than or equal one leads to the following stability condition which is similar to that of one-dimensional problems:
+\begin{equation}
+\abs{\frac{A_{jq}^{n+1}}{A_{jq}^n}} = \abs{\sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} e^{i ([\alpha-\gamma]k_j + [\beta-\mu]k_q)\Delta X}D_{\alpha\beta,\gamma\mu}} \leq 1 \Leftrightarrow  \sum_{\gamma=1}^{N_p^X}\sum_{\mu=1}^{N_p^Y} \abs{D_{\alpha\beta,\gamma\mu}} \leq 1
+\end{equation}
+or more simply:
+\begin{equation}
+\sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \alpha=1,...,N_p
+\end{equation}
+
+Again, the convective phase leads for the single particle-per-cell discretization to a piece-wise constant reconstruction of the field on the computational grid thus providing the first order upwind method. This method is known to be bounded by the stability requirements \cite[p.449]{Leveque}:
+\begin{subequations}
+  \label{eq:2DCFL}
+  \begin{alignat}{2}
+    & \abs{a}\frac{\Delta t}{\Delta X} + \abs{b} \frac{\Delta t}{\Delta Y} \leq 1 \qquad &\text{for DCU} \\
+    & \max \( \abs{a} \frac{\Delta t}{\Delta X}  , \abs{b} \frac{\Delta t}{\Delta Y}\) \leq 1 \qquad &\text{for CTU}
+  \end{alignat}
+\end{subequations}
+
+% \begin{table}[h]
+%   \centering
+%   \input{chapter3/tabular/2DCFL_comparison}
+%   \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
+%   \label{tab:CFL_comparison}
+% \end{table}
+
+
+
 
 
 %%% Local Variables: 
