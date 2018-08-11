@@ -40,7 +40,7 @@ def evalResidual(point,S,Sp,CFL):
         ## First order contributions
         D_mu = CFL*Nmp*Sp2[p]*S1[point]/(Sum1*Sump2)
         ## Second order contributions
-        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmpp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
+        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
         Res=Res + np.abs(D_mu)  
     return Res-1.
 
@@ -81,7 +81,7 @@ def symbolResidual(point,S,Sp):
         ## First order contributions
         D_mu = CFL*Nmp*Sp2[p]*S1[point]/(Sum1*Sump2)
         ## Second order contributions
-        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmpp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
+        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
         Res=Res + np.abs(D_mu)    
     Residual = lambdify((CFL),Res-1.)
     #Residual = lambdify((CFL),np.abs(Res)-1.)
@@ -123,7 +123,7 @@ def computeResidual(CFL,point,S,Sp):
         ## First order contributions
         D_mu = CFL*Nmp*Sp2[p]*S1[point]/(Sum1*Sump2)
         ## Second order contributions
-        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmpp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
+        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
         Res=Res + np.abs(D_mu)  
     return Res
 

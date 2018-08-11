@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=0.85]
+  \draw[thick,->] (-1.5,0.)--(1.5,0.) node [right] {$\xi$};
+  \draw[thick,->] (0.,-1.5)--(0.,1.5) node [above] {$\eta$};
+  \draw (-1.,-1.0) rectangle (1.,1.);
+  \node[above right] at (0.,1.) {$1$};\node[above right] at (0.,-1.) {-$1$};
+  \node[above right] at (-1,0.) {-$1$};\node[above right] at (1.,.) {$1$};
+  \draw[thick,->] (-.25+5.,0.)--(1.5+5.,0.) node [right] {$X$};
+  \draw[thick,->] (0.+5.,-.25)--(0.+5.,1.5) node [above] {$Y$};
+  % deformed element
+  % \draw (6.,1.) node [below] {$\vect{X}_1$}-- (8.,1.5) node [below] {$\vect{X}_2$}-- (9.,4.) node [above] {$\vect{X}_3$}-- (6.5,3.5) node [above] {$\vect{X}_4$}-- (6.,1.);
+  % \fill[black] (8.,3.25) circle (0.05) node [above] {$\vect{X}$};
+  % \fill[black] (.5,.5) circle (0.05) node [above] {$\vect{\xi}$};
+  % \draw[->] (8.,3.25) .. controls (6.,3.25) and (1.5,1.5) .. (.5,.5);
+  % Cartesian element
+  \draw (6.,1.) node [below] {$\vect{X}_1$}-- (9.,1.) node [below] {$\vect{X}_2$}-- (9.,4.) node [above] {$\vect{X}_3$}-- (6.,4) node [above] {$\vect{X}_4$}-- (6.,1.);
+  \fill[black] (8.,3.25) circle (0.05) node [above] {$\vect{X}$};
+  \fill[black] (.5,.5) circle (0.05) node [above] {$\vect{\xi}$};
+  \draw[->] (8.,3.25) .. controls (6.,3.25) and (1.5,1.5) .. (.5,.5);
+\end{tikzpicture}
+  

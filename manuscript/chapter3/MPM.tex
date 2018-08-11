@@ -48,7 +48,7 @@ where $\vect{v}^{i}$ is the velocity of the $i$th grid node, and $S_i(\vect{x})$
   \label{eq:density_approx}
   \rho\(\vect{x},t\)=\sum_{p=1}^{N_p} m_p \delta(\vect{x}^p-\vect{x})
 \end{equation}
-where the delta Dirac distribution $\delta$ is often referred to as the \textit{characteristic function} of material points, and $\vect{x}^p$ is the position of the $p$th particle. In what follows, the dependence on time will be omitted for simplicity and $p$ and $i$ or $j$ stand respectively for material points and nodes. %Conversely, the mass carried by each material point can be deducted for homogeneous from the volume of the cell $c$ it belongs to and the number of particles sharing this element $N_p^c$: $m_p=\rho \frac{\Omega_c}{N_p^c}$ (here?).
+where the delta Dirac distribution $\delta$ is often referred to as the \textit{characteristic function} of material points, and $\vect{x}^p$ is the position of the $p$th particle. In what follows, the dependence on time will be omitted for simplicity and $p$ and $i$ or $j$ stand respectively for material points and nodes. 
 
 By introducing a specific Cauchy tensor $\rho \tens{\bar{\sigma}}=\tens{\sigma}$ and the approximation of mass density \eqref{eq:density_approx} in the weak form \eqref{eq:linear_momentum_weak_form}, the property of the delta Dirac distribution yields:
 \begin{equation}
