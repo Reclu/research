@@ -156,6 +156,8 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
     Residual = lambdify((dt),Res-1.)
     return Residual
 
+
+
 def rootFinder(function,tol=1.e-12):
     NiterMax=1000
     # Find the bigest root of the residual by dichotomy algorithm
