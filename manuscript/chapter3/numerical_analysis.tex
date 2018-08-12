@@ -251,7 +251,53 @@ The von Neumann linear stability analysis performed in this section provides an 
 One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional constrained with the description of material boundaries.
 
 \subsection{Convergence analysis of the one-dimensonal scheme}
-We now propose to focus on convergence properties in order to define the order accuracy of one-dimensional DGMPM schemes. For the one-dimensonal scalar linear advecton equation with $a>0$, the following theorem holds: 
+We now propose to focus numerically on convergence properties of one-dimensional DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption holds. The following system of one-dimensional linear scalar advection equations is then considered:  
+\begin{equation*}
+  \drond{}{t} \matrice{v \\ \sigma} -\drond{}{X}\matrice{\frac{1}{\rho}\sigma \\ Ev} = \matrice{0 \\0}
+\end{equation*}
+It has been seen in section \ref{sec:characteristic_analysis} that waves travel at speeds $\pm c = \pm \sqrt{\frac{E}{\rho}}$ in elastic bars. Hence, providing the inflow boundary condition on the left end of the bar of length $l$:
+\begin{equation}
+  \label{eq:BC_convergence}
+  \sigma(X=0,t) = \tilde{\sigma} \sin\(\frac{4\pi t}{T}\)  
+\end{equation}
+where $T=c/l$ is the time taken by waves to travel from left to right ends, and $\tilde{\sigma}$ some wave amplitute, the exact solution of the problem consists in the transport of the boundary condition \eqref{eq:BC_convergence} according to:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:exact_solution_convergenceS}
+    &\sigma(X,t)=\tilde{\sigma} \sin\(\frac{4\pi (t-X/c)}{T}\) \\
+    \label{eq:exact_solution_convergenceV}
+    & v(X,t)=\frac{\sigma(X,t)}{\rho c}
+  \end{alignat}
+\end{subequations}
+
+The continuum equation is discretized with both MPM and DGMPM using a regular one-dimensional grid made of cells that all contain the same fixed number of particles. The convergence analysis in space is performed by maintaining the number in every every constant so that the CFL number can be set once and for all (set at $0.5$ for the MPM), thus preventing from time-space coupling effects. Hence, configurations involving different numbers of particles per cell are studied separately. Attention is paid to numerical solutions provided by the two numerical methods at time $t=0.75 T$ compared to exact solutions \eqref{eq:exact_solution_convergenceS} and \eqref{eq:exact_solution_convergenceV} according to the $L^2$ error $\epsilon$:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:L2_error_S}
+    & \epsilon_\sigma(t) = \int_0^L \( \frac{\abs{\sigma - \sigma_{\text{exact}}}^2}{\abs{\sigma_{\text{exact}}}^2}\)^{\frac{1}{2}}  dX \\
+    \label{eq:L2_error_V}
+    & \epsilon_v(t) = \int_0^L \( \frac{\abs{v - v_{\text{exact}}}^2}{\abs{v_{\text{exact}}}^2}\)^{\frac{1}{2}}  dX
+  \end{alignat}
+\end{subequations}
+Figures \ref{fig:convergence_stress} shows the evolution of the error $\epsilon_\sigma$ made on stress by the MPM and the DGMPM using either Euler or RK2 time discretizations. First, we see that convergence rates of the numerical methods are quite similar in terms of stress. However, the DGMPM using Euler time discretization exhibits a slighlty lower rate of convergence and yields the highest $L^2$ error. Second, an increase in the number of material points used in every cell provides equivalent convergence rates and on the other hand leads to a higher error (see figures \ref{fig:convergence_stress}\subref{subfig:conv_stress_2ppc} to \ref{fig:convergence_stress}\subref{subfig:conv_stress_8ppc}). The same behavior can be seen for the velocity in figures \ref{fig:convergence_velocity}\subref{subfig:conv_velo_2ppc} and \ref{fig:convergence_velocity}\subref{subfig:conv_velo_4ppc} for only two and four material points per cells. Furthermore, these figure show that the convergence rate of the DGMPM is the same for velocity, as expected by the approximation that is the same for velocity and stress, while that of MPM is slightly higher than for stress while lower than two. (regarder [Steffen] pour citer le fait qu'on le savait déjà)
+\begin{figure}[ht]
+  \centering
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_2ppc.tex}\phantomsubcaption\label{subfig:conv_stress_2ppc}}
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_3ppc.tex}\phantomsubcaption\label{subfig:conv_stress_3ppc}}\\
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_4ppc.tex}\phantomsubcaption\label{subfig:conv_stress_4ppc}}
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_8ppc.tex}\phantomsubcaption\label{subfig:conv_stress_8ppc}}
+  \caption{Evolution of stress $L^2$ errors.}
+  \label{fig:convergence_stress}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_2ppc.tex}\phantomsubcaption\label{subfig:conv_velo_2ppc}}
+  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_4ppc.tex}\phantomsubcaption\label{subfig:conv_velo_4ppc}}
+  \caption{Evolution of velocity $L^2$ errors.}
+  \label{fig:convergence_velocity}
+\end{figure}
+
+For the one-dimensonal scalar linear advecton equation with $a>0$, the following theorem holds: 
 \begin{theorem}[Roe \cite{Toro}]
   A numerical scheme of the form:
   \begin{equation}
@@ -264,32 +310,7 @@ We now propose to focus on convergence properties in order to define the order a
     \sum_\beta \beta^q D_{\beta} = \(-a\frac{\Delta t}{\Delta X}\)^q \quad 0 \leq q \leq p
   \end{equation}
 \end{theorem}
-However, the complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} prevent from a straightforward proof of accuracy beyond order zero. As a consequence, the convergence analysis is carried out here numerically unlike the stability analysis. To this end, we still consider the homogeneous one-dimensional medium of the previous section, submitted to an enforced level 
-
-One material point per cell
-$\bar{\sigma} \sin\(\frac{4\pi t}{T}\)$
-CFL for mpm set to 0.5
-
-
-\begin{figure}[ht]
-  \centering
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_2ppc.tex}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_3ppc.tex}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_4ppc.tex}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_8ppc.tex}}
-  \caption{Stress convergence curves}
-  \label{fig:convergence_4ppc}
-\end{figure}
-
-\begin{figure}[ht]
-  \centering
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_2ppc.tex}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_4ppc.tex}}
-  \caption{Velocity convergence curves}
-  \label{fig:convergence_4ppc}
-\end{figure}
-
-Therefore one can imagine to adapt the material points discretization so that a givan order of accuracy is achieved. Such an adaption of the particles positions must be however made by keeping fixed boundary material points.
+However, the complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} prevent from a straightforward proof of accuracy beyond order zero. Therefore one can imagine to adapt the material points discretization so that a givan order of accuracy is achieved. Such an adaption of the particles positions must be however made by keeping fixed boundary material points.
 
 \subsection{Two-dimensional stability analysis}
 \subsubsection*{Model equation - Space discretization}
