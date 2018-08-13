@@ -119,7 +119,7 @@ if CFL==1.:
     #print "CFL=1 changed to CFL=0.99999999999"
     CFL=0.99999999999
 Dt=CFL*dx/c 
-tfinal=0.75*L/c
+tfinal=0.02#0.75*L/c
 tf=2.*tfinal#0.75*L/c;
 inc=round(tfinal/Dt)
 
@@ -258,18 +258,22 @@ while T<tfinal:
         u = np.zeros((Nn,2))
         mesh.setMapping(K)
 
+    
 
     #print 'Increment =', n, 't = ', T,' s.'
     n+=1
     T+=Dt
     Velocity[:,n]=U[:,1]
     Stress[:,n]=rho*U[:,0]
+
     
     for i in range(Mp):
         Sth[i,n]=E*v0*np.sin(np.pi*c*T/L)*np.cos(np.pi*xp[i,0]/L)/c
         Vth[i,n]=v0*np.cos(np.pi*c*T/L)*np.sin(np.pi*xp[i,0]/L)
     Pos[:,n]=xp[:,0]
     time[n]=T
+
+    
     """
     plt.plot(xp[:,0],Stress[:,n],'r-o',lw=2.5)
     plt.plot(xp[:,0],Sth[:,n],'k-',lw=1.5)
@@ -289,7 +293,7 @@ line = [line1,line2, line3,line4]
 
 ax2.set_xlim(0.,L);
 ax2.set_ylim(np.min(Stress),np.max(Stress));
-
+ 
 ax2.grid()
 ax2.set_xlabel('x (m)', fontsize=18)
 ax2.set_ylabel('Stress', fontsize=18)

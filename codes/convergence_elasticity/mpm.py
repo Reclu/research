@@ -105,13 +105,11 @@ s0 =-0.*Sy
 v0=0.1
 
 # Time discretization
-#factor=2.
-CFL=0.5 
-tfinal=0.75*L/c
+tfinal=0.02#0.75*L/c
 tf=2.*tfinal#0.75*L/c
-Dt=CFL*lx/c
+Dt=1.e-5#CFL*lx/c
 
-inc=int(tfinal/Dt)
+inc=int(tfinal/Dt)+1
 
 T=0.
 n=0

@@ -32,11 +32,15 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
         TeXFile.write(r'\definecolor{'+color[i]+'}{RGB}{'+col[i]+'}')
         TeXFile.write('\n')
     TeXFile.write(r'\begin{tikzpicture}[scale=0.7]');TeXFile.write('\n')
-    TeXFile.write(r'\begin{loglogaxis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=north west,title={() -- particles per cell},xmin=0.001,xmax=0.1,ymin=0.001,ymax=0.1]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{loglogaxis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={() -- particles per cell},xmin=0.07,xmax=2.,ymin=0.001,ymax=0.2]');TeXFile.write('\n')
     legend=''
     TeXFile.write(r'\addplot[Blue,very thick,mark=*] coordinates {')
     for j in range(len(fields[0,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[0,j])+') ')
+    TeXFile.write('};\n')
+    TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
+    for j in range(len(fields[3,:])):
+        TeXFile.write('('+str(xField[j])+','+str(fields[3,j])+') ')
     TeXFile.write('};\n')
     TeXFile.write(r'\addplot[Red,very thick,mark=+] coordinates {')
     for j in range(len(fields[1,:])):
@@ -46,25 +50,17 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
     for j in range(len(fields[2,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[2,j])+') ')
     TeXFile.write('};\n')
-    TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
-    for j in range(len(fields[3,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[3,j])+') ')
-    TeXFile.write('};\n')
     
-    TeXFile.write(r'\legend{dgmpm (Euler),usl,usf,dgmpm (RK2)}')
+    
+    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),usl,usf}')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09) -- (axis cs:0.003/1.4,0.09/1.4);')
+    TeXFile.write(r'\draw (axis cs:0.2,0.1) -- (axis cs:0.2/1.4,0.1/1.4);')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09) -- (axis cs:0.003,0.09/1.4) node [midway,right] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.2,0.1) -- (axis cs:0.2,0.1/1.4) node [midway,right] {\scriptsize 1};')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09/1.4) -- (axis cs:0.003/1.4,0.09/1.4) node [midway,below] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.2,0.1/1.4) -- (axis cs:0.2/1.4,0.1/1.4) node [midway,below] {\scriptsize 1};')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09) -- (axis cs:0.005/1.4,0.09/2.8);')
-    TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09) -- (axis cs:0.005,0.09/2.8) node [midway,right] {\scriptsize 2};')
-    TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09/2.8) -- (axis cs:0.005/1.4,0.09/2.8) node [midway,below] {\scriptsize 1};')
-    TeXFile.write('\n')    
+    
     TeXFile.write(r'\end{loglogaxis}')
     TeXFile.write('\n')
     TeXFile.write('\end{tikzpicture}')
@@ -76,6 +72,9 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
 MP = [20,40,60,80,100,120,140,160,200,300]
 ppc=[2,3,4,8]
 
+
+MP=[4,8,16,32,64]
+ppc=[4]
 # MP = [10,20,40,60,80]
 # ppc=[2,3]
 
@@ -148,9 +147,9 @@ for p in range(len(ppc)):
         # plt.ylabel(r'$\sigma$')
         # plt.show()
         #############################################################################
-    export2DTeXFile('dgmpm_mpm_accuracyS_'+str(ppc[p])+'ppc.tex',dx[:,p],r'$\Delta X$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_usl[:,p],ErrS_usf[:,p],ErrS_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','usf','dgmpm (RK2)'])
+    export2DTeXFile('dgmpm_mpm_accuracyS_'+str(ppc[p])+'ppc.tex',dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_usl[:,p],ErrS_usf[:,p],ErrS_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','usf','dgmpm (RK2)'])
     export2DTeXFile('dgmpm_mpm_accuracyV_'+str(ppc[p])+'ppc.tex',dx[:,p],r'$\Delta X$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_usl[:,p],ErrV_usf[:,p],ErrV_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','usf','dgmpm (RK2)'])
-        
+         
 ###########Plot convergence curves####################
 #####Assess the constant and slopes of the
 #####convergence curves by fitting a power law with curve_fit
@@ -206,13 +205,9 @@ for p in range(len(ppc)):
     plt.loglog(dx[:,p],ErrS_dgmpmRK2[:,p],color_dgmpmRK2[p],lw=2.5,label='dgmpm RK2')
     # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+2,0],popt[4*p+2,1]),'k-')
 
-    #plt.loglog(dx[:,p],Err_dgmpm2[:,p],color_dgmpm2[p],lw=2.5,label='dgmpm L2 error')
-    # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+3,0],popt[4*p+3,1]),'k-')
-# plt.loglog(DX,Err2_S_fem,'g-+',lw=2.5,label='fem') 
-# plt.loglog(DX,func(DX,popt2[0],popt2[1]),'k-')
 
-# plt.loglog(dx[:,0],func(dx[:,0],1.,1.),'k-')
-# plt.loglog(dx[:,0],func(dx[:,0],1.,2.),'k--')
+plt.loglog(dx[:,0],func(dx[:,0],1.,1.),'k-')
+plt.loglog(dx[:,0],func(dx[:,0],1.,2.),'k--')
 
 plt.grid(True,which="both")
 plt.xlabel('grid size')
@@ -221,3 +216,31 @@ plt.ylabel(r'$\frac{||\sigma- \sigma_{exact}||_2}{||\sigma_{exact}||_2}$')
 plt.show()
 
 
+#####Plot of convergence curves#########
+fig1 = plt.figure()
+#Velocity
+color_dgmpm=['r-+','y-+','c-+','g-+','b-+','m-+']
+color_mpm=['r--+','y--+','c--+','g--+','b--+','m--+']
+color_dgmpmRK2=['m-+','b-+','g-+','c-+','y-+','r-+']
+color_dgmpm2=['m--','b--','g--','c--','y--','r--']
+for p in range(len(ppc)):
+    plt.loglog(dx[:,p],ErrV_dgmpm[:,p],color_dgmpm[p],lw=2.5,label='dgmpm')
+    # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p,0],popt[4*p,1]),'k-',label='dgmpm')
+
+    plt.loglog(dx[:,p],ErrV_usl[:,p],color_mpm[p],lw=2.5,label='usl')
+    # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+1,0],popt[4*p+1,1]),'k-')
+
+    plt.loglog(dx[:,p],ErrV_usl[:,p],color_mpm[p],linestyle='-.',lw=2.5,label='usf')
+    # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+1,0],popt[4*p+1,1]),'m-')
+
+    plt.loglog(dx[:,p],ErrV_dgmpmRK2[:,p],color_dgmpmRK2[p],lw=2.5,label='dgmpm RK2')
+    # plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+2,0],popt[4*p+2,1]),'k-')
+
+plt.loglog(dx[:,0],func(dx[:,0],1.,1.),'k-')
+plt.loglog(dx[:,0],func(dx[:,0],1.,2.),'k--')
+
+plt.grid(True,which="both")
+plt.xlabel('grid size')
+plt.legend(numpoints=1,loc='best')
+plt.ylabel(r'$\frac{||\sigma- \sigma_{exact}||_2}{||\sigma_{exact}||_2}$')
+plt.show()
