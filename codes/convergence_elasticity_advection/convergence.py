@@ -41,6 +41,10 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
     for j in range(len(fields[0,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[0,j])+') ')
     TeXFile.write('};\n')
+    TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
+    for j in range(len(fields[3,:])):
+        TeXFile.write('('+str(xField[j])+','+str(fields[3,j])+') ')
+    TeXFile.write('};\n')
     TeXFile.write(r'\addplot[Red,very thick,mark=+] coordinates {')
     for j in range(len(fields[1,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[1,j])+') ')
@@ -49,12 +53,8 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
     for j in range(len(fields[2,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[2,j])+') ')
     TeXFile.write('};\n')
-    TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
-    for j in range(len(fields[3,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[3,j])+') ')
-    TeXFile.write('};\n')
     
-    TeXFile.write(r'\legend{dgmpm (Euler),mpm,dgmpm (RK2)}')
+    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),usl,usf}')
     TeXFile.write('\n')    
     TeXFile.write(r'\draw (axis cs:0.003,0.09) -- (axis cs:0.003/1.4,0.09/1.4);')
     TeXFile.write('\n')    
