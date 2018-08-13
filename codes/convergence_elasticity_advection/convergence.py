@@ -49,24 +49,18 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
     for j in range(len(fields[1,:])):
         TeXFile.write('('+str(xField[j])+','+str(fields[1,j])+') ')
     TeXFile.write('};\n')
-    TeXFile.write(r'\addplot[Orange,very thick,mark=square] coordinates {')
-    for j in range(len(fields[2,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[2,j])+') ')
-    TeXFile.write('};\n')
+    # TeXFile.write(r'\addplot[Orange,very thick,mark=square] coordinates {')
+    # for j in range(len(fields[2,:])):
+    #     TeXFile.write('('+str(xField[j])+','+str(fields[2,j])+') ')
+    # TeXFile.write('};\n')
     
-    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),usl,usf}')
+    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),mpm}')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09) -- (axis cs:0.003/1.4,0.09/1.4);')
+    TeXFile.write(r'\draw (axis cs:0.04,0.01) -- (axis cs:0.04/1.4,0.01/1.4);')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09) -- (axis cs:0.003,0.09/1.4) node [midway,right] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.04,0.01) -- (axis cs:0.04,0.01/1.4) node [midway,right] {\scriptsize 1};')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.003,0.09/1.4) -- (axis cs:0.003/1.4,0.09/1.4) node [midway,below] {\scriptsize 1};')
-    TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09) -- (axis cs:0.005/1.4,0.09/2.8);')
-    TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09) -- (axis cs:0.005,0.09/2.8) node [midway,right] {\scriptsize 2};')
-    TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.005,0.09/2.8) -- (axis cs:0.005/1.4,0.09/2.8) node [midway,below] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.04,0.01/1.4) -- (axis cs:0.04/1.4,0.01/1.4) node [midway,below] {\scriptsize 1};')
     TeXFile.write('\n')    
     TeXFile.write(r'\end{loglogaxis}')
     TeXFile.write('\n')
@@ -77,7 +71,7 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
 ###Opening the files and computation of the solution by each method
 ###Parameters####
 MP = [20,40,60,80,100,120,140,160,200,300]
-ppc=[2,3,4,8]
+ppc=[2]
 
 # MP = [10,20,40,60,80,100]
 # ppc=[2]
@@ -158,8 +152,8 @@ for p in range(len(ppc)):
         # plt.ylabel(r'$\sigma$')
         # plt.show()
         #############################################################################
-    export2DTeXFile('dgmpm_mpm_accuracyS_'+str(ppc[p])+'ppc.tex',dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_usl[:,p],ErrS_usf[:,p],ErrS_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','usf','dgmpm (RK2)'])
-    export2DTeXFile('dgmpm_mpm_accuracyV_'+str(ppc[p])+'ppc.tex',dx[:,p],r'$\Delta X$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_usl[:,p],ErrV_usf[:,p],ErrV_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','usf','dgmpm (RK2)'])
+    export2DTeXFile('dgmpm_mpm_accuracyS_'+str(ppc[p])+'ppc_lowerCFL.tex',dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_usl[:,p],ErrS_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
+    export2DTeXFile('dgmpm_mpm_accuracyV_'+str(ppc[p])+'ppc_lowerCFL.tex',dx[:,p],r'$\Delta X$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_usl[:,p],ErrV_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
         
 ###########Plot convergence curves####################
 #####Assess the constant and slopes of the
