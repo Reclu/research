@@ -1,0 +1,21 @@
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
+\begin{tikzpicture}[scale=0.7]
+\begin{loglogaxis}[xlabel=$\Delta X$,ylabel=$\epsilon_v$,ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={() -- particles per cell}]
+\addplot[Blue,very thick,mark=*] coordinates {(2.5862068965517238,1.7616009083191881) (1.2711864406779658,1.87459782546243) (0.6302521008403362,1.9353985460259) (0.4189944134078213,1.95649864137817) };
+\addplot[Red,very thick,mark=+] coordinates {(2.5862068965517238,2.017459959263734) (1.2711864406779658,1.9933372583041562) (0.6302521008403362,1.9982887590540284) (0.4189944134078213,1.9992322254751158) };
+\addplot[Purple,very thick,mark=triangle*] coordinates {(2.5862068965517238,1.9257384836697553) (1.2711864406779658,1.9571076768556475) (0.6302521008403362,1.9794975934853716) (0.4189944134078213,1.9865316980087322) };
+\legend{dgmpm (Euler),mpm,dgmpm (RK2)}
+\draw (axis cs:0.003,0.09) -- (axis cs:0.003/1.4,0.09/1.4);
+\draw (axis cs:0.003,0.09) -- (axis cs:0.003,0.09/1.4) node [midway,right] {\scriptsize 1};
+\draw (axis cs:0.003,0.09/1.4) -- (axis cs:0.003/1.4,0.09/1.4) node [midway,below] {\scriptsize 1};
+\draw (axis cs:0.005,0.09) -- (axis cs:0.005/1.4,0.09/2.8);
+\draw (axis cs:0.005,0.09) -- (axis cs:0.005,0.09/2.8) node [midway,right] {\scriptsize 2};
+\draw (axis cs:0.005,0.09/2.8) -- (axis cs:0.005/1.4,0.09/2.8) node [midway,below] {\scriptsize 1};
+\end{loglogaxis}
+\end{tikzpicture}
