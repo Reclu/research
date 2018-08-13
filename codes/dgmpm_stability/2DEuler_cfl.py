@@ -168,7 +168,7 @@ def rootFinder(function,tol=1.e-12):
     while (a1-a0)>tol:
         it+=1
         a2=0.5*(a0+a1)
-        if function(a2)>1.e-4 or function(a2)==0.:
+        if function(a2)<1.e-7:
             a0=a2
         else:
             a1=a2
@@ -189,7 +189,7 @@ def gridSearch(function,tol=1.e-7):
             continue
         else:
             return i
-cx=1.;cy=1.
+cx=200.;cy=0.
 CFL=np.linspace(0.,1.,100.)
 
 ############### 1PPC
@@ -244,10 +244,9 @@ print "Solution DCU is: ",CFL
 
 residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
 solution=gridSearch(residual)
-solution1=optimize.root(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.,method='hybr',options={'xtol':1.e-12}).x
-solution2=rootFinder(residual)
+solutionN=optimize.newton(residual,1.)
 CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL
+print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
 
 print "   "
 print "=== Symmetric vertical ==="
@@ -260,9 +259,10 @@ print "Solution DCU is: ",CFL
 
 
 residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-solution=rootFinder2(residual)
+solutionN=optimize.newton(residual,1.)
+solution=gridSearch(residual)
 CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL
+print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
 
 
 print "   "
@@ -275,10 +275,22 @@ solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
 CFL=max(cx,cy)*solution/2.
 print "Solution DCU is: ",CFL
 
-
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+solutionN=optimize.newton(residual,1.)
+solution=gridSearch(residual)
 CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL
+print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
+
+CFL=np.linspace(0.,1.,10000)
+res=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    res[i]=residual(2.*CFL[i]/max(cx,cy))
+plt.plot(CFL,res,label='residual')
+plt.plot([0.5*max(cx,cy)*solution,0.5*max(cx,cy)*solution],[0,max(res)],'g',label='grid search')
+plt.plot([0.5*max(cx,cy)*solutionN,0.5*max(cx,cy)*solutionN],[0,max(res)],'r',label='Newton')
+plt.legend()
+plt.grid()
+plt.show()
 
 print "   "
 print "=== Symmetric vertical ==="
@@ -290,12 +302,22 @@ CFL=max(cx,cy)*solution/2.
 print "Solution DCU is: ",CFL
 
 
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+solutionN=optimize.newton(residual,1.)
+solution=gridSearch(residual)
 CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL
+print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
 
-
-
+CFL=np.linspace(0.,1.,10000)
+res=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    res[i]=residual(2.*CFL[i]/max(cx,cy))
+plt.plot(CFL,res,label='residual')
+plt.plot([0.5*max(cx,cy)*solution,0.5*max(cx,cy)*solution],[0,max(res)],'g',label='grid search')
+plt.plot([0.5*max(cx,cy)*solutionN,0.5*max(cx,cy)*solutionN],[0,max(res)],'r',label='Newton')
+plt.legend()
+plt.grid()
+plt.show()
 # ############### 4PPC
 # print "**************************************************************"
 # print "******************  4PPC discretization **********************"
