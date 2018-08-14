@@ -1,0 +1,11 @@
+\begin{tikzpicture}[scale=0.7]
+\begin{loglogaxis}[xlabel=$\Delta X (m)$,ylabel=$\epsilon_\sigma$,ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={(a) $L^2$ error on stress}]
+\addplot[Blue,very thick,mark=*] coordinates {(0.251256281407,0.344454145012) (0.125313283208,0.215572692382) (0.0625782227785,0.133669477167) (0.0312695434647,0.0815395799618) (0.0156298843389,0.049088254754) (0.00781372089389,0.029312463221) };
+\addplot[Purple,very thick,mark=triangle*] coordinates {(0.251256281407,0.425116061563) (0.125313283208,0.220214819501) (0.0625782227785,0.111793924015) (0.0312695434647,0.0562959508163) (0.0156298843389,0.0282452307712) (0.00781372089389,0.0141466385362) };
+\addplot[Red,very thick,mark=square] coordinates {(0.251256281407,0.34307085365) (0.125313283208,0.221795906481) (0.0625782227785,0.0804942839039) (0.0312695434647,0.0401255395372) (0.0156298843389,0.0199365104268) (0.00781372089389,0.00978426004058) };
+\legend{dgmpm (Euler),dgmpm (RK2),mpm}
+\draw (axis cs:0.2,0.08) -- (axis cs:0.2/1.4,0.08/1.4);
+\draw (axis cs:0.2,0.08) -- (axis cs:0.2,0.08/1.4) node [midway,right] {\scriptsize 1};
+\draw (axis cs:0.2,0.08/1.4) -- (axis cs:0.2/1.4,0.08/1.4) node [midway,below] {\scriptsize 1};
+\end{loglogaxis}
+\end{tikzpicture}

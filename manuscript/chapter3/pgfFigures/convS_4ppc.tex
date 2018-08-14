@@ -1,0 +1,11 @@
+\begin{tikzpicture}[scale=0.7]
+\begin{loglogaxis}[xlabel=$\Delta X (m)$,ylabel=$\epsilon_\sigma$,ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={(c) 4 particles per cell}]
+\addplot[Blue,very thick,mark=*] coordinates {(0.266666666667,0.230166564628) (0.129032258065,0.148343245722) (0.0634920634921,0.094051728996) (0.0314960629921,0.0571103354119) (0.0156862745098,0.0343571270909) (0.00782778864971,0.0205556139748) };
+\addplot[Purple,very thick,mark=triangle*] coordinates {(0.266666666667,0.317107981907) (0.129032258065,0.172864519653) (0.0634920634921,0.0898450715656) (0.0314960629921,0.0457697431901) (0.0156862745098,0.023096667871) (0.00782778864971,0.0116013253112) };
+\addplot[Red,very thick,mark=square] coordinates {(0.266666666667,0.377485793325) (0.129032258065,0.235088864724) (0.0634920634921,0.0800654266309) (0.0314960629921,0.0441291207099) (0.0156862745098,0.0226430095797) (0.00782778864971,0.00974318936661) };
+\legend{dgmpm (Euler),dgmpm (RK2),mpm, mpm (pic mapping)}
+\draw (axis cs:0.2,0.08) -- (axis cs:0.2/1.4,0.08/1.4);
+\draw (axis cs:0.2,0.08) -- (axis cs:0.2,0.08/1.4) node [midway,right] {\scriptsize 1};
+\draw (axis cs:0.2,0.08/1.4) -- (axis cs:0.2/1.4,0.08/1.4) node [midway,below] {\scriptsize 1};
+\end{loglogaxis}
+\end{tikzpicture}
