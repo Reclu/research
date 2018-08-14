@@ -105,8 +105,8 @@ s0 =-0.5*Sy
 
 # Time discretization
 #factor=2.
-CFL=0.01 
-tfinal=0.75*L/c
+CFL=0.4
+tfinal=0.5*L/c
 tf=2.*tfinal#0.75*L/c
 Dt=CFL*lx/c
 
@@ -197,8 +197,11 @@ while T<tfinal:
            
         
         A=np.dot(Map[Dofs,:].T,a[Dofs])
-        V+=Dt*A
-            
+        if algo=='classical':
+            V+=Dt*A
+        else:
+            V=np.dot(Map[Dofs,:].T,v[Dofs])
+        
         
         # Gradient and constitutive model
         Epsn=Eps
@@ -224,11 +227,16 @@ while T<tfinal:
         # Solve motion equation
         a[Dofs]=(Fe[Dofs]+Fi[Dofs])/mv[Dofs]
         a[-1]=0.
+        v[-1]=0.
         
         # Time integrator
         v+=Dt*a
         A=np.dot(Map[Dofs,:].T,a[Dofs])
-        V+=Dt*A
+        #V+=Dt*A
+        if algo=='classical':
+            V+=Dt*A
+        else:
+            V=np.dot(Map[Dofs,:].T,v[Dofs])
         
     a=np.zeros(Nn)
     v=np.zeros(Nn)

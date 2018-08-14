@@ -23,44 +23,46 @@ def computeLpNorm(Unum,Uexact,dx,p):
 def computeRelativeError(Unum,Uexact,dx,p):
     return (computeLpNorm(Unum,Uexact,dx,p)/computeLpNorm(np.zeros(len(Unum)),Uexact,dx,p))
 
-def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
+def export2DTeXFile(fileName,title,xField,xlabel,ylabel,fields,*kwargs):
     TeXFile=open(fileName,"w")
     n_fields = np.shape(fields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
-    color=['Purple','Blue','Duck','Green','Yellow','Orange','Red']
+    color=['Blue','Purple','Red','Orange','black','black','black']
     col=['120,28,129','63,96,174','83,158,182','109,179,136','202,184,67','231,133,50','217,33,32']
-    marker=['*','x','triangle*','square*','+','star','pentagone*']
-    for i in range(len(col)):
-        TeXFile.write(r'\definecolor{'+color[i]+'}{RGB}{'+col[i]+'}')
-        TeXFile.write('\n')
+    marker=['*','triangle*','square','+','none','none','none']
+    size=['very thick','very thick','very thick','very thick','thin','thin',]
+    # for i in range(len(col)):
+    #     TeXFile.write(r'\definecolor{'+color[i]+'}{RGB}{'+col[i]+'}')
+    #     TeXFile.write('\n')
     TeXFile.write(r'\begin{tikzpicture}[scale=0.7]');TeXFile.write('\n')
-    TeXFile.write(r'\begin{loglogaxis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={() -- particles per cell},xmin=0.001,xmax=0.1,ymin=0.001,ymax=0.1]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{loglogaxis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=south east,title={'+str(title)+'}]');TeXFile.write('\n')
     legend=''
-    TeXFile.write(r'\addplot[Blue,very thick,mark=*] coordinates {')
-    for j in range(len(fields[0,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[0,j])+') ')
-    TeXFile.write('};\n')
-    TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
-    for j in range(len(fields[3,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[3,j])+') ')
-    TeXFile.write('};\n')
-    TeXFile.write(r'\addplot[Red,very thick,mark=+] coordinates {')
-    for j in range(len(fields[1,:])):
-        TeXFile.write('('+str(xField[j])+','+str(fields[1,j])+') ')
-    TeXFile.write('};\n')
-    # TeXFile.write(r'\addplot[Orange,very thick,mark=square] coordinates {')
+    for i in range(np.shape(fields)[0]):
+        TeXFile.write(r'\addplot['+str(color[i])+','+str(size[i])+',mark='+str(marker[i])+'] coordinates {')
+        for j in range(len(fields[i,:])):
+            TeXFile.write('('+str(xField[j])+','+str(fields[i,j])+') ')
+        TeXFile.write('};\n')
+    # TeXFile.write(r'\addplot[Blue,very thick,mark=*] coordinates {')
+    # for j in range(len(fields[0,:])):
+    #     TeXFile.write('('+str(xField[j])+','+str(fields[0,j])+') ')
+    # TeXFile.write('};\n')
+    # TeXFile.write(r'\addplot[Purple,very thick,mark=triangle*] coordinates {')
     # for j in range(len(fields[2,:])):
     #     TeXFile.write('('+str(xField[j])+','+str(fields[2,j])+') ')
     # TeXFile.write('};\n')
+    # TeXFile.write(r'\addplot[Red,very thick,mark=+] coordinates {')
+    # for j in range(len(fields[1,:])):
+    #     TeXFile.write('('+str(xField[j])+','+str(fields[1,j])+') ')
+    # TeXFile.write('};\n')
     
-    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),mpm}')
+    TeXFile.write(r'\legend{dgmpm (Euler),dgmpm (RK2),mpm, mpm (pic)}')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.04,0.01) -- (axis cs:0.04/1.4,0.01/1.4);')
+    TeXFile.write(r'\draw (axis cs:0.2,0.08) -- (axis cs:0.2/1.4,0.08/1.4);')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.04,0.01) -- (axis cs:0.04,0.01/1.4) node [midway,right] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.2,0.08) -- (axis cs:0.2,0.08/1.4) node [midway,right] {\scriptsize 1};')
     TeXFile.write('\n')    
-    TeXFile.write(r'\draw (axis cs:0.04,0.01/1.4) -- (axis cs:0.04/1.4,0.01/1.4) node [midway,below] {\scriptsize 1};')
+    TeXFile.write(r'\draw (axis cs:0.2,0.08/1.4) -- (axis cs:0.2/1.4,0.08/1.4) node [midway,below] {\scriptsize 1};')
     TeXFile.write('\n')    
     TeXFile.write(r'\end{loglogaxis}')
     TeXFile.write('\n')
@@ -68,6 +70,10 @@ def export2DTeXFile(fileName,xField,xlabel,ylabel,fields,*kwargs):
     TeXFile.write('\n')
     TeXFile.close()
 
+def func(x,C,n):
+    return (C*(x**n))
+
+title=['a','b','c','d']
 ###Opening the files and computation of the solution by each method
 ###Parameters####
 MP = [20,40,60,80,100,120,140,160,200,300]
@@ -75,6 +81,9 @@ ppc=[2]
 
 # MP = [10,20,40,60,80,100]
 # ppc=[2]
+MP = [4,8,16,32,64,128]
+ppc=[2,3,4,8]
+ppc=[2,6,10,20]
 
 #MP = [120,160,200,240,300]
 loading=-75.
@@ -104,46 +113,41 @@ for p in range(len(ppc)):
         ##DGMPM: Discontinuous Galerkin Material Point Method
         DGMPM = dict(parameters)
         execfile('dgmpm.py', DGMPM)
-        parameters = {"Mp":Ne,"ppc":ppc[p],"loading":loading,"t_order":2,"period":period,"alg":'USL'}
+        parameters = {"Mp":Ne,"ppc":ppc[p],"loading":loading,"t_order":2,"period":period,"algo":'classical'}
         ##DGMPM: Discontinuous Galerkin Material Point Method with RK2 time integration
         DGMPMRK2 = dict(parameters)
         execfile('dgmpm.py', DGMPMRK2)
         USL = dict(parameters)
         execfile('mpm.py', USL)
-        parameters = {"Mp":Ne,"ppc":ppc[p],"loading":loading,"t_order":2,"period":period,"alg":'USF'}
+        parameters = {"Mp":Ne,"ppc":ppc[p],"loading":loading,"t_order":2,"period":period,"algo":'PIC'}
         USF = dict(parameters)
         execfile('mpm.py', USF)
-        # FEM = dict(parameters)
-        # execfile('fem.py', FEM)
+        FEM = dict(parameters)
+        execfile('fem.py', FEM)
         ########## Compute Errors #################
         dx[i,p]=DGMPM["dx"]
         n1= DGMPM["Increments"]
         n2= USL["Increments"]
         n1RK2= DGMPMRK2["Increments"]
-        #nFEM= FEM["Increments"]
+        nFEM= FEM["Increments"]
         #Sigma
         ErrS_dgmpm[i,p] = computeRelativeError(DGMPM["Stress"][:,n1],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
         ErrS_dgmpmRK2[i,p] = computeRelativeError(DGMPMRK2["Stress"][:,n1RK2],DGMPMRK2["Sth"][:,n1RK2],dx[i,p],Error_order1)
         ErrS_usl[i,p] = computeRelativeError(USL["Stress"][:,n2],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
         ErrS_usf[i,p] = computeRelativeError(USF["Stress"][:,n2],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
-        ErrS_dgmpm2[i,p] = computeRelativeError(DGMPM["Stress"][:,n1],DGMPM["Sth"][:,n1],dx[i,p],Error_order2)
-
         #Velocity
         ErrV_dgmpm[i,p] = computeRelativeError(DGMPM["Velocity"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),dx[i,p],Error_order1)
         ErrV_dgmpmRK2[i,p] = computeRelativeError(DGMPMRK2["Velocity"][:,n1RK2],-DGMPMRK2["Sth"][:,n1RK2]/(rho*c),dx[i,p],Error_order1)
         ErrV_usl[i,p] = computeRelativeError(USL["Velocity"][:,n2],-DGMPM["Sth"][:,n1]/(rho*c),dx[i,p],Error_order1)
         ErrV_usf[i,p] = computeRelativeError(USF["Velocity"][:,n2],-DGMPM["Sth"][:,n1]/(rho*c),dx[i,p],Error_order1)
-        ErrV_dgmpm2[i,p] = computeRelativeError(DGMPM["Velocity"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),dx[i,p],Error_order2)
-        # if p==0: ErrV_fem[i] = computeRelativeError(FEM["v"][:,nFEM],FEM["vth"][:,nFEM],FEM["dx"],Error_order2)
-        # DX.append(FEM["dx"])
+        
         #########################  Comparison  ######################################
         
         ##Stress
-        # l1,l2,l3,l4,l5=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Velocity"][:,n1],'r+', \
-        #                   DGMPM["Pos"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),'k', \
-        #                   DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Velocity"][:,n1RK2],'bo', \
-        #                   MPM["Pos"][:,n2],MPM["Velocity"][:,n2],'g^',\
-        #                   FEM["x"],FEM["v"][:,nFEM],'y^')
+        # l1,l2,l3,l4=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Velocity"][:,n1],'r+', \
+        #                         DGMPM["Pos"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),'k', \
+        #                         DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Velocity"][:,n1RK2],'bo', \
+        #                         USL["Pos"][:,n2],USL["Velocity"][:,n2],'g^')
         # # if p==0 :
         # #     plt.plot(FEM["y"],FEM["sigma"][:,n3],'b-o',label='fem')
         # #     plt.plot(FEM["y"],FEM["anal"][:,n3],'k--')
@@ -152,26 +156,79 @@ for p in range(len(ppc)):
         # plt.ylabel(r'$\sigma$')
         # plt.show()
         #############################################################################
-    export2DTeXFile('dgmpm_mpm_accuracyS_'+str(ppc[p])+'ppc_lowerCFL.tex',dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_usl[:,p],ErrS_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
-    export2DTeXFile('dgmpm_mpm_accuracyV_'+str(ppc[p])+'ppc_lowerCFL.tex',dx[:,p],r'$\Delta X$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_usl[:,p],ErrV_dgmpmRK2[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
+
+    ## Fit curves
+    errorList=[]
+    errorList.append(ErrS_dgmpm[:,p])
+    errorList.append(ErrS_usl[:,p])
+    errorList.append(ErrS_dgmpmRK2[:,p])
+    errorList.append(ErrS_usf[:,p])
+    
+    popt = np.zeros((len(errorList),2))
+    for j,convCurve in enumerate(errorList):
+        popt[j,:], pcov = curve_fit(func,dx[:,p],convCurve)
+
+    FitdgmpmEuler=func(dx[:,p],popt[0,0],popt[0,1])
+    Fitmpm=func(dx[:,p],popt[1,0],popt[1,1])
+    FitdgmpmRK2=func(dx[:,p],popt[2,0],popt[2,1])
+    print "+++ Order of accuracy in stress :"
+    print "dgmpm (euler): ", popt[0,1]
+    print "dgmpm (rk2): ", popt[2,1]
+    print "mpm: ", popt[1,1]
+    print "mpm (pic mapping): ", popt[3,1]
+    
+    
+    soustitre='('+str(title[p])+') '+str(ppc[p])+' particles per cell'
+    
+    ## Export Stress curves
+    #export2DTeXFile('convS_'+str(ppc[p])+'ppc.tex',soustitre,dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_dgmpmRK2[:,p],ErrS_usl[:,p],FitdgmpmEuler,FitdgmpmRK2,Fitmpm]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
+    export2DTeXFile('convS_'+str(ppc[p])+'ppc.tex',soustitre,dx[:,p],r'$\Delta X (m)$',r'$\epsilon_\sigma$',np.array([ErrS_dgmpm[:,p],ErrS_dgmpmRK2[:,p],ErrS_usl[:,p],ErrS_usf[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
+
+    # plt.loglog(dx[:,p],ErrS_dgmpm[:,p],'r')
+    # plt.loglog(dx[:,p],FitdgmpmEuler,'k')
+    # plt.grid()
+    # plt.show()
+    
+    errorList=[]
+    errorList.append(ErrV_dgmpm[:,p])
+    errorList.append(ErrV_usl[:,p])
+    errorList.append(ErrV_dgmpmRK2[:,p])
+    errorList.append(ErrV_usf[:,p])
+    
+    
+    popt = np.zeros((len(errorList),2))
+    for j,convCurve in enumerate(errorList):
+        popt[j,:], pcov = curve_fit(func,dx[:,p],convCurve)
+    FitdgmpmEuler=func(dx[:,p],popt[0,0],popt[0,1])
+    Fitmpm=func(dx[:,p],popt[1,0],popt[1,1])
+    FitdgmpmRK2=func(dx[:,p],popt[2,0],popt[2,1])
+    print "+++ Order of accuracy in velocity :"
+    print "dgmpm (euler): ", popt[0,1]
+    print "dgmpm (rk2): ", popt[2,1]
+    print "mpm: ", popt[1,1]
+    print "mpm (pic mapping): ", popt[3,1]
+    
+    # if p==0:
+    #     popt, pcov = curve_fit(func,DX,ErrV_fem)
+    #     print "fem : ", popt[1]
+    ## Export Velocity curves 
+    #export2DTeXFile('convV_'+str(ppc[p])+'ppc.tex',soustitre,dx[:,p],r'$\Delta X$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_dgmpmRK2[:,p],ErrV_usl[:,p],FitdgmpmEuler,FitdgmpmRK2,Fitmpm]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
+    export2DTeXFile('convV_'+str(ppc[p])+'ppc.tex',soustitre,dx[:,p],r'$\Delta X (m)$',r'$\epsilon_v$',np.array([ErrV_dgmpm[:,p],ErrV_dgmpmRK2[:,p],ErrV_usl[:,p],ErrV_usf[:,p]]),['dgmpm (Euler)','usl','dgmpm (RK2)'])
         
 ###########Plot convergence curves####################
 #####Assess the constant and slopes of the
 #####convergence curves by fitting a power law with curve_fit
-def func(x,C,n):
-    return (C*(x**n))
 
 
 errorList=[]
 for p in range(len(ppc)):
     errorList.append(ErrS_dgmpm[:,p])
-    errorList.append(ErrS_mpm[:,p])
+    errorList.append(ErrS_usl[:,p])
     errorList.append(ErrS_dgmpmRK2[:,p])
-    errorList.append(ErrS_dgmpm2[:,p])
-
+    
 popt = np.zeros((len(errorList),2))
 for i,convCurve in enumerate(errorList):
-    popt[i,:], pcov = curve_fit(func,dx[:,i/4],convCurve)
+    popt[i,:], pcov = curve_fit(func,dx[:,i/3],convCurve)
 
 
 # print 'Taux de convergence dgmpm: '
@@ -198,14 +255,11 @@ color_dgmpmRK2=['m-+','b-+','g-+','c-+','y-+','r-+']
 color_dgmpm2=['m--','b--','g--','c--','y--','r--']
 for p in range(len(ppc)):
     plt.loglog(dx[:,p],ErrS_dgmpm[:,p],color_dgmpm[p],lw=2.5,label='dgmpm')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p,0],popt[4*p,1]),'k-')
-
-    plt.loglog(dx[:,p],ErrS_mpm[:,p],color_mpm[p],lw=2.5,label='mpm')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+1,0],popt[4*p+1,1]),'k-')
-
+    
+    plt.loglog(dx[:,p],ErrS_usl[:,p],color_mpm[p],lw=2.5,label='mpm')
+    
     plt.loglog(dx[:,p],ErrS_dgmpmRK2[:,p],color_dgmpmRK2[p],lw=2.5,label='dgmpm RK2')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+2,0],popt[4*p+2,1]),'k-')
-
+    
     
 plt.grid(True,which="both")
 plt.xlabel('grid size')
@@ -217,15 +271,12 @@ plt.show()
 #Velocity
 for p in range(len(ppc)):
     plt.loglog(dx[:,p],ErrV_dgmpm[:,p],color_dgmpm[p],lw=2.5,label='dgmpm')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p,0],popt[4*p,1]),'k-')
-
-    plt.loglog(dx[:,p],ErrV_mpm[:,p],color_mpm[p],lw=2.5,label='mpm')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+1,0],popt[4*p+1,1]),'k-')
-
+    
+    plt.loglog(dx[:,p],ErrV_usl[:,p],color_mpm[p],lw=2.5,label='mpm')
+    
     plt.loglog(dx[:,p],ErrV_dgmpmRK2[:,p],color_dgmpmRK2[p],lw=2.5,label='dgmpm RK2')
-    plt.loglog(dx[:,p],func(dx[:,p],popt[4*p+2,0],popt[4*p+2,1]),'k-')
-
-    # plt.loglog(DX,ErrV_fem,'k',lw=2.5,label='FEM') 
+    
+    plt.loglog(DX,ErrV_fem,'y',lw=2.5,label='FEM') 
     
 plt.grid(True,which="both")
 plt.xlabel('grid size')
