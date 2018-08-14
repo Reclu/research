@@ -250,31 +250,31 @@ The von Neumann linear stability analysis performed in this section provides an 
 
 One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional constrained with the description of material boundaries.
 
-\subsection{Convergence analysis of the one-dimensonal scheme}
-We now propose to focus numerically on convergence properties of one-dimensional DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption holds. The following system of one-dimensional linear scalar advection equations is then considered:  
-\begin{equation*}
+\subsection{Space convergence analysis of the one-dimensonal scheme}
+We now propose to focus numerically on convergence properties of one-dimensional DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption under small strains holds. The following system of one-dimensional linear scalar advection equations is then considered:  
+\begin{equation}
+  \label{eq:conv_hyperbolic}
   \drond{}{t} \matrice{v \\ \sigma} -\drond{}{X}\matrice{\frac{1}{\rho}\sigma \\ Ev} = \matrice{0 \\0}
-\end{equation*}
-It has been seen in section \ref{sec:characteristic_analysis} that waves travel at speeds $\pm c = \pm \sqrt{\frac{E}{\rho}}$ in elastic bars. Hence, providing the inflow boundary condition on the left end of the bar of length $l$:
-\begin{equation}
-  \label{eq:BC_convergence}
-  \sigma(X=0,t) = \tilde{\sigma} \sin\(\frac{0.4\pi t}{T}\)  \quad \forall t 
 \end{equation}
-where $T=c/l$ is the time taken by waves to travel from left to right ends, and $\tilde{\sigma}$ some wave amplitute, the exact solution of the problem consists in the transport of the boundary condition \eqref{eq:BC_convergence} according to:
-\begin{subequations}
-  \begin{alignat}{1}
-    \label{eq:exact_solution_convergenceS}
-    &\sigma(X,t)=\tilde{\sigma} \sin\(\frac{4\pi (t-X/c)}{T}\) \\
-    \label{eq:exact_solution_convergenceV}
-    & v(X,t)=\frac{\sigma(X,t)}{\rho c}, \quad \forall t
-  \end{alignat}
-\end{subequations}
-A fixity boundary condition is also assumed at the right end of the bar:
+in a bar of length $l=1\:m$ with Young's modulus $E=2\times10^{11}\: Pa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$. 
+The bar is assumed to be initially motionless in a free-stress state, that is: $v(X,0)=\sigma(X,0)=0 \quad \forall X \in [0,l]$, and subject to the following boundary conditions on its left and right ends respectively:
 \begin{equation}
-  \label{eq:BC_velo}
-  v(l,t)=0 \quad \forall t
+  \label{eq:conv_Bcs}
+    \begin{aligned}
+    &\sigma(X=0,t) = \tilde{\sigma} \sin\(\frac{0.4\pi t}{T}\)\\
+    &\sigma(X=l,t) =0,  \qquad \forall t \in [0,T]
+  \end{aligned}
 \end{equation}
-The continuum equation is discretized with both MPM (USL) and DGMPM, which solutions are compared to exact solutions \eqref{eq:exact_solution_convergenceS} and \eqref{eq:exact_solution_convergenceV} at time $t=0.75 T$ according to the $L^2$ norm of the error, also referred to as the $L^2$ error $\epsilon$:
+where $T=\frac{1}{l}\sqrt{\frac{E}{\rho}}$ is the time taken by waves to travel from one end of the bar to another at the sound speed $c=\sqrt{\frac{E}{\rho}}$. The combination of hyperbolic system \eqref{eq:conv_hyperbolic} and boundary conditions \eqref{eq:conv_Bcs} yields a Picard problem which exact solution is \cite[Ch.2]{Wang}:
+\begin{equation}
+    \label{eq:exact_solution_convergence}
+  \begin{aligned}
+    &\sigma(X,t)=\tilde{\sigma} \sin\(\frac{0.4\pi (t-X/c)}{T}\) \\
+    & v(X,t)=-\frac{\tilde{\sigma}}{\rho c}\sin\(\frac{0.4\pi (t-X/c)}{T}\), \quad \forall \:X, t \in \[0,l\]\times\[0,T\]
+  \end{aligned}
+\end{equation}
+%MP = [4,8,16,32,64,128] ; ppc=[2,3,4,8] ; citer \cite[Ch.2]{Wang} (dire que c'est un problème de Picard) pour solution analytique
+The continuum system \eqref{eq:conv_hyperbolic} is discretized with both MPM (USF) and DGMPM by using $2^i$ cells ($i=2,3,...,7$) each containing $N_p=2,3,4,8$ regularly spaced material points so that the regular grid size is $\Delta X= l/2^i$. The refinement of the mesh operates on both nodes and particles so that the number of material points per cell initially selected is held constant. Therefore, configurations involving different numbers of particle per element are studied separately and the CFL number can be set once and for all (optimal for DGMPM, and $0.5$ for the MPM). Numerical solutions are then compared to the exact one \eqref{eq:exact_solution_convergence} according to the $L^2$ norm of the error, also referred to as the $L^2$ error $\epsilon$:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:L2_error_S}
@@ -283,61 +283,59 @@ The continuum equation is discretized with both MPM (USL) and DGMPM, which solut
     & \epsilon_v(t) = \(\Delta X \sum_{\alpha=1}^{N_p}\frac{(v_\alpha - v_{\text{exact}}(X_\alpha,t))^2}{v_{\text{exact}}(X_\alpha,t)^2}\)^{\frac{1}{2}}
   \end{alignat}
 \end{subequations}
-Note that the choice of time $t=0.75 T$ for comparisons is made to avoid disturbances introduced in numerical solutions due to the reflexion of the wave on the fixed boundary.
-The two numerical approaches are based on a one-dimensonal grid made of regular cells, each containing $2$, $3$, $4$ or $8$ material points. Therefore, the convergence analysis is performed by looking at the evolution of the $L^2$ error when both computational grid and set of material points are refined so that the number of particles in cells remains the same for a given configuration. As a consequence, the CFL number can be set once and for all (set at $0.5$ for the MPM), thus preventing from time-space coupling effects, and space discretizations involving different numbers of particles per cell are studied separately.
-
-The evolution of the $L^2$ error $\epsilon_\sigma$ is depicted in figure \ref{fig:convergence_stress} for every numbers of particles per cell considered for the MPM and the DGMPM using either Euler or RK2 time discretizations.
+Note that errors are computed at time $t=0.5 T$ so that no reflection of waves on the right boundary occurs and the stress amplitude is set at $\tilde{\sigma}=4\time10^4\:Pa$. Figure \ref{fig:convergence_stress} shows the evolution of the $L^2$ errors $\epsilon_\sigma$ for the MPM and the DGMPM using Euler and RK2 time discretizations for several number of particles per element. We see that despite the rates of convergence of stress (obtained by means of non-linear least squares fitting and reported in table \ref{tab:accuracy}) are close to one, the DGMPM--Euler and DGMPM--RK2 exhibit lower ones compared to that of the MPM. 
 \begin{figure}[ht]
   \centering
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_2ppc.tex}\phantomsubcaption\label{subfig:conv_stress_2ppc}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_3ppc.tex}\phantomsubcaption\label{subfig:conv_stress_3ppc}}\\
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_4ppc.tex}\phantomsubcaption\label{subfig:conv_stress_4ppc}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyS_8ppc.tex}\phantomsubcaption\label{subfig:conv_stress_8ppc}}
-  \caption{Evolution of stress $L^2$ errors.}
+  {\input{chapter3/pgfFigures/convS_2ppc.tex}\phantomsubcaption\label{subfig:convS_2ppc}}
+  {\input{chapter3/pgfFigures/convS_6ppc.tex}\phantomsubcaption\label{subfig:convS_6ppc}}
+  {\input{chapter3/pgfFigures/convS_10ppc.tex}\phantomsubcaption\label{subfig:convS_10ppc}}
+  {\input{chapter3/pgfFigures/convS_20ppc.tex}\phantomsubcaption\label{subfig:convS_20ppc}}
+  \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells.}
   \label{fig:convergence_stress}
 \end{figure}
-First, we see that convergence rates are quite similar and close to one, although the DGMPM using Euler time discretization exhibits a slighlty lower rate of convergence and yields the highest $L^2$ error. Second, an increase in the number of material points used in cells provides equivalent convergence rates but higher $L^2$ error (see figures \ref{fig:convergence_stress}\subref{subfig:conv_stress_2ppc} to \ref{fig:convergence_stress}\subref{subfig:conv_stress_8ppc}). The same behavior can be seen for the velocity in figures \ref{fig:convergence_velocity}\subref{subfig:conv_velo_2ppc} and \ref{fig:convergence_velocity}\subref{subfig:conv_velo_4ppc} for only two and four material points per cell.
+\begin{table}[ht]
+  \centering
+  \input{chapter3/tabular/accuracy}
+  \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
+  \label{tab:accuracy}
+\end{table}
+
+Second, an increase in the number of particles per cell provides slightly higher convergence rates according to table \ref{tab:accuracy}, it also shifts DGMPM curves upward as can be seen in figures \ref{fig:convergence_stress}\subref{subfig:convS_2ppc} to \ref{fig:convergence_stress}\subref{subfig:convS_20ppc}. On the other hand, the MPM error curves do not exhibit this behavior as observed in \cite{MPM_BSpline1}. At last, for coarse grids (\textit{i.e. $\Delta X= l/2^i$ for $i \leq 4$}) the DGMPM--Euler leads to the lowest error but its smaller rate of convergence makes it quickly less accurate than the two other methods. Similar behaviors can be seen for the velocity, which convergence curves are depicted in figure \ref{fig:convergence_velocity} for the same discretizations. Again, the DGMPM shows a lower rate of convergence than the MPM, and increasing the number of particles per cell leads to more error in DGMPM solutions. The same order of accuracy for velocity and stress resulting from the DGMPM (see table \ref{tab:accuracy}) was expected since the writing of the weak form of system \eqref{eq:conv_hyperbolic} leads to the same approximation for both field. On the other hand, the MPM is, as FEM, characterized by a higher order of convergence for velocity than stress owing to the use of shape functions derivatives for the computation of gradients. Hence, the MPM rate of convergence in terms of velocity is getting closer to second-order. 
+
 \begin{figure}[ht]
   \centering
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_2ppc.tex}\phantomsubcaption\label{subfig:conv_velo_2ppc}}
-  {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_4ppc.tex}\phantomsubcaption\label{subfig:conv_velo_4ppc}}
-  \caption{Evolution of velocity $L^2$ errors.}
+  {\input{chapter3/pgfFigures/convV_2ppc.tex}\phantomsubcaption\label{subfig:convV_2ppc}}
+  {\input{chapter3/pgfFigures/convV_6ppc.tex}\phantomsubcaption\label{subfig:convV_6ppc}}
+  {\input{chapter3/pgfFigures/convV_10ppc.tex}\phantomsubcaption\label{subfig:convV_10ppc}}
+  {\input{chapter3/pgfFigures/convV_20ppc.tex}\phantomsubcaption\label{subfig:convV_20ppc}}
+  \caption{Evolution of the $L^2$ error on velocity with regard to the number of particles lying in every cells.}
   \label{fig:convergence_velocity}
 \end{figure}
-% \begin{figure}[ht]
-%   \centering
-%   {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_2ppc_lowerCFL.tex}\phantomsubcaption\label{subfig:conv_velo_2ppc_lower}}
-%   {\input{chapter3/pgfFigures/dgmpm_mpm_accuracyV_4ppc_lowerCFL.tex}\phantomsubcaption\label{subfig:conv_velo_4ppc_lower}}
-%   \caption{Evolution of velocity $L^2$ errors with $CFL=1/100$.}
-%   \label{fig:convergence_velocity}
-% \end{figure}
-Furthermore, these figures show that convergence rates of velocity and stress are similar although the MPM provides a lower $L^2$ error for velocity than for stress. This property is expected for the DGMPM in which the weak formulation of a system of conservation laws yields the same approximation for velocity and stress.
+Recall that both MPM and DGMPM use the quadrature rule based on material points to build a linear system that is solved and which solution is projected to particles. This mapping step is in fact the only significant difference between those two schemes and must hence be responsible for the reduced accuracy on velocity introduced within the DGMPM. Therefore, figure \ref{fig:convergence_velocity} also shows the convergence curve of MPM velocity resulting from the PIC interpolation of the updated nodal velocity to the particle for several numbers of material points per cell. We see that the change of mapping procedure from nodes to material points yields a first-order material point method in terms of velocity as can be seen in table \ref{tab:accuracy}. 
 
-Since the DGMPM has been developed in order to capture non-regular solutions (discontinuities), the first-order accuracy it exhibits appears better suited than a higher-order one that would introduce more regularity in the approximate solution. Nevertheless, in smooth regions, high-order approximation is only possible with the DGMPM by using higher-order basis functions based on Legendre polynomials or B-Spline functions
+Since the DGMPM aims at capturing non-regular solutions (discontinuities), the first-order accuracy it exhibits appears better suited than a higher-order one that would introduce additional regularity in the approximation. Nevertheless, although linear shape functions has been employed so far, the method may handle higher-order approximations by using Legendre polynomials or B-Spline functions for instance (higher-order Lagrange polynomials being to be avoided for they lead to negative entries of the consistent mass matrix \cite{MPM_BSpline1}). Furthermore, the Discontinuous Galerkin features enables to localy increase the approximation order in regions where the solution is smooth. Note however that the particle-based quadrature rule limits the shape functions order one can select since few material points may lead to reduced integration. 
+This issue can be avoided by means of function reconstruction techniques allowing to build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particles locations and which can be evaluated everywhere in a cell. In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1} within the MPM, allows to evaluate a reconstructed function at Gauss points locations in order to improve the quadrature rule.
+Nonetheless, the introduction of such reconstruction techniques in the DGMPM might lead to a restrictive stability condition since it would make the method closer to DGFEM.
 
+%Regarder le papier Improving the MPM pour avoir les "bonnes" courbes de convergences.
 
-regarder [Steffen] pour citer le fait qu'on le savait déjà + aller chercher le haut ordre en utilisant avec des fonctions de forme adaptées type legendre ou Bspline mais alors, faire attention à l'intégration basée sur des points mats et éventuellement utiliser une reconstruction du champ qui va bien.
-
-Comme augmenter la régularité de la solution approximée n'a pas vraiment de sens pour les solutions discontinues, on peut utiliser des mesures de régularité pour augmenter l'ordre d'approx là où c'est nécessaire et diminuer le nombre de points matériels là où on a une solution irrégulière pour capter les sauts. Mais bon globalement, la méthode n'a pas été développer pour proposer du haut ordre.
-
-It is worth noticing that the above convergence study has been carried out numerically though dgmpm scheme equations \eqref{eq:Euler_scheme}, \eqref{eq:RK2_scheme} are governed by the following theorem for the one-dimensonal scalar linear advection equation with $a>0$:
+Finally, it is worth noticing that only reguarly-spaced material points have been considered in the above convergence analysis. An additional solution to achieve high-order accuracy can be derived for the following theorem for the one-dimensonal scalar linear advection equation with $a>0$:
 \begin{theorem}[Roe \cite{Toro}]
   \label{th:Roe}
   A numerical scheme of the form:
   \begin{equation}
     \label{eq:2}
-    q^{n+1}_\alpha=\sum_{\beta=-\infty}^{\infty} D_{\beta} q^{n}_{\alpha+\beta}
+    Q^{n+1}_\alpha=\sum_{\beta=-\infty}^{\infty} D_{\beta} Q^{n}_{\alpha+\beta}
   \end{equation}
-  is $p$th order accurate ($p\geq 0$) in space and time if and only if
+  is $p$th order accurate ($p\geq 0$) in space and time if and only if:
   \begin{equation}
     \label{eq:3}
-    \sum_\beta \beta^q D_{\beta} = \(-a\frac{\Delta t}{\Delta X}\)^q \quad 0 \leq q \leq p
+    \sum_\beta \beta^k D_{\beta} = \(-a\frac{\Delta t}{\Delta X}\)^k \quad 0 \leq k \leq p
   \end{equation}
 \end{theorem}
-The complexity of scheme equations derived previously and the lack of such equations for MPM formulations prevent the straightforward calculation of convergence rates. Hence, second order accuracy may be achieved for DGMPM schemes for specific positions of material points inside the elements that cannot be identified \textit{a priori}. Adaption strategies of the particle discretization can even be developed based on theorem \ref{th:Roe} in order to reach second order accuracy. 
+The complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} developed previously, and the lack of such equations for MPM formulations prevent the straightforward calculation of convergence rates. However, one can imagine to build adaption strategies  based on theorem \ref{th:Roe} for the particle discretization, so that a given order of accuracy is achieved. If such a distribution of material point exists, the corresponding Courant number can also be computed, thus ensuring both stability and accuracy of the numerical scheme.
 
 
-\eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} prevent from a straightforward proof of accuracy beyond order zero. Therefore one can imagine to adapt the material points discretization so that a given order of accuracy is achieved. Such an adaption of the particles positions must be however made by keeping fixed boundary material points.
 
 \subsection{Two-dimensional stability analysis}
 \subsubsection*{Model equation - Space discretization}
