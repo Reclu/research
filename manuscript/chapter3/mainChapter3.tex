@@ -22,11 +22,13 @@ In this chapter, a brief historical review of the developments about the MPM for
 \label{sec:DGMPM_analysis}
 \input{chapter3/numerical_analysis}
 
-convergence: Parler de la méthode de quadrature qui peut être améliorée en utilisant des méthodes de reconstruction \cite{BsplineMPM}\cite{MPM_BSpline1}.
-
-
-
 \section*{Conclusion}
+In this chapter, the formulation of the MPM has been recalled and some drawbacks of the method when applied to hyperbolic problems have been emphasized in section \ref{sec:MPM}. It has been seen that the projection of the nodal velocity field to material points inherited from FLIP, though it reduces the numerical diffusion, introduces spurious oscillations in the solution. Hence, an alternative to this mapping procedure in order to avoid numerical dissipation within the MPM without introducing numerical noise has been proposed by means of the Disontinuous Galerkin approximation in section \ref{sec:DGMPM}. The resulting DGMPM is based on the weak form of a system of conservation laws written element by element in an arbitrary computational grid in which particles can move. Interface fluxes involved in boundary integrals of the weak form result from the solution of Riemann problems at cells interfaces computed thanks to an approximate Riemann solver (see section \ref{subsec:interface_fluxes}). This method combines thus the strength of Finite Element and Finite Volume methods.
+
+The numerical analysis of the scheme applied to the solution of one and two-dimensional linear scalar advection equations performed in section \ref{sec:DGMPM_analysis} led to the ability to determine the maximal Courant number ensuring stability for a given discretization. The method is thus characterized by a CFL number depending on the locations of particles within the computational grid, but that can be set at one in particular cases. In addition to the stability of the method, the convergence properties of the DGMPM have been compared to that of the original MPM on a one-dimensional elastic problem. While the MPM, as FEM, shows a second-order accuracy in velocity and first-order in stress, the DGMPM exhibits a first-order accuracy for both fields. The loss of accuracy has been attribué to the mapping used in the DGMPM and strategies to handle higher-order approximations have been proposed. However, the purpose of this work being the accurate capturing of waves that can be non-regular, high-order accuracy is not essential for it leads to more regularity in the numerical solution. Attention is paid to the following of waves without oscillations unlike what has been highlighted for the MPM in section \ref{sec:MPM} on the bars impact problem. The object of the next chapter is the illustration of the DGMPM performances with one and two-dimensional simulations.
+
+
+
 
 %%% Local Variables: 
 %%% mode: latex

@@ -250,7 +250,7 @@ The von Neumann linear stability analysis performed in this section provides an 
 
 One can imagine to place material points so that an optimal stability condition is reached by minimizing some functional constrained with the description of material boundaries.
 
-\subsection{Space convergence analysis of the one-dimensonal scheme}
+\subsection{Space convergence analysis of the one-dimensional scheme}
 We now propose to focus numerically on convergence properties of one-dimensional DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption under small strains holds. The following system of one-dimensional linear scalar advection equations is then considered:  
 \begin{equation}
   \label{eq:conv_hyperbolic}
@@ -314,12 +314,12 @@ Second, an increase in the number of particles per cell provides slightly higher
 Recall that both MPM and DGMPM use the quadrature rule based on material points to build a linear system that is solved and which solution is projected to particles. This mapping step is in fact the only significant difference between those two schemes and must hence be responsible for the reduced accuracy on velocity introduced within the DGMPM. Therefore, figure \ref{fig:convergence_velocity} also shows the convergence curve of MPM velocity resulting from the PIC interpolation of the updated nodal velocity to the particle for several numbers of material points per cell. We see that the change of mapping procedure from nodes to material points yields a first-order material point method in terms of velocity as can be seen in table \ref{tab:accuracy}. 
 
 Since the DGMPM aims at capturing non-regular solutions (discontinuities), the first-order accuracy it exhibits appears better suited than a higher-order one that would introduce additional regularity in the approximation. Nevertheless, although linear shape functions has been employed so far, the method may handle higher-order approximations by using Legendre polynomials or B-Spline functions for instance (higher-order Lagrange polynomials being to be avoided for they lead to negative entries of the consistent mass matrix \cite{MPM_BSpline1}). Furthermore, the Discontinuous Galerkin features enables to localy increase the approximation order in regions where the solution is smooth. Note however that the particle-based quadrature rule limits the shape functions order one can select since few material points may lead to reduced integration. 
-This issue can be avoided by means of function reconstruction techniques allowing to build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particles locations and which can be evaluated everywhere in a cell. In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1} within the MPM, allows to evaluate a reconstructed function at Gauss points locations in order to improve the quadrature rule.
+This issue can be avoided by means of function reconstruction techniques allowing to build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particles locations and which can be evaluated everywhere in a cell. In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1,MPM_BSpline2} within the MPM, allows to evaluate a reconstructed function at Gauss points locations in order to improve the quadrature rule.
 Nonetheless, the introduction of such reconstruction techniques in the DGMPM might lead to a restrictive stability condition since it would make the method closer to DGFEM.
 
 %Regarder le papier Improving the MPM pour avoir les "bonnes" courbes de convergences.
 
-Finally, it is worth noticing that only reguarly-spaced material points have been considered in the above convergence analysis. An additional solution to achieve high-order accuracy can be derived for the following theorem for the one-dimensonal scalar linear advection equation with $a>0$:
+Finally, it is worth noticing that only regularly-spaced material points have been considered in the above convergence analysis. An additional solution to achieve high-order accuracy can be derived for the following theorem for the one-dimensional scalar linear advection equation with $a>0$:
 \begin{theorem}[Roe \cite{Toro}]
   \label{th:Roe}
   A numerical scheme of the form:
@@ -485,7 +485,7 @@ Recall that in the two-dimensional scheme equation \eqref{eq:2Dscheme_equation},
 \end{equation}
 
 \subsubsection*{The von Neumann linear stability analysis}
-Analogously to the one-dimensonal case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured discretization made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material points indices. For one arbitrary Fourier mode, one has \cite{Leveque}:
+Analogously to the one-dimensional case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured discretization made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material points indices. For one arbitrary Fourier mode, one has \cite[Ch.20]{Leveque}:
 \begin{equation}
 \bar{Q}^{n}_{\alpha \beta} = A_{jq}^n e^{i (\alpha k_j + \beta k_q)\Delta X}
 \end{equation}
@@ -499,10 +499,11 @@ with $i=\sqrt{-1}$. The requirement that the absolute value of the amplification
 \end{equation}
 or more simply:
 \begin{equation}
+\label{eq:2D_stability}
 \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \alpha=1,...,N_p
 \end{equation}
 
-Again, the convective phase leads for the single particle-per-cell discretization to a piece-wise constant reconstruction of the field on the computational grid thus providing the first order upwind method. This method is known to be bounded by the stability requirements \cite[p.449]{Leveque}:
+Again, the convective phase leads for the single particle-per-cell discretization to a piece-wise constant reconstruction of the field on the computational grid, thus providing the first order upwind method. This method is known to be bounded by the stability requirements \cite[Ch.20]{Leveque}:
 \begin{subequations}
   \label{eq:2DCFL}
   \begin{alignat}{2}
@@ -511,14 +512,34 @@ Again, the convective phase leads for the single particle-per-cell discretizatio
   \end{alignat}
 \end{subequations}
 
-Find a way for comparing CFLs by avoiding the depedence on celerities.
-% \begin{table}[h]
-%   \centering
-%   \input{chapter3/tabular/2DCFL_comparison}
-%   \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
-%   \label{tab:CFL_comparison}
-% \end{table}
+Configurations involving more particles in the computational grid cells are then studied numerically
+, as for one-dimensional cases, by assuming the same material points distribution in every elements. Furthermore, we consider only regular cells $\Delta Y = \Delta X$ and wave speeds satsifying $a\geq b >0$, so that Courant number reads $a\Delta t/\Delta X$. Coefficients $D_{\alpha \mu}$ depending on both horizontal and vertical wave speeds, the scheme equation \eqref{eq:2Dscheme_D_alphabeta} can be written as a function of the CFL number by means of the speed ratio  $a/b$. Hence, the maximal Courant number satisfying the stability condition \eqref{eq:2D_stability} also depends on the speed ratio.
+\begin{table}[h]
+  \centering
+  \input{chapter3/tabular/2DCFL_comparison_2ppc}
+  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the locations of the $2$ material points lying in every cells as a function of the speeds ratio $a/b$.}
+  \label{tab:2DCFL_comparison_2ppc}
+\end{table}
+Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc} and \ref{tab:2DCFL_comparison_4ppc} for the DGMPM scheme using DCU and CTU methods. The first column of this table shows the positions of material points inside cells for discretizations based on $2$ or $4$ particles per element. 
 
+%% 2ppc
+The space discretization leading to $2$ particles lying in every cell of the mesh is such that within an element, the two material points are both either on the horizontal axis or on the vertical axis of the cell, corresponding respectively to the results reported in first and second rows of table \ref{tab:2DCFL_comparison_2ppc}. Two situations are then to be distinguished:
+\begin{itemize}
+\item Material points are regularly-spaced within the grid and placed symetrically two-by-two with respect to cells centers. Those distributions are drawn in the first column of table \ref{tab:2DCFL_comparison_2ppc} by using blue cricles to represent particles.
+\item Material points still satisfy symmetry in cells, but are no longer regularly-spaced in the mesh. In that case, particles are drawn with red crosses.
+\end{itemize}
+First the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on speed ratio $a/b$ that converges to some value which depends on the particles distribution. Second, we see that a reduction of spacing between particles ensuring symmetry between them with respect to cells centers, as for one-dimensional case, yields an increase in the critical Courant number for both DCU and CTU approach. 
+\begin{table}[h]
+  \centering
+  \input{chapter3/tabular/2DCFL_comparison_4ppc}
+  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the material points distribution as a function of the speeds ratio $a/b$.}
+  \label{tab:2DCFL_comparison_4ppc}
+\end{table}
+Third, whether particles lie on the horizontal axis or the vertical axis of cells has a great influence on the critical Courant number one can expect. Hence, the configurations of the second row of table \ref{tab:2DCFL_comparison_2ppc} yields a higher CFL number for given speed ratios. Then, it appears that in order to improve the stability of the scheme, one must use a low number of material points in the direction of the dominating wave speed (\textit{i.e. horizontally if $a>b$ ; vertically if $b>a$}).  
+At last, it is worth noticing that the improvement brought by the CTU is much less significant than in the case of one single particle-per-cell discretization (equation \eqref{eq:2DCFL}).
+
+%% 4ppc
+We now move on cases for which grid cells each contains $4$ material points, by considering a square shaped distribution of particles contracted or simply tanslated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}. Two configurations are gathered in each row of the table and are distinguished by using either blue circles or red crosses for material points. Again, we observe that the increase in CFL number enabled by the use of the CTU approach is less important that in the case of one particle-per-cell. Next, as for one-dimensional cases and configurations studied in table \ref{tab:2DCFL_comparison_2ppc}, we see that the closer particles are from cell centers, the higher the CFL number is. Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particle inside elements does not have great influence of the evolution of Courant's number with respect to the speed ratio. 
 
 
 
