@@ -1,0 +1,79 @@
+\begin{tabular}[ht]{M{2.5cm}M{5.cm}M{5.cm}N}
+  %\setlength\extrarowheight{2.5pt}
+  \hline
+  Particles in cells & \multicolumn{2}{c}{Critical Courant number $a\Delta t /\Delta X = f(a/b)$}  & \\[0.5cm]
+   &  DCU & CTU & \\
+%   & & \multicolumn{2}{c}{$a/b=1$} & \multicolumn{2}{c}{$a/b=10$} & \multicolumn{2}{c}{$a/b=1$} & \multicolumn{2}{c}{$a/b=10$}\\
+   % Particles & Position of particles in cell $c$ &  \multicolumn{2}{c}{DCU} & \multicolumn{2}{c}{DCU} \\
+  \hline
+  \hline
+  \begin{tikzpicture}[scale=1.]
+    \draw[black,thick] (-1.,-1.) rectangle (1.,1.);
+    \draw[black!50,dashdotted] (-1.2,0.) -- (1.2,0.0);\draw[black!50,dashdotted] (.0,-1.2) -- (0.,1.2);
+    %% nodes
+    \fill[white] (-1,-1) circle (0.05);\draw (-1,-1) circle (0.05);
+    \fill[white] (1.,-1) circle (0.05);\draw (1,-1) circle (0.05);
+    \fill[white] (1,1) circle (0.05);\draw (1,1) circle (0.05);
+    \fill[white] (-1.,1) circle (0.05);\draw (-1,1) circle (0.05);
+    %% particles
+    \draw[Blue,mark=*] plot coordinates {(-0.5,-0.5)};
+    \draw[Blue,mark=*] plot coordinates {(0.5,0.5)};
+    \draw[Blue,mark=*] plot coordinates {(-0.5,0.5)};
+    \draw[Blue,mark=*] plot coordinates {(0.5,-0.5)};
+    %\draw[Blue,|-|] (0.5,-0.5) -- (0.5,0.5) node [midway,right] {\scriptsize $\frac{\Delta X}{2}$};
+    \draw[Red,mark=x] plot coordinates {(-0.25,-0.25)};
+    \draw[Red,mark=x] plot coordinates {(0.25,0.25)};
+    \draw[Red,mark=x] plot coordinates {(-0.25,0.25)};
+    \draw[Red,mark=x] plot coordinates {(0.25,-0.25)};
+    %\draw[Red,|-|] (-0.25,-0.25) -- (-0.25,0.25) node [midway,left] {\scriptsize $\frac{\Delta X}{4}$};
+  \end{tikzpicture} & \input{chapter3/pgfFigures/2dCFL_4ppcS_DCU} & \input{chapter3/pgfFigures/2dCFL_4ppcS_CTU}& \\ [3.25cm]
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+  \hline % Shifted left // Shifted right
+  \begin{tikzpicture}[scale=1.]
+    \draw[black,thick] (-1.,-1.) rectangle (1.,1.);
+    \draw[black!50,dashdotted] (-1.2,0.) -- (1.2,0.0);\draw[black!50,dashdotted] (.0,-1.2) -- (0.,1.2);
+    %% nodes
+    \fill[white] (-1,-1) circle (0.05);\draw (-1,-1) circle (0.05);
+    \fill[white] (1.,-1) circle (0.05);\draw (1,-1) circle (0.05);
+    \fill[white] (1,1) circle (0.05);\draw (1,1) circle (0.05);
+    \fill[white] (-1.,1) circle (0.05);\draw (-1,1) circle (0.05);
+    %% particles
+    \draw[Blue,mark=*] plot coordinates {(-0.5+0.25,-0.5)};
+    \draw[Blue,mark=*] plot coordinates {(0.5+0.25,0.5)};
+    \draw[Blue,mark=*] plot coordinates {(-0.5+0.25,0.5)};
+    \draw[Blue,mark=*] plot coordinates {(0.5+0.25,-0.5)};
+    \draw[Red,mark=x] plot coordinates {(-0.5-0.25,-0.5)};
+    \draw[Red,mark=x] plot coordinates {(0.5-0.25,0.5)};
+    \draw[Red,mark=x] plot coordinates {(-0.5-0.25,0.5)};
+    \draw[Red,mark=x] plot coordinates {(0.5-0.25,-0.5)};
+  \end{tikzpicture}  & \input{chapter3/pgfFigures/2dCFL_4ppcH_DCU} &\input{chapter3/pgfFigures/2dCFL_4ppcH_CTU}& \\ [3.25cm]
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \hline % Shifted above // Shifted below
+  \begin{tikzpicture}[scale=1.]
+    \draw[black,thick] (-1.,-1.) rectangle (1.,1.);
+    \draw[black!50,dashdotted] (-1.2,0.) -- (1.2,0.0);\draw[black!50,dashdotted] (.0,-1.2) -- (0.,1.2);
+    %% nodes
+    \fill[white] (-1,-1) circle (0.05);\draw (-1,-1) circle (0.05);
+    \fill[white] (1.,-1) circle (0.05);\draw (1,-1) circle (0.05);
+    \fill[white] (1,1) circle (0.05);\draw (1,1) circle (0.05);
+    \fill[white] (-1.,1) circle (0.05);\draw (-1,1) circle (0.05);
+    %% particles
+    \draw[Blue,mark=*] plot coordinates {(-0.5,-0.5+0.25)};
+    \draw[Blue,mark=*] plot coordinates {(0.5,0.5+0.25)};
+    \draw[Blue,mark=*] plot coordinates {(-0.5,0.5+0.25)};
+    \draw[Blue,mark=*] plot coordinates {(0.5,-0.5+0.25)};
+    \draw[Red,mark=x] plot coordinates {(-0.5,-0.5-0.25)};
+    \draw[Red,mark=x] plot coordinates {(0.5,0.5-0.25)};
+    \draw[Red,mark=x] plot coordinates {(-0.5,0.5-0.25)};
+    \draw[Red,mark=x] plot coordinates {(0.5,-0.5-0.25)};
+  \end{tikzpicture}& \input{chapter3/pgfFigures/2dCFL_4ppcV_DCU} &\input{chapter3/pgfFigures/2dCFL_4ppcV_CTU}& \\ [3.25cm]
+  %\begin{minipage}{0.85\textwidth}\lipsum[1]\end{minipage}
+  \hline
+\end{tabular}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
