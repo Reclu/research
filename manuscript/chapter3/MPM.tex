@@ -23,7 +23,7 @@ The weak form of the eulerian balance equation of linear momentum \eqref{eq:HPP_
 \begin{equation}
 \Vscr^1 = \{ \vect{u} \in H^1(\Omega_t) \}  \quad ; \quad \Vscr^1_{h} = \{\vect{u} \in \Vscr^1 | \vect{u}=\vect{\tilde{v}} \text{ on } \partial \Omega_t^v \}  \quad ; \quad \Vscr^1_{h,0} = \{\vect{u} \in \Vscr_h^1 | \vect{u}=\vect{0} \text{ on } \partial \Omega_t^v \} 
 \end{equation}
-where $H^1(\Omega_t)$ denotes the \textit{Hilbert} space in $\Omega_t$ \cite[Ch.4]{Belytschko}, \cite[Ch.1]{DiPietro}. Multiplication of equation \eqref{eq:HPP_linear_momentum} by a test function $\vect{w} \in \Vscr^1_{h,0}$ and integration over $\Omega_t$ yields, after integration by parts, the following weak form:
+where $H^1(\Omega_t)$ denotes the \textit{Sobolev} space in $\Omega_t$ \cite[Ch.4]{Belytschko}, \cite[Ch.1]{DiPietro}. Multiplication of equation \eqref{eq:HPP_linear_momentum} by a test function $\vect{w} \in \Vscr^1_{h,0}$ and integration over $\Omega_t$ yields, after integration by parts, the following weak form:
 \begin{equation}
   \label{eq:linear_momentum_weak_form}
   \begin{aligned}
@@ -122,7 +122,7 @@ On the other hand, updated nodal velocities resulting from the solution of \eqre
 
 The computation of constitutive equations is performed at material points within the MPM, thanks to the updated nodal velocity field and the gradient of shape functions. One has therefore some freedom since stress can be updated right after either the resolution of \eqref{eq:mpm_discrete} or the projection \eqref{eq:particles2nodes}. The first option yields the \textit{Update Stress Last} (USL) algorithm while the second implementation is called \textit{Update Stress First} (USF) \cite{Bardenhagen_USF_USL}. 
 
-\subsubsection{Boundary conditions}
+\subsubsection{Boundary conditions enforcement}
 
 Writing the weak form of linear momentum balance on the grid implies that Neumann boundary conditions are enforced on nodes throught the external force vector \eqref{eq:ext_forces}. Next, since stress are computed at material points based the nodal velocity field, Dirichlet boundary conditions are also dealt with at nodes. For USL, it is done once the solution is updated on the grid so that stresses can be computed and material points kinematic can be updated. On the other hand, USF formulation  first requires applying Dirichlet boundary conditions to compute the stress, and then again after solving discrete equations for particles kinematic \cite{USF_USL}. Furthermore, the enforcement of boundary condition is still a challenging aspect of the material point method (as others mesh-free methods) for problems involving complex geometries, see for instance \cite{Bcs_MPM}.
 
@@ -150,8 +150,7 @@ The research on MPM mainly focused so far on the instability arising from the co
 Second, the classical approximation basis is used and modified gradients with extended supports are introduced in the \textbf{Dual Domain Material Point Method} (DDMPM) \cite{DDMPM0}. BSMPM and DDMPM  both solve the grid-crossing error by widening the domain of influence of material points since B-Spline functions span more cells than Lagrange polynomials, and the support of the modified gradient of DDMPM is larger than that of the shape functions.  
 
 \subsubsection*{The back-mapping instability}
-Numerical oscillations appear in the MPM solution even for problems that do not involve the grid-crossing instability, that is due to the updating of the velocity field at material points \cite{Mass_Flip}. As an illustration, consider a one-dimensional elastic bar of length $L=6\:m$ with Young's modulus $E=200 \:GPa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$ within the infinitesimal theory. The bar is initially in a free stress state and Riemann-type initial velocities are prescribed along the bar, that is: $v=v_0>0$ for $x\in[0,L/2]$ and $v=-v_0$ for $x \in [L/2,L]$. Both ends of the bar are traction free so that this problem is equivalent to an impact of two elastic bars moving toward each other. The bar is discretized by using the MPM in a computational grid composed of $50$ regular cells, each containing either one or two material points (1ppc or 2ppc). Single material points are centered in cells while "cellmate" particles are placed symmetrically with respect to elements centers and are regularly spaced.
-The exact solution of this problem (see section \ref{subsec:charac_Linear_problems}) consists of two elastic discontinuities emanating from the middle of the bar and propagating left and rightward. In figure \ref{fig:US_diffusion}, numerical results provided by the USL and USF implementations of the MPM are compared to the exact solution before reflection of the waves on the boundaries. 
+Numerical oscillations appear in the MPM solution even for problems that do not involve the grid-crossing instability, that is due to the updating of the velocity field at material points \cite{Mass_Flip}. As an illustration, consider a one-dimensional elastic bar of length $L=6\:m$ with Young's modulus $E=200 \:GPa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$ within the infinitesimal theory. The bar is initially in a free stress state and Riemann-type initial velocities are prescribed along the bar, that is: $v=v_0>0$ for $x\in[0,L/2]$ and $v=-v_0$ for $x \in [L/2,L]$.
 \begin{figure}[ht]
   \centering
   {\input{chapter3/pgfFigures/US_diffusion10} \phantomsubcaption \label{subfig:US_diffusion_10}}
@@ -160,12 +159,14 @@ The exact solution of this problem (see section \ref{subsec:charac_Linear_proble
   \caption{MPM solutions of the bars impact problem for various discretizations. (a)--(b) comparison of stress computed with USF and USL formulations and exact solutions (c) numerical total energy evolutions. Parameters: $CFL=0.7$ ; $v_0=\frac{1}{200}\sqrt{\frac{E}{\rho}}$.}
   \label{fig:US_diffusion}
 \end{figure}
+Both ends of the bar are traction free so that this problem is equivalent to an impact of two elastic bars moving toward each other. The bar is discretized by using the MPM in a computational grid composed of $50$ regular cells, each containing either one or two material points (1ppc or 2ppc). Single material points are centered in cells while "cellmate" particles are placed symmetrically with respect to elements centers and are regularly spaced. The exact solution of this problem (see section \ref{subsec:charac_Linear_problems}) consists of two elastic discontinuities emanating from the middle of the bar and propagating left and rightward. In figure \ref{fig:US_diffusion}, numerical results provided by the USL and USF implementations of the MPM are compared to the exact solution before reflection of the waves on the boundaries. 
+
 Figures \ref{fig:US_diffusion}\subref{subfig:US_diffusion_10} and \ref{fig:US_diffusion}\subref{subfig:US_diffusion_25} show that both USL and USF solutions oscillate once the elastic front passed. Those oscillations are much more significant in the USF solutions regardless of the number of particles used. Indeed, the noise in USL results quickly reduces so that the correct stress level is reached in the middle region of the bar. Moreover, even though the $1ppc$ and $2ppc$ discretizations provide different results (slightly different for USL), neither of them enables the removal of oscillations. Figure \ref{fig:US_diffusion}\subref{subfig:US_energies} shows, on the other hand, the evolution of numerical total energies resulting from an MPM approximation of kinetic and strain energies:
 \begin{align}
   & e^{kin}=\frac{1}{2}\int_\Omega \rho \vect{v}\cdot\vect{v} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \vect{v}^p\cdot\vect{v}^p\\
 & e^{strain}= \frac{1}{2}\int_\Omega \rho \tens{\bar{\sigma}}: \nablav \vect{v} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \tens{\bar{\sigma}}^p: \nablav \vect{v}^p
 \end{align}
-One can see that the USL formulation is more diffusive than the USF for this problem. These results differ from observations made in \cite{Bardenhagen_USF_USL} in which no significant differences for problems involving smooth solutions is noticed. At last, figure \ref{fig:US_velocities} shows the numerical velocities at several time steps. The same observations than before are made by looking at figures \ref{fig:US_velocities}\subref{subfig:US_velo_10} and \ref{fig:US_velocities}\subref{subfig:US_velo_25}, namely numerical oscillations in both USL and USF solutions with bigger picks in USF one. 
+One can see that the USL formulation is more diffusive than the USF for this problem. These results differ from observations made in \cite{Bardenhagen_USF_USL} in which no significant differences for problems involving smooth solutions is noticed. At last, figure \ref{fig:US_velocities} shows the numerical velocities at several time steps. The same observations than before are made by looking at figures \ref{fig:US_velocities}\subref{subfig:US_velo_10} and \ref{fig:US_velocities}\subref{subfig:US_velo_25}, namely numerical oscillations in both USL and USF solutions with bigger picks in USF one. Nevertheless, a notable numerical artifact that prevents the proper assessment of the velocity occurs at the middle of the bar when two particles per cell are used. This can be partially explained by the oscillating stress field that introduce noise in internal forces as well. However, the velocity field given by USL computation "locks" in the central region although the stress field converges in time to the exact solution (figures \ref{fig:US_diffusion}\subref{subfig:US_diffusion_10} and \ref{fig:US_diffusion}\subref{subfig:US_diffusion_25}), which implies that this issue is not due to the computation of internal forces, but most likely to the convective phase.
 \begin{figure}[ht]
   \centering
   {\input{chapter3/pgfFigures/US_velo10}\phantomsubcaption \label{subfig:US_velo_10}}
@@ -173,30 +174,24 @@ One can see that the USL formulation is more diffusive than the USF for this pro
   \caption{Comparison between exact, USF and USL velocities of the bars impact problem for various discretizations.}
   \label{fig:US_velocities}
 \end{figure}
-Nevertheless, a notable numerical artifact that prevents the proper assessment of the velocity occurs at the middle of the bar when two particles per cell are used. This can be explained for USF formulation
 
-% Test to explain this
-% To understand what happends, consider the nodal velocity field resulting from the projection the Riemann-type initial conditions prescribed on material points. A regular distribution of particles in the mesh leads to a zero velocity at the central node after the mapping \eqref{eq:particles2nodes}, which is the correct solution. Next, initial conditions in stress and velocity yield null internal forces everywhere in the mesh for both USL and USF. As a consequence, the first solution of discrete equations does not alter the nodal velocity field. , and the discontinuous shape functions gradient so that the nodal velocity does not change after    
-% "locking" of velocity 
-% The symmetrical stress solution depicted in figures \ref{fig:US_diffusion}\subref{subfig:US_diffusion_10} and \ref{fig:US_diffusion}\subref{subfig:US_diffusion_25}, combined to the discontinuous gradient of shape functions, yield zero internal forces at the central node
-% Furthermore, a skew-symmetric velocity profile leads, after the convective step, to a zero velocity at the central node, which is the correct solution (and never changes because of null internal forces).
-
-This is not due to the computation of internal forces since the symmetrical stress solutions plotted in figures \ref{fig:US_diffusion}\subref{subfig:US_diffusion_10} and \ref{fig:US_diffusion}\subref{subfig:US_diffusion_25}, combined to the discontinuous gradient of shape functions, yield zero internal forces at the central node of the computational grid (equation \eqref{eq:int_forces}). Furthermore, a skew-symmetric velocity profile leads, after the convective step, to a zero velocity at the central node, which is the correct solution (and never changes because of null internal forces). Hence, the error most likely comes from the back-mapping of fields from the grid to material points. Moreover, this projection is known to be responsible for noise introduced in the numerical solution \cite{Mass_Flip}. On the other hand, the projection used in PIC is a simple interpolation of the updated nodal velocity:
+Since the the back-mapping is known to be responsible for noise introduced in MPM solution \cite{Mass_Flip}, we propose to project the velocity onto particles by a simple interpolation, as it is done in PIC:
+%Since the the back-mapping of fields from the grid to material points is known to be responsible for noise introduced in MPM solution , we propose to project fields onto particles as it is done in PIC instead, that is by a simple interpolation:
 \begin{equation}
   \label{eq:PIC_Back-mapping}
   \vect{v}^{p,n+1}=\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1}
 \end{equation}
-\begin{figure}[ht]
+Particles positions are next updated as in FLIP, with the nodal velocity \eqref{eq:position_update}, thus amouting to deform Lagrangian particles with the grid and exactly satisfy the relation $\vect{\dot{x}}^p=\vect{v}^p$, which is not the case in MPM. It is then worth noticing that the weak form \eqref{eq:mpm_discrete_weak} is based on the definition \eqref{eq:PIC_Back-mapping}, this projection seems therefore more consistent.
+
+The comparison between MPM using either PIC or FLIP mapping and exact velocities is plotted in figures \ref{fig:MPM_velocities}\subref{subfig:MPM_velo_10} and \ref{fig:MPM_velocities}\subref{subfig:MPM_velo_25}
+\begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/mpm_velo10}\phantomsubcaption \label{subfig:MPM_velo_10}}
   {\input{chapter3/pgfFigures/mpm_velo25}\phantomsubcaption \label{subfig:MPM_velo_25}}
   \caption{Comparison between USL algorithm with classical or PIC mapping and exact velocities of the bars impact problem for various discretizations.}
   \label{fig:MPM_velocities}
 \end{figure}
-In addition, the particles positions are updated, as in FLIP, by using the nodal velocity \eqref{eq:position_update}, amouting thus to deform Lagrangian particles with the grid and exactly satisfy the relation $\vect{\dot{x}}^p=\vect{v}^p$, which is not the case in MPM. It is worth noticing that the weak form \eqref{eq:mpm_discrete_weak} is based on the definition \eqref{eq:PIC_Back-mapping} so that this projection seems more consistent than the update \eqref{eq:mp_velocity_update}. 
-
-PIC projection \eqref{eq:PIC_Back-mapping} has been implemented into the USL formulation in order to compare it to the original USL algorithm and to the exact solution (figures \ref{fig:MPM_velocities}\subref{subfig:MPM_velo_10} and \ref{fig:MPM_velocities}\subref{subfig:MPM_velo_25}). 
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/mpm_diffusion10} \phantomsubcaption \label{subfig:mpm_diffusion_10}}
   {\input{chapter3/pgfFigures/mpm_diffusion25} \phantomsubcaption \label{subfig:mpm_diffusion_25}}
@@ -204,19 +199,19 @@ PIC projection \eqref{eq:PIC_Back-mapping} has been implemented into the USL for
   \caption{Comparison of USL solutions using either PIC or FLIP projection and exact solution of the bars impact problem for various discretizations. (a)--(b) comparison of stress profiles at several time steps (c) evolution of total energy. Parameters: $CFL=0.7$ ; $v_0=\frac{1}{200}\sqrt{\frac{E}{\rho}}$.}
   \label{fig:mpm_diffusion}
 \end{figure}
-As can be seen, the introduction of the PIC projection enables the elimination of noise in the numerical solution as well as the "locking" of the velocity in the middle region of the bar. Hence, the modified USL shows a good agreement with the exact solution in terms of velocity and stress (see figures \ref{fig:mpm_diffusion}\subref{subfig:mpm_diffusion_10} and \ref{fig:mpm_diffusion}\subref{subfig:mpm_diffusion_25}). Nevertheless, the modified USL is more diffusive, as shown in figure \ref{fig:mpm_diffusion}\subref{subfig:mpm_energies}. This result was expected since the PIC projection step was removed in order to reduce the numerical dissipation \cite{PIC_Nishiguchi}. Furthermore, the mapping \eqref{eq:PIC_Back-mapping} has been identified in \cite{XPIC} as a solution of the problem:
-\begin{equation}
-  \vect{v}^{p,n+1} = \arg \min_{\vect{v}^{p}}|| \vect{v}^{p}||_2,\quad \text{such that }  \frac{\sum_{p=1}^{N_p}S_{ip} m_p\vect{v}^{p}}{\sum_{k=1}^{N_p}S_{ik} m_k}=\vect{v}^{i,n+1}
-\end{equation}
-in which the minimization is achieved by dissipating kinetic energy.
+As can be seen, PIC projection eliminates the noise in numerical solutions as well as the velocity locking in the central region of the bar. In addition, stress results provided by the USL using PIC mapping are also close to the exact solution (see figures \ref{fig:mpm_diffusion}\subref{subfig:mpm_diffusion_10} and \ref{fig:mpm_diffusion}\subref{subfig:mpm_diffusion_25}). However, the resolution of discontinuities allowed by the "modified" USL--MPM is slightly lower than that of the original formulation owing to numerical diffusion as shown in the energy plot in figure \ref{fig:mpm_diffusion}\subref{subfig:mpm_energies}. This result was expected since the FLIP projection was preferred to PIC one for it enabled a reduction of numerical dissipation \cite{PIC_Nishiguchi}.
+
+% This balance between diffusion and noise resulting from the projection between nodes and particles selected has been emphasized in \cite{XPIC}
+% Furthermore, the mapping \eqref{eq:PIC_Back-mapping} has been identified in \cite{XPIC} as a solution of the problem:
+% \begin{equation}
+%   \vect{v}^{p,n+1} = \arg \min_{\vect{v}^{p}}|| \vect{v}^{p}||_2,\quad \text{such that }  \frac{\sum_{p=1}^{N_p}S_{ip} m_p\vect{v}^{p}}{\sum_{k=1}^{N_p}S_{ik} m_k}=\vect{v}^{i,n+1}
+% \end{equation}
+% in which the minimization is achieved by dissipating kinetic energy.
  
-
-
-
 \subsection{Strategy for reducing oscillations and diffusion}
-We are concerned here with the accurate solution of hyperbolic problems in solid undergoing finite deformations. Although the MPM enables an efficient management of large strains, the oscillations it suffers from do not allow to accurately capture waves propagating in a medium. The above numerical results however suggest that the numerical noise can be removed by using an interpolation instead of an update of material points velocity, at the cost of additional diffusion. The \textit{Extended PIC of order m (XPIC(m))} \cite{XPIC} hence proposes acombination of FLIP and PIC projections of fields to particles by means of an additional parameter $m$.
-The point of view adopted in this thesis is that the numerical diffusion is essentially due to the projection of fields from particles to nodes and back tha spread the information. Hence, a reduction of the domain of influence of material points is preferred to a widening, as GIMP, BSMPM and DDMPM propose. 
-As a consequence, a combination of the  \textit{Discontinuous Galerkin} approximation (DG) and the transfer of velocity from nodes to particles originally developed for PIC is proposed within the MPM. These two features are expected to respectively enable numerical diffusion and spurious osccilations. It is worth noticing that attention is paid to impact problems which solutions are mostly unregular so that high-order approximations, as investigated in \cite{MPM_BSpline2} or \cite{BsplineMPM}, are not considered here. 
+We are concerned here with the accurate solution of hyperbolic problems in solid undergoing finite deformations. Although the MPM enables an efficient management of large strains, the oscillations it suffers from do not allow to accurately capture waves propagating in a medium. The above numerical simulations however suggest that noise can be removed by using an interpolation instead of an update of material points velocity, at the cost of additional diffusion. Thus, the use of  a linear combination of PIC and FLIP projections to update particles velocity was proposed in \cite{Nairn}, which can be seen as an artificial damping. Further, a tunable mapping procedure based on a parameter $m$ that completely eliminates noise in MPM solution has been proposed in the \textit{Extended PIC of order m (XPIC(m))} \cite{XPIC}. A classical interpolation is selected for $m=1$ whereas the mapping tends to FLIP one as $m \rightarrow \infty$ while avoiding oscillations in dissipating energy. Therefore, the method is still unable to capture discontinuities.
+
+The point of view adopted in this thesis is that numerical diffusion is essentially due to the projection of fields from nodes to particles which spreads the information. Hence, a reduction of the domain of influence of nodes might result in lower dissipation. As a consequence, the reintroduction of PIC mapping combined to the \textit{Discontinuous Galerkin} approximation (DG) within the MPM is proposed here. These two features are expected to respectively avoid spurious oscillations and numerical diffusion.
 
 
 %%% Local Variables: 

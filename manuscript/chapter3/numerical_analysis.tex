@@ -1,4 +1,4 @@
-Following \cite{Hirsch}, the DGMPM discretization of linear advection problems are now written in a finite difference sense. The scheme equations thus obtained are the starting points for von Neumann linear stability analyses. First, the one-dimensional problem is considered and scheme equations based on the DGMPM space discratization, combined to both forward Euler and \textit{second-order Runge Kutta (RK2)} explicit time discretizations, are derived. Second, the two-dimensional scheme equation is written by using the DGMPM space discretizattion along with the explicit forward Euler time discretizattion only.
+Following \cite{Hirsch}, the DGMPM discretizations of scalar linear advection problems are now written in a finite difference sense. The scheme equations thus obtained are the starting points for von Neumann linear stability analyses. First, the one-dimensional problem is considered and scheme equations of the DGMPM space discretization combined to both forward Euler and RK2 explicit time integrations are derived. Second, the two-dimensional scheme equation is written by using the DGMPM space discretization along with the explicit forward Euler time integration only.
 
 \subsection{One-dimensional stability analysis}
 \label{subsec:scheme_equations}
@@ -18,11 +18,14 @@ Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galer
   \caption{One-dimensional mesh made of $E$ elements of constant length $\Delta X = \frac{l}{E}$.}\label{fig:1Dmesh}
 \end{figure}
 
-Since fields are carried by particles, we seek for the scheme equation that gives the solution $\bar{q}$ at a material point for a given time step, with respect to the solutions of other particles at previous time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points. Furthermore, since we consider here scalar quantities, the information on nodes and particles can be written as subscripts without ambiguity. Hence, at the time step $n$, the solution at material point $\alpha$ reads $q^{n}_\alpha$ and it is the same for nodes. Then, the cell containing a given particle $\mu$ will be denoted by $c(\mu)$ so that the nodes interacting with this particle are $2c(\mu)-1$ and $2c(\mu)$. At last, the linear shape functions defined in element $c(\mu)$ are:
+Since fields are carried by particles, we seek for the scheme equation that gives the solution $\bar{q}$ at a material point for a given time step, with respect to the solutions of other particles at the prior time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points.
+Since we consider here scalar quantities, the information on nodes and particles can be written as subscripts without ambiguity with vector components.
+In addition, to make the discinction between fields easier, upper and lower case Latin symbols are used for particles and nodal fields respectively.
+Hence, the solution at material point $\alpha$ and time step $n$ reads $Q^{n}_\alpha$ whereas that of node $i$ is $q^n_i$. Then, the cell containing the particle $\alpha$ will be denoted by $c(\alpha)$ so that the nodes interacting with this particle are $2c(\alpha)-1$ and $2c(\alpha)$. At last, the linear shape functions defined in element $c(\alpha)$ are:
 \begin{equation}
-S_{2c(\mu)-1}(X)= \frac{X^{2c(\mu)} - X}{\Delta X} \qquad S_{2c(\mu)}(X)= \frac{X -X^{2c(\mu)-1}}{\Delta X} \qquad X \in \[X^{2c(\mu)-1},X^{2c(\mu)}\]
+S_{2c(\alpha)-1}(X)= \frac{X^{2c(\alpha)} - X}{\Delta X} \qquad S_{2c(\alpha)}(X)= \frac{X -X^{2c(\alpha)-1}}{\Delta X} \qquad X \in \[X^{2c(\alpha)-1},X^{2c(\alpha)}\]
 \end{equation}
-and $S_{i,\mu}$ is the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
+and $S_{i\alpha}$ or $S_{i,\alpha}$ denote the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
 
 \subsubsection*{Scheme equation: Euler time discretization}
 The method followed to write the scheme equation is to trace backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $I$:

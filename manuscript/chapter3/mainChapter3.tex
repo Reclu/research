@@ -7,7 +7,7 @@ Since the early 50's, plenty of numerical methods that consist mainly in mesh-ba
 
 The \textbf{Material Point Method} (MPM) \cite{Sulsky94} mixes the advantages of both Lagrangian and Eulerian methods in order to circumvent mesh entanglement. However, the MPM suffers from numerical diffusion and oscillations that make it unable to accurately capture the waves travelling in solids. These limitations have been the object of researches that yield significant improvements without allowing to capture discontinuities. This is the purpose of this chapter.
 
-In what follows, a brief historical review of developments that provided to the MPM formulation is made and the original formulation is recalled in section \ref{sec:MPM}. Next, after emphasizing some shortcomings of the method, an extension of the MPM to the Discontinuous Galerkin (DG) approximation is proposed in section \ref{sec:DGMPM}. At last, the numerical analysis of the DGMPM is performed in section \ref{sec:DGMPM_analysis} in terms of convergence and stability. Those studies of the numerical scheme show that the optimal Courant number may be reach in specific cases at the cost of first-order accuracy in velocity.
+In what follows, a brief historical review of developments that provided to the MPM formulation is made and the original formulation is recalled in section \ref{sec:MPM}. Next, after emphasizing some shortcomings of the method, an extension of the MPM to the Discontinuous Galerkin (DG) approximation is proposed in section \ref{sec:DGMPM}. At last, the numerical analysis of the \textbf{Discontinuous Galerkin Material Point Method} (DGMPM) is performed in section \ref{sec:DGMPM_analysis} in terms of convergence and stability. Those studies of the numerical scheme show that the optimal Courant number may be reach in specific cases at the cost of first-order accuracy in velocity.
 
 
 
@@ -15,7 +15,7 @@ In what follows, a brief historical review of developments that provided to the 
 \label{sec:MPM}
 \input{chapter3/MPM}
 
-\section{Extension to discontinuous Galerkin approximation}
+\section{Extension of the MPM to discontinuous Galerkin approximation}
 \label{sec:DGMPM}
 \input{chapter3/DGMPM}
 
