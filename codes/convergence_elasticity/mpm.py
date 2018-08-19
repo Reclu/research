@@ -3,10 +3,10 @@
 from pylab import *
 from scipy.linalg import solve
 import numpy as np
+from matplotlib import animation
+import pdb
 
-
-
-L=25.
+L=1.
 Nelem=Mp
 Mp=Nelem*ppc
 Nn=Nelem + 1             # Number of elements
@@ -91,8 +91,8 @@ xp[:,0]=np.linspace(0.,L,Mp)
 
 # Material properties
 
-rho=1.
-E=100.
+rho=1.e3
+E=1.e7
 Sy=400.0e6           
 c=np.sqrt(E/rho)
 H = 10e9
@@ -105,9 +105,13 @@ s0 =-0.*Sy
 v0=0.1
 
 # Time discretization
-tfinal=0.02#0.75*L/c
+CFL=0.4
+Dt=CFL*lx/c
+tfinal=0.5*L/c
+
+tfinal=0.02
+Dt=1.e-3
 tf=2.*tfinal#0.75*L/c
-Dt=1.e-5#CFL*lx/c
 
 inc=int(tfinal/Dt)+1
 
@@ -124,8 +128,8 @@ Eps=np.zeros(Mp)
 Fimp=np.zeros(Mp)
 Fimp[0]=s0
 
-V = v0*np.sin(np.pi*xp[:,0]/L)/rho
-
+G=1.e-4
+V = c*np.pi*G*np.sin(np.pi*xp[:,0])
 
 # Grid nodes' fields
 a=np.zeros(Nn)
@@ -145,6 +149,8 @@ mv=np.sum(np.dot(np.dot(Map,MD),Map.T),axis=1)
 
 # Storage
 Stress=np.zeros((Mp,int(inc)+2))
+Sth=np.zeros((Mp,int(inc)+2))
+Vth=np.zeros((Mp,int(inc)+2))
 p=np.zeros((Mp,int(inc)+2))
 Epsp=np.zeros((Mp,int(inc)+2))
 dEpsp=np.zeros((Mp,int(inc)+2))
@@ -171,10 +177,15 @@ def smoothSolution(x,c,t,tfinal,tf):
     return val
 
 #alg='USF'
-while T<tfinal:
-
+for n in range(int(inc)+2)[1:]:
     mf=(1-alpha)*mn + alpha*md
 
+    T+=Dt
+    time[n]=T
+    
+    if time[n]>tfinal:
+        Increments=n-1
+        break
     if alg=='USL':
         
         # Convection /!\
@@ -200,9 +211,7 @@ while T<tfinal:
         
         A=np.dot(Map[Dofs,:].T,a[Dofs])
         V+=Dt*A
-        
-            
-        
+
         # Gradient and constitutive model
         Epsn=Eps
         
@@ -215,6 +224,7 @@ while T<tfinal:
         #v[Dofs]=solve(mf,np.dot(Map[Dofs,:],np.dot(MD,V)))
         v[0]=0.
         v[-1]=0.
+        
         
         # Gradient and constitutive model
         Epsn=Eps
@@ -239,11 +249,43 @@ while T<tfinal:
     a=np.zeros(Nn)
     v=np.zeros(Nn)
     Fi=np.zeros(Nn)
+
     
-    n+=1
-    T+=Dt
+    
     Stress[:,n]=Sig[:]
     Pos[:,n]=xp[:,0]
     Velocity[:,n]=V[:]
-    time[n]=T
-Increments=n
+    
+    for i in range(Mp):
+        Sth[i,n]=E*np.pi*G*np.sin(np.pi*c*T)*np.cos(np.pi*xp[i,0])
+        #Vth[i,n]=v0*np.cos(np.pi*c*T/L)*np.sin(np.pi*xp[i,0]/L)
+        Vth[i,n]=c*np.pi*G*np.cos(np.pi*c*T)*np.sin(np.pi*xp[i,0])
+        
+    # if T+Dt>tfinal:
+    #     break
+"""
+fig, (ax2) = plt.subplots(1,1)
+plt.title('Elastic wave in a bar')
+line1, = ax2.plot([], [],'b-s' , lw=2.,ms=1.5)
+line2, = ax2.plot([], [],'r-s' , lw=2.,ms=1.5)
+line = [line1,line2]
+ax2.set_xlim(0.,L);
+ax2.set_ylim(np.min(Velocity),np.max(Velocity));
+ 
+ax2.grid()
+ax2.set_xlabel('x (m)', fontsize=18)
+ax2.set_ylabel('Stress', fontsize=18)
+fig.legend((line),("V","S"),'upper right',numpoints=1)
+def init():
+    line[0].set_data([], [])
+    line[1].set_data([], [])
+    return line
+def animate(i):
+    line[0].set_data(Pos[:,i],Velocity[:,i])
+    line[1].set_data(Pos[:,i],Vth[:,i])
+    return line
+
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=Increments, interval=50, blit=True)
+plt.show()
+"""

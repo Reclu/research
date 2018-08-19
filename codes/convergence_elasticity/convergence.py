@@ -74,7 +74,7 @@ ppc=[2,3,4,8]
 
 
 MP=[4,8,16,32,64]
-ppc=[4]
+ppc=[4,6,8]
 # MP = [10,20,40,60,80]
 # ppc=[2,3]
 
@@ -122,23 +122,39 @@ for p in range(len(ppc)):
         #Sigma
         ErrS_dgmpm[i,p] = computeRelativeError(DGMPM["Stress"][:,n1],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
         ErrS_dgmpmRK2[i,p] = computeRelativeError(DGMPMRK2["Stress"][:,n1RK2],DGMPMRK2["Sth"][:,n1RK2],dx[i,p],Error_order1)
-        ErrS_usl[i,p] = computeRelativeError(USL["Stress"][:,n2],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
-        ErrS_usf[i,p] = computeRelativeError(USF["Stress"][:,n2],DGMPM["Sth"][:,n1],dx[i,p],Error_order1)
+        ErrS_usl[i,p] = computeRelativeError(USL["Stress"][:,n2],USL["Sth"][:,n2],dx[i,p],Error_order1)
+        ErrS_usf[i,p] = computeRelativeError(USF["Stress"][:,n2],USF["Sth"][:,n2],dx[i,p],Error_order1)
         ErrS_dgmpm2[i,p] = computeRelativeError(DGMPM["Stress"][:,n1],DGMPM["Sth"][:,n1],dx[i,p],Error_order2)
 
         #Velocity
         ErrV_dgmpm[i,p] = computeRelativeError(DGMPM["Velocity"][:,n1],DGMPM["Vth"][:,n1],dx[i,p],Error_order1)
         ErrV_dgmpmRK2[i,p] = computeRelativeError(DGMPMRK2["Velocity"][:,n1RK2],DGMPMRK2["Vth"][:,n1RK2],dx[i,p],Error_order1)
-        ErrV_usl[i,p] = computeRelativeError(USL["Velocity"][:,n2],DGMPM["Vth"][:,n1],dx[i,p],Error_order1)
-        ErrV_usf[i,p] = computeRelativeError(USF["Velocity"][:,n2],DGMPM["Vth"][:,n1],dx[i,p],Error_order1)
+        ErrV_usl[i,p] = computeRelativeError(USL["Velocity"][:,n2],USL["Vth"][:,n2],dx[i,p],Error_order1)
+        ErrV_usf[i,p] = computeRelativeError(USF["Velocity"][:,n2],USF["Vth"][:,n2],dx[i,p],Error_order1)
         ErrV_dgmpm2[i,p] = computeRelativeError(DGMPM["Velocity"][:,n1],DGMPM["Vth"][:,n1],dx[i,p],Error_order2)
         #########################  Comparison  ######################################
+        position=np.linspace(0.,1.,10)
+        
+        E=1.e7;rho=1000.;c=np.sqrt(E/rho);G=1.e-4
+        reference=E*G*np.pi*np.sin(np.pi*c*0.02)*np.cos(np.pi*position)
         
         ##Stress
-        # l1,l2,l3,l4=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Velocity"][:,n1],'r+', \
-        #                   DGMPM["Pos"][:,n1],DGMPM["Vth"][:,n1],'k', \
-        #                   DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Velocity"][:,n1RK2],'bo', \
-        #                   USL["Pos"][:,n2],USL["Velocity"][:,n2],'g^')
+        l1,l2,l3,l4,l5=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Stress"][:,n1],'r+', \
+                                DGMPM["Pos"][:,n1],DGMPM["Sth"][:,n1],'k', \
+                                DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Stress"][:,n1RK2],'bo', \
+                                USF["Pos"][:,n2],USF["Stress"][:,n2],'g^',\
+                                position,reference,'r',linestyle='--')
+        # if p==0 :
+        #     plt.plot(FEM["y"],FEM["sigma"][:,n3],'b-o',label='fem')
+        #     plt.plot(FEM["y"],FEM["anal"][:,n3],'k--')
+        plt.grid()
+        plt.xlabel('x (m)')
+        plt.ylabel(r'$\sigma$')
+        plt.show()
+        # l1,l2,l3,l4=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Stress"][:,n1],'r+', \
+        #                      DGMPM["Pos"][:,n1],DGMPM["Sth"][:,n1],'k', \
+        #                      DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Stress"][:,n1RK2],'bo', \
+        #                      USF["Pos"][:,n2],USF["Stress"][:,n2],'g^')
         # # if p==0 :
         # #     plt.plot(FEM["y"],FEM["sigma"][:,n3],'b-o',label='fem')
         # #     plt.plot(FEM["y"],FEM["anal"][:,n3],'k--')
@@ -189,7 +205,7 @@ def func(x,C,n):
 fig1 = plt.figure()
 #Stress
 color_dgmpm=['r-+','y-+','c-+','g-+','b-+','m-+']
-color_mpm=['r--+','y--+','c--+','g--+','b--+','m--+']
+color_mpm=['y-o','g-o','c-o','r-o','b-o','m-o']
 color_dgmpmRK2=['m-+','b-+','g-+','c-+','y-+','r-+']
 color_dgmpm2=['m--','b--','g--','c--','y--','r--']
 for p in range(len(ppc)):

@@ -7,36 +7,38 @@ We consider the scalar linear advection equation for an arbitrary quantity $q=\r
 \begin{equation}
 \drond{\bar{q}}{t} + \drond{\bar{f}}{X} = 0 
 \end{equation}
-The specific flux function being $\bar{f} = a\bar{q}$, the quasi-linear form reads:
+with specific flux function $\bar{f} = a\bar{q}$, leading to the quasi-linear form:
 \begin{equation}
 \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} = 0 \label{eq:scalar_advection}
 \end{equation}
-Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, it is assumed that the medium has been divided with $N_p$ material points arbitrarily distributed in $E$ two-nodes elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid mesh is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
+Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, the medium is divided with $N_p$ material points arbitrarily distributed in $E$ two-nodes elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid mesh is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/1D_domain}
   \caption{One-dimensional mesh made of $E$ elements of constant length $\Delta X = \frac{l}{E}$.}\label{fig:1Dmesh}
 \end{figure}
 
-Since fields are carried by particles, we seek for the scheme equation that gives the solution $\bar{q}$ at a material point for a given time step, with respect to the solutions of other particles at the prior time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points.
+Since fields are carried by particles, we seek the scheme equation that gives the solution at a material point for a given time step, with respect to the solutions of other particles at the prior time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points.
 Since we consider here scalar quantities, the information on nodes and particles can be written as subscripts without ambiguity with vector components.
 In addition, to make the discinction between fields easier, upper and lower case Latin symbols are used for particles and nodal fields respectively.
-Hence, the solution at material point $\alpha$ and time step $n$ reads $Q^{n}_\alpha$ whereas that of node $i$ is $q^n_i$. Then, the cell containing the particle $\alpha$ will be denoted by $c(\alpha)$ so that the nodes interacting with this particle are $2c(\alpha)-1$ and $2c(\alpha)$. At last, the linear shape functions defined in element $c(\alpha)$ are:
+Hence, the solution at material point $\alpha$ and time step $n$ reads $\bar{Q}^{n}_\alpha$ whereas that of node $i$ is $\bar{q}^n_i$. Then, the cell containing the particle $\alpha$ will be denoted by $c(\alpha)$ so that the nodes interacting with this particle are $2c(\alpha)-1$ and $2c(\alpha)$. At last, the linear shape functions defined in element $c(\alpha)$ are:
 \begin{equation}
 S_{2c(\alpha)-1}(X)= \frac{X^{2c(\alpha)} - X}{\Delta X} \qquad S_{2c(\alpha)}(X)= \frac{X -X^{2c(\alpha)-1}}{\Delta X} \qquad X \in \[X^{2c(\alpha)-1},X^{2c(\alpha)}\]
 \end{equation}
-and $S_{i\alpha}$ or $S_{i,\alpha}$ denote the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
+and $S_{i\alpha}$ or $S_{i,\alpha}$ correspond to the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
 
 \subsubsection*{Scheme equation: Euler time discretization}
-The method followed to write the scheme equation is to trace backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $I$:
+The method followed to write the scheme equation is to trace backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $\alpha$:
 \begin{equation}
 \bar{Q}^{n+1}_\alpha = H\(\bar{Q}^{n}_\beta\) \qquad  \beta=1,..,N_p
 \end{equation} 
-Quantities at time $t^{n+1}$ are obtained by interpolating nodal solutions of the discrete equation \eqref{eq:DGMPM_discrete} in the cell containing the $\alpha$th particle by the projection \eqref{eq:DGMPM_node2points}: 
+Quantities at time $t^{n+1}$ are obtained by interpolating nodal solutions of the discrete equation \eqref{eq:DGMPM_discrete} in the cell containing the $\alpha$th particle: 
 \begin{equation}
 \bar{Q}^{n+1}_\alpha = S_{2c(\alpha)-1,\alpha}\bar{q}_{2c(\alpha)-1}^{n+1} + S_{2c(\alpha),\alpha}\bar{q}_{2c(\alpha)}^{n+1} \label{eq:updated_MP}
 \end{equation}
-With the interface fluxes in the case of the linear scalar advection equation $\Fc_N =  (aq^*) N $, in which $q^*$ is the stationary solution of Riemann's problem at the cell interface and $N=\pm 1$ the outward unit normal, the discrete form \eqref{eq:DGMPM_discrete} leads to the following expressions of updated nodal values:
+The linear scalar advection equation leads to the interface flux function $\Fc_N =  (aq^*) N $, where
+%With the interface fluxes in the case of the linear scalar advection equation $\Fc_N =  (aq^*) N $, in which 
+$q^*$ is the stationary solution of Riemann's problem at a cell interface and $N=\pm 1$ the outward unit normal. The discrete form \eqref{eq:DGMPM_discrete} thus reads for both nodes of cell $c(\alpha)$:
 \begin{equation}
   \label{eq:nodal_discrete_forms}
   \begin{aligned}
@@ -44,14 +46,13 @@ With the interface fluxes in the case of the linear scalar advection equation $\
     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{\Delta t}{M^L_{2c(\alpha)}}\( K_{2c(\alpha),j} a\bar{q}_{j}^{n}- a\rho \bar{q}_{2c(\alpha)}^*N_{2c(\alpha)} \)
   \end{aligned}
 \end{equation}
-Where in a one-dimensional grid, the outward unit vectors are $N_{2c(\alpha)-1}=-1$ and $N_{2c(\alpha)}=1$.
-
-First, the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
+Where in a one-dimensional grid, the outward unit vectors are $N_{2c(\alpha)-1}=-1$ and $N_{2c(\alpha)}=1$. Discrete equations \eqref{eq:nodal_discrete_forms} are then simplified by first considering that the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
+%First, the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
 \begin{equation}
   \label{eq:grid_density}
   \rho(X) = \frac{M^L_{2c-1}+M^L_{2c}}{\Delta X} = \frac{\sum_{\mu=1}^{N_p^c} m_\mu}{\Delta X}, \qquad X \in [X^{2c-1},X^{2c}]
 \end{equation}
-where $N_p^{c}$ is the number of particles in cell $c$ and $m_\mu$, the mass carried by the $\mu$th material point. For homogenous medium, we assume the mass is uniformly distributed between patricles so that the previous definition reduces to $\rho = N_p^{c} m^c/\Delta X$, with $m^c$ the mass carried by particles lying in $c$. Then, provided linear shape functions, the lumped mass and the pseudo-stiffness matrices are:
+where $N_p^{c}$ is the number of particles in cell $c$ and $m_\mu$, the mass carried by the $\mu$th material point. For homogenous medium, we further assume that the mass is uniformly distributed between patricles so that the previous definition reduces to $\rho = N_p^{c} m^c/\Delta X$, with $m^c$ the mass carried by particles lying in $c$. Second, provided linear shape functions, the lumped mass and the pseudo-stiffness matrices are:
 \begin{align}
   & M^L_i = \sum_{\mu=1}^{N_p} S_{i\mu} m_\mu = m^{c(i)} \sum_{\mu=1}^{N_p} S_{i\mu}\\
   & K_{2c(\alpha)-1,j} = \sum_{\mu=1}^{N_p} \drond{S_{2c(\alpha)-1,\mu}}{X} m_\mu S_{j\mu} = -m^{c(i)} \sum_{\mu=1}^{N_p} \frac{ S_{j\mu}}{\Delta X} \\
@@ -62,21 +63,12 @@ The discontinuous approximation basis moreover yields a bloc diagonal pseudo-sti
   \label{eq:block_diag_K}
   K_{ij} \bar{q}_{j}^{n}= K_{i,2c(i)-1} \bar{q}_{2c(i)-1}^{n}+K_{i,2c(i)} \bar{q}_{2c(i)}^{n}
 \end{equation}
-
-A right-going wave (\textit{i.e. $a>0$}) leads to a stationary solution of Riemann problems equals to the state of the upwind node of an interface, that is:
+Third, a right-going wave (\textit{i.e. $a>0$}) leads to a stationary solution of Riemann problems equals to the state of the upwind node of an interface, that is:
 \begin{align}
   & q_{2c(\alpha)-1}^* = \rho \bar{q}^n_{2c(\alpha)-2}=  N_p^{c(\alpha)}\frac{ m^{c(\alpha)}}{\Delta X}\bar{q}^n_{2c(\alpha)-2} \\
   & q_{2c(\alpha)}^* = \rho \bar{q}^n_{2c(\alpha)} =  N_p^{c(\alpha)}\frac{ m^{c(\alpha)}}{\Delta X} \bar{q}^n_{2c(\alpha)} 
 \end{align}
-
-Gathering all the previous consideration and seeing that the definition of the mass density used implies that every particles in a given cell carry the same mass, equations \eqref{eq:nodal_discrete_forms} read:
-% \begin{equation}
-%   \label{eq:nodal_euler}
-%   \begin{aligned}
-%     & \bar{q}_{2c(\alpha)-1}^{n+1}= \bar{q}_{2c(\alpha)-1}^{n} - \frac{a\Delta t}{\Delta X}\( \frac{m^{c(\alpha)} f_{c(\alpha)}^{n} - N_p^{c( \alpha)}m^{c(\alpha)} \bar{q}^n_{2c(\alpha)-2}}{\sum_{\mu=1}^{N_p^{c(\alpha)}} m^{c(\alpha)} S_{2c(\alpha)-1,\mu}}\)\\
-%     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{m^{c(\alpha)}f_{c(\alpha)}^{n}- N_p^{c( \alpha)} m^{c(\alpha)} \bar{q}^n_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}} m^{c(\alpha)} S_{2c(\alpha),\mu}} \)
-%   \end{aligned}
-% \end{equation
+Therefore, gathering all the previous considerations, equations \eqref{eq:nodal_discrete_forms} read:
 \begin{equation}
   \label{eq:nodal_euler}
   \begin{aligned}
@@ -84,7 +76,7 @@ Gathering all the previous consideration and seeing that the definition of the m
     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{\sum_{\mu=1}^{N_p^{c(\alpha)}} \[S_{2c(\alpha)-1,\mu}\bar{q}_{2c(\alpha)-1}^{n}+ S_{2c(\alpha),\mu}\bar{q}_{2c(\alpha)}^{n}\]- N_p^{c( \alpha)} \bar{q}^n_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}} S_{2c(\alpha),\mu}} \)
   \end{aligned}
 \end{equation}
-where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar{q}_{2c-1}^{n}+ S_{2c,\mu}\bar{q}_{2c}^{n}\]$ are written for simplicity $f_{c}^{n}$. Note also that the Courant number $a\Delta t/\Delta X$ arises. Introduction of those equation in the updated material point solution \eqref{eq:updated_MP} leads after some simplifications to:
+where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar{q}_{2c-1}^{n}+ S_{2c,\mu}\bar{q}_{2c}^{n}\]$ are written for simplicity $f_{c}^{n}$, and Courant number $a\Delta t/\Delta X$ arises. Introduction of those equations in the updated material point solution \eqref{eq:updated_MP} leads after some simplifications to:
 \begin{equation}
   \label{eq:euler_before_mapping}
   \begin{split}
@@ -92,13 +84,15 @@ where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar
     & + \frac{a\Delta t}{\Delta X}\(\frac{S_{2c(\alpha),\alpha}}{\sum_\mu S_{2c(\alpha),\mu}}-\frac{S_{2c(\alpha)-1,\alpha}}{\sum_\mu S_{2c(\alpha)-1,\mu}}\)f_{c(\alpha)}^{n}
   \end{split}
 \end{equation}
-In equation \eqref{eq:euler_before_mapping} the solutions at nodes result from the convection step \eqref{eq:DGMPM_points2nodes}:
+
+Then, the solutions at nodes and time step $n$ in equation \eqref{eq:euler_before_mapping} result from the projection between particles and the grid \eqref{eq:DGMPM_points2nodes}:
+%In equation \eqref{eq:euler_before_mapping} the solutions at nodes result from the convection step \eqref{eq:DGMPM_points2nodes}:
 \begin{equation}
 \bar{q}^{n}_{i} = \frac{\sum_\beta S_{i\beta}m_\beta \bar{Q}^n_{\beta}}{\sum_\gamma S_{i\gamma}m_\gamma} = \frac{\sum_\beta S_{i\beta} \bar{q}^n_{\beta}}{\sum_\beta S_{i\beta}} \label{eq:stab_mapping}
 \end{equation}
-In particular, the volume fluxes contributions can be written:
+In particular, volume fluxes contributions can be written:
 \begin{equation}
-  f_{c}^{n}=\sum_{\mu=1}^{N_p^{c}}\[S_{2c-1,\mu}\frac{\sum_\beta S_{2c-1,\beta}\bar{q}^n_{\beta}}{\sum_\mu S_{2c-1,\mu}}+ S_{2c,\mu}\frac{\sum_\beta S_{2c,\beta} \bar{q}^n_{\beta}}{\sum_\mu S_{2c(\mu),\mu}} \]=\sum^{N_p}_{\beta=1}\(S_{2c-1,\beta} +S_{2c,\beta} \)\bar{q}^n_{\beta} \label{eq:volume_fluxes_mapped}
+  f_{c}^{n}=\sum_{\mu=1}^{N_p^{c}}\[S_{2c-1,\mu}\frac{\sum_\beta S_{2c-1,\beta}\bar{q}^n_{\beta}}{\sum_\gamma S_{2c-1,\gamma}}+ S_{2c,\mu}\frac{\sum_\beta S_{2c,\beta} \bar{q}^n_{\beta}}{\sum_\gamma S_{2c,\gamma}} \]=\sum^{N_p}_{\beta=1}\(S_{2c-1,\beta} +S_{2c,\beta} \)\bar{q}^n_{\beta} \label{eq:volume_fluxes_mapped}
 \end{equation}
 Thus, introduction of mappings \eqref{eq:stab_mapping} and \eqref{eq:volume_fluxes_mapped} in equation \eqref{eq:euler_before_mapping} and permutation of sums over $\beta$ and $i$ lead after some simplifications to the scheme equation:
 \begin{equation}
@@ -117,27 +111,19 @@ Note that the last term of formula \eqref{eq:scheme_euler1} is non-zero if parti
     & + \left.   \frac{a\Delta t}{\Delta X} \[\frac{S_{2c(\beta),\alpha}}{\sum_{\mu}  S_{2c(\beta),\mu}}-\frac{S_{2c(\beta)-1,\alpha}}{\sum_\mu S_{2c(\beta)-1,\mu}}\] \vphantom{\sum_{i=1}^{2E}}\right\rbrace
   \end{split}
 \end{equation}
-The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for scalar linear advection with covers two cells regardless of the number of material points. It is worth noticing that in the particular case of one material point lying in every cells, convective phase \eqref{eq:stab_mapping} simplifies to: $\bar{q}^n_i = \bar{Q}^n_\alpha$ for $c(i)=c(\alpha)$. The mapping hence amounts to a piece-wise constant reconstruction of the field on the background grid that makes the DGMPM equivalent to the \textit{First Order Upwind (FOU)} method.
-% Moreover, the particular case of one material point lying in every cell leads to the simplified form: 
-% \begin{equation}
-%   \begin{split}
-%     \label{eq:Godunov}
-%     \bar{Q}^{n+1}_\alpha = \bar{Q}^{n}_\alpha\(1-\frac{a\Delta t}{\Delta X}\) +\frac{a\Delta t}{\Delta X} \bar{Q}^{n}_{\alpha-1} 
-%   \end{split}
-% \end{equation}
-% which corresponds to the Godunov scheme. This result is due to the convective phase from particles to nodes \eqref{eq:DGMPM_points2nodes} which in the case of a one particle-per-cell discretization leads to a piecewise constant reconstruction of fields on the grid.
+The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for the scalar linear advection equation covers two cells regardless of the number of material points. It is worth noticing that in the particular case of one material point lying in every cells, convective phase \eqref{eq:stab_mapping} simplifies to: $\bar{q}^n_i = \bar{Q}^n_\alpha$ for $c(i)=c(\alpha)$. The mapping therefore amounts to a piece-wise constant reconstruction of the field on the background grid that makes the DGMPM equivalent to the \textit{First Order Upwind (FOU)} method.
 However, this no longer holds for other distributions of material points within the computational grid. 
 
 \subsubsection*{Scheme equation: RK2 time discretization}
 
-The solution of the discrete system on the grid for the second-order Runge-Kutta time integration consists in the two-stages procedure \eqref{eq:DGMPM_discrete_RK2} which, particularizes at node $i$ for the one-dimensional scalar linear advection equation as:
+The discrete system on the grid resulting from the second-order Runge-Kutta time integration consists in the two-stage procedure \eqref{eq:DGMPM_discrete_RK2} which, for the one-dimensional scalar linear advection equation, particularizes at node $i$  as:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:RK2_stage1}& \bar{q}^{n+1/2}_{i}  =\bar{q}^{n}_{i} + \frac{1}{2}\frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^n_{j} - q^{*,n}_{i}N_i \) \quad \text{(no sum on $i$)} \\
     \label{eq:RK2_stage2}& \bar{q}^{n+1}_{i}  =\bar{q}^{n}_{i} + \frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^{n+1/2}_{j} - q^{*,n+1/2}_{i}N_i \) \quad \text{(no sum on $i$)}
   \end{alignat}
 \end{subequations}
-This procedure can be seen as a recursive use of the Euler scheme \eqref{eq:nodal_euler} with suitable time step sizes. Indeed, the first stage \eqref{eq:RK2_stage1} yields the intermediate nodal fields in cell $c(\alpha)$:
+This procedure can be seen as a recursive use of the Euler scheme \eqref{eq:nodal_euler} with suitable time step sizes. The first stage \eqref{eq:RK2_stage1} yields the intermediate nodal fields in cell $c(\alpha)$:
 \begin{equation}
   \label{eq:discrete_RK2_step1}
   \begin{aligned}
@@ -145,7 +131,7 @@ This procedure can be seen as a recursive use of the Euler scheme \eqref{eq:noda
     &\bar{q}_{2c(\alpha)}^{n+1/2}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}}  S_{2c(\alpha),\mu}} \)
   \end{aligned}
 \end{equation}
-In addition, the second stage \eqref{eq:RK2_stage2} leads to the expressions of nodal quantities at the end of the time step:
+and the second \eqref{eq:RK2_stage2} leads to the expression of nodal quantities at the end of the time step:
 \begin{equation}
   \label{eq:discrete_RK2_step2}
   \begin{aligned}
@@ -153,23 +139,25 @@ In addition, the second stage \eqref{eq:RK2_stage2} leads to the expressions of 
     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{\sum_{\gamma=1}^{N_p^{c(\alpha)}}\[S_{2c(\alpha)-1,\gamma}\bar{q}_{2c(\alpha)-1}^{n+1/2}+ S_{2c(\alpha),\gamma}\bar{q}_{2c(\alpha)}^{n+1/2}\]- N_p^{c( \alpha)}  \bar{q}^{n+1/2}_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}}  S_{2c(\alpha),\mu}} \)
   \end{aligned}
 \end{equation}
-Then, combination of the interpolation from nodes to particles \eqref{eq:updated_MP} and equations \eqref{eq:discrete_RK2_step2} leads, after some simplifications, to the solution at material point $\alpha$ and time step $n+1$:
+Then, introduction of the interpolation from nodes to particles \eqref{eq:updated_MP} in equations \eqref{eq:discrete_RK2_step2} leads to the solution at material point $\alpha$ and time step $n+1$:
 \begin{equation}
   \begin{split}
     \bar{Q}^{n+1}_\alpha =  &S_{2c(\alpha)-1,\alpha}\bar{q}_{2c(\alpha)-1}^{n} - \(\frac{a\Delta t}{\Delta X}\[S_{2c(\alpha)-1,\alpha} - S_{2c(\alpha),\alpha}\frac{\sum_{\gamma} S_{2c(\alpha)-1,\gamma}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\] \)\bar{q}_{2c(\alpha)-1}^{n+1/2} \\ & +S_{2c(\alpha),\alpha}\bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{\Delta X}\[S_{2c(\alpha),\alpha} - S_{2c(\alpha)-1,\alpha}\frac{\sum_{\gamma} S_{2c(\alpha),\gamma}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}- N_p^{c(\alpha)}\frac{S_{2c(\alpha),\alpha}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\] \bar{q}_{2c(\alpha)}^{n+1/2}\\
     &+N_p^{c(\alpha)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\bar{q}_{2c(\alpha)-2}^{n+1/2}
   \end{split}
 \end{equation}
-Note that the volume fluxes contributions $f_c^{n}$ are used in equations \eqref{eq:discrete_RK2_step1} and not in \eqref{eq:discrete_RK2_step2}. Indeed, nodal values $q_i^{n+1/2}$ provided by the first stage of RK2 algorithm are substituted in the second one, it is therefore better to make them appear explicitly. It thus comes:
+Nodal values $q_i^{n+1/2}$ are provided by the first stage of RK2 algorithm and can be substituted in the second stage:
+%Note that the volume fluxes contributions $f_c^{n}$ are used in equations \eqref{eq:discrete_RK2_step1} and not in \eqref{eq:discrete_RK2_step2}. Indeed, nodal values $q_i^{n+1/2}$ provided by the first stage of RK2 algorithm are substituted in the second one, it is therefore better to make them appear explicitly. It thus comes:
 \begin{equation}
   \begin{split}
     \bar{Q}^{n+1}_\alpha &=  S_{2c(\alpha)-1,\alpha}\bar{q}_{2c(\alpha)-1}^{n} +S_{2c(\alpha),\alpha}\bar{q}_{2c(\alpha)}^{n} \\
-    &- \frac{a\Delta t}{\Delta X}\[S_{2c(\alpha)-1,\alpha} - S_{2c(\alpha),\alpha}\frac{\sum_{\mu} S_{2c(\alpha)-1,\mu}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\] \(\bar{q}_{2c(\alpha)-1}^{n} - \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n} - N_p^{c( \alpha)} \bar{q}^n_{2c(\alpha)-2}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\)\) \\
-    &  + \frac{a\Delta t}{\Delta X}\[S_{2c(\alpha),\alpha}\(1- \frac{N_p^{c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\) - S_{2c(\alpha)-1,\alpha}\frac{\sum_{\mu} S_{2c(\alpha),\mu}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\] \(\bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha),\mu}} \)\)\\
-    &+N_p^{c(\alpha)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\(\bar{q}_{2c(\alpha)-2}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)-1}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)-2}}{\sum_{\mu}  S_{2c(\alpha)-2,\mu}} \)\) \label{eq:Mp_before_mapping}
+    -& \frac{a\Delta t}{\Delta X}\[S_{2c(\alpha)-1,\alpha} - S_{2c(\alpha),\alpha}\frac{\sum_{\mu} S_{2c(\alpha)-1,\mu}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\] \(\bar{q}_{2c(\alpha)-1}^{n} - \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n} - N_p^{c( \alpha)} \bar{q}^n_{2c(\alpha)-2}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\)\) \\
+    +& \frac{a\Delta t}{\Delta X}\[S_{2c(\alpha),\alpha}\(1- \frac{N_p^{c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\) - S_{2c(\alpha)-1,\alpha}\frac{\sum_{\mu} S_{2c(\alpha),\mu}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\] \(\bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha),\mu}} \)\)\\
+    +& N_p^{c(\alpha)}\frac{a\Delta t}{\Delta X}\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\(\bar{q}_{2c(\alpha)-2}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)-1}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)-2}}{\sum_{\mu}  S_{2c(\alpha)-2,\mu}} \)\) \label{eq:Mp_before_mapping}
   \end{split}
 \end{equation}
-Note that the second equation of the set \eqref{eq:discrete_RK2_step1} is used for $q^{n+1/2}_{2c(\alpha)-2}$ since it is the downwstream node of the adjacent cell $c(\alpha)-1$. At last, by rearranging formula \eqref{eq:Mp_before_mapping} as:
+Note that the solution of the downstream node of the adjacent cell $q^{n+1/2}_{2c(\alpha)-2}$ results from the second equation of the set \eqref{eq:discrete_RK2_step1}. Therefore, by rearranging formula \eqref{eq:Mp_before_mapping} as:
+%Note that the second equation of the set \eqref{eq:discrete_RK2_step1} is used for $q^{n+1/2}_{2c(\alpha)-2}$ since it is the downwstream node of the adjacent cell $c(\alpha)-1$. At last, by rearranging formula \eqref{eq:Mp_before_mapping} as:
 \begin{equation}
   \begin{split}
     \bar{Q}^{n+1}_\alpha =  &\(S_{2c(\alpha)-1,\alpha} -\frac{a\Delta t}{\Delta X}\[S_{2c(\alpha)-1,\alpha} - S_{2c(\alpha),\alpha}\frac{\sum_{\mu} S_{2c(\alpha)-1,\mu}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\]\)\bar{q}_{2c(\alpha)-1}^{n} \\
@@ -179,7 +167,7 @@ Note that the second equation of the set \eqref{eq:discrete_RK2_step1} is used f
     -&\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(\alpha)}\frac{S_{2c(\alpha),\alpha}}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} f_{c(\alpha)}^{n} +\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2N_p^{c(\alpha)}\frac{S_{2c(\alpha)-1,\alpha}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}}\frac{ f_{c(\alpha)-1}^{n}}{\sum_{\mu}  S_{2c(\alpha)-2,\mu}}
   \end{split}
 \end{equation}
-the use of convective phase equations \eqref{eq:stab_mapping} and \eqref{eq:volume_fluxes_mapped} allows to write:
+the use of mapping equations \eqref{eq:stab_mapping} and \eqref{eq:volume_fluxes_mapped} allows to write:
 \begin{equation}
   \begin{split}
     \bar{Q}^{n+1}_\alpha =  &\sum_{\beta} \bar{Q}_\beta^n  \left\lbrace \frac{S_{2c(\alpha)-1,\beta}}{\sum_\mu S_{2c(\alpha)-1,\mu}}\(S_{2c(\alpha)-1,\alpha} -\frac{a\Delta t}{\Delta X}\[S_{2c(\alpha)-1,\alpha} - S_{2c(\alpha),\alpha}\frac{\sum_{\gamma} S_{2c(\alpha)-1,\gamma}}{\sum_{\mu}  S_{2c(\alpha),\mu}}\]\)  \right. \\
@@ -189,7 +177,7 @@ the use of convective phase equations \eqref{eq:stab_mapping} and \eqref{eq:volu
     &+\frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2 N_p^{c(\alpha)}\left.\( \frac{\[S_{2c(\alpha)-2,\beta} +S_{2c(\alpha)-3,\beta} \]}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}\sum_{\mu}  S_{2c(\alpha)-2,\mu}} S_{2c(\alpha)-1,\alpha}-\frac{\[S_{2c(\alpha)-1,\beta} +S_{2c(\alpha),\beta} \]}{\(\sum_{\mu}  S_{2c(\alpha),\mu}\)^2} S_{2c(\alpha),\alpha}\)  \right\rbrace
   \end{split}
 \end{equation}
-Once the previous formula is simplified, the one-dimensional scheme equation of the DGMPM with the RK2 time discretization can be written as:
+Once the previous formula is simplified, the one-dimensional scheme equation of the DGMPM with the RK2 time discretization can be written:
 \begin{equation}
   \label{eq:RK2_scheme}
   \begin{split}
@@ -201,14 +189,14 @@ Once the previous formula is simplified, the one-dimensional scheme equation of 
     &+ \frac{1}{2}\(\frac{a\Delta t}{\Delta X}\)^2\frac{S_{2c(\beta)+1,\alpha}N_p^{c(\alpha)}}{\sum_{\mu}  S_{2c(\alpha)-1,\mu}\sum_{\mu}  S_{2c(\alpha)-2,\mu}} \left.\[ 1 - N_p^{c( \alpha)}\frac{S_{2c(\alpha)-2,\beta} }{\sum_{\mu}  S_{2c(\alpha)-2,\mu}}\] \right\rbrace
     \end{split}
 \end{equation}
-The first braces of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two-stages time integration. The brackets in those higher order corrections vanish when only one point is in each cell of the grid, so that the scheme is, as that of the previous section, equivalent to the FOU method.
+The three first terms of the latter scheme equation correspond to that obtained for the Euler algorithm \eqref{eq:Euler_scheme} while the second order terms are provided by the two-stage time integration. The brackets in those higher-order corrections vanish when only one point is in each cell of the grid, so that the scheme is, as that of the previous section, equivalent to the FOU method.
 
 \subsubsection*{The von Neumann linear stability analysis}
 The scheme equations obtained above are written for simplicity:
 \begin{equation}
-\bar{Q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p} \bar{Q}^n_{\beta} D_{\alpha\beta} \label{eq:scheme_Dpi}
+\bar{Q}^{n+1}_\alpha = \sum_{\beta=1}^{N_p}  D_{\alpha\beta} \bar{Q}^n_{\beta}\label{eq:scheme_Dpi}
 \end{equation}
-Moreover, the computational domain is repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $I$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
+Moreover, the computational domain is repeated periodically by mapping it to the domain $[-l,0]$ so that the solution at material point $\alpha$ and time step $n$ is expanded into a discrete Fourier basis of $2E+1$ harmonics over the domain $X \in \[-l,l\]$:
 \begin{equation}
 \bar{Q}^{n}_\alpha = \sum_{j=-E}^{E}A_j^n e^{i \alpha k_j \Delta X}
 \end{equation}
@@ -220,29 +208,32 @@ The amplification factor between two time steps at a given point is defined as:
 \begin{equation}
 \frac{A_j^{n+1}}{A_j^n} = \sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta} \quad \forall j=-E,...,E \label{eq:fourier_expansion}
 \end{equation}
-A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than one in modulus: $\abs{A^{n+1}/A^n} < 1$. This upper bound allows to ensure that eventual errors do not increase during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
+A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than or equal to one in modulus: $\abs{A^{n+1}/A^n} \leq 1$. This upper bound allows to prevent an increasing in error during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
 \begin{equation}
- \abs{\sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} \leq \sum_{\beta=1}^{N_p} \abs{e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} = \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}}
+ \abs{\sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} \leq \sum_{\beta=1}^{N_p} \abs{e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} = \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \quad \forall j=-E,...,E
 \end{equation}
 where the triangle inequality, and the unit modulus of the complex number $e^{\alpha (\beta -\alpha)k_j \Delta X}$ have been used.
 Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied for all material points:
 \begin{equation}
-  \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: I = 1,...,N_p
+  \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: \alpha = 1,...,N_p
 \end{equation}
-Hence, the stability of the scheme is ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to deal with analytically for general discretizations. 
+The stability of the scheme is thus ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
 \begin{table}[h]
   \centering
   \input{chapter3/tabular/CFL_comparison}
   \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
   \label{tab:CFL_comparison}
 \end{table}
-Although the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in equation \eqref{eq:stability} can be find numerically. Some configurations are studied in table \ref{tab:CFL_comparison} and the critical Courant number resulting from the two time discretizations studied above are compared for each. Those results have been obtained by assuming that the particle distribution is the same in every element of a one-dimensional regular mesh so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. First, the DGMPM scheme is stable for all CFL number lower to or equal one when cells contain one particle only regardless of their Positions. Then, when many material points share the same element, several configurations are considered:
+However, though the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particles distribution in every elements of a one-dimensional regular mesh. 
+% so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. 
+First, the DGMPM scheme is stable for all CFL number lower than or equal to one when cells contain one particle only regardless of their positions. This property characterized the FOU method that is retrieved with this discretization. 
+Then, when many material points share the same element, several configurations are considered:
 \begin{itemize}
 \item[(i)] particles are positioned symmetrically with respect to cells centers and regularly spaced in the mesh. This space discretization is referred to as the natural configuration in the following.
-\item[(ii)] particles initially symmetrically positioned are shifted of $u=\Delta X/10$ with respect to cells centers and regularly spaced in the mesh.
-\item[(iii)] the same than (ii) with $u$ so that the first material point overlaps the left node.
-\item[(iv)] the same than (ii) with $u$ so that the last material point overlaps the right node.
-\item[(v)] particles are placed symmetrically with respect to cells centers but not regularly spaced in the mesh.
+\item[(ii)] particles in the natural configuration are all shifted of $u=\Delta X/10$.
+\item[(iii)] the same than (ii) with $u$ so that one material point overlaps every left nodes of cells.
+\item[(iv)] the same than (iii) for right nodes.
+\item[(v)] particles are placed symmetrically with respect to cells centers but not regularly spaced in the mesh. Material points in the left half of cells are shifted of $u_1=-\Delta X/10$ while those of the right half are shifted of $u_2=\Delta X/10$.
 \item[(vi)] the same than (v) with the first and last particles overlapping left and right nodes of cells respectively.
 \end{itemize}
 RK2 results bad when the upwind material point move to the right
