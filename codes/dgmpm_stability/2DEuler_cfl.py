@@ -191,7 +191,7 @@ def gridSearch(function,tol=1.e-7):
             continue
         else:
             return i
-cx=200.;cy=0.
+cx=2.;cy=1.
 CFL=np.linspace(0.,1.,100.)
 
 ############### 1PPC
