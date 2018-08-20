@@ -116,9 +116,9 @@ CFL=computeCourantNumber(t_order,parent,Map)
 if CFL==1.:
     #print "CFL=1 changed to CFL=0.99999999999"
     CFL=0.99999999999
-
-#CFL=0.4
 Dt=CFL*dx/c 
+
+#Dt=(0.5*L/c)/100.
 tfinal=0.5*L/c
 tf=2.*tfinal#0.75*L/c;
 inc=round(tfinal/Dt)

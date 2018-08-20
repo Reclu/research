@@ -69,7 +69,7 @@ def bar(x1,x2,Mp):
 
 #print 'Initializing problem ...'
 # Define geometry of the problem
-L=25.               # Length of the bar
+L=1.               # Length of the bar
 Nelem=Mp            # Number of elements
 Mp=Nelem*ppc
 Nn=Nelem*2 + 2             # Number of elements
@@ -77,8 +77,8 @@ Nn=Nelem*2 + 2             # Number of elements
 
 # Material properties
 
-rho=1.
-E=100.
+rho=1.e3
+E=1.e7
 Sy=400.0e6           
 c=np.sqrt(E/rho)
 H = 10e9
@@ -114,14 +114,20 @@ s0=sd/rho
 
 #print '       Algorithmic parameters'
 # Time discretization
-CFL=computeCourantNumber(t_order,parent,Map)
-if CFL==1.:
-    #print "CFL=1 changed to CFL=0.99999999999"
-    CFL=0.99999999999
-Dt=CFL*dx/c 
-tfinal=0.02#0.75*L/c
+
+# CFL=computeCourantNumber(t_order,parent,Map)
+# if CFL==1.:
+#     #print "CFL=1 changed to CFL=0.99999999999"
+#     CFL=0.99999999999
+# Dt=CFL*dx/c
+# tfinal=0.5*L/c
+
+CFL=0.4
+Dt=CFL*dx/c
+tfinal=0.02
+Dt=1.e-3
 tf=2.*tfinal#0.75*L/c;
-inc=round(tfinal/Dt)
+inc=int(tfinal/Dt)
 
 update_position=False
 
@@ -133,7 +139,8 @@ n=0
 Md=mass*np.eye(Mp,Mp)
 U = np.zeros((Mp,2))
 
-U[:,1] = v0*np.sin(np.pi*xp[:,0]/L)/rho
+G=1.e-4
+U[:,1] = c*np.pi*G*np.sin(np.pi*xp[:,0])
 
 # Nodes' fields
 u = np.zeros((Nn,2))
@@ -215,8 +222,14 @@ limiter =-1 : none
 limiter=-1
 
 #print '... computing ...'
-while T<tfinal:
+for n in range(int(inc)+2)[1:]:
+
+    T+=Dt
+    time[n]=T
     
+    if time[n]>tfinal:
+        Increments=n-1
+        break
     # Effective mass matrix
     mf=(1-alpha)*mg + alpha*md
     
@@ -236,7 +249,6 @@ while T<tfinal:
     # Transmissive boundary conditions
     u[2*parent[-1]+3,0] = u[2*parent[-1]+2,0]
     u[-1,1] = -u[-2,1]
-
     
     if t_order==1 :
         u=UpdateState(Dt,Dofs,mf,u,mass_vector,limiter)
@@ -258,39 +270,24 @@ while T<tfinal:
         u = np.zeros((Nn,2))
         mesh.setMapping(K)
 
-    
-
     #print 'Increment =', n, 't = ', T,' s.'
-    n+=1
-    T+=Dt
     Velocity[:,n]=U[:,1]
     Stress[:,n]=rho*U[:,0]
-
-    
     for i in range(Mp):
-        Sth[i,n]=E*v0*np.sin(np.pi*c*T/L)*np.cos(np.pi*xp[i,0]/L)/c
-        Vth[i,n]=v0*np.cos(np.pi*c*T/L)*np.sin(np.pi*xp[i,0]/L)
+        Sth[i,n]=E*G*np.pi*np.sin(np.pi*c*time[n])*np.cos(np.pi*xp[i,0])
+        #Vth[i,n]=v0*np.cos(np.pi*c*T/L)*np.sin(np.pi*xp[i,0]/L)
+        Vth[i,n]=c*np.pi*G*np.cos(np.pi*c*time[n])*np.sin(np.pi*xp[i,0])
+        
     Pos[:,n]=xp[:,0]
-    time[n]=T
-
     
-    """
-    plt.plot(xp[:,0],Stress[:,n],'r-o',lw=2.5)
-    plt.plot(xp[:,0],Sth[:,n],'k-',lw=1.5)
-    plt.grid()
-    plt.show()
-    """
-Increments=n
+    
+
 """
 fig, (ax2) = plt.subplots(1,1)
 plt.title('Elastic wave in a bar')
-
 line1, = ax2.plot([], [],'b-s' , lw=2.,ms=1.5)
 line2, = ax2.plot([], [],'r-s' , lw=2.,ms=1.5)
-line3, = ax2.plot([], [],'k--' , lw=1.,ms=1.5)
-line4, = ax2.plot([], [],'k--' , lw=1.,ms=1.5)
-line = [line1,line2, line3,line4]
-
+line = [line1,line2]
 ax2.set_xlim(0.,L);
 ax2.set_ylim(np.min(Stress),np.max(Stress));
  
@@ -298,20 +295,17 @@ ax2.grid()
 ax2.set_xlabel('x (m)', fontsize=18)
 ax2.set_ylabel('Stress', fontsize=18)
 fig.legend((line),("V","S"),'upper right',numpoints=1)
-
 def init():
     line[0].set_data([], [])
     line[1].set_data([], [])
     return line
-
 def animate(i):
-    line[0].set_data(Pos[:,i],Velocity[:,i]*rho*c)
-    line[1].set_data(Pos[:,i],Stress[:,i])
-    line[2].set_data(Pos[:,i],Vth[:,i]*rho*c)
-    line[3].set_data(Pos[:,i],Sth[:,i])
+    line[0].set_data(Pos[:,i],Stress[:,i])
+    line[1].set_data(Pos[:,i],Sth[:,i])
     return line
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=Increments, interval=50, blit=True)
 plt.show()
+
 """

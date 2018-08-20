@@ -157,7 +157,6 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
     return Residual
 
 
-
 def rootFinder(function,tol=1.e-12):
     NiterMax=1000
     # Find the bigest root of the residual by dichotomy algorithm
@@ -181,7 +180,7 @@ def rootFinder(function,tol=1.e-12):
             return a0
 
 def gridSearch(function,tol=1.e-7):
-    samples=100000
+    samples=500000
     # Find the bigest root of the residual by grid search algorithm
     CFL=np.linspace(0.,1.,samples)
     for i in CFL:
@@ -191,8 +190,6 @@ def gridSearch(function,tol=1.e-7):
             continue
         else:
             return i
-cx=2.;cy=1.
-CFL=np.linspace(0.,1.,100.)
 
 ############### 1PPC
 # print "**************************************************************"
@@ -232,99 +229,101 @@ CFL=np.linspace(0.,1.,100.)
 # plt.grid()
 # plt.show()
 
-############### 2PPC
-print "**************************************************************"
-print "******************  2PPC discretization **********************"
-print "**************************************************************"
-print "=== Symmetric horizontal ==="
-Xp=np.array([-0.5,0.5])
-Yp=np.array([0.,0.])
+cx=20.;cy=20.
+print "Speeds: cx/cy=",cx/cy
 
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-CFL=max(cx,cy)*solution/2.
-print "Solution DCU is: ",CFL
-
-residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-solution=gridSearch(residual)
-solutionN=optimize.newton(residual,1.)
-CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
-
-print "   "
-print "=== Symmetric vertical ==="
-Yp=np.array([-0.5,0.5])
-Xp=np.array([0.,0.])
-
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-CFL=max(cx,cy)*solution/2.
-print "Solution DCU is: ",CFL
-
-
-residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-solutionN=optimize.newton(residual,1.)
-solution=gridSearch(residual)
-CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
-
-
-print "   "
-print "=== Shifted ==="
-print "=== Symmetric horizontal ==="
-Xp=np.array([-0.25,0.25])
-Yp=np.array([0.,0.])
-
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-CFL=max(cx,cy)*solution/2.
-print "Solution DCU is: ",CFL
-
-residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-solutionN=optimize.newton(residual,1.)
-solution=gridSearch(residual)
-CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
-
-CFL=np.linspace(0.,1.,10000)
-res=np.zeros(len(CFL))
-for i in range(len(CFL)):
-    res[i]=residual(2.*CFL[i]/max(cx,cy))
-plt.plot(CFL,res,label='residual')
-plt.plot([0.5*max(cx,cy)*solution,0.5*max(cx,cy)*solution],[0,max(res)],'g',label='grid search')
-plt.plot([0.5*max(cx,cy)*solutionN,0.5*max(cx,cy)*solutionN],[0,max(res)],'r',label='Newton')
-plt.legend()
-plt.grid()
-plt.show()
-
-print "   "
-print "=== Symmetric vertical ==="
-Yp=np.array([-0.25,0.25])
-Xp=np.array([0.,0.])
-
-solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-CFL=max(cx,cy)*solution/2.
-print "Solution DCU is: ",CFL
-
-
-residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-solutionN=optimize.newton(residual,1.)
-solution=gridSearch(residual)
-CFL=max(cx,cy)*solution/2.
-print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
-
-CFL=np.linspace(0.,1.,10000)
-res=np.zeros(len(CFL))
-for i in range(len(CFL)):
-    res[i]=residual(2.*CFL[i]/max(cx,cy))
-plt.plot(CFL,res,label='residual')
-plt.plot([0.5*max(cx,cy)*solution,0.5*max(cx,cy)*solution],[0,max(res)],'g',label='grid search')
-plt.plot([0.5*max(cx,cy)*solutionN,0.5*max(cx,cy)*solutionN],[0,max(res)],'r',label='Newton')
-plt.legend()
-plt.grid()
-plt.show()
-# ############### 4PPC
+# ############### 2PPC
 # print "**************************************************************"
-# print "******************  4PPC discretization **********************"
+# print "******************  2PPC discretization **********************"
 # print "**************************************************************"
-# print "=== Symmetric ==="
+# print "=== Symmetric horizontal ==="
+# Xp=np.array([-0.5,0.5])
+# Yp=np.array([0.,0.])
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL, " (Newton ", 0.5*max(cx,cy)*solutionN,")"
+
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solution=gridSearch(residual)
+# solutionN=optimize.newton(residual,1.)
+# CFL=(max(cx,cy)*solution/2.)
+# print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
+
+# print "   "
+# print "=== Symmetric vertical ==="
+# Yp=np.array([-0.5,0.5])
+# Xp=np.array([0.,0.])
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL, " (Newton ", 0.5*max(cx,cy)*solutionN,")"
+
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(residual,1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
+
+# print "   "
+# print "=== Shifted ==="
+# print "=== Symmetric horizontal ==="
+# Xp=np.array([-0.25,0.25])
+# Yp=np.array([0.,0.])
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(residual,1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL, " (Newton ", 0.5*max(cx,cy)*solutionN,")"
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(residual,1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
+
+
+# print "   "
+# print "=== Symmetric vertical ==="
+# Yp=np.array([-0.25,0.25])
+# Xp=np.array([0.,0.])
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(residual,1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution DCU is: ",CFL, " (Newton ", 0.5*max(cx,cy)*solutionN,")"
+
+
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solutionN=optimize.newton(residual,1.)
+# solution=gridSearch(residual)
+# CFL=max(cx,cy)*solution/2.
+# print "Solution CTU is: ",CFL, " (Newton ",0.5*max(cx,cy)*solutionN,")"
+
+# CFL=np.linspace(0.,1.,10000)
+# res=np.zeros(len(CFL))
+# for i in range(len(CFL)):
+#     res[i]=residual(2.*CFL[i]/max(cx,cy))
+# plt.plot(CFL,res,label='residual')
+# plt.plot([0.5*max(cx,cy)*solution,0.5*max(cx,cy)*solution],[0,max(res)],'g',label='grid search')
+# plt.plot([0.5*max(cx,cy)*solutionN,0.5*max(cx,cy)*solutionN],[0,max(res)],'r',label='Newton')
+# plt.legend()
+# plt.grid()
+# plt.show()
+
+############### 4PPC
+print "**************************************************************"
+print "******************  4PPC discretization **********************"
+print "**************************************************************"
+print "=== Symmetric ==="
 # Xp=np.array([-0.25,0.25,0.25,-0.25])
 # Yp=np.array([-0.25,-0.25,0.25,0.25])
 
@@ -338,59 +337,77 @@ plt.show()
 # CFL=max(cx,cy)*solution/2.
 # print "Solution CTU is: ",CFL
 
-# print "    "
-# print "=== Shiffted right ==="
-# shift=+0.45
-# Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
-# Yp=np.array([-0.25,-0.25,0.25,0.25])
+
+# print "=== Shiffted symmetrically ==="
+# Xp=np.array([-0.5,0.5,0.5,-0.5])
+# Yp=np.array([-0.5,-0.5,0.5,0.5])
 
 # solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
 # CFL=max(cx,cy)*solution/2.
 # print "Solution DCU is: ",CFL
 
 
+# residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
 # solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
 # CFL=max(cx,cy)*solution/2.
 # print "Solution CTU is: ",CFL
-
-# print "    "
-# print "=== Shiffted above ==="
-# Xp=np.array([-0.25,0.25,0.25,-0.25])
-# Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
-
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution DCU is: ",CFL
+cx=20.;cy=2.
+print "Speeds: cx/cy=",cx/cy
 
 
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution CTU is: ",CFL
+print "    "
+print "=== Shiffted right ==="
+shift=+0.25
+Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
+Yp=np.array([-0.25,-0.25,0.25,0.25])
 
-# print "    "
-# print "=== Shiffted left ==="
-# shift=-0.25
-# Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
-# Yp=np.array([-0.25,-0.25,0.25,0.25])
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
 
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution DCU is: ",CFL
 
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution CTU is: ",CFL
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
 
-# print "    "
-# print "=== Shiffted below ==="
-# Xp=np.array([-0.25,0.25,0.25,-0.25])
-# Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
+print "    "
+print "=== Shiffted above ==="
+Xp=np.array([-0.25,0.25,0.25,-0.25])
+Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
 
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution DCU is: ",CFL
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
 
-# solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution CTU is: ",CFL
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
+
+print "    "
+print "=== Shiffted left ==="
+shift=-0.25
+Xp=np.array([-0.25,0.25,0.25,-0.25])+shift
+Yp=np.array([-0.25,-0.25,0.25,0.25])
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
+
+print "    "
+print "=== Shiffted below ==="
+Xp=np.array([-0.25,0.25,0.25,-0.25])
+Yp=np.array([-0.25,-0.25,0.25,0.25])+shift
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL
+
+solution=optimize.newton(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution CTU is: ",CFL
 

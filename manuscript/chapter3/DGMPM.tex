@@ -255,7 +255,10 @@ An additional numerical flux defined at edges is hence built from these transver
 \begin{equation}
 \Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^{j,+} \Acb^{i,-}(\Delta \Wcb) \label{eq:transverse_corrections}
 \end{equation}
-which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the length of edge $(j)$). Every corrections must be removed from intercell fluxes that can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
+which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the length of edge $(j)$). 
+Transverse corrections must be subtracted from intercell fluxes \cite[Ch.20]{Leveque}, which can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
+
+%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
 
 \begin{remark} 
   For linear elasticity, there is no need of an auxiliary vector of conserved quantity so that transverse contributions are computed with the same eigenbasis than that of the approximate-state Riemann solver.
