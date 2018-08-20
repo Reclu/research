@@ -225,12 +225,12 @@ Similar considerations lead to the state laws for entropy and for additional the
   \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vcb}=-\Acb
 \end{equation}
 where $\Acb$ are thermodynamic forces associated to internal variables $\Vcb$.
-%In what follows, we shall consider hyperelastic or linear elastic deformations that do not involve irreversible processes (\textit{e.g. damage or thermal softening}). Hence, additional internal variables and associated thermodynamic forces are not activated in such situations. However, the cases of \textit{elastoplasticity} and \textit{elasto-viscoplasticity}, involving such variables and forces, will be considered in the linearized geometrical framework.
-In what follows, we shall only consider additional internal variables that describe \textit{elastoplasticity} and \textit{elasto-viscoplasticity} under small strains.
+In what follows, hyperelastic solids are only involved in reversible isothermal deformations. As a consequence, additional internal variables as well as entropy are not considered.
+%In what follows, we shall only consider additional internal variables that describe \textit{elastoplasticity} and \textit{elasto-viscoplasticity} under small strains.
 
-\begin{remark}
+\thomas{\begin{remark}
   \label{rq:isothermal_deformation}
-  Temperature has been introduced as a state variable and requires the heat equation as \thomas{a balance equation } in order to close the system:
+  Temperature has been introduced as a state variable and requires the heat equation as a balance equation in order to close the system:
   \begin{equation*}
     \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Acb}{\theta}\dot{\Vcb} \)
   \end{equation*}
@@ -242,14 +242,13 @@ In what follows, we shall only consider additional internal variables that descr
   \begin{equation*}
     \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
   \end{equation*}
-  By using the time derivative of free energy density and noting that \thomas{$\eta=-\drond{\psi}{\theta} =0$}, we get that each side of the previous equation simplify.
-\end{remark}
+  By using the time derivative of free energy density and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation simplify.
+\end{remark}}
 
-\subsubsection*{Examples of hyperelastic constitutive laws}
+%\subsubsection*{Examples of hyperelastic constitutive laws}
 We now specify the above discussion to constitutive models that will be used in the following of the manuscript.
-
-$\newline$
-\textbf{The neo-Hookean hyperelastic model} is well-suited to describe rubber-like materials and is based on the polyconvex stored energy function (\textit{i.e. convex with respect to all its arguments}):
+\begin{example}[Neo-Hookean]
+The neo-Hookean hyperelastic model is well-suited to describe rubber-like materials and is based on the polyconvex stored energy function (\textit{i.e. convex with respect to all its arguments}):
 \begin{equation}
   \label{eq:neo-hook_energy}
   \rho_0 \psi(J,\tens{F})= \frac{\kappa}{2}(J-1)^2 + \frac{\mu}{2}\[J^{-2/3} (\tens{F}:\tens{F})-3 \]
@@ -267,9 +266,10 @@ and
   \end{split}
 \end{equation}
 where $\tens{H}=J\tens{F}^{-T}$ is the \textit{adjoint tensor} of the deformation gradient. The polyconvexity of this model ensures the positive definiteness of the acoustic tensor \eqref{eq:neo-hook_acoustic} \cite{Kluth}.
+\end{example}
 
-$\newline$
-\textbf{The Saint-Venant-Kirchhoff hyperelastic model} is an extension of linear elastic Hooke's law to hyperelasticity based on the stored energy function:
+\begin{example}[Saint-Venant-Kirchhoff]
+The Saint-Venant-Kirchhoff hyperelastic model is an extension of linear elastic Hooke's law to hyperelasticity based on the stored energy function:
 \begin{equation}
   \label{eq:SVK_energy}
   \rho_0\psi=\frac{1}{8}\(\tens{F}^T\tens{F}- \tens{I}\):\Cbb:\(\tens{F}^T\tens{F}- \tens{I}\)
@@ -293,29 +293,32 @@ with $B_{i\alpha j \beta}=F_{k\alpha}F_{k\beta}\delta_{ij} + F_{j\alpha}F_{i\bet
   \end{split}
 \end{equation}
 Even though it is known that this model can lead to non-physical solutions for very large deformation, it will be used for a one-dimensional strain problem for it enables to easily develop an exact solution (see section \ref{subsec:charac_nonlinear_problems}).  
+\end{example}
 
 
-\subsubsection*{History-dependent models in small strain}
-Similarly to equation \eqref{eq:PK1_definition} for the infinitesimal theory one writes:
+%\subsubsection*{History-dependent models in small strain}
+\subsubsection*{The infinitesimal theory formulation}
+%Analogously to the hyperelastic case, constitutive equations within the small strain framework are derived from the Eulerian Clausius-Duhem inequality. Then, by assuming the existence of a Helmholtz free energy density $\psi$ depending on the temperature $\theta$, the linearized strain tensor $\tens{\eps}$ and additional internal variables $\Vcb$, 
+
+The linearized geometrical framework leads, by assuming the existence of a Helmholtz free energy density $\psi$ that depends on the temperature $\theta$, the linearized strain tensor $\tens{\eps}$ and additional internal variables $\Vcb$, to the following relation \cite[Ch.4]{Foundation_of_elasticity}:
 \begin{equation}
   \label{eq:Cauchy_definition}
   \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
 \end{equation}
-which time derivative yields:
-\begin{equation}
-  \label{eq:HPP_tangent}
-  \tens{\dot{\sigma}} = \rho_0\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}}
-\end{equation}
-$\Cbb$ the \textit{elastic stiffness} tensor (major and minor symmetric). In particular, for isotropic elasticity the \textit{Hooke's law} is based on the elasticity tensor: $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, with Lamé parameters $(\lambda,\mu)$.
 
-
+% which time derivative yields:
+% \begin{equation}
+%   \label{eq:HPP_tangent}
+%   \tens{\dot{\sigma}} = \rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}}
+% \end{equation}
+% $\Cbb$ the \textit{elastic stiffness} tensor (major and minor symmetric). In particular, for isotropic elasticity the \textit{Hooke's law} is based on the elasticity tensor: $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, with Lamé parameters $(\lambda,\mu)$.
 
 While (hyper)elasticity is dissipationless, irreversible strain and associated hardening that occur in the context of plasticity dissipate energy.
 % plasticity is characterized by irreversible strain and hardening variables $\Vcb$ that account for the loading history undergone by every material particles.
 The infinitesimal strain tensor $\tens{\eps}$ is assumed to be additively decomposed into an elastic and a plastic part: $\tens{\eps} = \tens{\eps}^e + \tens{\eps}^p$ such that the mechanical dissipation only involves the rate of the plastic part:
 \begin{equation}
   \label{eq:HPP_dissipation}
-  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
+  \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
 \end{equation}
 
 A \textit{yield condition} is defined by means of function $f(\tens{\sigma},\Acb)$ so that the elastic domain $\Ebb$ in forces space $(\tens{\sigma},\Acb)$ corresponds to:
