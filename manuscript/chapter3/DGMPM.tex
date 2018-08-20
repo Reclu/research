@@ -2,7 +2,7 @@
 After a brief historical review of DG methods, the Discontinuous Galerkin Material Point Method is derived within the large strain framework with a total Lagrangian formulation. It will be seen that this new numerical approach makes use of the approximate-state Riemann solver developed in section \ref{sec:riemann_solvers} to compute intercell terms which purpose is to connect elements together. At last, the DGMPM solution scheme will be provided for hyperbolic problems.
 
 \subsection{The discontinuous Galerkin approximation}
-The DG approximation was first introduced in the context of the finite element method for the solution of the neutron transport equation \cite{NeutronDG}. This hyperbolic equation describes the advection of the angular flux which quantifies the amount of neutrons at a given location. Since neutrons can lie in a cell of a finite element mesh while its neighbors are empty, the need of describing discontinuities of the primal field across elements interfaces within a FEM context arised. Hence, an approximate solution was seeked by the Galerkin method, in a domain discretized with triangular elements by means of Lagrange polynomials that can be discontinuous across the cells. This approach amounts to duplicate the nodes of the mesh so that the support of each shape function reduces to one finite element. Those early works have launched a serie of developments of the \textbf{Discontinuous Galerkin Finite Element Method} (DGFEM) for parabolic \cite{Arnold_IPM}, elliptic \cite{Hansbo_DGsolid,Noel_HEDG}, and hyperbolic problems \cite{Cockburn}. Indeed, the DGFEM gained more and more popularity since the 80's, even for problems that do not involve discontinuities, on account of its ability to locally handle high-order approximation and its highly parallelizable nature. 
+The DG approximation was first introduced in the context of the finite element method for the solution of the neutron transport equation \cite{NeutronDG}. This hyperbolic equation describes the advection of the angular flux which quantifies the amount of neutrons at a given location. Since neutrons can lie in a cell of a finite element mesh while its neighbors are empty, the need of describing discontinuities of the primal field across elements interfaces within a FEM context arised. Hence, an approximate solution was seeked by the Galerkin method, in a domain discretized with triangular elements by means of Lagrange polynomials that can be discontinuous across the cells. This approach amounts to duplicate the nodes of the mesh so that the support of each shape function reduces to one finite element. Those early works have launched a series of developments of the \textbf{Discontinuous Galerkin Finite Element Method} (DGFEM) for parabolic \cite{Arnold_IPM}, elliptic \cite{Hansbo_DGsolid,Noel_HEDG}, and hyperbolic problems \cite{Cockburn}. Indeed, the DGFEM gained more and more popularity since the 80's, even for problems that do not involve discontinuities, on account of its ability to locally handle high-order approximation and its highly parallelizable nature. 
 Researches conducted in the context of hyperbolic problems, of particular interest here, enabled the introduction of numerical tools developed for Finite Volume Methods (FVM) within finite element schemes.
 Namely, the use of suitable \textit{slope limiters} \cite{vanLeer_Limiters} based on the \textit{total variation} \cite{Harten_TVD} enables the formulation of flexible numerical methods in which a good resolution of discontinuities is possible without destroying the accuracy in smooth regions. Furthermore, these approaches can easily handle mesh-adaption strategies by dint of the relaxation of fields continuity. Nevertheless mesh tangling problems do not vanish.
 Thus, the introduction of DG approximation in the MPM should lead to a numerical method that benefits from both FEM and FVM features and enables local high-order approximation while avoiding mesh entanglement instabilities.
@@ -52,12 +52,12 @@ In addition, the reference mass density is described in the computational grid b
   \label{eq:mass_density_DGMPM}
   \rho_0\(\vect{X}\) =  \sum_{p=1}^{N_p} m_p \delta\(\vect{X}^p - \vect{X}\)
 \end{equation}
-where $\Omega_0$ denotes the reference configuration of the continuum. In a similar manenr to FEM and MPM, the vector of conserved quantities is approximated on the mesh by:
+where $\Omega_0$ denotes the reference configuration of the continuum. In a similar manner to FEM and MPM, the vector of conserved quantities is approximated on the mesh by:
 \begin{equation}
   \label{eq:DGMPM_node2points}
   \Wcb(\vect{X},t) = \sum^{N_n}_{i=1} S_{i}(\vect{X})\Wcb^i(t) 
 \end{equation}
-with $\Wcb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X})$ tha shape function attached to it. Note that the convention of denoting particle and nodal fields by $p$ and $(i,j)$ still holds in this section.
+with $\Wcb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X})$ the shape function attached to it. Note that the convention of denoting particle and nodal fields by $p$ and $(i,j)$ still holds in this section.
 
 \subsubsection{Weak formulation of the continuum problem}
 Multiplying equation \eqref{eq:conservative_form} by a test function $\Vcb$ yields the weak formulation of the problem:
@@ -128,7 +128,7 @@ Alternatively, a \textit{second-order Runge-Kutta (RK2)} explicit time discretiz
 
 
 \subsection{Non-homogeneous hyperbolic system}
-Solid mechanics equations may lead to source terms in the conservative form even for neglected body forces. This is for instance the case for time-dependent plasticity (see $\Scb$ in equation \eqref{eq:vectors_elasticity}), or for cylindrical and spherical coordinates systems. In the latter situations, the gradient operators invlove terms that are not derivatives, leading to a right-hand side in system \eqref{eq:conservative_form} that depends on $\Wcb$ and called a geometric source term \cite[Ch.17]{Leveque}. Efficient procedures for the treatment of source terms $\Scb$ in non-homogeneous hyperbolic systems have been developed for finite volume methods that we propose here to take advantage of. 
+Solid mechanics equations may lead to source terms in the conservative form even for neglected body forces. This is for instance the case for time-dependent plasticity (see $\Scb$ in equation \eqref{eq:vectors_elasticity}), or for cylindrical and spherical coordinates systems. In the latter situations, the gradient operators involve terms that are not derivatives, leading to a right-hand side in system \eqref{eq:conservative_form} that depends on $\Wcb$ and called a geometric source term \cite[Ch.17]{Leveque}. Efficient procedures for the treatment of source terms $\Scb$ in non-homogeneous hyperbolic systems have been developed for finite volume methods that we propose here to take advantage of. 
 
 A commonly used approach to solve non-homogeneous systems consists in solving alternatively a homogeneous PDEs system and a system of ODEs, namely:
 \begin{subequations}
@@ -155,7 +155,7 @@ Two sub-problems are thus solved separately at each time step, the solution of t
 is second-order accurate if each solution operator is at least second-order accurate \cite{Leveque}.
 \end{remark}
 
-The DGMPM solution scheme reduces to the discrete solution oparator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at find approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}). For a DGMPM space-time discretization made of $N_p$ material points and $N_T$ time increments, those solutions can be written:
+The DGMPM solution scheme reduces to the discrete solution operator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at find approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}). For a DGMPM space-time discretization made of $N_p$ material points and $N_T$ time increments, those solutions can be written:
 % It has been established so far that the DGMPM scheme provides an approximate solution $\Qc(\vect{X}^i,t^{n,+1})= \Qc^{i,n+1}$,  with $i=1,...,N_n$ and $n=1,...,N_T$, that depends on the value of $\Qc$ at other points and previous time step, that is:
 \begin{equation}
   \label{eq:general_scheme}
@@ -200,7 +200,7 @@ where $\Wcb_{X_N^-}$ and $\Wcb_{X_N^{+}}$ are the states lying infinitely close 
 Godunov's method hence allows to account for the complete wave structure of the solution within the numerical scheme. Since this method is known to be based on E-fluxes, intercell fluxes involved in boundary integrals of weak forms of DG-methods can be computed as Godunov's ones. To this end, Riemann problems are defined at cells faces by considering that initial data are piecewise constant even for high-order approximations. Note that this strategy is also followed in FVM when high-order reconstruction techniques of the fields are used.
 
 Let us consider as an illustration of the computation of interface fluxes within the DGMPM, the two-dimensional case depicted in figure \ref{fig:2D_edge}.
-Only one Riemann problem per interface rather than nodal ones is considered in order to avoid a dramatical increase in computational time.
+Only one Riemann problem per interface rather than nodal ones is considered in order to avoid a dramatic increase in computational time.
 % Since intercell fluxes must be calculated in addition to the solution discrete equations \eqref{eq:DGMPM_discrete}, only one Riemann problem per interface is considered rather than nodal ones, in order to avoid a dramatical increase in computational time.
 Thus, by averaging nodal fields on each side of the interface, one obtains mean \textit{downwind} and \textit{upwind} states $\Wcb_{X_N^-}$ and $\Wcb_{X_N^+}$ that correspond to the initial conditions of the Riemann problem.
 \begin{figure}[h!]
@@ -216,7 +216,7 @@ Furthermore, as mentioned in section \ref{sec:riemann_solvers}, the exact (time 
 
 Recall that hyperelasticity and elastoplasticity conservative forms (equations \eqref{eq:vectors_hyperelasticity} and \eqref{eq:vectors_plasticity}) involve strains in the vector of conserved quantities, and stresses in the flux vector.
 % At last, solid mechanics conservative forms involve for hyperelasticity and elastoplasticity (equations \eqref{eq:vectors_hyperelasticity} and \eqref{eq:vectors_plasticity}), strains in the vector of conserved quantities, and stresses in the flux vector.
-Hence, the calculation of Godunov's fluxes requires the integration of constitutive laws that can be time-consuming for nonlinear problems. Nevertheless, the introduction of an auxiliary vector of conserved quantities $\Qcb$ \eqref{eq:auxiliary_vectors} and the quasilinear form it provides, avoid the computation of constistutive equations. Indeed, the stationary solution of the Riemann problem is then given in terms of the auxiliary vector $\Qcb^*$, which is a rearrangement of the flux components. Thus, the generic Riemann problem solved at cells interface reads:
+Hence, the calculation of Godunov's fluxes requires the integration of constitutive laws that can be time-consuming for nonlinear problems. Nevertheless, the introduction of an auxiliary vector of conserved quantities $\Qcb$ \eqref{eq:auxiliary_vectors} and the quasilinear form it provides, avoid the computation of constitutive equations. Indeed, the stationary solution of the Riemann problem is then given in terms of the auxiliary vector $\Qcb^*$, which is a rearrangement of the flux components. Thus, the generic Riemann problem solved at cells interface reads:
 \begin{equation}
   \label{eq:RP_quasilinear}
   \begin{aligned}
@@ -243,7 +243,7 @@ The method derived above for the computation of normal fluxes can be viewed as t
   \caption{Normal and transverse fluctuations defined from edge $i$.}
   \label{fig:CTU}
 \end{figure}
-Let's consider the patch of grid cells shown in figure \ref{fig:CTU}, and focus on the edge denoted $(i)$ which local normal vector is $\vect{N}^i$. The Riemann problem defined at this edge gives rise to normal fluctuations $\Acb^{i,-}(\Delta \Wcb)$ and $\Acb^{i,+}(\Delta \Wcb)$ contributing to cells L et R respectively. These terms lead to the computation of transverse fluctuations giving contribution to neighboring cells across edges $(j)$ and $(k)$ for cell L, and across edges $(m)$ and $(l)$ for cell R. Transverse fluctuations are computed by projecting normal fluctuations onto the characteristic basis associated to the Riemann problem \eqref{eq:RP_mesh} defined on the adjacent edge, hence the name transverse Riemann solver. The spectral analysis of the corresponding Jacobian matrix, carried out in \cite{Kluth}, leads to right eigenvectors that are be written $\Rcb_{\Wc}^i$ hereinafter. The negative normal fluctuation is, for instance, decomposed on the characteristic basis associated to edge $(j)$ as:
+Let's consider the patch of grid cells shown in figure \ref{fig:CTU}, and focus on the edge denoted $(i)$ which local normal vector is $\vect{N}^i$. The Riemann problem defined at this edge gives rise to normal fluctuations $\Acb^{i,-}(\Delta \Wcb)$ and $\Acb^{i,+}(\Delta \Wcb)$ contributing to cells L and R respectively. These terms lead to the computation of transverse fluctuations giving contribution to neighboring cells across edges $(j)$ and $(k)$ for cell L, and across edges $(m)$ and $(l)$ for cell R. Transverse fluctuations are computed by projecting normal fluctuations onto the characteristic basis associated to the Riemann problem \eqref{eq:RP_mesh} defined on the adjacent edge, hence the name transverse Riemann solver. The spectral analysis of the corresponding Jacobian matrix, carried out in \cite{Kluth}, leads to right eigenvectors that are be written $\Rcb_{\Wc}^i$ hereinafter. The negative normal fluctuation is, for instance, decomposed on the characteristic basis associated to edge $(j)$ as:
 \begin{equation}
 \Acb^{i,-}(\Delta \Wcb) = \sum_{m=1}^{M} \beta_m \vect{\Rc}^{j,m}_\Wc
 \end{equation}
@@ -256,7 +256,7 @@ An additional numerical flux defined at edges is hence built from these transver
 \Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^{j,+} \Acb^{i,-}(\Delta \Wcb) \label{eq:transverse_corrections}
 \end{equation}
 which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the length of edge $(j)$). 
-Ingoing transverse corrections must be counted positively while outgoing ones must be subtracted from intercell fluxes. At last, numerical fluxes computed at interfaces can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
+In-going transverse corrections must be counted positively while outgoing ones must be subtracted from intercell fluxes. At last, numerical fluxes computed at interfaces can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
 
 %With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
 
@@ -330,7 +330,7 @@ First, the use of conservation laws \eqref{eq:conservative_form} instead of the 
 Next, since the deformation gradient is no longer calculated with shape functions gradients, the task of choosing between USF and USL algorithms vanishes. In that sense the DGMPM scheme is simpler.
 At last, the solution of Riemann problems at every edges of the mesh increases computational time. Fortunately, the use of discontinuous Galerkin approximation makes this numerical method highly parallelizable \cite{Cockburn}.
 
-The numerical scheme derived above is analyzed in terms of staiblity and convergence in the next secion.
+The numerical scheme derived above is analyzed in terms of stability and convergence in the next section.
 
 
 %%% Local Variables: 
