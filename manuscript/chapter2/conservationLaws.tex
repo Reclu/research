@@ -300,22 +300,19 @@ Even though it is known that this model can lead to non-physical solutions for v
 \subsubsection*{The infinitesimal theory formulation}
 %Analogously to the hyperelastic case, constitutive equations within the small strain framework are derived from the Eulerian Clausius-Duhem inequality. Then, by assuming the existence of a Helmholtz free energy density $\psi$ depending on the temperature $\theta$, the linearized strain tensor $\tens{\eps}$ and additional internal variables $\Vcb$, 
 
-The linearized geometrical framework leads, by assuming the existence of a Helmholtz free energy density $\psi$ that depends on the temperature $\theta$, the linearized strain tensor $\tens{\eps}$ and additional internal variables $\Vcb$, to the following relation \cite[Ch.4]{Foundation_of_elasticity}:
+The linearized geometrical framework leads, by assuming the existence of a Helmholtz free energy density $\psi$ that depends on the temperature $\theta$, the infinitesimal strain tensor $\tens{\eps}$ and additional internal variables $\Vcb$, to the following relation \cite[Ch.4]{Foundation_of_elasticity}:
 \begin{equation}
   \label{eq:Cauchy_definition}
   \rho \drond{\psi}{\tens{\eps}} = \tens{\sigma}
 \end{equation}
-
-% which time derivative yields:
-% \begin{equation}
-%   \label{eq:HPP_tangent}
-%   \tens{\dot{\sigma}} = \rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}}
-% \end{equation}
-% $\Cbb$ the \textit{elastic stiffness} tensor (major and minor symmetric). In particular, for isotropic elasticity the \textit{Hooke's law} is based on the elasticity tensor: $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, with Lamé parameters $(\lambda,\mu)$.
-
-While (hyper)elasticity is dissipationless, irreversible strain and associated hardening that occur in the context of plasticity dissipate energy.
+which time derivative yields:
+\begin{equation}
+  \label{eq:HPP_tangent}
+  \tens{\dot{\sigma}} = \rho\ddrond{\psi}{\tens{\eps}}{\tens{\eps}}:\tens{\dot{\eps}} = \Cbb:\tens{\dot{\eps}}
+\end{equation}
+%While (hyper)elasticity is dissipationless, irreversible strain and associated hardening that occur in the context of plasticity dissipate energy.
 % plasticity is characterized by irreversible strain and hardening variables $\Vcb$ that account for the loading history undergone by every material particles.
-The infinitesimal strain tensor $\tens{\eps}$ is assumed to be additively decomposed into an elastic and a plastic part: $\tens{\eps} = \tens{\eps}^e + \tens{\eps}^p$ such that the mechanical dissipation only involves the rate of the plastic part:
+The infinitesimal strain tensor is further assumed to be additively decomposed into an elastic and a plastic part: $\tens{\eps} = \tens{\eps}^e + \tens{\eps}^p$. Then, with irreversible deformations due to plastic strains, the mechanical dissipation reads:
 \begin{equation}
   \label{eq:HPP_dissipation}
   \Dscr^{int}=\tens{\sigma}:\tens{\dot{\eps}}^p -\rho \drond{\psi}{\Vcb}\dot{\Vcb} \geq 0
@@ -335,27 +332,7 @@ According to the GSM framework \cite{GSM} we assume the existence of a dissipati
      \dot{\Vcb}& = -&\drond{\Phi}{f}\drond{f}{\Acb}
   \end{alignat}
 \end{subequations}
-where $\drond{\Phi}{f}=\dot{p}$ is the equivalent plastic strain rate. Two cases must then be distinguished:
-\begin{itemize}
-\item \textbf{Rate-independent} plasticity is based on the assumption that admissible thermodynamic forces lie within or on the boundary of the elastic domain \eqref{eq:elastic_convex}. The equivalent plastic strain rate is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
-\begin{equation}
-  \label{eq:Kuhn_Tucker}
-  \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
-\end{equation}
-The plastic multiplier, or the \textit{equivalent plastic strain rate}, is determined by the \textit{consistency condition}:
-\begin{equation}
-  \label{eq:consistency_condition}
-  \dot{f}=0
-\end{equation}
-
-% In analogy with the elastic law \eqref{eq:HPP_tangent}, rate-independent plastic evolutions are governed by the \textit{elastoplastic tangent modulus}:
-% \begin{equation}
-%   \label{eq:HPP_tangent_plasticity}
-%   \tens{\dot{\sigma}}=\Cbb^{ep}:\tens{\dot{\eps}}
-% \end{equation}
-
-\item \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity can be seen as a regularization of rate-independent plasticity that relaxes the condition $f(\tens{\sigma},\Acb)\leq 0$ and thus leads to admissible thermodynamic forces lying outside the elastic domain \cite[p.58]{Simo}. Furthermore, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast}. 
-\end{itemize}
+where $\drond{\Phi}{f}=\dot{p}$ is the equivalent plastic strain rate.% Two cases must then be distinguished:
 
 
 $\newline$
@@ -393,6 +370,23 @@ In this expression, $H(p)$ is defined so that $H''(p)=C$ is the \textit{hardenin
     R &=H'(p)
   \end{alignat}
 \end{subequations}
+
+\begin{example}[Linear elasticity]
+  No dissipation $\Rightarrow$ No internal variables $\Rightarrow$ $\Cbb$ the \textit{elastic stiffness} tensor (major and minor symmetric). In particular, for isotropic elasticity the \textit{Hooke's law} is based on the elasticity tensor: $C_{ijkl}=\lambda \delta_{ij}\delta_{kl} + \mu \(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\)$, with Lamé parameters $(\lambda,\mu)$.
+\end{example}
+
+\begin{example}[Elastoplasticity]
+  \textbf{Rate-independent} plasticity is based on the assumption that admissible thermodynamic forces lie within or on the boundary of the elastic domain \eqref{eq:elastic_convex}. The equivalent plastic strain rate is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
+\begin{equation}
+  \label{eq:Kuhn_Tucker}
+  \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
+\end{equation}
+The plastic multiplier, or the \textit{equivalent plastic strain rate}, is determined by the \textit{consistency condition}:
+\begin{equation}
+  \label{eq:consistency_condition}
+  \dot{f}=0
+\end{equation}
+
 For rate-independent plasticity, the consistency condition $\dot{f}=\drond{f}{(\tens{s}-\tens{Y})}:(\thomas{\tens{\dot{s}}-\tens{\dot{Y}}}) - \drond{f}{R}\dot{R}=0$ then leads to:
 \begin{subequations}
   \begin{alignat}{1}
@@ -412,7 +406,10 @@ At last, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution} can
 \end{equation}
 with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}. Note that (positive) linear hardening ensure the positive definiteness of the elastoplastic acoustic tensor $\tens{A}^{ep}=\tens{A}^{elast} -  \frac{6\mu^2}{3\mu +C} \thomas{(\tens{m}\cdot{n})\otimes(\tens{m}\cdot{n})}$.  
 
-$\newline$
+\end{example}
+\begin{example}[Elasto-viscoplasticity]
+  \textbf{Viscoplasticity} or \textbf{rate-dependent} plasticity can be seen as a regularization of rate-independent plasticity that relaxes the condition $f(\tens{\sigma},\Acb)\leq 0$ and thus leads to admissible thermodynamic forces lying outside the elastic domain \cite[p.58]{Simo}. Furthermore, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast}.
+
 According to Perzyna model \cite{Perzyna}, viscoplasticity leads on the other hand to an explicit definition of the equivalent plastic strain:
 \begin{equation}
   \label{eq:EVP_creep_law}
@@ -423,6 +420,9 @@ where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is th
   \label{eq:EVP_plastic_strain_rate}
   \tens{\dot{\eps}}^p=\left\langle \frac{f}{\eta}\right\rangle^n\:\sqrt{\frac{3}{2}}\tens{m}
 \end{equation}
+
+\end{example}
+
 
 \subsection{The general formulation}
 Balance and constitutive equations obtained previously are now summarized for various class of materials and regime of deformations. Recall that the deformations are assumed isothermal and that history effects are considered within the infinitesimal theory only.
