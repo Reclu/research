@@ -189,7 +189,8 @@ def gridSearch(function,tol=1.e-7):
         if a0<tol:
             continue
         else:
-            return i
+           return i
+
 
 ############### 1PPC
 # print "**************************************************************"
