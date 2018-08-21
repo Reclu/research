@@ -42,7 +42,7 @@ Thus, the introduction of DG approximation in the MPM should lead to a numerical
 Consider again a continuum solid body with volume $\Omega_t$ within the time interval $\tau$. The DGMPM is expected to provide a material description of a deformation so that an approximate solution of a Lagrangian system of conservation laws written in conservative form is seeked. Recall that such a conservative form for some vector of conserved quantities $\Wcb$ reads, in Cartesian coordinates system:
 \begin{equation}
   \label{eq:conservative_form}
-  \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \Scb \quad \forall \vect{X},t \in \Omega_0 \times \tau
+  \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \Scb \quad \forall \vect{X},t \in \Omega_0 \times \tau
 \end{equation}
 
 \subsubsection{The DGMPM discretization}
@@ -134,7 +134,7 @@ A commonly used approach to solve non-homogeneous systems consists in solving al
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:Splitting_advec} 
-    & \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{e}_\alpha}{X_\alpha} = \vect{0}\\
+    & \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \vect{0}\\
     \label{eq:Splitting_ODE}
     & \ddroit{\Wcb}{t} = \Scb
   \end{alignat}
@@ -216,7 +216,7 @@ Furthermore, as mentioned in section \ref{sec:riemann_solvers}, the exact (time 
 
 Recall that hyperelasticity and elastoplasticity conservative forms (equations \eqref{eq:vectors_hyperelasticity} and \eqref{eq:vectors_plasticity}) involve strains in the vector of conserved quantities, and stresses in the flux vector.
 % At last, solid mechanics conservative forms involve for hyperelasticity and elastoplasticity (equations \eqref{eq:vectors_hyperelasticity} and \eqref{eq:vectors_plasticity}), strains in the vector of conserved quantities, and stresses in the flux vector.
-Hence, the calculation of Godunov's fluxes requires the integration of constitutive laws that can be time-consuming for nonlinear problems. Nevertheless, the introduction of an auxiliary vector of conserved quantities $\Qcb$ \eqref{eq:auxiliary_vectors} and the quasilinear form it provides, avoid the computation of constitutive equations. Indeed, the stationary solution of the Riemann problem is then given in terms of the auxiliary vector $\Qcb^*$, which is a rearrangement of the flux components. Thus, the generic Riemann problem solved at cells interface reads:
+Hence, the calculation of Godunov's fluxes requires the integration of constitutive laws that can be time-consuming for nonlinear problems. Nevertheless, the introduction of an auxiliary vector of conserved quantities $\Qcb=\matrice{\vect{v}\\ \tens{\Pi}}$ and the quasilinear form it provides, avoid the computation of constitutive equations. Indeed, the stationary solution of the Riemann problem is then given in terms of the auxiliary vector $\Qcb^*$, which is a rearrangement of the flux components. Thus, the generic Riemann problem solved at cells interface reads:
 \begin{equation}
   \label{eq:RP_quasilinear}
   \begin{aligned}
