@@ -17,7 +17,7 @@ or equivalently, in matrix form:
 Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Sc}$ may depend on independent variables and the unknown vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ are not leads respectively to \textit{linear systems with variable coefficients} or to \textit{linear systems with constant coefficients}. The system remains \textit{linear} if $\vect{\Sc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if the $\tens{\Asf}^p$ depend on independent variables $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
 
-\thomas{The \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given conditions}. Geometrically speaking, the solution of such a problem can be seen as the building of a hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order Cauchy problem by using suitable changes of variables \cite[p.54]{PDEs}, we will therefore focus on first order PDEs.
+The \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given prescribed values. Geometrically speaking, the solution of such a problem can be seen as the building of a hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order Cauchy problem by using suitable changes of variables \cite[p.54]{PDEs}, we will therefore focus on first order PDEs.
 
 \subsection{Notion of characteristics -- Hyperbolic problems}
 The theorem of \textit{Cauchy--Kowalewski} locally ensures the existence of solutions of a Cauchy problem for partial differential systems and is based on the restrictive requirement of analytic coefficients matrices and initial data (see \cite[p.46]{PDEs}). The case of first order systems however, only requires continuity and differentiability conditions and lies on the concept of \textit{characteristics}, which makes the development of a solution more flexible.
@@ -84,7 +84,6 @@ Introduction of a parameter $\eta$ and integration of equation \eqref{eq:monge_a
   x=x(\eta) \quad ; \quad t=t(\eta) \quad ; \quad u=u(\eta)
 \end{equation*}
 Hence, a characteristic curve is tangent at every point to all the integral surfaces, and an infinity of integral surfaces cross one characteristic curve. As a consequence, if the initial curve is a characteristic curve, infinitely many integral surfaces contain it so that the Cauchy problem can not be solved.
-
 However, the following statement holds \cite[Ch.1]{Courant}:
 \begin{theorem}[Courant]
   \label{th:integral_surface_generated}

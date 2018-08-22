@@ -1,24 +1,25 @@
-The characteristic analysis carried out above is now applied to specific problems of solid mechanics. Both linear and non-linear problems which solutions involve several types are waves are considered. As we shall see, the development of exact solutions of Riemann problems highly depends on the different characteristic structure involved by linear elastic, elastoplastic and hyperelastic solids.
+The characteristic analysis carried out above is now applied to specific problems of solid mechanics. Both linear and non-linear problems which solutions involve several types are waves are considered.
+As we shall see, the different characteristic structures involved by linear elastic, elastoplastic and hyperelastic solids require the use of different technics in order to develop exact solutions.
 %% Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves may propagate within solids.
 
 \subsection{Linear elastodynamics problems}
 \label{subsec:charac_Linear_problems}
-A homogeneous hyperbolic system of dimension $m$ is considered in a linear elastic solid so that the Riemann problem in the arbitrary direction $\vect{n}$ reads:
-\begin{equation}
-  \label{eq:Linear_Riemann_problem}
-  \begin{aligned}
-  &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \vect{0}, \\
-  &\left\lbrace 
-    \begin{aligned}
-      & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
-      & \Qcb(x_n,t=0) = \Qcb^R \quad \text{if } x_n> 0
-    \end{aligned}
-    \right.
-  \end{aligned}
-\end{equation}
+A homogeneous hyperbolic system of dimension $m$ is considered in a linear elastic solid so that a Riemann problem of the form \eqref{eq:Riemann_problem_HPP} is written.% in the arbitrary direction $\vect{n}$ reads:
+% \begin{equation}
+%   \label{eq:Linear_Riemann_problem}
+%   \begin{aligned}
+%   &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \vect{0}, \\
+%   &\left\lbrace 
+%     \begin{aligned}
+%       & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
+%       & \Qcb(x_n,t=0) = \Qcb^R \quad \text{if } x_n> 0
+%     \end{aligned}
+%     \right.
+%   \end{aligned}
+% \end{equation}
 
 \subsubsection*{Characteristic variables -- Waves solution}
-By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ ($\Rsf_{ij}=\Rc^j_i$), the quasi-linear form of system \eqref{eq:Linear_Riemann_problem} can be rewritten:
+By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ ($\Rsf_{ij}=\Rc^j_i$), the quasi-linear form of system \eqref{eq:Riemann_problem_HPP} reads:
 \begin{equation*}
   \begin{aligned}
     &\drond{\Pc_i}{t} + c_i\drond{\Pc_i}{x} = 0 \\
@@ -30,7 +31,7 @@ By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ 
     \right.
   \end{aligned}
 \end{equation*}
-\begin{figure}[h]
+\begin{figure}[h!]
   \centering
   \subcaptionbox*{}[0.45\linewidth]{\input{chapter2/pgfFigures/advection_solution}}
   \subcaptionbox*{}[0.45\linewidth]{\input{chapter2/pgfFigures/advection_P}}
@@ -49,12 +50,12 @@ The vector $\Qcb$ is then determined by inverting the relation:
     \end{aligned}
     \right.
 \end{equation}
-Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is linear a superposition of $m$ waves, each of which having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{I+1} t <0$ for all $i>I$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
+Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is linear a superposition of $m$ waves, each having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{I+1} t <0$ for all $i>I$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
 \begin{equation}
   \label{eq:Q_expansion_sides}
   \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
 \end{equation}
-or, introducing the expansions of initial data \eqref{eq:Q_expansion_sides}:
+or, by introducing the expansions of initial data \eqref{eq:Q_expansion_sides}:
 \begin{align}
   &\Qcb = \sum_{i=1}^m \Rcb^i \Pc_i^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\) \\
   &\Qcb= \sum_{i=1}^{m}\Rcb^i \Pc_i^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\) 
@@ -64,7 +65,7 @@ Those equations are equivalent to jump conditions across multiple discontinuous 
   \label{eq:jump_star_R}
   &  \Qcb-\Qcb^R = -\sum_{i=I+1}^{m} \Rcb^i\delta^i \\
   \label{eq:jump_star_L}
-  &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i \\
+  &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i 
 \end{align}
 where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from the expansions of initial conditions by solving:
 \begin{equation}
@@ -72,35 +73,30 @@ where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimite
   \Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}
 \end{equation}
 
-We see that the solutions of Riemann problem \eqref{eq:Linear_Riemann_problem} consist in discontinuous waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
+We see that the solutions of Riemann problem  \eqref{eq:Riemann_problem_HPP} consist in discontinuous waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
 \begin{definition}
   The \textbf{Rankine-Hugoniot condition} is satisfied across a discontinuous wave of speed $s_i$ associated to the $i$th characteristic field, which is solution of the hyperbolic system $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$:
 \begin{equation}
   \label{eq:rankine-hugoniot}
   \saut{ \Fcb} = s_i \saut{ \Qcb}
 \end{equation}
-where $\saut{\bullet}$ denotes the jump operator across the discontinuity. The Rankine-Hugoniot condition is also valid for shock waves that will be met for non-linear problems in section \ref{sec:SVK_solution}.
+where $\saut{\bullet}$ denotes the jump operator across the discontinuity. More specifically, shock waves that will be met for non-linear problems in section \ref{sec:SVK_solution} also satisfy the Rankine-Hugoniot condition.
 \end{definition}
 
 \subsubsection*{Solution of the elastic bar problem}
-The above discussion is now specified to a one-dimensional elastic medium of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$. As a consequence, the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. Neglecting body forces and introducing \textit{Young's modulus E} such that $\sigma = E\eps$, the Riemann problem takes the form \eqref{eq:Linear_Riemann_problem} with conserved quantities and flux vector:
+The above discussion is now specified to a one-dimensional elastic medium, $x\in\[-l,l\]$, of density $\rho$ undergoing one-dimensional stress and strain states within the infinitesimal framework: $\tens{\eps}=\eps\: \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\sigma}=\sigma \:\vect{e}_1\otimes \vect{e}_1$. As a consequence, the bar hypothesis holds with $\vect{v}=v \vect{e}_1$. Neglecting body forces and introducing \textit{Young's modulus E} such that $\sigma = E\eps$, the Riemann problem takes the form \eqref{eq:Riemann_problem_HPP} with conserved quantities and flux vector:
 \begin{equation*}
   \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
 \end{equation*}
-where $v=\vect{v}\cdot{e}_1$. The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
+along with Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) as initial conditions. The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
-  \left\lbrace
-    \begin{aligned}
-      & c_1=- \sqrt{\frac{E}{\rho} }=-c\\
-      & c_2= \sqrt{\frac{E}{\rho} }=c
-    \end{aligned}\right.
- \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
+  c=\pm\sqrt{\frac{E}{\rho} }  \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
 The characteristic structure of the solution consisting of two elastic discontinuities emanating from the origin of the ($x,t$) plane is depicted in figure \ref{fig:elasticity_example}.
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/example_elasticity}
-  \caption{Solution to Riemann problem \eqref{eq:Linear_Riemann_problem} for an elastic bar.}
+  \caption{Solution to Riemann problem  \eqref{eq:Riemann_problem_HPP} for an elastic bar.}
   \label{fig:elasticity_example}
 \end{figure}
 The solution $\Qcb^*$ lying in the region bounded by the two elastic waves is computed by means of equation \eqref{eq:jump_star_L} after solving \eqref{eq:delta_system} for the wave strength coefficients. For a system of dimension $2$ by writing $\Qcb^R-\Qcb^L=\Delta \Qcb$ those wave strengths read:
@@ -124,7 +120,7 @@ Hence, equation \eqref{eq:jump_star_L} yields the solution:
 
 \subsection{Elastic-plastic media in the geometrical linearized limit}
 \label{subsec:elasto-plastic_problem}
-We now consider a homogeneous one-dimensional elastoplastic medium, $x\in\[-l,l\]$, under the bar assumption. The bar is made of a linear hardening material of mass density $\rho$, tensile yield stress $\sigma^y$ and Young's modulus $E$, under the bar assumption. For such a solid domain, the Riemann problem \eqref{eq:Linear_Riemann_problem} can be written by means of the following conserved quantities and flux vectors \cite{Thomas_EP}:
+The previous problem is now extended to elastoplastic media by considering the same bar made of a linear hardening material of tensile yield stress $\sigma^y$. For such a solid domain, a Riemann problem of the form \eqref{eq:Riemann_problem_HPP} can be written by means of the following conserved quantities and flux vectors \cite{Thomas_EP}:
 \begin{equation*}
   \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Hv}
 \end{equation*}
@@ -132,22 +128,11 @@ where $H=E$ for elastic loadings while $H=d\sigma/d\eps$ is the tangent modulus 
 
 %We now generalize the previous discussion to elastoplastic solids within the small strains framework. A plane wave problem in an infinite elastoplastic medium with linear hardening is then considered. Such a plane wave can be due for instance to Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) so that plastic flow may occur.
 % The exact solution of such a linear problem being known \cite{Wang} an exact Riemann solver, which however requires a particular procedure, may be used.
-The discontinuity of $H$ across the plastic threshold prevents here the direct derivation of the solution by using the above approach. Indeed, two sets of characteristic speeds and associated eigenvectors must be considered, that is \cite{Thomas_EP,Wang}:
+The discontinuity of $H$ across the plastic threshold prevents here the direct derivation of the solution by using the approach followed for linear elasticity. Indeed, two sets of characteristic speeds and associated eigenvectors must be considered, that is \cite{Thomas_EP,Wang}:
 \begin{equation*}
   c=\pm\sqrt{\frac{H}{\rho} } \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
-Waves are referred to as elastic waves for $H=E$ and as plastic ones when $H=d\sigma/d\eps$. Whether a plastic wave appears or not hence depends on the tangent modulus and subsequently, on the yield function. A prediction-correction procedure must thus be followed by first solving an elastic Riemann problem which resulting (trial) solution $\Qcb$ is tested against the yield criterion on both sides $x<0$ or $x>0$. With possibly different yield stresses, plastic strains and hardening parameters in left and right regions, the yield criterion may be violated or not, leading to one, two or no plastic wave that must be added as a correction to the original problem. Figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves} shows a solution involving two plastic waves and figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_stress_4waves}, the corresponding stress field in the bar.
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Characteristic structure\label{subfig:ep_bar_charac_4waves}}{\input{chapter2/pgfFigures/elastoplastic_bar}}
-  \subcaptionbox{Stress profile in the bar\label{subfig:ep_bar_stress_4waves}}{\input{chapter2/pgfFigures/elastoplastic_stress}}
-  % \\\subcaptionbox{3-waves solution ($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_charac_3waves}}{\input{chapter2/pgfFigures/elastoplastic_bar_1plast}}
-  % \subcaptionbox{Stress for 3-waves($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_stress_3waves}}{\input{chapter2/pgfFigures/elastoplastic_stress_1plast}}
-  \caption{Examples of solution of Riemann problem in a homogeneous elastoplastic bar with linear hardening and initial plastic strain $\eps^p(x,0)= 0$.}
-  \label{fig:EP_bar_solution}
-\end{figure}
-If neither $f_L$ nor $f_R$ leads to a violation of the criterion, the problem is elastic and the trial state is the solution. Otherwise, the plastic correction is performed by computing the stress in regions of the ($x,t$) plane bounded by elastic and plastic waves ($\tilde{\Qcb}^{L,R}$ in figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves}) so that the yield function satisfies $f_{L,R}=0$. Then, the velocity and elastic wave strengths in yielding regions are given by solving:
+so that waves are referred to as elastic or plastic waves. Whether a plastic wave appears or not hence depends on the tangent modulus and subsequently, on the yield function. A prediction-correction procedure must thus be followed by first solving an elastic Riemann problem which resulting (trial) solution $\Qcb$ is tested against the yield criterion on both sides $x<0$ or $x>0$. In general, possibly different yield stresses, plastic strains and hardening parameters in left and right regions lead to a yield criterion that may be violated or not, and hence to one, two or no plastic wave that must be added as a correction to the original problem. If neither $f_L$ nor $f_R$ leads to a violation of the criterion, the problem is elastic and the trial state is the solution. Otherwise, the plastic correction is performed by computing the stress in regions of the ($x,t$) plane bounded by elastic and plastic waves ($\tilde{\Qcb}^{L,R}$ in figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves}) so that the yield function satisfies $f_{L,R}=0$. Then, the velocity and elastic wave strengths in yielding regions are given by solving:
 \begin{align}
   & \tilde{\Qcb}^R = \Qcb^R - \delta^1_E \Rcb^1_E\\
   & \tilde{\Qcb}^L = \Qcb^L + \delta^2_E \Rcb^2_E
@@ -164,16 +149,27 @@ At last a plastic Riemann solver leading to the solution of the problem $\Qcb^*$
   \right.
 \end{equation}
 
-% \begin{remark}
-%   Note that the above solver also applies to bar problems characterized by stress and strain such that $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1$ ; $\tens{\eps}=\eps \vect{e}_1\otimes \vect{e}_1$, and different wave speeds.
-% \end{remark}
+ Figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves} shows the characteristic structure of the solution of the Riemann problem in a homogeneous medium considered here, involving two plastic waves, and figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_stress_4waves} the corresponding stress field in the bar.
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Characteristic structure\label{subfig:ep_bar_charac_4waves}}{\input{chapter2/pgfFigures/elastoplastic_bar}}
+  \subcaptionbox{Stress profile in the bar\label{subfig:ep_bar_stress_4waves}}{\input{chapter2/pgfFigures/elastoplastic_stress}}
+  % \\\subcaptionbox{3-waves solution ($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_charac_3waves}}{\input{chapter2/pgfFigures/elastoplastic_bar_1plast}}
+  % \subcaptionbox{Stress for 3-waves($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_stress_3waves}}{\input{chapter2/pgfFigures/elastoplastic_stress_1plast}}
+  \caption{Examples of solution of Riemann problem in a homogeneous elastoplastic bar with linear hardening and initial plastic strain $\eps^p(x,0)= 0$.}
+  \label{fig:EP_bar_solution}
+\end{figure}
+\begin{remark}
+  Note that the above solver also applies to plane wave problems characterized by one-dimensional strain and multi-dimensional stress states by considering different wave speeds.
+\end{remark}
 
 
 \subsection{Hyperelastic media: A Saint-Venant-Kirchhoff solution}
 \label{sec:SVK_solution}
 The approaches followed above are no longer possible for problems involving a non-linear Jacobian matrix since right eigenvectors cannot be taken out of the derivatives. Moreover, as we shall see with an example, the characteristic structure of such problems can be more complex and depend on the initial data. 
 %%% Picard problem
-Consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{E}_2$ and $\vect{E}_3$, and semi-infinite in direction $\vect{E}_1$ (\textit{i.e. $X_1 \in [0,+\infty[$}) in the reference configuration. This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{E}_1$ so that the deformation gradient and the PK1 tensor are respectively of the form:
+Consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{E}_2$ and $\vect{E}_3$, and semi-infinite in direction $\vect{E}_1$ (\textit{i.e. $X_1 \in [0,+\infty[$}) in the reference configuration. This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{E}_1$ so that the deformation gradient and the PK1 tensors are respectively of the form:
 \begin{align}
   \label{eq:SVK_plane_wave}
   &\tens{F}=F\vect{e}_1\otimes\vect{E}_1 + \vect{e}_2\otimes\vect{E}_2 + \vect{e}_3\otimes\vect{E}_3 \\
@@ -234,38 +230,40 @@ Suppose now that initial data are given so that $\bar{F} > F_R$. The resulting c
 A shock wave is a discontinuous wave hence satisfying the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot}:
 \begin{align}
   \label{eq:RH_velocity}
-  & -\frac{1}{\rho_0}\(\bar{\Pi} - \Pi_R \) = s \( \bar{v} - v_R \)\\
+  & -\frac{1}{\rho_0}\(\bar{\Pi} - \Pi_i \) = s \( \bar{v} - v_i \)\\
   \label{eq:RH_F}
-  & - \( \bar{v}-v_R\)=s\( \bar{F} - F_R\)
+  & - \( \bar{v}-v_i\)=s\( \bar{F} - F_i\)
 \end{align}
-where the shock speed $s$ is to be defined.
-In what follows, $\bar{F}$ is considered as an unknown so that a relation connecting $\Qcb^R$ to a set of solutions $\Qcb$ through a shock wave can be developed.
+where the shock speed $s$ is to be defined and $i\in\{L,R\}$.
+In what follows, $\bar{F}$ is considered as an unknown so that a relation connecting $\Qcb^i$ to a set of solutions $\Qcb$ through a shock wave can be developed.
 Substitution of $s$ from equation \eqref{eq:RH_F} and introduction in equation \eqref{eq:RH_velocity} where $\Pi=\frac{\lambda+2\mu}{2}\(F^3-F\)$ yield:
 \begin{align}
   \label{eq:shock_speed}
-  & s=-\frac{\bar{v}-v_R}{\bar{F} - F_R}\\
+  & s=-\frac{\bar{v}-v_i}{\bar{F} - F_i}\\
   \label{eq:v_jump}
-  & \bar{v}-v_R= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\bar{F}-F_R)\[ \bar{F}^3-\bar{F} - (F_R^3-F_R)\]}
+  & \bar{v}-v_i= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\bar{F}-F_i)\[ \bar{F}^3-\bar{F} - (F_i^3-F_i)\]}
 \end{align}
 In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied \cite[p.268]{Leveque}:
 \begin{equation}
   \label{eq:Lax_entropy}
-  c(\bar{F})<s<c(F_R)
+  c(\bar{F})<s<c(F_i)
 \end{equation}
-For the problem considered here ($\bar{F}>F$), the Lax condition is automatically satisfied. As a consequence, the square root in equation \eqref{eq:v_jump} is real, leading to two families of curves in the phase plane ($F,v$). \thomas{One of those curve is expected to identify with the jump conditions derived for the linear case \eqref{eq:jump_star_R} when considering an infinitesimal jump } (\textit{i.e. $\bar{F}=F_R+\epsilon$ with $\epsilon \rightarrow 0$}). Thus, equation \eqref{eq:v_jump} reads:
+Lax entropy condition implies that the square root in equation \eqref{eq:v_jump} is real, leading to two families of curves in the phase plane ($F,v$). When considering an infinitesimal jump (\textit{i.e. $\bar{F}=F_i\pm\epsilon$ with $\epsilon \rightarrow 0$}), each of these curve is expected to identify with one of the jump conditions derived for the linear case \eqref{eq:jump_star_R} of \eqref{eq:jump_star_L}.
+% One of those curve is expected to identify with the jump conditions derived for the linear case \eqref{eq:jump_star_R} when considering an infinitesimal jump (\textit{i.e. $\bar{F}=F_R+\epsilon$ with $\epsilon \rightarrow 0$}).
+Thus, equation \eqref{eq:v_jump} reads:
 \begin{equation}
   \label{eq:linearization}
-  \bar{v}-v_R= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\epsilon\[ (F_R+\epsilon)^3-(F_R+\epsilon) - (F_R^3-F_R)\]}
+  \bar{v}-v_i= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\epsilon\[ (F_i+\epsilon)^3-(F_i+\epsilon) - (F_i^3-F_i)\]}
 \end{equation}
 where, with $\epsilon \rightarrow 0$:
 \begin{equation*}
-  (F_R+\epsilon)^3\approx F_R^3(1+\frac{3\epsilon}{F_R})
+  (F_i+\epsilon)^3\approx F_i^3(1+\frac{3\epsilon}{F_i})
 \end{equation*}
 so that:
 \begin{equation*}
-  \matrice{\bar{v} \\ \bar{F}}=\matrice{v_R \\ F_R} + \epsilon \matrice{\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F_R^2-1\]}\\1}
+  \matrice{\bar{v} \\ \bar{F}}=\matrice{v_i \\ F_i} + \epsilon \matrice{\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F_i^2-1\]}\\1}
 \end{equation*}
-The minus sign allows to recover the right eigenvector associated to the right-going wave and therefore corresponds to a right-going shock wave. On the other hand, the plus sign stands for left-going shocks. Finally, the Rankine-Hugoniot condition across a left-going shock and a right-going shock respectively lead to:
+The minus sign allows to recover equation \eqref{eq:jump_star_R} associated to the right-going wave and therefore corresponds to a right-going shock wave. On the other hand, the plus sign stands for equation \eqref{eq:jump_star_L} and left-going shocks. Finally, the Rankine-Hugoniot condition across a left-going shock and a right-going shock respectively lead to:
 \begin{align}
   \label{eq:left-going_shock}
   &\bar{v}-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\bar{F}-F_L)\[ \bar{F}^3-\bar{F} - (F_L^3-F_L)\]} \\

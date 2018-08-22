@@ -1,4 +1,4 @@
-The quasi-linear forms written above enable the particularization of the theory of first order quasi-linear system developed in section \ref{sec:PDEs} to solid mechanics problems. Once the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} will be carried out, a particular type of IVP that will be considered in the rest of the manuscript is introduced.
+The quasi-linear forms written above enable the particularization of the theory of first order quasi-linear systems developed in section \ref{sec:PDEs} to solid mechanics problems. Once the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} will be carried out, a particular type of IVP which is of particular interest in this manuscript will be introduced.
 
 %The theory of first order quasi-linear system is now applied to solid dynamics through the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} is performed in this section. Second, a particular type of IVP that will be considered in the rest of the manuscript is introduced. 
 \subsection{Characteristic structure of solutions}
@@ -8,18 +8,18 @@ For the sake of simplicity studies of finite deformation and linearized geometri
   \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
 \end{equation}
 where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ of dimension $m$ arise.
-In three dimensions, the non-symmetric PK1 tensor in quasi-linear form \eqref{eq:HE_quasilinear} yields a Jacobian matrix of dimension $m=3+9$ while systems \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} involving Cauchy tensor, lead to $m=3+6$.
+In three dimensions, the non-symmetrical PK1 tensor in quasi-linear form \eqref{eq:HE_quasilinear} yields a Jacobian matrix of dimension $m=3+9$ while systems \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} involving Cauchy tensor, lead to $m=3+6$.
 The characteristic analysis of system \eqref{eq:normal_quasi} is therefore equivalent to that of linear combinations of matrices $\Absf^\alpha$. With the previous developments, the Jacobian matrix reads:
 \begin{equation}
   \label{eq:jacobian_generic}
   \Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes \vect{N} \\  \tilde{\Hbb}\cdot\vect{N} & \tens{0}^4 }
 \end{equation}
-in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stiffness tensor depending on the case considered. The characteristic structure of the problem is given by the $m$ eigenvalues $c_K$ and associated left eigenvectors $\Lcb^K$ of the Jacobian matrix satisfying:
+in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stiffness tensor depending on the case considered. The characteristic structure of the problem is given by the $m$ eigenvalues $c_K$ and associated left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ of the Jacobian matrix satisfying:
 \begin{equation}
   \label{eq:eigen_system}
   \vect{\Lc}^K\cdot \(\Jbsf - c_K \Ibsf\) = \vect{0}
 \end{equation}
-where $\Ibsf$ is the $m\times m$ identity matrix. Introducing a generic stress measure $\tens{S}$ that either denotes $\tens{\Pi}$ or $\tens{\sigma}$, left eigenvectors read $\vect{\Lc}^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$. Thus, for non-zero eigenvalues one gets:
+where $\Ibsf$ is the $m\times m$ identity matrix. Thus, for non-zero eigenvalues one gets:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:eigen_left_stress}
@@ -33,7 +33,7 @@ Substitution of $\tens{S}^K$ obtained from \eqref{eq:eigen_left_velo} in \eqref{
   \label{eq:acoustic_eigen}
  (\vect{v}^K\otimes\vect{N}):\(\tilde{\Hbb}\cdot  \vect{N}\) - \rho_0c_K^2 \vect{v}^K = \tens{0}
 \end{equation}
-which is the \textit{acoustic tensor} $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$ left eigensystem. Due to the symmetry of $\tens{A}$, system \eqref{eq:acoustic_eigen} is equivalent to the right eigensystem:
+which is the left eigensystem of the acoustic tensor $A_{ij}=N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta$. Due to the symmetry of $\tens{A}$, system \eqref{eq:acoustic_eigen} is equivalent to the right eigensystem:
 \begin{equation}
   \label{eq:acoustic_eigen_system_lambda}
   \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 c_K^2 \delta_{ij} \) v_j^K =0
@@ -93,7 +93,7 @@ meaning that the solution is constant along each characteristic straight line wi
 \end{remark}
 
 \subsection{The Riemann problem}
-A Riemann problem is a Cauchy problem with piecewise constant initial data. In particular, the Riemann problem based on the conservative form \eqref{eq:general_conservative_HE} for hyperelastic solids in the arbitrary direction $\vect{N}=N_\alpha \vect{E}_\alpha$ takes the form:
+A Riemann problem is a Cauchy problem with piecewise constant initial data. In particular, the Riemann problem based on the conservative form \eqref{eq:general_conservative_HE} for hyperelastic solids, in the arbitrary direction $\vect{N}=N_\alpha \vect{E}_\alpha$, takes the form:
 \begin{equation}
   \label{eq:Riemann_problem_HE}
   \begin{aligned}
@@ -106,7 +106,7 @@ A Riemann problem is a Cauchy problem with piecewise constant initial data. In p
     \right.
   \end{aligned}
 \end{equation}
-where $X_N=\vect{X}\cdot\vect{N}$. Analogously for small strains, one writes the Riemann problem corresponding to conservative forms \eqref{eq:general_conservative} or \eqref{eq:general_conservative_EP} in the direction $\vect{n}=n_i \vect{e}_i$:
+Analogously, for small strains one writes the Riemann problem corresponding to conservative forms \eqref{eq:general_conservative} or \eqref{eq:general_conservative_EP} in the direction $\vect{n}=n_i \vect{e}_i$:
 \begin{equation}
   \label{eq:Riemann_problem_HPP}
   \begin{aligned}
