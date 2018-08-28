@@ -52,13 +52,13 @@ class DGmesh:
         return self.Map,self.Grad,self.d,Parent.astype(int)
 
 
-    def computeFlux(self,U,W,dofs,md,epeq):
+    def computeFlux(self,U,W,dofs,md):
         """
         Evaluation of interface fluxes by solving Riemann problems
         Computation of volumic fluxes over each cell
         Assembling of interfaces and volumes contributions
         """
-        fluxes = self.computeInterfaceFlux(W,epeq)
+        fluxes = self.computeInterfaceFlux(W)
         fint = self.computeInternalForces(W,dofs)
         f = self.computeTotalForces(fint,fluxes)
         return f
@@ -74,7 +74,7 @@ class DGmesh:
         waves[:,1] = delta[1]*np.array([-self.rho*self.c,1])
         return waves
 
-    def computeInterfaceFlux(self,W,EPeq):
+    def computeInterfaceFlux(self,W):
         debug = False
         Nnodes = np.shape(W)[0]
         Nelem = (Nnodes-2)/2

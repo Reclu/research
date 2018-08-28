@@ -12,8 +12,8 @@ if not os.path.exists('texFiles/'+str(directory)):
     os.system('mkdir texFiles/'+str(directory))
 path='texFiles/'+str(directory)
 """
-Comparison of the implementation of the 1D elastic set of equations
-in dynamics:
+Comparison of the implementation of the 1D elastic-plastic set of equations
+in dynamics for linear isotropic hardening materials:
 - with the MPM
 - with the GIMP
 """
@@ -73,14 +73,14 @@ CFL=0.5
 NTmaxi = 300
 length = 6.0
 ppc=1
-Nelem = 50
+Nelem = 100
 E = 2.0e11
 Sigy = 400.0e7
 H = 10e9
 rho = 7800.0
 c=np.sqrt(E/rho)
 sigd =0.
-v0=-2.*Sigy/(rho*c)
+v0=2.*Sigy/(rho*c)
 factor=1.
 timeOut = 2.*length/(np.sqrt(E/rho))
 t_order=1
@@ -149,8 +149,13 @@ rcParams['xtick.labelsize'] = 16
 rcParams['ytick.labelsize'] = 16
 rcParams['legend.fontsize'] = 16
 
-
-
+frames=[]
+for i in frames:
+    plt.plot(DGMPM["pos"][:,i],DGMPM["sig"][:,i],'b')
+    plt.plot(DGMPM2["pos"][:,i],DGMPM2["sig"][:,i],'r--')
+    plt.grid()
+    plt.show()
+    
 frames=[5,20]
 frames=[]
 for n1 in frames:
@@ -177,11 +182,11 @@ fig, (ax1, ax2) = plt.subplots(2,1)
 
 # intialize two line objects (one in each axes)
 line1, = ax1.plot([], [],'r--', ms=2.5,label='mpm')
-line2, = ax1.plot([], [],'b--' ,ms=1.5,label='ep')
+line2, = ax1.plot([], [],'b-o' ,ms=1.5,label='ep')
 line3, = ax1.plot([], [],'g--' , ms=2,label='ac')
 line4, = ax1.plot([], [],'k' , ms=2,label='fvm')
 line5, = ax2.plot([], [],'r--' , ms=2,label='mpm')
-line6, = ax2.plot([], [],'b--' , ms=2,label='ep')
+line6, = ax2.plot([], [],'b-o' , ms=2,label='ep')
 line7, = ax2.plot([], [],'g--', ms=2.5,label='ac')
 line8, = ax2.plot([], [],'k', ms=2.5,label='fvm')
 line = [line1, line2,line3,line4,line5,line6,line7,line8]
@@ -197,7 +202,7 @@ ax1.set_xlim(0.,length)
 ax2.set_xlim(0.,length)
 ax1.set_ylim(1.1*np.min(MPM["sig"]),1.1*np.max(MPM["sig"]))
 ax2.set_ylim(1.1*np.min(MPM["epsp"]),1.1*np.max(MPM["epsp"]))
-
+ax1.legend(numpoints=1)
 def init():
     line[0].set_data([], [])
     line[1].set_data([], [])
@@ -221,6 +226,6 @@ def animate(i):
     return line
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=DGMPM["increments"], interval=50, blit=True)
+                               frames=DGMPM["increments"], interval=100, blit=True)
 
 plt.show()

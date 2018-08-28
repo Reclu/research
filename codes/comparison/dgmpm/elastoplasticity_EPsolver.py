@@ -25,7 +25,7 @@ def bilinear(eps,EPn,Pn,E,Sigy,H):
         #(i) Elastic prediction
         Selas = E*(DEFO-EPn[i])
         #(ii) Compute the criterion 
-        f = np.abs(Selas) - (Sigy+H*EPn[i])
+        f = np.abs(Selas) - (Sigy+H*Pn[i])
         if (f<=0.):
             #elastic step
             S[i] = Selas
@@ -106,7 +106,6 @@ cp=np.sqrt(HT/rho)
 c=np.sqrt(E/rho)
 Sy=Sigy
 
-
 mesh = DGmesh(Mp,L,ppc,c,cp,rho,Sy,H)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
@@ -129,6 +128,7 @@ else:
         CFL=1.
     else:
         CFL=float(t_order)/float(ppc)
+        
 Dt=CFL*dx/c 
 tfinal=timeOut
 tf=timeUnload
@@ -151,7 +151,6 @@ U[Mp/2:Mp,1]=-v0
 W = np.copy(U)
 W[0:Mp/2,1]=v0
 W[Mp/2:Mp,1]=-v0
-
 
 # Nodes' fields
 u = np.zeros((Nn,2))
@@ -207,20 +206,6 @@ def UpdateState(dt,dofs,Ml,U,W,md,ep,limit):
     for i in range(len(dofs)):
         if md[dofs[i]]!=0.:
             U[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
-    if limit :
-        Umean=np.zeros((Nelem,2))
-        # Valeur moyenne de U sur chaque element
-        for i in range(Nelem):
-            Umean[i,:]=(U[2*i,:]+U[2*i+1,:])*0.5
-            # peut etre fait dans la boucle d'update
-        vl=np.zeros(Nelem)
-        vr=np.zeros(Nelem)
-        for i in range(Nelem):
-            # add a ghost cell if limiters used !
-            vl[i]=limited_flux(Umean[i,:]-U[2*i,:],Umean[i,:]-Umean[i-1,:],Umean[i+1,:]-Umean[i,:])
-            vr[i]=limited_flux(Umean[i,:]-U[2*i,:],Umean[i,:]-Umean[i-1,:],Umean[i+1,:]-Umean[i,:])
-            
-        # Pour chaque element, comperer avec gauche et droite
     return U
 
 def UpdateStateRK2(dt,dofs,Ml,U,W,md,ep):
@@ -246,54 +231,13 @@ def UpdateStateRK2(dt,dofs,Ml,U,W,md,ep):
     U+=k2
     return U
 
-def UpdatePlasticStrain(U,EPeqn,Sigy,H,predictor):
-    EPeq = np.zeros(U.shape[0])
-    for i in range(U.shape[0]):
-        EPeq[i] = EPeqn[i]
-        f = np.abs(U[i,0])-H*EPeqn[i]-Sigy
-        if (f>1.e-12):
-            EPeq[i] = (np.abs(U[i,0])-Sigy)/H
-            predictor[2*i]=True
-            predictor[2*i+1]=True
-    return EPeq,predictor
-
-def prescribeStress(UR,(EPeqL,EPeqR),rho,(cL,cR),(cpL,cpR),(SyL,SyR),(HL,HR),sigd):
-    #Tests on the criterion
-    fL = np.abs(sigd)-HL*EPeqL-SyL
-    fR = np.abs(sigd)-HR*EPeqR-SyR
-    if (fL>1.e-12) and (fR<0.0):
-        #print "BC 1"
-        #Leftward plastic wave
-        alpha2 = (sigd-UR[0])/(cR) ; v_star = UR[1] - alpha2
-        alpha1P = (sigd-(SyL+HL*EPeqL))/(cpL) ; v0_star = v_star - alpha1P
-        alpha1 = v0_star - UR[1] ; sig0 = SyL+HL*EPeqL - alpha1*cL
-    elif (fL<0.0) and (fR>1.e-12):
-        #print "BC 2"
-        #Rightward plastic wave
-        alpha2 = ((SyR+HR*EPeqR)-UR[0])/(cR) ; v1_star = UR[1] - alpha2
-        alpha2P = (sigd - (SyR+HR*EPeqR))/(cpR) ; v_star = v1_star - alpha2P
-        alpha1 = v_star - UR[1] ; sig0 = sigd - alpha1*cL
-        
-    elif (fL>1.e-12) and (fR>1.e-12):
-        #print "BC 3"
-        #Four waves
-        alpha2 = ((SyR+HR*EPeqR)-UR[0])/(cR) ; v1_star = UR[1] - alpha2
-        alpha2P = (sigd - (SyR+HR*EPeqR))/(cpR) ; v_star = v1_star - alpha2P
-        alpha1P = (sigd-(SyL+HL*EPeqL))/(cpL) ; v0_star = v_star - alpha1P;
-        alpha1 = v0_star - UR[1] ; sig0 = SyL+HL*EPeqL - alpha1*cL
-    else:
-        #print "BC 4"
-        #Elastic
-        sig0 = 2*sigd-UR[0]
-    return (sig0,UR[1])
-
 while T<tfinal:
     
     # Mapping from material points to nodes
     
     Um=np.dot(Md,U)
     Wm=np.dot(Md,W)
-    EPm=np.dot(Md,epsp[:,n])
+    EPm=np.dot(Md,p[:,n])
     for i in range(len(Dofs)):
         if mass_vector[Dofs[i]]!=0.:
             u[Dofs[i],:]=np.dot(Map[Dofs[i],:],Um)/mass_vector[Dofs[i]]
@@ -301,13 +245,14 @@ while T<tfinal:
             ep[Dofs[i]]=np.dot(Map[Dofs[i],:],EPm)/mass_vector[Dofs[i]]
     
     ep[0]=ep[1] ; ep[-1]=ep[-2]
-    
+
+    s0=0.
     # Apply load on first node
-    w[2*parent[0],0]=2.*s0*(T<tf) - w[2*parent[0]+1,0] 
-    w[2*parent[0],1]=w[2*parent[0]+1,1]
+    w[2*parent[0],0]= 2.*s0*(T<tf) - w[2*parent[0]+1,0] 
+    w[2*parent[0],1]= w[2*parent[0]+1,1]
     # Transmissive boundary conditions
-    w[2*parent[-1]+3,0] =2.*s0*(T<tf) - w[2*parent[-1]+2,0]
-    w[2*parent[-1]+3,1] =w[2*parent[-1]+2,1]
+    w[2*parent[-1]+3,0] = 2.*s0*(T<tf) - w[2*parent[-1]+2,0]
+    w[2*parent[-1]+3,1] = w[2*parent[-1]+2,1]
     
     if t_order==1 :
         u=UpdateState(Dt,Dofs,md,u,w,mass_vector,ep,limit)
@@ -322,7 +267,8 @@ while T<tfinal:
 
     Eps=U[:,0]*rho
     Sig,p[:,n+1],epsp[:,n+1],tangent_modulus = bilinear(Eps,epsp[:,n],p[:,n],E,Sy,H)
-    
+
+
     #print 'Increment =', n, 't = ', T,' s.'
     n+=1
     T+=Dt
@@ -334,4 +280,5 @@ while T<tfinal:
 
     pos[:,n]=xp[:,0]
     time[n]=T
+    
 increments=n

@@ -25,7 +25,7 @@ def bilinear(eps,EPn,Pn,E,Sigy,H):
         #(i) Elastic prediction
         Selas = E*(DEFO-EPn[i])
         #(ii) Compute the criterion 
-        f = np.abs(Selas) - (Sigy+H*EPn[i])
+        f = np.abs(Selas) - (Sigy+H*Pn[i])
         if (f<=0.):
             #elastic step
             S[i] = Selas
@@ -201,9 +201,9 @@ def plotStress(sig,color):
     plt.title('Stress along the bar',fontsize=22)
     plt.show()
 
-def UpdateState(dt,dofs,Ml,U,W,md,ep,limit):
+def UpdateState(dt,dofs,Ml,U,W,md,limit):
     Nnodes = np.shape(U)[0]
-    f=mesh.computeFlux(U,W,dofs,md,ep)
+    f=mesh.computeFlux(U,W,dofs,md)
     for i in range(len(dofs)):
         if md[dofs[i]]!=0.:
             U[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
@@ -284,14 +284,11 @@ while T<tfinal:
     
     Um=np.dot(Md,U)
     Wm=np.dot(Md,W)
-    EPm=np.dot(Md,epsp[:,n])
     for i in range(len(Dofs)):
         if mass_vector[Dofs[i]]!=0.:
             u[Dofs[i],:]=np.dot(Map[Dofs[i],:],Um)/mass_vector[Dofs[i]]
             w[Dofs[i],:]=np.dot(Map[Dofs[i],:],Wm)/mass_vector[Dofs[i]]
-            ep[Dofs[i]]=np.dot(Map[Dofs[i],:],EPm)/mass_vector[Dofs[i]]
-    
-    ep[0]=ep[1] ; ep[-1]=ep[-2]
+            
     
     # Apply load on first node
     w[2*parent[0],0]=2.*s0*(T<tf) - w[2*parent[0]+1,0] 
@@ -305,7 +302,7 @@ while T<tfinal:
     # w[Nn-1,1]=np.copy(w[Nn-2,1])
     
     if t_order==1 :
-        u=UpdateState(Dt,Dofs,md,u,w,mass_vector,ep,limit)
+        u=UpdateState(Dt,Dofs,md,u,w,mass_vector,limit)
     elif t_order==2 :
         u=UpdateStateRK2(Dt,Dofs,md,u,w,mass_vector,ep)
     

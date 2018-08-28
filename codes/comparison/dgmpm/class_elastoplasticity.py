@@ -1,7 +1,7 @@
 # !/usr/bin/python
 
 import numpy as np
-
+import pdb
 
 class DGmesh:
     #Constructor
@@ -70,8 +70,8 @@ class DGmesh:
 
     def computeElasticWaves(self,delta):
         waves = np.zeros((2,2))
-        waves[:,0] = delta[0]*np.array([self.rho*self.c,1])
-        waves[:,1] = delta[1]*np.array([-self.rho*self.c,1])
+        waves[:,0] = delta[0]*np.array([self.rho*self.c,1.])
+        waves[:,1] = delta[1]*np.array([-self.rho*self.c,1.])
         return waves
 
     def computeInterfaceFlux(self,W,EPeq):
@@ -87,32 +87,33 @@ class DGmesh:
             dW = WR-WL
             #Elastic prediction
             delta = self.computeDelta(dW,self.c,self.c)
-            Strial= SL + delta[0]*self.c
+            Strial= SL + delta[0]*self.c*self.rho
             #Tests on the criterion
             fL = np.abs(Strial)-self.H*EPeq[2*i]-self.sigy
             fR = np.abs(Strial)-self.H*EPeq[2*i+1]-self.sigy
-            if (fL>1.e-10) and (fR<1.e-10):
+            if debug: print np.abs(Strial),self.sigy,fL,fR,
+            if (fL>0.0) and (fR<0.0):
                 if debug : print i," plastic-elastic"
                 #Leftward plastic wave
                 delta1=(np.sign(Strial)*(self.sigy+self.H*EPeq[2*i])-SL)/(self.rho*self.c)
                 R = WR- WL + delta1*np.array([self.rho*self.c,1.0])
                 deltaP = self.computeDelta(R,self.cp,self.c)
-                Wstar = WL + delta1*np.array([self.rho*self.c,1])+ deltaP[0]*np.array([self.rho*self.cp,1])
-            elif (fL<1.e-10) and (fR>1.e-10):
+                Wstar = WL + delta1*np.array([self.rho*self.c,1.])+ deltaP[0]*np.array([self.rho*self.cp,1.])
+            elif (fL<0.0) and (fR>0.0):
                 if debug : print i," elastic-plastic"
                 #Rightward plastic wave
                 delta2=(np.sign(Strial)*(self.sigy+self.H*EPeq[2*i+1])-SR)/(self.rho*self.c)
                 R = WR-delta2*np.array([-self.rho*self.c,1.0]) -WL
                 deltaP = self.computeDelta(R,self.c,self.cp)
-                Wstar = WR - delta2*np.array([-self.rho*self.c,1])- deltaP[1]*np.array([-self.rho*self.cp,1])
-            elif (fL>1.e-10) and (fR>1.e-10):
+                Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])
+            elif (fL>0.0) and (fR>0.0):
                 if debug : print i," plastic-plastic"
                 #Four waves
                 delta1=(np.sign(Strial)*(self.sigy+self.H*EPeq[2*i])-SL)/(self.rho*self.c)
                 delta2=(np.sign(Strial)*(self.sigy+self.H*EPeq[2*i+1])-SR)/(self.rho*self.c)
                 R = WR - delta2*np.array([-self.rho*self.c,1.0]) - ( WL + delta1*np.array([self.rho*self.c,1.0]))
                 deltaP = self.computeDelta(R,self.cp,self.cp)
-                Wstar = WR - delta2*np.array([-self.rho*self.c,1])- deltaP[1]*np.array([-self.rho*self.cp,1])
+                Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])
             else:
                 if debug : print i," elastic-elastic"
                 # Elastic fluctuations
