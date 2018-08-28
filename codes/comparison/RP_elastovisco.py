@@ -82,10 +82,10 @@ eta=100.0
 n=1./4.
 c=np.sqrt(E/rho)
 sigd =0.
-v0=1.*Sigy/(rho*c)
-hardening='kinematic'
+v0=5.*Sigy/(rho*c)
+hardening='isotropic'
 factor=1.
-timeOut = .5*length/(np.sqrt(E/rho))
+timeOut = 1.*length/(np.sqrt(E/rho))
 t_order=1
 timeUnload = 2*timeOut
 algo = 'USL'
@@ -155,6 +155,14 @@ rcParams['xtick.labelsize'] = 16
 rcParams['ytick.labelsize'] = 16
 rcParams['legend.fontsize'] = 16
 
+frames=[1,2,3,4,5,6]
+frames=[]
+for i in frames:
+    plt.plot(MPM["pos"][:,i],MPM["sig"][:,i],'k')
+    plt.plot(DGMPM["pos"][:,i],DGMPM["sig"][:,i],'r--')
+    plt.grid()
+    plt.show()
+
 
 c = np.sqrt(E/rho)
 HT = (H*E)/(H+E) ; cp = np.sqrt(HT/rho)
@@ -173,6 +181,7 @@ factor2=DGMPM2["CFL"]/CFL
 
 
 ### Energy plots
+"""
 plt.plot(MPM["time"][:-1],MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),'b-x',lw=2.,label='mpm 1ppc')
 plt.plot(MPM2["time"][:-1],MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),'r-x',lw=2.,label='mpm 2ppc')
 plt.plot(DGMPM["time"][:-1],DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),'bo',lw=2.,label='dgmpm 1ppc')
@@ -181,12 +190,9 @@ plt.grid()
 plt.legend(numpoints=1)
 plt.show()
 
-# export2pgfPlot('NRG_mpm_1ppc.pgf',MPM["time"][:-1],MPM["NRG"][:-1],'t','NRG')
-# export2pgfPlot('NRG_mpm_2ppc.pgf',MPM2["time"][:-1],MPM2["NRG"][:-1],'t','NRG')
-# export2pgfPlot('NRG_modmpm_1ppc.pgf',DGMPM["time"][:-1],DGMPM["NRG"][:-1],'t','NRG')
-# export2pgfPlot('NRG_modmpm_2ppc.pgf',DGMPM2["time"][:-1],DGMPM2["NRG"][:-1],'t','NRG')
 legend=['mpm 1ppc','mpm 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 export2DTeXFile(str(path)+'/dgmpm_mpm_energies.tex',np.array([MPM["time"][:-1],MPM2["time"][:-1],DGMPM["time"][:-1],DGMPM2["time"][:-1],DGMPM3["time"][:-1],np.array([0.,1.e-8])]),'$time (s)$',r'$\frac{e}{e_{max}}$','(c) evolution of total energy $e$',np.array([MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),DGMPM3["NRG"][:-1]/max(DGMPM3["NRG"][:-1]),np.array([1.,1.])]),legend)
+"""
 
 frames=[5,20]
 frames=[]
@@ -234,6 +240,8 @@ ax2.set_xlabel('x (m)', fontsize=18)
 ax2.set_ylabel(r'$\varepsilon^p$', fontsize=18)
 ax1.set_ylabel(r'$\sigma$', fontsize=18)
 
+ax1.legend(numpoints=1)
+
 ax1.set_xlim(0.,length)
 ax2.set_xlim(0.,length)
 ax1.set_ylim(1.1*np.min(MPM["sig"]),1.1*np.max(MPM["sig"]))
@@ -269,6 +277,6 @@ def animate(i):
     return line
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=DGMPM["increments"], interval=50, blit=True)
+                               frames=DGMPM["increments"], interval=100, blit=True)
 
 plt.show()

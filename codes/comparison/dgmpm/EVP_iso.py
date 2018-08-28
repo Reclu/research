@@ -30,7 +30,7 @@ def computeS(t,U,p,H,E,Sy,eta,n):
     S = np.zeros(2)
     Seq = computeSeq(U[0],p,H)
     f = criterion(Seq,Sy)
-    S[0] = -E*creep_law(f,eta,n)
+    S[0] = -E*creep_law(f,eta,n)*np.sign(U[0])
     S[1] = 0.
     return S
 
@@ -194,9 +194,8 @@ def UpdateState(dt,dofs,Ml,U,md,limit):
     dU=np.zeros(np.shape(U))
     for i in range(len(dofs)):
         if md[dofs[i]]!=0.:
-            dU[dofs[i],:]=dt*f[dofs[i],:]/md[dofs[i]]
             U[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
-    return U,dU
+    return U
 
 def UpdateStateRK2(dt,dofs,Ml,U,md):
     Nnodes = np.shape(U)[0]
@@ -226,6 +225,15 @@ while T<tfinal:
     
     # Effective mass matrix
     mf=(1-alpha)*mg + alpha*md
+
+    #  integration of ODE on material points
+    for j in range(Mp):
+        r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf')
+        r.set_initial_value(rho*U[j,:],time[n]+Dt).set_f_params(p[j,n],H,E,Sy,eta,power)
+        r.integrate(r.t+Dt/2.)
+        if r.successful():
+            U[j,:] = r.y/rho
+
     
     # Mapping from material points to nodes
     Um=np.dot(Md,U)
@@ -234,15 +242,15 @@ while T<tfinal:
             u[Dofs[i],:]=np.dot(Map[Dofs[i],:],Um)/mass_vector[Dofs[i]]
             
     # Apply load on first node
-    u[2*parent[0],0]=2.*s0*(T<tf) - u[2*parent[0]+1,0] 
+    u[2*parent[0],0]=2.*s0*(T<tf) -u[2*parent[0]+1,0] 
     u[2*parent[0],1]=u[2*parent[0]+1,1]
     # Transmissive boundary conditions
-    u[2*parent[-1]+3,0] =- u[2*parent[-1]+2,0]
+    u[2*parent[-1]+3,0] =-u[2*parent[-1]+2,0]
     u[2*parent[-1]+3,1] =u[2*parent[-1]+2,1]
 
 
     if t_order==1:
-        u,du=UpdateState(Dt,Dofs,md,u,mass_vector,limit)
+        u=UpdateState(Dt,Dofs,md,u,mass_vector,limit)
     elif t_order==2:
         u=UpdateStateRK2(Dt,Dofs,md,u,mass_vector)
     
@@ -254,7 +262,7 @@ while T<tfinal:
     for j in range(Mp):
         r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf')
         r.set_initial_value(rho*U[j,:],time[n]+Dt).set_f_params(p[j,n],H,E,Sy,eta,power)
-        r.integrate(r.t+Dt)
+        r.integrate(r.t+Dt/2.)
         if r.successful():
             U[j,:] = r.y/rho
             
