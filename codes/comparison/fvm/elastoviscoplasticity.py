@@ -44,7 +44,7 @@ mthlim(i)<0: no limiter
 limit = True
 mthlim = np.zeros(2,dtype=int)
 for idx,i in enumerate(mthlim):
-    mthlim[idx] = -1   #Choose of the Superbee limiter
+    mthlim[idx] = 1   #Choose of the Superbee limiter
 
 #Definition of arrays
 #Ghost cells at both ends of the bar are used to prescribe boundary conditions

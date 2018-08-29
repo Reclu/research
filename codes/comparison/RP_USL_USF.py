@@ -87,8 +87,9 @@ algo = 'USL'
 limit=-1
 update_position=False
 mpm_mapping=True
+hardening='isotropic'
 
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping}
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping,"hardening":hardening}
 #################
 
 
@@ -98,7 +99,7 @@ print 'Computing MPM'
 execfile('mpm/elasticity.py', USL)
 
 algo='USF'
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping}
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping,"hardening":hardening}
 ##MPM: Material Point Method
 USF = dict(parameters)
 print 'Computing modified MPM'
@@ -107,7 +108,7 @@ execfile('mpm/elasticity.py', USF)
 
 algo='USL'
 ppc=2
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping}
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping,"hardening":hardening}
 
 print "=============== 2PPC COMPUTATIONS ===================="
 
@@ -117,7 +118,7 @@ print 'Computing USL'
 execfile('mpm/elasticity.py', USL2)
 
 algo='USF'
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping}
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"limit":limit,"algo":algo,"t_order":t_order,"mpm_mapping":mpm_mapping,"hardening":hardening}
 ##MPM: Material Point Method
 USF2 = dict(parameters)
 print 'Computing modified MPM'

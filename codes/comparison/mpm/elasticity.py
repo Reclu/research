@@ -57,7 +57,7 @@ def buildApproximation1D(xp,xn,connect):
 
 
 
-def bilinear(eps_n,eps,EPn,Pn,E,Sigy,H):
+def bilinear(eps_n,eps,EPn,Pn,E,Sigy,H,hardening):
     #initialization
     S = np.zeros(len(eps))
     EP = np.zeros(len(eps))
@@ -67,8 +67,11 @@ def bilinear(eps_n,eps,EPn,Pn,E,Sigy,H):
     for i,DEFO in enumerate(eps):
         #(i) Elastic prediction
         Selas = E*(DEFO-EPn[i])
-        #(ii) Compute the criterion 
-        f = np.abs(Selas) - (Sigy+H*Pn[i])
+        #(ii) Compute the criterion
+        if hardening=='isotropic':
+            f = np.abs(Selas) - (Sigy+H*Pn[i])
+        elif hardening=='kinematic':
+            f = np.abs(Selas-H*EPn[i]) - Sigy
         if (f<=0):
             #elastic step
             S[i] = Selas
@@ -165,7 +168,7 @@ Pos[:,n]=X[:]
 Velocity[:,n]=V[:]
 time[n]=T
 
-Sig,p[:,0],Epsp[:,0],tangent_modulus = bilinear(np.zeros(len(Eps)),Eps,Epsp[:,0],p[:,0],E,Sigy,H)
+Sig,p[:,0],Epsp[:,0],tangent_modulus = bilinear(np.zeros(len(Eps)),Eps,Epsp[:,0],p[:,0],E,Sigy,H,hardening)
 
 alg=algo
 alpha=1.
@@ -202,7 +205,7 @@ while T<tfinal:
         # Gradient and constitutive model
         Epsn=Eps
         Eps+=Dt*np.dot(Grad[Dofs,:].T,v[Dofs])
-        Sig,p[:,n],Epsp[:,n],tangent_modulus = bilinear(Epsn,Eps,Epsp[:,n],p[:,n],E,Sigy,H)
+        Sig,p[:,n+1],Epsp[:,n+1],tangent_modulus = bilinear(Epsn,Eps,Epsp[:,n],p[:,n],E,Sigy,H,hardening)
     elif alg=='USF':
         # Convection /!\
         v[Dofs]=solve(mf,np.dot(Map[Dofs,:],np.dot(MD,V)))
@@ -210,7 +213,7 @@ while T<tfinal:
         # Gradient and constitutive model
         Epsn=Eps
         Eps+=Dt*np.dot(Grad[Dofs,:].T,v[Dofs])
-        Sig,p[:,n],Epsp[:,n],tangent_modulus = bilinear(Epsn,Eps,Epsp[:,n],p[:,n],E,Sigy,H)
+        Sig,p[:,n+1],Epsp[:,n+1],tangent_modulus = bilinear(Epsn,Eps,Epsp[:,n],p[:,n],E,Sigy,H)
         
         # Internal force vector
         Fi[Dofs]=-np.dot(Grad[Dofs,:],np.dot(MD,Sig))/rho
