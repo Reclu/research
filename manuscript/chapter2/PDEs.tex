@@ -28,91 +28,98 @@ To illustrate the aforementioned notions, we consider the first order quasi-line
   \label{eq:1st_order_pde}
    a u_x + b u_t  = c
 \end{equation}
-where coefficients $a$ and $b$ are such that $a^2 + b^2 \neq 0$. Given values of $u$ are prescribed along a curve $\Cscr_0:\varphi(x,t)=const$ in the $(x,t)$ plane, thus defining a curve $\Cscr$ of the space $(x,t,u)$. In what follows, $\Cscr$ is referred to as the \textit{initial curve}.
-Moreover, we assume that $\Cscr_0$ is regular, namely $\varphi_x^2 + \varphi_t^2 \neq 0$, and that one of the partial derivatives does not vanish, say $\varphi_\x \neq 0$.
-
+where coefficients $a$ and $b$ are such that $a^2 + b^2 \neq 0$. Given values of $u$ are prescribed along a curve defined by means of a parameter $\eta$ in the $(x,t)$ plane as $\Cscr_0:(x(\eta),t(\eta))$, so that $u(x(\eta),t(\eta))$ draws a curve $\Cscr$ of the space $(x,t,u)$. 
+%In what follows, $\Cscr$ is referred to as the \textit{initial curve}.
+We assume that $\Cscr_0$ is regular, namely $\ddroit{x}{\eta}^2 + \ddroit{t}{\eta}^2 \neq 0$, and that one of the derivatives, say $\ddroit{t}{\eta}$, does not vanish. Figure \ref{fig:initial_curve} shows an exemple of such an \textit{initial curve} $\Cscr$ prescribing values of $u$ along a parametrized curve of the $(x,t)$ plane.
+%The value of $u$ on $\Cscr$ being used as a starting point for the solution of the Cauchy problem, $\Cscr$ is referred to as the \textit{initial curve}. 
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/initialCurve}
   \caption{Example of curve initial curve $\Cscr$ in the $(x,t,u)$ space and its projection $\Cscr_0$ in the $(x,t)$ plane.}
   \label{fig:initial_curve}
 \end{figure}
-With data given along $\Cscr$, the Cauchy problem is equivalent to that of finding a surface $u(x,t)$ that contains the initial curve and satisfies \eqref{eq:1st_order_pde}. Thus, one seeks the derivatives of $u$ along $\Cscr$. Since $u=u(\varphi(x,t))$ along $\Cscr$, one has $u_x = u' \varphi_x $ and $u_t = u' \varphi_t$ from which one deduces:
+With data given along $\Cscr$, the Cauchy problem is equivalent to that of finding a surface $u(x,t)$ that contains the initial curve and satisfies \eqref{eq:1st_order_pde}.
+Thus, one seeks the partial derivatives $u_x$ and $u_t$ of $u$ on $\Cscr$ in order to extend the given data into a strip in the neighborhood of the initial curve.
+The total derivative of $u$ along $\Cscr$ being:
+\begin{equation}
+  \label{eq:dtot_u}
+  \ddroit{u}{\eta}=u_x\ddroit{x}{\eta}+u_t\ddroit{t}{\eta}
+\end{equation}
+one gets the following relation between the partial derivatives of $u$ on the initial curve:
 \begin{equation*}
-  u_t = \frac{\varphi_t}{\varphi_x}u_x 
+  u_t= \ddroit{u}{t} - u_x\ddroit{x}{t}
 \end{equation*}
-This relation enables to rewrite the PDE \eqref{eq:1st_order_pde} as:
+Then, equation \eqref{eq:1st_order_pde} can be rewritten as:
 \begin{equation}
   \label{eq:normal_form_pde}
-  (a + b\frac{\varphi_t}{\varphi_x})u_x = c
+  (a - b\ddroit{x}{t})u_x = c - b\ddroit{u}{t}\lvert_{t\in\Cscr_0}
 \end{equation}
-On the other hand, the total differential of $\varphi(x,t)=const$ being $d\varphi = \varphi_x dx + \varphi_t dt =0$, equation \eqref{eq:normal_form_pde} becomes:
-\begin{equation}
-  \label{eq:normal_form_pde_2}
-  (a - \ddroit{x}{t}b)u_x = c
-\end{equation}
-Hence, the Cauchy problem admits a unique solution if and only if:
+The right-hand side of equation \eqref{eq:normal_form_pde} is known along $\Cscr$ so that the Cauchy problem admits a unique solution $u_x$ if and only if:
 \begin{equation}
   \label{eq:non-characteristics}
   \ddroit{x}{t}\neq \frac{a}{b}
 \end{equation}
-A \textit{non-characteristic curves} is an initial curve satisfying the condition \eqref{eq:non-characteristics}, otherwise it is a \textit{characteristic curve}. 
+An initial curve satisfying the condition \eqref{eq:non-characteristics} is a \textit{non-characteristic curve} and enables to uniquely determine a solution of the Cauchy problem. On the other hand, an initial curve defined such that $\ddroit{x}{t} = \frac{a}{b}$ is a \textit{characteristic curve} and yields infinitely many solutions \cite[p.65]{Courant}. 
+
+%A \textit{non-characteristic curve} is an initial curve satisfying the condition \eqref{eq:non-characteristics}, otherwise it is a \textit{characteristic curve}. 
+
 
 \subsubsection*{Geometrical representation of characteristic curves}
-Let $u(x,t)$ be a surface in the $(x,t,u)$ space which normal vector is $\vect{n}=[u_x,u_t,-1]$. This surface is an integral surface if it is a solution of equation \eqref{eq:1st_order_pde} and hence, if $\vect{n}\cdot \vect{w}=0$ in $(x,t,u)$, where $\vect{w}=[a,b,c]$.
-Figure \ref{fig:plan_fan} shows a collection of integral surfaces for some partial differential equation \eqref{eq:1st_order_pde} with prescribed $u$ along a straight line $\Cscr$. The set of tangent planes to every solutions $u^{(i)}(x,t)$ of equation \eqref{eq:1st_order_pde} thus forms a fan of planes which axis is $\vect{w}$.
-% \begin{figure}[ht]
-%   \centering
-%   \subcaptionbox{Integral surfaces in $(x,t,u)$ space\label{subfig:fan_plan}}{\input{chapter2/pgfFigures/plan_fan}} \qquad 
-%   \subcaptionbox{Projection in $(t,u)$ plane\label{subfig:fan_plan_proj}}{\input{chapter2/pgfFigures/plan_fan_proj}}
-%   \caption{Examples of integral surfaces passing through the same initial curve $\Cscr$ defined such that $t=const$ and $u=const$ along $\Cscr$.}
-%   \label{fig:plan_fan}
-% \end{figure}
-This defines \textit{characteristic line elements} tangent to all integral surfaces $u^{(i)}(x,t)$:
-\begin{equation}
-  \label{eq:monge_axis}
-  \matrice{dx \\ dt \\ du} = \matrice{a \\ b \\c}
-\end{equation}
+Consider a partial differential equation of the form \eqref{eq:1st_order_pde}, and prescribed values of $u$ along a characteristic curve $\Cscr$. Since one cannot find a unique solution of Cauchy problem in this case, infinitely many integral surfaces $u^{(i)}(x,t)$ with normal vectors $\vect{n}^{(i)}=[u^{(i)}_x,u^{(i)}_t,-1]$ can intersect $\Cscr$. Those integral surfaces satisfy equation \eqref{eq:1st_order_pde} and hence, $\vect{n}^{(i)}\cdot \vect{w}=0$ where $\vect{w}=[a,b,c]$, so that the set of tangent planes to solutions $u^{(i)}(x,t)$ forms a fan which axis is $\vect{w}$.
+This situation is depicted in figure \ref{fig:plan_fan} for which an initial characteristic straight line $\Cscr$ is contained by integral surfaces satisfying a PDE of the form \eqref{eq:1st_order_pde}.
+%Let $u(x,t)$ be a surface in the $(x,t,u)$ space which normal vector is $\vect{n}=[u_x,u_t,-1]$. This surface is an integral surface if it is a solution of equation \eqref{eq:1st_order_pde} and hence, if $\vect{n}\cdot \vect{w}=0$ with $\vect{w}=[a,b,c]$.
+%This situation is depicted in figure \ref{fig:plan_fan} for which an initial characteristic straight line $\Cscr$ is contained by integral surfaces satisfying some pde of the form \eqref{eq:1st_order_pde}.
+% Figure \ref{fig:plan_fan} shows a collection of integral surfaces for some partial differential equation \eqref{eq:1st_order_pde} with prescribed $u$ along a straight line $\Cscr$.
+% Then, the set of tangent planes to those solutions $u^{(i)}(x,t)$ forms a fan of planes which axis is $\vect{w}$.
 \begin{figure}[h!]
   \centering
   \input{chapter2/pgfFigures/plan_fan}
   \caption{Examples of integral surfaces passing through the same curve $\Cscr$ defined such that $t=const$ and $u=const$ along $\Cscr$.}
   \label{fig:plan_fan}
 \end{figure}
-Introduction of a parameter $\eta$ and integration of equation \eqref{eq:monge_axis} yields a one-parameter family of \textit{characteristic curves} of the PDE:
+
+$\newline$
+\textit{Characteristic line elements}, tangent to all integral surfaces $u^{(i)}(x,t)$ are then defined as:
+\begin{equation}
+  \label{eq:monge_axis}
+  \matrice{dx \\ dt \\ du} = \matrice{a \\ b \\c}
+\end{equation}
+Introduction of a parameter $\eta$ and integration of equation \eqref{eq:monge_axis} yields a one-parameter family of characteristic curves of the PDE:
 \begin{equation*}
   x=x(\eta) \quad ; \quad t=t(\eta) \quad ; \quad u=u(\eta)
 \end{equation*}
 Hence, a characteristic curve is tangent at every point to all the integral surfaces, and an infinity of integral surfaces cross one characteristic curve. As a consequence, if the initial curve is a characteristic curve, infinitely many integral surfaces contain it so that the Cauchy problem can not be solved.
-However, the following statement holds \cite[Ch.1]{Courant}:
+However, the following statement holds \cite[p.63]{Courant}:
 \begin{theorem}[Courant]
   \label{th:integral_surface_generated}
   Every surface $u(x,t)$ generated by a one-parameter family of characteristic curves is an integral surface. Conversely, every integral surface is generated by a one-parameter family of characteristic curves.
 \end{theorem}
 This theorem will be used in what follows to solve the Cauchy problem.
 
-\subsection{The method of characteristic}
-We now extend the concept of characteristic curves to first order quasi-linear systems of dimension $I$. In matrix form:
+%\subsection{The method of characteristic}
+\subsubsection*{First order quasi-linear systems}
+The concept of characteristic curves is now extended to first order quasi-linear systems of dimension $I$. In matrix form:
 \begin{equation}
   \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Sc} = \vect{0}
 \end{equation}
-Similarly to quasi-linear PDEs, given values of $\Ucb$ are prescribed along a regular curve $\Cscr_0:\varphi(x,t)=const$ defining the initial curve $\Ucb(\varphi(x,t))$ of the $(x,t,\Ucb)$ space. The Cauchy problem consists in finding all the derivatives of $\Ucb(x,t)$ such that equation \eqref{eq:1st_order_quasi-linear_syst} is satisfied in the vicinity of $\Cscr$.
-Noticing that along the initial curve $\Ucb_x = \Ucb' \varphi_x$ and $\Ucb_t = \Ucb' \varphi_t$, one gets:
-\begin{equation*}
-  \vect{\Uc}_x\varphi_t - \vect{\Uc}_t\varphi_x= \vect{0}
-\end{equation*}
-Hence, system \eqref{eq:1st_order_quasi-linear_syst} can be rewritten:
+Similarly to quasi-linear PDEs, given values of $\Ucb$ are prescribed along a regular curve $\Cscr_0:(x(\eta),t(\eta))$ defining an initial curve $\Ucb(x(\eta),t(\eta))$ of the $(x,t,\Ucb)$ space. The Cauchy problem consists in finding all the derivatives of $\Ucb(x,t)$ such that equation \eqref{eq:1st_order_quasi-linear_syst} is satisfied in the vicinity of $\Cscr$.
+Making use of the total derivative of $\Ucb$ along the initial curve:
+\begin{equation}
+  \label{eq:dtot_Uvect}
+  \ddroit{\Ucb}{\eta}=\Ucb_x\ddroit{x}{\eta}+\Ucb_t\ddroit{t}{\eta}
+\end{equation}
+system \eqref{eq:1st_order_quasi-linear_syst} can be rewritten:
 \begin{equation}
   \label{eq:normal_form}
-  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \vect{\Sc} = \vect{0} 
+  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \Scb + \Absf^t\ddroit{\Ucb}{t}\lvert_{t\in\Cscr_0} = \vect{0}
 \end{equation}
 where:
 \begin{equation}
   \label{eq:lambda_slope}
-  \lambda=-\frac{\varphi_t}{\varphi_x}=\ddroit{x}{t}
+  \lambda=\ddroit{x}{t}
 \end{equation}
-The Cauchy problem admits n unique solution $\vect{\Uc}_x$ along $\Cscr$ if the determinant of the system does not vanish, that is:
+The Cauchy problem admits a unique solution $\vect{\Uc}_x$ along $\Cscr$ if the determinant of the system does not vanish, that is:
 \begin{equation}
   \label{eq:characteristic_determinant}
   D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
@@ -127,7 +134,7 @@ where D is called the \textit{characteristic determinant} of system \eqref{eq:1s
 \end{remark}
 
 A first order system of $I$ partial differential equations is said \textit{hyperbolic} if it admits $I$ real eigenvalues associated to independent eigenvectors \cite{Courant}.
-For those problems one can draw a set of one-parameter families of curves in the $(x,t)$ plane by integrating the relations $\lambda_k=dx/dt$ ($1 \leq k \leq I$).
+For those problems, one can draw a set of one-parameter families of characteristic curves $\varphi^k$ in the $(x,t)$ plane by integrating the relations $\lambda_k=dx/dt$ ($1 \leq k \leq I$).
 \begin{example}
   \label{ex:charac1}
   Consider the first order system with variable coefficients
@@ -164,11 +171,12 @@ Unlike example \ref{ex:charac1}, coefficient matrices do not depend on independe
   \centering
   \subcaptionbox{Example \ref{ex:charac1}: $\lambda_{1,2}=\pm 1/x$\label{subfig:curve_lines}}{\input{chapter2/pgfFigures/exampleCharac}}
   \subcaptionbox{Example \ref{ex:charac2}: $\lambda_{1}=1 \:\text{and} \: \lambda_2=1/2$\label{subfig:straight_lines}}{\input{chapter2/pgfFigures/exampleCharac_const}}
-  \caption{Family of base characteristic curves corresponding to the eigenvalues of the first order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
+  \caption{Family of characteristic curves corresponding to the eigenvalues of the first order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
   \label{fig:exampleCharac}
 \end{figure}
 
-As theorem \ref{th:integral_surface_generated} states, an integral surface is generated by a one-parameter family of characteristic curves. Therefore the knowledge of those curves can be used to build the solution of the Cauchy problem. Indeed, the projection of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis} leads to:
+\subsection{The method of characteristic}
+As theorem \ref{th:integral_surface_generated} states, an integral surface is generated by a one-parameter family of characteristic curves. Therefore the knowledge of those curves enables the building of the solution of the Cauchy problem. Indeed, the projection of the quasi-linear system \eqref{eq:1st_order_quasi-linear_syst} onto the \textit{left eigenbasis} or \textit{left characteristic basis} leads to:
 \begin{equation*}
   \vect{\Lc}^k \( \Absf^t \vect{\Uc}_t + \Absf^x\vect{\Uc}_x \) + \vect{\Lc}^k \vect{\Sc}= \vect{0}
 \end{equation*}
@@ -177,7 +185,7 @@ where $\Lcb^k$ satisfies \eqref{eq:eigenvectors}, and hence:
 \begin{equation*}
   \vect{\Lc}^k  \Absf^t \( \vect{\Uc}_t +\lambda_k \vect{\Uc}_x   \) + \vect{\Lc}^k \vect{\Sc}=\vect{0}
 \end{equation*}
-In this equation, the \textit{directional derivative} of $\vect{\Uc}$ along the $k$th characteristic curve arises, namely:
+In this equation, the \textit{directional derivative} of $\vect{\Uc}$ along the $k$th characteristic curve $\varphi^k$ arises, namely:
 \begin{equation*}
  \ddroit{\Ucb}{t}\lvert_{t\in\varphi^k} = \Ucb_t + \lambda_k \Ucb_x   
 \end{equation*}
@@ -194,7 +202,7 @@ To illustrate the method, let us consider again the quasi-linear system of examp
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/characMethod2x2}
-  \caption{Domain of dependence of the solution at point $(x^*,t^*)$ for the system of example \ref{ex:charac1}.}
+  \caption{Domain of dependence of the solution at $(x^*,t^*)$ for the system of example \ref{ex:charac1}.}
   \label{fig:charac_method2x2}
 \end{figure}
 We see that only a segment of the initial curve has an influence on the solution at a given point. Namely, the intersections of the initial curve and characteristic curves with the highest and the lowest slopes define the \textit{domain of dependence} of the solution at this point (see figure \ref{fig:charac_method2x2}). This property of hyperbolic problems implies the existence of waves that propagates information at finite speeds corresponding to the eigenvalues of a quasi-linear form. The theory presented so far will be applied in what follows to solid mechanics.
