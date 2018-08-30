@@ -95,13 +95,16 @@ class DGmesh:
                 yieldR=self.H*EPeq[2*i+1]+self.sigy
                 StrialL= Strial
                 StrialR= Strial
+                hardL=0.
+                hardR=0.
             elif self.hard == 'kinematic':
                 yieldL=self.sigy
                 yieldR=self.sigy
-                StrialL= Strial - self.H*EPeq[2*i]
-                StrialR= Strial - self.H*EPeq[2*i+1]
-                print "Carefull, kinematic hardening selected although it is not correctly coded here !!"
-                pdb.set_trace()
+                StrialL= Strial #- self.H*EPeq[2*i]
+                StrialR= Strial #- self.H*EPeq[2*i+1]
+                hardL=self.H*EPeq[2*i]
+                hardR=self.H*EPeq[2*i+1]
+                
             fL = np.abs(StrialL)- yieldL
             fR = np.abs(StrialR)- yieldR
             
@@ -109,22 +112,22 @@ class DGmesh:
             if (fL>0.0) and (fR<0.0):
                 if debug : print i," plastic-elastic"
                 #Leftward plastic wave
-                delta1=(np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
+                delta1=(hardL+np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
                 R = WR- WL + delta1*np.array([self.rho*self.c,1.0])
                 deltaP = self.computeDelta(R,self.cp,self.c)
                 Wstar = WL + delta1*np.array([self.rho*self.c,1.])+ deltaP[0]*np.array([self.rho*self.cp,1.])
             elif (fL<0.0) and (fR>0.0):
                 if debug : print i," elastic-plastic"
                 #Rightward plastic wave
-                delta2=(np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
+                delta2=(hardR+np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
                 R = WR-delta2*np.array([-self.rho*self.c,1.0]) -WL
                 deltaP = self.computeDelta(R,self.c,self.cp)
                 Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])
             elif (fL>0.0) and (fR>0.0):
                 if debug : print i," plastic-plastic"
                 #Four waves
-                delta1=(np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
-                delta2=(np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
+                delta1=(hardL+np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
+                delta2=(hardR+np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
                 R = WR - delta2*np.array([-self.rho*self.c,1.0]) - ( WL + delta1*np.array([self.rho*self.c,1.0]))
                 deltaP = self.computeDelta(R,self.cp,self.cp)
                 Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])
