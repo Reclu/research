@@ -15,7 +15,7 @@ path='texFiles/'+str(directory)
 Comparison of the implementation of the 1D elastic set of equations
 in dynamics:
 - with the MPM
-- with the GIMP
+- with the DGMPM
 """
 def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile=open(fileName,"w")
@@ -78,12 +78,15 @@ E = 2.0e11
 Sigy = 400.0e6
 H = 10e9
 rho = 7800.0
-eta=100.0
-n=1./4.
+
+tau=1.e-13 #relaxation time
+n=4.37#1./4.
+eta=pow(tau,1./n)*Sigy#24.3e6#100.0
+print eta
 c=np.sqrt(E/rho)
 sigd =0.
-v0=5.*Sigy/(rho*c)
-hardening='isotropic'
+v0=4.*Sigy/(rho*c)
+hardening='kinematic'
 factor=1.
 timeOut = 1.*length/(np.sqrt(E/rho))
 t_order=1
@@ -196,6 +199,7 @@ export2DTeXFile(str(path)+'/dgmpm_mpm_energies.tex',np.array([MPM["time"][:-1],M
 
 frames=[5,20]
 frames=[]
+frames=[20,30,45]
 for n1 in frames:
     time = '%.2e' % MPM["time"][2*n1]
     plt.plot(MPM["pos"][:,n1],MPM["sig"][:,2*n1],'g-x',lw=2.,ms=8.,label='MPM 1ppc')

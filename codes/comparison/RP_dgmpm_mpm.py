@@ -15,27 +15,26 @@ path='texFiles/'+str(directory)
 Comparison of the implementation of the 1D elastic set of equations
 in dynamics:
 - with the MPM
-- with the GIMP
+- with the DGMPM
 """
 def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile=open(fileName,"w")
     n_fields = np.shape(yfields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
-    marker=['+','x','triangle','square','none','none','pentagone*']
-    #marker=['none','none','+','triangle','none','star','pentagone*']
-    style=['only marks','only marks','only marks','only marks','dashed','solid','pentagone*']
-    thickness=['very thick','very thick','very thick','very thick','very thick','thin','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','Green','black','Duck','Green']
-    TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
-    TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'}]');TeXFile.write('\n')
+    marker=['none','none','none','|','x','pentagone*','none','triangle*']
+    style=['dashed','densely dotted','solid','solid','only marks','solid','solid']
+    thickness=['very thick','very thick','very thick','very thick','thick','thin','thin','thick']
+    couleur=['Red','Orange','Blue','Purple','Green','black','Yellow','black','Green']
+    TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'},xmin=0.,xmax=6.]');TeXFile.write('\n')
     legend=''
     for i in range(n_fields):
         if i==0:
             legend=legend+kwargs[0][i]
         else:
             legend=legend+','+kwargs[0][i]
-        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+'] coordinates {')
+        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+',mark size=3pt] coordinates {')
         for j in range(np.shape(yfields[i])[0]):
             TeXFile.write('('+str(xFields[i][j])+','+str(yfields[i][j])+') ')
         TeXFile.write('};\n')
@@ -75,7 +74,7 @@ length = 6.0
 ppc=1
 Nelem = 50
 E = 2.0e11
-Sigy = 400.0e7
+Sigy = 400.0e6
 H = 10e9
 rho = 7800.0
 c=np.sqrt(E/rho)
@@ -171,7 +170,7 @@ plt.show()
 # export2pgfPlot('NRG_mpm_2ppc.pgf',MPM2["time"][:-1],MPM2["NRG"][:-1],'t','NRG')
 # export2pgfPlot('NRG_modmpm_1ppc.pgf',DGMPM["time"][:-1],DGMPM["NRG"][:-1],'t','NRG')
 # export2pgfPlot('NRG_modmpm_2ppc.pgf',DGMPM2["time"][:-1],DGMPM2["NRG"][:-1],'t','NRG')
-legend=['mpm 1ppc','mpm 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+legend=['usl 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 export2DTeXFile(str(path)+'/dgmpm_mpm_energies.tex',np.array([MPM["time"][:-1],MPM2["time"][:-1],DGMPM["time"][:-1],DGMPM2["time"][:-1],DGMPM3["time"][:-1],np.array([0.,1.e-8])]),'$time (s)$',r'$\frac{e}{e_{max}}$','(c) evolution of total energy $e$',np.array([MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),DGMPM3["NRG"][:-1]/max(DGMPM3["NRG"][:-1]),np.array([1.,1.])]),legend)
 
 frames=[5,20]
@@ -189,8 +188,9 @@ for n1 in frames:
     plt.legend(numpoints=1)
     plt.grid()
     plt.show()
-    legend=['mpm 1ppc','mpm 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
-    if n1==5 : subtitle='(a) time t = '+str(time)+' s.'
-    if n1==20 : subtitle='(b) time t = '+str(time)+' s.'
+    legend=['usl 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+    temps=time[:-4]
+    if n1==5 : subtitle=r'(a) time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
+    if n1==20 : subtitle=r'(a) time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
     export2DTeXFile(str(path)+'/dgmpm_mpm_diffusion'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],MPM["pos"][:,2*n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["sig"][:,2*n1],MPM2["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,2*n1],DGMPM3["sig"][:,n1],MPM["Sth"][:,2*n1]]),legend)
     export2DTeXFile(str(path)+'/dgmpm_mpm_velo'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],DGMPM2["pos"][:,2*n1]]),'$x (m)$','$v (m/s)$',str(subtitle),np.array([MPM["velo"][:,2*n1],MPM2["velo"][:,2*n1],DGMPM["velo"][:,n1],DGMPM2["velo"][:,2*n1],DGMPM3["velo"][:,n1],DGMPM2["Vth"][:,2*n1]]),legend)
