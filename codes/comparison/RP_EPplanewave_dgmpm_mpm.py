@@ -101,33 +101,53 @@ fvmlimiter=-1
 parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
 #################
 
+##MPM: Material Point Method
+USL = dict(parameters)
+print 'Computing  USF'
+execfile('mpm/planeWave.py', USL)
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":'USF',"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+#################
+
+##MPM: Material Point Method
+USF = dict(parameters)
+print 'Computing  USF'
+execfile('mpm/planeWave.py', USF)
+
 
 ##DGMPM: Discontinuous Galerkin Material Point Method
 DGMPM = dict(parameters)
 print 'Computing  DGMPM (ep solver)'
 execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM)
 
-
-##FEM: Finite Element Method
-FEM = dict(parameters)
-print 'Computing  FEM'
-execfile('fem/planeWave.py', FEM)
-
-
-##FVM: Finite Volume Method
-FVM = dict(parameters)
-print 'Computing  FVM'
-execfile('fvm/elastoplasticity_planewave.py', FVM)
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing  DGMPM (ac solver)'
+execfile('dgmpm/planeWaveEP_ACsolver.py', DGMPM2)
 
 
-fvmlimiter=1
 
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+# ppc=2
+# #Nelem = 50/ppc
+# parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
 
-##FVM: Finite Volume Method
-FVM2 = dict(parameters)
-print 'Computing  FVM (SB)'
-execfile('fvm/elastoplasticity_planewave.py', FVM2)
+# print "=============== 2PPC COMPUTATIONS ===================="
+
+# ##MPM: Material Point Method
+# MPM2 = dict(parameters)
+# print 'Computing MPM'
+# execfile('mpm/elasticity.py', MPM2)
+
+# ##DGMPM: Discontinous Galerkin Material Point Method
+# DGMPM2 = dict(parameters)
+# print 'Computing DGMPM'
+# execfile('dgmpm/elasticity.py', DGMPM2)
+
+# parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+# ##DGMPM: Discontinous Galerkin Material Point Method
+# DGMPM3 = dict(parameters)
+# print 'Computing DGMPM (RK2)'
+# execfile('dgmpm/elasticity.py', DGMPM3)
 
 #############################################################################
 #########################  Comparison  ######################################
@@ -146,43 +166,43 @@ frames=[45,65,95]
 frames=[20,30,45]
 
 for i,n1 in enumerate(frames):
-    time = '%.2e' % FVM["t"][n1]
+    time = '%.2e' % DGMPM["time"][n1]
     fig, (ax1, ax2) = plt.subplots(2,1)
-    if FVM["t"][n1]<=0.5*length/c :
-        temps=FVM["t"][n1]
+    if DGMPM["time"][n1]<=0.5*length/c :
+        temps=DGMPM["time"][n1]
     else:
-        temps=FVM["t"][n1-1]
+        temps=DGMPM["time"][n1-1]
     
     if hardening=='isotropic':
-        Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     elif hardening=='kinematic':
-        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+    ax1.plot(USL["pos"][:,2*n1],USL["sig"][:,2*n1],'y',lw=2.,ms=4.,label='USL')
+    ax1.plot(USF["pos"][:,2*n1],USF["sig"][:,2*n1],'b',lw=2.,ms=4.,label='USF')
     ax1.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'r',lw=2.,ms=4.,label='DGMPM (ep solver)')
-    ax1.plot(FVM["centroids"],FVM["sig"][:,n1],'g',lw=2.,ms=4.,label='FVM')
-    ax1.plot(FVM2["centroids"],FVM2["sig"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
-    ax1.plot(FEM["centroids"],FEM["sig"][:,n1],'c',lw=2.,ms=4.,label='FEM')
-    ax1.plot(FVM["centroids"],-np.sign(v0)*Sexact,'k',lw=2.,ms=4.,label='exact')
+    ax1.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,n1],'r--',lw=2.,ms=4.,label='DGMPM (ac solver)')
+    ax1.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=4.,label='exact')
     ax1.set_title('Stress at time t='+str(time)+' s.',size=24.)
     ax1.set_xlabel('x (m)')
     ax1.set_ylabel(r'$\sigma (Pa)$')
 
+    ax2.plot(USL["pos"][:,2*n1],USL["epsp"][:,2*n1],'y',lw=2.,ms=4.,label='USL')
+    ax2.plot(USF["pos"][:,2*n1],USF["epsp"][:,2*n1],'b',lw=2.,ms=4.,label='USF')
     ax2.plot(DGMPM["pos"][:,n1],DGMPM["epsp"][:,n1],'r',lw=2.,ms=4.,label='DGMPM (ep solver)')
-    ax2.plot(FVM["centroids"],FVM["EP"][:,n1],'g',lw=2.,ms=4.,label='FVM')
-    ax2.plot(FVM2["centroids"],FVM2["EP"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
-    ax2.plot(FEM["centroids"],FEM["epsp"][:,n1],'c',lw=2.,ms=4.,label='FEM')
-    ax2.plot(FVM["centroids"],-np.sign(v0)*Epexact,'k',lw=2.,ms=4.,label='exact')
+    ax2.plot(DGMPM2["pos"][:,n1],DGMPM2["epsp"][:,n1],'r--',lw=2.,ms=4.,label='DGMPM (ac solver)')
+    ax2.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Epexact,'k',lw=2.,ms=4.,label='exact')
     ax2.set_title('Plastic strain at time t='+str(time)+' s.')
     ax2.set_xlabel('x (m)')
     ax2.set_ylabel(r'$\varepsilon^p (Pa)$')
     ax1.legend(numpoints=1)
     ax1.grid();ax2.grid()
     plt.show()
-    legend=['dgmpm','fem','fvm','fvm (SB)','exact']
+    legend=['usl','usf','dgmpm (ep solver)','dgmpm (ac solver)','exact']
     temps=time[:-4]
     subtitle=subtitles[i]+r' time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    export2DTeXFile(str(path)+'/EP_dgmpm_fvm_stress'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([DGMPM["sig"][:,n1],FEM["sig"][:,n1],FVM["sig"][:,n1],FVM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
-    export2DTeXFile(str(path)+'/EP_dgmpm_fvm_epsp'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\epsilon^p$',str(subtitle),np.array([DGMPM["epsp"][:,n1],FEM["epsp"][:,n1],FVM["EP"][:,n1],FVM2["EP"][:,n1],-np.sign(v0)*Epexact]),legend)
-    
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_stress'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([USL["sig"][:,2*n1],USF["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_epsp'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["epsp"][:,2*n1],USF["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_velo'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["velo"][:,2*n1],USF["velo"][:,2*n1],DGMPM["Velocity"][:,n1],DGMPM2["Velocity"][:,n1],-np.sign(v0)*Vexact]),legend)
 
 """
 ####################################################################
