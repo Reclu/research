@@ -1,121 +1,30 @@
 \chapter{Numerical Results}
-Study the influence of the number of material points per cell in simulations + comparison MPM
-\section{Linearized geometrical framework}
+\section*{Introduction}
+The Discontinuous Galerkin Material Point Method developed in the previous chapter is now illustrated and compared to other numerical schemes (MPM, FVM, FEM) or analytical solutions. 
+Firstly, one and two-dimensional problems that fall within the infinitesimal theory will be considered for elastic, elastic-viscoplastic and elastoplastic materials in sections \ref{sec:1dhpp_simulations} and \ref{sec:2dhpp_simulations}. The simulations performed in that context show significant improvements enabled by the introduction of DG approximation in the MPM. Second, numerical solutions of problems involving waves travelling in finite deforming solids, for which the dependence on history of constitutive models is neglected, are analyzed in sections \ref{sec:1dhe_simulations} and \ref{sec:2dhe_simulations}.
 
-% Parameters:
-% CFL=0.5
-% NTmaxi = 300
-% length = 6.0
-% ppc=1
-% Nelem = 50
-% E = 2.0e11
-% Sigy = 400.0e6
-% H = 10e9
-% rho = 7800.0
-% c=np.sqrt(E/rho)
-% sigd =0.
-% v0=2.*Sigy/(rho*c)
-% factor=1.
-% timeOut = 1.*length/c
-% t_order=1
-% timeUnload = 2*timeOut
-% algo = 'USL'
-% update_position=False
-% mpm_mapping=True
-% limit=-1
-% hardening='kinematic'
-% fvmlimiter=-1
+%%Study the influence of the number of material points per cell in simulations + comparison MPM
 
-\subsection{One-dimensional elasticity}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/dgmpm_mpm_diffusion5}}
-  {\input{chapter4/pgfFigures/dgmpm_mpm_diffusion20}}
-  {\input{chapter4/pgfFigures/dgmpm_mpm_energies}}
-  \caption{elastic RP stress and energies}
-  \label{fig:stress_elastic_RP}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/dgmpm_mpm_velo5}}
-  {\input{chapter4/pgfFigures/dgmpm_mpm_velo20}}
- \caption{elastic RP velo}
-  \label{fig:velo_elastic_RP}
-\end{figure}
+\section{Bar problems -- Linearized geometrical framework}
+\label{sec:1dhpp_simulations}
+\input{chapter4/1dhpp}
 
-\subsection{One-dimensional elastoviscoplasticity}
-\subsection{One-dimensional elastoplasticity}
-Comparison with mpm for 1ppc
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress45}}
-  \caption{elastic-plastic RP stress}
-  \label{fig:stress_elastoplastic_RP}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp45}}
-  \caption{elastic-plastic RP epsp}
-  \label{fig:epsp_elastoplastic_RP}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo45}}
-  \caption{elastic-plastic RP velo}
-  \label{fig:velo_elastoplastic_RP}
-\end{figure}
-Comparison with mpm for 1ppc and 2ppcs with RK2
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress45}}
-  \caption{elastic-plastic RP stress}
-  \label{fig:stress_elastoplastic_RP}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp45}}
-  \caption{elastic-plastic RP epsp}
-  \label{fig:epsp_elastoplastic_RP}
-\end{figure}
+\section{Two-dimensional small strain problems}
+\label{sec:2dhpp_simulations}
+\input{chapter4/2dhpp}
 
+% \section{Hypoelastic solids}
+% Run again the test case with an updated CFL if many ppcs. Also look at the mass matrix that is probably zero for first node, the grid must be moved or something like that.
 
-Comparison with fvm and FEM (lumpes mass matrix + radial return for integrating constitutive equations)
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress45}}
-  \caption{elastic-plastic RP stress}
-  \label{fig:stress_elastoplastic_RP}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp45}}
-  \caption{elastic-plastic RP epsp}
-  \label{fig:epsp_elastoplastic_RP}
-\end{figure}
+\section{Plane wave problems -- Large strains framework}
+\label{sec:1dhe_simulations}
+\input{chapter4/1dhe}
 
-\subsection{Two-dimensional elasticity}
+\section{Two-dimensional large strains problem}
+\label{sec:2dhe_simulations}
+\input{chapter4/1dhe}
 
-\section{Hypoelastic solids}
-Run again the test case with an updated CFL if many ppcs. Also look at the mass matrix that is probably zero for first node, the grid must be moved or something like that.
-\section{Hyperelastic solids}
-\subsection{One-dimensional problems}
-\subsection{Two-dimensional problems}
-
-
+\section{Conclusion}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

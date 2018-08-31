@@ -1,0 +1,122 @@
+To begin with, let us focus on the problem that has been used in section \ref{sec:MPM} to illustrate shortcomings of the MPM which motivated the derivation of the DGMPM.
+We thus consider an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L$ in direction $\vect{e}_1$. The Cauchy stress and infinitesimal strain tensor are of the form:
+\begin{align*}
+  & \tens{\sigma} = \sigma \: \vect{e}_1\otimes \vect{e}_1 \\
+  & \tens{\eps} = \eps \: \vect{e}_1\otimes \vect{e}_1
+\end{align*}
+so that the bar assumption holds. Riemann-type initial conditions on the horizontal velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed in the bar, that is, $v=v_0>0$ for $x_1\in\[0,L/2\]$ and $v=-v_0$ for $x_1\in \:]L/2,L]$.
+
+
+% Parameters:
+% CFL=0.5
+% NTmaxi = 300
+% length = 6.0
+% ppc=1
+% Nelem = 50
+% E = 2.0e11
+% Sigy = 400.0e6
+% H = 10e9
+% rho = 7800.0
+% c=np.sqrt(E/rho)
+% sigd =0.
+% v0=1.*Sigy/(2*rho*c)
+% v0=2.*Sigy/(rho*c)
+% factor=1.
+% timeOut = 1.*length/c
+% t_order=1
+% timeUnload = 2*timeOut
+% algo = 'USL'
+% update_position=False
+% mpm_mapping=True
+% limit=-1
+% hardening='kinematic'
+% fvmlimiter=-1
+\subsection{Isotropic elastic material}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/dgmpm_mpm_diffusion5}}
+  {\input{chapter4/pgfFigures/dgmpm_mpm_diffusion20}}
+  {\input{chapter4/pgfFigures/dgmpm_mpm_energies}}
+  \caption{elastic RP stress and energies}
+  \label{fig:stress_elastic_RP}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/dgmpm_mpm_velo5}}
+  {\input{chapter4/pgfFigures/dgmpm_mpm_velo20}}
+ \caption{elastic RP velo}
+  \label{fig:velo_elastic_RP}
+\end{figure}
+
+
+\subsection{Elastoviscoplastic material}
+
+
+\subsection{Elastoplastic material}
+Comparison with mpm for 1ppc
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress45}}
+  \caption{elastic-plastic RP stress}
+  \label{fig:stress_elastoplastic_RP}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp45}}
+  \caption{elastic-plastic RP epsp}
+  \label{fig:epsp_elastoplastic_RP}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo45}}
+  \caption{elastic-plastic RP velo}
+  \label{fig:velo_elastoplastic_RP}
+\end{figure}
+Comparison with mpm for 1ppc and 2ppcs with RK2
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress45}}
+  \caption{elastic-plastic RP stress}
+  \label{fig:stress_elastoplastic_RP}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp45}}
+  \caption{elastic-plastic RP epsp}
+  \label{fig:epsp_elastoplastic_RP}
+\end{figure}
+
+
+Comparison with fvm and FEM (lumped mass matrix + radial return for integrating constitutive equations)
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress45}}
+  \caption{elastic-plastic RP stress}
+  \label{fig:stress_elastoplastic_RP}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp20}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp30}}
+  {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp45}}
+  \caption{elastic-plastic RP epsp}
+  \label{fig:epsp_elastoplastic_RP}
+\end{figure}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
