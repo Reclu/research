@@ -5,7 +5,7 @@ import pdb
 
 class DGmesh:
     #Constructor
-    def __init__(self,Mp,l,ppc,c,cp,rho,sigy,H,hardening):
+    def __init__(self,Mp,l,ppc,c,cp,rho,lam,mu,sigy,H):
         nex = Mp/ppc
         nnx=2*nex+2
         lmp=l/(Mp-1)
@@ -17,7 +17,8 @@ class DGmesh:
         self.rho = rho
         self.sigy=sigy
         self.H = H
-        self.hard = hardening
+        self.lam=lam
+        self.mu=mu
         
     def set_sigy(self,sigy):
         self.sigy=sigy
@@ -75,7 +76,12 @@ class DGmesh:
         waves[:,1] = delta[1]*np.array([-self.rho*self.c,1.])
         return waves
 
-    def computeInterfaceFlux(self,W,EPeq):
+    def computeSeq(self,S,EP,lam,mu,H):
+        KK = 3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+        return ((2.0*mu)/(lam+2.0*mu))*S-KK*EP
+
+    def computeInterfaceFlux(self,W,EP):
+        H=self.H ; lam=self.lam ; mu=self.mu
         debug = False
         Nnodes = np.shape(W)[0]
         Nelem = (Nnodes-2)/2
@@ -90,44 +96,40 @@ class DGmesh:
             delta = self.computeDelta(dW,self.c,self.c)
             Strial= SL + delta[0]*self.c*self.rho
             #Tests on the criterion
-            if self.hard == 'isotropic':
-                yieldL=self.H*EPeq[2*i]+self.sigy
-                yieldR=self.H*EPeq[2*i+1]+self.sigy
-                StrialL= Strial
-                StrialR= Strial
-                hardL=0.
-                hardR=0.
-            elif self.hard == 'kinematic':
-                yieldL=self.sigy
-                yieldR=self.sigy
-                StrialL= Strial
-                StrialR= Strial
-                hardL=self.H*EPeq[2*i]
-                hardR=self.H*EPeq[2*i+1]
-                
-            fL = np.abs(StrialL)- yieldL
-            fR = np.abs(StrialR)- yieldR
+            SS_star_L = self.computeSeq(Strial,EP[2*i],lam,mu,H)
+            SS_star_R = self.computeSeq(Strial,EP[2*i+1],lam,mu,H)
             
+                
+            fL = np.abs(SS_star_L)-self.sigy
+            fR = np.abs(SS_star_R)-self.sigy
+
+            KK_L=3.0*(H/2.0)+(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+            KK_R=3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
             if debug: print np.abs(Strial),self.sigy,fL,fR,
             if (fL>0.0) and (fR<0.0):
                 if debug : print i," plastic-elastic"
                 #Leftward plastic wave
-                delta1=(hardL+np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
+                S_starL = ((lam/(2.0*mu))+1.0)*(self.sigy*np.sign(SS_star_L)+ KK_L*EP[2*i])
+                delta1=(S_starL-SL)/(self.rho*self.c)
                 R = WR- WL + delta1*np.array([self.rho*self.c,1.0])
                 deltaP = self.computeDelta(R,self.cp,self.c)
                 Wstar = WL + delta1*np.array([self.rho*self.c,1.])+ deltaP[0]*np.array([self.rho*self.cp,1.])
             elif (fL<0.0) and (fR>0.0):
                 if debug : print i," elastic-plastic"
                 #Rightward plastic wave
-                delta2=(hardR+np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
+                S_starR = ((lam/(2.0*mu))+1.0)*(self.sigy*np.sign(SS_star_R)+ KK_R*EP[2*i+1])
+                delta2=(S_starR-SR)/(self.rho*self.c)
                 R = WR-delta2*np.array([-self.rho*self.c,1.0]) -WL
                 deltaP = self.computeDelta(R,self.c,self.cp)
                 Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])
             elif (fL>0.0) and (fR>0.0):
                 if debug : print i," plastic-plastic"
                 #Four waves
-                delta1=(hardL+np.sign(StrialL)*(yieldL)-SL)/(self.rho*self.c)
-                delta2=(hardR+np.sign(StrialR)*(yieldR)-SR)/(self.rho*self.c)
+                S_starL = ((lam/(2.0*mu))+1.0)*(self.sigy*np.sign(SS_star_L)+ KK_L*EP[2*i])
+                S_starR = ((lam/(2.0*mu))+1.0)*(self.sigy*np.sign(SS_star_R)+ KK_R*EP[2*i+1])
+                delta1=(S_starL-SL)/(self.rho*self.c)
+                delta2=(S_starR-SR)/(self.rho*self.c)
+                
                 R = WR - delta2*np.array([-self.rho*self.c,1.0]) - ( WL + delta1*np.array([self.rho*self.c,1.0]))
                 deltaP = self.computeDelta(R,self.cp,self.cp)
                 Wstar = WR - delta2*np.array([-self.rho*self.c,1.])- deltaP[1]*np.array([-self.rho*self.cp,1.])

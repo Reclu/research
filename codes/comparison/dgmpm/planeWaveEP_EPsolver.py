@@ -1,46 +1,51 @@
 #!/usr/bin/python
 
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import animation
-from matplotlib import *
 from pylab import *
-import scipy.integrate
-#from scipy.integrate import ode
-from scipy import optimize
-from sympy import *
+import sys
+import os
 sys.path.append(os.path.expandvars('dgmpm'))
-from class_elasticity import *
+from class_elastoplasticity_planeWave import *
+
 
 
 ##########################
-
-def positive_part(x):
-    return 0.5*(x+np.abs(x))
-
-def creep_law(f,Seq,eta,n):
-    return ((positive_part(f)/eta)**n)*np.sign(Seq)
-
-def criterion(Seq,Sy):
-    return np.abs(Seq)-Sy
-
-def computeSeq(S,EP,H):
-    return S-H*EP
-
-def computeS(t,U,EP,H,E,Sy,eta,n,tau):
-    S = np.zeros(2)
-    Seq= computeSeq(U[0],EP,H)
-    f = criterion(Seq,Sy)
-    S[0] = -E*creep_law(f,Seq,eta,n)
-    #S[0] = -E*(positive_part(np.abs(Seq)/Sy -1.)**n)*np.sign(Seq)/tau
-    S[1] = 0.
-    return S
-
 def bar(x1,x2,Mp):
     xp=np.zeros((Mp,2))
     xp[:,0]=np.linspace(x1,x2,Mp)
     return xp
 
+## Kinematic hardening
+def bilinear(eps,EPn,Pn,lam,mu,Sigy,H):
+    #initialization
+    S = np.zeros(len(eps))
+    EP = np.zeros(len(eps))
+    P  = np.zeros(len(eps))
+    TM  = np.zeros(len(eps))
+    #Loop on integration points
+    for i,DEFO in enumerate(eps):
+        #(i) Elastic prediction
+        Sx_trial = (lam+2.0*mu)*DEFO-2.0*mu*EPn[i]
+        Sr_trial = lam*DEFO+mu*EPn[i]
+        SS = Sx_trial-Sr_trial-3.0*(H/2.0)*EPn[i]
+        Seq_trial = np.abs(SS)
+        #(ii) Compute the criterion 
+        f = Seq_trial - Sigy
+        if (f<=0):
+            #elastic step
+            S[i] = Sx_trial
+            EP[i] = EPn[i]
+            P[i] = Pn[i]
+            TM[i] = lam+2.0*mu
+        elif (f>0):
+            #elastoplastic step
+            dP = f/(3.0*(mu+(H/2.0)))
+            P[i] = Pn[i]+dP
+            EP[i] = EPn[i]+(P[i]-Pn[i])*np.sign(SS)
+            S[i] = Sx_trial - 2.0*mu*dP*np.sign(SS)
+            TM[i] = (lam+2.0*mu)-8*(mu**2/(3.0*H+6.0*mu))
+    return S,P,EP,TM
+    
 def computeCourantNumber(order,parent,Map):
     ## CFL number for Euler algorithm
     sol=[]
@@ -83,6 +88,7 @@ def computeCourantNumber(order,parent,Map):
                 Dmu +=0.5*Nmp*(Courant**2)*( Map[n1,alpha]/(Sum1*Sump2)*(1.-Nmpp*Sp2[mu]/Sump2) -(Sp2[mu]/Sump2)*(Map[n1,alpha]/Sum1-Map[n2,alpha]/Sum2) )
             Res+=np.abs(Dmu)
         Residual = lambdify((Courant),Res-1.)
+        #sol.append(optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12}).x)
         sol.append(optimize.newton(Residual,1.))
     solution_CFL=np.min(sol)
     print "Courant number set to :",solution_CFL
@@ -92,35 +98,36 @@ def computeCourantNumber(order,parent,Map):
 
 
 # Define geometry of the problem
-L=length               # Length of the bar
-Mp=Nelem*ppc             # Number of Material points
-Nn=Nelem*2 + 2             # Number of elements
+L=length 
+Mp=Nelem*ppc          
+Nn=Nelem*2 + 2
+
 
 
 # Material properties
 E=Young
-Sy=Sigy           
-c=np.sqrt(E/rho)
+lam = (nu*E)/(((1.0+nu)*(1.0-2.0*nu)))
+mu= E/(2.0*(1.0+nu))
+HT = (lam+2.0*mu)-8*(mu**2/(3.0*H+6.0*mu))
 
-power=n
-# relaxation time
-tau=(eta/Sigy)**n
+c = np.sqrt((lam+2.0*mu)/rho)
+cp=np.sqrt(HT/rho)
 
-mesh = DGmesh(Mp,L,ppc,c,rho)
+Sy=Sigy
+
+mesh = DGmesh(Mp,L,ppc,c,cp,rho,lam,mu,Sy,H)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
 
-# Build approximation matrices
-Map,Grad,Dofs,parent=mesh.buildApproximation(xp)
 
 mass=rho*dx/ppc
 
-
 # Define applied stress
-sd=sigd               
+sd=sigd     
 
 # Define imposed specific stress
-s0=sd/rho               
+s0=sd/rho
+
 
 # Time discretization
 if compute_CFL:
@@ -130,12 +137,13 @@ else:
         CFL=1.
     else:
         CFL=float(t_order)/float(ppc)
+        
 Dt=CFL*dx/c 
 tfinal=timeOut
 tf=timeUnload
 inc=round(tfinal/Dt)
 
-print Dt,tau
+limit=False
 
 T=0.
 n=0
@@ -144,36 +152,46 @@ n=0
 Md=mass*np.eye(Mp,Mp)
 U = np.zeros((Mp,2))
 
-#v0=Sy/(2*rho*c)
+
 U[0:Mp/2,1]=v0
 U[Mp/2:Mp,1]=-v0
 
+# Auxilary variables vector (for boundary conditions)
+W = np.copy(U)
+W[0:Mp/2,1]=v0
+W[Mp/2:Mp,1]=-v0
 
 # Nodes' fields
 u = np.zeros((Nn,2))
+ep = np.zeros(Nn)
+# Auxilary variables vector (for boundary conditions)
+w = np.zeros((Nn,2))
 
 # Storage
 sig=np.zeros((Mp,int(inc)+2))
 epsp = np.zeros((Mp,int(inc)+2))
-p = np.zeros((Mp,int(inc)+2))
-velo=np.zeros((Mp,int(inc)+2))
+p=np.zeros((Mp,int(inc)+2))
+Epsilon=np.zeros((Mp,int(inc)+2))
+dEpsp=np.zeros((Mp,int(inc)+2))
+
+Velocity=np.zeros((Mp,int(inc)+2))
 pos=np.zeros((Mp,int(inc)+2))
 time=np.zeros(int(inc)+2)
-NRG=np.zeros(int(inc)+2)
-kin=np.zeros(int(inc)+2)
-strain=np.zeros(int(inc)+2)
 sig[:,0]=U[:,0]
-velo[:,0]= U[:,1]
-pos[:,0]=np.copy(xp[:,0])
+Velocity[:,0]= U[:,1]
+pos[:,0]=xp[:,0]
 time[0]=T
 
+# Build approximation matrices
+Map,Grad,Dofs,parent=mesh.buildApproximation(xp)
 
+#mesh.set_sigy(np.dot(Map,np.ones(Mp)*Sigy))
 mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
 md=np.diag(np.sum(mg,axis=1))
 mass_vector = np.dot(np.dot(Map,Md),Map.T)
 mass_vector = np.sum(mass_vector,axis=1)
 K=np.dot(np.dot(Grad[Dofs,:],Md),Map[Dofs,:].T)
-alpha=1.e0 # for effective mass matrix
+alpha=1e0 # for effective mass matrix
 
 dim=2 # Number of unknowns
 mesh.setMapping(K)
@@ -191,129 +209,116 @@ def plotStress(sig,color):
     plt.title('Stress along the bar',fontsize=22)
     plt.show()
 
-def UpdateState(dt,dofs,Ml,U,md,limit):
+def UpdateState(dt,dofs,Ml,U,W,md,ep,limit):
     Nnodes = np.shape(U)[0]
-    if limit!=-1 : boolean=True
-    else : boolean=False
-    f=mesh.computeFlux(U,dofs,md)
-    dU=np.zeros(np.shape(U))
+    f=mesh.computeFlux(U,W,dofs,md,ep)
     for i in range(len(dofs)):
         if md[dofs[i]]!=0.:
-            dU[dofs[i],:]=dt*f[dofs[i],:]/md[dofs[i]]
             U[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
-    return U,dU
+    return U
 
-def UpdateStateRK2(dt,dofs,Ml,U,md):
+def UpdateStateRK2(dt,dofs,Ml,U,W,md,ep):
+    # Nnodes = np.shape(U)[0]
+    # k1=np.zeros((Nnodes,2))
+    # k2=np.zeros((Nnodes,2))
+    # # first step : compute flux and intermediate state w
+    # f=mesh.computeFlux(U,W,dofs,md,ep)
+    # for i in range(len(dofs)):
+    #     if md[dofs[i]]!=0.:
+    #         k1[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
+    # u12 = U+k1*0.5
+    # w12 = np.copy(u12)
+    # w12[:,0] = rho*u12[:,0]*E
+    # w12[:,1] = u12[:,1]
+    
+    # w12[0,:] = prescribeStress(w12[1,:],[ep[0],ep[1]],rho,(c,c),(cp,cp),(Sy,Sy),(H,H),sd*(T<=timeUnload))
+    # # second step : compute flux and update U
+    # f=mesh.computeFlux(u12,w12,dofs,md,ep)
+    # for i in range(len(dofs)):
+    #     if md[dofs[i]]!=0.:
+    #         k2[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
+    # U+=k2
     Nnodes = np.shape(U)[0]
     k1=np.zeros((Nnodes,2))
     k2=np.zeros((Nnodes,2))
     # first step : compute flux and intermediate state w
-    f=mesh.computeFlux(U,dofs,md)
+    f=mesh.computeFlux(U,W,dofs,md,ep)
     for i in range(len(dofs)):
         k1[dofs[i],:]+=dt*f[dofs[i],:]/(2.*md[dofs[i]])
     w = U+k1
+    plast=np.zeros(Nnodes)
+    epsp=np.zeros(Nnodes)
+    
+    W[1:-1,0],plast[1:-1],epsp[1:-1],tangent_modulus = bilinear(w[1:-1,0]*rho,ep[1:-1],ep[1:-1],lam,mu,Sy,H)
+    W[:,1]=w[:,1]
+    # Apply load on first node
+    W[0,0]= -W[1,0] 
+    W[0,1]= W[1,1] 
+    # Transmissive boundary conditions
+    W[-1,0] = -W[-2,0]
+    W[-1,1] = W[-2,1]
+    
+    plast[0]=plast[1];plast[-1]=plast[-2]
+    epsp[0]=epsp[1];epsp[-1]=epsp[-2]
     # second step : compute flux and update U
-    f=mesh.computeFlux(w,dofs,md)
+    f=mesh.computeFlux(w,W,dofs,md,epsp)
     for i in range(len(dofs)):
         k2[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
     U+=k2
     return U
 
-
-n=0
-kin[n]=0.5*np.inner(np.dot(Md,velo[:,n]),velo[:,n])
-strain[n]=0.5*np.inner(np.dot(Md,sig[:,n]/rho),sig[:,n]/E)
-NRG[n]=kin[n]+strain[n]
-
-
-
 while T<tfinal:
     
-    # Effective mass matrix
-    mf=(1-alpha)*mg + alpha*md
-
-
-    # ## integration of ODE on material points
-    # for j in range(Mp):
-    #     if (Dt/tau)<10.:
-    #         ## Non stiff problem
-    #         r = scipy.integrate.ode(computeS).set_integrator('vode', method='adams',order=5)
-    #     else:
-    #         ## Stiff problem
-    #         r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf',order=12)
-    #     r.set_initial_value(rho*U[j,:],time[n]+Dt).set_f_params(epsp[j,n],H,E,Sy,eta,power,tau)
-    #     r.integrate(r.t+Dt/2.)
-    #     if r.successful():
-    #         U[j,:] = r.y/rho
-            
     # Mapping from material points to nodes
+    
     Um=np.dot(Md,U)
+    Wm=np.dot(Md,W)
+    if hardening=='isotropic':
+        EPm=np.dot(Md,p[:,n])
+    elif hardening=='kinematic':
+        EPm=np.dot(Md,epsp[:,n])
+        
     for i in range(len(Dofs)):
         if mass_vector[Dofs[i]]!=0.:
             u[Dofs[i],:]=np.dot(Map[Dofs[i],:],Um)/mass_vector[Dofs[i]]
-            
+            w[Dofs[i],:]=np.dot(Map[Dofs[i],:],Wm)/mass_vector[Dofs[i]]
+            ep[Dofs[i]]=np.dot(Map[Dofs[i],:],EPm)/mass_vector[Dofs[i]]
+    
+    ep[0]=ep[1] ; ep[-1]=ep[-2]
+
+    s0=0.
     # Apply load on first node
-    u[2*parent[0],0]=2.*s0*(T<tf) - u[2*parent[0]+1,0] 
-    u[2*parent[0],1]=u[2*parent[0]+1,1]
+    w[2*parent[0],0]= 2.*s0*(T<tf) - w[2*parent[0]+1,0] 
+    w[2*parent[0],1]= w[2*parent[0]+1,1]
     # Transmissive boundary conditions
-    u[2*parent[-1]+3,0] =- u[2*parent[-1]+2,0]
-    u[2*parent[-1]+3,1] =u[2*parent[-1]+2,1]
-
-
-    if t_order==1:
-        u,du=UpdateState(Dt,Dofs,md,u,mass_vector,limit)
-    elif t_order==2:
-        u=UpdateStateRK2(Dt,Dofs,md,u,mass_vector)
+    w[2*parent[-1]+3,0] = 2.*s0*(T<tf) - w[2*parent[-1]+2,0]
+    w[2*parent[-1]+3,1] = w[2*parent[-1]+2,1]
     
+    if t_order==1 :
+        u=UpdateState(Dt,Dofs,md,u,w,mass_vector,ep,limit)
+    elif t_order==2 :
+        u=UpdateStateRK2(Dt,Dofs,md,u,w,mass_vector,ep)
+        
     # Mapping back to the material points
-    U=np.dot(Map[Dofs,:].T,u[Dofs,:])
+    U=np.dot(Map.T,u)
+    
+    u = np.zeros((Nn,2))
+    w = np.zeros((Nn,2))
 
-    
-    #  integration of ODE on material points
-    for j in range(Mp):
-        if (Dt/tau)<1.e2:
-            ## Non stiff problem
-            r = scipy.integrate.ode(computeS).set_integrator('vode', method='adams',order=5)
-        else:
-            ## Stiff problem
-            r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf',order=12)
-        #r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf')
-        r.set_initial_value(rho*U[j,:],time[n]+Dt).set_f_params(epsp[j,n],H,E,Sy,eta,power,tau)
-        r.integrate(r.t+Dt)
-        if r.successful():
-            U[j,:] = r.y/rho
-            
-    if update_position:
-        xp[:,0]+=Dt*U[:,1]
-        # Compute new mapping (convective phase)
-        Map,Grad,Dofs,parent=mesh.buildApproximation(np.asmatrix(xp))
-        mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
-        md=np.diag(np.sum(mg,axis=1))
-        mass_vector = np.dot(np.dot(Map,Md),Map.T)
-        mass_vector = np.sum(mass_vector,axis=1)
-        K=np.dot(np.dot(Grad[Dofs,:],Md),Map[Dofs,:].T)
-        u = np.zeros((Nn,2))
-        mesh.setMapping(K)
-    
+    Eps=U[:,0]*rho
+    Sig,p[:,n+1],epsp[:,n+1],tangent_modulus = bilinear(Eps,epsp[:,n],p[:,n],lam,mu,Sy,H)
+
+
+    #print 'Increment =', n, 't = ', T,' s.'
     n+=1
     T+=Dt
-    velo[:,n]=U[:,1]
-    sig[:,n]=rho*U[:,0]
+    Velocity[:,n]=U[:,1]
+    sig[:,n]=Sig
+    Epsilon[:,n]=U[:,0]*rho
+    W[:,0]=Sig
+    W[:,1]=np.copy(U[:,1])
 
-    Seq=computeSeq(sig[:,n],epsp[:,n-1],H)
-    f = criterion(Seq,Sy)
-    epsp[:,n] = epsp[:,n-1] +  creep_law(f,Seq,eta,power)*Dt
-    
-        
     pos[:,n]=xp[:,0]
     time[n]=T
-
-    kin[n]=0.5*np.inner(np.dot(Md,velo[:,n]),velo[:,n])
-    strain[n]=0.5*np.inner(np.dot(Md,sig[:,n]/rho),sig[:,n]/E)
-    NRG[n]=kin[n]+strain[n]
-
-    increments=n
-
-x=mesh.xn
-
-
+    
+increments=n

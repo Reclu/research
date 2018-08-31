@@ -1,26 +1,20 @@
 #!/usr/bin/python
 
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import animation
-import pdb
+
 
 """
-Implementation of high order shock capturing methods to solve the 1D elastoplasticity set of equations in dynamics
+Implementation of high order shock capturing methods to solve the 1D elastoplasticity set of equations in dynamics with a kinematic hardening
 """
-
 E_A=Young
 rho_A=rho
-c_A = np.sqrt(E_A/rho_A)
 Sigy_A=Sigy
 H_A=H
-
-DX=length/Nelem
-
+nu_A=nu
 #Define 1D mesh
+DX=length/Nelem
 x = np.linspace(0.,length,Nelem+1)
 x = np.linspace(-DX/2.,length+DX/2.,Nelem+1)
-
 dx = x[1]-x[0]
 y=x+(dx/2.0)
 #Centres of cells
@@ -31,10 +25,18 @@ centroids=y
 courantNumber = 1.0
 t = np.zeros(NTmaxi)
 #Define material parameters
+lam_A = (nu_A*E_A)/(((1.0+nu_A)*(1.0-2.0*nu_A)))
+mu_A = E_A/(2.0*(1.0+nu_A))
+c_A = np.sqrt((lam_A+2.0*mu_A)/rho_A)
 
-c_A = np.sqrt(E_A/rho_A)
-HT_A = (E_A*H_A)/(E_A+H_A)
+HT_A = (lam_A+2.0*mu_A)-8*(mu_A**2/(3.0*H_A+6.0*mu_A))
+HT_A2 = (mu_A*(3.0*lam_A+2.0*mu_A)+(3.0/2.0)*H_A*(2.0*mu_A+lam_A))/(3.0*(mu_A+H_A/2.0))
+HT_A3 = (lam_A+2.0*mu_A+((2.0*mu_A*lam_A)/(mu_A+(3.0*H_A/2.0)))) \
+     / (1.0+ ((2.0*mu_A)/(mu_A+(3.0*H_A/2.0))))
+
 cp_A = np.sqrt(HT_A/rho_A)
+
+HEL = ((lam_A+2.0*mu_A)/(2.0*mu_A))*Sigy_A
 
 """Limiters of waves:
 mthlim(i)<0: no limiter
@@ -48,7 +50,7 @@ mthlim(i)<0: no limiter
 limit = True
 mthlim = np.zeros(4,dtype=int)
 for idx,i in enumerate(mthlim):
-    mthlim[idx] = fvmlimiter#-1   #Choose of the Superbee limiter
+    mthlim[idx] = fvmlimiter   #Choose of the Superbee limiter
 
 #Definition of arrays
 #2 Ghost cells at both ends of the bar are used to prescribe boundary conditions
@@ -64,21 +66,29 @@ matCp = np.zeros(len(y)+4)
 rho = np.zeros(len(y)+4)
 Sigy = np.zeros(len(y)+4)
 H = np.zeros(len(y)+4)
-impact = np.zeros(NTmaxi)
-#impact[:Nt] = sigd
+lam = np.zeros(len(y)+4)
+mu = np.zeros(len(y)+4)
 
 #Initial conditions and definition properties
-matC[:] = c_A 
-matCp[:] = cp_A 
-rho[:] = rho_A
-Sigy[:] = Sigy_A
-H[:] = H_A
-
 for i in range(len(y)+4):
     if (i<len(range(len(y)+4))/2):
         v[i,0] = v0
+        matC[i] = c_A 
+        matCp[i] = cp_A 
+        rho[i] = rho_A
+        Sigy[i] = Sigy_A
+        H[i] = H_A
+        lam[:] = lam_A
+        mu[:] = mu_A
     else:
         v[i,0] = -v0
+        matC[i] = c_A 
+        matCp[i] = cp_A
+        rho[i] = rho_A
+        Sigy[i] = Sigy_A
+        H[i] = H_A
+        lam[:] = lam_A
+        mu[:] = mu_A
 
 U[:,0] = sig[:,0]
 U[:,1] = v[:,0]
@@ -140,44 +150,37 @@ def philim(a,b,meth):
         philim = 1.0                                   #Lax-Wendroff
     return philim
 
-def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
+
+def computeSeq(S,EP,lam,mu,H):
+    KK = 3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+    return ((2.0*mu)/(lam+2.0*mu))*S-KK*EP
+
+def EP_RiemannSolver(U,EP,rho,lam,mu,Sigy,H):
     #Allocation of fluctuations arrays
     amdq = np.zeros((Nelem+3,U.shape[1]))
     apdq = np.zeros((Nelem+3,U.shape[1]))
     waves = np.zeros((Nelem+3,U.shape[1],2*U.shape[1]))
     s = np.zeros((Nelem+3,2*U.shape[1]))
+    matC = np.sqrt((lam+2.0*mu)/rho)
+    HT = (lam+2.0*mu)-8*(mu**2/(3.0*H+6.0*mu)) ; matCp = np.sqrt(HT/rho)
     #Loop on interfaces
     for i in range(Nelem+3):
         UL = U[i,:]; SL = U[i,0]
-        UR = U[i+1,:] ; SR = U[i+1,0] 
+        UR = U[i+1,:] ; SR = U[i+1,0]
         dU = UR-UL
         #Elastic prediction: elastic Riemann solver
         alpha = computeAlpha(dU,rho[i],rho[i+1],matC[i],matC[i+1])
         Strial = SL+alpha[0]*rho[i]*matC[i]
         #Tests on the criterion
-        fL = np.abs(Strial)-H[i]*EPeq[i]-Sigy[i]
-        fR = np.abs(Strial)-H[i+1]*EPeq[i+1]-Sigy[i+1]
-        if hardening == 'isotropic':
-            yieldL=H[i]*EPeq[i]+Sigy[i]
-            yieldR=H[i+1]*EPeq[i+1]+Sigy[i+1]
-            StrialL= Strial
-            StrialR= Strial
-            hardL=0.
-            hardR=0.
-        elif hardening == 'kinematic':
-            yieldL=Sigy[i]
-            yieldR=Sigy[i+1]
-            StrialL= Strial
-            StrialR= Strial
-            hardL=H[i]*EPeq[i]
-            hardR=H[i+1]*EPeq[i+1]
-                
-        fL = np.abs(StrialL)- yieldL
-        fR = np.abs(StrialR)- yieldR
+        SS_star_L = computeSeq(Strial,EP[i],lam[i],mu[i],H[i])
+        SS_star_R = computeSeq(Strial,EP[i+1],lam[i+1],mu[i+1],H[i+1])
+        fL = np.abs(SS_star_L)-Sigy[i]
+        fR = np.abs(SS_star_R)-Sigy[i+1]
         if (fL>0.0) and (fR<0.0):
             #Leftward plastic wave
-            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*EPeq[i])-SL)/(rho[i]*matC[i])
-            alpha1 = (hardL+np.sign(StrialL)*(yieldL)-SL)/(rho[i]*matC[i])
+            KK_L = 3.0*(H[i]/2.0) +(mu[i]*(3.0*lam[i]+2.0*mu[i]))/(lam[i]+2.0*mu[i])
+            S_starL = ((lam[i]/(2.0*mu[i]))+1.0)*(Sigy[i]*np.sign(SS_star_L)+ KK_L*EP[i])
+            alpha1 = (S_starL-SL)/(rho[i]*matC[i])
             R = U[i+1,:]-U[i,:]-alpha1*np.array([rho[i]*matC[i],1.0])
             alphaA = computeAlpha(R,rho[i],rho[i+1],matCp[i],matC[i+1])
             waves[i,:,0] = alpha1*np.array([rho[i]*matC[i],1.0])
@@ -188,8 +191,11 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,3]*waves[i,:,3]
         elif (fL<0.0) and (fR>0.0):
             #Rightward plastic wave
-            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*EPeq[i+1])-SR)/(rho[i+1]*matC[i+1])
-            alpha2 = (hardR+np.sign(StrialR)*(yieldR)-SR)/(rho[i+1]*matC[i+1])
+            KK_R = 3.0*(H[i+1]/2.0) +(mu[i+1]*(3.0*lam[i+1]+2.0*mu[i+1])) \
+                   /(lam[i+1]+2.0*mu[i+1])
+            S_starR = ((lam[i+1]/(2.0*mu[i+1]))+1.0)*(Sigy[i+1]*np.sign(SS_star_R) \
+                                                      + KK_R*EP[i+1])
+            alpha2 = (S_starR-SR)/(rho[i+1]*matC[i+1])
             R = U[i+1,:]-U[i,:]-alpha2*np.array([-rho[i+1]*matC[i+1],1.0])
             alphaA = computeAlpha(R,rho[i],rho[i+1],matC[i],matCp[i+1])
             waves[i,:,0] = alphaA[0]*np.array([rho[i]*matC[i],1.0])
@@ -200,10 +206,15 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,2]*waves[i,:,2]+s[i,3]*waves[i,:,3]
         elif (fL>0.0) and (fR>0.0):
             #Four waves
-            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*EPeq[i])-SL)/(rho[i]*matC[i])
-            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*EPeq[i+1])-SR)/(rho[i+1]*matC[i+1])
-            alpha1 = (hardL+np.sign(StrialL)*(yieldL)-SL)/(rho[i]*matC[i])
-            alpha2 = (hardR+np.sign(StrialR)*(yieldR)-SR)/(rho[i+1]*matC[i+1])
+            KK_L = 3.0*(H[i]/2.0) +(mu[i]*(3.0*lam[i]+2.0*mu[i]))/(lam[i]+2.0*mu[i])
+            S_starL = ((lam[i]/(2.0*mu[i]))+1.0)*(Sigy[i]*np.sign(SS_star_L) \
+                                                  + KK_L*EP[i])
+            KK_R = 3.0*(H[i+1]/2.0) +(mu[i+1]*(3.0*lam[i+1]+2.0*mu[i+1])) \
+                   /(lam[i+1]+2.0*mu[i+1])
+            S_starR = ((lam[i+1]/(2.0*mu[i+1]))+1.0)*(Sigy[i+1]*np.sign(SS_star_R) \
+                                                      + KK_R*EP[i+1])
+            alpha1 = (S_starL-SL)/(rho[i]*matC[i])
+            alpha2 = (S_starR-SR)/(rho[i+1]*matC[i+1])
             R = U[i+1,:]-U[i,:]-alpha1*np.array([rho[i]*matC[i],1.0])-alpha2*np.array([-rho[i+1]*matC[i+1],1.0])
             alphaP = computeAlpha(R,rho[i],rho[i+1],matCp[i],matCp[i+1])
             waves[i,:,0] = alpha1*np.array([rho[i]*matC[i],1.0])
@@ -222,55 +233,58 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,3]*waves[i,:,3]
     return amdq,apdq,waves,s
 
-def conservativeUpdate(U,EPeqn,dt0dx,amdq,apdq,cqxx,limit):
-    EPeq = np.zeros(len(y)+4)
+def conservativeUpdate(U,dt0dx,amdq,apdq,cqxx,limit):
     for i in range(Nelem+2)[2:]:
         U[i,:] -= dt0dx*(apdq[i-1,:]+amdq[i,:])
         if (limit):
             U[i,:] -= (dt0dx/2.0)*(cqxx[i,:]-cqxx[i-1,:])
-    #Update of the cumulated plastic strain
+
+
+def computeEP(U,EPn,lam,mu,H,Sigy):
+    EP = np.copy(EPn)
     for i in range(Nelem+3):
-        EPeq[i] = EPeqn[i]
-        f = np.abs(U[i,0])-H[i]*EPeqn[i]-Sigy[i]
+        SS = computeSeq(U[i,0],EPn[i],lam[i],mu[i],H[i])
+        f = np.abs(SS)-Sigy[i]
         if (f>0):
-            EPeq[i] = (np.abs(U[i,0])-Sigy[i])/H[i]
-    return EPeq
+            KK = 3.0*(H[i]/2.0) +(mu[i]*(3.0*lam[i]+2.0*mu[i]))/(lam[i]+2.0*mu[i])
+            EP[i] = (-Sigy[i]*np.sign(SS)+((2.0*mu[i])/(lam[i]+2.0*mu[i]))*U[i,0])/KK
+    return EP
 
 CFL = 1.0
-dx = x[1]-x[0]
+
 for i in range(NTmaxi)[1:]:
     #Apply Courant condition
     dt = CFL* dx/c_A
     if ((t[i-1]+dt)>timeOut):
         dt = timeOut - t[i-1]
     t[i]=t[i-1]+dt
-    
-    #Apply boundary conditions: reflective boundaries on the left
+    ##Apply boundary conditions: 
+    #Left
     U[0,0] = -U[3,0] ; U[0,1] = U[3,1]
     U[1,0] = -U[2,0] ; U[1,1] = U[2,1]
-    #Zero displacement prescribed on the right
+    #Right
     U[Nelem+1+1,0] = -U[Nelem+1,0] ; U[Nelem+1+1,1] = U[Nelem+1,1]
     U[Nelem+2+1,0] = -U[Nelem-1+1,0] ; U[Nelem+2+1,1] = U[Nelem-1+1,1]
-    
     ###Elastic-plastic Riemann solver and computation of fluctuations
-    if hardening=='isotropic':
-        amdq,apdq,waves,s = EP_RiemannSolver(U,EPeq[:,i-1],rho,matC,matCp,Sigy,H,hardening)
-    elif hardening=='kinematic':
-        amdq,apdq,waves,s = EP_RiemannSolver(U,EP[:,i-1],rho,matC,matCp,Sigy,H,hardening)
+    amdq,apdq,waves,s = EP_RiemannSolver(U,EP[:,i-1],rho,lam,mu,Sigy,H)
     #Compute limited waves
     cqxx = computeLimitedWaves(waves,s,mthlim,dt/dx)
     #Conservative update and update of the plastic strain
-    EPeq[:,i] = conservativeUpdate(U,EPeq[:,i-1],dt/dx,amdq,apdq,cqxx,limit)
+    conservativeUpdate(U,dt/dx,amdq,apdq,cqxx,limit)
+    #Compute Updated Plastic Strain
+    EP[:,i] = computeEP(U,EP[:,i-1],lam,mu,H,Sigy)
     #Store results
     sig[:,i] = U[:,0]
     v[:,i] = U[:,1]
     #Update of other fields
-    EP[:,i] = EP[:,i-1]+(EPeq[:,i]-EPeq[:,i-1])*np.sign(sig[:,i])
+    dEPeq = (EP[:,i] - EP[:,i-1])*np.sign(sig[:,i])
+    EPeq[:,i] = EPeq[:,i-1] + dEPeq
     eps[:,i] = sig[:,i]/E_A + EP[:,i]
-    #pdb.set_trace()
     disp[:,i] = disp[:,i-1] + v[:,i]*dt
     if (t[i]==timeOut):
+        increments=i
         break
+
 increments=i
 sig=sig[2:-2,:increments]
 EP=EP[2:-2,:increments]

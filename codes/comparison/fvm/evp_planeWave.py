@@ -1,23 +1,27 @@
-#!/usr/bin/python
-
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import pdb
 from scipy.integrate import ode
+from scipy.optimize import fsolve
 
 """
 Implementation of high order shock capturing methods to solve the 1D elastoviscoplastic set of equations with the model of Sokolowski-Malvern.
 The viscoplasticity is treated through the addition of a right hand side containing the viscoplastic flow rule. The right hand side is treated by a second order splitting approach: the total solution is advanced of 2*dt at each time step.
+Plane Wave 1D strain case.
 """
+
 E_A=Young
+nu_A=nu
 rho_A=rho
-c_A = np.sqrt(E_A/rho_A)
 Sigy_A=Sigy
 H_A=H
 eta_A=eta
 n_A=n
+sigd=0.
 
+#Define 1D mesh
+#Intercells points
 DX=length/Nelem
 
 x = np.linspace(0.,length,Nelem+1)
@@ -27,10 +31,13 @@ y=x+(dx/2.0)
 #Centres of cells
 y=y[:(len(y)-1)]
 centroids=y
+
 #Define parameters
-courantNumber = 1.0
 t = np.zeros(NTmaxi)
 #Define material parameters
+lam_A = (E_A*nu_A)/((1.0+nu_A)*(1.0-2.0*nu_A)) 
+mu_A = E_A/(2.0*(1.0+nu_A))
+c_A = np.sqrt((lam_A+2.0*mu_A)/rho_A)
 
 """Limiters of waves:
 mthlim(i)<0: no limiter
@@ -51,11 +58,14 @@ for idx,i in enumerate(mthlim):
 v = np.zeros((len(y)+4,NTmaxi))
 disp = np.zeros((len(y)+4,NTmaxi))
 sig = np.zeros((len(y)+4,NTmaxi))
+eps = np.zeros((len(y)+4,NTmaxi))
 U = np.zeros((len(y)+4,2))
 matC = np.zeros(len(y)+4)
 rho = np.zeros(len(y)+4)
 Sigy = np.zeros(len(y)+4)
 H = np.zeros(len(y)+4)
+lam = np.zeros(len(y)+4)
+mu = np.zeros(len(y)+4)
 eta = np.zeros(len(y)+4)
 n = np.zeros(len(y)+4)
 EP = np.zeros((len(y)+4,NTmaxi))
@@ -63,6 +73,16 @@ dEP = np.zeros((len(y)+4,NTmaxi))
 
 
 #Initial conditions et definition properties
+matC[:] = c_A 
+rho[:] = rho_A
+Sigy[:] = Sigy_A
+H_A*=3.0/2.0
+H[:] = H_A
+eta[:] = eta_A
+n[:] = n_A
+lam[:] = lam_A
+mu[:] = mu_A
+
 for i in range(len(y)+4):
     if (i<len(range(len(y)+4))/2):
         v[i,0] = v0
@@ -83,6 +103,8 @@ for i in range(len(y)+4):
 
 U[:,0] = sig[:,0]
 U[:,1] = v[:,0]
+
+
 
 #Definition of functions
 def computeAlpha(dU,rho1,rho2,c1,c2):
@@ -176,20 +198,32 @@ def conservativeUpdate(U,dt0dx,amdq,apdq,cqxx,limit):
 def positive_part(x):
     return 0.5*(x+np.abs(x))
 
-def creep_law(f,S,EP,H,eta,n):
-    return ((positive_part(f)/eta)**n)*np.sign(S-H*EP)
+def creep_law(f,Seq,eta,n):
+    return ((positive_part(f)/eta)**n)*np.sign(Seq)
 
-def criterion(S,EP,H,Sigy):
-    return (np.abs(S-H*EP)-Sigy)
+def criterion(Seq,Sigy):
+    return (np.abs(Seq)-Sigy)
 
-def computeS(t,U,EP,E,H,Sigy,eta,n):
+def computeSeq(S,EP,lam,mu,H):
+    KK = 3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+    return (((2.0*mu)/(lam+2.0*mu))*S-KK*EP)
+
+
+def computeS(t,U,EP,lam,mu,H,Sigy,eta,n):
     S = np.zeros(len(U))
-    f = criterion(U[0],EP,H,Sigy)
-    S[0] = -E*creep_law(f,U[0],EP,H,eta,n)
+    Seq = computeSeq(U[0],EP,lam,mu,H)
+    f = criterion(Seq,Sigy)
+    S[0] = -(2.0*mu)*creep_law(f,Seq,eta,n)
     S[1] = 0
     return S
-pfj=[]
-test=np.zeros(Nelem+4)
+
+def equation(z,S,EP,lam,mu,Sigy,H,eta,n,dt):
+    Seq = computeSeq(S,z,lam,mu,H)
+    f = criterion(Seq,Sigy)
+    return (z-EP-creep_law(f,Seq,eta,n)*dt)
+
+#pdb.set_trace()
+
 for i in range(NTmaxi)[1:]:
     #Apply Courant condition
     dt = dx/np.max(c_A)
@@ -199,14 +233,14 @@ for i in range(NTmaxi)[1:]:
     #RHS(dt/2.0)
     # for j in range(Nelem+4):
     #     r = ode(computeS).set_integrator('vode', method='bdf')
-    #     r.set_initial_value(U[j,:],t[i-1]).set_f_params(EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
+    #     r.set_initial_value(U[j,:],t[i-1]).set_f_params(EP[j,i-1],lam[j],mu[j],H[j],Sigy[j],eta[j],n[j])
     #     r.integrate(r.t+(dt/2.0))
     #     if r.successful():
     #         U[j,:] = r.y
-    #Apply boundary conditions: reflective boundaries on the left
-    U[0,0] = -U[3,0] ; U[0,1] = U[3,1]
-    U[1,0] = -U[2,0] ; U[1,1] = U[2,1]
-    #Zero displacement prescribed on the right
+    #Apply boundary conditions: prescribed stress on the left
+    U[0,0] = 2.0*sigd-U[3,0] ; U[0,1] = U[3,1]
+    U[1,0] = 2.0*sigd-U[2,0] ; U[1,1] = U[2,1]
+    #reflective boundary on the right
     U[Nelem+1+1,0] = -U[Nelem+1,0] ; U[Nelem+1+1,1] = U[Nelem+1,1]
     U[Nelem+2+1,0] = -U[Nelem-1+1,0] ; U[Nelem+2+1,1] = U[Nelem-1+1,1]
     #Compute flux first order
@@ -217,25 +251,24 @@ for i in range(NTmaxi)[1:]:
     conservativeUpdate(U,dt/dx,amdq,apdq,cqxx,limit)
     #RHS (2)
     for j in range(Nelem+4):
-        r = ode(computeS).set_integrator('lsoda', method='bdf')
-        r.set_initial_value(U[j,:],t[i]).set_f_params(EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
+        r = ode(computeS).set_integrator('vode', method='bdf')
+        r.set_initial_value(U[j,:],t[i-1]).set_f_params(EP[j,i-1],lam[j],mu[j],H[j],Sigy[j],eta[j],n[j])
         r.integrate(r.t+(dt))
         if r.successful():
-            test[j]=1
             U[j,:] = r.y
-    if (test==1).all():
-        pfj.append(1.)
     #Update of fields and Store results
     sig[:,i] = U[:,0]
     v[:,i] = U[:,1]
-    f = criterion(sig[:,i],EP[:,i-1],H,Sigy)
-    EP[:,i] = EP[:,i-1] + creep_law(f,sig[:,i],EP[:,i-1],H,eta,n)*dt
+    Seq = computeSeq(sig[:,i],EP[:,i-1],lam,mu,H)
+    f = criterion(Seq,Sigy)
+    #Explicit update of the viscoplastic strain
+    EP[:,i] = EP[:,i-1] + creep_law(f,Seq,eta,n)*dt
     dEP[:,i] = (EP[:,i] - EP[:,i-1])/dt
     #Update of the displacement field
     disp[:,i] = disp[:,i-1] + v[:,i]*dt
+    eps[:,i] = (sig[:,i]+2*mu_A*EP[:,i])/(lam_A+2.0*mu_A)
     if (t[i]==timeOut):
         increments=i
         break
 sig=sig[2:-2,:increments]
 EP=EP[2:-2,:increments]
-print "itegrations failed :",abs(len(pfj)-increments)

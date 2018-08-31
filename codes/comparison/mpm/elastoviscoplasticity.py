@@ -133,9 +133,6 @@ c = np.sqrt(E/rho)
 m = rho*lx/ppc
 power=n
 
-#Bc_nodes=np.array([0]) # left extremity fixed
-Bc_nodes=[Nn-1]
-
 s0 =-sigd
 
 # Time discretization
