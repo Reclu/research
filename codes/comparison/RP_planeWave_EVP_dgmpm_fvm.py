@@ -6,7 +6,7 @@ from matplotlib import animation
 import pdb
 import os
 import sys
-from computeAnalyticalSolutionKIN import *
+from ExactplaneWaveKin import *
 directory=os.path.basename(__file__)[:-3]
 
 if not os.path.exists('texFiles/'+str(directory)):
@@ -74,7 +74,7 @@ CFL=0.5
 NTmaxi = 300
 length = 6.0
 ppc=1
-Nelem = 50
+Nelem = 200
 E = 2.0e11
 nu=0.3
 lamb=E*nu/((1.+nu)*(1.-2.*nu))
@@ -93,7 +93,7 @@ dt=(length/c)/Nelem
 ## Viscous parameters
 case='stiff'
 if case=='stiff':
-    tau=dt/50. #relaxation time
+    tau=dt/100. #relaxation time
 elif case=='non-stiff':
     tau=dt*2. #relaxation time
 n=4.37#1./4.
@@ -101,7 +101,7 @@ eta=pow(tau,1./n)*Sigy
 # n=0.25
 # eta=100.
 
-print eta
+print "viscosity : ",eta, " relaxation time :",tau
 sigd =0.
 HEL = ((lamb+2.0*mu)/(2.0*mu))*Sigy
 v0=2.*HEL/(rho*c)
@@ -153,19 +153,20 @@ frames=[20,30,45]
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
 
 for i,n1 in enumerate(frames):
-    time = '%.2e' % FVM["t"][n1]
-    if FVM["t"][n1]<=0.5*length/c :
-        temps=FVM["t"][n1]
+    time = '%.2e' % FEM["t"][n1]
+    if FEM["t"][n1]<=0.5*length/c :
+        temps=FEM["t"][n1]
     else:
-        temps=FVM["t"][n1-1]
+        temps=FEM["t"][n1-1]
         
-    # if hardening=='isotropic':
-    #     print 'nice try'
-    #     #Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(DGMPM["pos"][:,n1],length,c,temps,abs(v0),Sigy,E,H,rho)
-    # elif hardening=='kinematic':
-    #     Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(DGMPM["pos"][:,n1],length,c,temps,abs(v0),Sigy,E,H,rho)
+    if hardening=='isotropic':
+        print 'nice try'
+        #Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(DGMPM["pos"][:,n1],length,c,temps,abs(v0),Sigy,E,H,rho)
+    elif hardening=='kinematic':
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(FEM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     plt.plot(FVM["centroids"],FVM["sig"][:,n1],'b',lw=2.,ms=8.,label='FVM')
-    plt.plot(FEM["centroids"],FEM["sigma"][:,n1],'k',lw=2.,ms=8.,label='FEM')
+    plt.plot(FEM["centroids"],FEM["sigma"][:,n1],'g',lw=2.,ms=8.,label='FEM')
+    plt.plot(FEM["centroids"],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
     # plt.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'rx',lw=2.,ms=8.,label='DGMPM 1ppc')
     # plt.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
     # plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,2*n1],'ro',lw=2.,ms=8.,label='DGMPM 2ppc')
@@ -214,12 +215,12 @@ ax1.legend(numpoints=1)
 
 ax1.set_xlim(0.,length)
 ax2.set_xlim(0.,length)
-ax1.set_ylim(1.1*np.min(MPM["sig"]),1.1*np.max(MPM["sig"]))
+ax1.set_ylim(1.1*np.min(FEM["sigma"]),1.1*np.max(FEM["sigma"]))
 if hardening=='kinematic':
-    ax2.set_ylim(1.1*np.min(MPM2["epsp"]),1.1*np.max(MPM2["epsp"]))
+    ax2.set_ylim(1.1*np.min(FEM["epsp"]),1.1*np.max(FEM["epsp"]))
 elif hardening=='isotropic':
     ax2.set_ylim(1.1*np.min(MPM2["p"]),1.1*np.max(MPM2["p"]))
-ax2.set_ylim(1.1*np.min(MPM2["epsp"]),1.1*np.max(MPM2["epsp"]))
+ax2.set_ylim(1.1*np.min(FEM["epsp"]),1.1*np.max(FEM["epsp"]))
 def init():
     line[0].set_data([], [])
     line[1].set_data([], [])
@@ -234,19 +235,21 @@ def init():
     return line
 
 def animate(i):
-    line[0].set_data(DGMPM["pos"][:,i],DGMPM["sig"][:,i])
-    line[1].set_data(MPM["pos"][:,2*i],MPM["sig"][:,2*i])
-    line[2].set_data(DGMPM3["pos"][:,i],DGMPM3["sig"][:,i])
-    line[3].set_data(MPM2["pos"][:,2*i],MPM2["sig"][:,2*i])
-    line[4].set_data(FEM["centroids"],FEM["sig"][:,i])
-    line[5].set_data(DGMPM["pos"][:,i],DGMPM["epsp"][:,i])
-    line[6].set_data(MPM["pos"][:,2*i],MPM["epsp"][:,2*i])
-    line[7].set_data(DGMPM3["pos"][:,i],DGMPM3["epsp"][:,i])
-    line[8].set_data(MPM2["pos"][:,2*i],MPM2["epsp"][:,2*i])
+    # line[0].set_data(DGMPM["pos"][:,i],DGMPM["sig"][:,i])
+    # line[1].set_data(MPM["pos"][:,2*i],MPM["sig"][:,2*i])
+    # line[2].set_data(DGMPM3["pos"][:,i],DGMPM3["sig"][:,i])
+    # line[3].set_data(MPM2["pos"][:,2*i],MPM2["sig"][:,2*i])
+    line[3].set_data(FVM["centroids"],FVM["sig"][:,i])
+    line[4].set_data(FEM["centroids"],FEM["sigma"][:,i])
+    # line[5].set_data(DGMPM["pos"][:,i],DGMPM["epsp"][:,i])
+    # line[6].set_data(MPM["pos"][:,2*i],MPM["epsp"][:,2*i])
+    # line[7].set_data(DGMPM3["pos"][:,i],DGMPM3["epsp"][:,i])
+    # line[8].set_data(MPM2["pos"][:,2*i],MPM2["epsp"][:,2*i])
+    line[8].set_data(FVM["centroids"],FVM["EP"][:,i])
     line[9].set_data(FEM["centroids"],FEM["epsp"][:,i])
     return line
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=DGMPM["increments"], interval=100, blit=True)
+                               frames=FVM["increments"], interval=100, blit=True)
 
 plt.show()

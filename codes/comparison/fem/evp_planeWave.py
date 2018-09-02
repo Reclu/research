@@ -64,7 +64,7 @@ def bilinear(x,u_n,u,Sn,EPn,Pn,lam,mu,Sigy,H,eta,n,dt):
             S[i] = result.x[0] ; EP[i] = result.x[1]
             #Post-processing
             Seq = computeS(S[i],EP[i],lam,mu,H)
-            f= criterion(Seqx,Sigy)
+            f= criterion(Seq,Sigy)
             P[i]=Pn[i]+dt*creep_law(f,Seq,eta,n)*np.sign(Seq)
     return S,P,EP
     
