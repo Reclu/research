@@ -28,6 +28,7 @@ def criterion(Seq,Sigy):
 
 def computeS(S,EP,lam,mu,H):
     KK = 3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+    #KK = H +0.5*(4.*mu*(lam+mu)-lam**2)/(lam+2.0*mu)
     return (((2.0*mu)/(lam+2.0*mu))*S-KK*EP)
 
 def bilinear(x,u_n,u,Sn,EPn,Pn,lam,mu,Sigy,H,eta,n,dt):
@@ -44,14 +45,11 @@ def bilinear(x,u_n,u,Sn,EPn,Pn,lam,mu,Sigy,H,eta,n,dt):
         Sx_trial = (lam+2.0*mu)*DEFO-2.0*mu*EPn[i]
         Sr_trial = lam*DEFO+mu*EPn[i]
         SS = Sx_trial-Sr_trial-3.0*(H/2.0)*EPn[i]
+        # Sr_trial = lam*DEFO+(mu-0.5*lam)*EPn[i]
+        # SS = Sx_trial-Sr_trial-H*EPn[i]
         Seq_trial = np.abs(SS)
         #(ii) Compute the criterion 
         f = Seq_trial - Sigy
-        # Selas = (lam+2.0*mu)*DEFO-2.0*mu*EPn[i]
-        # S_trial = computeS(Selas,EPn[i],lam,mu,H)
-        # #(ii) Compute the criterion 
-        # f = criterion(S_trial,Sigy)
-        #pdb.set_trace()
         if (f<=0):
             #elastic step
             S[i] = Sx_trial

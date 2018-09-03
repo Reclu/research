@@ -15,7 +15,7 @@ path='texFiles/'+str(directory)
 """
 Comparison of the implementation of the 1D elastic set of equations
 in dynamics:
-- with the FVM
+- with the MPM
 - with the DGMPM
 """
 def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
@@ -93,9 +93,9 @@ dt=(length/c)/Nelem
 ## Viscous parameters
 case='stiff'
 if case=='stiff':
-    tau=1.e-7#dt/50. #relaxation time
+    tau=dt/100. #relaxation time
 elif case=='non-stiff':
-    tau=dt*2. #relaxation time
+    tau=dt/2. #relaxation time
 n=4.37#1./4.
 eta=pow(tau,1./n)*Sigy
 # n=0.25
@@ -124,22 +124,30 @@ elif hardening=='isotropic':
 
 
 ##FVM: Finite Volume Method
-FVM = dict(parameters)
-print 'Computing FVM (Strang splitting)'
-#execfile('fvm/evp_planeWave_strang2.py', FVM)
+MPM = dict(parameters)
+print 'Computing MPM '
+execfile('mpm/planeWave_evp.py', MPM)
+
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+#################
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing  DGMPM (RK2)'
+execfile('dgmpm/EVPplaneWave_Kin.py', DGMPM2)
+
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":2,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":1,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+#################
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM3 = dict(parameters)
+print 'Computing  DGMPM'
+execfile('dgmpm/EVPplaneWave_Kin.py', DGMPM3)
 
 ##FVM: Finite Volume Method
-FVM2 = dict(parameters)
-print 'Computing FVM (Godunov splitting)'
-execfile('fvm/evp_planeWave_God2.py', FVM2)
-
-
-##FEM: Finite Element Method
-FEM = dict(parameters)
-print 'Computing FEM'
-execfile('fem/evp_planeWave.py', FEM)
-
-
+MPM2 = dict(parameters)
+print 'Computing MPM '
+execfile('mpm/planeWave_evp.py', MPM2)
 #############################################################################
 #########################  Comparison  ######################################
 #############################################################################
@@ -159,22 +167,24 @@ frames=[20,30,45]
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
 
 for i,n1 in enumerate(frames):
-    time = '%.2e' % FEM["t"][n1]
-    if FEM["t"][n1]<=0.5*length/c :
-        temps=FEM["t"][n1]
+    time = '%.2e' % DGMPM["time"][n1]
+    if DGMPM["time"][n1]<=0.5*length/c :
+        temps=DGMPM["time"][n1]
     else:
-        temps=FEM["t"][n1-1]
+        temps=DGMPM["time"][n1-1]
         
     if hardening=='isotropic':
         print 'nice try'
         #Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(DGMPM["pos"][:,n1],length,c,temps,abs(v0),Sigy,E,H,rho)
     elif hardening=='kinematic':
-        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(FEM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
-    #plt.plot(FVM["centroids"],FVM["sig"][:,n1],'b',lw=2.,ms=8.,label='Strang')
-    plt.plot(FVM2["centroids"],FVM2["sig"][:,n1],'r',lw=2.,ms=8.,label='Godunov')
-    plt.plot(FEM["centroids"],FEM["sigma"][:,n1],'g',lw=2.,ms=8.,label='FEM')
-    plt.plot(FEM["centroids"],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
-    plt.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'rx',lw=2.,ms=8.,label='DGMPM 1ppc')
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+    plt.plot(MPM["pos"][:,2*n1],MPM["sig"][:,2*n1],'r',lw=2.,ms=8.,label='MPM')
+    plt.plot(MPM2["pos"][:,2*n1],MPM2["sig"][:,2*n1],'r--',lw=2.,ms=8.,label='MPM (2ppc)')
+    plt.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'g',lw=2.,ms=8.,label='DGMPM')
+    plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,n1],'b',lw=2.,ms=8.,label='DGMPM (RK2)')
+    plt.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
+    plt.plot(DGMPM3["pos"][:,2*n1],DGMPM3["sig"][:,2*n1],'y--',lw=2.,ms=8.,label='DGMPM (2ppc)')
+    
     # plt.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
     # plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,2*n1],'ro',lw=2.,ms=8.,label='DGMPM 2ppc')
     # plt.plot(DGMPM3["pos"][:,n1],DGMPM3["sig"][:,n1],'yo',lw=2.,ms=8.,label='DGMPM 2ppc (RK2)')
