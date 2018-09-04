@@ -23,12 +23,11 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     n_fields = np.shape(yfields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
-    marker=['+','x','triangle','square','none','none','pentagone*']
-    #marker=['none','none','+','triangle','none','star','pentagone*']
-    style=['only marks','only marks','only marks','only marks','dashed','solid','pentagone*']
-    thickness=['very thick','very thick','very thick','very thick','very thick','thin','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','Green','black','Duck','Green']
-    TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
+    marker=['none','none','none','|','x','none','triangle*','none','*']
+    style=['dashed','dotted','solid','solid','only marks','solid','densely dotted','only marks']
+    thickness=['very thick','very thick','very thick','very thick','thick','thin','thick','very thick','thick']
+    couleur=['Red','Orange','Blue','Purple','Green','black','Yellow','black','Green','Orange','Duck']
+    TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
     TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'}]');TeXFile.write('\n')
     legend=''
     for i in range(n_fields):
@@ -36,11 +35,11 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
             legend=legend+kwargs[0][i]
         else:
             legend=legend+','+kwargs[0][i]
-        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+'] coordinates {')
+        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+',mark size=3pt] coordinates {')
         for j in range(np.shape(yfields[i])[0]):
             TeXFile.write('('+str(xFields[i][j])+','+str(yfields[i][j])+') ')
         TeXFile.write('};\n')
-    if subtitle=='(c) evolution of total energy $e$':
+    if subtitle[:3]=='(c)':
         TeXFile.write(r'\legend{'+str(legend)+'}')
     else:
         TeXFile.write(r'%\legend{'+str(legend)+'}')
@@ -74,7 +73,7 @@ CFL=0.5
 NTmaxi = 300
 length = 6.0
 ppc=1
-Nelem = 100
+Nelem = 50
 E = 2.0e11
 nu=0.3
 lamb=E*nu/((1.+nu)*(1.-2.*nu))
@@ -88,14 +87,14 @@ factor=1.
 timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
-dt=(length/c)/Nelem
+dt=(length/Nelem)/c
 
 ## Viscous parameters
-case='stiff'
+case='non-stiff'
 if case=='stiff':
     tau=dt/100. #relaxation time
 elif case=='non-stiff':
-    tau=dt/2. #relaxation time
+    tau=dt*50. #relaxation time
 n=4.37#1./4.
 eta=pow(tau,1./n)*Sigy
 # n=0.25
@@ -123,18 +122,16 @@ elif hardening=='isotropic':
     execfile('dgmpm/EVP_iso.py', DGMPM)
 
 
-##FVM: Finite Volume Method
+##MPM: Material Point Method
 MPM = dict(parameters)
 print 'Computing MPM '
 execfile('mpm/planeWave_evp.py', MPM)
 
-
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
-#################
-##DGMPM: Discontinuous Galerkin Material Point Method
-DGMPM2 = dict(parameters)
-print 'Computing  DGMPM (RK2)'
-execfile('dgmpm/EVPplaneWave_Kin.py', DGMPM2)
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":'USF',"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+##MPM: Material Point Method
+USF = dict(parameters)
+print 'Computing MPM (USF)'
+execfile('mpm/planeWave_evp.py', USF)
 
 
 parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":2,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":1,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
@@ -144,10 +141,19 @@ DGMPM3 = dict(parameters)
 print 'Computing  DGMPM'
 execfile('dgmpm/EVPplaneWave_Kin.py', DGMPM3)
 
-##FVM: Finite Volume Method
-MPM2 = dict(parameters)
-print 'Computing MPM '
-execfile('mpm/planeWave_evp.py', MPM2)
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":2,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"eta":eta,"n":n,"sigd":sigd,"hardening":hardening,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+#################
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing  DGMPM (RK2 + strang)'
+execfile('dgmpm/EVPplaneWave_Kin_Strang.py', DGMPM2)
+
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM4 = dict(parameters)
+print 'Computing  DGMPM (RK2)'
+execfile('dgmpm/EVPplaneWave_Kin.py', DGMPM4)
+
 #############################################################################
 #########################  Comparison  ######################################
 #############################################################################
@@ -179,11 +185,12 @@ for i,n1 in enumerate(frames):
     elif hardening=='kinematic':
         Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     plt.plot(MPM["pos"][:,2*n1],MPM["sig"][:,2*n1],'r',lw=2.,ms=8.,label='MPM')
-    plt.plot(MPM2["pos"][:,2*n1],MPM2["sig"][:,2*n1],'r--',lw=2.,ms=8.,label='MPM (2ppc)')
-    plt.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'g',lw=2.,ms=8.,label='DGMPM')
-    plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,n1],'b',lw=2.,ms=8.,label='DGMPM (RK2)')
+    #plt.plot(MPM2["pos"][:,2*n1],MPM2["sig"][:,2*n1],'r--',lw=2.,ms=8.,label='MPM (2ppc)')
+    plt.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'go',lw=2.,ms=8.,label='DGMPM')
+    plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,n1],'b',lw=2.,ms=8.,label='DGMPM (RK2 + strang)')
     plt.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
     plt.plot(DGMPM3["pos"][:,2*n1],DGMPM3["sig"][:,2*n1],'y--',lw=2.,ms=8.,label='DGMPM (2ppc)')
+    plt.plot(DGMPM4["pos"][:,n1],DGMPM4["sig"][:,n1],'c',lw=2.,ms=8.,label='DGMPM (RK2)')
     
     # plt.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=8.,label='exact')
     # plt.plot(DGMPM2["pos"][:,n1],DGMPM2["sig"][:,2*n1],'ro',lw=2.,ms=8.,label='DGMPM 2ppc')
@@ -194,13 +201,11 @@ for i,n1 in enumerate(frames):
     plt.legend(numpoints=1)
     plt.grid()
     plt.show()
-    legend=['mpm 1ppc','mpm 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)']
-    if n1==5 : subtitle='(a) time t = '+str(time)+' s.'
-    if n1==20 : subtitle='(b) time t = '+str(time)+' s.'
+    legend=['usl 1ppc','usf 1ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2 + strang)','plastic solution']
     temps=time[:-4]
     subtitle=subtitles[i]+r' time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    # export2DTeXFile(str(path)+'/dgmpm_mpm_stress'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["sig"][:,2*n1],MPM2["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,2*n1],DGMPM3["sig"][:,n1]]),legend)
-    # export2DTeXFile(str(path)+'/dgmpm_mpm_epsp'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["epsp"][:,2*n1],MPM2["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM2["epsp"][:,2*n1],DGMPM3["epsp"][:,n1]]),legend)
+    export2DTeXFile(str(path)+'/evp_dgmpm_mpm_stress'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM3["pos"][:,2*n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["sig"][:,2*n1],USF["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM3["sig"][:,2*n1],DGMPM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
+    export2DTeXFile(str(path)+'/evp_dgmpm_mpm_epsp'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM3["pos"][:,2*n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["epsp"][:,2*n1],USF["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM3["epsp"][:,2*n1],DGMPM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
     # export2DTeXFile(str(path)+'/dgmpm_mpm_velo'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1]]),'$x (m)$','$v (m/s)$',str(subtitle),np.array([MPM["velo"][:,2*n1],MPM2["velo"][:,2*n1],DGMPM["velo"][:,n1],DGMPM2["velo"][:,2*n1],DGMPM3["velo"][:,n1]]),legend)
 
 

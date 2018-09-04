@@ -119,7 +119,6 @@ mesh = DGmesh(Mp,L,ppc,c,cp,rho,lam,mu,Sy,H)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
 
-
 mass=rho*dx/ppc
 
 # Define applied stress
@@ -137,7 +136,7 @@ else:
         CFL=1.
     else:
         CFL=float(t_order)/float(ppc)
-        
+
 Dt=CFL*dx/c 
 tfinal=timeOut
 tf=timeUnload
@@ -160,6 +159,7 @@ U[Mp/2:Mp,1]=-v0
 W = np.copy(U)
 W[0:Mp/2,1]=v0
 W[Mp/2:Mp,1]=-v0
+
 
 # Nodes' fields
 u = np.zeros((Nn,2))
@@ -293,12 +293,13 @@ while T<tfinal:
     # Transmissive boundary conditions
     w[2*parent[-1]+3,0] = 2.*s0*(T<tf) - w[2*parent[-1]+2,0]
     w[2*parent[-1]+3,1] = w[2*parent[-1]+2,1]
-    
+
+
     if t_order==1 :
         u=UpdateState(Dt,Dofs,md,u,w,mass_vector,ep,limit)
     elif t_order==2 :
         u=UpdateStateRK2(Dt,Dofs,md,u,w,mass_vector,ep)
-        
+    
     # Mapping back to the material points
     U=np.dot(Map.T,u)
     

@@ -27,7 +27,6 @@ def criterion(Seq,Sigy):
 
 def computeSeq(S,EP,lam,mu,H):
     KK = 3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
-    #KK = H +0.5*(4.*mu*(lam+mu)-lam**2)/(lam+2.0*mu)
     return (((2.0*mu)/(lam+2.0*mu))*S-KK*EP)
 
 
@@ -255,6 +254,17 @@ while T<tfinal:
     mf=(1-alpha)*mg + alpha*md
 
 
+    ## integration of ODE on material points
+    for j in range(Mp):
+        ## Stiff problem
+        r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf',order=3)
+        r.set_initial_value(rho*U[j,:],time[n]+Dt).set_f_params(epsp[j,n],lam,mu,H,Sy,eta,power)
+        r.integrate(r.t+Dt/2.)
+        if r.successful():
+            U[j,:] = r.y/rho
+    # for j in range(Mp):
+    #     U[j,0] = integrateODE(Dt/2.,rho*U[j,0],epsp[j,n],H,Sigy,eta,power,mu,lam)/rho
+        
     # Mapping from material points to nodes
     Um=np.dot(Md,U)
     for i in range(len(Dofs)):
@@ -280,7 +290,14 @@ while T<tfinal:
     
     #  integration of ODE on material points
     for j in range(Mp):
-        U[j,0] = integrateODE(Dt,rho*U[j,0],epsp[j,n],H,Sigy,eta,power,mu,lam)/rho
+        r = scipy.integrate.ode(computeS).set_integrator('vode', method='bdf',order=3)
+        r.set_initial_value(rho*U[j,:],time[n]+Dt/2.).set_f_params(epsp[j,n],lam,mu,H,Sy,eta,power)
+        
+        r.integrate(r.t+Dt/2.)
+        if r.successful():
+            U[j,:] = r.y/rho
+    # for j in range(Mp):
+    #     U[j,0] = integrateODE(Dt,rho*U[j,0],epsp[j,n],H,Sigy,eta,power,mu,lam)/rho
 
             
     if update_position:

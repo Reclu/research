@@ -232,10 +232,7 @@ while T<tfinal:
         # Gradient and constitutive model
         Epsn=Eps
         Eps+=Dt*np.dot(Grad[Dofs,:].T,v[Dofs])
-        if hardening=='kinematic':
-            Sig,Epsp[:,n+1]=stress_update_kin(Eps,Stress[:,n],Epsp[:,n],E,Sigy,H,eta,power,Dt)  
-        elif hardening=='isotropic':
-            Sig,Epsp[:,n+1],p[:,n+1]=stress_update_iso(Eps,Stress[:,n],Epsp[:,n],p[:,n],E,Sigy,H,eta,power,Dt)
+        Sig,p[:,n+1],Epsp[:,n+1] = bilinear(Eps,Sig,Epsp[:,n-1],p[:,n-1],lam,mu,Sigy,H,eta,power,Dt)
             
         # Internal force vector
         Fi[Dofs]=-np.dot(Grad[Dofs,:],np.dot(MD,Sig))/rho

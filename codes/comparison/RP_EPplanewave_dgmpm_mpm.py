@@ -25,10 +25,10 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
     ## 5 fields
-    marker=['+','none','none','|','none','pentagone*','none','triangle*']
-    style=['solid','dotted','solid','solid','solid','solid','solid']
-    thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
+    marker=['none','none','|','none','pentagone*','none','triangle*','none']
+    style=['dashed','solid','solid','solid','solid','solid','dotted']
+    thickness=['very thick','very thick','thick','thin','very thick','thin','thick','very thick']
+    couleur=['Red','Blue','Purple','black','Yellow','black','Green','Orange']
     TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
     TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'},xmin=0.,xmax=6.]');TeXFile.write('\n')
     legend=''
@@ -197,12 +197,12 @@ for i,n1 in enumerate(frames):
     ax1.legend(numpoints=1)
     ax1.grid();ax2.grid()
     plt.show()
-    legend=['usl','usf','dgmpm (ep solver)','dgmpm (ac solver)','exact']
+    legend=['usl 1ppc','dgmpm 1ppc (ep solver)','dgmpm 1ppc (ac solver)','exact']
     temps=time[:-4]
     subtitle=subtitles[i]+r' time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_stress'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([USL["sig"][:,2*n1],USF["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
-    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_epsp'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["epsp"][:,2*n1],USF["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
-    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_velo'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["velo"][:,2*n1],USF["velo"][:,2*n1],DGMPM["Velocity"][:,n1],DGMPM2["Velocity"][:,n1],-np.sign(v0)*Vexact]),legend)
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_stress'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([USL["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_epsp'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
+    export2DTeXFile(str(path)+'/EP_dgmpm_mpm_velo'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["velo"][:,2*n1],DGMPM["Velocity"][:,n1],DGMPM2["Velocity"][:,n1],-np.sign(v0)*Vexact]),legend)
 
 """
 ####################################################################

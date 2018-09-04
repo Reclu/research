@@ -102,16 +102,15 @@ class DGmesh:
                 
             fL = np.abs(SS_star_L)-self.sigy
             fR = np.abs(SS_star_R)-self.sigy
-
             KK_L=3.0*(H/2.0)+(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
-            KK_R=3.0*(H/2.0) +(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
+            KK_R=3.0*(H/2.0)+(mu*(3.0*lam+2.0*mu))/(lam+2.0*mu)
             if debug: print np.abs(Strial),self.sigy,fL,fR,
             if (fL>0.0) and (fR<0.0):
                 if debug : print i," plastic-elastic"
                 #Leftward plastic wave
                 S_starL = ((lam/(2.0*mu))+1.0)*(self.sigy*np.sign(SS_star_L)+ KK_L*EP[2*i])
                 delta1=(S_starL-SL)/(self.rho*self.c)
-                R = WR- WL + delta1*np.array([self.rho*self.c,1.0])
+                R = WR- WL - delta1*np.array([self.rho*self.c,1.0])
                 deltaP = self.computeDelta(R,self.cp,self.c)
                 Wstar = WL + delta1*np.array([self.rho*self.c,1.])+ deltaP[0]*np.array([self.rho*self.cp,1.])
             elif (fL<0.0) and (fR>0.0):
@@ -138,6 +137,7 @@ class DGmesh:
                 # Elastic fluctuations
                 waves = self.computeElasticWaves(delta)
                 Wstar = WL + waves[:,0]
+            if abs(fluxes[2*i,1]-1.28386254e+09)<1.: pdb.set_trace()
             fluxes[2*i,:] = np.array([-Wstar[1],-Wstar[0]])
             fluxes[2*i+1,:] = np.array([-Wstar[1],-Wstar[0]])
         return fluxes
