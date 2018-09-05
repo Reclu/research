@@ -51,15 +51,51 @@ so that the bar assumption holds. Riemann-type initial conditions on the horizon
 
 \subsection{Elastoviscoplastic material}
 
+Juste comparer DGMPM et MPM avec du strang et godunov 1ppc et 2ppc. Stiff $dt/tau=100$ non-stiff $dt/tau=1/50$ bdf3 pour strang. Pas de RK2 godunov car le RK2 n'a une influence que sur la partie convective qui est équivalent au 1ppc Euler.
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff20}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff30}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff45}}
+  \caption{elastic-viscoplastic RP stress (non-stiff)}
+  \label{fig:stress_elastoviscoplastic_RP}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff20}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff30}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff45}}
+  \caption{elastic-viscoplastic RP epsp (non-stiff)}
+  \label{fig:epsp_elastoviscoplastic_RP}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressstiff20}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressstiff30}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressstiff45}}
+  \caption{elastic-viscoplastic RP stress (stiff)}
+  \label{fig:stress_elastoviscoplastic_RP}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff20}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff30}}
+  {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff45}}
+  \caption{elastic-viscoplastic RP epsp (stiff)}
+  \label{fig:epsp_elastoviscoplastic_RP}
+\end{figure}
 
 \subsection{Elastoplastic material}
-Comparison with mpm for 1ppc
+Comparison with mpm for 1ppc which does not involve the treatment of rhs and so the choice of some parameter for integrating it.
 \begin{figure}[h!]
   \centering
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress20}}
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress30}}
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress45}}
-  \caption{elastic-plastic RP stress}
+  \caption{elastic-plastic RP stress (1ppc)}
   \label{fig:stress_elastoplastic_RP}
 \end{figure}
 \begin{figure}[h!]
@@ -67,18 +103,18 @@ Comparison with mpm for 1ppc
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp20}}
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp30}}
   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp45}}
-  \caption{elastic-plastic RP epsp}
+  \caption{elastic-plastic RP epsp (1ppc)}
   \label{fig:epsp_elastoplastic_RP}
 \end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo20}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo30}}
-  {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo45}}
-  \caption{elastic-plastic RP velo}
-  \label{fig:velo_elastoplastic_RP}
-\end{figure}
-Comparison with mpm for 1ppc and 2ppcs with RK2
+% \begin{figure}[h!]
+%   \centering
+%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo20}}
+%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo30}}
+%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo45}}
+%   \caption{elastic-plastic RP velo}
+%   \label{fig:velo_elastoplastic_RP}
+% \end{figure}
+Comparison with mpm for 1ppc and 2ppcs with RK2 (requires additional bc treatment and constitutive). Only ep solver
 \begin{figure}[h!]
   \centering
   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress20}}
