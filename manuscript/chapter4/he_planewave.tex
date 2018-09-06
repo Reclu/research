@@ -1,0 +1,57 @@
+
+Parameters + 100 elems
+% CFL=0.5
+% NTmaxi = 300
+% length = 6.0
+% ppc=1
+% Nelem = 100
+% E = 2.0e11
+% Sigy = 400.0e6
+% rho = 7800.0
+% nu = 0.3
+% lamb = (E*nu)/((1+nu)*(1.-2.*nu))
+% mu = E/(2.*(1.+nu))
+% C=lamb+2.*mu
+% c=np.sqrt(C/rho)
+
+% factor=1.
+% timeOut = 1.*length/c
+% t_order=1
+% timeUnload = 2*timeOut
+
+% sigd = -50.*Sigy
+% v0=0.*Sigy/(rho*c)
+% algo = 'USL'
+% update_position=False
+% mpm_mapping=True
+% limit=-1
+\subsection{Compression impact on a SVK medium}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/he_stress_rare40}}
+  {\input{chapter4/pgfFigures/he_stress_rare80}}
+  \caption{shock stress $-50\sigma^y$}
+  \label{fig:he_rarefaction}
+\end{figure}
+\subsection{Tensile impact on a SVK medium}
+pas de temps recalculé en fonction de la vitesse
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/he_stress_50shock44}}
+  {\input{chapter4/pgfFigures/he_stress_50shock88}}
+  \caption{shock stress $50\sigma^y$}
+  \label{fig:he_shock}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/he_stress_5shock43}}
+  {\input{chapter4/pgfFigures/he_stress_5shock89}}
+  \caption{shock stress lower shock $5\sigma^y$}
+  \label{fig:he_low_shock}
+\end{figure}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

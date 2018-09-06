@@ -1,11 +1,3 @@
-To begin with, let us focus on the problem that has been used in section \ref{sec:MPM} to illustrate shortcomings of the MPM which motivated the derivation of the DGMPM.
-We thus consider an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L$ in direction $\vect{e}_1$. The Cauchy stress and infinitesimal strain tensor are of the form:
-\begin{align*}
-  & \tens{\sigma} = \sigma \: \vect{e}_1\otimes \vect{e}_1 \\
-  & \tens{\eps} = \eps \: \vect{e}_1\otimes \vect{e}_1
-\end{align*}
-so that the bar assumption holds. Riemann-type initial conditions on the horizontal velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed in the bar, that is, $v=v_0>0$ for $x_1\in\[0,L/2\]$ and $v=-v_0$ for $x_1\in \:]L/2,L]$.
-
 
 % Parameters:
 % CFL=0.5
@@ -32,7 +24,8 @@ so that the bar assumption holds. Riemann-type initial conditions on the horizon
 % hardening='kinematic'
 % fvmlimiter=-1
 
-\subsection{Elastoviscoplastic material}
+
+\subsubsection{Elastoviscoplasticity}
 
 Juste comparer DGMPM et MPM avec du strang et godunov 1ppc et 2ppc. Stiff $dt/tau=100$ non-stiff $dt/tau=1/50$ bdf3 pour strang. Pas de RK2 godunov car le RK2 n'a une influence que sur la partie convective qui est équivalent au 1ppc Euler.
 
@@ -72,7 +65,7 @@ Juste comparer DGMPM et MPM avec du strang et godunov 1ppc et 2ppc. Stiff $dt/ta
   \label{fig:epsp_elastoviscoplastic_RP}
 \end{figure}
 
-\subsection{Elastoplastic material}
+\subsubsection{Elastoplasticicity}
 Comparison with mpm for 1ppc which does not involve the treatment of rhs and so the choice of some parameter for integrating it.
 \begin{figure}[h!]
   \centering

@@ -1,0 +1,38 @@
+To begin with, let us focus on the problem that has been used in section \ref{sec:MPM} to illustrate shortcomings of the MPM and that motivated the derivation of the DGMPM.
+We thus consider an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L=6\:m$ in direction $\vect{e}_1$. The Cauchy stress and infinitesimal strain tensor are of the form:
+\begin{align*}
+  & \tens{\sigma} = \sigma \: \vect{e}_1\otimes \vect{e}_1 \\
+  & \tens{\eps} = \eps \: \vect{e}_1\otimes \vect{e}_1
+\end{align*}
+so that the bar assumption holds. Riemann-type initial conditions on the horizontal velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed in the bar, that is, $v=v_0>0$ for $x_1\in\[0,L/2\]$ and $v=-v_0$ for $x_1\in \:]L/2,L]$. In addition, both ends of the domain are traction free. The bar is assumed elastic with density $\rho=7800 \: kg.m^{-3}$, Poisson ration $\nu=0.3$ and Young's modulus $E=2\times 10^{11}\:Pa$.
+The exact solution of this problem \cite[Ch.1]{Wang} has been recalled in section \ref{subsec:charac_Linear_problems} and consists of two elastic discontinuities propagating left and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$, and reflect on the free ends of the bar. 
+
+The domain is discretized with material points in a grid made of $50$ regular cells which contain either one centered particle or two material points symmetrically placed with respect to element centers. Figure \ref{fig:elastic_stress} shows a comparison of stress profiles provided by DGMPM schemes and MPM-USL formulations with the exact solution for an initial velocity set to $v_0=\frac{c}{200}$. 
+\begin{figure}[h!]
+  \centering
+  {\phantomsubcaption \label{subfig:rp_stress1}}
+  {\phantomsubcaption \label{subfig:rp_stress2}}
+  \input{chapter4/pgfFigures/dgmpm_mpm_stress}
+  \caption{Stress solutions of the Riemann problem in an isotropic elastic bar before and after reflection of incident waves on the free boundaries of the bar. Comparison between  }
+  \label{fig:elastic_stress}
+\end{figure}
+We see that no oscillations, diffusion introduced for 2ppc dgmpm while mpm does not change. However RK2 allows to perfectly fit the exact solution \ref{fig:elastic_stress}\subref{subfig:rp_stress1} \ref{fig:elastic_stress}\subref{subfig:rp_stress2}.
+
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/dgmpm_mpm_energies}
+  \caption{elastic RP stress and energies}
+  \label{fig:energy_elastic_RP}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter4/pgfFigures/dgmpm_mpm_velo}}
+  \caption{elastic RP velo}
+  \label{fig:velo_elastic_RP}
+\end{figure}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

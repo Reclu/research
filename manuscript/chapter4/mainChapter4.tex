@@ -1,28 +1,41 @@
 \chapter{Numerical Results}
 \section*{Introduction}
-The Discontinuous Galerkin Material Point Method developed in the previous chapter is now illustrated and compared to other numerical schemes (MPM, FVM, FEM) or analytical solutions. 
-Firstly, one and two-dimensional problems that fall within the infinitesimal theory will be considered for elastic, elastic-viscoplastic and elastoplastic materials in sections \ref{sec:1dhpp_simulations} and \ref{sec:2dhpp_simulations}. The simulations performed in that context show significant improvements enabled by the introduction of DG approximation in the MPM. Second, numerical solutions of problems involving waves travelling in finite deforming solids, for which the dependence on history of constitutive models is neglected, are analyzed in sections \ref{sec:1dhe_simulations} and \ref{sec:2dhe_simulations}.
+The Discontinuous Galerkin Material Point Method developed in the previous chapter is now illustrated and compared to other numerical schemes or analytical solutions. 
+First, problems falling in the small strain framework are considered in section \ref{sec:hpp_simulations}. More specifically, the DGMPM solution of the Riemann problem in an elastic bar is compared MPM ones in section \ref{sec:hpp_bar}. The method is then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{sec:hpp_planewave}, and to the solution of plane strain problems in sections \ref{sec:el_planestrain} and \ref{sec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact solutions are then shown.
+%one and two-dimensional problems that fall within the infinitesimal theory will be considered for elastic, elastic-viscoplastic and elastoplastic materials in sections \ref{sec:hpp_bar} and \ref{sec:hpp_planewave}.
 
-%%Study the influence of the number of material points per cell in simulations + comparison MPM
+Second, attention is paid to problems involving waves travelling in finite deforming solids, for which the dependence on history of constitutive models is neglected in section \ref{sec:he_simulations}. For that purpose, the propagation of plane waves in a hyperelastic Saint-Venant-Kirchhoff medium and a plane strain state problem in a Neo-Hookean solid are considered in sections \ref{sec:he_planewave} and \ref{sec:he_plate}. The DGMPM simulations performed on the former cases are compared to the MPM solution and the exact one (see section \ref{sec:SVK_solution}) while the solution of the latter is compared to MPM and FEM simulations.
 
-\section{Bar problems -- Linearized geometrical framework}
-\label{sec:1dhpp_simulations}
-\input{chapter4/1dhpp}
 
-\section{Two-dimensional small strain problems}
-\label{sec:2dhpp_simulations}
-\input{chapter4/2dhpp}
+\section{Linearized geometrical framework}
+\label{sec:hpp_simulations}
 
-% \section{Hypoelastic solids}
-% Run again the test case with an updated CFL if many ppcs. Also look at the mass matrix that is probably zero for first node, the grid must be moved or something like that.
+\subsection{Riemann problem in an isotropic elastic bar}
+\label{sec:hpp_bar}
+\input{chapter4/elasticBar}
 
-\section{Plane wave problems -- Large strains framework}
-\label{sec:1dhe_simulations}
-\input{chapter4/1dhe}
+\subsection{Plane wave in a history dependent material}
+\label{sec:hpp_planewave}
+\input{chapter4/hpp_planewave}
 
-\section{Two-dimensional large strains problem}
-\label{sec:2dhe_simulations}
-\input{chapter4/2dhe}
+\subsection{Plane strain problem -- Elasticity}
+\label{sec:el_planestrain}
+\input{chapter4/elasticplate}
+\subsection{Plane strain problem -- Elastoplasticity}
+\label{sec:ep_planestrain}
+\input{chapter4/plasticplate}
+
+\section{Large strains framework}
+\label{sec:he_simulations}
+\subsection{Plane wave in a hyperelastic medium}
+\label{sec:he_planewave}
+\input{chapter4/he_planewave}
+
+\subsection{Plane strain problem}
+\label{sec:he_plate}
+\input{chapter4/he_plate}
+
+
 
 \section{Conclusion}
 %%% Local Variables:
