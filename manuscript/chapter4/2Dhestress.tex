@@ -1,0 +1,62 @@
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=3 by 3,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=1.ex,
+      vertical sep=2ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.25\linewidth,
+    colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
+      ,at={(current axis.south east)},anchor=south west
+    }]
+    %% FIRST ROW (time 1 = 2.3e-4s)
+    %%% RANGE -6.5e9 -- 100e9
+    \nextgroupplot[ylabel={$t=2.3\times 10^{-4} \:s$},title={(a) FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_fem_stress53.png};
+    \nextgroupplot[title={(a) DGMPM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_dgmpm_stress53.png};
+    \nextgroupplot[title={(c) MPM},
+    colorbar,colorbar style={
+      title= {$\sigma_{11}\: (GPa)$},
+      ytick={-0.65,10},
+      yticklabels={-6.5,100},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-.65) (0.,10)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_stress53.png};
+
+    %% SECOND ROW (time 2 =6.5e-4s)
+    %%% RANGE -7.1e9 -- 210e9
+    \nextgroupplot[ylabel={$t=6.5\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_fem_stress176.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_dgmpm_stress176.png};
+    \nextgroupplot[colorbar,colorbar style={
+      title= {$\sigma_{11}\: (GPa)$},
+      ytick={-0.71,21.},
+      yticklabels={-7.1,210},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.71) (0.,21)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_stress176.png};
+
+    %% THIRD ROW (time 2 =1.4e-3s)
+    %%% RANGE -5.9e9 -- 330e9
+    \nextgroupplot[ylabel={$t=1.4\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_fem_stress444.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_dgmpm_stress444.png};
+    \nextgroupplot[colorbar,colorbar style={
+      title= {$\sigma_{11}\: (GPa)$},
+      ytick={-0.59,33.},
+      yticklabels={-5.9,330},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.59) (0.,33.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_stress444.png};
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

@@ -1,64 +1,57 @@
-\begin{figure}\centering
-  \begin{tikzpicture}
-    \begin{groupplot}[group style={group size=3 by 3,
-        ylabels at=edge left, yticklabels at=edge left,
-        horizontal sep=.5ex,
-        vertical sep=2ex,},
-      enlargelimits=0,
-      xmin=0.,xmax=1., ymin=-0.,ymax=1.
-      ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.25\linewidth,
-      colorbar style={
-        title style={
-          font=\scriptsize,
-          at={(1,.5)},
-          anchor=north west
-        },yticklabel style={font=\scriptsize}
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=3 by 3,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=1.ex,
+      vertical sep=5ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.27\linewidth,
+    colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
       ,at={(current axis.south east)},anchor=south west
-      }]
-      %% FIRST ROW (first stress sigma11)
-      %%% RANGE -4.8e7 -- 1.1e9
-      \nextgroupplot[title={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_stress77.png};
-      \nextgroupplot[title={DGMPM 1ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_stress77.png};
-      %\nextgroupplot[title={DGMPM 4ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_stress_77.png};
-      \nextgroupplot[title={DGMPM 4ppc},
-      colorbar,colorbar style={
-        title= {$\sigma_{11}\: (GPa)$},
-        ytick={-0.048,1.1},
-        %yticklabels={0,0.5,1},
-      }]
-      \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.048) (0.,1.1)};% Fake extreme values to fix scale
-      \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_stress77.png};
-
-      %% SECOND ROW (first plastic strain epsp11)
-      %%% RANGE -4.3e-5 -- 3.9e-3
-      \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_epsp77.png};
-      \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_epsp77.png};
-      %\nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_epsp_77.png};
-      \nextgroupplot[colorbar,colorbar style={
-        title= {$\eps_{11}\cdot 10^{-3}$},
-        ytick={-0.043,3.9},
-        %yticklabels={0,0.5,1},
-      }]
-      \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.043) (0.,3.9)};% Fake extreme values to fix scale
-      \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_epsp77.png};
-      
-      %% THIRD ROW (equivalent plastic strain)
-      %%% RANGE 0 -- 4.3e-3
-      \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p77.png};
-      \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p77.png};
-      %\nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_p_77.png};
-      \nextgroupplot[colorbar,colorbar style={
-        title= {$p \cdot 10^{-3}$},
-        ytick={0.,4.3},
-        %yticklabels={0,0.5,1},
-      }]
-      \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,4.3)};% Fake extreme values to fix scale
-      \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p77.png};
-      \end{groupplot}
-  \end{tikzpicture}
-  \caption{time $t=3.5e-4s$}
-  \label{fig:2dEP_comparison1}
-\end{figure}
+    }]
+    %% FIRST ROW (first stress sigma11)
+    %%% RANGE -4.8e7 -- 1.1e9
+    \nextgroupplot[title={(a) FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_stress77.png};
+    \nextgroupplot[title={(b) DGMPM 1ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_stress77.png};
+    \nextgroupplot[title={(c) DGMPM 4ppc},
+    colorbar,colorbar style={
+      title= {$\sigma_{11}\: (MPa)$},
+      ytick={-0.048,1.1},
+      yticklabels={-48,1.1e3},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.048) (0.,1.1)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_stress77.png};
+    
+    %% SECOND ROW (first plastic strain epsp11)
+    %%% RANGE -4.3e-5 -- 3.9e-3
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_epsp77.png};
+    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_epsp77.png};
+    \nextgroupplot[colorbar,colorbar style={
+      title= {$\eps^p_{11}$},
+      ytick={-0.043,3.9},
+      yticklabels={-4.3e-5,3.9e-3},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.043) (0.,3.9)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_epsp77.png};
+    
+    %% THIRD ROW (equivalent plastic strain)
+    %%% RANGE 0 -- 4.3e-3
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p77.png};
+    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p77.png};
+    \nextgroupplot[colorbar,colorbar style={
+      title= {$p$},
+      ytick={0.,4.3},
+      yticklabels={0,4.3e-3},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,4.3)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p77.png};
+  \end{groupplot}
+\end{tikzpicture}
 
 
 
