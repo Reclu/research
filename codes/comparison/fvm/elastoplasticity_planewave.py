@@ -287,5 +287,5 @@ for i in range(NTmaxi)[1:]:
 
 increments=i
 sig=sig[2:-2,:increments]
-EP=EP[2:-2,:increments]
+epsp=EP[2:-2,:increments]
 v=v[2:-2,:increments]
