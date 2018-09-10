@@ -56,8 +56,8 @@ v = np.zeros((len(y)+4,NTmaxi))
 disp = np.zeros((len(y)+4,NTmaxi))
 eps = np.zeros((len(y)+4,NTmaxi))
 sig = np.zeros((len(y)+4,NTmaxi))
-EP = np.zeros((len(y)+4,NTmaxi))
-EPeq = np.zeros((len(y)+4,NTmaxi))
+epsp = np.zeros((len(y)+4,NTmaxi))
+epspeq = np.zeros((len(y)+4,NTmaxi))
 U = np.zeros((len(y)+4,2))
 matC = np.zeros(len(y)+4)
 matCp = np.zeros(len(y)+4)
@@ -140,7 +140,7 @@ def philim(a,b,meth):
         philim = 1.0                                   #Lax-Wendroff
     return philim
 
-def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
+def EP_RiemannSolver(U,epspeq,rho,matC,matCp,Sigy,H,hardening):
     #Allocation of fluctuations arrays
     amdq = np.zeros((Nelem+3,U.shape[1]))
     apdq = np.zeros((Nelem+3,U.shape[1]))
@@ -155,11 +155,11 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
         alpha = computeAlpha(dU,rho[i],rho[i+1],matC[i],matC[i+1])
         Strial = SL+alpha[0]*rho[i]*matC[i]
         #Tests on the criterion
-        fL = np.abs(Strial)-H[i]*EPeq[i]-Sigy[i]
-        fR = np.abs(Strial)-H[i+1]*EPeq[i+1]-Sigy[i+1]
+        fL = np.abs(Strial)-H[i]*epspeq[i]-Sigy[i]
+        fR = np.abs(Strial)-H[i+1]*epspeq[i+1]-Sigy[i+1]
         if hardening == 'isotropic':
-            yieldL=H[i]*EPeq[i]+Sigy[i]
-            yieldR=H[i+1]*EPeq[i+1]+Sigy[i+1]
+            yieldL=H[i]*epspeq[i]+Sigy[i]
+            yieldR=H[i+1]*epspeq[i+1]+Sigy[i+1]
             StrialL= Strial
             StrialR= Strial
             hardL=0.
@@ -169,14 +169,14 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             yieldR=Sigy[i+1]
             StrialL= Strial
             StrialR= Strial
-            hardL=H[i]*EPeq[i]
-            hardR=H[i+1]*EPeq[i+1]
+            hardL=H[i]*epspeq[i]
+            hardR=H[i+1]*epspeq[i+1]
                 
         fL = np.abs(StrialL)- yieldL
         fR = np.abs(StrialR)- yieldR
         if (fL>0.0) and (fR<0.0):
             #Leftward plastic wave
-            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*EPeq[i])-SL)/(rho[i]*matC[i])
+            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*epspeq[i])-SL)/(rho[i]*matC[i])
             alpha1 = (hardL+np.sign(StrialL)*(yieldL)-SL)/(rho[i]*matC[i])
             R = U[i+1,:]-U[i,:]-alpha1*np.array([rho[i]*matC[i],1.0])
             alphaA = computeAlpha(R,rho[i],rho[i+1],matCp[i],matC[i+1])
@@ -188,7 +188,7 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,3]*waves[i,:,3]
         elif (fL<0.0) and (fR>0.0):
             #Rightward plastic wave
-            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*EPeq[i+1])-SR)/(rho[i+1]*matC[i+1])
+            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*epspeq[i+1])-SR)/(rho[i+1]*matC[i+1])
             alpha2 = (hardR+np.sign(StrialR)*(yieldR)-SR)/(rho[i+1]*matC[i+1])
             R = U[i+1,:]-U[i,:]-alpha2*np.array([-rho[i+1]*matC[i+1],1.0])
             alphaA = computeAlpha(R,rho[i],rho[i+1],matC[i],matCp[i+1])
@@ -200,8 +200,8 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,2]*waves[i,:,2]+s[i,3]*waves[i,:,3]
         elif (fL>0.0) and (fR>0.0):
             #Four waves
-            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*EPeq[i])-SL)/(rho[i]*matC[i])
-            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*EPeq[i+1])-SR)/(rho[i+1]*matC[i+1])
+            #alpha1 = (np.sign(Strial)*(Sigy[i]+H[i]*epspeq[i])-SL)/(rho[i]*matC[i])
+            #alpha2 = (np.sign(Strial)*(Sigy[i+1]+H[i+1]*epspeq[i+1])-SR)/(rho[i+1]*matC[i+1])
             alpha1 = (hardL+np.sign(StrialL)*(yieldL)-SL)/(rho[i]*matC[i])
             alpha2 = (hardR+np.sign(StrialR)*(yieldR)-SR)/(rho[i+1]*matC[i+1])
             R = U[i+1,:]-U[i,:]-alpha1*np.array([rho[i]*matC[i],1.0])-alpha2*np.array([-rho[i+1]*matC[i+1],1.0])
@@ -222,19 +222,19 @@ def EP_RiemannSolver(U,EPeq,rho,matC,matCp,Sigy,H,hardening):
             apdq[i,:] = s[i,3]*waves[i,:,3]
     return amdq,apdq,waves,s
 
-def conservativeUpdate(U,EPeqn,dt0dx,amdq,apdq,cqxx,limit):
-    EPeq = np.zeros(len(y)+4)
+def conservativeUpdate(U,epspeqn,dt0dx,amdq,apdq,cqxx,limit):
+    epspeq = np.zeros(len(y)+4)
     for i in range(Nelem+2)[2:]:
         U[i,:] -= dt0dx*(apdq[i-1,:]+amdq[i,:])
         if (limit):
             U[i,:] -= (dt0dx/2.0)*(cqxx[i,:]-cqxx[i-1,:])
     #Update of the cumulated plastic strain
     for i in range(Nelem+3):
-        EPeq[i] = EPeqn[i]
-        f = np.abs(U[i,0])-H[i]*EPeqn[i]-Sigy[i]
+        epspeq[i] = epspeqn[i]
+        f = np.abs(U[i,0])-H[i]*epspeqn[i]-Sigy[i]
         if (f>0):
-            EPeq[i] = (np.abs(U[i,0])-Sigy[i])/H[i]
-    return EPeq
+            epspeq[i] = (np.abs(U[i,0])-Sigy[i])/H[i]
+    return epspeq
 
 CFL = 1.0
 dx = x[1]-x[0]
@@ -254,24 +254,24 @@ for i in range(NTmaxi)[1:]:
     
     ###Elastic-plastic Riemann solver and computation of fluctuations
     if hardening=='isotropic':
-        amdq,apdq,waves,s = EP_RiemannSolver(U,EPeq[:,i-1],rho,matC,matCp,Sigy,H,hardening)
+        amdq,apdq,waves,s = EP_RiemannSolver(U,epspeq[:,i-1],rho,matC,matCp,Sigy,H,hardening)
     elif hardening=='kinematic':
-        amdq,apdq,waves,s = EP_RiemannSolver(U,EP[:,i-1],rho,matC,matCp,Sigy,H,hardening)
+        amdq,apdq,waves,s = EP_RiemannSolver(U,epsp[:,i-1],rho,matC,matCp,Sigy,H,hardening)
     #Compute limited waves
     cqxx = computeLimitedWaves(waves,s,mthlim,dt/dx)
     #Conservative update and update of the plastic strain
-    EPeq[:,i] = conservativeUpdate(U,EPeq[:,i-1],dt/dx,amdq,apdq,cqxx,limit)
+    epspeq[:,i] = conservativeUpdate(U,epspeq[:,i-1],dt/dx,amdq,apdq,cqxx,limit)
     #Store results
     sig[:,i] = U[:,0]
     v[:,i] = U[:,1]
     #Update of other fields
-    EP[:,i] = EP[:,i-1]+(EPeq[:,i]-EPeq[:,i-1])*np.sign(sig[:,i])
-    eps[:,i] = sig[:,i]/E_A + EP[:,i]
+    epsp[:,i] = epsp[:,i-1]+(epspeq[:,i]-epspeq[:,i-1])*np.sign(sig[:,i])
+    eps[:,i] = sig[:,i]/E_A + epsp[:,i]
     #pdb.set_trace()
     disp[:,i] = disp[:,i-1] + v[:,i]*dt
     if (t[i]==timeOut):
         break
 increments=i
 sig=sig[2:-2,:increments]
-EP=EP[2:-2,:increments]
+epsp=epsp[2:-2,:increments]
 v=v[2:-2,:increments]

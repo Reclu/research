@@ -59,8 +59,8 @@ Sigy = np.zeros(len(y)+4)
 H = np.zeros(len(y)+4)
 eta = np.zeros(len(y)+4)
 n = np.zeros(len(y)+4)
-EP = np.zeros((len(y)+4,NTmaxi))
-dEP = np.zeros((len(y)+4,NTmaxi))
+epsp = np.zeros((len(y)+4,NTmaxi))
+depsp = np.zeros((len(y)+4,NTmaxi))
 
 
 #Initial conditions et definition properties
@@ -177,16 +177,16 @@ def conservativeUpdate(U,dt0dx,amdq,apdq,cqxx,limit):
 def positive_part(x):
     return 0.5*(x+np.abs(x))
 
-def creep_law(f,S,EP,H,eta,n):
-    return ((positive_part(f)/eta)**n)*np.sign(S-H*EP)
+def creep_law(f,S,epsp,H,eta,n):
+    return ((positive_part(f)/eta)**n)*np.sign(S-H*epsp)
 
-def criterion(S,EP,H,Sigy):
-    return (np.abs(S-H*EP)-Sigy)
+def criterion(S,epsp,H,Sigy):
+    return (np.abs(S-H*epsp)-Sigy)
 
-def computeS(t,U,EP,E,H,Sigy,eta,n):
+def computeS(t,U,epsp,E,H,Sigy,eta,n):
     S = np.zeros(len(U))
-    f = criterion(U[0],EP,H,Sigy)
-    S[0] = -E*creep_law(f,U[0],EP,H,eta,n)
+    f = criterion(U[0],epsp,H,Sigy)
+    S[0] = -E*creep_law(f,U[0],epsp,H,eta,n)
     S[1] = 0
     return S
 
@@ -208,8 +208,11 @@ for i in range(NTmaxi)[1:]:
         if r.successful():
             U[j,:] = r.y
     # for j in range(Nelem+4):
-    #     U[j,0] = integrateODE(dt/2.,U[j,0],EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
-
+    #     r = ode(computeS).set_integrator('vode', method='bdf')
+    #     r.set_initial_value(U[j,:],t[i-1]).set_f_params(epsp[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
+    #     r.integrate(r.t+(dt/2.0))
+    #     if r.successful():
+    #         U[j,:] = r.y
     #Apply boundary conditions: reflective boundaries on the left
     U[0,0] = -U[3,0] ; U[0,1] = U[3,1]
     U[1,0] = -U[2,0] ; U[1,1] = U[2,1]
@@ -227,8 +230,8 @@ for i in range(NTmaxi)[1:]:
     #     U[j,0] = integrateODE(dt/2.,U[j,0],EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
     for j in range(Nelem+4):
         r = ode(computeS).set_integrator('lsoda', method='bdf')
-        r.set_initial_value(U[j,:],t[i]).set_f_params(EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
-        r.integrate(r.t+(dt/2.))
+        r.set_initial_value(U[j,:],t[i]).set_f_params(epsp[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
+        r.integrate(r.t+(dt))
         if r.successful():
             test[j]=1
             U[j,:] = r.y
@@ -237,14 +240,14 @@ for i in range(NTmaxi)[1:]:
     #Update of fields and Store results
     sig[:,i] = U[:,0]
     v[:,i] = U[:,1]
-    f = criterion(sig[:,i],EP[:,i-1],H,Sigy)
-    EP[:,i] = EP[:,i-1] + creep_law(f,sig[:,i],EP[:,i-1],H,eta,n)*dt
-    dEP[:,i] = (EP[:,i] - EP[:,i-1])/dt
+    f = criterion(sig[:,i],epsp[:,i-1],H,Sigy)
+    epsp[:,i] = epsp[:,i-1] + creep_law(f,sig[:,i],epsp[:,i-1],H,eta,n)*dt
+    depsp[:,i] = (epsp[:,i] - epsp[:,i-1])/dt
     #Update of the displacement field
     disp[:,i] = disp[:,i-1] + v[:,i]*dt
     if (t[i]==timeOut):
         increments=i
         break
 sig=sig[2:-2,:increments]
-EP=EP[2:-2,:increments]
+epsp=epsp[2:-2,:increments]
 print "itegrations failed :",abs(len(pfj)-increments)

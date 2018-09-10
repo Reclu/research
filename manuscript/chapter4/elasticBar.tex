@@ -5,33 +5,32 @@ We thus consider an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ 
   & \tens{\eps} = \eps \: \vect{e}_1\otimes \vect{e}_1
 \end{align*}
 so that the bar assumption holds. Riemann-type initial conditions on the horizontal velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed in the bar, that is, $v=v_0>0$ for $x_1\in\[0,L/2\]$ and $v=-v_0$ for $x_1\in \:]L/2,L]$. In addition, both ends of the domain are traction free. The bar is assumed elastic with density $\rho=7800 \: kg.m^{-3}$, Poisson ration $\nu=0.3$ and Young's modulus $E=2\times 10^{11}\:Pa$.
-The exact solution of this problem \cite[Ch.1]{Wang} has been recalled in section \ref{subsec:charac_Linear_problems} and consists of two elastic discontinuities propagating left and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$, and reflect on the free ends of the bar. 
+The exact solution of this problem \cite[Ch.1]{Wang} has been recalled in section \ref{subsec:charac_Linear_problems} and consists of two elastic discontinuities propagating left and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$. 
 
-The domain is discretized with material points in a grid made of $50$ regular cells which contain either one centered particle or two material points symmetrically placed with respect to element centers. Figure \ref{fig:elastic_stress} shows a comparison of stress profiles provided by DGMPM schemes and MPM-USL formulations with the exact solution for an initial velocity set to $v_0=\frac{c}{200}$. 
+The domain is discretized with material points in a grid made of $50$ regular cells which contain either one centered particle or two material points symmetrically placed with respect to element centers. The problem is solved with the DGMPM coupled with both Euler and RK2 time integration, and MPM formulations. Since more numerical noise appears in the USF formulation of the MPM (see section \ref{sec:MPM}), only the USL implementation is used. In addition, the projection of the updated velocity from nodes to particles is made by means of both PIC and FLIP back mappings for the 1 Particle Per Cell (ppc) discretization, and of FLIP projection only for the 2ppc discretization. The Courant number is set to $1/2$ for MPM implementations while that of DGMPM schemes satisfy the stability condition \eqref{eq:stability} derived in section \ref{sec:DGMPM_analysis}.
+
+Figure \ref{fig:elastic_stress} numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
 \begin{figure}[h!]
   \centering
-  {\phantomsubcaption \label{subfig:rp_stress1}}
-  {\phantomsubcaption \label{subfig:rp_stress2}}
-  \input{chapter4/pgfFigures/dgmpm_mpm_stress}
-  \caption{Stress solutions of the Riemann problem in an isotropic elastic bar before and after reflection of incident waves on the free boundaries of the bar. Comparison between  }
+  {\phantomsubcaption \label{subfig:rp_elastic1}}
+  {\phantomsubcaption \label{subfig:rp_elastic2}}
+  % \input{chapter4/pgfFigures/dgmpm_mpm_stress}
+  \input{chapter4/pgfFigures/dgmpm_mpm_elasticity}
+  \caption{Stress (first row) and velocity (second row) solutions of the Riemann problem in an isotropic elastic at two different times (columns \subref{subfig:rp_elastic1} and \subref{subfig:rp_elastic2}). Comparison between DGMPM coupled with Euler or RK2 time integration, MPM-USL formulation using either PIC and FLIP mapping of the updated velocity, and the exact solution for an initial velocity set to $v_0=\frac{c}{200}$.}
   \label{fig:elastic_stress}
 \end{figure}
-We see that no oscillations, diffusion introduced for 2ppc dgmpm while mpm does not change. However RK2 allows to perfectly fit the exact solution \ref{fig:elastic_stress}\subref{subfig:rp_stress1} \ref{fig:elastic_stress}\subref{subfig:rp_stress2}.
-
+First, since Courant number can be set at one for the DGMPM-Euler when 1ppc is used, the method allows to capture the discontinuities and yield solutions fiting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while in that case the DGMPM-Euler exhibits a more restrictive stability condition that prevents the accurate resolution of waves. Nevertheless, as expected by the PIC mapping it uses, DGMPM formulations do not suffer from oscillations. 
+%%
+Second, this projection of updated fields from nodes to particles that allows to avoid the locking of velocity in the central region in USL solution also enables the correct assessment of the velocity with DGMPM schemes.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/dgmpm_mpm_energies}
-  \caption{elastic RP stress and energies}
+  \caption{Evolution of total energy $e$ for DGMPM and MPM-USL solutions on the Riemann problem in an elastic bar.}
   \label{fig:energy_elastic_RP}
 \end{figure}
-
-
-\begin{figure}[h!]
-  \centering
-  {\input{chapter4/pgfFigures/dgmpm_mpm_velo}}
-  \caption{elastic RP velo}
-  \label{fig:velo_elastic_RP}
-\end{figure}
+%%
+At last, the introduction of DG approximation within the USL-PIC leads to a reduction of numerical diffusion, though less significant than that permitted by using FLIP mapping as originally proposed for the MPM. This can be seen in figure \ref{fig:energy_elastic_RP} in which the evolution of total energy is depicted for every methods.
+One can also see in this figure that the situations for which the CFL number is set to unity for DGMPM formulations, leads to an exact conservation of the total energy during the computation.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

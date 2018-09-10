@@ -60,6 +60,59 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile.write('\n')
     TeXFile.close()
 
+def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend,*kwargs):
+    row=len(rowFields)
+    col=len(colFields)
+    fields_in_plots=len(containers)
+    marker=['+','none','none','|','none','pentagone*','none','triangle*']
+    style=['solid','dotted','solid','solid','solid','solid','solid']
+    thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
+    couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
+
+    TeXFile=open(fileName,"w")
+    # Define Paul Tol's colors (purple to red)
+    TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{groupplot}[group style={group size='+str(col)+' by '+str(row)+',');TeXFile.write('\n')
+    TeXFile.write('ylabels at=edge left, yticklabels at=edge left,horizontal sep=2.ex,');TeXFile.write('\n')
+    TeXFile.write('vertical sep=4ex,xticklabels at=edge bottom,xlabels at=edge bottom},');TeXFile.write('\n')
+    if row==1:
+        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,'+str(Ylabels)+',xlabel=x (m),');TeXFile.write('\n')
+    else:
+        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,xlabel=$x (m)$,');TeXFile.write('\n')
+    TeXFile.write('axis on top,scale only axis,width=0.32\linewidth');TeXFile.write('\n')
+    TeXFile.write(']');TeXFile.write('\n')
+    for i,field in enumerate(rowFields): ## sum over rows
+        for j in range(col):
+            TeXFile.write(r'\nextgroupplot[')
+            if i==0: TeXFile.write(r'title={'+str(titles[j])+'},')
+            if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',')
+            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.25,-0.45)+(0.cm,1cm)$)},legend columns=5}')
+            TeXFile.write(']');TeXFile.write('\n')
+            for k in range(fields_in_plots):
+                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=2pt] coordinates{')
+                #pdb.set_trace()
+                FIELD=containers[k][field][:,colFields[j][k]]
+                xFields=containers[k]["pos"][:,colFields[j][k]]
+                for l in range(len(FIELD)):
+                    TeXFile.write('('+str(xFields[l])+','+str(FIELD[l])+') ')
+                TeXFile.write('};\n')
+    for lab in legend:
+        TeXFile.write(r'\addlegendentry{'+str(lab)+'}');TeXFile.write('\n')
+    TeXFile.write('\n')    
+    TeXFile.write(r'\end{groupplot}')
+    TeXFile.write('\n')
+    TeXFile.write('\end{tikzpicture}')
+    TeXFile.write('\n')
+    TeXFile.write('%%% Local Variables:')
+    TeXFile.write('\n')
+    TeXFile.write('%%% mode: latex')
+    TeXFile.write('\n')
+    TeXFile.write('%%% TeX-master: "../../mainManuscript"')
+    TeXFile.write('\n')
+    TeXFile.write('%%% End:')
+    TeXFile.write('\n')
+    TeXFile.close()
+
 
 def export2pgfPlot(fileName,xfield,yfield,xlabel,ylabel):
     #pdb.set_trace()
@@ -144,6 +197,9 @@ rcParams['legend.fontsize'] = 16
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
 frames=[45,65,95]
 frames=[20,30,45]
+titles=[]
+sig_th=np.zeros((len(DGMPM["pos"][:,0]),len(frames)))
+epsp_th=np.zeros((len(DGMPM["pos"][:,0]),len(frames)))
 
 for i,n1 in enumerate(frames):
     time = '%.2e' % FVM["t"][n1]
@@ -157,6 +213,10 @@ for i,n1 in enumerate(frames):
         Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     elif hardening=='kinematic':
         Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+
+    sig_th[:,i]=-np.sign(v0)*Sexact
+    epsp_th[:,i]=-np.sign(v0)*Epexact
+
     ax1.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'r',lw=2.,ms=4.,label='DGMPM (ep solver)')
     ax1.plot(FVM["centroids"],FVM["sig"][:,n1],'g',lw=2.,ms=4.,label='FVM')
     ax1.plot(FVM2["centroids"],FVM2["sig"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
@@ -167,8 +227,8 @@ for i,n1 in enumerate(frames):
     ax1.set_ylabel(r'$\sigma (Pa)$')
 
     ax2.plot(DGMPM["pos"][:,n1],DGMPM["epsp"][:,n1],'r',lw=2.,ms=4.,label='DGMPM (ep solver)')
-    ax2.plot(FVM["centroids"],FVM["EP"][:,n1],'g',lw=2.,ms=4.,label='FVM')
-    ax2.plot(FVM2["centroids"],FVM2["EP"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
+    ax2.plot(FVM["centroids"],FVM["epsp"][:,n1],'g',lw=2.,ms=4.,label='FVM')
+    ax2.plot(FVM2["centroids"],FVM2["epsp"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
     ax2.plot(FEM["centroids"],FEM["epsp"][:,n1],'c',lw=2.,ms=4.,label='FEM')
     ax2.plot(FVM["centroids"],-np.sign(v0)*Epexact,'k',lw=2.,ms=4.,label='exact')
     ax2.set_title('Plastic strain at time t='+str(time)+' s.')
@@ -179,10 +239,23 @@ for i,n1 in enumerate(frames):
     plt.show()
     legend=['dgmpm','fem','fvm','fvm (SB)','exact']
     temps=time[:-4]
-    subtitle=subtitles[i]+r' time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    export2DTeXFile(str(path)+'/EP_dgmpm_fvm_stress'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([DGMPM["sig"][:,n1],FEM["sig"][:,n1],FVM["sig"][:,n1],FVM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
-    export2DTeXFile(str(path)+'/EP_dgmpm_fvm_epsp'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\epsilon^p$',str(subtitle),np.array([DGMPM["epsp"][:,n1],FEM["epsp"][:,n1],FVM["EP"][:,n1],FVM2["EP"][:,n1],-np.sign(v0)*Epexact]),legend)
+    subtitle=subtitles[i]+r' $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
+    titles.append(subtitle)
+    #export2DTeXFile(str(path)+'/EP_dgmpm_fvm_stress'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([DGMPM["sig"][:,n1],FEM["sig"][:,n1],FVM["sig"][:,n1],FVM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
+    #export2DTeXFile(str(path)+'/EP_dgmpm_fvm_epsp'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\epsilon^p$',str(subtitle),np.array([DGMPM["epsp"][:,n1],FEM["epsp"][:,n1],FVM["epsp"][:,n1],FVM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
     
+fileName=str(path)+'/ep_dgmpm_fvm_fem.tex'
+Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["sig"]=sig_th;Exact["epsp"]=epsp_th
+FEM["pos"]=DGMPM["pos"];FVM["pos"]=DGMPM["pos"];FVM2["pos"]=DGMPM["pos"]
+# DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]
+containers=np.array([DGMPM,FEM,FVM,FVM2,Exact])
+rowFields=['sig','epsp']
+colFields=np.array([[20,20,20,20,0],[30,30,30,30,1],[45,45,45,45,2]])
+legend=['dgmpm','fem','fvm','fvm (SB)','exact']
+Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
+
+export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
+
 
 """
 ####################################################################

@@ -63,7 +63,7 @@ def export2pgfPlot(fileName,xfield,yfield,xlabel,ylabel):
 
 ###Opening the files and computation of the solution by each method
 ###Parameters####
-CFL=0.7
+CFL=0.5
 NTmaxi = 300
 length = 6.0
 ppc=1
