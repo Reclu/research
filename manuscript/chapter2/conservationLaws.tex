@@ -449,6 +449,7 @@ which is positive-definite for positive linear hardening ($C>0 \:;\: R'>0$).
 
 
 \subsection{The general formulation}
+\label{sec:general-formulation}
 Balance and constitutive equations obtained previously are now summarized for various class of materials and regime of deformations. Recall that the deformations are assumed isothermal and that history effects are considered within the infinitesimal theory only.
 
 \subsubsection*{Hyperelasticity}
@@ -515,7 +516,7 @@ where:
 \begin{equation*}
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
-in which symmetries of the elastic stiffness tensor have been used. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule \eqref{eq:flow_rule_plast}.
+in which symmetries of the elastic stiffness tensor have been used. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule \eqref{eq:flow_rule_plast}. \thomas{Moreover, the source term arrising due to the viscoplastic flow rule \eqref{eq:EVP_plastic_strain_rate} can be written in terms of a relaxation term $\bar{\Scb}$ and a relaxation time $\tau=(\eta/\sigma^y)^n$ as $\Scb=\bar{\Scb}/\tau$ \cite{Thomas_EVP}, so that the system \eqref{eq:HPP_quasi-linear} can be identified to a \textit{relaxation system} \cite{Relaxation_syst}. In the asymptotic limit $\tau \rightarrow 0$ or in the \textit{vanishing viscosisty limit}, system \eqref{eq:HPP_quasi-linear} tends to the \textit{equilibrium system} corresponding to elastoplasticity \cite{Thomas_EVP}.}
 
 \subsubsection*{Elastoplasticity}
 The writing of a conservative form for elastoplasticity is similar to what was done for hyperelastic solids. Indeed, the system composed of kinematic laws \eqref{eq:HPP_kinematic} and the balance equation of linear momentum \eqref{eq:HPP_linear_momentum}:
