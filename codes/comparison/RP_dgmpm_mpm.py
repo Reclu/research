@@ -22,11 +22,11 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     n_fields = np.shape(yfields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
-    marker=['none','none','none','|','x','pentagone*','none','triangle*']
-    style=['dashed','densely dotted','solid','solid','only marks','solid','solid']
-    thickness=['very thick','very thick','very thick','very thick','thick','thin','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','Green','black','Yellow','black','Green']
-    TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
+    marker=['none','*','none','none','|','x','none','none','triangle*']
+    style=['dashed','solid','densely dotted','solid','solid','only marks','solid','solid']
+    thickness=['very thick','thin','very thick','very thick','very thick','thick','thin','thin','thick']
+    couleur=['Red','Duck','Orange','Blue','Purple','Green','black','Yellow','black','Green']
+    TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
     TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'},xmin=0.,xmax=6.]');TeXFile.write('\n')
     legend=''
     for i in range(n_fields):
@@ -38,7 +38,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
         for j in range(np.shape(yfields[i])[0]):
             TeXFile.write('('+str(xFields[i][j])+','+str(yfields[i][j])+') ')
         TeXFile.write('};\n')
-    if subtitle=='(c) evolution of total energy $e$':
+    if subtitle[:3]=='(c)':
         TeXFile.write(r'\legend{'+str(legend)+'}')
     else:
         TeXFile.write(r'%\legend{'+str(legend)+'}')
@@ -100,6 +100,18 @@ MPM = dict(parameters)
 print 'Computing MPM'
 execfile('mpm/elasticity.py', MPM)
 
+mpm_mapping=False
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening}
+#################
+
+
+##MPM: Material Point Method
+PIC = dict(parameters)
+print 'Computing MPM'
+execfile('mpm/elasticity.py', PIC)
+
+mpm_mapping=True
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening}
 
 ##DGMPM: Discontinuous Galerkin Material Point Method
 DGMPM = dict(parameters)
@@ -159,6 +171,7 @@ factor2=DGMPM2["CFL"]/CFL
 
 ### Energy plots
 plt.plot(MPM["time"][:-1],MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),'b-x',lw=2.,label='mpm 1ppc')
+plt.plot(PIC["time"][:-1],PIC["NRG"][:-1]/max(PIC["NRG"][:-1]),'b-x',lw=2.,label='pic 1ppc')
 plt.plot(MPM2["time"][:-1],MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),'r-x',lw=2.,label='mpm 2ppc')
 plt.plot(DGMPM["time"][:-1],DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),'bo',lw=2.,label='dgmpm 1ppc')
 plt.plot(DGMPM2["time"][:-1],DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),'ro',lw=2.,label='dgmpm 2ppc')
@@ -170,8 +183,8 @@ plt.show()
 # export2pgfPlot('NRG_mpm_2ppc.pgf',MPM2["time"][:-1],MPM2["NRG"][:-1],'t','NRG')
 # export2pgfPlot('NRG_modmpm_1ppc.pgf',DGMPM["time"][:-1],DGMPM["NRG"][:-1],'t','NRG')
 # export2pgfPlot('NRG_modmpm_2ppc.pgf',DGMPM2["time"][:-1],DGMPM2["NRG"][:-1],'t','NRG')
-legend=['usl 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
-export2DTeXFile(str(path)+'/dgmpm_mpm_energies.tex',np.array([MPM["time"][:-1],MPM2["time"][:-1],DGMPM["time"][:-1],DGMPM2["time"][:-1],DGMPM3["time"][:-1],np.array([0.,1.e-8])]),'$time (s)$',r'$\frac{e}{e_{max}}$','(c) evolution of total energy $e$',np.array([MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),DGMPM3["NRG"][:-1]/max(DGMPM3["NRG"][:-1]),np.array([1.,1.])]),legend)
+legend=['usl 1ppc','usl-pic 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+export2DTeXFile(str(path)+'/dgmpm_mpm_energies.tex',np.array([MPM["time"][:-1],PIC["time"][:-1],MPM2["time"][:-1],DGMPM["time"][:-1],DGMPM2["time"][:-1],DGMPM3["time"][:-1],np.array([0.,1.e-8])]),'$time (s)$',r'$\frac{e}{e_{max}}$','(c) evolution of total energy $e$',np.array([MPM["NRG"][:-1]/max(MPM["NRG"][:-1]),PIC["NRG"][:-1]/max(PIC["NRG"][:-1]),MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),DGMPM3["NRG"][:-1]/max(DGMPM3["NRG"][:-1]),np.array([1.,1.])]),legend)
 
 frames=[5,20]
 for n1 in frames:
@@ -188,9 +201,9 @@ for n1 in frames:
     plt.legend(numpoints=1)
     plt.grid()
     plt.show()
-    legend=['usl 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+    legend=['usl 1ppc','usl-pic 1ppc','usl 2ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
     temps=time[:-4]
     if n1==5 : subtitle=r'(a) time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    if n1==20 : subtitle=r'(a) time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    export2DTeXFile(str(path)+'/dgmpm_mpm_diffusion'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],MPM["pos"][:,2*n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["sig"][:,2*n1],MPM2["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,2*n1],DGMPM3["sig"][:,n1],MPM["Sth"][:,2*n1]]),legend)
-    export2DTeXFile(str(path)+'/dgmpm_mpm_velo'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],DGMPM2["pos"][:,2*n1]]),'$x (m)$','$v (m/s)$',str(subtitle),np.array([MPM["velo"][:,2*n1],MPM2["velo"][:,2*n1],DGMPM["velo"][:,n1],DGMPM2["velo"][:,2*n1],DGMPM3["velo"][:,n1],DGMPM2["Vth"][:,2*n1]]),legend)
+    if n1==20 : subtitle=r'(b) time $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
+    export2DTeXFile(str(path)+'/dgmpm_mpm_diffusion'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],PIC["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],MPM["pos"][:,2*n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([MPM["sig"][:,2*n1],PIC["sig"][:,2*n1],MPM2["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,2*n1],DGMPM3["sig"][:,n1],MPM["Sth"][:,2*n1]]),legend)
+    export2DTeXFile(str(path)+'/dgmpm_mpm_velo'+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],PIC["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],DGMPM2["pos"][:,2*n1]]),'$x (m)$','$v (m/s)$',str(subtitle),np.array([MPM["velo"][:,2*n1],PIC["velo"][:,2*n1],MPM2["velo"][:,2*n1],DGMPM["velo"][:,n1],DGMPM2["velo"][:,2*n1],DGMPM3["velo"][:,n1],DGMPM2["Vth"][:,2*n1]]),legend)
