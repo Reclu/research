@@ -1,9 +1,9 @@
-We now move on to a problem involving three-dimensional stress states. Consider a infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L=6\:m$ in direction $\vect{e}_1$. Riemann-type initial conditions similar to those treated above are assumed to yield the following infinitesimal strain and cauchy stress tensors:
+We now move on to a problem involving three-dimensional stress states. Consider a infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L=6\:m$ in direction $\vect{e}_1$. Riemann-type initial conditions similar to those treated above are assumed to yield the following infinitesimal strain and Cauchy stress tensors:
 \begin{align*}
   & \tens{\eps}= \eps \vect{e}_1 \otimes\vect{e}_1 \\
   & \tens{\sigma}=\sigma_L \vect{e}_1 \otimes \vect{e}_1 + \sigma_T \(\vect{e}_2 \otimes \vect{e}_2+\vect{e}_3 \otimes \vect{e}_3\) 
 \end{align*}
-which correspond to the plane wave assumption. In that case, a relation depending on the consitutive model considered exists between longitudinal and transverse stress componenents $\sigma_L$ and $\sigma_T$. As a consequence, a one-dimensional hyperbolic system is only solved for $\sigma_L=\sigma$ and the transverse componenent is computed subsequently. In this section, the behavior of the DGMPM on relaxation systems (see section \ref{sec:general-formulation}) is looked at by considering a solid medium made of a elastic-viscoplastic material with linear kinematic hardenings. In the asymptotic limit $\tau \rightarrow 0$, where $\tau$ is the relaxation time, the numerical solution must converge to that of elastoplastic materials that is studied afterwards. 
+which correspond to the plane wave assumption. In that case, a relation depending on the constitutive model considered exists between longitudinal and transverse stress components $\sigma_L$ and $\sigma_T$. As a consequence, a one-dimensional hyperbolic system is only solved for $\sigma_L=\sigma$ and the transverse component is computed subsequently. In this section, the behavior of the DGMPM on relaxation systems (see section \ref{sec:general-formulation}) is looked at by considering a solid medium made of a elastic-viscoplastic material following Perzyna model with linear kinematic hardening. In the asymptotic limit $\tau \rightarrow 0$, where $\tau$ is the relaxation time, the computed elastic-viscoplastic solution should tend to the elastoplastic one derived in \cite{Thomas_EP}, the latter being studied afterwards. 
 \begin{table}[h!]
   \centering
   \input{chapter4/tabular/material}
@@ -11,131 +11,84 @@ which correspond to the plane wave assumption. In that case, a relation dependin
   \label{tab:material}
 \end{table}
 Table \ref{tab:material} lists the values of material parameters considered. In particular, the viscosity $\eta$ is a function of the relaxation time that is used to tune the stiffness of the problem.  
-Finally, the initial velocity is set so that plastic flow occurs:
+The initial velocity is set so that plastic flow occurs:
 \begin{equation*}
   v_0=2\frac{Y_H}{\rho c_L}
 \end{equation*}
-where $Y_H=(\lambda+2\mu)/2\mu$ denotes the Hugoniot elastic limit and $c_L=\sqrt{(\lambda+2\mu)/\rho}$ is the elastic pressure wave speed.
-% c=np.sqrt((lamb+2.*mu)/rho)
-% hardening='kinematic'
-% timeOut = 1.*length/c
-
-% HEL = ((lamb+2.0*mu)/(2.0*mu))*Sigy
-% v0=2.*HEL/(rho*c)
-% algo = 'USL'
-% update_position=False
-% mpm_mapping=True
-% limit=-1
-
-
+where $Y_H=(\lambda+2\mu)/2\mu$ denotes the Hugoniot elastic limit and $c_L=\sqrt{(\lambda+2\mu)/\rho}$ is the elastic pressure wave speed. Both ends of the medium are traction free so that right and leftward compression elastic waves reflect as unloading waves that interact with the incident plastic ones \cite{Thomas_EVP}.
 
 \subsubsection{Elastoviscoplasticity}
-
-Juste comparer DGMPM et MPM avec du strang et godunov 1ppc et 2ppc. Stiff $dt/tau=100$ non-stiff $dt/tau=1/50$ bdf3 pour strang. Pas de RK2 godunov car le RK2 n'a une influence que sur la partie convective qui est équivalent au 1ppc Euler.
-
+The elastic-viscoplastic problem is solved with the MPM using USL formulation (for 1ppc only), the DGMPM-Euler with Godunov splitting, and the DGMPM-RK2 with Strang splitting. The resulting ODE systems are discretized with an implicit backward Euler scheme for Godunov and a backward differentiation formula of order 3 for Strang splitting. The viscoplastic flow rule is then integrated explicitly at the end of the time step to update viscoplastic strains. On the other hand, constitutive equations are integrated with a radial return algorithm \cite{Simo} within the MPM. First, the relaxation system is considered in a non-stiff setting characterized by a relaxation time bigger than the time step governed by the convection part, that is $\tau=50\Delta t$. Figure \ref{fig:nonstiff_elastoviscoplastic_RP} shows a comparison of numerical stress and plastic strain with the exact solutions of the elastoplastic limit.
+%Pas de RK2 godunov car le RK2 n'a une influence que sur la partie convective qui est équivalent au 1ppc Euler.
 \begin{figure}[h!]
   \centering
-  % {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff20}}
-  % {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff30}}
-  % {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressnon-stiff45}}
+  {\phantomsubcaption \label{subfig:evp_nonstiff1}}
+  {\phantomsubcaption \label{subfig:evp_nonstiff2}}
+  {\phantomsubcaption \label{subfig:evp_nonstiff3}}
   {\input{chapter4/pgfFigures/evp_dgmpm_mpmnon-stiff}}
-  \caption{elastic-viscoplastic RP stress (non-stiff)}
-  \label{fig:stress_elastoviscoplastic_RP}
+  \caption{Plastic strain and longitudinal stress resulting from MPM and DGMPM simulations before (column \subref{subfig:evp_nonstiff1}) and after (columns \subref{subfig:evp_nonstiff2} and \subref{subfig:evp_nonstiff3}) reflection of incident plane waves on the free boundaries. Non-stiff problem: $\tau=50\Delta t$.}
+  \label{fig:nonstiff_elastoviscoplastic_RP}
 \end{figure}
+For this non-stiff configuration, viscous effects lead to a much smoother solution compared to the elastic-plastic one as can be seen in figures \ref{fig:nonstiff_elastoviscoplastic_RP}\subref{subfig:evp_nonstiff1}. Godunov and Strang solutions both results, for one and two ppc respectively, in an overestimated apparent tensile yield stress. On the other hand, elastic and plastic waves cannot even be distinguished in the MPM and DGMPM-Euler for 2ppc solutions due to the diffusion they suffer from. Furthermore, local overshoots appears in the viscoplastic strain computed with the MPM and the DGMPM-Euler when one ppc is used. While the former can be explained by the locking in the MPM velocity field, the latter can be eliminated by integrating implicitly the viscoplastic flow rule \cite{Thomas_EVP}.
 
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff20}}
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff30}}
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspnon-stiff45}}
-%   \caption{elastic-viscoplastic RP epsp (non-stiff)}
-%   \label{fig:epsp_elastoviscoplastic_RP}
-% \end{figure}
-
+In figure \ref{fig:siff_elastoviscoplastic_RP}, a lower relaxation time, leading to a stiffer system is set.
 \begin{figure}[h!]
   \centering
-  % {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressstiff20}}
-  % {\input{chapter4/pgfFigures/evp_dgmpm_mpm_stressstiff30}}
+  {\phantomsubcaption \label{subfig:evp_stiff1}}
+  {\phantomsubcaption \label{subfig:evp_stiff2}}
+  {\phantomsubcaption \label{subfig:evp_stiff3}}
   {\input{chapter4/pgfFigures/evp_dgmpm_mpmstiff}}
-  \caption{elastic-viscoplastic RP stress (stiff)}
-  \label{fig:stress_elastoviscoplastic_RP}
+  \caption{Plastic strain and longitudinal stress resulting from MPM and DGMPM simuations before (column \subref{subfig:evp_stiff1}) and after (columns \subref{subfig:evp_stiff2} and \subref{subfig:evp_stiff3}) reflection of incident plane waves on the free boundaries. Stiff problem: $\tau=\Delta t \times 10^{-2}$.}
+  \label{fig:siff_elastoviscoplastic_RP}
 \end{figure}
+The same remarks as before can be made though numerical solutions are sharper and get closer to the elastic-plastic stress and strain. Once again, the overshoots arising in the DGMPM-Euler viscoplastic strain can be removed by integrating implicitly the flow rule. This is also the case for the spurious oscillations that can be observed in the stress solution. Moreover, Strang splitting yield an underestimated plastic wave that leads to a delayed solution compared to that of Godunov splitting and MPM. This behaviour could be expected for Strang splitting for, as mentioned in section [??], this fractional method may fail to correctly compute wave speeds on underresolved grids \cite{Thomas_EVP}. 
 
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff20}}
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff30}}
-%   {\input{chapter4/pgfFigures/evp_dgmpm_mpm_epspstiff45}}
-%   \caption{elastic-viscoplastic RP epsp (stiff)}
-%   \label{fig:epsp_elastoviscoplastic_RP}
-% \end{figure}
+The two simulations performed in this section show that the DGMPM enables more flexibility than the original MPM in order to adapt the scheme so that a problem is solved in a more accurate manner. This versatility is further demonstrated on the elastic-plastic problem that is now considered.
 
 \subsubsection{Elastoplasticicity}
-Comparison with mpm for 1ppc which does not involve the treatment of rhs and so the choice of some parameter for integrating it.
+%% On utilise la forme quasi linear pour la dgmpm donc on est un peu différent des volumes finis car on a un retour radial en plus. Il faut que ca soit clair ça !
+Viscous effects are now removed by considering the one-dimensional hyperbolic system corresponding to elastoplastic constitutive models derived in section \ref{sec:the-general-formulation}. Elastic-plastic problems can be solved by means of two different approach with the DGMPM that are studied here. First, the plastic part can be omitted in the convection problem by only taking into account elastic waves in the Riemann problems. At the end of the time step, plastic quantities are updated at material points with a radial return algorithm. This type of solver in which only the fastest waves are considered is referred to as an \textit{acoustic solver} [ref?].
+Alternatively, one can compute intercell fluxes by means of the elastoplastic approximate Riemann solver developed in section \ref{subsec:EP_riemann_solvers}. This solver, by accounting for both elastic and plastic waves, should yield more accurate results for plastic waves. In addition, plastic quantities are also updated with a radial return algorithm at the end of each time step.
+
+The solutions of DGMPM-Euler scheme, combined with the two approaches discussed above, are compared to MPM and exact solutions on the 1ppc space discretization in figure \ref{fig:RP_EP_dgmpm_mpm}. 
 \begin{figure}[h!]
   \centering
-  % {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress20}}
-  % {\input{chapter4/pgfFigures/EP_dgmpm_mpm_stress30}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_mpm1}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_mpm2}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_mpm3}}
   {\input{chapter4/pgfFigures/ep_dgmpm_mpm}}
-  \caption{elastic-plastic RP stress (1ppc)}
-  \label{fig:stress_elastoplastic_RP}
+  \caption{Plane wave solution of the Riemann problem in an elastoplastic material with linear hardening. Comparison between DGMPM-Euler using either an acoustic or an elastoplastic Riemann solver, MPM, and exact solutions in terms of stress and plastic strain.}
+  \label{fig:RP_EP_dgmpm_mpm}
 \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp20}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp30}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_epsp45}}
-%   \caption{elastic-plastic RP epsp (1ppc)}
-%   \label{fig:epsp_elastoplastic_RP}
-% \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo20}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo30}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_mpm_velo45}}
-%   \caption{elastic-plastic RP velo}
-%   \label{fig:velo_elastoplastic_RP}
-% \end{figure}
+It can be seen in figures \ref{fig:RP_EP_dgmpm_mpm}\subref{subfig:ep_dgmpm_mpm1} and \ref{fig:RP_EP_dgmpm_mpm}\subref{subfig:ep_dgmpm_mpm2} that the acoustic solver yield a slight error in the apparent tensile yield stress which does not subsist with the elastoplastic solver. Furthermore, the solution provided by the former exhibits spurious oscillations behind the elastic unloading waves that result from the reflection of waves on the free boundaries (see figure \ref{fig:RP_EP_dgmpm_mpm}\subref{subfig:ep_dgmpm_mpm3}). The use of an elastoplastic Riemann solver also enables the removal of this noise. At last, the MPM stress oscillates around the plastic plateau which is a similar behavior to that observed for elasticity. As a consequence, the final plastic strain computed with the MPM differs from DGMPM and exact solutions that are, on the other hand, pretty close.
 
-
-Comparison with mpm for 1ppc and 2ppcs with RK2 (requires additional bc treatment and constitutive). Only ep solver
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 2 PPC disrcetization removed since there is no significant differences 
+% We now focus on the influence of the number of material points in cells by also considering the 2ppc discretization for the MPM and DGMPM schemes using the elastoplastic Riemann solver.
+% Comparison with mpm for 1ppc and 2ppcs with RK2 (requires additional bc treatment and constitutive if a quasilinear form is used which is not mandatory for 1d problems). Only ep solver
 % \begin{figure}[h!]
 %   \centering
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress20}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress30}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress45}}
-%   \caption{elastic-plastic RP stress}
-%   \label{fig:stress_elastoplastic_RP}
+%   % {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress20}}
+%   % {\input{chapter4/pgfFigures/EP_dgmpm_ppc_stress30}}
+%   {\input{chapter4/pgfFigures/ep_dgmpm_ppc}}
+%   \caption{Influence of the number of particles lying in cells and time discretization used within the DGMPM using the elastoplastic Riemann solver for the plane wave problem.}
+%   \label{fig:RP_EP_dgmpm_ppc}
 % \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp20}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp30}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_ppc_epsp45}}
-%   \caption{elastic-plastic RP epsp}
-%   \label{fig:epsp_elastoplastic_RP}
-% \end{figure}
-
-
-Comparison with fvm and FEM (lumped mass matrix + radial return for integrating constitutive equations)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Figure \ref{fig:RP_EP_dgmpm_fvm} moreover shows explicit P1-finite element using lumped mass matrix and FVM solutions. As for MPM, constitutive equations are integrated by means of a radial return within FEM. 
+On the other hand, a second-order TVD finite volume method using Superbee flux limiters (SB) \cite{Thomas_EP} and the DGMPM-Euler, both based on an elastoplastic Riemann solver, are considered. 
+Finite element solutions are extracted at integration points, consistently with finite volumes centroids and particles for the 1ppc discretization.
+As seen in section \ref{subsec:scheme_equations}, DGMPM schemes are equivalent to Godunov scheme when one particle lies in every cells of the grid, so that the comparison with the finite volume solutions highlights improvements enabled by SB limiters. In figure \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm1}, the incident elastic waves are perfectly captured by every methods due to a CFL number set to unity. On the other hand, plastic fronts are steeper for FEM and FVM solutions though oscillations arising in the former yield an overestimated plastic strain. 
 \begin{figure}[h!]
   \centering
-  % {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress20}}
-  % {\input{chapter4/pgfFigures/EP_dgmpm_fvm_stress30}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_fvm1}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_fvm2}}
+  {\phantomsubcaption \label{subfig:ep_dgmpm_fvm3}}
   {\input{chapter4/pgfFigures/ep_dgmpm_fvm_fem}}
-  \caption{elastic-plastic RP stress}
-  \label{fig:stress_elastoplastic_RP}
+  \caption{Stress and plastic strain solutions of the Riemann problem in a one-dimensional elastoplastic medium: comparison between FEM, Superbee FVM and DGMPM-Euler.}
+  \label{fig:RP_EP_dgmpm_fvm}
 \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp20}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp30}}
-%   {\input{chapter4/pgfFigures/EP_dgmpm_fvm_epsp45}}
-%   \caption{elastic-plastic RP epsp}
-%   \label{fig:epsp_elastoplastic_RP}
-% \end{figure}
-
+After reflexion of elastic waves on the free boundaries (figures \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm2} and \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm3}), additional numerical noise appears in the FEM solution and elastic unloading waves are differently solved by FVM and DGMPM. Hence, the final plastic strain profiles in figure \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm3} differ so that the best solution is provided by second-order TVD finite volumes. Comment about limiters for the DGMPM ?
 
 %%% Local Variables:
 %%% mode: latex

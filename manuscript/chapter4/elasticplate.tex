@@ -1,6 +1,34 @@
+We now consider an elastic solid with square section of dimension $l=3m$ in the ($\vect{e}_1,\vect{e}_2$) plane, and infinite in the direction $\vect{e}_3$ so that the plane strain assumption (\textit{i.e. $\eps_{33}=\eps_{13}=\eps_{23}=0$}) holds. The values of elastic parameters considered are still those of table \ref{tab:material}. The solid suddenly undergoes a tensile stress on a part of its left boundary (see figure \ref{fig:2D_problem}) so that shear and pressure waves travel in the mediumtoward the horizontally fixed right end, reflect and then propagate leftward.
+No exact solution is available, comparisons with $Q1$ finite element (bilinear approximation) and MPM solutions are thus performed.
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/2d_square}
+  \caption{Geometry, loading and boundary condition for the tensile impact problem on a two-dimensional elastic medium.}
+  \label{fig:2D_problem}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \input{chapter4/pgfFigures/2d_mesh}
+  \caption{Meshes used for the simulations.}
+  \label{fig:2d_meshes}
+\end{figure}
+The solid is discretized such that material points are equivalent to finite element nodes, 
+that is $l\times l \equiv 28 \times 28$ particles and nodes. Two arbitrary grids are used for the DGMPM so that either one of four material points lie in every cells as depicted in figure \ref{fig:2d_meshes} for a coarse example.
+
+The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus}, using an explicit time discretization with no artificial viscosity added . These numerical results are compared to those obtained from DGMPM computations using both CTU and DCU methods. The Courant number is set to unity in DGMPM-CTU and to $0.7$ in DGMPM-DCU leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{DCU}=1.13 \times 10^{-5}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{figure:2D_partial_impact} shows numerical results in terms of the Cauchy stress tensor $\tens{\sigma} = \frac{1}{J}\tens{\Pi}\tens{F}^T$ exported from Abaqus to Paraview with the code developed in \cite{Export_Abaqus}. 
+
+
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Delasticity}
   \caption{Longitudinal stress $\sigma_{11}$ isovalues in a linear elastic plate.}
   \label{fig:2delast_comparison1}
 \end{figure}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
