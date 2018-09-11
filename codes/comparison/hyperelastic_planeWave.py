@@ -41,7 +41,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
             legend=legend+kwargs[0][i]
         else:
             legend=legend+','+kwargs[0][i]
-        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+'] coordinates {')
+        TeXFile.write(r'\addplot['+str(couleur[i])+','+str(thickness[i])+',mark='+str(marker[i])+','+str(style[i])+',mark repeat=5] coordinates {')
         for j in range(np.shape(yfields[i])[0]):
             TeXFile.write('('+str(xFields[i][j])+','+str(yfields[i][j])+') ')
         TeXFile.write('};\n')
@@ -72,7 +72,17 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
     thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
     couleur=['Red','Blue','Orange','Purple','black','Orange','Green','Duck','Green']
-    
+    maxim=[]
+    minim=[]
+    maximum=np.zeros(row)
+    minimum=np.zeros(row)
+    for i,field in enumerate(rowFields):
+        for j in range(fields_in_plots):
+            for k in (colFields[i]):
+                maxim.append(max(containers[j][field][:,k]))
+                minim.append(min(containers[j][field][:,k]))
+        maximum[i]=1.1*max(maxim)
+        minimum[i]=1.1*min(minim)
     TeXFile=open(fileName,"w")
     # Define Paul Tol's colors (purple to red)
     TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
@@ -80,7 +90,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     TeXFile.write('ylabels at=edge left, yticklabels at=edge left,horizontal sep=2.ex,');TeXFile.write('\n')
     TeXFile.write('vertical sep=4ex,xticklabels at=edge bottom,xlabels at=edge bottom},');TeXFile.write('\n')
     if row==1:
-        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,xlabel=x (m),');TeXFile.write('\n')
+        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,xlabel=$x (m)$,');TeXFile.write('\n')
     else:
         TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,xlabel=$x (m)$,');TeXFile.write('\n')
     TeXFile.write('axis on top,scale only axis,width=0.45\linewidth');TeXFile.write('\n')
@@ -88,12 +98,12 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     for i,field in enumerate(rowFields): ## sum over rows
         for j in range(col):
             TeXFile.write(r'\nextgroupplot[')
-            if i==0: TeXFile.write(r'title={'+str(titles[j])+'},')
-            if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',')
-            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.5,-0.35)+(0.45cm,1cm)$)},legend columns=3}')
+            if i==0: TeXFile.write(r'title={'+str(titles[j])+'},ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
+            if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
+            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.5,-0.35)+(0.45cm,1cm)$)},legend columns=3},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
-                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=2pt] coordinates{')
+                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=5] coordinates{')
                 #pdb.set_trace()
                 #print field
                 FIELD=containers[k][field][:,colFields[j][k]]
@@ -169,25 +179,7 @@ DGMPM = dict(parameters)
 print 'Computing  DGMPM'
 execfile('dgmpm/hyperelasticity.py', DGMPM)
 
-if sigd>0.:
-    frames=[]
-    frmpm=[]
-    for i in MPM["time"]:
-        for j in DGMPM["time"]:
-            if abs(i-j)<5.e-7:
-                ndg = np.where(DGMPM["time"]==j)[0][0]
-                nmpm = np.where(MPM["time"]==i)[0][0]
-                
-                tdg = '%.2e' % j ; tmpm = '%.2e' % i
-                print "dgmpm increment ",ndg
-                print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
-                print "mpm time: ",tmpm," ; dgmpm time:",tdg
-                frames.append(ndg)
-                frmpm.append(nmpm)
-else :
-    frames=[40,80]
-    frmpm=[80,160]
-    start=0
+
 # for i,t in enumerate(DGMPM["time"]):
 #     print i,t
 ppc=2
@@ -225,7 +217,28 @@ rcParams['ytick.labelsize'] = 16
 rcParams['legend.fontsize'] = 16
 
 
+if sigd>0.:
+    frames=[]
+    frmpm=[]
+    fr2ppc=[]
+    for i in MPM["time"]:
+        for j in DGMPM["time"]:
+            if abs(i-j)<5.e-7:
+                ndg = np.where(DGMPM["time"]==j)[0][0]
+                nmpm = np.where(MPM["time"]==i)[0][0]
+                
+                tdg = '%.2e' % j ; tmpm = '%.2e' % i
+                print "dgmpm increment ",ndg
+                print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
+                print "mpm time: ",tmpm," ; dgmpm time:",tdg
+                frames.append(ndg)
+                frmpm.append(nmpm)
+else :
+    frames=[40,80]
+    frmpm=[80,160]
+    start=0
 
+#pdb.set_trace()
 # frames=[5,20]
 # frames=[]
 # frames=[20,30,45]
@@ -275,12 +288,12 @@ fileName=str(path)+'/he_stress_'+case+'.tex'
 Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["Pi"]=DGMPM["Pi_th"]
 containers=np.array([MPM,DGMPM,DGMPM2,DGMPM3,Exact])
 rowFields=['Pi']
-colFields=np.array([[frmpm[0],frames[0],frmpm[0],frames[0],frames[0]],[frmpm[1],frames[1],frmpm[1],frames[1],frames[1]]])
+colFields=np.array([[frmpm[0],frames[0],2*frames[0],frames[0],frames[0]],[frmpm[1],frames[1],2*frames[1]+1,frames[1],frames[1]]])
 legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\Pi (Pa)$']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
-
+print DGMPM2["time"][[2*frames[0],2*frames[1]+1]],DGMPM["time"][frames]
 
 ####################################################################
 fig, (ax1, ax2) = plt.subplots(2,1)

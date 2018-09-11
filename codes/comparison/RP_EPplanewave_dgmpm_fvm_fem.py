@@ -64,11 +64,25 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    marker=['+','none','none','|','none','pentagone*','none','triangle*']
+    marker=['+','none','none','x','none','pentagone*','none','triangle*']
     style=['solid','dotted','solid','solid','solid','solid','solid']
     thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
     couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
-
+    maximum=np.zeros(row)
+    minimum=np.zeros(row)
+    # sum over rows (fields sigma of epsp)
+    for i,field in enumerate(rowFields):
+        maxim=[]
+        minim=[]
+        #if field=='epsp':pdb.set_trace()
+        # sum over columns (t1,t2,etc.)
+        for j in range(col):
+            # sum over fields in plots (USL,DGMPM,etc.)
+            for k in range(fields_in_plots):
+                maxim.append(max(containers[k][field][:,colFields[j][k]]))
+                minim.append(min(containers[k][field][:,colFields[j][k]]))
+        maximum[i]=1.1*max(maxim)
+        minimum[i]=1.1*min(minim)
     TeXFile=open(fileName,"w")
     # Define Paul Tol's colors (purple to red)
     TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
@@ -84,12 +98,13 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     for i,field in enumerate(rowFields): ## sum over rows
         for j in range(col):
             TeXFile.write(r'\nextgroupplot[')
-            if i==0: TeXFile.write(r'title={'+str(titles[j])+'},')
-            if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',')
-            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.25,-0.45)+(0.cm,1cm)$)},legend columns=5}')
+            if i==0: TeXFile.write(r'title={'+str(titles[j])+'},ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
+            elif j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
+            elif j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.25,-0.45)+(0.cm,1cm)$)},legend columns=5},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
+            else: TeXFile.write('ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
-                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=2pt] coordinates{')
+                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=2] coordinates{')
                 #pdb.set_trace()
                 FIELD=containers[k][field][:,colFields[j][k]]
                 xFields=containers[k]["pos"][:,colFields[j][k]]

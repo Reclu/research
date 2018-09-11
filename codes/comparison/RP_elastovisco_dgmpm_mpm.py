@@ -90,7 +90,7 @@ dt=(length/c)/Nelem
 ## Viscous parameters
 case='stiff'
 if case=='stiff':
-    tau=dt/10000. #relaxation time
+    tau=dt/100. #relaxation time
 elif case=='non-stiff':
     tau=dt*2. #relaxation time
 n=4.37#1./4.
