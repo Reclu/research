@@ -5,11 +5,11 @@
       vertical sep=2ex,},
     enlargelimits=0,
     xmin=0.,xmax=1., ymin=-0.,ymax=1.
-    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.21\linewidth,
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.2\linewidth,
     colorbar style={
       title style={
         font=\scriptsize,
-        at={(1,.5)},
+        at={(1,.25)},
         anchor=north west
       },yticklabel style={font=\scriptsize}
       ,at={(current axis.south east)},anchor=south west
@@ -22,8 +22,8 @@
     \nextgroupplot[title={(d) MPM 1ppc},
     colorbar,colorbar style={
       title= {$\sigma_{11}\: (MPa)$},
-      ytick={-5.7e-2,2.9e-1},
-      yticklabels={-57,290},
+      ytick={-5.7e-2,2.e-1,2.9e-1},
+      yticklabels={-57,200,290},
     }]
     \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-5.7e-2) (0.,2.9e-1)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/mpm_stress_115.png};
@@ -35,8 +35,8 @@
     \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_stress_338.png};
     \nextgroupplot[colorbar,colorbar style={
       title= {$\sigma_{11}\: (MPa)$},
-      ytick={-4.3e-2,4.8e-1},
-      yticklabels={-43,480},
+      ytick={-4.3e-2,2.e-1,4.8e-1},
+      yticklabels={-43,200,480},
     }]
     \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-4.3e-2) (0.,4.8e-1)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/mpm_stress_338.png};

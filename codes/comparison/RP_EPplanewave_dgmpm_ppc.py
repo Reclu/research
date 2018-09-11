@@ -22,10 +22,10 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
     ## 5 fields
-    marker=['none','none','|','none','pentagone*','none','triangle*','none']
-    style=['dashed','solid','solid','solid','solid','solid','dotted']
-    thickness=['very thick','very thick','thick','thin','very thick','thin','thick','very thick']
-    couleur=['Red','Blue','Purple','black','Yellow','black','Green','Orange']
+    marker=['none','none','none','|','x','none','pentagone*','none','triangle*']
+    style=['dashed','dotted','solid','solid','only marks','solid','solid','solid']
+    thickness=['very thick','very thick','very thick','thick','thick','thin','very thick','thin','thick']
+    couleur=['Red','Orange','Blue','Purple','Green','black','Yellow','black','Green']
     TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
     TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'},xmin=0.,xmax=6.]');TeXFile.write('\n')
     legend=''
@@ -163,14 +163,6 @@ parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,
 USF = dict(parameters)
 print 'Computing  USF'
 #execfile('mpm/planeWave.py', USF)
-
-
-##DGMPM: Discontinuous Galerkin Material Point Method
-DGMPM = dict(parameters)
-print 'Computing  DGMPM (ep solver)'
-execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM)
-
-
 ppc=2
 #Nelem = 50/ppc
 parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
@@ -209,6 +201,42 @@ execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM3)
 #             frmpm.append(nmpm)
 # print frames
 # start=3
+=======
+
+ppc=2
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+#################
+
+##MPM: Material Point Method
+USL2 = dict(parameters)
+print 'Computing  USL (2ppc)'
+execfile('mpm/planeWave.py', USL2)
+
+
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing  DGMPM (ep solver 2ppc)'
+execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM2)
+
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM3 = dict(parameters)
+print 'Computing  DGMPM (ep solver 2ppc + RK2)'
+execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM3)
+
+
+ppc=8
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+#################
+
+##MPM: Material Point Method
+USL3 = dict(parameters)
+print 'Computing  USL (8ppc)'
+execfile('mpm/planeWave.py', USL3)
+
+>>>>>>> a8f9c4507db8470149558797c903f9e42890b458
 #############################################################################
 #########################  Comparison  ######################################
 #############################################################################
@@ -281,4 +309,3 @@ Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 
-    

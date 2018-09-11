@@ -46,7 +46,7 @@ $q^*$ is the stationary solution of Riemann's problem at a cell interface and $N
     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{\Delta t}{M^L_{2c(\alpha)}}\( K_{2c(\alpha),j} a\bar{q}_{j}^{n}- a\rho \bar{q}_{2c(\alpha)}^*N_{2c(\alpha)} \)
   \end{aligned}
 \end{equation}
-Where in a one-dimensional grid, the outward unit vectors are $N_{2c(\alpha)-1}=-1$ and $N_{2c(\alpha)}=1$. Discrete equations \eqref{eq:nodal_discrete_forms} are then simplified by first considering that the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
+where in a one-dimensional grid, the outward unit vectors are $N_{2c(\alpha)-1}=-1$ and $N_{2c(\alpha)}=1$. Discrete equations \eqref{eq:nodal_discrete_forms} are then simplified by first considering that the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
 %First, the mass density is defined in a cell as the ratio of total nodal mass and the element volume:
 \begin{equation}
   \label{eq:grid_density}
@@ -240,7 +240,7 @@ Then, when many material points share the same element, several configurations a
 %One can see in table \ref{tab:CFL_comparison} that the RK2 time discretization generally provides better results in terms of CFL number for the particles distributions considered. However, a uniform translation of material points in the mesh leads to a decrease in the Courant number for both time integrations.
 First, table \ref{tab:CFL_comparison} shows that the natural configuration leads to the optimal stability bound for the RK2 integrator while the CFL number allowed by using Euler time discretization decreases with increasing number of particles per cell.
 Second, moving every points rightward in the mesh (\textit{i.e. cases (ii) and (iv)}) causes a drop in the critical Courant number for both RK2 and Euler algorithms. In particular, stability conditions for more than two particles per cell provided by the RK2 are, in those cases, more restrictive than that of the Euler.
-Third, the leftward shifting (\textit{i.e. case (iii)}) leads on the other hand to an improvement of the stability condition for Euler time integration compared to that enabled in the natural configuration. The CFL number provided by RK2 integration as for it decreases due to the shifting while remaining higher than Euler one.
+Third, the leftward shifting (\textit{i.e. case (iii)}) leads on the other hand to an improvement of the stability condition for Euler time integration compared to that enabled in the natural configuration. The CFL number provided by RK2 integration also decreases due to the shifting while remaining higher than Euler one.
 At last, particles distributions conserving the symmetry with respect to cells centers (\textit{i.e. cases (v) and (vi)}), yield the optimal stability condition for the RK2 integrator while the Euler CFL depends on the spacing between material points. More specifically, Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation.
 
 % In table \ref{tab:CFL_comparison}, we see that in the natural configuration, RK2 integrator leads to the optimal Courant number whereas the one allowed by using Euler discretization depends on the number of material points in cells. Next, those stability conditions become more restrictive when particles are uniformly translated leftward or rightward in the mesh, whit a more significant decrease in CFL number for a translation in the stream direction (\textit{i.e. cases (ii) and (iv)}). In particular, the RK2 algorithm may yields a lower stability bound than that of Euler approach in situation (iv) with more than two particles per cell.
@@ -249,6 +249,7 @@ At last, particles distributions conserving the symmetry with respect to cells c
 The distribution of material points, and therefore the resulting quadrature, has an influence on the stability of the scheme. The optimal Courant number can be reached even with the Euler discretization, whereas the classical DGFEM scheme developed in \cite{Chavent_Salzano} is restricted to condition $\Delta t / \Delta X = \Oc(\sqrt{\Delta X})$. This limitation has been addressed by introducing slope limiters in order to remove non-physical oscillations in the vicinity of sharp solutions while providing high-order accuracy in smooth regions \cite{Chavent_Cockburn}. However, the stability of the method was still bounded by $CFL\leq 1/2$ and the scheme was first-order accurate. The use of a second-order Runge-Kutta \cite{DGFEM_CFL} allowed to achieve second-order accuracy of the scheme, but the stability condition then reduced to $CFL\leq1/3$. It is worth noting that space–time DGFEM formulations \cite{ST_DGFEM1,ST_DGFEM2} provided more recently the ability to relax constraints of pure space DGFEM and obtain a critical CFL at 1.
 
 \subsection{Space convergence analysis of the one-dimensional scheme}
+\label{sec:convergence}
 We now propose to focus numerically on convergence properties of DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption under small strains holds. The following system of one-dimensional linear scalar advection equations is then considered:  
 \begin{equation}
   \label{eq:conv_hyperbolic}
@@ -359,7 +360,7 @@ With positions of nodes of cell $C$ denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y
 Horizontal and vertical edges lengths are distinguished here in spite of the Cartesian nature of the grid in order to easily extend the following study to rectilinear grids. Again, there is no empty cell inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
 
 \subsubsection*{Two-dimensional scheme equation}
-One can imagine to combine the DGMPM discretization with a multi-stage time integration as proposed for one-dimensional problems. The analysis of the DGMPM scheme for two-dimensional problems carried out here however only considers the Euler time discretization. As we shall see, the use of the CTU method (see section \ref{subsec:interface_fluxes}) introduces second-order corrections in time to the original DCU approach. Therefore, the updated solution at material point $\alpha$ is obtained by interpolation of nodal solutions satisfying equation \eqref{eq:2D_model_equation}, discretized as:
+One can imagine to combine the DGMPM discretization with a multi-stage time integration as proposed for one-dimensional problems. The analysis of the DGMPM scheme for two-dimensional problems carried out here however only considers the Euler time discretization. As we shall see, the use of the CTU method (see section \ref{subsec:interface_fluxes}) introduces second-order corrections in time within the original DCU approach. Therefore, the updated solution at material point $\alpha$ is obtained by interpolation of nodal solutions satisfying equation \eqref{eq:2D_model_equation}, discretized as:
 \begin{equation}
   \bar{q}_i^{n+1} = \bar{q}_i^n + \frac{\Delta t}{M^L_i} \(K_{ij}^X a\bar{q}_j^n + K_{ij}^Y b\bar{q}_j^n - \hat{f}_i^{*}\) \label{eq:discrete2D}
 \end{equation}
@@ -398,7 +399,7 @@ Referring to a quantity defined at an interface by means of parenthesis superscr
   f^{(i)}= c_n q^{(i)}_U = \underbrace{c_nq^{(i)}_D}_{f_N(q^{(i)}_D)} - \underbrace{c_n (q^{(i)}_D -q^{(i)}_U)}_{A^{+}_{U/D}} 
 \end{equation}
 where $c_n$ is the speed in the normal direction to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
-The CTU is adopted by accounting for transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
+The CTU is adopted by subtracting from fluxes \eqref{eq:2d_Godunov_fluxes} transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
 \begin{equation}
   \label{eq:2D_transverse_corrections}
   B^+A^+_{U/D}=c_t c_n (q^{(i)}_D -q^{(i)}_U)

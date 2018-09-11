@@ -1,27 +1,46 @@
-Citer le papier sur le immersed boundary de basiliev pour les oscillations sur la MPM
+The same solid as above is now suppose made of an elastic-plastic material with linear isotropic hardening of tensile yield stress $\sigma^y$ and hardening modulus $H$ (see table \ref{tab:material}). A tensile impact is still considered on the bottom left part of the domain, as depicted in figure \ref{fig:2D_planeStrain}\subref{subfig:2D_problem}, with the traction force $\sigma^d=2\sigma^y$ so that plastic flow occurs. A comparison between FEM (Cast3M Drexus), MPM and DGMPM using either one or four particles per elements is made on the equivalent plastic strain $p$, similar observation as above being made on the longitudinal stress $\sigma_{11}$.
+The computation of intercell fluxes within the DGMPM is based on an elastic Riemann solver. Hence, the plastic flow is integrated by means of a radial return algorithm in every methods.
 
+Figure \ref{fig:2dEP_comparison} shows FEM and DGMPM solutions before and after reflection of the longitudinal pressure wave on the right end of the domain.
+In addition, due to the large amplitude of equivalent plastic strain, MPM results for the same time steps are plotted separately in figure \ref{fig:2dEP_mpm}. Concerning the longitudinal stress $\sigma_{11}$ similar observations than for elasticity can be made. On the other hand, a good agreement between FEM and DGMPM equivalent plastic strains can be seen in figure \ref{fig:2dEP_comparison}. 
 \begin{figure}[h!]
   \centering
-  \input{chapter4/2dEP_1}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues at time $t=3.5e-4s$ in an elastic-plastic plate made of a linear isotropic hardening material}
-  \label{fig:2dEP_comparison1}
+  \input{chapter4/2delastoplasticity}
+  \caption{Isovalues of equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at two different times. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
+  \label{fig:2dEP_comparison}
 \end{figure}
-% %\input{chapter4/pngFigs}
-
 \begin{figure}[h!]
   \centering
-  \input{chapter4/2dEP_2}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues at time $t=1.0e-3ss$ in an elastic-plastic plate made of a linear isotropic hardening material}
-  \label{fig:2dEP_comparison2}
+  \input{chapter4/2dEP_mpm2}
+  \caption{MPM isovalues of plastic strain $p$ in an elastic-plastic plate made of a linear isotropic hardening material at two different times ($CFL=0.7$).}
+  \label{fig:2dEP_mpm}
 \end{figure}
-%\input{chapter4/2dEP_2}
+Nevertheless, a concentration of plastic strains occurs at the interface between loaded and traction free parts of the left boundary of the domain in DGMPM solutions. 
+Such concentrations in the high gradients region can also be seen in MPM solutions depicted in figure \ref{fig:2dEP_mpm} so that this phenomenon seems to be a geometric effect arrising due to the space discretization rather than to numerical methods themselves.
+%% Also plot stress
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter4/2dEP_1}
+%   \caption{Isovalues of longitudinal stress $\sigma_{11}$ and equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at time $t=3.5e-4 \:s$. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
+%   \label{fig:2dEP_comparison1}
+% \end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter4/2dEP_2}
+%   \caption{Isovalues of longitudinal stress $\sigma_{11}$ and equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at time $t=1.0e-3 \:s$. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
+%   \label{fig:2dEP_comparison2}
+% \end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter4/2dEP_mpm}
+%   \caption{Isovalues of MPM longitudinal stress $\sigma_{11}$ and plastic strain $p$ in an elastic-plastic plate made of a linear isotropic hardening material at two different times.}
+%   \label{fig:2dEP_mpm}
+% \end{figure}
 
-\begin{figure}[h!]
-  \centering
-  \input{chapter4/2dEP_mpm}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues at time $t=3.5e-4s$ in an elastic-plastic plate made of a linear isotropic hardening material}
-  \label{fig:2dEP_comparison1}
-\end{figure}
+
+
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 import pdb
 from scipy.integrate import ode
+from scipy import optimize as opt
 
 """
 Implementation of high order shock capturing methods to solve the 1D elastoviscoplastic set of equations with the model of Sokolowski-Malvern.
@@ -188,6 +189,9 @@ def computeS(t,U,epsp,E,H,Sigy,eta,n):
     S[0] = -E*creep_law(f,U[0],epsp,H,eta,n)
     S[1] = 0
     return S
+
+
+
 pfj=[]
 test=np.zeros(Nelem+4)
 for i in range(NTmaxi)[1:]:
@@ -197,6 +201,12 @@ for i in range(NTmaxi)[1:]:
         dt = timeOut - t[i-1]
     t[i]=t[i-1]+dt
     #RHS(dt/2.0)
+    for j in range(Nelem+4):
+        r = ode(computeS).set_integrator('vode', method='bdf')
+        r.set_initial_value(U[j,:],t[i-1]).set_f_params(EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
+        r.integrate(r.t+(dt/2.0))
+        if r.successful():
+            U[j,:] = r.y
     # for j in range(Nelem+4):
     #     r = ode(computeS).set_integrator('vode', method='bdf')
     #     r.set_initial_value(U[j,:],t[i-1]).set_f_params(epsp[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
@@ -216,6 +226,8 @@ for i in range(NTmaxi)[1:]:
     #Conservative update
     conservativeUpdate(U,dt/dx,amdq,apdq,cqxx,limit)
     #RHS (2)
+    # for j in range(Nelem+4):
+    #     U[j,0] = integrateODE(dt/2.,U[j,0],EP[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
     for j in range(Nelem+4):
         r = ode(computeS).set_integrator('lsoda', method='bdf')
         r.set_initial_value(U[j,:],t[i]).set_f_params(epsp[j,i-1],E_A,H[j],Sigy[j],eta[j],n[j])
