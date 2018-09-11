@@ -1,55 +1,73 @@
+We first consider a plane wave state in an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L=6m$ in direction $\vect{e}_1$, made of a hyperelastic Saint-Venant-Kirchhoff material, namely:
+\begin{align*}
+  & \tens{F} = F \vect{e}_1 \otimes \vect{e}_1 + \vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3 \\
+  & \tens{\Pi} = \Pi \vect{e}_1 \otimes \vect{e}_1 + \Pi_r \(\vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3\)
+\end{align*}
+where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. The solid is assumed initially at rest so that the exact solutions of the Picard problem thus formulated, depending on the applied load $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$, have been developed in section \ref{sec:SVK_solution}. Recall that since the characteristic speeds of this nonlinear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter.
+Moreover, it has been established that the problem is no longer hyperbolic if the deformation gradient is such that $F<\sqrt{\frac{1}{3}}$ (see remark \ref{rq:hyperbolicity_limit_SVK} in section \ref{sec:SVK_solution}). As a consequence, we consider here loading conditions that do not yield a loss of hyperbolicity. 
 
-Parameters + 100 elems
-% CFL=0.5
-% NTmaxi = 300
-% length = 6.0
-% ppc=1
-% Nelem = 100
-% E = 2.0e11
-% Sigy = 400.0e6
-% rho = 7800.0
-% nu = 0.3
-% lamb = (E*nu)/((1+nu)*(1.-2.*nu))
-% mu = E/(2.*(1.+nu))
-% C=lamb+2.*mu
-% c=np.sqrt(C/rho)
-
-% factor=1.
-% timeOut = 1.*length/c
-% t_order=1
-% timeUnload = 2*timeOut
-
-% sigd = -50.*Sigy
-% v0=0.*Sigy/(rho*c)
-% algo = 'USL'
-% update_position=False
-% mpm_mapping=True
-% limit=-1
-\subsection{Compression impact on a SVK medium}
+The one-dimensional medium is then discretized by using either $100$ or $200$ material points lying in $100$ regular grid cells. Once again, the 2ppc discretization is such that particles are regularly spaced in the mesh. Material parameters considered for the infinitesimal theory are kept here.
+\subsubsection{Compression impact on a SVK medium}
+To begin with, the body is submitted on its left end to a compression load $\Pi^d= 2\times 10^{10} \: Pa$ so that the solution of this problem consists of a right-going rarefaction. The stress profile resulting from MPM and DGMPM computations are compared to the exact solution in figure \ref{fig:he_rarefaction} for different times. %Euler and RK2 time discretizations are respectively used within the DGMPM for 1ppc and 2ppc distributions.
+% \begin{figure}[h!]
+%   \centering
+%   {\input{chapter4/pgfFigures/he_stress_rare40}}
+%   {\input{chapter4/pgfFigures/he_stress_rare80}}
+%   \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
+%   \label{fig:he_rarefaction}
+% \end{figure}
 \begin{figure}[h!]
   \centering
-  {\input{chapter4/pgfFigures/he_stress_rare40}}
-  {\input{chapter4/pgfFigures/he_stress_rare80}}
-  \caption{shock stress $-50\sigma^y$}
+  {\input{chapter4/pgfFigures/he_stress_rare}}
+  \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_rarefaction}
 \end{figure}
-\subsection{Tensile impact on a SVK medium}
-pas de temps recalculé en fonction de la vitesse
+As for small strains problems, the MPM solution exhibits spurious oscillations while DGMPM ones are close to the exact solution due to the CFL number set to unity for both Euler and RK2 formulations.
+However, as expected from the use of an approximate-state Riemann solver for this nonlinear problem, DGMPM stresses do not fit exactly the analytical solution. One can imagine to use an exact Riemann solver based on the exact solution in order to reduce this error. Nevertheless, such an implementation requires to solve a nonlinear problem at each cell interface and is very costly. Futhermore, an analytical solution is available for a SVK material but it is not the case for other constitutive models, which prevents the use of an exact solver.
+
+\subsubsection{Tensile impact on a SVK medium}
+A tensile load of same magnitude that gives rise to a shock wave in the medium is now considered. Recall that for this problem, the characteristic speeds read $c=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }$ (see equation \eqref{eq:SVK_charac_fields} in section \ref{sec:SVK_solution}). It then follows that the higher the deformation gradient, the faster waves propagate. Hence, the celerity of the fastest wave is given by the deformation gradient on the upwind side and must be used to adapt the time step to satisfy the CFL condition for fixed Courant number. This situation did not arise in the above case of a rarefaction wave since the highest deformation gradient value was that of rest state on the downwind side. 
+
+The same methods and discretizations as before are used to solve this problem which results are compared to the exact solution in figure \ref{fig:he_shock}. We see that slight oscillations appear after the shock in DGMPM solutions based on a unit Courant number. Note that this numerical noise (figure \ref{fig:he_shock}\subref{subfig:he_shock1}) does not appear in the DGMPM-Euler using 2ppc due to the lower Courant number used though the solution obviously suffers from diffusion.   
 \begin{figure}[h!]
   \centering
-  {\input{chapter4/pgfFigures/he_stress_50shock44}}
-  {\input{chapter4/pgfFigures/he_stress_50shock88}}
-  \caption{shock stress $50\sigma^y$}
+  {\phantomsubcaption \label{subfig:he_shock1}}
+  {\phantomsubcaption \label{subfig:he_shock2}}
+  {\input{chapter4/pgfFigures/he_stress_50shock}}
+  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{10} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_shock}
 \end{figure}
+%% MPM
+Furthermore, the error in the MPM solutions grows during the computation, implying that the method in unstable even for a CFL number set to $1/2$ as for linear problems.
+%% Capturing shocks
+Next, in spite of a CFL number set at one, the DGMPM-Euler and DGMPM-RK2 do not perfectly capture the discontinuity, though a good behavior is shown. Indeed, according to Lax entropy condition \eqref{eq:Lax_entropy}, the wave celerity used for the time step evaluation is an upper bound of the shock speed so that a shock cannot be captured.
 
+%% Lower shock
 \begin{figure}[h!]
   \centering
-  {\input{chapter4/pgfFigures/he_stress_5shock43}}
-  {\input{chapter4/pgfFigures/he_stress_5shock89}}
-  \caption{shock stress lower shock $5\sigma^y$}
+  {\input{chapter4/pgfFigures/he_stress_5shock}}
+  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{9} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_low_shock}
 \end{figure}
+Nevertheless, the loading conditions considered so far are deliberately extreme for the purpose of visualization. A lower tensile load will lead to a numerical solution closer to analytical results as can be seen in figure \ref{fig:he_low_shock} which shows the comparison for a load magnitude $\Pi^d=-2\times 10^{9} \: Pa$. In addition, the oscillations appearing in DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc solutions are significantly reduced with this load. The MPM solution on the other hand, still exhibits an increasing error although a Courant number ensuring the stability in the scheme for linear problems is used.
+
+%% Previous figures
+% \begin{figure}[h!]
+%   \centering
+%   {\input{chapter4/pgfFigures/he_stress_50shock44}}
+%   {\input{chapter4/pgfFigures/he_stress_50shock88}}
+%   \caption{shock stress $50\sigma^y$}
+%   \label{fig:he_shock}
+% \end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   {\input{chapter4/pgfFigures/he_stress_5shock43}}
+%   {\input{chapter4/pgfFigures/he_stress_5shock89}}
+%   \caption{shock stress lower shock $5\sigma^y$}
+%   \label{fig:he_low_shock}
+% \end{figure}
+
+
 
 %%% Local Variables:
 %%% mode: latex

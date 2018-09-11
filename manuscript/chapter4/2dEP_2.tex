@@ -1,8 +1,8 @@
 \begin{tikzpicture}
-  \begin{groupplot}[group style={group size=3 by 3,
+  \begin{groupplot}[group style={group size=3 by 2,
       ylabels at=edge left, yticklabels at=edge left,
       horizontal sep=1.ex,
-      vertical sep=5.ex,},
+      vertical sep=2.ex,},
     enlargelimits=0,
     xmin=0.,xmax=1., ymin=-0.,ymax=1.
     ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.27\linewidth,
@@ -16,40 +16,40 @@
     }]
     %% FIRST ROW (first stress sigma11)
     %%% RANGE -7.2e7 -- 1.1e9
-    \nextgroupplot[title={(a) FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_stress231.png};
-    \nextgroupplot[title={(b) DGMPM 1ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_stress231.png};
+    \nextgroupplot[title={(a) FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_stress338.png};
+    \nextgroupplot[title={(b) DGMPM 1ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_stress338.png};
     \nextgroupplot[title={(c) DGMPM 4ppc},
     colorbar,colorbar style={
       title= {$\sigma_{11}\: (MPa)$},
-      ytick={-0.072,1.1},
-      yticklabels={-72,1.1e3},
+      ytick={-0.73,8,8.9},
+      yticklabels={-73,800,870},
     }]
-    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.072) (0.,1.1)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_stress231.png};
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.73) (0.,8.9)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_stress338.png};
     
     %% SECOND ROW (first plastic strain epsp11)
     %%% RANGE -3.2e-5 -- 1.7e-2
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_epsp231.png};
-    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_epsp231.png};
-    \nextgroupplot[colorbar,colorbar style={
-      title= {$\eps^p_{11}\cdot 10^{-2}$},
-      ytick={-0.0032,1.7},
-      yticklabels={-3.2e-5,1.7e-2},
-    }]
-    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.0032) (0.,1.7)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_epsp231.png};
+    % \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_epsp338.png};
+    % \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_epsp338.png};
+    % \nextgroupplot[colorbar,colorbar style={
+    %   title= {$\eps^p_{11}\cdot 10^{-2}$},
+    %   ytick={-0.0032,1.7},
+    %   yticklabels={-3.2e-5,1.7e-2},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.0032) (0.,1.7)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_epsp338.png};
       
     %% THIRD ROW (equivalent plastic strain)
     %%% RANGE 0 -- 2.e-2
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p231.png};
-    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p231.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p338.png};
+    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p338.png};
     \nextgroupplot[colorbar,colorbar style={
-      title= {$p$},
+      title= {$p \: (\%)$},
       ytick={0.,2.},
-      yticklabels={0,2.e-2},
+      yticklabels={0,2},
     }]
     \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,2.)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p231.png};
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p338.png};
   \end{groupplot}
 \end{tikzpicture}
 

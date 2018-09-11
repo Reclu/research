@@ -1,30 +1,26 @@
-We now consider an elastic solid with square section of dimension $l=3m$ in the ($\vect{e}_1,\vect{e}_2$) plane, and infinite in the direction $\vect{e}_3$ so that the plane strain assumption (\textit{i.e. $\eps_{33}=\eps_{13}=\eps_{23}=0$}) holds. The values of elastic parameters considered are still those of table \ref{tab:material}. The solid suddenly undergoes a tensile stress on a part of its left boundary (see figure \ref{fig:2D_problem}) so that shear and pressure waves travel in the mediumtoward the horizontally fixed right end, reflect and then propagate leftward.
-No exact solution is available, comparisons with $Q1$ finite element (bilinear approximation) and MPM solutions are thus performed.
+We now consider an elastic solid with square section of dimension $l=3m$ in the ($\vect{e}_1,\vect{e}_2$) plane, and infinite in the direction $\vect{e}_3$ so that the plane strain assumption (\textit{i.e. $\eps_{33}=\eps_{13}=\eps_{23}=0$}) holds. The values of elastic parameters considered are still those of table \ref{tab:material}. The solid suddenly undergoes a tensile stress on a part of its left boundary (see figure \ref{fig:2D_planeStrain}\subref{subfig:2D_problem}) so that shear and pressure waves travel in the mediumtoward the horizontally fixed right end, reflect and then propagate leftward.
 \begin{figure}[h!]
   \centering
-  \input{chapter4/pgfFigures/2d_square}
-  \caption{Geometry, loading and boundary condition for the tensile impact problem on a two-dimensional elastic medium.}
-  \label{fig:2D_problem}
+  \subcaptionbox{Geometry and boundary conditions\label{subfig:2D_problem}}{\input{chapter4/pgfFigures/2d_square}} \qquad
+  \subcaptionbox{Material points set and grids \label{subfig:2d_meshes}}{\input{chapter4/pgfFigures/2d_mesh}}
+  \caption{Geometry, loading and boundary conditions for the tensile impact problem on a two-dimensional elastic medium.}
+  \label{fig:2D_planeStrain}
 \end{figure}
+The exact solution of this problem being unknown, DGMPM solutions using the CTU method are compared to the MPM solution and to $Q1$ finite element (bilinear approximation) solutions obtained with the code Cast3M Drexus \cite{Castem}.
 
-\begin{figure}[h!]
-  \centering
-    \input{chapter4/pgfFigures/2d_mesh}
-  \caption{Meshes used for the simulations.}
-  \label{fig:2d_meshes}
-\end{figure}
-The solid is discretized such that material points are equivalent to finite element nodes, 
-that is $l\times l \equiv 28 \times 28$ particles and nodes. Two arbitrary grids are used for the DGMPM so that either one of four material points lie in every cells as depicted in figure \ref{fig:2d_meshes} for a coarse example.
-
-The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus}, using an explicit time discretization with no artificial viscosity added . These numerical results are compared to those obtained from DGMPM computations using both CTU and DCU methods. The Courant number is set to unity in DGMPM-CTU and to $0.7$ in DGMPM-DCU leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{DCU}=1.13 \times 10^{-5}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{figure:2D_partial_impact} shows numerical results in terms of the Cauchy stress tensor $\tens{\sigma} = \frac{1}{J}\tens{\Pi}\tens{F}^T$ exported from Abaqus to Paraview with the code developed in \cite{Export_Abaqus}. 
-
-
+The solid is discretized such that material points are equivalent to finite element nodes, that is: $l\times l \equiv 28 \times 28$ particles and nodes. Moreover, two arbitrary grids are used for the DGMPM so that either one of four material points lie in every cells as depicted in figure \ref{fig:2D_planeStrain}\subref{subfig:2d_meshes} for a coarse example.
+Figure \ref{fig:2delast_comparison} shows the isovalues of longitudinal stress $\sigma_{11}$ in the two-dimensional medium resulting from every numerical methods stated above at two different times with the traction force set to $\sigma^d=200\: Mpa$. The first and second lines of plots respectively corresponds to the stress profile before and after reflection of the pressure wave on the right boundary of the domain.
+Unlike FEM and MPM, the DGMPM does not exhibit oscillations regardless of the number of particles in grid cells. Nevertheless, the decrease in the CFL number involved by the 4ppc discretization yield a less accurate resolution of the jump discontinuity carried by the longitudinal pressure wave than for 1ppc.
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Delasticity}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues in a linear elastic plate.}
-  \label{fig:2delast_comparison1}
+  \caption{Isovalues of longitudinal stress $\sigma_{11}$ solution of the tensile impact problem in a two-dimensional elastic medium. Comparison between FEM (CFL=0.9), DGMPM-CTU using 1ppc (CFL=1) or 4ppc (CFL=0.23), and MPM using 1ppc (CFL=0.7).}
+  \label{fig:2delast_comparison}
 \end{figure}
+On the other hand, the propagation of waves in both directions $\vect{e}_1$ and $\vect{e}_2$ provides a cylindrical profile to the longitudinal stress that is almost indentically described by FEM and DGMPM using 1ppc, even after reflection of the fixed boundary (second row in figure \ref{fig:2delast_comparison}). The smoothness of the DGMPM solutions using 4ppc and the oscillations in MPM results prevent distinguishing this structure.
+
+
+
 
 
 
