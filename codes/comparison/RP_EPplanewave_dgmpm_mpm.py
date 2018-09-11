@@ -86,7 +86,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             TeXFile.write(r'\nextgroupplot[')
             if i==0: TeXFile.write(r'title={'+str(titles[j])+'},')
             if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',')
-            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.3,-0.45)+(0.cm,1cm)$)},legend columns=2}')
+            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.5,-0.45)+(0.cm,1cm)$)},legend columns=2}')
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
                 TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=2pt] coordinates{')
@@ -270,7 +270,7 @@ Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["sig"]=sig_th;Exact["epsp"]=epsp_th
 containers=np.array([USL,DGMPM,DGMPM2,Exact])
 rowFields=['sig','epsp']
 colFields=np.array([[40,20,20,0],[60,30,30,1],[90,45,45,2]])
-legend=['usl 1ppc','dgmpm 1ppc (ep solver)','dgmpm 1ppc (ac solver)','exact']
+legend=['usl 1ppc','dgmpm 1ppc (elastic-plastic solver)','dgmpm 1ppc (elastic solver)','exact']
 Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
