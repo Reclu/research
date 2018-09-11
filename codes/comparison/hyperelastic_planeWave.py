@@ -65,6 +65,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile.close()
 
 def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend,*kwargs):
+    
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
@@ -81,11 +82,11 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             for k in (colFields[i]):
                 maxim.append(max(containers[j][field][:,k]))
                 minim.append(min(containers[j][field][:,k]))
-        maximum[i]=1.1*max(maxim)
-        minimum[i]=1.1*min(minim)
+        maximum[i]=1.05*max(maxim)
+        minimum[i]=1.05*min(minim)
     TeXFile=open(fileName,"w")
     # Define Paul Tol's colors (purple to red)
-    TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{tikzpicture}[spy using outlines={rectangle, magnification=3, size=1.5cm, connect spies},scale=.9]');TeXFile.write('\n')
     TeXFile.write(r'\begin{groupplot}[group style={group size='+str(col)+' by '+str(row)+',');TeXFile.write('\n')
     TeXFile.write('ylabels at=edge left, yticklabels at=edge left,horizontal sep=2.ex,');TeXFile.write('\n')
     TeXFile.write('vertical sep=4ex,xticklabels at=edge bottom,xlabels at=edge bottom},');TeXFile.write('\n')
@@ -103,7 +104,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.5,-0.35)+(0.45cm,1cm)$)},legend columns=3},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
-                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=5] coordinates{')
+                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=2] coordinates{')
                 #pdb.set_trace()
                 #print field
                 FIELD=containers[k][field][:,colFields[j][k]]
@@ -111,6 +112,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
                 for l in range(len(FIELD)):
                     TeXFile.write('('+str(xFields[l])+','+str(FIELD[l])+') ')
                 TeXFile.write('};\n')
+            if j==0 and fileName[-9:]=='shock.tex':
+                TeXFile.write(r'\begin{scope}');TeXFile.write('};\n')
+                TeXFile.write(r'\spy[black,size=3cm] on (2.35,4.2) in node [fill=none] at (5.8,4.);');TeXFile.write('};\n')
+            TeXFile.write(r'\end{scope}');TeXFile.write('};\n')
     for lab in legend:
         TeXFile.write(r'\addlegendentry{'+str(lab)+'}');TeXFile.write('\n')
     TeXFile.write('\n')    
@@ -157,7 +162,7 @@ timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
 
-sigd = 5.*Sigy
+sigd = 50.*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 update_position=False
