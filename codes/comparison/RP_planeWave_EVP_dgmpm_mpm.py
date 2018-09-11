@@ -62,10 +62,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    marker=['none','none','none','|','x','none','triangle*','none','*']
-    style=['dashed','dotted','solid','solid','only marks','solid','densely dotted','only marks']
-    thickness=['very thick','very thick','very thick','very thick','thick','thin','thick','very thick','thick']
-    couleur=['Red','Orange','Blue','Purple','Green','black','Yellow','black','Green','Orange','Duck']
+    marker=['none','none','|','x','none','triangle*','none','*']
+    style=['dashed','solid','solid','only marks','solid','densely dotted','only marks']
+    thickness=['very thick','very thick','very thick','thick','thin','thick','very thick','thick']
+    couleur=['Red','Blue','Purple','Green','black','Yellow','black','Green','Orange','Duck']
     TeXFile=open(fileName,"w")
     # Define Paul Tol's colors (purple to red)
     TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
@@ -143,7 +143,7 @@ timeUnload = 2*timeOut
 dt=(length/Nelem)/c
 
 ## Viscous parameters
-case='non-stiff'
+case='stiff'
 if case=='stiff':
     tau=dt/100. #relaxation time
 elif case=='non-stiff':
@@ -267,10 +267,10 @@ for i,n1 in enumerate(frames):
 fileName=str(path)+'/evp_dgmpm_mpm'+case+'.tex'
 Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["sig"]=sig_th;Exact["epsp"]=epsp_th
 # MPM[:,2*n1],USF["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM3["pos"][:,2*n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]
-containers=np.array([MPM,USF,DGMPM,DGMPM3,DGMPM2,Exact])
+containers=np.array([MPM,DGMPM,DGMPM3,DGMPM2,Exact])
 rowFields=['sig','epsp']
-colFields=np.array([[40,40,20,40,20,0],[60,60,30,60,30,1],[90,90,45,90,45,2]])
-legend=['usl 1ppc','usf 1ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2 + strang)','plastic solution']
+colFields=np.array([[40,20,40,20,0],[60,30,60,30,1],[90,45,90,45,2]])
+legend=['usl 1ppc','dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2 + strang)','plastic solution']
 Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)

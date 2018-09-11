@@ -13,11 +13,8 @@ if not os.path.exists('texFiles/'+str(directory)):
     os.system('mkdir texFiles/'+str(directory))
 path='texFiles/'+str(directory)
 """
-Comparison of the implementation of the 1D elastic-plastic set of equations
-in dynamics for linear isotropic/kinematic hardening materials:
-- with the MPM
-- with the DGMPM
-- with the FVM
+Comparison of DGMPM implementations of the 1D elastic-plastic set of equations
+in dynamics for linear kinematic hardening materials
 """
 def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile=open(fileName,"w")
@@ -25,10 +22,10 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
     ## 5 fields
-    marker=['+','none','none','|','none','pentagone*','none','triangle*']
-    style=['solid','dotted','solid','solid','solid','solid','solid']
-    thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
+    marker=['none','none','|','none','pentagone*','none','triangle*','none']
+    style=['dashed','solid','solid','solid','solid','solid','dotted']
+    thickness=['very thick','very thick','thick','thin','very thick','thin','thick','very thick']
+    couleur=['Red','Blue','Purple','black','Yellow','black','Green','Orange']
     TeXFile.write(r'\begin{tikzpicture}[scale=0.8]');TeXFile.write('\n')
     TeXFile.write(r'\begin{axis}[xlabel='+str(xlabel)+',ylabel='+str(ylabel)+',ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={'+subtitle+'},xmin=0.,xmax=6.]');TeXFile.write('\n')
     legend=''
@@ -64,10 +61,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    marker=['+','none','none','|','none','pentagone*','none','triangle*']
-    style=['solid','dotted','solid','solid','solid','solid','solid']
-    thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
+    marker=['none','+','x','none','triangle*','none']
+    style=['solid','only marks','only marks','solid','dotted']
+    thickness=['very thick','thin','thick','thin','very thick','thin','thick','very thick']
+    couleur=['Blue','Purple','Duck','black','Yellow','black','Green','Orange']
 
     TeXFile=open(fileName,"w")
     # Define Paul Tol's colors (purple to red)
@@ -86,11 +83,12 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             TeXFile.write(r'\nextgroupplot[')
             if i==0: TeXFile.write(r'title={'+str(titles[j])+'},')
             if j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',')
-            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.25,-0.45)+(0.cm,1cm)$)},legend columns=5}')
+            if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.3,-0.45)+(0.cm,1cm)$)},legend columns=2}')
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
                 TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=2pt] coordinates{')
                 #pdb.set_trace()
+                #print field
                 FIELD=containers[k][field][:,colFields[j][k]]
                 xFields=containers[k]["pos"][:,colFields[j][k]]
                 for l in range(len(FIELD)):
@@ -112,8 +110,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     TeXFile.write('%%% End:')
     TeXFile.write('\n')
     TeXFile.close()
-
-
+    
 def export2pgfPlot(fileName,xfield,yfield,xlabel,ylabel):
     #pdb.set_trace()
     dataFile=open(fileName,"w")
@@ -154,6 +151,19 @@ fvmlimiter=-1
 parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
 #################
 
+##MPM: Material Point Method
+USL = dict(parameters)
+print 'Computing  USF'
+#execfile('mpm/planeWave.py', USL)
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":'USF',"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+#################
+
+##MPM: Material Point Method
+USF = dict(parameters)
+print 'Computing  USF'
+#execfile('mpm/planeWave.py', USF)
+
 
 ##DGMPM: Discontinuous Galerkin Material Point Method
 DGMPM = dict(parameters)
@@ -161,27 +171,44 @@ print 'Computing  DGMPM (ep solver)'
 execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM)
 
 
-##FEM: Finite Element Method
-FEM = dict(parameters)
-print 'Computing  FEM'
-execfile('fem/planeWave.py', FEM)
-
-
-##FVM: Finite Volume Method
-FVM = dict(parameters)
-print 'Computing  FVM'
-execfile('fvm/elastoplasticity_planewave.py', FVM)
-
-
-fvmlimiter=1
-
+ppc=2
+#Nelem = 50/ppc
 parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
 
-##FVM: Finite Volume Method
-FVM2 = dict(parameters)
-print 'Computing  FVM (SB)'
-execfile('fvm/elastoplasticity_planewave.py', FVM2)
+print "=============== 2PPC COMPUTATIONS ===================="
 
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing  DGMPM (ep solver)'
+execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM2)
+
+
+
+
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"nu":nu,"Sigy":Sigy, "H":H,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False,"hardening":hardening,"fvmlimiter":fvmlimiter}
+
+print "=============== 2PPC COMPUTATIONS ===================="
+
+##DGMPM: Discontinuous Galerkin Material Point Method
+DGMPM3 = dict(parameters)
+print 'Computing  DGMPM (ep solver)'
+execfile('dgmpm/planeWaveEP_EPsolver.py', DGMPM3)
+
+# frames=[]
+# frmpm=[]
+# for i in DGMPM2["time"]:
+#     for j in DGMPM["time"]:
+#         if abs(i-j)<5.e-7:
+#             ndg = np.where(DGMPM["time"]==j)[0][0]
+#             nmpm = np.where(DGMPM2["time"]==i)[0][0]
+#             print nmpm
+#             tdg = '%.2e' % j ; tmpm = '%.2e' % i
+#             print "dgmpm increment ",ndg, " ; time difference: ",'%.2e' %abs(j-i)
+#             print "mpm time: ",tmpm," ; dgmpm time:",tdg
+#             frames.append(ndg)
+#             frmpm.append(nmpm)
+# print frames
+# start=3
 #############################################################################
 #########################  Comparison  ######################################
 #############################################################################
@@ -202,116 +229,56 @@ sig_th=np.zeros((len(DGMPM["pos"][:,0]),len(frames)))
 epsp_th=np.zeros((len(DGMPM["pos"][:,0]),len(frames)))
 
 for i,n1 in enumerate(frames):
-    time = '%.2e' % FVM["t"][n1]
+    mpm=2*n1-1#frmpm[start+i]
+    print n1,mpm,mpm/2+1
+    time = '%.2e' % DGMPM["time"][n1]
     fig, (ax1, ax2) = plt.subplots(2,1)
-    if FVM["t"][n1]<=0.5*length/c :
-        temps=FVM["t"][n1]
+    if DGMPM["time"][n1]<=0.5*length/c :
+        temps=DGMPM["time"][n1]
     else:
-        temps=FVM["t"][n1-1]
+        temps=DGMPM["time"][n1-1]
     
     if hardening=='isotropic':
-        Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionISO(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     elif hardening=='kinematic':
-        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(FVM["centroids"],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
-
+        Sexact,Epexact,Vexact = computeAnalyticalSolutionKIN(DGMPM["pos"][:,n1],length,c,temps,abs(v0),HEL,lamb,mu,H,rho)
     sig_th[:,i]=-np.sign(v0)*Sexact
     epsp_th[:,i]=-np.sign(v0)*Epexact
-
-    ax1.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'r^',lw=2.,ms=4.,label='DGMPM (ep solver)')
-    ax1.plot(FVM["centroids"],FVM["sig"][:,n1],'g',lw=2.,ms=4.,label='FVM')
-    ax1.plot(FVM2["centroids"],FVM2["sig"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
-    ax1.plot(FEM["centroids"],FEM["sig"][:,n1],'c',lw=2.,ms=4.,label='FEM')
-    ax1.plot(FVM["centroids"],-np.sign(v0)*Sexact,'k',lw=2.,ms=4.,label='exact')
+    ax1.plot(DGMPM["pos"][:,n1],DGMPM["sig"][:,n1],'b',lw=2.,ms=4.,label='DGMPM 1ppc')
+    ax1.plot(DGMPM2["pos"][:,mpm],DGMPM2["sig"][:,mpm],'r--',lw=2.,ms=4.,label='DGMPM 2ppc')
+    ax1.plot(DGMPM3["pos"][:,mpm/2+1],DGMPM3["sig"][:,mpm/2+1],'g-',lw=2.,ms=4.,label='DGMPM RK2')
+    ax1.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Sexact,'k',lw=2.,ms=4.,label='exact')
     ax1.set_title('Stress at time t='+str(time)+' s.',size=24.)
     ax1.set_xlabel('x (m)')
     ax1.set_ylabel(r'$\sigma (Pa)$')
 
-    ax2.plot(DGMPM["pos"][:,n1],DGMPM["epsp"][:,n1],'r',lw=2.,ms=4.,label='DGMPM (ep solver)')
-    ax2.plot(FVM["centroids"],FVM["epsp"][:,n1],'g',lw=2.,ms=4.,label='FVM')
-    ax2.plot(FVM2["centroids"],FVM2["epsp"][:,n1],'b',lw=2.,ms=4.,label='FVM (SB)')
-    ax2.plot(FEM["centroids"],FEM["epsp"][:,n1],'c',lw=2.,ms=4.,label='FEM')
-    ax2.plot(FVM["centroids"],-np.sign(v0)*Epexact,'k',lw=2.,ms=4.,label='exact')
+    ax2.plot(DGMPM["pos"][:,n1],DGMPM["epsp"][:,n1],'b',lw=2.,ms=4.,label='DGMPM 1ppc')
+    ax2.plot(DGMPM2["pos"][:,mpm],DGMPM2["epsp"][:,mpm],'r--',lw=2.,ms=4.,label='DGMPM 2ppc')
+    ax2.plot(DGMPM3["pos"][:,mpm/2+1],DGMPM3["epsp"][:,mpm/2+1],'r--',lw=2.,ms=4.,label='DGMPM RK2')
+    ax2.plot(DGMPM["pos"][:,n1],-np.sign(v0)*Epexact,'k',lw=2.,ms=4.,label='exact')
     ax2.set_title('Plastic strain at time t='+str(time)+' s.')
     ax2.set_xlabel('x (m)')
     ax2.set_ylabel(r'$\varepsilon^p (Pa)$')
     ax1.legend(numpoints=1)
     ax1.grid();ax2.grid()
     plt.show()
-    legend=['dgmpm','fem','fvm','fvm (SB)','exact']
+    legend=['usl 1ppc','dgmpm 1ppc (ep solver)','dgmpm 1ppc (ac solver)','exact']
     temps=time[:-4]
     subtitle=subtitles[i]+r' $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
     titles.append(subtitle)
-    #export2DTeXFile(str(path)+'/EP_dgmpm_fvm_stress'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([DGMPM["sig"][:,n1],FEM["sig"][:,n1],FVM["sig"][:,n1],FVM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
-    #export2DTeXFile(str(path)+'/EP_dgmpm_fvm_epsp'+str(n1)+'.tex',np.array([DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\epsilon^p$',str(subtitle),np.array([DGMPM["epsp"][:,n1],FEM["epsp"][:,n1],FVM["epsp"][:,n1],FVM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
-    
-fileName=str(path)+'/ep_dgmpm_fvm_fem.tex'
+    #export2DTeXFile(str(path)+'/EP_dgmpm_mpm_stress'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\sigma (Pa)$',str(subtitle),np.array([USL["sig"][:,2*n1],DGMPM["sig"][:,n1],DGMPM2["sig"][:,n1],-np.sign(v0)*Sexact]),legend)
+    #export2DTeXFile(str(path)+'/EP_dgmpm_mpm_epsp'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["epsp"][:,2*n1],DGMPM["epsp"][:,n1],DGMPM2["epsp"][:,n1],-np.sign(v0)*Epexact]),legend)
+    #export2DTeXFile(str(path)+'/EP_dgmpm_mpm_velo'+str(n1)+'.tex',np.array([USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\eps^p$',str(subtitle),np.array([USL["velo"][:,2*n1],DGMPM["Velocity"][:,n1],DGMPM2["Velocity"][:,n1],-np.sign(v0)*Vexact]),legend)
+
+fileName=str(path)+'/ep_dgmpm_ppc.tex'
 Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["sig"]=sig_th;Exact["epsp"]=epsp_th
-FEM["pos"]=DGMPM["pos"];FVM["pos"]=DGMPM["pos"];FVM2["pos"]=DGMPM["pos"]
-# DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]
-containers=np.array([DGMPM,FEM,FVM,FVM2,Exact])
+# USL["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,n1],DGMPM["pos"][:,n1]
+containers=np.array([DGMPM,DGMPM2,DGMPM3,Exact])
 rowFields=['sig','epsp']
-colFields=np.array([[20,20,20,20,0],[30,30,30,30,1],[45,45,45,45,2]])
-legend=['dgmpm','fem','fvm','fvm (SB)','exact']
+colFields=np.array([[20,39,20,0],[30,59,30,1],[45,89,45,2]])
+legend=['dgmpm 1ppc','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 
-
-"""
-####################################################################
-fig, (ax1, ax2) = plt.subplots(2,1)
-
-# intialize two line objects (one in each axes)
-line1, = ax1.plot([], [],'b-o' ,ms=1.5,label='ep')
-line2, = ax1.plot([], [],'k' , ms=2,label='fvm')
-line3, = ax1.plot([], [],'k-o' , ms=2,label='fvm SB')
-line4, = ax1.plot([], [],'g-+' , ms=2,label='fem')
-
-line5, = ax2.plot([], [],'b-o' , ms=2,label='ep')
-line6, = ax2.plot([], [],'k', ms=2.5,label='fvm')
-line7, = ax2.plot([], [],'k-o', ms=2.5,label='fvm SB')
-line8, = ax2.plot([], [],'g-+' , ms=2,label='fem')
-
-
-line = [line1, line2,line3,line4,line5,line6,line7,line8]
-
-ax1.grid()
-ax2.grid()
-ax1.set_xlabel('x (m)', fontsize=18)
-ax2.set_xlabel('x (m)', fontsize=18)
-ax2.set_ylabel(r'$\varepsilon^p$', fontsize=18)
-ax1.set_ylabel(r'$\sigma$', fontsize=18)
-
-ax1.set_xlim(0.,length)
-ax2.set_xlim(0.,length)
-ax1.set_ylim(1.1*np.min(FEM["sig"]),1.1*np.max(FEM["sig"]))
-ax2.set_ylim(1.1*np.min(FEM["epsp"]),1.1*np.max(FEM["epsp"]))
-ax1.legend(numpoints=1)
-def init():
-    line[0].set_data([], [])
-    line[1].set_data([], [])
-    line[2].set_data([], [])
-    line[3].set_data([], [])
-    line[4].set_data([], [])
-    line[5].set_data([], [])
-    line[6].set_data([], [])
-    line[7].set_data([], [])
-    return line
-
-def animate(i):
-    line[0].set_data(DGMPM["pos"][:,i],DGMPM["sig"][:,i])
-    line[1].set_data(FVM["centroids"],FVM["sig"][:,i])
-    line[2].set_data(FVM2["centroids"],FVM2["sig"][:,i])
-    line[3].set_data(FEM["centroids"],FEM["sig"][:,i])
-
-    line[4].set_data(DGMPM["pos"][:,i],DGMPM["epsp"][:,i])
-    line[5].set_data(FVM["centroids"],FVM["EP"][:,i])
-    line[6].set_data(FVM2["centroids"],FVM2["EP"][:,i])
-    line[7].set_data(FEM["centroids"],FEM["epsp"][:,i])
-    return line
-
-anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=DGMPM["increments"], interval=100, blit=True)
-
-plt.show()
-"""
+    
