@@ -1,15 +1,18 @@
-\documentclass[10pt,a4paper,notitlepage,twoside]{report}
+\documentclass[10pt,a4paper,notitlepage,twoside,openright]{book}
 %\documentclass[11pt,a4paper,notitlepage,twoside]{report}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 %\usepackage[fleqn]{amsmath} %% Equations left aligned
+%\usepackage{tikz}
+%\usepackage{array}
+%\usepackage{pgfplots}
+%\usepackage{todonotes}
+\input{template-Spi-Manuscript/Preambule}
 \usepackage{amsmath}
 \usepackage[tensorialbold]{userCommands}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{tikz}
 \usepackage{cancel}
-\usepackage{array}
 \usetikzlibrary{patterns} 
 \usetikzlibrary{shapes}
 \usetikzlibrary{snakes}
@@ -22,9 +25,7 @@
 \usepackage[font=normal]{subcaption}
 \usepackage[section]{placeins} % pictures restricted to \section
 \usepackage{geometry}
-\usepackage{pgfplots}
 \usepackage{fncylab}
-% \usepackage{todonotes}
 \usepackage{fancyhdr}
 \usepackage{mathtools}
 \usepackage{ifpdf}
@@ -88,7 +89,8 @@
 
 \mathtoolsset{showonlyrefs}
 
-
+\input{template-Spi-Manuscript/Funct_TemplateECN}
+\input{template-Spi-Manuscript/Input_TemplateECN}
 \makeatother
 \begin{document}
 \tableofcontents{}
