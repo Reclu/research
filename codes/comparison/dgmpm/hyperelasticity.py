@@ -6,9 +6,11 @@ from matplotlib import animation
 import scipy.optimize as optimize
 import sys
 import os
+import pdb
 sys.path.append(os.path.expandvars('dgmpm'))
 from class_hyperelasticity import *
 import hyperelasticExactSolution as analytic
+import CourantNumber as cfl
 ##########################
 def bar(x1,x2,Mp):
     xp=np.zeros((Mp,2))
@@ -26,20 +28,28 @@ Nn=Nelem*2 + 2             # Number of elements
 
 
 # Material properties
-
+Tangent=C
 rho0=rho
-Sy=Sigy           
-c0=np.sqrt(C/rho0)
+Sy=Sigy
+#pdb.set_trace()
+c0=np.sqrt(Tangent/rho0)
 
 
 exact_solver=False
 
-mesh = DGmesh(Mp,length,ppc,rho0,C,exact_solver)
+mesh = DGmesh(Mp,length,ppc,rho0,Tangent,exact_solver)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,length,Mp)
 xp0=np.copy(xp[:,0])
 
-
+# Build approximation matrices
+Map,Grad,Dofs,parent=mesh.buildApproximation(xp)
+"""
+plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+')
+plt.plot(xp[:,0],xp[:,1],'ro')
+plt.grid()
+plt.show()
+"""
 mass=rho0*dx/ppc
 
 
@@ -47,22 +57,25 @@ mass=rho0*dx/ppc
 sd= sigd              
 
 # Define imposed gradient corresponding to sd = PK1
-Res = lambda x: x + 2.*sd/C - x**3
+Res = lambda x: x + 2.*sd/Tangent - x**3
 f0=optimize.brentq(Res,np.sqrt(3.)/3.+0.00001,1.5)
 
 qR=np.array([1.,0.])
-qL=analytic.applyBoundaryCondition(C,rho0,f0,qR)
-q_star = analytic.compute_stationnary_solution(qL,qR,C,rho0)
+qL=analytic.applyBoundaryCondition(Tangent,rho0,f0,qR)
+q_star = analytic.compute_stationnary_solution(qL,qR,Tangent,rho0)
 
 if t_order==1:
     CFL=1./ppc
 elif t_order==2:
     CFL=1.
+
+CFL=cfl.computeCourantNumber(mesh,parent,Map,t_order)
+        
 # Time discretization
 dt=CFL*dx/c0 
 tfinal=timeOut
 tf=timeUnload;
-NTMaxi=2*int(tfinal/dt)
+NTMaxi=20*int(tfinal/dt)
 #t_order= 1
 updated_lagrangian=True
 # limit = 0 : minmod // limit = 1 : superbee // limit = 2 : MUSCL
@@ -101,8 +114,6 @@ pos[:,0]=np.copy(xp[:,0])
 time[0]=T
 
 
-# Build approximation matrices
-Map,Grad,Dofs,parent=mesh.buildApproximation(xp)
 
 
 mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
@@ -150,7 +161,7 @@ def UpdateStateRK2(dt,dofs,Ml,u,w,md,sd):
     u12[0,0]=np.copy(u12[1,0])
     u12[-2,0] = np.copy(u12[-1,0])
     
-    w12[1:-1,0] =computePK1(C,rho0,u12[1:-1,0]*rho0)
+    w12[1:-1,0] =computePK1(Tangent,rho0,u12[1:-1,0]*rho0)
     w12[:,1] = np.copy(u12[:,1])
     w12[0,0]=2.*sd - w12[1,0]
     w12[0,1]=np.copy(w12[1,1])
@@ -164,24 +175,24 @@ def UpdateStateRK2(dt,dofs,Ml,u,w,md,sd):
     u+=k2
     return u
 
-def computeTimeStep(rho,C,J,dx,CFL):
-    c=np.sqrt(C*(3.*J**2 -1.)/(2.*rho))
+def computeTimeStep(rho,Tangent,J,dx,CFL):
+    c=np.sqrt(Tangent*(3.*J**2 -1.)/(2.*rho))
     dt = CFL*dx/c
     return dt
 
-def computePK1(C,rho0,F):
-    pi = C*F*(F**2-1.)/2.
+def computePK1(Tangent,rho0,F):
+    pi = Tangent*F*(F**2-1.)/2.
     return pi
 
-def computeCelerity(C,rho0,F):
+def computeCelerity(Tangent,rho0,F):
     cel=np.zeros(len(F))
     for i in range(len(F)):
-        cel[i]=np.sqrt(C*(3.*F[i]**2-1.)/(2.*rho0))
+        cel[i]=np.sqrt(Tangent*(3.*F[i]**2-1.)/(2.*rho0))
     return cel
 
-pi0 = computePK1(C,rho0,U[:,0]*rho0)
+pi0 = computePK1(Tangent,rho0,U[:,0]*rho0)
 
-u0=computePK1(C,rho0,np.ones(Nn))
+u0=computePK1(Tangent,rho0,np.ones(Nn))
 
 
 for n in range(NTMaxi)[1:]:    
@@ -208,7 +219,7 @@ for n in range(NTMaxi)[1:]:
 
     
     Jmax=np.max(u[:,0]*rho0)
-    dt=computeTimeStep(rho0,C,Jmax,dx,CFL)
+    dt=computeTimeStep(rho0,Tangent,Jmax,dx,CFL)
 
     if ((time[n-1]+dt)>tfinal):
         dt = tfinal - time[n-1]
@@ -219,7 +230,7 @@ for n in range(NTMaxi)[1:]:
     elif t_order==2 :
         u=UpdateStateRK2(dt,Dofs,md,u,w,mass_vector0,sd)
     
-    u0=computePK1(C,rho0,u[:,0]*rho0)
+    u0=computePK1(Tangent,rho0,u[:,0]*rho0)
     
     # Mapping back to the material points
     U=np.dot(Map[Dofs,:].T,u[Dofs,:])
@@ -235,10 +246,10 @@ for n in range(NTMaxi)[1:]:
         md=np.diag(np.sum(mg,axis=1))
         mass_vector = np.dot(np.dot(Map,Md),Map.T)
         mass_vector = np.sum(mass_vector,axis=1)
-        
-    
+        CFL=cfl.computeCourantNumber(mesh,parent,Map,t_order)
+    print t_order
     u= np.zeros((Nn,2))
-    W[:,0] = computePK1(C,rho0,U[:,0]*rho0)
+    W[:,0] = computePK1(Tangent,rho0,U[:,0]*rho0)
     W[:,1] = np.copy(U[:,1])
     
     #print 'Increment =', n, 't = ', time[n],' s.'
@@ -247,15 +258,19 @@ for n in range(NTMaxi)[1:]:
     pos[:,n]=xp[:,0]
     
     for i in range(Mp):
-        Pi_th[i,n],V_th[i,n]= analytic.computeSolution(time[n],pos[i,0],qL,qR,q_star,C,rho0)
+        Pi_th[i,n],V_th[i,n]= analytic.computeSolution(time[n],pos[i,0],qL,qR,q_star,Tangent,rho0)
     
     if (time[n]==tfinal):
         increments=n
         break
+    plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+')
+    plt.plot(pos[:,n],xp[:,1],'ro')
+    plt.grid()
+    plt.show()
 
 x=mesh.xn
 time=time[0:increments]
-
+"""
 #Sigma
 fig = plt.figure()
 plt.grid()
@@ -296,3 +311,4 @@ anim = animation.FuncAnimation(fig, animate, init_func=init,
 plt.grid()
 #anim.save('StressBar.mp4', extra_args=['-vcodec', 'libx264'])
 plt.show()
+"""
