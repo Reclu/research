@@ -7,7 +7,7 @@ Rather than ascribing cells velocity to particles as what is done in PIC, Lagran
 Merging those two improvements yielded the so-called \textbf{FLuid Implicit Particle} method (FLIP) \cite{FLIP}. It is worth noticing that in this new PIC formulation, the background mesh is used for solving balance equations only , thus providing an adaptive feature to the numerical scheme. 
 
 
-Even though particles carry the whole history of the problem, FLIP has been essentially used until the 90's to model history-independent constitutive models which were dealt with at the grid level. The first application of the method to history-dependent materials was made in the context of solid mechanics \cite{Sulsky94}. Lagrangian particles are then seen seen as material points since they are used to store every fields of the problem and to compute constitutive equations, thus leading to the Material Point Method that is derived hereinafter. 
+Even though particles carry the whole history of the problem, FLIP has been essentially used until the 90's to model history-independent constitutive models which were dealt with at the grid level. The first application of the method to history-dependent materials was made in the context of solid mechanics \cite{Sulsky94}. Lagrangian particles are then seen as material points since they are used to store every fields of the problem and to compute constitutive equations, thus leading to the Material Point Method that is derived hereinafter. 
 
 \subsection{Derivation of the MPM}
 Consider a solid domain with volume $\Omega_t$ bounded by the surface $\partial \Omega_t$, subject to traction forces and prescribed velocity on its boundaries within the time interval $\tau=\[0,T\]$:
@@ -45,7 +45,7 @@ The continuum body is discretized into a set of $N_p$ material points in an arbi
 Analogously to the Finite Element Method (FEM) \cite{Belytschko}, the velocity is approximated on the MPM background mesh by:
 \begin{equation}
   \label{eq:approximation_basis}
-  \vect{v}(\vect{x},t)=S_i(\vect{x})\vect{v}^{i}(t)
+  \vect{v}(\vect{x},t)=S_j(\vect{x})\vect{v}^{j}(t)
 \end{equation}
 where $\vect{v}^{i}$ is the velocity of the $i$th grid node, and $S_i(\vect{x})$ the (linear) shape function attached to it. One feature of the MPM is that the mass density is approximated in the grid based on the mass carried by each material point:
 \begin{equation}
@@ -58,7 +58,7 @@ By introducing successively in the weak form \eqref{eq:linear_momentum_weak_form
 \begin{equation}
   \begin{aligned}
     &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
-    & \sum_{p=1}^{N_p} m_p  \[\vect{\dot{v}}(\vect{x}^p) \cdot \vect{w}(\vect{x}^p) + \tens{\bar{\sigma}}(\vect{x}^p):\nablat \vect{w}(\vect{x}^p) \]  = \sum_{p=1}^{N_p}m_p \vect{b}(\vect{x}^p)\cdot \vect{w}(\vect{x}^p) + \int_{\partial \Omega^\sigma_t} \vect{T}^d\cdot\vect{w}\: ds  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
+    & \sum_{p=1}^{N_p} m_p  \[\vect{\dot{v}}(\vect{x}^p) \cdot \vect{w}(\vect{x}^p) + \tens{\bar{\sigma}}(\vect{x}^p):\nablat \vect{w}(\vect{x}^p) \]  = \sum_{p=1}^{N_p}m_p \vect{b}(\vect{x}^p)\cdot \vect{w}(\vect{x}^p) + \int_{\partial \Omega^\sigma_t} \vect{T}_d\cdot\vect{w}\: ds  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
   \end{aligned}
 \end{equation}
 Then, with the finite element approximation \eqref{eq:approximation_basis}, the weak form reads:
@@ -66,20 +66,20 @@ Then, with the finite element approximation \eqref{eq:approximation_basis}, the 
   \label{eq:mpm_discrete_weak}
     \begin{aligned}
       &\text{Find $\vect{v} \in \Vscr_h^1$ such that} \\
-      & \vect{w}^j \sum_{p=1}^{N_p} m_p  \[ S_{jp} S_{ip} \vect{\dot{v}}^i + \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^j\( \sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall \: t \in \tau
+      & \vect{w}^i \sum_{p=1}^{N_p} m_p  \[ S_{ip} S_{jp} \vect{\dot{v}}^j + \nablav S_{ip} \cdot \tens{\bar{\sigma}}^p \]  =  \vect{w}^i\( \sum_{p=1}^{N_p}m_p S_{ip}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_i(\vect{x})\vect{T}_d\: ds\)  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall \: t \in \tau
   \end{aligned}
 \end{equation}
 in which $S_{ip}=S_i(\vect{x}^p)$ and $\tens{\bar{\sigma}}^p=\tens{\bar{\sigma}}(\vect{x}^p)$. Next, the arbitrariness of the test function $\vect{w}$ leads to the semi-discrete equation in matrix form:
 \begin{equation}
   \label{eq:mpm_semi-discrete}
-  M_{ji} \vect{\dot{v}}^i = \vect{f}_{int}^j + \vect{f}_{ext}^j 
+  M_{ij} \vect{\dot{v}}^j = \vect{f}_{int}^i + \vect{f}_{ext}^i 
 \end{equation}
-where the definition of the mass matrix $M_{ij}$ and internal and external force vectors $\vect{f}_{int}^j $ and $\vect{f}_{ext}^j$ are:
+where the definition of the mass matrix $M_{ij}$ and internal and external force vectors $\vect{f}_{int}^i $ and $\vect{f}_{ext}^i$ are:
 \begin{subequations}
   \begin{alignat}{1}
-    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{jp} S_{ip} \label{eq:mass_matrix}\\
-    & \vect{f}_{int}^j = - \sum_{p=1}^{N_p} m_p \nablav S_{jp} \cdot \tens{\bar{\sigma}}^p \label{eq:int_forces}\\
-    & \vect{f}_{ext}^j =\sum_{p=1}^{N_p}m_p S_{jp}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_j(\vect{x})\vect{T}^d\: ds \label{eq:ext_forces}
+    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{ip} S_{jp} \label{eq:mass_matrix}\\
+    & \vect{f}_{int}^i = - \sum_{p=1}^{N_p} m_p \nablav S_{ip} \cdot \tens{\bar{\sigma}}^p \label{eq:int_forces}\\
+    & \vect{f}_{ext}^i =\sum_{p=1}^{N_p}m_p S_{ip}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_i(\vect{x})\vect{T}_d\: ds \label{eq:ext_forces}
   \end{alignat}
 \end{subequations}
 In addition, note that particles play the role of integration points in the semi-discrete form so that the mass matrix depends on the positions of material points in the grid and must be computed at each time step. Hence, the MPM can be seen as an extension of FEM with moving Gauss points. However, this quadrature rule results in a consistent mass matrix $M_{ji}$ that may be singular when only one material point lies in an element due to reduced integration. The use of a linear combination of the (positive-definite) diagonally lumped mass matrix $M^L_i=\sum_p S_{ip}m_p$, and the (positive semi-definite) consistent mass matrix is then recommended \cite{Love}. Nevertheless, since no parameter values are prescribed for this combination, the lumped mass matrix is widely used in MPM simulations in spite of additional dissipation of kinetic energy it introduces \cite{Mass_Flip}. 
@@ -91,12 +91,13 @@ At last, system \eqref{eq:mpm_semi-discrete} is solved for nodal accelerations $
 \end{equation}
 where the superscripts $\bullet^{k,l}$ denote the time step $l$ at which the $k$th nodal field is evaluated. 
 
-Recall that the background grid inherited from FLIP is arbitrary so that fields must be projected between particles and nodes to $(i)$ solve the linear system \eqref{eq:mpm_discrete} and $(ii)$ advect the solution by moving material points. The first mapping step, required to build the discrete form, aims at satisfying the conservation of linear momentum:
+Recall that the background grid inherited from FLIP is arbitrary so that fields must be projected between particles and nodes to $(i)$ solve the linear system \eqref{eq:mpm_semi-discrete} and $(ii)$ advect the solution by moving material points. The first mapping step, required to build the discrete form, aims at satisfying the conservation of linear momentum:
 \begin{equation}
   \label{eq:particles2nodes}
   M^{L,n}_i \vect{v}^{i,n} = \sum_{p=1}^{N_p} S_{ip}m_p \vect{v}^{p,n}
 \end{equation}
-that must be solved for every $\vect{v}^i$. Once the nodal accelerations are calculated from system \eqref{eq:mpm_semi-discrete}, the velocity of each material points is \textbf{updated} according to the approach followed in FLIP \cite{PIC_Nishiguchi}:
+that must be solved for every $\vect{v}^i$. Once the nodal accelerations are calculated from system \eqref{eq:mpm_semi-discrete}, nodale velocity increments can be computed to \textbf{update} the velocity of each material point by following FLIP approach \cite{PIC_Nishiguchi}:
+%the velocity of each material points is \textbf{updated} according to the approach followed in FLIP \cite{PIC_Nishiguchi}:
 \begin{equation}
   \label{eq:mp_velocity_update}
   \vect{v}^{p,n+1}= \vect{v}^{p,n}+ \Delta t^n \sum_{i=1}^{N_n} S_{ip}\vect{\dot{v}}^{i}
@@ -109,11 +110,16 @@ On the other hand, updated nodal velocities resulting from the solution of \eqre
 
 \begin{remark}
   \label{rq:dual_velo}
-  Equations \eqref{eq:mp_velocity_update} and \eqref{eq:position_update} lead to a double definition of the velocity since the time derivative of the displacement of a given particle does not correspond to its velocity. This can be seen in a finite differences sense by combining equations \eqref{eq:mpm_discrete}, \eqref{eq:position_update}:
+  Equations \eqref{eq:mp_velocity_update} and \eqref{eq:position_update} lead to a double definition of the velocity since the time derivative of the displacement of a given particle does not correspond to its velocity. This can be seen in a finite differences sense by combining equations \eqref{eq:position_update} and \eqref{eq:mpm_discrete}:
   \begin{equation}
+    \label{eq:double_velocity_mpm}
     \frac{\vect{x}^{p,n+1} - \vect{x}^{p,n}}{\Delta t^n}  =\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1} = \sum_{i=1}^{N_n} S_{ip} \( \vect{v}^{i,n} + \Delta t \vect{\dot{v}}^i\)
   \end{equation}
-  and subsequently \eqref{eq:mp_velocity_update}:
+  Next, on gets from equation \eqref{eq:mp_velocity_update}:
+  \begin{equation*}
+    \Delta t^n \sum_{i=1}^{N_n} S_{ip}\vect{\dot{v}}^{i}= \vect{v}^{p,n+1}- \vect{v}^{p,n}
+  \end{equation*}
+  which, once introduced in \eqref{eq:double_velocity_mpm}, yields:
   \begin{equation}
     \frac{\vect{x}^{p,n+1} - \vect{x}^{p,n}}{\Delta t^n}= \sum_{i=1}^{N_n} S_{ip} \vect{v}^{i,n} +   \vect{v}^{p,n+1} - \vect{v}^{p,n}
   \end{equation}
@@ -142,7 +148,56 @@ $\newline$
 \end{itemize}
 
 Although the material point method presented above has been successfully applied to a wide range of complex engineering problems involving finite deformations \cite{Wieckowski}, this approach suffers from limitations which are discussed in the next section. 
+\subsection{Lagrangian formulation of the MPM}
+Despite the above Eulerian formulation of the MPM is widely used, an alternative method that solves a discrete system on a reference configuration and which derivation is briefly recalled here, has also been developed \cite{Love}.
 
+Though an Eulerian equation is solved, the fact of using moving material points to store and carry the fields confers the method a Lagrangian nature.
+\subsubsection*{Discrete equations}
+An approximate solution of the conservation of Lagrangian linear momentum is seeked within the time interval $\tau=\[0,T\]$, in a solid with volume $\Omega_0$ and boundary $\partial \Omega_0$ in the reference configuration. The body is subject to traction forces and prescribed velocity on its boundaries:
+\begin{align}
+  & \tens{\Pi}\cdot\vect{N}=\vect{T}_d \quad \text{on } \partial \Omega_0^\Pi\\
+  & \vect{v} = \vect{\tilde{v}} \quad \text{on } \partial \Omega_0^v
+\end{align}
+where $\vect{N}$ is the outward normal vector to $\partial \Omega_0$ and the set of boundaries satisfies $\partial \Omega_0 =\partial \Omega^\Pi_0 \cap \partial \Omega^v_0$. Thus, the weak form of the balance equation of Lagrangian linear momentum \eqref{eq:Lagrangian_linear_momentum} is written in the reference configuration by means of the Galerkin approach. After integration by parts, one gets:
+\begin{equation}
+  \label{eq:lagrangian_momentum_weak_form}
+  \begin{aligned}
+    &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
+    &\int_{\Omega_0}  \rho_0  \vect{\dot{v}} \cdot \vect{w}\: dv + \int_{\Omega_0}\tens{\Pi}: 
+    \nablat_0 \vect{w} \:dv - \int_{\partial \Omega^\Pi_0} \vect{T}_d\cdot\vect{w}\: ds= \int_{\Omega_0} \rho_0 \vect{b}\cdot \vect{w} \: dv  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
+  \end{aligned}
+\end{equation}
+Representing the solid in the reference configuration with a collection of $N_p$ material points that can move in an arbitrary grid.
+Similarly to the Eulerian formulation, the reference mass density is defined based on the masses carried by the particles and the delta Dirac distribution: $\rho_0(\vect{X})=\sum_{p=1}^{N_p}m_p \delta\(\vect{X}^p-\vect{X}\)$. Thus, the specific PK1 stress tensor $\rho_0\tens{\bar{\Pi}}=\tens{\Pi}$ is introduced so that volume integrals of the weak are evaluated by treating particles as quadrature points:
+\begin{equation}
+  \label{eq:discrete_lagrangian_momentum_weak_form}
+  \begin{aligned}
+    &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
+    & \sum_{p=1}^{N_p}  m_p\( \vect{\dot{v}}^p \cdot \vect{w}^p + \tens{\bar{\Pi}}^p:
+    \nablat_0 \vect{w}^p \) - \int_{\partial \Omega^\Pi_0} \vect{T}_d\cdot\vect{w}\: ds= \sum_{p=1}^{N_p} m_p \vect{b}^p\cdot \vect{w}^p   \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
+  \end{aligned}
+\end{equation}
+%Note that in equation \eqref{eq:discrete_lagrangian_momentum_weak_form}, the superscipt $p$ denotes a field evaluated at the $p$th material point position in the reference configuration.
+At last, shape functions defined at nodes of the grid, combined with the arbitrariness of the test field $\vect{w}$, lead to the semi-discrete form:
+\begin{equation}
+  \label{eq:lagrangian_mpm_semi-discrete}
+  M_{ij} \vect{\dot{v}}^j = \vect{f}_{int}^i + \vect{f}_{ext}^i 
+\end{equation}
+with the following definitions of the mass matrix and internal and external force vectors:
+\begin{subequations}
+  \begin{alignat}{1}
+    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{ip} S_{jp}\\
+    & \vect{f}_{int}^i = - \sum_{p=1}^{N_p} m_p \nablav_0 S_{ip} \cdot \tens{\bar{\Pi}}^p\\
+    & \vect{f}_{ext}^i =\sum_{p=1}^{N_p}m_p S_{ip}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_i(\vect{x})\vect{T}_d\: ds 
+  \end{alignat}
+\end{subequations}
+
+\begin{remark}
+  The description of the reference mass density used yields a discrete weak form \eqref{eq:discrete_lagrangian_momentum_weak_form} in which fields are evaluated at the positions of material points \textbf{in the reference configuration}, namely for instance: $\vect{v}^p=\vect{v}(\vect{X}^p)$. As a consequence, the shape functions and the gradient of shape functions are also evaluated in the reference configuration.
+\end{remark}
+
+\subsubsection*{Solution scheme}
+Actualisation du gradient de la tranformation et de la fonction transformation. Résoudre sur la configuration précédente et non nécessairement de référence.
 \subsection{Shortcomings of the MPM}
 
 \subsubsection*{The grid-crossing instability}
@@ -150,7 +205,7 @@ The research on MPM mainly focused so far on the instability arising from the co
 Second, the classical approximation basis is used and modified gradients with extended supports are introduced in the \textbf{Dual Domain Material Point Method} (DDMPM) \cite{DDMPM0}. BSMPM and DDMPM  both solve the grid-crossing error by widening the domain of influence of material points since B-Spline functions span more cells than Lagrange polynomials, and the support of the modified gradient of DDMPM is larger than that of the shape functions.  
 
 \subsubsection*{The back-mapping instability}
-Numerical oscillations appear in the MPM solution even for problems that do not involve the grid-crossing instability, that is due to the updating of the velocity field at material points \cite{Mass_Flip}. As an illustration, consider a one-dimensional elastic bar of length $L=6\:m$ with Young's modulus $E=200 \:GPa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$ within the infinitesimal theory. The bar is initially in a free stress state and Riemann-type initial velocities are prescribed along the bar, that is: $v=v_0>0$ for $x\in[0,L/2]$ and $v=-v_0$ for $x \in ]L/2,L]$.
+Numerical oscillations appear in the MPM solution even for problems that do not involve the grid-crossing instability, that is due to the updating of the velocity field at material points \cite{Mass_Flip}. As an illustration, consider a one-dimensional elastic bar of length $L=6\:m$ with Young's modulus $E=200 \:GPa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$ within the infinitesimal theory. The bar is initially in a free stress state and Riemann-type initial velocities are prescribed along the bar, that is: $v=v_0>0$ for $x\in[0,L/2[$ and $v=-v_0$ for $x \in ]L/2,L]$.
 \begin{figure}[ht]
   \centering
   {\input{chapter3/pgfFigures/US_diffusion10} \phantomsubcaption \label{subfig:US_diffusion_10}}
@@ -159,7 +214,7 @@ Numerical oscillations appear in the MPM solution even for problems that do not 
   \caption{MPM solutions of the bars impact problem for various discretizations. (a)--(b) comparison of stress computed with USF and USL formulations and exact solutions (c) numerical total energy evolution. Parameters: $CFL=0.7$ ; $v_0=\frac{1}{200}\sqrt{\frac{E}{\rho}}$.}
   \label{fig:US_diffusion}
 \end{figure}
-Both ends of the bar are traction free so that this problem is equivalent to an impact of two elastic bars moving toward each other. The bar is discretized by using the MPM in a computational grid composed of $50$ regular cells, each containing either one or two material points (1ppc or 2ppc). Single material points are centered in cells while "cellmate" particles are placed symmetrically with respect to elements centers and are regularly spaced. The exact solution of this problem (see section \ref{subsec:charac_Linear_problems}) consists of two elastic discontinuities emanating from the middle of the bar and propagating left and rightward. In figure \ref{fig:US_diffusion}, numerical results provided by the USL and USF implementations of the MPM are compared to the exact solution before reflection of the waves on the boundaries. 
+Both ends of the bar are traction free so that this problem is equivalent to an impact of two elastic bars moving toward each other. The bar is discretized by using the MPM in a computational grid composed of $50$ regular cells, each containing either one or two material points (1ppc or 2ppc). Single material points are centered in cells while "cellmate" particles are placed symmetrically with respect to elements centers and are regularly spaced. The exact solution of this problem (see section \ref{subsec:charac_Linear_problems}) consists of two elastic discontinuities emanating from the middle of the bar and propagating leftward and rightward. In figure \ref{fig:US_diffusion}, numerical results provided by the USL and USF implementations of the MPM are compared to the exact solution before reflection of the waves on the boundaries. 
 
 Figures \ref{fig:US_diffusion}\subref{subfig:US_diffusion_10} and \ref{fig:US_diffusion}\subref{subfig:US_diffusion_25} show that both USL and USF solutions oscillate once the elastic front passed. Those oscillations are much more significant in the USF solutions regardless of the number of particles used. Indeed, the noise in USL results quickly reduces so that the correct stress level is reached in the middle region of the bar. Moreover, even though the $1ppc$ and $2ppc$ discretizations provide different results (slightly different for USL), neither of them enables the removal of oscillations. Figure \ref{fig:US_diffusion}\subref{subfig:US_energies} shows, on the other hand, the evolution of numerical total energies resulting from an MPM approximation of kinetic and strain energies:
 \begin{align}
@@ -175,8 +230,8 @@ One can see that the USL formulation is more diffusive than the USF for this pro
   \label{fig:US_velocities}
 \end{figure}
 
-Since the the back-mapping is known to be responsible for noise introduced in MPM solution \cite{Mass_Flip}, we propose to project the velocity onto particles by a simple interpolation, as it is done in PIC:
-%Since the the back-mapping of fields from the grid to material points is known to be responsible for noise introduced in MPM solution , we propose to project fields onto particles as it is done in PIC instead, that is by a simple interpolation:
+Since the back-mapping is known to be responsible for noise introduced in MPM solution \cite{Mass_Flip}, we propose to project the velocity onto particles by a simple interpolation, as it is done in PIC:
+%Since the back-mapping of fields from the grid to material points is known to be responsible for noise introduced in MPM solution , we propose to project fields onto particles as it is done in PIC instead, that is by a simple interpolation:
 \begin{equation}
   \label{eq:PIC_Back-mapping}
   \vect{v}^{p,n+1}=\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1}
@@ -211,7 +266,7 @@ As can be seen, PIC projection eliminates the noise in numerical solutions as we
 \subsection{Strategy for reducing oscillations and diffusion}
 We are concerned here with the accurate solution of hyperbolic problems in solid undergoing finite deformations. Although the MPM enables an efficient management of large strains, the oscillations it suffers from do not allow to accurately capture waves propagating in a medium. The above numerical simulations however suggest that noise can be removed by using an interpolation instead of an update of material points velocity, at the cost of additional diffusion. Thus, the use of  a linear combination of PIC and FLIP projections to update particles velocity was proposed in \cite{Nairn}, which can be seen as an artificial damping. Further, a tunable mapping procedure based on a parameter $m$ that completely eliminates noise in MPM solution has been proposed in the \textit{Extended PIC of order m (XPIC(m))} \cite{XPIC}. A classical interpolation is selected for $m=1$ whereas the mapping tends to FLIP one as $m \rightarrow \infty$ while avoiding oscillations in dissipating energy. Therefore, the method is still unable to capture discontinuities.
 
-The point of view adopted in this thesis is that numerical diffusion is essentially due to the projection of fields from nodes to particles which spreads the information. Hence, a reduction of the domain of influence of nodes might result in lower dissipation. As a consequence, the reintroduction of PIC mapping combined to the \textit{Discontinuous Galerkin} approximation (DG) within the MPM is proposed here. These two features are expected to respectively avoid spurious oscillations and numerical diffusion.
+The point of view adopted in this thesis is that numerical diffusion is essentially due to the projection of fields from nodes to particles which spreads the information. Hence, a reduction of the domain of influence of nodes might result in lower dissipation. As a consequence, the reintroduction of PIC mapping combined to the \textit{Discontinuous Galerkin} approximation (DG) within the MPM is proposed here. These two features are expected to respectively avoid spurious oscillations and limit numerical diffusion.
 
 
 %%% Local Variables: 
