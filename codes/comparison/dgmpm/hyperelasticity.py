@@ -246,8 +246,8 @@ for n in range(NTMaxi)[1:]:
         md=np.diag(np.sum(mg,axis=1))
         mass_vector = np.dot(np.dot(Map,Md),Map.T)
         mass_vector = np.sum(mass_vector,axis=1)
-        CFL=cfl.computeCourantNumber(mesh,parent,Map,t_order)
-    print t_order
+        CFL=0.1#cfl.computeCourantNumber(mesh,parent,Map,t_order)
+    #print t_order
     u= np.zeros((Nn,2))
     W[:,0] = computePK1(Tangent,rho0,U[:,0]*rho0)
     W[:,1] = np.copy(U[:,1])
@@ -263,10 +263,10 @@ for n in range(NTMaxi)[1:]:
     if (time[n]==tfinal):
         increments=n
         break
-    plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+')
-    plt.plot(pos[:,n],xp[:,1],'ro')
-    plt.grid()
-    plt.show()
+    # plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+')
+    # plt.plot(pos[:,n],xp[:,1],'ro')
+    # plt.grid()
+    # plt.show()
 
 x=mesh.xn
 time=time[0:increments]

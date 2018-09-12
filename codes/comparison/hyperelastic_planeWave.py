@@ -161,7 +161,7 @@ factor=1.
 timeOut = 1.*length/c
 t_order=2
 timeUnload = 2*timeOut
-sigd = -1.*Sigy
+sigd = -50.*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 update_position=False
@@ -237,7 +237,7 @@ for i in MPM["time"]:
             print "mpm time: ",tmpm," ; dgmpm time:",tdg
             frames.append(ndg)
             frmpm.append(nmpm)
-start=0
+start=len(frames)-5
 #frames=frames[-4,-1]
 #frmpm=frmpm[-4,-1]
 pdb.set_trace()
