@@ -1,19 +1,30 @@
-The plane wave problem in two dimensions (see \cite{DGMPM})%\subsection{Two-dimensional problem}
-
+A two-dimensional plate is now made of the compressible hyperelastic neo-Hookean material, which is known to be a polyconvex model, and considered here in the plane strain case. The problem is similar to that studied in sections \ref{sec:el_planestrain} and \ref{sec:ep_planestrain} with different dimensions and loading conditions as depicted in figure \ref{fig:2d_heDomain}.
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/2d_heDomain}
+  \caption{Geometry, boundary and loading conditions of the two-dimensional problem in plane strain with a hyperelastic neo-Hookean material.}
+  \label{fig:2d_heDomain}
+\end{figure}
+The bulk $\kappa$ and shear $\mu$ moduli as well as the reference mass density $\rho_0$ are taken according to the values of table \ref{tab:material}.  The solid is then discretized such that DGMPM material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 33 \times 25$ material points and $l \times h \equiv 32 \times 24$ elements for FEM. Moreover, only one particle lies at the center of each cell of the arbitrary grid. The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus}, using an explicit time discretization with no artificial viscosity added. These numerical results are compared to those obtained from MPM and DGMPM using CTU computations. The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{MPM}=0.67 \times 10^{-5}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}. Cauchy stress is plotted on the current configuration that results from time integration of material points velocity in DGMPM and MPM.
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Dhestress}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues in a linear elastic plate.}
+  \caption{Isovalues of Cauchy stress tensor component $\sigma_{11}$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
   \label{fig:2dhe_stress}
 \end{figure}
-
-
+At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite oscillations in FEM and MPM solutions. 
+MPM solution moreover exhibits, as for small strains problems, a concentration of stress in the high gradients region on the left boundary. It is worth noticing that the DGMPM shows the same results that cannot be seen here due to the attenuation introduced by MPM values which are much higher.
+% Then, interactions between shear and tension-compression waves occurring in the left part of the plate give rise to a decrease of the stress level on the wave front which is managed differently by the two methods. Thus, additional oscillations are introduced in the FEM solution leading to a more diffuse wave profile (right colored map in figure \ref{figure:2D_partial_impact}\subref{subfig:2Dpartialplate2}).
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Dhevelo}
-  \caption{Longitudinal stress $\sigma_{11}$ isovalues in a linear elastic plate.}
+  \caption{Isovalues of velocity component $v_1$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
   \label{fig:2dhe_velo}
 \end{figure}
+On the other hand, the deformed shapes of the plate computed with the CTU and the FEM remain close while "holes" develop in the one resulting from the MPM. This error obviously results from the oscillating particles velocity field that is used to update the position (see figure \ref{fig:2dhe_velo}).
+
+After the reflection of waves on the fixed boundary occuring at time $t=6.5\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the same remarks as before hold with additional oscillations in FEM solutions. The deformed shapes resulting from the numerical methods are rather different due to oscillations in FEM and MPM velocity fields.
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

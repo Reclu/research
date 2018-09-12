@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.9]
   \begin{groupplot}[group style={group size=3 by 3,
       ylabels at=edge left, yticklabels at=edge left,
       horizontal sep=1.ex,
@@ -21,10 +21,10 @@
     \nextgroupplot[title={(c) MPM},
     colorbar,colorbar style={
       title= {$v_1\: (m/s)$},
-      ytick={-1.1,0.15},
-      yticklabels={-1.1e3,1.5e2},
+      ytick={-1.1,0.072},
+      yticklabels={-1.1e3,72},
     }]
-    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,0.15)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,0.072)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_velo53.png};
 
     %% SECOND ROW (time 2 =6.5e-4s)
@@ -33,10 +33,10 @@
     \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_dgmpm_velo176.png};
     \nextgroupplot[colorbar,colorbar style={
       title= {$v_1\: (m/s)$},
-      ytick={-1.1,0.089},
-      yticklabels={-1.1e3,89},
+      ytick={-1.1,0.048},
+      yticklabels={-1.1e3,48},
     }]
-    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,0.089)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,0.048)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_velo176.png};
 
     %% THIRD ROW (time 2 =1.4e-3s)
@@ -45,10 +45,10 @@
     \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_dgmpm_velo444.png};
     \nextgroupplot[colorbar,colorbar style={
       title= {$v_1\: (m/s)$},
-      ytick={-1.2,0.029},
-      yticklabels={-1.2e3,29},
+      ytick={-1.1,0.082},
+      yticklabels={-1.1e3,82},
     }]
-    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.2) (0.,0.029)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,0.082)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/he_mpm_velo444.png};
     
   \end{groupplot}
