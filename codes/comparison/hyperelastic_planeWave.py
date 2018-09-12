@@ -162,7 +162,7 @@ timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
 
-sigd = 50.*Sigy
+sigd = -0.5*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 update_position=False

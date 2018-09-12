@@ -64,7 +64,7 @@ tfinal=timeOut
 tf=timeUnload;
 NTMaxi=2*int(tfinal/dt)
 #t_order= 1
-updated_lagrangian=False
+updated_lagrangian=True
 # limit = 0 : minmod // limit = 1 : superbee // limit = 2 : MUSCL
 limit=-1 
 
@@ -227,12 +227,10 @@ for n in range(NTMaxi)[1:]:
     xp[:,0]+=dt*U[:,1]
     
     if updated_lagrangian :
-        mass_vector0 = np.copy(mass_vector)
-        K=np.dot(np.dot(Grad[Dofs,:],Md),Map[Dofs,:].T)
-        mesh.setMapping(K)
-    
         # Compute new mapping (convective phase)
         Map,Grad,Dofs,parent=mesh.buildApproximation(np.asmatrix(xp))
+        K=np.dot(np.dot(Grad[Dofs,:],Md),Map[Dofs,:].T)
+        mesh.setMapping(K)
         mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
         md=np.diag(np.sum(mg,axis=1))
         mass_vector = np.dot(np.dot(Map,Md),Map.T)
@@ -257,3 +255,44 @@ for n in range(NTMaxi)[1:]:
 
 x=mesh.xn
 time=time[0:increments]
+
+#Sigma
+fig = plt.figure()
+plt.grid()
+ax = plt.axes(xlim=(0.,L), ylim=(1.1*np.min(Pi),1.1*np.max(Pi)))
+ax.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+', lw='2.', ms='8.')
+lineList = []
+line1, = ax.plot([], [],'r+', lw='2.', ms='8.',label='DG_MPM')
+lineList.append(line1)
+line2, = ax.plot([], [],'ro', lw='2.',ms='8.',label='MPM')
+lineList.append(line2)
+
+fig.legend((lineList),('DG_MPM','MPM'),'upper right',numpoints=1)
+
+time_text = ax.text(0.05, 0.95,'', transform=ax.transAxes)
+
+ax.set_xlabel('x (m)', fontsize=18)
+ax.set_ylabel(r'$\sigma$ (Pa)', fontsize=18)
+ax.set_title('Elastic wave in 1D bar')
+
+# initialization function: plot the background of each frame
+def init():
+    time_text.set_text('')
+    for line in lineList:
+        line.set_data([], [])
+    return tuple(lineList)+(time_text,)
+
+# animation function.  This is called sequentially
+def animate(i):
+    #lineList[0].set_data(DGMPM["Pos"][:,i],DGMPM["Pi"][:,i])
+    lineList[1].set_data(pos[:,i],Pi[:,i])
+    time_text.set_text('Stress ')
+    return tuple(lineList)+(time_text,)
+
+# call the animator.  blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=increments, interval=20, blit=True)
+#Animation of the stress
+plt.grid()
+#anim.save('StressBar.mp4', extra_args=['-vcodec', 'libx264'])
+plt.show()

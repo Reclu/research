@@ -6,20 +6,19 @@ from matplotlib import animation
 from matplotlib import *
 from pylab import *
 import scipy.optimize as optimize
-
+import pdb
 L=length
 Mp=Nelem*ppc
-Nn=Mp/ppc +1       # Number of nodes
+meshFactor=3
+Nelem*=meshFactor
+Nn=Nelem +1       # Number of nodes
 lx=L*ppc/(Mp-1)    # Length of cells
-
 ############ METHODES
-def buildMesh(Mp,l,ppc):
-    nex = Mp/ppc
-    nnx=nex+1
-    lmp=l/(Mp-1)
-    dx = ppc*l/nex
-    xn = np.linspace(-lmp/2,l+lmp/2,nex+1)
-    connect = np.array([np.arange(0,nnx-1,1),np.arange(1,nnx,1)]).T
+def buildMesh(Nelem,Mp,solid_length,ppc,meshFactor):
+    dx_mp=solid_length/(Mp-1)
+    mesh_length=meshFactor*(solid_length + dx_mp)
+    xn = np.linspace(0.,mesh_length,Nelem+1)-dx_mp/2.
+    connect = np.array([np.arange(0,Nelem,1),np.arange(1,Nelem+1,1)]).T
     return xn,connect
 
 def buildApproximation1D(xp,xn,connect):
@@ -51,7 +50,8 @@ def buildApproximation1D(xp,xn,connect):
     for j in range(np.shape(Dofs)[0]):
         if Dofs[j]!=0:
             d.append(j)
-    return Map,Grad,d
+    
+    return Map,Grad,d,Parent.astype(int)-1
 
 def celerity(E,rho0,J):
     return np.sqrt(E*(3.*J**2 -1.)/(2.*rho0))
@@ -59,10 +59,16 @@ def celerity(E,rho0,J):
 ################## END OF METHODES
 
 
-xn,connect=buildMesh(Mp,L,ppc)
+xn,connect=buildMesh(Nelem,Mp,L,ppc,meshFactor)
 xp=np.zeros((Mp,2))
 xp[:,0]=np.linspace(0.,L,Mp)
 
+"""
+plt.plot(xp[:,0],xp[:,1],'ro')
+plt.plot(xn,np.zeros(len(xn)),'b+')
+plt.grid()
+plt.show()
+"""
 # Material properties
 Sy  = Sigy
 c=np.sqrt(C/rho)
@@ -70,7 +76,7 @@ c=np.sqrt(C/rho)
 m=rho*lx/ppc
 
 # Define force
-s0 =sigd
+s0 = sigd
 
 # Define imposed specific gradient
 # Define imposed gradient corresponding to sd = PK1
@@ -127,7 +133,7 @@ Pos[:,0]=np.copy(xp[:,0])
 time[0]=T
 
 # Build approximation matrices
-Map,Grad,Dofs=buildApproximation1D(xp,xn,connect)
+Map,Grad,Dofs,parent=buildApproximation1D(xp,xn,connect)
 
 mg=np.dot(np.dot(Map,Md),Map.T)
 md=np.diag(np.sum(mg,axis=1))
@@ -149,7 +155,7 @@ for n in range(NTMaxi)[1:]:
     
     # Convection
     v[Dofs]=np.dot(Map[Dofs,:],np.dot(Md,V))/mv[Dofs]
-    v[-1]=0.
+    v[connect[parent[-1],1]]=0.
 
     
     Jmax=np.max(J)
@@ -160,14 +166,14 @@ for n in range(NTMaxi)[1:]:
     time[n]=time[n-1]+Dt
     
     # Forces building
-    Fe[0]=-s0*(time[n-1]<tf)
+    Fe[connect[parent[0],0]]=-s0*(time[n-1]<tf)
     Fi[Dofs]=-np.dot(Grad[Dofs,:],np.dot(Md,Sig))
     
     # Solve motion equation
     a[Dofs]=(Fe[Dofs]+Fi[Dofs])/mv[Dofs]
-    a[-1]=0.
+    a[connect[parent[-1],1]]=0.
     v+=a*Dt
-    v[-1]=0.
+    v[connect[parent[-1],1]]=0.
     
     # Gradient and constitutive model
     dF=Dt*np.dot(Grad[Dofs,:].T,v[Dofs])
@@ -177,25 +183,23 @@ for n in range(NTMaxi)[1:]:
         Sig[i]=C*(Def[i,n]**3 -Def[i,n])/(2.*rho) 
         
     
-    if s0==0.:
-        Sig[0]=0.
-        Sig[-1]=0.
+    # if s0==0.:
+    #     Sig[0]=0.
+    #     Sig[-1]=0.
     
     # Lagrangian step
     A=np.dot(Map[Dofs,:].T,a[Dofs])
-    V+=Dt*A
-    #V=np.dot(Map[Dofs,:].T,v[Dofs])
-    #V[-1]=0.
+    V+=Dt*np.dot(Map[Dofs,:].T,a[Dofs])
     
-    #xp[:,0]+=V*Dt
     xp[:,0]+=np.dot(Map[Dofs,:].T,v[Dofs])*Dt
-    """
-    # Compute new mapping (convective phase)
-    Map,Grad,Dofs=buildApproximation1D(np.asmatrix(xp),xn,connect)
     
+    # Compute new mapping (convective phase)
+    Map,Grad,Dofs,parent=buildApproximation1D(np.asmatrix(xp),xn,connect)
+
+
     mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
     md=np.diag(np.sum(mg,axis=1))
-    """
+    
     a=np.zeros(Nn)
     v=np.zeros(Nn)
 
@@ -220,4 +224,45 @@ pos=Pos[:,0:increments:factor]
 velo=Velocity[:,0:increments:factor]
 temps=time[0:increments:factor]
 time=temps[0:increments:factor]
+"""
+#Sigma
+fig = plt.figure()
+plt.grid()
+ax = plt.axes(xlim=(0.,L), ylim=(np.min(Pi),1.5*np.max(Pi)))
+ax.plot(xn,np.zeros(len(xn)),'b+', lw='2.', ms='8.')
+lineList = []
+line1, = ax.plot([], [],'r+', lw='2.', ms='8.',label='DG_MPM')
+lineList.append(line1)
+line2, = ax.plot([], [],'ro', lw='2.',ms='8.',label='MPM')
+lineList.append(line2)
 
+fig.legend((lineList),('DG_MPM','MPM'),'upper right',numpoints=1)
+
+time_text = ax.text(0.05, 0.95,'', transform=ax.transAxes)
+
+ax.set_xlabel('x (m)', fontsize=18)
+ax.set_ylabel(r'$\sigma$ (Pa)', fontsize=18)
+ax.set_title('Elastic wave in 1D bar')
+
+# initialization function: plot the background of each frame
+def init():
+    time_text.set_text('')
+    for line in lineList:
+        line.set_data([], [])
+    return tuple(lineList)+(time_text,)
+
+# animation function.  This is called sequentially
+def animate(i):
+    #lineList[0].set_data(DGMPM["Pos"][:,i],DGMPM["Pi"][:,i])
+    lineList[1].set_data(Pos[:,i],Pi[:,i])
+    time_text.set_text('Stress ')
+    return tuple(lineList)+(time_text,)
+
+# call the animator.  blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=increments, interval=20, blit=True)
+#Animation of the stress
+plt.grid()
+#anim.save('StressBar.mp4', extra_args=['-vcodec', 'libx264'])
+plt.show()
+"""
