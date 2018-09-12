@@ -54,13 +54,16 @@ qR=np.array([1.,0.])
 qL=analytic.applyBoundaryCondition(C,rho0,f0,qR)
 q_star = analytic.compute_stationnary_solution(qL,qR,C,rho0)
 
-CFL=1./ppc
+if t_order==1:
+    CFL=1./ppc
+elif t_order==2:
+    CFL=1.
 # Time discretization
 dt=CFL*dx/c0 
 tfinal=timeOut
 tf=timeUnload;
 NTMaxi=2*int(tfinal/dt)
-t_order= 1
+#t_order= 1
 updated_lagrangian=False
 # limit = 0 : minmod // limit = 1 : superbee // limit = 2 : MUSCL
 limit=-1 
@@ -123,11 +126,11 @@ def plotStress(sig,color):
     plt.title('Stress along the bar',fontsize=22)
     plt.show()
 
-def UpdateState(dt,dofs,Ml,U,W,md,u0,limit):
+def UpdateState(dt,dofs,Ml,U,W,md,limit):
     Nnodes = np.shape(U)[0]
     if limit!=-1 : boolean=True
     else : boolean=False
-    f=mesh.computeFlux(U,W,dofs,u0,boolean,limit)
+    f=mesh.computeFlux(U,W,dofs,boolean,limit)
     for i in range(len(dofs)):
         if md[dofs[i]]!=0.:
             U[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
@@ -138,21 +141,23 @@ def UpdateStateRK2(dt,dofs,Ml,u,w,md,sd):
     k1=np.zeros((Nnodes,2))
     k2=np.zeros((Nnodes,2))
     # first step : compute flux and intermediate state w
-    f=mesh.computeFlux(u,w,dofs,u0,False,-1)
+    f=mesh.computeFlux(u,w,dofs,False,-1)
     for i in range(len(dofs)):
         k1[dofs[i],:]+=dt*f[dofs[i],:]/(2.*md[dofs[i]])
     u12 = u+k1
     w12 = np.zeros((Nnodes,2))
-    w12[:,0] =computePK1(C,rho0,u0,u12[:,0]*rho0)
+
+    u12[0,0]=np.copy(u12[1,0])
+    u12[-2,0] = np.copy(u12[-1,0])
+    
+    w12[1:-1,0] =computePK1(C,rho0,u12[1:-1,0]*rho0)
     w12[:,1] = np.copy(u12[:,1])
-    u[0,0]=np.copy(u[1,0])
-    w[0,0]=2.*sd - w[1,0]
-    w[0,1]=np.copy(w[1,1])
-    u12[-2,0] = np.copy(u[-1,0])
-    w[-2,0] = np.copy(w[-1,0])
-    w[-2,1] = -np.copy(w[-1,1])
+    w12[0,0]=2.*sd - w12[1,0]
+    w12[0,1]=np.copy(w12[1,1])
+    #w12[-2,0] = np.copy(w12[-1,0])
+    #w12[-2,1] = -np.copy(w12[-1,1])
     # second step : compute flux and update U
-    f=mesh.computeFlux(u12,w12,dofs,u0,False,-1)
+    f=mesh.computeFlux(u12,w12,dofs,False,-1)
 
     for i in range(len(dofs)):
         k2[dofs[i],:]+=dt*f[dofs[i],:]/md[dofs[i]]
@@ -164,8 +169,8 @@ def computeTimeStep(rho,C,J,dx,CFL):
     dt = CFL*dx/c
     return dt
 
-def computePK1(C,rho0,pi0,F):
-    pi = C*F*(F**2-1.)/2. - pi0
+def computePK1(C,rho0,F):
+    pi = C*F*(F**2-1.)/2.
     return pi
 
 def computeCelerity(C,rho0,F):
@@ -174,9 +179,9 @@ def computeCelerity(C,rho0,F):
         cel[i]=np.sqrt(C*(3.*F[i]**2-1.)/(2.*rho0))
     return cel
 
-pi0 = computePK1(C,rho0,np.zeros(Mp),U[:,0]*rho0)
+pi0 = computePK1(C,rho0,U[:,0]*rho0)
 
-u0=computePK1(C,rho0,np.zeros(Nn),np.ones(Nn))
+u0=computePK1(C,rho0,np.ones(Nn))
 
 
 for n in range(NTMaxi)[1:]:    
@@ -210,11 +215,11 @@ for n in range(NTMaxi)[1:]:
     time[n]=time[n-1]+dt
     
     if t_order==1 :
-        u=UpdateState(dt,Dofs,md,u,w,mass_vector0,u0,limit)
+        u=UpdateState(dt,Dofs,md,u,w,mass_vector0,limit)
     elif t_order==2 :
         u=UpdateStateRK2(dt,Dofs,md,u,w,mass_vector0,sd)
     
-    u0=computePK1(C,rho0,u0,u[:,0]*rho0)
+    u0=computePK1(C,rho0,u[:,0]*rho0)
     
     # Mapping back to the material points
     U=np.dot(Map[Dofs,:].T,u[Dofs,:])
@@ -235,7 +240,7 @@ for n in range(NTMaxi)[1:]:
         
     
     u= np.zeros((Nn,2))
-    W[:,0] = computePK1(C,rho0,pi0,U[:,0]*rho0)
+    W[:,0] = computePK1(C,rho0,U[:,0]*rho0)
     W[:,1] = np.copy(U[:,1])
     
     #print 'Increment =', n, 't = ', time[n],' s.'
