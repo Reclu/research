@@ -14,7 +14,7 @@ or equivalently, in matrix form:
   \label{eq:diff_system_matrix}
   \sum_{k=1}^{N}\sum_{p=1}^{M}\tens{\Asf}^p \drond{^p\vect{\Uc}}{x_k^p} + \vect{\Sc} =  \vect{0}
 \end{equation}
-Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Sc}$ may depend on independent variables and the unknown vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ are not leads respectively to \textit{linear systems with variable coefficients} or to \textit{linear systems with constant coefficients}. The system remains \textit{linear} if $\vect{\Sc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if the $\tens{\Asf}^p$ depend on independent variables $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
+Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Sc}$ may depend on independent variables and the unknown vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ or not leads respectively to \textit{linear systems with variable coefficients} or to \textit{linear systems with constant coefficients}. The system remains \textit{linear} if $\vect{\Sc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if the $\tens{\Asf}^p$ depend on dependent variables $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
 
 The \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given prescribed values. Geometrically speaking, the solution of such a problem can be seen as the building of a hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order Cauchy problem by using suitable changes of variables \cite[p.54]{PDEs}, we will therefore focus on first order PDEs.
@@ -45,14 +45,14 @@ The total derivative of $u$ along $\Cscr$ being:
   \label{eq:dtot_u}
   \ddroit{u}{\eta}=u_x\ddroit{x}{\eta}+u_t\ddroit{t}{\eta}
 \end{equation}
-one gets the following relation between the partial derivatives of $u$ on the initial curve:
+one gets, after multiplying the previous equation by $d\eta$, the following relation between the partial derivatives of $u$ on the initial curve:
 \begin{equation*}
   u_t= \ddroit{u}{t} - u_x\ddroit{x}{t}
 \end{equation*}
 Then, equation \eqref{eq:1st_order_pde} can be rewritten as:
 \begin{equation}
   \label{eq:normal_form_pde}
-  (a - b\ddroit{x}{t})u_x = c - b\ddroit{u}{t}\lvert_{t\in\Cscr_0}
+  (a - b\ddroit{x}{t})u_x = c - b\left.\ddroit{u}{t}\right|_{t\in\Cscr_0}
 \end{equation}
 The right-hand side of equation \eqref{eq:normal_form_pde} is known along $\Cscr$ so that the Cauchy problem admits a unique solution $u_x$ if and only if:
 \begin{equation}
@@ -112,14 +112,14 @@ Making use of the total derivative of $\Ucb$ along the initial curve:
 system \eqref{eq:1st_order_quasi-linear_syst} can be rewritten:
 \begin{equation}
   \label{eq:normal_form}
-  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \Scb + \Absf^t\ddroit{\Ucb}{t}\lvert_{t\in\Cscr_0} = \vect{0}
+  \( \Absf^x - \lambda \Absf^t \) \vect{\Uc}_x + \Scb + \Absf^t\left.\ddroit{\Ucb}{t}\right|_{t\in\Cscr_0} = \vect{0}
 \end{equation}
 where:
 \begin{equation}
   \label{eq:lambda_slope}
   \lambda=\ddroit{x}{t}
 \end{equation}
-The Cauchy problem admits a unique solution $\vect{\Uc}_x$ along $\Cscr$ if the determinant of the system does not vanish, that is:
+With $\Scb$ and $\Absf^t\left.\ddroit{\Ucb}{t}\right|_{t\in\Cscr_0}$ known along $\Cscr_0$, the Cauchy problem admits a unique solution $\vect{\Uc}_x$ along $\Cscr$ if the determinant of the system does not vanish, that is:
 \begin{equation}
   \label{eq:characteristic_determinant}
   D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
@@ -133,8 +133,12 @@ where D is called the \textit{characteristic determinant} of system \eqref{eq:1s
   Note that eigenvectors can be stored as matrices $\Rbsf$ and $\Lbsf$ where $\Rsf_{ij}=\Rc^j_i$ and $\Lsf_{ij}=\Lc_j^i$.
 \end{remark}
 
-A first order system of $I$ partial differential equations is said \textit{hyperbolic} if it admits $I$ real eigenvalues associated to independent eigenvectors \cite{Courant}.
+\begin{definition}
+  \label{def:hyperbolic_system}
+  A first order system of $I$ partial differential equations is said \textbf{hyperbolic} if it admits $I$ real eigenvalues associated to independent eigenvectors \cite{Courant}.
 For those problems, one can draw a set of one-parameter families of characteristic curves $\varphi^k$ in the $(x,t)$ plane by integrating the relations $\lambda_k=dx/dt$ ($1 \leq k \leq I$).
+\end{definition}
+
 \begin{example}
   \label{ex:charac1}
   Consider the first order system with variable coefficients
@@ -187,7 +191,7 @@ where $\Lcb^k$ satisfies \eqref{eq:eigenvectors}, and hence:
 \end{equation*}
 In this equation, the \textit{directional derivative} of $\vect{\Uc}$ along the $k$th characteristic curve $\varphi^k$ arises, namely:
 \begin{equation*}
- \ddroit{\Ucb}{t}\lvert_{t\in\varphi^k} = \Ucb_t + \lambda_k \Ucb_x   
+ \left.\ddroit{\Ucb}{t}\right|_{t\in\varphi^k} = \Ucb_t + \lambda_k \Ucb_x   
 \end{equation*}
 Thus, along a characteristic curve a system of partial differential equations reduces to a system of \textit{Ordinary Differential Equations} (ODEs) composed of the following \textit{characteristic equations}:
 \begin{equation}
@@ -198,7 +202,7 @@ Integration of equations \eqref{eq:PDEs_ODEs} yields a set of \textit{integral c
 %It then comes out that the Cauchy problem can be solved as the system \eqref{eq:PDEs_ODEs}.
 Indeed, the solution at a point of the $(x,t)$ plane can be determined by tracing backward the characteristic curves to the initial curve and integrating ODEs \eqref{eq:PDEs_ODEs} along those paths according to the \textit{method of characteristics}. Note that if the right-hand side of equation \eqref{eq:1st_order_quasi-linear_syst} is zero, then $\Ucb$ is constant along characteristic curves. 
 
-To illustrate the method, let us consider again the quasi-linear system of example \ref{ex:charac1} for which the Cauchy problem is built by prescribing initial conditions along the $x$-axis. Note that "initial conditions" have now a physical meaning since they are defined at $t=0$, the Cauchy problem is then an \textit{Initial Value Problem (IVP)}. Through a point $(x^*,t^*)$ pass two characteristic curves, each belonging to a different one-parameter family. The solution at this point can be determined by integrating the ODE corresponding to the first (\textit{resp. second}) eigenvalue of the system between $(x^1,0)$ (\textit{resp. $(x^2,0)$}) and $(x^*,t^*)$. The singularity of hyperbolic problems can hence be circumvented by using the characteristic structure in order to determine n unique solution. 
+To illustrate the method, let us consider again the quasi-linear system of example \ref{ex:charac1} for which the Cauchy problem is built by prescribing initial conditions along the $x$-axis. Note that "initial conditions" have now a physical meaning since they are defined at $t=0$, the Cauchy problem is then an \textit{Initial Value Problem (IVP)}. Through a point $(x^*,t^*)$ pass two characteristic curves, each belonging to a different one-parameter family. The solution at this point can be determined by integrating the ODE corresponding to the first (\textit{resp. second}) eigenvalue of the system between $(x^1,0)$ (\textit{resp. $(x^2,0)$}) and $(x^*,t^*)$. The singularity of hyperbolic problems can hence be circumvented by using the characteristic structure in order to determine a unique solution. 
 \begin{figure}[h]
   \centering
   \input{chapter2/pgfFigures/characMethod2x2}

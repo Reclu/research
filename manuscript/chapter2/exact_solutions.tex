@@ -1,6 +1,35 @@
 The characteristic analysis carried out above is now applied to specific problems of solid mechanics. Both linear and non-linear problems which solutions involve several types are waves are considered.
-As we shall see, the different characteristic structures involved by linear elastic, elastoplastic and hyperelastic solids require the use of different technics in order to develop exact solutions.
+As we shall see, the different characteristic structures involved by linear elastic, elastoplastic and hyperelastic solids require the use of different technics in order to develop exact solutions. First a particular type of IVP, of particular interest in this manuscript, is introduced.
 %% Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves may propagate within solids.
+\subsection{The Riemann problem}
+A Riemann problem is a Cauchy problem with piecewise constant initial data. In particular, the Riemann problem based on the conservative form \eqref{eq:general_conservative_HE} for hyperelastic solids, in the arbitrary direction $\vect{N}=N_\alpha \vect{E}_\alpha$, takes the form:
+\begin{equation}
+  \label{eq:Riemann_problem_HE}
+  \begin{aligned}
+    &\Ucb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \Scb, \\
+    &\left\lbrace 
+      \begin{aligned}
+        & \Ucb(X_N,t=0) = \Ucb^L \quad \text{if } X_N< 0\\
+        & \Ucb(X_N,t=0) = \Ucb^R \quad \text{if } X_N> 0
+      \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+Analogously, for small strains one writes the Riemann problem corresponding to conservative forms \eqref{eq:general_conservative} or \eqref{eq:general_conservative_EP} in the direction $\vect{n}=n_i \vect{e}_i$:
+\begin{equation}
+  \label{eq:Riemann_problem_HPP}
+  \begin{aligned}
+    &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \Scb, \\
+    &\left\lbrace 
+      \begin{aligned}
+        & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
+        & \Qcb(x_n,t=0) = \Qcb^R \quad \text{if } x_n> 0
+      \end{aligned}
+    \right.
+  \end{aligned}
+\end{equation}
+where $x_n=\vect{x}\cdot\vect{n}$.
+Problems of the form \eqref{eq:Riemann_problem_HE} or \eqref{eq:Riemann_problem_HPP} are considered in the next section, in which exact solutions are recalled or derived.
 
 \subsection{Linear elastodynamics problems}
 \label{subsec:charac_Linear_problems}
@@ -20,7 +49,8 @@ A homogeneous hyperbolic system of dimension $m$ is considered in a linear elast
 
 \subsubsection*{Characteristic variables -- Waves solution}
 By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ ($\Rsf_{ij}=\Rc^j_i$), the quasi-linear form of system \eqref{eq:Riemann_problem_HPP} reads:
-\begin{equation*}
+\begin{equation}
+  \label{eq:RP_characteristic_variables}
   \begin{aligned}
     &\drond{\Pc_i}{t} + c_i\drond{\Pc_i}{x} = 0 \\
     &\left\lbrace 
@@ -30,7 +60,7 @@ By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ 
       \end{aligned}
     \right.
   \end{aligned}
-\end{equation*}
+\end{equation}
 \begin{figure}[h!]
   \centering
   \subcaptionbox*{}[0.45\linewidth]{\input{chapter2/pgfFigures/advection_solution}}
@@ -38,7 +68,7 @@ By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ 
   \caption{Solution to linear advection equation on the quantity $\Pc_i$ with characteristic speed $c_i$.}
   \label{fig:advection}
 \end{figure}
-with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_K = \Rc^K_i\Csf_{Kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profile $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, the solution  $\Pc_i(x,t)$ at a given point is given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\thomas{\Pc_i(x,t)=\Pc_i(x-c_it,0)}$  \cite[p.52]{Toro}. 
+with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_K = \Rc^K_i\Csf_{Kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profile $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, the solution  $\Pc_i(x,t)$ at a given point is given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$  \cite[p.52]{Toro}. 
 The vector $\Qcb$ is then determined by inverting the relation:
 \begin{equation}
   \label{eq:Q_expansion}
@@ -50,7 +80,7 @@ The vector $\Qcb$ is then determined by inverting the relation:
     \end{aligned}
     \right.
 \end{equation}
-Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is linear a superposition of $m$ waves, each having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{I+1} t <0$ for all $i>I$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
+Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is a linear superposition of $m$ waves, each having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{I+1} t <0$ for all $i>I$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
 \begin{equation}
   \label{eq:Q_expansion_sides}
   \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
@@ -67,7 +97,7 @@ Those equations are equivalent to jump conditions across multiple discontinuous 
   \label{eq:jump_star_L}
   &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i 
 \end{align}
-where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are called the \textit{wave strengths} and can be computed from the expansions of initial conditions by solving:
+where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are weighting coefficients involved in \textit{wave strengths} $\Wcb^i=\Rcb^i \delta^i$, that can be computed from the expansions of initial conditions by solving:
 \begin{equation}
   \label{eq:delta_system}
   \Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}
@@ -88,7 +118,7 @@ The above discussion is now specified to a one-dimensional elastic medium, $x\in
 \begin{equation*}
   \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
 \end{equation*}
-along with Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) as initial conditions. The eigenvalues and left eigenvectors of the corresponding Jacobian matrix are:
+along with Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) as initial conditions. In addition, the solid is assumed to be initially in a free-stress state. The eigenvalues, left and right eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
   c=\pm\sqrt{\frac{E}{\rho} }  \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
@@ -167,7 +197,9 @@ At last a plastic Riemann solver leading to the solution of the problem $\Qcb^*$
 
 \subsection{Hyperelastic media: A Saint-Venant-Kirchhoff solution}
 \label{sec:SVK_solution}
-The approaches followed above are no longer possible for problems involving a non-linear Jacobian matrix since right eigenvectors cannot be taken out of the derivatives. Moreover, as we shall see with an example, the characteristic structure of such problems can be more complex and depend on the initial data. 
+The approaches followed above are no longer possible for problems involving a non-linear Jacobian matrix. Indeed, the writing of Riemann problem \eqref{eq:RP_characteristic_variables} in terms of characteristic variables is valid for right eigen-vectors that are constant. 
+%since right eigenvectors cannot be taken out of the derivatives.
+Moreover, as we shall see with an example, the characteristic structure of such problems can be more complex and depend on the initial data. 
 %%% Picard problem
 Consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infinite in directions $\vect{E}_2$ and $\vect{E}_3$, and semi-infinite in direction $\vect{E}_1$ (\textit{i.e. $X_1 \in [0,+\infty[$}) in the reference configuration. This medium suddenly undergoes a load at $(X_1=X=0,t=0)$ in direction $\vect{E}_1$ so that the deformation gradient and the PK1 tensors are respectively of the form:
 \begin{align}
@@ -175,7 +207,7 @@ Consider a hyperelastic medium made of a Saint-Venant-Kirchhoff material, infini
   &\tens{F}=F\vect{e}_1\otimes\vect{E}_1 + \vect{e}_2\otimes\vect{E}_2 + \vect{e}_3\otimes\vect{E}_3 \\
   & \tens{\Pi}=\Pi_{11}\vect{e}_1\otimes\vect{E}_1 + \Pi_{22}\(\vect{e}_2\otimes\vect{E}_2 + \vect{e}_3\otimes\vect{E}_3 \)
 \end{align}
-which corresponds to a plane wave solution. We assume that $F(0,t)=\bar{F}$ is given, leading to a \textit{Picard problem} involving both initial and boundary conditions with neglected body forces:
+which corresponds to a plane wave solution. We assume that $F(0,t)=\bar{F}$ is given, leading to a \textit{Picard problem} \cite[p.20]{Wang} involving both initial and boundary conditions with neglected body forces:
 \begin{equation}
   \label{eq:Picard_problem}
   \begin{aligned}

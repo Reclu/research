@@ -68,8 +68,6 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     style=['dashed','solid','solid','solid','solid','solid','dotted']
     thickness=['very thick','very thick','thick','thin','very thick','thin','thick','very thick']
     couleur=['Red','Blue','Purple','black','Yellow','black','Green','Orange']
-    maxim=[]
-    minim=[]
     maximum=np.zeros(row)
     minimum=np.zeros(row)
     # sum over rows (fields sigma of epsp)

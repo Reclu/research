@@ -1,42 +1,44 @@
 \chapter{Numerical Results}
 \section*{Introduction}
 The Discontinuous Galerkin Material Point Method developed in the previous chapter is now illustrated and compared to other numerical schemes or analytical solutions. 
-First, problems falling in the small strain framework are considered in section \ref{sec:hpp_simulations}. More specifically, the DGMPM solution of the Riemann problem in an elastic bar is compared MPM ones in section \ref{sec:hpp_bar}. The method is then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{sec:hpp_planewave}, and to the solution of plane strain problems in sections \ref{sec:el_planestrain} and \ref{sec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact solutions are then shown.
+First, problems falling in the small strain framework are considered in section \ref{sec:hpp_simulations}. More specifically, the DGMPM solution of the Riemann problem in an elastic bar is compared MPM ones in section \ref{subsec:hpp_bar}. The method is then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{subsec:hpp_planewave}, and to the solution of plane strain problems in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact solutions are then shown.
 %one and two-dimensional problems that fall within the infinitesimal theory will be considered for elastic, elastic-viscoplastic and elastoplastic materials in sections \ref{sec:hpp_bar} and \ref{sec:hpp_planewave}.
 
-Second, attention is paid to problems involving waves travelling in finite deforming solids, for which the dependence on history of constitutive models is neglected in section \ref{sec:he_simulations}. For that purpose, the propagation of plane waves in a hyperelastic Saint-Venant-Kirchhoff medium and a plane strain state problem in a Neo-Hookean solid are considered in sections \ref{sec:he_planewave} and \ref{sec:he_plate}. The DGMPM simulations performed on the former cases are compared to the MPM solution and the exact one (see section \ref{sec:SVK_solution}) while the solution of the latter is compared to MPM and FEM simulations.
+Second, attention is paid to problems involving waves travelling in finite deforming solids, for which the dependence on history of constitutive models is neglected in section \ref{sec:he_simulations}. For that purpose, the propagation of plane waves in a hyperelastic Saint-Venant-Kirchhoff medium and a plane strain state problem in a Neo-Hookean solid are considered in sections \ref{subsec:he_planewave} and \ref{subsec:he_plate}. The DGMPM simulations performed on the former cases are compared to the MPM solution and the exact one (see section \ref{sec:SVK_solution}) while the solution of the latter is compared to MPM and FEM simulations.
 
 
 \section{Linearized geometrical framework}
 \label{sec:hpp_simulations}
 
 \subsection{Riemann problem in an isotropic elastic bar}
-\label{sec:hpp_bar}
+\label{subsec:hpp_bar}
 \input{chapter4/elasticBar}
 
 \subsection{Plane wave in a history dependent material}
-\label{sec:hpp_planewave}
+\label{subsec:hpp_planewave}
 \input{chapter4/hpp_planewave}
 
 \subsection{Plane strain problem -- Elasticity}
-\label{sec:el_planestrain}
+\label{subsec:el_planestrain}
 \input{chapter4/elasticplate}
 
 \subsection{Plane strain problem -- Elastoplasticity}
-\label{sec:ep_planestrain}
+\label{subsec:ep_planestrain}
 \input{chapter4/plasticplate}
 
 \section{Large strains framework}
 \label{sec:he_simulations}
 The DGMPM is now applied to problems involving finite deformations in hyperelastic solids in order to see how the discontinuous Galerkin material point method behaves for nonlinear hyperbolic problems.
-\subsection{Total Lagrangian formulation of the MPM}
-In addition, MPM solutions shown in this section result from a total Lagrangian formulation of the method, which is not common but allows to really compare both approaches under the same conditions.
+% \subsection{Total Lagrangian formulation of the MPM}
+% \label{subsec:mpm_total_lagrangian}
+%\input{chapter4/total_lagrangian_mpm}
+In addition, MPM solutions shown in this section result from a total Lagrangian formulation of the method, which is not common but allows to really compare both approaches under the same conditions. Different update of particles positions so that the method developed here is different form the one comonly used.
 \subsection{Plane wave in a hyperelastic medium}
-\label{sec:he_planewave}
+\label{subsec:he_planewave}
 \input{chapter4/he_planewave}
 
 \subsection{Plane strain problem}
-\label{sec:he_plate}
+\label{subsec:he_plate}
 \input{chapter4/he_plate}
 
 

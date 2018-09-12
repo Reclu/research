@@ -1,8 +1,8 @@
-The quasi-linear forms written above enable the particularization of the theory of first order quasi-linear systems developed in section \ref{sec:PDEs} to solid mechanics problems. Once the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} will be carried out, a particular type of IVP which is of particular interest in this manuscript will be introduced.
+The quasi-linear forms written above enable the particularization of the theory of first order quasi-linear systems developed in section \ref{sec:PDEs} to solid mechanics problems. %Once the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} will be carried out, a particular type of IVP which is of particular interest in this manuscript will be introduced.
 
 %The theory of first order quasi-linear system is now applied to solid dynamics through the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} is performed in this section. Second, a particular type of IVP that will be considered in the rest of the manuscript is introduced. 
-\subsection{Characteristic structure of solutions}
-For the sake of simplicity studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using the generic notation of stress $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of considering multi-dimensional conservation laws systems, we will focus without loss of generality on quasi-linear form \eqref{eq:HE_quasilinear} projected on an arbitrary direction $\vect{N}=\[\vect{E}_1,\vect{E}_2,\vect{E}_3\]$ \cite[p.425-426]{Leveque}. In this direction, one has:
+%\subsection{Characteristic structure of solutions}
+For the sake of simplicity, studies of finite deformation and linearized geometrical frameworks will be condensed in this part by using the generic notation of stress $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of considering multi-dimensional conservation laws systems, we will focus without loss of generality on quasi-linear form \eqref{eq:HE_quasilinear} projected on an arbitrary direction $\vect{N}=\[\vect{E}_1,\vect{E}_2,\vect{E}_3\]$ \cite[p.425-426]{Leveque}. In this direction, one has:
 \begin{equation}
   \label{eq:normal_quasi}
   \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
@@ -17,7 +17,7 @@ The characteristic analysis of system \eqref{eq:normal_quasi} is therefore equiv
 in which $\tilde{\Hbb}$ is either the hyperelastic or elastoplastic tangent modulus, or the elastic stiffness tensor depending on the case considered. The characteristic structure of the problem is given by the $m$ eigenvalues $c_K$ and associated left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ of the Jacobian matrix satisfying:
 \begin{equation}
   \label{eq:eigen_system}
-  \vect{\Lc}^K\cdot \(\Jbsf - c_K \Ibsf\) = \vect{0}
+  \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0}
 \end{equation}
 where $\Ibsf$ is the $m\times m$ identity matrix. Thus, for non-zero eigenvalues one gets:
 \begin{subequations}
@@ -38,17 +38,17 @@ which is the left eigensystem of the acoustic tensor $A_{ij}=N_\alpha \tilde{H}_
   \label{eq:acoustic_eigen_system_lambda}
   \(  N_\alpha \tilde{H}_{i\alpha j \beta}  N_\beta - \rho_0 c_K^2 \delta_{ij} \) v_j^K =0
 \end{equation}
-or alternatively, with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
+or alternatively, with the eigenvalues $\omega_p$ and associated eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
 \begin{equation}
   \label{eq:acoustic_eigen_system}
-  \( \tens{A} - \omega_p \tens{I} \) \vect{l}^p = \vect{0}
+   \( \tens{A} - \omega_p \tens{I} \) \cdot \vect{l}^p  = \vect{0}
 \end{equation}
 The condition for system \eqref{eq:normal_quasi} to be hyperbolic (real eigenvalues and independent eigenvectors) is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
 \begin{equation}
   \label{eq:strong_ellipticity}
   (\vect{n}\otimes \vect{N}): \tilde{\Hbb}: (\vect{n}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{n} \in \Rbb^3 \: ; \: \vect{N},\vect{n} \ne \vect{0}
 \end{equation}
-If the condition holds, the acoustic tensor admits $3$ couples eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_K,\Lcb^K\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:normal_quasi} can be defined:
+If the condition holds, the acoustic tensor admits $3$ couples of eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_K,\Lcb^K\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
   \label{eq:left_eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
@@ -79,7 +79,7 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
 \end{equation}
 
 \begin{remark}
-  Since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elasto-viscoplasticity in small strains leads to the same characteristic structure. 
+  Since the right-hand side of equation \eqref{eq:normal_quasi} is not involved in the characteristic analysis, linear elasticity and elasto-viscoplasticity in small strains share the same characteristic structure. 
 \end{remark}
 
 \begin{remark}
@@ -89,38 +89,9 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
   \label{eq:characteristic_equations_homogeneous}
   \Lcb^K \cdot d\Qcb = \vect{0},\quad K=1,...,6
 \end{equation}
-meaning that the solution is constant along each characteristic straight line with slope $\xi = c_K$. Such solutions $\Qcb(\xi)$ that only depend on the ray $\xi$ are called \textit{similarity solutions}.
+meaning that the solution is constant along each characteristic straight line with slope $\xi = c_K$. Such solutions $\Qcb(\xi)$ that only depend on the ray $\xi$ are called \textit{self-similar solutions}.
 \end{remark}
 
-\subsection{The Riemann problem}
-A Riemann problem is a Cauchy problem with piecewise constant initial data. In particular, the Riemann problem based on the conservative form \eqref{eq:general_conservative_HE} for hyperelastic solids, in the arbitrary direction $\vect{N}=N_\alpha \vect{E}_\alpha$, takes the form:
-\begin{equation}
-  \label{eq:Riemann_problem_HE}
-  \begin{aligned}
-    &\Wcb_t + \drond{\Fcb\cdot \vect{N}}{X_N} = \Scb, \\
-    &\left\lbrace 
-      \begin{aligned}
-        & \Wcb(X_N,t=0) = \Wcb^L \quad \text{if } X_N< 0\\
-        & \Wcb(X_N,t=0) = \Wcb^R \quad \text{if } X_N> 0
-      \end{aligned}
-    \right.
-  \end{aligned}
-\end{equation}
-Analogously, for small strains one writes the Riemann problem corresponding to conservative forms \eqref{eq:general_conservative} or \eqref{eq:general_conservative_EP} in the direction $\vect{n}=n_i \vect{e}_i$:
-\begin{equation}
-  \label{eq:Riemann_problem_HPP}
-  \begin{aligned}
-    &\Qcb_t + \drond{\Fcb\cdot \vect{n}}{x_n} = \Scb, \\
-    &\left\lbrace 
-      \begin{aligned}
-        & \Qcb(x_n,t=0) = \Qcb^L \quad \text{if } x_n< 0\\
-        & \Qcb(x_n,t=0) = \Qcb^R \quad \text{if } x_n> 0
-      \end{aligned}
-    \right.
-  \end{aligned}
-\end{equation}
-where $x_n=\vect{x}\cdot\vect{n}$.
-Problems of the form \eqref{eq:Riemann_problem_HE} or \eqref{eq:Riemann_problem_HPP} are considered in the next section, in which exact solutions are recalled or derived.
 
 %%% Local Variables:
 %%% mode: latex

@@ -8,11 +8,11 @@ Consider a three-dimensional solid with volume denoted by $\Omega \subset \Rbb^3
   \caption{Deformation of a solid body between a reference state $\Omega_0$ to a subsequent state $\Omega_t$.}
   \label{fig:deformationFunction}
 \end{figure}
-\thomas{The points of $\Rbb^3$ are located with \textit{Eulerian} or \textit{spatial coordinates} $\vect{x}=x_i\vect{e}_i$ while material particles in the reference configuration are located with \textit{Lagrangian coordinates} $\vect{X}=X_\alpha \vect{E}_\alpha$.
+The points of $\Rbb^3$ are located with \textit{Eulerian} or \textit{spatial coordinates} $\vect{x}=x_i\vect{e}_i$ while material particles in the reference configuration are located with \textit{Lagrangian coordinates} $\vect{X}=X_\alpha \vect{E}_\alpha$.
 %Two different bases $(\vect{E}_1,\vect{E}_2,\vect{E}_3)$ and $(\vect{e}_1,\vect{e}_2,\vect{e}_3)$, that may be different are not, allow the use of \textit{Lagrangian coordinates} and $\vect{E}_\alpha$ or \textit{Eulerian coordinates} $\vect{x}=x_i\vect{e}_i$ respectively. %Lagrangian coordinates give the location of material particles in the reference configuration while Eulerian coordinates are used to locate the point of space at which a particle may be at a given time.
 %In the reference configuration, all material particles are located by their position vectors: $\vect{X}=X_\alpha \vect{E}_\alpha$.
 At time $t$, the particle initially located at $\vect{X}$ may have moved to a different position given by the smooth mapping $\vect{\phi}(\vect{X},t)=\phi_i(\vect{X},t)\vect{e}_i$, providing the path of every particle of the solid during the deformation.
-Thus, the current volume of the solid is defined by means of Eulerian coordinates and the \textit{deformation function} $\vect{\phi}(\vect{X},t)$ as: $\Omega(t)=\{\vect{x}\in \Rbb^3: \vect{x}=\vect{\phi}(\vect{X},t),\: \vect{X},t\in\Omega_0\times \tau\}$}.
+Thus, the current volume of the solid is defined by means of Eulerian coordinates and the \textit{deformation function} $\vect{\phi}(\vect{X},t)$ as: $\Omega(t)=\{\vect{x}\in \Rbb^3: \vect{x}=\vect{\phi}(\vect{X},t),\: \vect{X},t\in\Omega_0\times \tau\}$.
 % The restriction of Eulerian coordinates to the current volume, namely $\vect{x}\in\Omega(t)$, allows to write the bijective relation $\vect{x}=\vect{\phi}(\vect{X},t)$.
 %Thus, the mapping $\vect{\phi}$ provides the path of every particle of the solid during the deformation.
 % In the Lagrangian coordinates system, particles are tracked during the deformation while the \textit{Eulerian coordinates}, denoted by $\vect{x}=x_i\vect{e}_i$, correspond to a \textit{spatial description}.
@@ -43,7 +43,7 @@ with $\tens{I}$, the second-order identity tensor. The deformation gradient tens
 \end{equation}
 in the current configuration. Transport equations \eqref{eq:transport_equations} involve the determinant of the deformation gradient $J=\det(\tens{F})>0$, also called the \textit{Jacobian of the deformation}.
 
-Since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}), the deformation gradient is one strain measure among others. For instance, one also defines the \textit{right Cauchy-Green} or the \textit{Green-Lagrange} tensors as:
+Since it accounts for changes in lengths and angles (\textit{i.e. the change of shape of a body}), the deformation gradient is one strain measure among others. For instance, one also defines the \textit{right Cauchy-Green} and the \textit{Green-Lagrange} tensors as:
 \begin{equation*}
   \tens{C}=\tens{F}^T\tens{F} \quad ; \quad \tens{E}=\frac{1}{2}(\tens{C}-\tens{I})
 \end{equation*}
@@ -148,12 +148,12 @@ where the \textit{first Piola-Kirchhoff stress tensor} (PK1) $\tens{\Pi}=J\tens{
   \label{eq:Lagrangian_linear_momentum}
   \rho_0 \vect{\dot{v}} - \nablav_0 \cdot \tens{\Pi} = \rho_0 \vect{b} \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-or equivalently for small strains:
+or equivalently for the current configuration:
 \begin{equation}
   \label{eq:HPP_linear_momentum}
   \rho \vect{\dot{v}} - \nablav \cdot \tens{\sigma} = \rho \vect{b}  \qquad \forall \: \: \vect{x},t \in \Omega \times \tau 
 \end{equation}
-On the other hand, the conservation of angular momentum \eqref{eq:angular_momentum} leads to the symmetry of Cauchy stress tensor \cite{Foundation_of_elasticity}: $\sigma_{ij}=\sigma_{ji}$.
+On the other hand, the conservation of angular momentum \eqref{eq:angular_momentum} leads to the symmetry of Cauchy stress tensor $\tens{\sigma}=\tens{\sigma}^T$, or equivalently from the definition of PK1 tensor, $\tens{\Pi}\cdot \tens{F}^T=\tens{\Pi}^T\cdot \tens{F}$ \cite{Foundation_of_elasticity}.
 
 We complete the set of balance laws by considering the \textit{first law of thermodynamics}. This law is a balance between the rates of change of \textit{kinetic} and \textit{internal} energies, the power of external forces, and the amount of heat entering the system as \textit{volume} or \textit{surface heat sources}.
 \begin{equation*}
@@ -181,7 +181,7 @@ Finally, the small strain version of equation \eqref{eq:energy_balance} is:
 Strain and stress are then conjugate fields through an energy function. The former are referred to as \textit{state variables} describing the evolution of the thermodynamic system while the latter are \textit{thermodynamic forces} governed by \textit{constitutive equations}. In what follows, such constitutive equations are derived.
 
 \subsection{Constitutive equations -- Thermodynamics}
-The closure of a problem is given by constitutive equations for the stress. Once and for all, we consider here constituive models within the \textit{Generalized Standard Materials} (GSM) framework \cite{GSM}.
+The closure of a problem is given by constitutive equations for the stress. Once and for all, we consider here constitutive models within the \textit{Generalized Standard Materials} (GSM) framework \cite{GSM}.
 
 \subsubsection*{The general hyperelasticity formulation}
 First, the \textit{Clausius-Duhem} inequality resulting from combination of first and second laws of thermodynamics, reads: 
@@ -189,7 +189,7 @@ First, the \textit{Clausius-Duhem} inequality resulting from combination of firs
   \label{eq:Clausius-Duhem}
   \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dscr^{int}} \:  \underbrace{-\:\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{\Dscr^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-where $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the specific mechanical and thermal dissipations. The relation \eqref{eq:Clausius-Duhem} becomes an equality for \textit{reversible} processes and a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that mechanical and thermal dissipations simultaneously \thomas{satisfy non-negativeness}.
+where $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the volumic mechanical and thermal dissipations. The relation \eqref{eq:Clausius-Duhem} becomes an equality for \textit{reversible} processes and a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that mechanical and thermal dissipations simultaneously satisfy non-negativeness.
 Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
 \begin{equation*}
   \label{eq:Fourier_law}
@@ -208,7 +208,7 @@ or, by introducing the time derivative of Helmholtz free energy density $\dot{\p
 \end{equation}
 
 
-Since the mechanical dissipation must be non-negative regardless of the nature of the deformation, it must in particular vanish for a reversible isothermal process (\textit{i.e. $\theta=const$}) for which every additional internal variables are constant (\textit{i.e. $\dot{\Vc}=0$}). With these considerations, we are left with the relation:
+Since the mechanical dissipation must be non-negative regardless of the nature of the transformation, it must in particular vanish for a reversible isothermal process (\textit{i.e. $\theta=const$}) for which every additional internal variables are constant (\textit{i.e. $\dot{\Vc}=0$}). With these considerations, we are left with the relation:
 \begin{equation*}
   \( \tens{\Pi} - \rho_0\drond{\psi}{\tens{F}} \): \tens{\dot{F}} = 0
 \end{equation*}
@@ -219,30 +219,30 @@ holding regardless of the deformation, and hence:
 \end{equation}
 A material is said \textit{hyperelastic} if there exist a \textit{stored energy density function} $\rho_0\psi$ from which can be derived the first Piola-Kirchhoff stress tensor \cite[p.8]{Foundation_of_elasticity}. 
 
-Similar considerations lead to the state laws for entropy and for additional thermodynamic forces :
+Similar considerations lead to the state laws for entropy and are assumed for additional thermodynamic forces associated to internal variables $\Vcb$:
 \begin{equation}
   \label{eq:thermodynamic_forces}
   \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vcb}=-\Acb
 \end{equation}
-where $\Acb$ are thermodynamic forces associated to internal variables $\Vcb$.
 
 
-\thomas{\begin{remark}
+\begin{remark}
   \label{rq:isothermal_deformation}
-  Temperature has been introduced as a state variable and requires the heat equation as a balance equation in order to close the system:
+  Temperature has been introduced as a state variable and requires the first principle of thermodynamics, rewritten as the heat equation, in order to close the system:
   \begin{equation*}
     \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Acb}{\theta}\dot{\Vcb} \)
   \end{equation*}
-  Nevertheless, we will restrict our attention in the following to isothermal deformations so that temperature can be omitted and internal energy balance equation \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} is automatically satisfied. Indeed, for isothermal processes the heat equation leads to:
-  \begin{equation*}
-    \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
-  \end{equation*}
-  which, once introduced in the energy balance \eqref{eq:energy_balance} yields:
-  \begin{equation*}
-    \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
-  \end{equation*}
-  By using the time derivative of free energy density and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation simplify.
-\end{remark}}
+  Nevertheless, we will restrict our attention in the following to isothermal deformations so that temperature can be omitted and internal energy balance equation \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} is not considered.
+  % automatically satisfied. Indeed, for isothermal processes the heat equation leads to:
+  % \begin{equation*}
+  %   \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
+  % \end{equation*}
+  % which, once introduced in the energy balance \eqref{eq:energy_balance} yields:
+  % \begin{equation*}
+  %   \rho_0 \dot{e} - \tens{\Pi}:\tens{\dot{F}} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
+  % \end{equation*}
+  % By using the time derivative of free energy density and noting that $\eta=-\drond{\psi}{\theta} =0$, we get that each side of the previous equation simplify.
+\end{remark}
 
 For isothermal reversible deformations in hyperelastic solids, the time derivative of equation \eqref{eq:PK1_definition} leads to:
 \begin{equation}
@@ -343,7 +343,8 @@ In addition, a set of internal variables and associated forces describing the pl
   f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(R(r)+\sigma^y\) \equiv 0
 \end{equation}
 where $\sigma^y$ is the tensile yield stress and $r$ is to be defined. In deviatoric stress space, the von-Mises yield surface is a circle which center and radius are $\tens{Y}$ and $R(r)$. Those thermodynamic forces hence respectively describe the displacement of the elastic domain center due to \textit{kinematic hardening}, and the evolution of its radius due to \textit{isotropic hardening}.
-The specialization of the yield surface \eqref{eq:von-Mises_yield} to kinematic or isotropic hardenings is made by respectively setting $R(r)=0$ or $\tens{Y}=\tens{0}$.
+Setting $R(r)$ (\textit{resp.} $\tens{Y}$) to zero amounts to specialize the yield surface \eqref{eq:von-Mises_yield} to kinematic (\textit{resp. isotropic}) hardening.
+%The specialization of the yield surface \eqref{eq:von-Mises_yield} to kinematic or isotropic hardenings is made by respectively setting $R(r)=0$ or $\tens{Y}=\tens{0}$.
 % In the following, linear hardening will be considered here by setting either $\tens{Y}=\tens{0}$ for isotropic or $R(r)=0$ for kinematic hardening.
 Then, flow rules \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast} applied to the yield function \eqref{eq:von-Mises_yield} lead to:
 \begin{subequations}
@@ -356,7 +357,7 @@ Then, flow rules \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast} 
 \end{subequations}
 where $r$ is identified from \eqref{eq:equiv_plastic_strain_rate} as the equivalent plastic strain and $\tens{m}$ is referred to as the \textit{plastic flow direction}.
 
-Next, the Helmholtz free energy density takes the form: 
+Next, assuming a Prager-Ziegler linear kinematic hardening \cite[p.91]{Simo}, the Helmholtz free energy density takes the form: 
 %By considering internal variables and associated forces as: $\{\Vcb,\Acb\}=\{\[\tens{\eps}^p,p\],\[\tens{s}-\tens{Y},-R(p)\]\}$, one defines the following Helmholtz free energy density:
 \begin{equation}
   \label{eq:EP_helmoltz}
@@ -393,12 +394,12 @@ We consider in what follows isothermal deformations of isotropic solids, that ma
 \end{example}
 
 \begin{example}[Elastoplasticity]
-  Rate-independent plasticity or elastoplasticity is based on the assumption that admissible thermodynamic forces lie within or on the boundary of the elastic domain \eqref{eq:elastic_convex}. The equivalent plastic strain rate is used as a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
+  Rate-independent plasticity or elastoplasticity is based on the assumption that admissible thermodynamic forces lie within or on the boundary of the elastic domain \eqref{eq:elastic_convex}. The equivalent plastic strain rate becomes a Lagrange multiplier in order to ensure $f(\tens{\sigma},\Acb)\leq 0$ and must obey the \textit{K{\"u}hn-Tucker compatibility conditions}:
 \begin{equation}
   \label{eq:Kuhn_Tucker}
   \dot{p} \geq 0 \quad ; \quad f \leq 0 \quad ; \quad \dot{p}f =0 
 \end{equation}
-The equivalent plastic strain rate, is determined by the \textit{consistency condition} $\dot{f}=\drond{f}{(\tens{s}-\tens{Y})}:(\thomas{\tens{\dot{s}}-\tens{\dot{Y}}}) - \drond{f}{R}\dot{R}=0$ that leads to:
+The equivalent plastic strain rate, is determined by the \textit{consistency condition} $\dot{f}=\drond{f}{(\tens{s}-\tens{Y})}:(\tens{\dot{s}}-\tens{\dot{Y}}) - \drond{f}{R}\dot{R}=0$ that leads to:
 \begin{equation}
    \sqrt{\frac{3}{2}}\tens{m}:\dot{\tens{Y}} + \dot{R} =\sqrt{\frac{3}{2}}\tens{m}:\dot{\tens{\sigma}}
 \end{equation}
@@ -426,12 +427,12 @@ which is positive-definite for positive linear hardening ($C>0 \:;\: R'>0$).
 \begin{example}[Elasto-viscoplasticity]
   Viscoplasticity or rate-dependent plasticity can be seen as a regularization of rate-independent plasticity that relaxes the condition $f(\tens{\sigma},\Acb)\leq 0$ and thus leads to admissible thermodynamic forces lying outside the elastic domain \cite[p.58]{Simo}.
   %%
-  According to Perzyna model \cite{Perzyna}, viscoplasticity provides on the other hand an explicit definition of the equivalent plastic strain:
+  Viscoplasticity provides on the other hand an explicit definition of the equivalent plastic strain, for example the Perzyna or Sokolowskii-Malvern model \cite{Perzyna} is governed by:
   \begin{equation}
     \label{eq:EVP_creep_law}
     \dot{p}=\left\langle \frac{f}{\eta}\right\rangle^n
   \end{equation}
-  where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters arising from the relaxation of the condition $f\leq 0$.
+  where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters.% arising from the relaxation of the condition $f\leq 0$.
   %%
   Hence, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast}.
   %%
@@ -462,21 +463,21 @@ The system of conservation laws for problems involving hyperelastic solids is co
 Assuming a Cartesian coordinates system, this system can be written in \textit{conservative form}:
 \begin{equation}
   \label{eq:general_conservative_HE}
-  \Wcb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \Scb
+  \Ucb_t + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \Scb
 \end{equation}
-where the vector of conserved quantities $\Wcb$, fluxes vectors $\Fcb\cdot \vect{E}_\alpha$ and the source term $\Scb$ are:
+where the vector of conserved quantities $\Ucb$, fluxes vectors $\Fcb\cdot \vect{E}_\alpha$ and the source term $\Scb$ are:
 \begin{equation}
   \label{eq:vectors_hyperelasticity}
-  \Wcb =\matrice{\rho_0\vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{E}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{E}_\alpha\\-\vect{v}\otimes\vect{E}_\alpha } \quad; \quad \Scb = \matrice{ \rho_0\vect{b} \\ \tens{0}}
+  \Ucb =\matrice{\rho_0\vect{v} \\ \tens{F}} \quad ; \quad \Fcb\cdot\vect{E}_\alpha = \matrice{-\tens{\Pi}\cdot\vect{E}_\alpha\\-\vect{v}\otimes\vect{E}_\alpha } \quad; \quad \Scb = \matrice{ \rho_0\vect{b} \\ \tens{0}}
 \end{equation}
 A quasi-linear system of the form \eqref{eq:HPP_quasi-linear} may then be built by introducing an auxiliary vector $\Qcb=\matrice{\vect{v}\\ \tens{\Pi}}$ and using the chain rule according to \cite{Trangenstein91}:
 \begin{equation}
   \label{eq:quasi-linear_Trangenstein}
-  \drond{\Qcb}{t} + \(\drond{\Wcb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{E}_\alpha}{\Qcb} \drond{\Qcb}{X_\alpha} = \(\drond{\Wcb}{\Qcb}\)^{-1}\Scb = \tilde{\Scb}
+  \drond{\Qcb}{t} + \(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{E}_\alpha}{\Qcb} \drond{\Qcb}{X_\alpha} = \(\drond{\Ucb}{\Qcb}\)^{-1}\Scb = \tilde{\Scb}
 \end{equation}
 In the quasi-linear form, the derivative of the vector of conserved quantities with respect to the auxiliary vector leads to the diagonal matrices:
 \begin{equation*}
-  \drond{\Wcb}{\Qcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}}} \Rightarrow \(\drond{\Wcb}{\Qcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{\Pi}}{\tens{F}}}
+  \drond{\Ucb}{\Qcb}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{F}}{\tens{\Pi}}} \Rightarrow \(\drond{\Ucb}{\Qcb}\)^{-1}=\matrice{\tens{I} & \tens{0}^3 \\ \tens{0}^3  & \drond{\tens{\Pi}}{\tens{F}}}
 \end{equation*}
 where the tangent modulus $\drond{\tens{\Pi}}{\tens{F}}=\Hbb$ arises and $\tens{0}^p$ is a $p$th-order zero tensor. Moreover, the derivative of the flux vectors with respect to the auxiliary vector reads:
 \begin{equation}
@@ -516,7 +517,7 @@ where:
 \begin{equation*}
   \Absf^i=\drond{\Fcb\cdot \vect{e}_i}{\Qcb}=-\matrice{\tens{0}^3 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\\Cbb\cdot\vect{e}_i & \tens{0}^4}
 \end{equation*}
-in which symmetries of the elastic stiffness tensor have been used. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule \eqref{eq:flow_rule_plast}. \thomas{Moreover, the source term arrising due to the viscoplastic flow rule \eqref{eq:EVP_plastic_strain_rate} can be written in terms of a relaxation term $\bar{\Scb}$ and a relaxation time $\tau=(\eta/\sigma^y)^n$ as $\Scb=\bar{\Scb}/\tau$ \cite{Thomas_EVP}, so that the system \eqref{eq:HPP_quasi-linear} can be identified to a \textit{relaxation system} \cite{Relaxation_syst}. In the asymptotic limit $\tau \rightarrow 0$ or in the \textit{vanishing viscosisty limit}, system \eqref{eq:HPP_quasi-linear} tends to the \textit{equilibrium system} corresponding to elastoplasticity \cite{Thomas_EVP}.}
+in which symmetries of the elastic stiffness tensor have been used. Since the elastic stiffness tensor is constant, system \eqref{eq:HPP_quasi-linear} is linear for elasticity and semi or non-linear for elasto-viscoplasticity depending on the flow rule \eqref{eq:flow_rule_plast}. Moreover, the source term arising due to the viscoplastic flow rule \eqref{eq:EVP_plastic_strain_rate} can be written in terms of a relaxation term $\bar{\Scb}$ and a relaxation time $\tau=(\eta/\sigma^y)^n$ as $\Scb=\bar{\Scb}/\tau$ \cite{Thomas_EVP}, so that the system \eqref{eq:HPP_quasi-linear} can be identified to a \textit{relaxation system} \cite{Relaxation_syst}. In the asymptotic limit $\tau \rightarrow 0$ or in the \textit{vanishing viscosity limit}, system \eqref{eq:HPP_quasi-linear} tends to the \textit{equilibrium system} corresponding to elastoplasticity \cite{Thomas_EVP}.
 
 \subsubsection*{Elastoplasticity}
 The writing of a conservative form for elastoplasticity is similar to what was done for hyperelastic solids. Indeed, the system composed of kinematic laws \eqref{eq:HPP_kinematic} and the balance equation of linear momentum \eqref{eq:HPP_linear_momentum}:
@@ -528,12 +529,12 @@ The writing of a conservative form for elastoplasticity is similar to what was d
 can be written as:
 \begin{equation}
   \label{eq:general_conservative_EP}
-  \Wcb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
+  \Ucb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
 \end{equation}
  where the conserved quantities, fluxes and source term vectors are:
 \begin{equation}
   \label{eq:vectors_plasticity}
-  \Wcb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{ \vect{b} \\\tens{0}} 
+  \Ucb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{ \vect{b} \\\tens{0}} 
 \end{equation}
 Analogously to hyperelasticity, a quasi-linear form involving the elastoplastic tangent modulus \eqref{eq:elastoplastic_tangent} is derived by means of the auxiliary vector $\Qcb=\matrice{\vect{v}\\ \tens{\sigma}}$ and the chain rule:
 \begin{equation}

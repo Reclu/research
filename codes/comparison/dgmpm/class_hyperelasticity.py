@@ -49,7 +49,7 @@ class DGmesh:
         return self.Map,self.Grad,self.d,Parent.astype(int)
 
 
-    def computeFlux(self,U,W,dofs,u0,limit,limiter):
+    def computeFlux(self,U,W,dofs,limit,limiter):
         """
         Evaluation of interface fluxes by solving Riemann problems
         Computation of volumic fluxes over each cell
@@ -59,7 +59,7 @@ class DGmesh:
             U = self.slopeLimiter(U,limiter)
             W = self.slopeLimiter(W,limiter)
         fluxes = self.computeInterfaceFlux(U,W)
-        fint = self.computeInternalForces(U,dofs,u0)
+        fint = self.computeInternalForces(U,dofs)
         f = self.computeTotalForces(fint,fluxes)
         return f
 
@@ -112,7 +112,7 @@ class DGmesh:
             f[mapp[1],:]-=fluxes[mapp[1],:] # Right node
         return f
     
-    def computeFluxVector(self,U,u0):
+    def computeFluxVector(self,U):
         Nnodes = np.shape(U)[0]
         flux = np.zeros((Nnodes,2))
         for i in range(Nnodes):
@@ -121,11 +121,11 @@ class DGmesh:
             flux[i,:] = np.array([-vs,-self.E*J*(J*J -1.)/(2.*self.rho0)])
         return flux
 
-    def computeInternalForces(self,U,dofs,u0):
+    def computeInternalForces(self,U,dofs):
         S = self.Kx
         Nnodes = np.shape(U)[0]
         fint = np.zeros((Nnodes,2))
-        flux = self.computeFluxVector(U,u0)
+        flux = self.computeFluxVector(U)
         fint[dofs,0] = np.dot(S,flux[dofs,0])
         fint[dofs,1] = np.dot(S,flux[dofs,1])
         return fint

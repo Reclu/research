@@ -39,10 +39,10 @@ Thus, the introduction of DG approximation in the MPM should lead to a numerical
 
 
 \subsection{Derivation of the DGMPM}
-Consider again a continuum solid body with volume $\Omega_t$ within the time interval $\tau$. The DGMPM is expected to provide a material description of a deformation so that an approximate solution of a Lagrangian system of conservation laws written in conservative form is seeked. Recall that such a conservative form for some vector of conserved quantities $\Wcb$ reads, in Cartesian coordinates system:
+Consider again a continuum solid body with volume $\Omega_t$ within the time interval $\tau$. The DGMPM is expected to provide a material description of a deformation so that an approximate solution of a Lagrangian system of conservation laws written in conservative form is seeked. Recall that such a conservative form for some vector of conserved quantities $\Ucb$ reads, in Cartesian coordinates system:
 \begin{equation}
   \label{eq:conservative_form}
-  \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \Scb \quad \forall \vect{X},t \in \Omega_0 \times \tau
+  \drond{\Ucb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \Scb \quad \forall \vect{X},t \in \Omega_0 \times \tau
 \end{equation}
 %where $\Omega_0$ denotes the reference configuration of the continuum.
 \subsubsection{The DGMPM discretization}
@@ -55,17 +55,17 @@ In addition, the reference mass density is described in the computational grid b
 In a similar manner to FEM and MPM, the vector of conserved quantities is approximated on the mesh by:
 \begin{equation}
   \label{eq:DGMPM_node2points}
-  \Wcb(\vect{X},t) = \sum^{N_n}_{i=1} S_{i}(\vect{X})\Wcb^i(t) 
+  \Ucb(\vect{X},t) = \sum^{N_n}_{i=1} S_{i}(\vect{X})\Ucb^i(t) 
 \end{equation}
-with $\Wcb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X})$ the shape function attached to it. Note that the convention of denoting particle and nodal fields by $p$ and $(i,j)$ still holds in this section.
+with $\Ucb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X})$ the shape function attached to it. Note that the convention of denoting particle and nodal fields by $p$ and $(i,j)$ still holds in this section.
 
 \subsubsection{Weak formulation of the continuum problem}
 Multiplying equation \eqref{eq:conservative_form} by a test function $\Vcb$ yields the weak formulation of the problem:
 \begin{equation}
   \label{eq:weak_form}
   \begin{aligned}
-    &\text{Find $\Wcb \in \Vscr_h^1$ such that} \\
-    &\int_{\Omega_t} \drond{\Wcb}{t} \vect{\Vc} \: d\Omega + \int_{\Omega_t}   \drond{\Fcb_\alpha}{X_\alpha}\vect{\Vc} \: d\Omega    = \int_{\Omega_t} \Scb \vect{\Vc} \: d\Omega \quad \forall \: \vect{\Vc},t \in  \Vscr_h^1\times \tau
+    &\text{Find $\Ucb \in \Vscr_h^1$ such that} \\
+    &\int_{\Omega_t} \drond{\Ucb}{t} \vect{\Vc} \: d\Omega + \int_{\Omega_t}   \drond{\Fcb_\alpha}{X_\alpha}\vect{\Vc} \: d\Omega    = \int_{\Omega_t} \Scb \vect{\Vc} \: d\Omega \quad \forall \: \vect{\Vc},t \in  \Vscr_h^1\times \tau
   \end{aligned}
 \end{equation}
 The key idea of DG methods is to allow jump of fields across mesh elements faces by using broken polynomial spaces for the approximate solution \cite[Ch.1]{DiPietro}:
@@ -76,31 +76,31 @@ with $H^k(\Omega^e)$, the Sobolev space and $\Pscr^k(\Omega^e)$, the space of po
 \begin{equation}
   \label{eq:DGMPM_weak_form}
   \begin{aligned}
-    &\text{Find $\Wcb \in \Vscr_h^1$ such that} \\
-    &\int_{\Omega^e} \drond{\Wcb}{t} \vect{\Vc} \: d\Omega - \int_{\Omega^e} \Fcb_\alpha  \drond{\vect{\Vc}}{X_\alpha} \: d\Omega   + \int_{\partial \Omega^e} \(\Fcb\cdot \vect{N}\)  \vect{\Vc} \: d\Gamma = \int_{\Omega^e} \Scb \vect{\Vc} \: d\Omega \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
+    &\text{Find $\Ucb \in \Vscr_h^1$ such that} \\
+    &\int_{\Omega^e} \drond{\Ucb}{t} \vect{\Vc} \: d\Omega - \int_{\Omega^e} \Fcb_\alpha  \drond{\vect{\Vc}}{X_\alpha} \: d\Omega   + \int_{\partial \Omega^e} \(\Fcb\cdot \vect{N}\)  \vect{\Vc} \: d\Gamma = \int_{\Omega^e} \Scb \vect{\Vc} \: d\Omega \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
   \end{aligned}
 \end{equation}
 where $\partial \Omega^e$ is the boundary of the $e$th element with outward normal vector $\vect{N}$. The dot operator $\Fcb\cdot \vect{N}$ denotes the inner product between the outward normal vector and every component of the flux, thus yielding the intercell flux, written $\Fcb_N$ for simplicity. Next, the introduction of specific fields:
 \begin{equation}
   \label{eq:specific_quantities}
-  \Wcb = \rho_0 \bar{\Wcb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha \quad ; \quad \Scb = \rho_0 \bar{\Scb}
+  \Ucb = \rho_0 \bar{\Ucb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha \quad ; \quad \Scb = \rho_0 \bar{\Scb}
 \end{equation}
 combined with the definition of mass density \eqref{eq:mass_density_DGMPM}, leads to the following total Lagrangian formulation:
 %Such a discretization of the reference mass density combined with the writing of Lagrangian conservation laws \eqref{eq:conservative_form} yields a total Lagrangian formulation, and equation \eqref{eq:DGMPM_weak_form} thus reads:
 \begin{equation} 
   \label{eq:DGMPM_discrete_weak}
-  \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Wcb}}{t}  \vect{\Vc} - \bar{\Fcb}_{\alpha} \drond{\vect{\Vc}}{X_\alpha} -\bar{\Scb}  \vect{\Vc} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \Fcb_N  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
+  \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Ucb}}{t}  \vect{\Vc} - \bar{\Fcb}_{\alpha} \drond{\vect{\Vc}}{X_\alpha} -\bar{\Scb}  \vect{\Vc} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \Fcb_N  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
 \end{equation}
 
 At last, introduction of the DGMPM approximation \eqref{eq:DGMPM_node2points} and arbitrariness of the test field in the weak form \eqref{eq:DGMPM_discrete_weak} provide the semi-discrete system that must be solved on the grid:
 \begin{equation}
   \label{eq:DGMPM_semi_discrete}
-  \sum_{p=1}^{N_p}\[ S_{ip} m_p S_{jp} \drond{\bar{\Wcb}^j}{t}  - \drond{S_{ip}}{X_\alpha} m_p S_{jp} \bar{\Fcb}^j_{\alpha} - S_{ip} m_p \bar{\Scb}^p\] + \int_{\Gamma_e} S_i(\vect{X}) \Fcb_N  \: d\Gamma =  0  \quad \forall \: e,t \in  \times \[1,E\]\times \tau
+  \sum_{p=1}^{N_p}\[ S_{ip} m_p S_{jp} \drond{\bar{\Ucb}^j}{t}  - \drond{S_{ip}}{X_\alpha} m_p S_{jp} \bar{\Fcb}^j_{\alpha} - S_{ip} m_p \bar{\Scb}^p\] + \int_{\Gamma_e} S_i(\vect{X}) \Fcb_N  \: d\Gamma =  0  \quad \forall \: e,t \in  \times \[1,E\]\times \tau
 \end{equation}
 or, in matrix form:
 \begin{equation}
   \label{eq:DGMPM_semi_discrete_matrix}
-  M_{ij} \drond{\bar{\Wcb}_j}{t} - K^\alpha_{ij} \bar{\Fcb}^j_{\alpha} - \Scb^i + \vect{\hat{\Fc}}^i = \vect{0}  
+  M_{ij} \drond{\bar{\Ucb}_j}{t} - K^\alpha_{ij} \bar{\Fcb}^j_{\alpha} - \Scb^i + \vect{\hat{\Fc}}^i = \vect{0}  
 \end{equation}
 Here again, particles plays the role of integration points in volume integrals owing to the delta Dirac characteristic function. Hence, the consistent mass matrix $M_{ij}$ may also be singular due to reduced integration so that the diagonally lumped mass matrix $M^L_i$ is used.
 \begin{remark}
@@ -111,15 +111,15 @@ The discrete system is derived by discretizing the time interval $\tau$ into $N_
 %Finally, the explicit forward Euler time discretization of $\tau$ in $N_t$ subinterval is perfomed, leading to the discrete system:
 \begin{equation}
   \label{eq:DGMPM_discrete}
-  M^L_i \frac{\bar{\Wcb}^{i,n+1} - \bar{\Wcb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} + \Scb^{i,n}- \vect{\hat{\Fc}}^{i,n}  
+  M^L_i \frac{\bar{\Ucb}^{i,n+1} - \bar{\Ucb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} + \Scb^{i,n}- \vect{\hat{\Fc}}^{i,n}  
 \end{equation}
 where again, the superscripts $(\bullet)^{k,l}$ denote a field evaluated at node $k$ and time step $l$. Note that in general the source term $\Scb$ may depend on the vector of conserved quantities, hence the superscript $n$ in equation \eqref{eq:DGMPM_discrete}.
 Alternatively, a \textit{second-order Runge-Kutta (RK2)} explicit time discretization may be employed, leading to the following two-stage discrete form:
 \begin{equation}
   \label{eq:DGMPM_discrete_RK2}
   \begin{aligned}
-    & M^L_i \frac{\bar{\Wcb}^{i,n+1/2} - \bar{\Wcb}^{i,n}}{\Delta t^{n} } = \frac{1}{2}\(K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} + \Scb^{i,n}- \vect{\hat{\Fc}}^{i,n}\)  \\
-    & M^L_i \frac{\bar{\Wcb}^{i,n+1} - \bar{\Wcb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n+1/2} + \Scb^{i,n+1/2}- \vect{\hat{\Fc}}^{i,n+1/2}
+    & M^L_i \frac{\bar{\Ucb}^{i,n+1/2} - \bar{\Ucb}^{i,n}}{\Delta t^{n} } = \frac{1}{2}\(K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} + \Scb^{i,n}- \vect{\hat{\Fc}}^{i,n}\)  \\
+    & M^L_i \frac{\bar{\Ucb}^{i,n+1} - \bar{\Ucb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n+1/2} + \Scb^{i,n+1/2}- \vect{\hat{\Fc}}^{i,n+1/2}
   \end{aligned}
 \end{equation}
 \begin{remark}
@@ -129,38 +129,43 @@ Alternatively, a \textit{second-order Runge-Kutta (RK2)} explicit time discretiz
 
 \subsection{Non-homogeneous hyperbolic system}
 \label{sec:splitting}
-Solid mechanics equations may lead to source terms in the conservative form even for neglected body forces. For instance, the writing of equations in cylindrical and spherical coordinates systems, in which the gradient operators involve terms that are not derivatives, yields a right-hand side in system \eqref{eq:conservative_form} that depends on $\Wcb$ and called a geometric source term \cite[Ch.17]{Leveque}.
+Solid mechanics equations may lead to source terms in the conservative form even for neglected body forces. For instance, the writing of equations in cylindrical and spherical coordinates systems, in which the gradient operators involve terms that are not derivatives, yields a right-hand side in system \eqref{eq:conservative_form} that depends on $\Ucb$ and called a geometric source term \cite[Ch.17]{Leveque}.
 %%
 This is also the case for relaxation systems as that identified in section \ref{sec:general-formulation} for elasto-viscoplasticity. In the latter case, a small relaxation time $\tau$ compared to the time scale governed by the convective part (\textit{i.e. the characteristic speeds of the problem}) leads to a \textit{stiff system} \cite{Stiff_problems}. 
 
 The solution of this class of problem on underresolved grids, that is $\tau \ll \Delta t$, requires the use of asymptotically convergent, accurate and stable numerical methods in order to avoid nonphysical results \cite{Leveque_stiff}.
-Thus, the numerical scheme must enable to use of underresolved grids which time step is dictated by the Courant-Friedrichs-Lewy (CFL) satibility condition. The method also has to be \textit{asymptotic preserving} in the limit $\tau \rightarrow 0$ for fixed $\Delta t$ and $\Delta X$ \cite{Stiff_problems}, that is the limiting scheme is a good discretization of the equilibrium system even if the source term is underresolved. At last, the order of accuracy in the stiff limit and stability at discrete level must be preserved \cite{Pareschi_stiff}, and the numerical scheme must be able to preserve steady state numerically \cite{Toro_stiff}.
+Thus, the numerical scheme must enable to use underresolved grids which time step is dictated by the Courant-Friedrichs-Lewy (CFL) satibility condition. The method also has to be \textit{asymptotic preserving} in the limit $\tau \rightarrow 0$ for fixed $\Delta t$ and $\Delta X$ \cite{Stiff_problems}, that is the limiting scheme is a good discretization of the equilibrium system even if the source term is underresolved. At last, the order of accuracy in the stiff limit and stability at discrete level must be preserved \cite{Pareschi_stiff}, and the numerical scheme must be able to preserve steady state numerically \cite{Toro_stiff}.
 
 A commonly used approach to solve non-homogeneous systems consists in solving alternatively a homogeneous PDE system and a system of ODEs, namely:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:Splitting_advec} 
-    & \drond{\Wcb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \vect{0}\\
+    & \drond{\Ucb}{t} + \sum_{\alpha=1}^D \drond{\Fcb\cdot \vect{E}_\alpha}{X_\alpha} = \vect{0}\\
     \label{eq:Splitting_ODE}
-    & \ddroit{\Wcb}{t} = \Scb
+    & \ddroit{\Ucb}{t} = \Scb
   \end{alignat}
 \end{subequations}
 Equation \eqref{eq:Splitting_advec} is solved by applying the DGMPM discretizations \eqref{eq:DGMPM_discrete} or \eqref{eq:DGMPM_discrete_RK2}, while the solution of equation \eqref{eq:Splitting_ODE} is determined by some ODEs solver. 
 If the discrete solution operators associated to equations \eqref{eq:Splitting_advec} and \eqref{eq:Splitting_ODE} for one time step are denoted by $H^{(\Delta t)}$ and $F^{(\Delta t)}$ respectively, the discrete solution reads \cite{Toro}:
 \begin{equation}
   \label{eq:godunov_splitting}
-  \Wcb^{n+1} = F^{(\Delta t)} H^{(\Delta t)} (\Wcb^n)
+  \Ucb^{n+1} = F^{(\Delta t)} H^{(\Delta t)} (\Ucb^n)
 \end{equation}
 The \textit{fractional-step method} \eqref{eq:godunov_splitting}, known as Godunov's splitting, is only first–order accurate in time when H and F are at least first–order accurate solution operators. On the other hand, Strang splitting:
   \begin{equation}
     \label{eq:Strang_splitting}
-    \Wcb^{n+1} = F^{(\Delta t/2)} H^{(\Delta t)} F^{(\Delta t/2)} (\Wcb^n)
+    \Ucb^{n+1} = F^{(\Delta t/2)} H^{(\Delta t)} F^{(\Delta t/2)} (\Ucb^n)
   \end{equation}
   is second-order accurate if each solution operator is at least second-order accurate \cite{Leveque}.
 
 Two sub-problems are thus solved separately at each time step, the solution of the first one being used as initial conditions in the second. Thus, fractional-step methods \eqref{eq:godunov_splitting} and \eqref{eq:Strang_splitting} enable to take advantage of efficient tools already developed for homogeneous systems of conservation laws and of ODEs solvers. However, it is worth noticing that even though the use of an implicit solver for equation \eqref{eq:Splitting_ODE} eliminates the influence of the relaxation time on the CFL condition, a L-stable solver as the Euler implicit method \cite{Book_ODE} is required to compute the correct solution. 
 
-The DGMPM solution scheme reduces to the discrete solution operator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at finding approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}). For a DGMPM space-time discretization made of $N_p$ material points and $N_T$ time increments, those solutions can be written:
+
+
+\subsection{Intercell fluxes}
+\label{subsec:interface_fluxes}
+The DGMPM solution scheme reduces to the discrete solution operator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at finding approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}).
+For a DGMPM space-time discretization made of $N_p$ material points and $N_T$ time increments, those solutions can be written:
 % It has been established so far that the DGMPM scheme provides an approximate solution $\Qc(\vect{X}^i,t^{n,+1})= \Qc^{i,n+1}$,  with $i=1,...,N_n$ and $n=1,...,N_T$, that depends on the value of $\Qc$ at other points and previous time step, that is:
 \begin{equation}
   \label{eq:general_scheme}
@@ -180,34 +185,31 @@ The following statement then holds:
   Monotone linear numerical schemes can be at most first-order accurate.
 \end{theorem}
 
-
-\subsection{Intercell fluxes}
-\label{subsec:interface_fluxes}
 Intercell fluxes of the weak form propagates information across cells by taking into account the different values that fields can take on each side of the interface. DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximations \cite{Cockburn}. %, namely, when the discrete system identifies with a first-order finite volume scheme.  
 Such a numerical method is monotone for flux functions $\Fcb_N$ that are Lipschitz continuous, consistent and monotone, namely, they must be \textit{E-fluxes} \cite{Osher}. One possibility, which is widely used and adopted here, is the \textit{Godunov flux function}. 
 %The computation of interface fluxes $\hat{\Fcb}^{i,n}$ in the DGMPM system of discrete equations \eqref{eq:DGMPM_discrete} is now developed. We can here benefit from the finite volume technologies which are essentially based on the way those fluxes are computed.
 \subsubsection*{The Godunov flux}
-The Godunov method \cite{Godunov_method} has been proposed in the context of finite difference schemes in which the piecewise constant approximation of the solution naturally allows the definition of local Riemann problems at cells interfaces. That is, two cells $i$ and $i+1$ with interface having normal vector $\vect{N}$, define a Riemann problem in the direction $X_N=\vect{X}\cdot{N}$ which \textit{stationary solution} is used to compute the intercell numerical flux $\Fcb \cdot \vect{N}$. The stationary solution $\Wcb^*$ is the similarity solution along the vertical characteristic in the $(X_N,t)$ plane of the Riemann problem:
-% Hence, the intercell numerical flux $\Fcb \cdot \vect{N}()$ is that of the stationary solution, that is, the similarity solution along the vertical straight line in the $(x,t)$ plane $\Wcb(x/t=0)$, of the Riemann problem:
+The Godunov method \cite{Godunov_method} has been proposed in the context of finite difference schemes in which the piecewise constant approximation of the solution naturally allows the definition of local Riemann problems at cells interfaces. That is, two cells $i$ and $i+1$ with interface having normal vector $\vect{N}$, define a Riemann problem in the direction $X_N=\vect{X}\cdot{N}$ which \textit{stationary solution} is used to compute the intercell numerical flux $\Fcb \cdot \vect{N}$. The stationary solution $\Ucb^*$ is the similarity solution along the vertical characteristic in the $(X_N,t)$ plane of the Riemann problem:
+% Hence, the intercell numerical flux $\Fcb \cdot \vect{N}()$ is that of the stationary solution, that is, the similarity solution along the vertical straight line in the $(x,t)$ plane $\Ucb(x/t=0)$, of the Riemann problem:
 \begin{equation}
   \label{eq:RP_mesh}
   \begin{aligned}
-    &\drond{\Wcb}{t} + \drond{\Fcb_N}{X_N} = \vect{0}  \\
-    & \Wcb(X_N,0)= \left\lbrace 
+    &\drond{\Ucb}{t} + \drond{\Fcb_N}{X_N} = \vect{0}  \\
+    & \Ucb(X_N,0)= \left\lbrace 
       \begin{aligned}
-        & \Wcb_{X_N^-} \text{ if } X_N <0 \\
-        & \Wcb_{X_N^{+}} \text{ if } X_N \geq 0
+        & \Ucb_{X_N^-} \text{ if } X_N <0 \\
+        & \Ucb_{X_N^{+}} \text{ if } X_N > 0
       \end{aligned}
         \right.
   \end{aligned}
 \end{equation}
-where $\Wcb_{X_N^-}$ and $\Wcb_{X_N^{+}}$ are the states lying infinitely close to the interface in cells $i$ and $i+1$ respectively. 
+where $\Ucb_{X_N^-}$ and $\Ucb_{X_N^{+}}$ are the states lying infinitely close to the interface in cells $i$ and $i+1$ respectively. 
 Godunov's method hence allows to account for the complete wave structure of the solution within the numerical scheme. Since this method is known to be based on E-fluxes, intercell fluxes involved in boundary integrals of weak forms of DG-methods can be computed as Godunov's ones. To this end, Riemann problems are defined at cells faces by considering that initial data are piecewise constant even for high-order approximations. Note that this strategy is also followed in FVM when high-order reconstruction techniques of the fields are used.
 
 Let us consider as an illustration of the computation of interface fluxes within the DGMPM, the two-dimensional case depicted in figure \ref{fig:2D_edge}.
 Only one Riemann problem per interface rather than nodal ones is considered in order to avoid a dramatic increase in computational time.
 % Since intercell fluxes must be calculated in addition to the solution discrete equations \eqref{eq:DGMPM_discrete}, only one Riemann problem per interface is considered rather than nodal ones, in order to avoid a dramatical increase in computational time.
-Thus, by averaging nodal fields on each side of the interface, one obtains mean \textit{downwind} and \textit{upwind} states $\Wcb_{X_N^-}$ and $\Wcb_{X_N^+}$ that correspond to the initial conditions of the Riemann problem.
+Thus, by averaging nodal fields on each side of the interface, one obtains mean \textit{downwind} and \textit{upwind} states $\Ucb_{X_N^-}$ and $\Ucb_{X_N^+}$ that correspond to the initial conditions of the Riemann problem.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2DEdge}
@@ -234,14 +236,14 @@ Hence, the calculation of Godunov's fluxes requires the integration of constitut
         \right.
   \end{aligned}
 \end{equation}
-avoids the computation of constitutive equations. Indeed, the auxiliary vectors introduced in section \ref{sec:general-formulation} are rearrangements of the flux components, that is $\Fcb_N(\Wcb)=\Lbsf \Qcb$ with $\Lbsf$ some localization matrix. Then, the intercell flux is $\Fcb_N(\Wcb^*)=\Lbsf \Qcb^*$ where $\Qcb^*$  is the stationary solution of Riemann problem \eqref{eq:RP_quasilinear}. Note that this approach requires that stress as well as velocity and strain are projected back and forth between material points and nodes within the DGMPM.
-%Indeed, the stationary solution $\Qcb^*$ of \eqref{eq:RP_quasilinear} is a rearrangement of the flux components, that is $\Qcb^*=\matrice{\vect{v}^* \\ \tens{\sigma}^*}$ for the infinitesimal theory and $\Qcb^* = \matrice{\vect{v}^* \\ \tens{\Pi}^*}$ for finite deformations. Thus, stress as well as velocity and strain must be projected back and forth between material points and nodes within the DGMPM. $\Fcb_N(\Wcb^*)=\Lbsf \Qcb^*$ 
+avoids the computation of constitutive equations. Indeed, the auxiliary vectors introduced in section \ref{sec:general-formulation} are rearrangements of the flux components, that is $\Fcb_N(\Ucb)=\Lbsf \Qcb$ with $\Lbsf$ some localization matrix. Then, the intercell flux is $\Fcb_N(\Ucb^*)=\Lbsf \Qcb^*$ where $\Qcb^*$  is the stationary solution of Riemann problem \eqref{eq:RP_quasilinear}. Note that this approach requires that stress as well as velocity and strain are projected back and forth between material points and nodes within the DGMPM.
+%Indeed, the stationary solution $\Qcb^*$ of \eqref{eq:RP_quasilinear} is a rearrangement of the flux components, that is $\Qcb^*=\matrice{\vect{v}^* \\ \tens{\sigma}^*}$ for the infinitesimal theory and $\Qcb^* = \matrice{\vect{v}^* \\ \tens{\Pi}^*}$ for finite deformations. Thus, stress as well as velocity and strain must be projected back and forth between material points and nodes within the DGMPM. $\Fcb_N(\Ucb^*)=\Lbsf \Qcb^*$ 
 
 \subsubsection*{Transverse corrections}
 
 The method derived above for the computation of normal fluxes can be viewed as the \textit{Donor-Cell Upwind (DCU)} method \cite{Leveque} in which only contributions from upwind cells sharing an edge (in two dimensions) with the current one are considered. For multidimensional problems waves can travel in several directions such that contributions coming from corner cells must be taken into account in order to improve accuracy and stability of the numerical scheme. The \textit{Corner Transport Upwind (CTU)} method \cite{Colella_CTU} consists in considering contributions propagating in bias and coming from upwind cells sharing only a node (in two dimensions) with another. This approach allows to improve the Courant condition especially for solid mechanics problems for which strain components are coupled through Poisson's effect. At each cell interface, one defines left-going and right-going fluctuations as:
 \begin{equation}
-  \Acb^-(\Delta \Wcb) = \Fcb_N(\Wcb^*) - \Fcb_N(\Wcb_{X_N^-}) \qquad ;  \qquad \Acb^+(\Delta \Wcb) = \Fcb_N(\Wcb_{X_N^+})-\Fcb_N(\Wcb^*) 
+  \Acb^-(\Delta \Ucb) = \Fcb_N(\Ucb^*) - \Fcb_N(\Ucb_{X_N^-}) \qquad ;  \qquad \Acb^+(\Delta \Ucb) = \Fcb_N(\Ucb_{X_N^+})-\Fcb_N(\Ucb^*) 
 \end{equation}
 \begin{figure}[h!]
   \centering
@@ -249,18 +251,18 @@ The method derived above for the computation of normal fluxes can be viewed as t
   \caption{Normal and transverse fluctuations defined from edge $i$.}
   \label{fig:CTU}
 \end{figure}
-Let's consider the patch of grid cells shown in figure \ref{fig:CTU}, and focus on the edge denoted $(i)$ which local normal vector is $\vect{N}^i$. The Riemann problem defined at this edge gives rise to normal fluctuations $\Acb^{i,-}(\Delta \Wcb)$ and $\Acb^{i,+}(\Delta \Wcb)$ contributing to cells L and R respectively. These terms lead to the computation of transverse fluctuations giving contribution to neighboring cells across edges $(j)$ and $(k)$ for cell L, and across edges $(m)$ and $(l)$ for cell R. Transverse fluctuations are computed by projecting normal fluctuations onto the characteristic basis associated to the Riemann problem \eqref{eq:RP_mesh} defined on the adjacent edge, hence the name transverse Riemann solver. The spectral analysis of the corresponding Jacobian matrix, carried out in \cite{Kluth}, leads to right eigenvectors that are be written $\Rcb_{\Wc}^i$ hereinafter. The negative normal fluctuation is, for instance, decomposed on the characteristic basis associated to edge $(j)$ as:
+Let's consider the patch of grid cells shown in figure \ref{fig:CTU}, and focus on the edge denoted $(i)$ which local normal vector is $\vect{N}^i$. The Riemann problem defined at this edge gives rise to normal fluctuations $\Acb^{i,-}(\Delta \Ucb)$ and $\Acb^{i,+}(\Delta \Ucb)$ contributing to cells L and R respectively. These terms lead to the computation of transverse fluctuations giving contribution to neighboring cells across edges $(j)$ and $(k)$ for cell L, and across edges $(m)$ and $(l)$ for cell R. Transverse fluctuations are computed by projecting normal fluctuations onto the characteristic basis associated to the Riemann problem \eqref{eq:RP_mesh} defined on the adjacent edge, hence the name transverse Riemann solver. The spectral analysis of the corresponding Jacobian matrix, carried out in \cite{Kluth}, leads to right eigenvectors that are be written $\Rcb_{\Wc}^i$ hereinafter. The negative normal fluctuation is, for instance, decomposed on the characteristic basis associated to edge $(j)$ as:
 \begin{equation}
-\Acb^{i,-}(\Delta \Wcb) = \sum_{m=1}^{M} \beta_m \vect{\Rc}^{j,m}_\Wc
+\Acb^{i,-}(\Delta \Ucb) = \sum_{m=1}^{M} \beta_m \vect{\Rc}^{j,m}_\Wc
 \end{equation}
 where $\vect{\Rc}_\Wc^{j,m}$ is based on the normal vector $\vect{N}^j$ but also on different tangent moduli between grid cells L and its neighbor T. Since only waves with positive characteristic speeds with respect to the orientation defined by outward normal vector to considered edge will contribute to the transverse fluctuation, only the positive operator $\Bcb^+$ is used:
 \begin{equation}
-\Bcb^{j,+} \Acb^{i,-}(\Delta \Wcb) = \sum_{\underset{c_m >0}{m=1}}^{M} c_m \beta_m \vect{\Rc}_\Wc^{j,m} \label{eq:transverse_fluctuations}
+\Bcb^{j,+} \Acb^{i,-}(\Delta \Ucb) = \sum_{\underset{c_m >0}{m=1}}^{M} c_m \beta_m \vect{\Rc}_\Wc^{j,m} \label{eq:transverse_fluctuations}
 \end{equation}
 with $c_m$, the celerity of wave $m$.
 An additional numerical flux defined at edges is hence built from these transverse fluctuations:
 \begin{equation}
-\Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^{j,+} \Acb^{i,-}(\Delta \Wcb) \label{eq:transverse_corrections}
+\Fcb^{j,\text{tran}} = \frac{\Delta t}{2 \Delta X^j} \Bcb^{j,+} \Acb^{i,-}(\Delta \Ucb) \label{eq:transverse_corrections}
 \end{equation}
 which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the length of edge $(j)$). 
 In-going transverse corrections must be counted positively while outgoing ones must be subtracted from intercell fluxes. At last, numerical fluxes computed at interfaces can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
@@ -294,18 +296,18 @@ Second, this procedure is repeated between the corner ghost node and $G_L$ in or
 \end{remark}
 
 \subsection{DGMPM solution scheme}
-Let us assume that the vector of specific conserved quantities $\bar{\Wcb}^n$ as well as the auxiliary vector $\Qcb^n$ are known at every material points that discretize a continuum body $\Omega_0$, in a grid made of $N_{n}$ nodes at a given time $t^n$. The computational procedure followed within the DGMPM between two time steps $n$ and $n+1$ can now be derived. We consider here cases based on the use of an auxiliary vector, the others being only particular cases.
+Let us assume that the vector of specific conserved quantities $\bar{\Ucb}^n$ as well as the auxiliary vector $\Qcb^n$ are known at every material points that discretize a continuum body $\Omega_0$, in a grid made of $N_{n}$ nodes at a given time $t^n$. The computational procedure followed within the DGMPM between two time steps $n$ and $n+1$ can now be derived. We consider here cases based on the use of an auxiliary vector, the others being only particular cases.
 % , which requires to (i) solve the hyperbolic system \eqref{} in $\Omega$ with associated boundary conditions and (ii) update the vector $\bar{\Qcb}^n$ on material points.
 
 The scheme has been established with a total Lagrangian formulation, therefore, the lumped mass and \textit{pseudo-stiffness} matrices $M^L_{ij}$ and $K^\alpha_{ij}$ of the semi-discrete form \eqref{eq:DGMPM_semi_discrete} are computed once and for all at the beginning of the calculation. The procedure then reads:
 \begin{itemize}
-%\item[] $\bar{\Wcb}, \:\Qcb$ known at material points
+%\item[] $\bar{\Ucb}, \:\Qcb$ known at material points
 \item[(a)] The discrete equation \eqref{eq:DGMPM_discrete} and Riemann problems at cells interfaces \eqref{eq:RP_quasilinear} require a projection of fields onto the grid:
   \begin{equation}
     \label{eq:DGMPM_points2nodes}
-    M^L_i \bar{\Wcb}^i = \sum_{p=1}^{N_p} S_{ip} m_p \bar{\Wcb}^p \qquad \text{and} \qquad M^L_i \vect{\Qc}^i = \sum_{p=1}^{N_p} S_{ip} m_p \vect{\Qc}^p 
+    M^L_i \bar{\Ucb}^i = \sum_{p=1}^{N_p} S_{ip} m_p \bar{\Ucb}^p \qquad \text{and} \qquad M^L_i \vect{\Qc}^i = \sum_{p=1}^{N_p} S_{ip} m_p \vect{\Qc}^p 
   \end{equation}
-  to be solved for each $\bar{\Wcb}^i$ and $\vect{\Qc}^i$ respectively. The projection of fields from particles to nodes hence follows the weighted least squares interpolation used in MPM. 
+  to be solved for each $\bar{\Ucb}^i$ and $\vect{\Qc}^i$ respectively. The projection of fields from particles to nodes hence follows the weighted least squares interpolation used in MPM. 
 %\item[(b)] Compute time step: in the general case the tangent modulus depends on the deformation gradient as well as the waves speeds. It is therefore needed to compute the time step so that the fastest wave can at most cross the smallest cell of the mesh according to Courant condition.
 \item[(b)] The specific flux vectors $\bar{\Fcb}^i_{\alpha}$ involved in the equations are computed from $\vect{\Qc}^i$ knowing $\rho_0$, thus avoiding the computation of constitutive equations.
 \item[(c)] Enforcement of boundary conditions on ghost nodes.
@@ -318,9 +320,9 @@ The scheme has been established with a total Lagrangian formulation, therefore, 
 \item[(e)] Advance solution in time by solving the discrete equation \eqref{eq:DGMPM_discrete} at each node.
 \item[(f)] Back-mapping: as motivated at the end of section \ref{sec:MPM}, the nodal updated solution is projected to material points with the classical interpolation as in PIC:
   \begin{equation}
-    \bar{\Wcb}^{p,n+1} = \sum_{i=1}^{N} S_{ip}\bar{\Wcb}^{i,n+1}
+    \bar{\Ucb}^{p,n+1} = \sum_{i=1}^{N} S_{ip}\bar{\Ucb}^{i,n+1}
   \end{equation}
-\item[(g)] Material point kinematics and constitutive model: The new solution $\bar{\Wcb}^{p,n+1}$ allows to increment the deformation $\vect{\varphi}(\vect{X},t)$ and to update stress components, which will be used in the auxiliary vector for the next time step, through hyperelastic constitutive equations:
+\item[(g)] Material point kinematics and constitutive model: The new solution $\bar{\Ucb}^{p,n+1}$ allows to increment the deformation $\vect{\varphi}(\vect{X},t)$ and to update stress components, which will be used in the auxiliary vector for the next time step, through hyperelastic constitutive equations:
   \begin{align}
     & \vect{\varphi}^{p,n+1} = \vect{X}^p + \Delta t \vect{v}^{p,n+1} \\
     & \tens{\Pi}^{p,n+1} =  \drond{\Psi}{\tens{F}}(\tens{F}^{p,n+1})

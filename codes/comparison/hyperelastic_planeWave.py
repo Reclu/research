@@ -104,7 +104,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             if j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.5,-0.35)+(0.45cm,1cm)$)},legend columns=3},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
-                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=2] coordinates{')
+                TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=8] coordinates{')
                 #pdb.set_trace()
                 #print field
                 FIELD=containers[k][field][:,colFields[j][k]]
@@ -113,9 +113,9 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
                     TeXFile.write('('+str(xFields[l])+','+str(FIELD[l])+') ')
                 TeXFile.write('};\n')
             if j==0 and fileName[-9:]=='shock.tex':
-                TeXFile.write(r'\begin{scope}');TeXFile.write('};\n')
-                TeXFile.write(r'\spy[black,size=3cm] on (2.35,4.2) in node [fill=none] at (5.8,4.);');TeXFile.write('};\n')
-            TeXFile.write(r'\end{scope}');TeXFile.write('};\n')
+                TeXFile.write(r'\begin{scope}');TeXFile.write('\n')
+                TeXFile.write(r'\spy[black,size=3cm] on (2.35,4.2) in node [fill=none] at (5.8,4.);');TeXFile.write('\n')
+                TeXFile.write(r'\end{scope}');TeXFile.write('\n')
     for lab in legend:
         TeXFile.write(r'\addlegendentry{'+str(lab)+'}');TeXFile.write('\n')
     TeXFile.write('\n')    
@@ -162,7 +162,7 @@ timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
 
-sigd = 50.*Sigy
+sigd = -0.5*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 update_position=False
@@ -253,10 +253,12 @@ if sigd>0.:
     if sigd==5.*Sigy:
         frames=[43,89]
         frmpm=[85,176]
+        #frmpm=[2*85,2*176]
         load=5
     elif sigd==50.*Sigy:
         frames=[44,88]
         frmpm=[80,160]
+        #frmpm=[160,320]
         load=50
     start=0
 titles=[]
@@ -297,70 +299,42 @@ colFields=np.array([[frmpm[0],frames[0],2*frames[0],frames[0],frames[0]],[frmpm[
 legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\Pi (Pa)$']
 
-export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
+#export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 print DGMPM2["time"][[2*frames[0],2*frames[1]+1]],DGMPM["time"][frames]
 
 ####################################################################
-fig, (ax1, ax2) = plt.subplots(2,1)
-"""
+fig, (ax1) = plt.subplots(1,1)
+
 # intialize two line objects (one in each axes)
 line1, = ax1.plot([], [],'r-o', ms=2.5,label='dgmpm')
 line2, = ax1.plot([], [],'g--' ,ms=1.5,label='mpm')
 line3, = ax1.plot([], [],'rs' , ms=2,label='dgmpm')
 line4, = ax1.plot([], [],'b--s' , ms=2,label='mpm')
 line5, = ax1.plot([], [],'k' , ms=2,label='fvm')
-line6, = ax2.plot([], [],'r-o', ms=2.5,label='dgmpm')
-line7, = ax2.plot([], [],'g--' ,ms=1.5,label='mpm')
-line8, = ax2.plot([], [],'rs' , ms=2,label='dgmpm')
-line9, = ax2.plot([], [],'b--s' , ms=2,label='mpm')
-line10, = ax2.plot([], [],'k' , ms=2,label='fvm')
-line = [line1, line2,line3,line4,line5,line6,line7,line8,line9,line10]
+line = [line1, line2,line3,line4,line5]
 
 ax1.grid()
-ax2.grid()
 ax1.set_xlabel('x (m)', fontsize=18)
-ax2.set_xlabel('x (m)', fontsize=18)
-ax2.set_ylabel(r'$\varepsilon^p$', fontsize=18)
 ax1.set_ylabel(r'$\sigma$', fontsize=18)
 
 ax1.legend(numpoints=1)
 
 ax1.set_xlim(0.,length)
-ax2.set_xlim(0.,length)
-ax1.set_ylim(1.1*np.min(MPM["sig"]),1.1*np.max(MPM["sig"]))
-if hardening=='kinematic':
-    ax2.set_ylim(1.1*np.min(MPM2["epsp"]),1.1*np.max(MPM2["epsp"]))
-elif hardening=='isotropic':
-    ax2.set_ylim(1.1*np.min(MPM2["p"]),1.1*np.max(MPM2["p"]))
-ax2.set_ylim(1.1*np.min(MPM2["epsp"]),1.1*np.max(MPM2["epsp"]))
+ax1.set_ylim(1.1*np.min(MPM["Pi"]),1.1*np.max(MPM["Pi"]))
 def init():
     line[0].set_data([], [])
     line[1].set_data([], [])
     line[2].set_data([], [])
     line[3].set_data([], [])
     line[4].set_data([], [])
-    line[5].set_data([], [])
-    line[6].set_data([], [])
-    line[7].set_data([], [])
-    line[8].set_data([], [])
-    line[9].set_data([], [])
     return line
 
 def animate(i):
-    line[0].set_data(DGMPM["pos"][:,i],DGMPM["sig"][:,i])
-    line[1].set_data(MPM["pos"][:,2*i],MPM["sig"][:,2*i])
-    line[2].set_data(DGMPM3["pos"][:,i],DGMPM3["sig"][:,i])
-    line[3].set_data(MPM2["pos"][:,2*i],MPM2["sig"][:,2*i])
-    line[4].set_data(FEM["centroids"],FEM["sig"][:,i])
-    line[5].set_data(DGMPM["pos"][:,i],DGMPM["epsp"][:,i])
-    line[6].set_data(MPM["pos"][:,2*i],MPM["epsp"][:,2*i])
-    line[7].set_data(DGMPM3["pos"][:,i],DGMPM3["epsp"][:,i])
-    line[8].set_data(MPM2["pos"][:,2*i],MPM2["epsp"][:,2*i])
-    line[9].set_data(FEM["centroids"],FEM["epsp"][:,i])
+    line[0].set_data(MPM["pos"][:,i],MPM["Pi"][:,i])
     return line
 
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=DGMPM["increments"], interval=100, blit=True)
+                               frames=MPM["increments"], interval=100, blit=True)
 
 plt.show()
-"""
+
