@@ -174,6 +174,27 @@ def gridSearch(function,tol=1.e-7):
 samples=20
 cx=np.linspace(2.,80.,samples)
 cy=cx[0]
+############### 1PPC
+print "**************************************************************"
+print "******************  1PPC discretization **********************"
+print "**************************************************************"
+print "=== Symmetric horizontal ==="
+Xp=np.array([-0.])
+Yp=np.array([0.])
+DCU=np.zeros(samples)
+CTU=np.zeros(samples)
+for i in range(samples):
+    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=gridSearch(residual)
+    DCU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=optimize.newton(residual,1.)
+    #solution=gridSearch(residual)
+    CTU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+plt.plot(cx/cy,DCU,'b')
+plt.plot(cx/cy,CTU,'r')
+plt.grid()
+plt.show()
 
 ############### 2PPC
 print "**************************************************************"

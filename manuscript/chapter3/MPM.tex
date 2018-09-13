@@ -74,7 +74,7 @@ in which $S_{ip}=S_i(\vect{x}^p)$ and $\tens{\bar{\sigma}}^p=\tens{\bar{\sigma}}
   \label{eq:mpm_semi-discrete}
   M_{ij} \vect{\dot{v}}^j = \vect{f}_{int}^i + \vect{f}_{ext}^i 
 \end{equation}
-where the definition of the mass matrix $M_{ij}$ and internal and external force vectors $\vect{f}_{int}^i $ and $\vect{f}_{ext}^i$ are:
+where the definition of the mass matrix $M_{ij}$ and internal and external forces vectors $\vect{f}_{int}^i $ and $\vect{f}_{ext}^i$ are:
 \begin{subequations}
   \begin{alignat}{1}
     & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{ip} S_{jp} \label{eq:mass_matrix}\\
@@ -130,7 +130,7 @@ The computation of constitutive equations is performed at material points within
 
 \subsubsection{Boundary conditions enforcement}
 
-Writing the weak form of linear momentum balance on the grid implies that Neumann boundary conditions are enforced on nodes through the external force vector \eqref{eq:ext_forces}. Next, since stress are computed at material points based the nodal velocity field, Dirichlet boundary conditions are also dealt with at nodes. For USL, it is done once the solution is updated on the grid so that stresses can be computed and material points kinematic can be updated. On the other hand, USF formulation  first requires applying Dirichlet boundary conditions to compute the stress, and then again after solving discrete equations for particles kinematic \cite{USF_USL}. Furthermore, the enforcement of boundary condition is still a challenging aspect of the material point method (as others mesh-free methods) for problems involving complex geometries, see for instance \cite{Bcs_MPM}.
+Writing the weak form of linear momentum balance on the grid implies that Neumann boundary conditions are enforced on nodes through the external forces vector \eqref{eq:ext_forces}. Next, since stress are computed at material points based the nodal velocity field, Dirichlet boundary conditions are also dealt with at nodes. For USL, it is done once the solution is updated on the grid so that stresses can be computed and material points kinematic can be updated. On the other hand, USF formulation  first requires applying Dirichlet boundary conditions to compute the stress, and then again after solving discrete equations for particles kinematic \cite{USF_USL}. Furthermore, the enforcement of boundary condition is still a challenging aspect of the material point method (as others mesh-free methods) for problems involving complex geometries, see for instance \cite{Bcs_MPM}.
 
 \subsubsection{Solution scheme summary}
 All the ingredients derived above are now summarized to write the procedure followed within the MPM for one time step. Position and velocity vectors $\vect{x}^n$ and $\vect{v}^n$ are supposed known at every material points that discretize the continuum body in a computational grid at time $t^n$. USL formulation further requires the knowledge of the specific stress tensor $\tens{\bar{\sigma}}^n$ at material points. The MPM solution scheme then consists of the following steps:
@@ -149,60 +149,95 @@ $\newline$
 
 Although the material point method presented above has been successfully applied to a wide range of complex engineering problems involving finite deformations \cite{Wieckowski}, this approach suffers from limitations which are discussed in the next section. 
 \subsection{Lagrangian formulation of the MPM}
-Despite the above Eulerian formulation of the MPM is widely used, an alternative method that solves a discrete system on a reference configuration and which derivation is briefly recalled here, has also been developed \cite{Love}.
-
-Though an Eulerian equation is solved, the fact of using moving material points to store and carry the fields confers the method a Lagrangian nature.
-\subsubsection*{Discrete equations}
-An approximate solution of the conservation of Lagrangian linear momentum is seeked within the time interval $\tau=\[0,T\]$, in a solid with volume $\Omega_0$ and boundary $\partial \Omega_0$ in the reference configuration. The body is subject to traction forces and prescribed velocity on its boundaries:
+Despite the above Eulerian formulation of the MPM is widely used, an alternative method that solves a discrete system on a reference configuration and which derivation is briefly recalled here, has been developed \cite{Love}.
+\subsubsection*{Discretized equations}
+An approximate solution of the balance equation of Lagrangian linear momentum is seeked within the time interval $\tau=\[0,T\]$, in a solid with volume $\Omega_0$ and boundary $\partial \Omega_0$ in the reference configuration. The body is subject to traction forces and prescribed velocity on its boundaries:
 \begin{align}
-  & \tens{\Pi}\cdot\vect{N}=\vect{T}_d \quad \text{on } \partial \Omega_0^\Pi\\
+  & \tens{\Pi}\cdot\vect{N}=\vect{T}_{d,0} \quad \text{on } \partial \Omega_0^\Pi\\
   & \vect{v} = \vect{\tilde{v}} \quad \text{on } \partial \Omega_0^v
 \end{align}
-where $\vect{N}$ is the outward normal vector to $\partial \Omega_0$ and the set of boundaries satisfies $\partial \Omega_0 =\partial \Omega^\Pi_0 \cap \partial \Omega^v_0$. Thus, the weak form of the balance equation of Lagrangian linear momentum \eqref{eq:Lagrangian_linear_momentum} is written in the reference configuration by means of the Galerkin approach. After integration by parts, one gets:
+where $\vect{N}$ is the outward normal vector to $\partial \Omega_0$ and the set of boundaries satisfies $\partial \Omega_0 =\partial \Omega^\Pi_0 \cap \partial \Omega^v_0$. Thus, the weak form of equation \eqref{eq:Lagrangian_linear_momentum} is written by means of the Galerkin method. After integration by parts, one gets:
 \begin{equation}
   \label{eq:lagrangian_momentum_weak_form}
   \begin{aligned}
     &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
     &\int_{\Omega_0}  \rho_0  \vect{\dot{v}} \cdot \vect{w}\: dv + \int_{\Omega_0}\tens{\Pi}: 
-    \nablat_0 \vect{w} \:dv - \int_{\partial \Omega^\Pi_0} \vect{T}_d\cdot\vect{w}\: ds= \int_{\Omega_0} \rho_0 \vect{b}\cdot \vect{w} \: dv  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
+    \nablat_0 \vect{w} \:dv - \int_{\partial \Omega^\Pi_0} \vect{T}_{d,0}\cdot\vect{w}\: ds= \int_{\Omega_0} \rho_0 \vect{b}\cdot \vect{w} \: dv  \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
   \end{aligned}
 \end{equation}
-Representing the solid in the reference configuration with a collection of $N_p$ material points that can move in an arbitrary grid.
-Similarly to the Eulerian formulation, the reference mass density is defined based on the masses carried by the particles and the delta Dirac distribution: $\rho_0(\vect{X})=\sum_{p=1}^{N_p}m_p \delta\(\vect{X}^p-\vect{X}\)$. Thus, the specific PK1 stress tensor $\rho_0\tens{\bar{\Pi}}=\tens{\Pi}$ is introduced so that volume integrals of the weak are evaluated by treating particles as quadrature points:
+The solid is represented in the reference configuration with a collection of $N_p$ material points whose masses, combined to the delta Dirac distribution, define the reference mass density: $\rho_0(\vect{X})=\sum_{p=1}^{N_p}m_p \delta\(\vect{X}^p-\vect{X}\)$.
+% The solid is represented in the reference configuration with a collection of $N_p$ material points that can move in an arbitrary grid.
+% Similarly to the Eulerian formulation, the reference mass density is defined based on the masses carried by the particles and the delta Dirac distribution: $\rho_0(\vect{X})=\sum_{p=1}^{N_p}m_p \delta\(\vect{X}^p-\vect{X}\)$.
+Thus, the specific PK1 stress tensor $\rho_0\tens{\bar{\Pi}}=\tens{\Pi}$ is introduced so that every volume integrals of the weak are evaluated by treating particles as quadrature points:
 \begin{equation}
   \label{eq:discrete_lagrangian_momentum_weak_form}
   \begin{aligned}
     &\text{Find $\vect{v}\in \Vscr_h^1$ such that} \\
     & \sum_{p=1}^{N_p}  m_p\( \vect{\dot{v}}^p \cdot \vect{w}^p + \tens{\bar{\Pi}}^p:
-    \nablat_0 \vect{w}^p \) - \int_{\partial \Omega^\Pi_0} \vect{T}_d\cdot\vect{w}\: ds= \sum_{p=1}^{N_p} m_p \vect{b}^p\cdot \vect{w}^p   \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
+    \nablat_0 \vect{w}^p \) - \int_{\partial \Omega^\Pi_0} \vect{T}_{d,0}\cdot\vect{w}\: ds= \sum_{p=1}^{N_p} m_p \vect{b}^p\cdot \vect{w}^p   \qquad \forall \: \vect{w} \in \Vscr_{h,0}^1, \forall\: t \in \tau
   \end{aligned}
 \end{equation}
-%Note that in equation \eqref{eq:discrete_lagrangian_momentum_weak_form}, the superscipt $p$ denotes a field evaluated at the $p$th material point position in the reference configuration.
-At last, shape functions defined at nodes of the grid, combined with the arbitrariness of the test field $\vect{w}$, lead to the semi-discrete form:
+Next, shape functions defined at nodes of a background grid and arbitrariness of the test field $\vect{w}$ lead to the semi-discrete form:
 \begin{equation}
   \label{eq:lagrangian_mpm_semi-discrete}
   M_{ij} \vect{\dot{v}}^j = \vect{f}_{int}^i + \vect{f}_{ext}^i 
 \end{equation}
-with the following definitions of the mass matrix and internal and external force vectors:
+Since the particles are considered as integration points, the diagonally lumped mass matrix is used in order to circumvent an eventual singularity. Hence, the mass matrix and forces vectors involved in the semi-discrete \eqref{eq:lagrangian_mpm_semi-discrete} equation read:
 \begin{subequations}
   \begin{alignat}{1}
-    & M_{ij}= \sum_{p=1}^{N_p} m_p  S_{ip} S_{jp}\\
+    \label{eq:lag_mass}
+    & M^L_{i}= \sum_{p=1}^{N_p} m_p  S_{ip}\\
+    \label{eq:lag_fint}
     & \vect{f}_{int}^i = - \sum_{p=1}^{N_p} m_p \nablav_0 S_{ip} \cdot \tens{\bar{\Pi}}^p\\
-    & \vect{f}_{ext}^i =\sum_{p=1}^{N_p}m_p S_{ip}\vect{b}^p  + \int_{\partial \Omega^\sigma_t} S_i(\vect{x})\vect{T}_d\: ds 
+    \label{eq:lag_fext}
+    & \vect{f}_{ext}^i =\sum_{p=1}^{N_p}m_p S_{ip}\vect{b}^p  + \int_{\partial \Omega^\Pi_0} S_i(\vect{x})\vect{T}_{d,0}\: ds 
   \end{alignat}
 \end{subequations}
 
-\begin{remark}
-  The description of the reference mass density used yields a discrete weak form \eqref{eq:discrete_lagrangian_momentum_weak_form} in which fields are evaluated at the positions of material points \textbf{in the reference configuration}, namely for instance: $\vect{v}^p=\vect{v}(\vect{X}^p)$. As a consequence, the shape functions and the gradient of shape functions are also evaluated in the reference configuration.
-\end{remark}
+%Note that the description of the reference mass density used yields a weak form \eqref{eq:discrete_lagrangian_momentum_weak_form} involving fields in the reference configuration, so that the shape functions, their gradient and hence, the mass matrix and forces vector, are also evaluated in this configuration.
+At last, the explicit time discretization of system \eqref{eq:lagrangian_mpm_semi-discrete} yields the discrete system that is solved at nodes to advance the solution from time increment $t^n$ to $t^{n+1}$:
+\begin{equation}
+  \label{eq:lagrangian_mpm_discrete}
+  M^L_i \frac{\vect{v}^{j,n+1} - \vect{v}^{j,n}}{\Delta t^n} =\vect{f}_{int}^i + \vect{f}_{ext}^i 
+\end{equation}
 
+% Garder la généralité du Lagrangien jusqu'à la fin du solution scheme ?
 \subsubsection*{Solution scheme}
-Actualisation du gradient de la tranformation et de la fonction transformation. Résoudre sur la configuration précédente et non nécessairement de référence.
-\subsection{Shortcomings of the MPM}
+Suppose that position and velocity vectors, as well as specific PK1 tensor, are stored at material points at time $t^n$ in the volume $\Omega_n$, that is: $\vect{x}^{p,n}$, $\vect{v}^{p,n}$ and $\tens{\bar{\Pi}}^{p,n}$ are known $\: \forall p=1,...,N_p$.
+One first has to compute the mass matrix \eqref{eq:lag_mass} in the reference configuration which may be defined, as proposed in \cite{Love}, as the \textbf{the last computed} one, that is $\Omega_0\equiv \Omega_{n}$. This \textit{updated Lagrangian} formulation of the MPM bases the computation of the mass matrix on the shape functions evaluated at particle positions $\vect{x}^{p,n}$.
+Alternatively, the reference configuration may be kept constant during simulations so that the mass matrix is computed once and for all. It is however worth noticing that such a \textit{total Lagrangian} formulation of the MPM is, to our knowledge, not met in the litterature.
 
+Next, analogously to the Eulerian formulation of the MPM, the mapping of the velocity from particles to nodes aims at ensuring the conservation of Lagrangian linear momentum by solving the following system for the nodal velocities:
+\begin{equation*}
+  M^{L}_i \vect{v}^{i,n} = \sum_{p=1}^{N_p} S_{ip}m_p \vect{v}^{p,n}
+\end{equation*}
+
+Once internal as well as external forces are built from equations \eqref{eq:lag_fint} and \eqref{eq:lag_fext} respectively, acceleration and velocity are computed on the grid by successively solving systems \eqref{eq:lagrangian_mpm_semi-discrete} and \eqref{eq:lagrangian_mpm_discrete}. Than, according to FLIP mapping \eqref{eq:mp_velocity_update}, these fields areare used to update the material points kinematics (\textit{i.e.} $\vect{v}^{p,n+1}$ and $\vect{x}^{p,n+1}$).
+Moreover, the gradient of shape functions provide the deformation gradient, based on the following explicit time discretization:
+\begin{equation}
+  \label{eq:total_def_grad}
+  \frac{\tens{F}^{p,n+1}-\tens{F}^{p,n}}{\Delta t}= \nablat_0 \vect{v}^{p,n+1} 
+\end{equation}
+The above equation yields directly the updated deformation gradient for the total Lagrangian formulation. On the other hand, the use of the velocity gradient tensor is made in the updated Lagangian formulation, which is approximated as:
+\begin{equation}
+  \nablat_n \vect{v} \approx \sum_{p=1}^{N_p}\nabla S_{ip}(\vect{x}^{p,n}) \vect{v}^{i,n}
+\end{equation}
+where $\nabla_n \(\bullet\) = \left.\drond{\vect{v}}{\vect{x}}\right|_{\vect{x}=\vect{\phi}(\vect{X},t^n)}$ denotes the gradient operator in the configuration $\Omega_n$.
+The chain rule then allows to identify this tensor in the right-hand side of equation \eqref{eq:total_def_grad}:
+\begin{equation}
+  \nablat_0 \vect{v}^{p,n+1} =\nablat_n \vect{v}^{p,n+1} \cdot \drond{\phi(\vect{X},t^n)}{\vect{X}} =\nablat_n \vect{v}^{p,n+1} \cdot \tens{F}^{p,n}
+\end{equation}
+so that the deformation gradient is updating in the updated Lagrangian formulation according to:
+\begin{equation}
+  \label{eq:updated_def_grad}
+  \frac{\tens{F}^{p,n+1}-\tens{F}^{p,n}}{\Delta t}= \nablat_n \vect{v}^{p,n+1} \cdot \tens{F}^{p,n}
+\end{equation}
+Finally, constitutive equations can be dealt with at the particles level. Note that the choice between USL and USF algorithms for the integration of constitutive equations also arises with Lagrangian formulations developed above.
+
+\subsection{Shortcomings of the MPM}
 \subsubsection*{The grid-crossing instability}
-The research on MPM mainly focused so far on the instability arising from the computation of internal forces when material points move from one cell to another, the so-called \textit{grid-crossing} error \cite{Gimp}. In that case, the discontinuity of the gradient of shape functions across element interfaces yields tremendous noise in the numerical solution. The \textbf{Generalized Interpolation Material Point Method} (GIMP) addressed this issue by modifying the particles characteristic function, thus widening the domain of influence of material points \cite{Gimp}. By doing so, every particles are given a domain having a constant shape or not, that must be tracked during the computation, leading respectively to the uniform GIMP (uGIMP) or contiguous particle GIMP (cpGIMP) formulations \cite{Book_MPM}. In the cpGIMP algorithm, diagonal entries of the deformation gradient are used to update the "shapes" of particles. The \textbf{Convected Particle Domain Interpolation} (CPDI) \cite{CPDI}, on the other hand, accounts for shear deformations and rotations of particles domains, thus providing an improvement of GIMP. However, those methods involve other difficulties related to the tracking of the deforming domains of material points in the Eulerian grid, and may also suffer from mesh entanglement \cite{DDMPM0}. Other approaches consisting in the direct modification of the approximation basis have then been followed to tackle the grid-crossing error. First, the \textbf{B-Spline Material Point Method} (BSMPM) \cite{Steffen_quadError} uses quadratic or cubic B-Spline functions with continuous gradients as nodal shape functions allowing to circumvent the instability \cite{MPM_BSpline1}. % (which can be seen as an IsoGeometric Analysis IGA \cite{IGA_Hughes} for immersed boundary problems, notion of unification ? c'est plus pour du fluide structure cette terminologie)
-Second, the classical approximation basis is used and modified gradients with extended supports are introduced in the \textbf{Dual Domain Material Point Method} (DDMPM) \cite{DDMPM0}. BSMPM and DDMPM  both solve the grid-crossing error by widening the domain of influence of material points since B-Spline functions span more cells than Lagrange polynomials, and the support of the modified gradient of DDMPM is larger than that of the shape functions.  
+The research on MPM mainly focused so far on the instability arising from the computation of internal forces when material points move from one cell to another, the so-called \textit{grid-crossing} error \cite{Gimp}. For both Eulerian and updated Lagrangian formulations, the discontinuity of the gradient of shape functions across element interfaces yields tremendous noise in the numerical solution. The \textbf{Generalized Interpolation Material Point Method} (GIMP) addressed this issue by modifying the particles characteristic function, thus widening the domain of influence of material points \cite{Gimp}. By doing so, every particles are given a domain having a constant shape or not, that must be tracked during the computation, leading respectively to the uniform GIMP (uGIMP) or contiguous particle GIMP (cpGIMP) formulations \cite{Book_MPM}. In the cpGIMP algorithm, diagonal entries of the deformation gradient are used to update the "shapes" of particles. The \textbf{Convected Particle Domain Interpolation} (CPDI) \cite{CPDI}, on the other hand, accounts for shear deformations and rotations of particles domains, thus providing an improvement of GIMP. However, those methods involve other difficulties related to the tracking of the deforming domains of material points in the Eulerian grid, and may also suffer from mesh entanglement \cite{DDMPM0}. Other approaches consisting in the direct modification of the approximation basis have then been followed to tackle the grid-crossing error. First, the \textbf{B-Spline Material Point Method} (BSMPM) \cite{Steffen_quadError} uses quadratic or cubic B-Spline functions with continuous gradients as nodal shape functions allowing to circumvent the instability \cite{MPM_BSpline1}. % (which can be seen as an IsoGeometric Analysis IGA \cite{IGA_Hughes} for immersed boundary problems, notion of unification ? c'est plus pour du fluide structure cette terminologie)
+Second, the classical approximation basis is used and modified gradients with extended supports are introduced in the \textbf{Dual Domain Material Point Method} (DDMPM) \cite{DDMPM0}. BSMPM and DDMPM  both solve the grid-crossing error by widening the domain of influence of material points since B-Spline functions span more cells than Lagrange polynomials, and the support of the modified gradient of DDMPM is larger than that of the shape functions.  \thomas{However, the fact that this numerical issue can be circumvented by solving equations in the reference configuration in a total Lagrangian fashion, must be emphasized.} 
 
 \subsubsection*{The back-mapping instability}
 Numerical oscillations appear in the MPM solution even for problems that do not involve the grid-crossing instability, that is due to the updating of the velocity field at material points \cite{Mass_Flip}. As an illustration, consider a one-dimensional elastic bar of length $L=6\:m$ with Young's modulus $E=200 \:GPa$ and mass density $\rho=7800 \:kg\cdot m^{-3}$ within the infinitesimal theory. The bar is initially in a free stress state and Riemann-type initial velocities are prescribed along the bar, that is: $v=v_0>0$ for $x\in[0,L/2[$ and $v=-v_0$ for $x \in ]L/2,L]$.

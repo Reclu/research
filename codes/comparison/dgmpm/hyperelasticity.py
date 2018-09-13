@@ -69,15 +69,13 @@ if t_order==1:
 elif t_order==2:
     CFL=1.
 
-CFL=cfl.computeCourantNumber(mesh,parent,Map,t_order)
+CFL,t_order=cfl.computeCourantNumber(mesh,parent,Map,t_order)
         
 # Time discretization
 dt=CFL*dx/c0 
 tfinal=timeOut
 tf=timeUnload;
 NTMaxi=20*int(tfinal/dt)
-#t_order= 1
-updated_lagrangian=True
 # limit = 0 : minmod // limit = 1 : superbee // limit = 2 : MUSCL
 limit=-1 
 
@@ -112,7 +110,6 @@ time=np.zeros(int(NTMaxi))
 velo[:,0]= np.copy(U[:,1])
 pos[:,0]=np.copy(xp[:,0])
 time[0]=T
-
 
 
 
@@ -161,7 +158,7 @@ def UpdateStateRK2(dt,dofs,Ml,u,w,md,sd):
     u12[0,0]=np.copy(u12[1,0])
     u12[-2,0] = np.copy(u12[-1,0])
     
-    w12[1:-1,0] =computePK1(Tangent,rho0,u12[1:-1,0]*rho0)
+    w12[1:-1,0] =computePK1(Tangent,u12[1:-1,0]*rho0)
     w12[:,1] = np.copy(u12[:,1])
     w12[0,0]=2.*sd - w12[1,0]
     w12[0,1]=np.copy(w12[1,1])
@@ -180,7 +177,7 @@ def computeTimeStep(rho,Tangent,J,dx,CFL):
     dt = CFL*dx/c
     return dt
 
-def computePK1(Tangent,rho0,F):
+def computePK1(Tangent,F):
     pi = Tangent*F*(F**2-1.)/2.
     return pi
 
@@ -190,11 +187,9 @@ def computeCelerity(Tangent,rho0,F):
         cel[i]=np.sqrt(Tangent*(3.*F[i]**2-1.)/(2.*rho0))
     return cel
 
-pi0 = computePK1(Tangent,rho0,U[:,0]*rho0)
 
-u0=computePK1(Tangent,rho0,np.ones(Nn))
-
-
+density=1./U[:,0]
+    
 for n in range(NTMaxi)[1:]:    
     
     # Mapping from material points to nodes
@@ -215,12 +210,18 @@ for n in range(NTMaxi)[1:]:
     u[2*parent[-1]+3,0] = np.copy(u[2*parent[-1]+2,0])
     w[2*parent[-1]+3,0] = -np.copy(w[2*parent[-1]+2,0])
     w[2*parent[-1]+3,1] = np.copy(w[2*parent[-1]+2,1])
-    
 
+    mesh.updateMassDensity(u[:,0])
     
-    Jmax=np.max(u[:,0]*rho0)
-    dt=computeTimeStep(rho0,Tangent,Jmax,dx,CFL)
-
+    Jmax=np.max(u[2*parent[0]:,0]*mesh.rho0[2*parent[0]:])
+    nodeMax=np.where(u[2*parent[0]:,0]*mesh.rho0[2*parent[0]:]==Jmax)[0]
+    if len(nodeMax)>1:
+        nodeMax=nodeMax[0]
+    else :
+        pdb.set_trace()
+        print Jmax,u[:,0]*mesh.rho0
+    dt=computeTimeStep(mesh.rho0[nodeMax],Tangent,Jmax,dx,CFL)
+    
     if ((time[n-1]+dt)>tfinal):
         dt = tfinal - time[n-1]
     time[n]=time[n-1]+dt
@@ -230,8 +231,6 @@ for n in range(NTMaxi)[1:]:
     elif t_order==2 :
         u=UpdateStateRK2(dt,Dofs,md,u,w,mass_vector0,sd)
     
-    u0=computePK1(Tangent,rho0,u[:,0]*rho0)
-    
     # Mapping back to the material points
     U=np.dot(Map[Dofs,:].T,u[Dofs,:])
     
@@ -239,17 +238,24 @@ for n in range(NTMaxi)[1:]:
     
     if updated_lagrangian :
         # Compute new mapping (convective phase)
+        prevParent=parent
         Map,Grad,Dofs,parent=mesh.buildApproximation(np.asmatrix(xp))
+        if (prevParent!=parent).any():
+            print "********************************"
+            print "*    GRID CROSSING OCCURING    *"
+            print "********************************"
+            print parent
         K=np.dot(np.dot(Grad[Dofs,:],Md),Map[Dofs,:].T)
         mesh.setMapping(K)
         mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
         md=np.diag(np.sum(mg,axis=1))
         mass_vector = np.dot(np.dot(Map,Md),Map.T)
         mass_vector = np.sum(mass_vector,axis=1)
-        CFL=0.1#cfl.computeCourantNumber(mesh,parent,Map,t_order)
+        CFL,t_order=(0.3,1)#cfl.computeCourantNumber(mesh,parent,Map)
     #print t_order
     u= np.zeros((Nn,2))
-    W[:,0] = computePK1(Tangent,rho0,U[:,0]*rho0)
+    
+    W[:,0] = computePK1(Tangent,U[:,0]*density)
     W[:,1] = np.copy(U[:,1])
     
     #print 'Increment =', n, 't = ', time[n],' s.'
@@ -259,10 +265,17 @@ for n in range(NTMaxi)[1:]:
     
     for i in range(Mp):
         Pi_th[i,n],V_th[i,n]= analytic.computeSolution(time[n],pos[i,0],qL,qR,q_star,Tangent,rho0)
+
+    if (U[:,0]*density<=np.sqrt(1./3.)).any():
+        print "HYPERBOLIC LIMIT OF SVK MODEL REACHED"
+        increments=n
+        break
+    density=1./U[:,0]
     
     if (time[n]==tfinal):
         increments=n
         break
+
     # plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+')
     # plt.plot(pos[:,n],xp[:,1],'ro')
     # plt.grid()
@@ -270,12 +283,15 @@ for n in range(NTMaxi)[1:]:
 
 x=mesh.xn
 time=time[0:increments]
-"""
+
 #Sigma
 fig = plt.figure()
 plt.grid()
 ax = plt.axes(xlim=(0.,L), ylim=(1.1*np.min(Pi),1.1*np.max(Pi)))
 ax.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+', lw='2.', ms='8.')
+for i in range(mesh.nInterfaces):
+    ax.plot(np.array([mesh.xn[i],mesh.xn[i]]),np.array([np.min(Pi),np.max(Pi)]),'k--')
+
 lineList = []
 line1, = ax.plot([], [],'r+', lw='2.', ms='8.',label='DG_MPM')
 lineList.append(line1)
@@ -306,9 +322,9 @@ def animate(i):
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=increments, interval=20, blit=True)
+                               frames=increments, interval=200, blit=True)
 #Animation of the stress
 plt.grid()
 #anim.save('StressBar.mp4', extra_args=['-vcodec', 'libx264'])
 plt.show()
-"""
+

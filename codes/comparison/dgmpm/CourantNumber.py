@@ -3,9 +3,11 @@ import numpy as np
 import scipy.optimize as optimize
 import pdb
 
-def computeCourantNumber(mesh,parent,Map,t_order):
+
+def computeCourantNumber(mesh,parent,Map,t_order=0):
     print "Computing Courant number ..."
-    sol=[]
+    solEuler=[]
+    solRK2=[]
     # Symbolic function to evaluate shape functions
     # sum over mesh cells to compute the lowest Courant number by solving the minimum amplification factor equation
     ###############################"Residual = residualEuler(0,shapes,shapes)
@@ -30,14 +32,42 @@ def computeCourantNumber(mesh,parent,Map,t_order):
         S1M = Map[n1,matpointN] ; S2M = Map[n2,matpointN]
         if t_order==1:
             residual=residualEuler(point,[S1,S2],[S1M,S2M])
+            solution=optimize.root(residual,1.,method='hybr',options={'xtol':1.e-4}).x[0]
+            solEuler.append(solution)
         elif t_order==2:
             residual=residualRK2(point,[S1,S2],[S1M,S2M])
-        solution=optimize.newton(residual,1.)
-        sol.append(solution)
-    solution_CFL=np.min(sol)
-    print "Courant number set to :",solution_CFL
-    return solution_CFL
-
+            solution=optimize.root(residual,1.,method='hybr',options={'xtol':1.e-4}).x[0]
+            solRK2.append(solution)
+        elif t_order==0:
+            res_Euler=residualEuler(point,[S1,S2],[S1M,S2M])
+            res_RK2=residualRK2(point,[S1,S2],[S1M,S2M])
+            sol_Euler=optimize.root(res_Euler,1.,method='hybr',options={'xtol':1.e-4}).x[0]
+            sol_RK2=optimize.root(res_RK2,1.,method='hybr',options={'xtol':1.e-4}).x[0]
+            solRK2.append(sol_RK2)
+            solEuler.append(sol_Euler)
+        #solution=optimize.newton(residual,1.)
+        # solution=optimize.root(residual,1.,method='hybr',options={'xtol':1.e-4}).x[0]
+        # sol.append(solution)
+    if t_order==1:
+        solution_CFL=np.min(solEuler)
+        print "Courant number set to (Euler algorithm):",solution_CFL
+        return solution_CFL,1
+    elif t_order==2:
+        solution_CFL=np.min(solRK2)
+        print "Courant number set to (RK2 algorithm):",solution_CFL
+        return solution_CFL,2
+    elif t_order==0:
+        solution_Euler=np.min(solEuler)
+        solution_RK2=np.min(solRK2)
+        if solution_Euler>=solution_RK2:
+            solution_CFL=solution_Euler
+            print "Courant number set to (Euler algorithm):",solution_CFL
+            return np.min(solEuler),1
+        else:
+            solution_CFL=solution_RK2
+            print "Courant number set to (RK2 algorithm):",solution_CFL
+            return np.min(solRK2),2
+    
 def residualRK2(point,S,Sp):
     CFL = symbols('CFL')
     Res=0.

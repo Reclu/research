@@ -12,9 +12,18 @@ class DGmesh:
         self.dx = ppc*l/nex
         self.xn = np.linspace(-lmp/2,l+lmp/2,nex+1)
         self.connect = np.array([np.arange(1,nnx-1,2),np.arange(2,nnx,2)]).T
-        self.rho0 = rho0
+        self.nInterfaces = np.shape(self.connect)[0]+1
+        self.rho0 = rho0*np.ones(2*self.nInterfaces)
+        self.referenceMassDensity=self.rho0
         self.E = E
         self.exact = exact
+
+    def updateMassDensity(self,us):
+        for i in range(len(us)):
+            if us[i]!=0.:
+                self.rho0[i]=1./us[i]
+            else:
+                self.rho0[i]=0.
         
     def buildApproximation(self,xp):
         xn =self.xn
@@ -63,25 +72,27 @@ class DGmesh:
         f = self.computeTotalForces(fint,fluxes)
         return f
 
-    def computeDelta(self,dU,cL,cR):
-        delta1 = (self.rho0*cR*dU[1]+dU[0])/(self.rho0*(cL+cR))
-        delta2 = (self.rho0*cL*dU[1]-dU[0])/(self.rho0*(cL+cR))
+    def computeDelta(self,dU,rhoL,rhoR,cL,cR):
+        delta1 = (rhoR*cR*dU[1]+dU[0])/(rhoL*cL+rhoR*cR)
+        delta2 = (rhoL*cL*dU[1]-dU[0])/(rhoL*cL+rhoR*cR)
         return [delta1,delta2]
 
-    def computeElasticWaves(self,delta,cL,cR):
+    def computeElasticWaves(self,delta,rhoL,rhoR,cL,cR):
         waves = np.zeros((2,2))
-        waves[:,0] = delta[0]*np.array([self.rho0*cL,1.])
-        waves[:,1] = delta[1]*np.array([-self.rho0*cR,1.])
+        waves[:,0] = delta[0]*np.array([rhoL*cL,1.])
+        waves[:,1] = delta[1]*np.array([-rhoR*cR,1.])
         return waves
 
-    def approximateRiemannSolver(self,WL,WR,JL,JR):
+    def approximateRiemannSolver(self,rhoL,rhoR,WL,WR,JL,JR):
         HL = self.E*(-1.+ 3.*JL*JL)/2.
         HR = self.E*(-1.+ 3.*JR*JR)/2.
-        cL = np.sqrt(HL/self.rho0)
-        cR = np.sqrt(HR/self.rho0)
+        if JL<=np.sqrt(1./3.) or JR<=np.sqrt(1./3.): 
+            print HL,HR
+        cL = np.sqrt(HL/rhoL)
+        cR = np.sqrt(HR/rhoR)
         dW = WR-WL
-        alpha = self.computeDelta(dW,cL,cR)
-        waves = self.computeElasticWaves(alpha,cL,cR)
+        alpha = self.computeDelta(dW,rhoL,rhoR,cL,cR)
+        waves = self.computeElasticWaves(alpha,rhoL,rhoR,cL,cR)
         Wstar = WL + waves[:,0]
         return Wstar
     
@@ -94,9 +105,11 @@ class DGmesh:
             # Take original quantity vector and not specific one
             WL = W[2*i,:]
             WR = W[2*i+1,:]
-            JL = U[2*i,0]*self.rho0
-            JR = U[2*i+1,0]*self.rho0
-            Pi,v = self.approximateRiemannSolver(WL,WR,JL,JR)
+            JL = U[2*i,0]*self.rho0[2*i]
+            JR = U[2*i+1,0]*self.rho0[2*i+1]
+            if U[2*i,0]==0. or U[2*i+1,0]==0.:
+                continue
+            Pi,v = self.approximateRiemannSolver(self.rho0[2*i],self.rho0[2*i+1],WL,WR,JL,JR)
             fluxes[2*i,:] = np.array([-v,-Pi])
             fluxes[2*i+1,:] = np.array([-v,-Pi])
         return fluxes
@@ -116,9 +129,11 @@ class DGmesh:
         Nnodes = np.shape(U)[0]
         flux = np.zeros((Nnodes,2))
         for i in range(Nnodes):
-            vs=U[i,1]/self.rho0
-            J=U[i,0]*self.rho0
-            flux[i,:] = np.array([-vs,-self.E*J*(J*J -1.)/(2.*self.rho0)])
+            if self.rho0[i]==0.:
+                continue
+            vs=U[i,1]/self.rho0[i]
+            J=U[i,0]*self.rho0[i]
+            flux[i,:] = np.array([-vs,-self.E*J*(J*J -1.)/(2.*self.rho0[i])])
         return flux
 
     def computeInternalForces(self,U,dofs):

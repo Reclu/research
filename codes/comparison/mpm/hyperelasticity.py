@@ -183,22 +183,17 @@ for n in range(NTMaxi)[1:]:
         Sig[i]=C*(Def[i,n]**3 -Def[i,n])/(2.*rho) 
         
     
-    # if s0==0.:
-    #     Sig[0]=0.
-    #     Sig[-1]=0.
     
     # Lagrangian step
     A=np.dot(Map[Dofs,:].T,a[Dofs])
     V+=Dt*np.dot(Map[Dofs,:].T,a[Dofs])
     
     xp[:,0]+=np.dot(Map[Dofs,:].T,v[Dofs])*Dt
-    
-    # Compute new mapping (convective phase)
-    Map,Grad,Dofs,parent=buildApproximation1D(np.asmatrix(xp),xn,connect)
-
-
-    mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
-    md=np.diag(np.sum(mg,axis=1))
+    if updated_lagrangian:
+        # Compute new mapping (convective phase)
+        Map,Grad,Dofs,parent=buildApproximation1D(np.asmatrix(xp),xn,connect)
+        mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
+        md=np.diag(np.sum(mg,axis=1))
     
     a=np.zeros(Nn)
     v=np.zeros(Nn)
