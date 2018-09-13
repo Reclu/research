@@ -135,13 +135,13 @@ else:
     if t_order==2:
         CFL=1.
     else:
-        CFL=float(t_order)/float(ppc)
-
+        if ppc==1: CFL=1.
+        elif ppc==2: CFL=0.5
+        elif ppc==3: CFL=0.5
 Dt=CFL*dx/c 
 tfinal=timeOut
 tf=timeUnload
 inc=round(tfinal/Dt)
-
 limit=False
 
 T=0.

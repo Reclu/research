@@ -72,7 +72,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     marker=['none','none','+','x','none','none','star','pentagone*']
     style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
     thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
-    couleur=['Red','Blue','Orange','Purple','black','Orange','Green','Duck','Green']
+    couleur=['Red','Orange','Blue','Green','Purple','black','Orange','Duck','Green']
     maxim=[]
     minim=[]
     maximum=np.zeros(row)
@@ -146,8 +146,8 @@ def export2pgfPlot(fileName,xfield,yfield,xlabel,ylabel):
 CFL=0.5
 NTmaxi = 300
 length = 6.0
-ppc=2
-Nelem = 10
+ppc=1
+Nelem = 100
 E = 2.0e11
 Sigy = 400.0e6
 rho = 7800.0
@@ -159,16 +159,16 @@ c=np.sqrt(C/rho)
 
 factor=1.
 timeOut = 1.*length/c
-t_order=2
+t_order=1
 timeUnload = 2*timeOut
-sigd = -50.*Sigy
+sigd = -20.*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
-update_position=False
+updated_lagrangian=False
 mpm_mapping=True
 limit=-1
 
-parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C, "rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C, "rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"updated_lagrangian":updated_lagrangian,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
 #################
 
 
@@ -183,29 +183,32 @@ DGMPM = dict(parameters)
 print 'Computing  DGMPM'
 execfile('dgmpm/hyperelasticity.py', DGMPM)
 
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C ,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"updated_lagrangian":True,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+
+##MPM: Material Point Method
+MPM2 = dict(parameters)
+print 'Computing MPM'
+execfile('mpm/hyperelasticity.py', MPM2)
+
 # for i,t in enumerate(DGMPM["time"]):
 #     print i,t
-# ppc=2
-# #Nelem = 50/ppc
-# parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C ,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+ppc=2
+#Nelem = 50/ppc
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C ,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"updated_lagrangian":updated_lagrangian,"v0":v0,"factor":factor,"algo":algo,"t_order":t_order,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
 
 
-# print "=============== 2PPC COMPUTATIONS ===================="
+print "=============== 2PPC COMPUTATIONS ===================="
 
-# ##MPM: Material Point Method
-# MPM2 = dict(parameters)
-# print 'Computing MPM'
-# #execfile('mpm/hyperelasticity.py', MPM2)
 
-# ##DGMPM: Discontinous Galerkin Material Point Method
-# DGMPM2 = dict(parameters)
-# print 'Computing DGMPM'
-# execfile('dgmpm/hyperelasticity.py', DGMPM2)
+##DGMPM: Discontinous Galerkin Material Point Method
+DGMPM2 = dict(parameters)
+print 'Computing DGMPM'
+execfile('dgmpm/hyperelasticity.py', DGMPM2)
 
-# parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C ,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"update_position":update_position,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
-# ##DGMPM: Discontinous Galerkin Material Point Method
-# DGMPM3 = dict(parameters)
-# execfile('dgmpm/hyperelasticity.py', DGMPM3)
+parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,"Young":E,"Sigy":Sigy,"C":C ,"rho":rho,"sigd":sigd,"timeOut":timeOut,"timeUnload":timeUnload,"updated_lagrangian":updated_lagrangian,"v0":v0,"factor":factor,"algo":algo,"t_order":2,"limit":limit,"mpm_mapping":mpm_mapping,"compute_CFL":False}
+##DGMPM: Discontinous Galerkin Material Point Method
+DGMPM3 = dict(parameters)
+execfile('dgmpm/hyperelasticity.py', DGMPM3)
 
 
 #############################################################################
@@ -222,75 +225,67 @@ rcParams['legend.fontsize'] = 16
 
 frames=[]
 frmpm=[]
-fr2ppc=[]
+frUL=[]
 
 pdb.set_trace()
 for i in MPM["time"]:
     for j in DGMPM["time"]:
-        if abs(i-j)<5.e-7:
-            ndg = np.where(DGMPM["time"]==j)[0][0]
-            nmpm = np.where(MPM["time"]==i)[0][0]
+        for k in MPM2["time"]:
+            if abs(i-j)<1.e-4 and abs(i-k)<1.e-4:
+                ndg = np.where(DGMPM["time"]==j)[0][0]
+                nmpm = np.where(MPM["time"]==i)[0][0]
+                nUL = np.where(MPM2["time"]==k)[0][0]
             
-            tdg = '%.2e' % j ; tmpm = '%.2e' % i
-            print "dgmpm increment ",ndg
-            print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
-            print "mpm time: ",tmpm," ; dgmpm time:",tdg
-            frames.append(ndg)
-            frmpm.append(nmpm)
-start=len(frames)-5
-#frames=frames[-4,-1]
-#frmpm=frmpm[-4,-1]
-pdb.set_trace()
-# frames=[5,20]
-# frames=[]
-# frames=[20,30,45]
+                tdg = '%.2e' % j ; tmpm = '%.2e' % i
+                print "dgmpm increment ",ndg
+                print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
+                print "mpm time: ",tmpm," ; dgmpm time:",tdg
+                frames.append(ndg)
+                frmpm.append(nmpm)
+                frUL.append(nUL)
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
 
-# if sigd>0.:
-#     if sigd==5.*Sigy:
-#         frames=[43,89]
-#         frmpm=[85,176]
-#         #frmpm=[2*85,2*176]
-#         load=5
-#     elif sigd==50.*Sigy:
-#         frames=[44,88]
-#         frmpm=[80,160]
-#         #frmpm=[160,320]
-#         load=50
-#     start=0
+if sigd>0.:
+    if sigd==5.*Sigy:
+        frames=[43,89]
+        frmpm=[85,176]
+        #frmpm=[2*85,2*176]
+        load=5
+    elif sigd==50.*Sigy:
+        frames=[44,88]
+        frmpm=[80,160]
+        #frmpm=[160,320]
+        load=50
+pdb.set_trace()
+start=0
 titles=[]
 for i,n1 in enumerate(frames[start:]):
     time = '%.2e' % DGMPM["time"][n1]
     mpm=frmpm[start+i]
     print n1,mpm," time t=",time
     fig, (ax1,ax2) = plt.subplots(1,2)
-    ax1.plot(MPM["pos"][:,mpm],MPM["Pi"][:,mpm],'b-x',lw=2.,ms=8.,label='MPM')
-    ax1.plot(DGMPM["pos"][:,n1],DGMPM["Pi"][:,n1],'g-o',lw=2.,ms=8.,label='DGMPM')
-    # ax1.plot(DGMPM3["pos"][:,n1],DGMPM3["Pi"][:,n1],'r-',lw=2.,ms=8.,label='DGMPM RK2')
-    # ax1.plot(DGMPM["pos"][:,n1],DGMPM["Pi_th"][:,n1],'k',lw=2.,ms=8.,label='exact')
-    # ax1.plot(MPM2["pos"][:,frmpm[i]],MPM2["Pi"][:,frmpm[i]],'y-x',lw=2.,ms=8.,label='MPM 2ppc')
-    # ax1.plot(DGMPM2["pos"][:,2*n1],DGMPM2["Pi"][:,2*n1],'r-o',lw=2.,ms=8.,label='DGMPM 2ppc')
-    ax2.plot(DGMPM["x"][:5],np.zeros(5),'b+',lw=2.,ms=8.,label='nodes')
-    ax2.plot(MPM["pos"][:5,mpm],np.zeros(5),'go',lw=2.,ms=8.,label='MPM')
-    ax2.plot(DGMPM["pos"][:5,n1],np.zeros(5),'ro',lw=2.,ms=8.,label='DGMPM')
+    plt.plot(MPM["pos"][:,mpm],MPM["Pi"][:,mpm],'b-x',lw=2.,ms=8.,label='MPM')
+    plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi"][:,n1],'g-o',lw=2.,ms=8.,label='DGMPM')
+    # plt.plot(DGMPM3["pos"][:,n1],DGMPM3["Pi"][:,n1],'r-',lw=2.,ms=8.,label='DGMPM RK2')
+    # plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi_th"][:,n1],'k',lw=2.,ms=8.,label='exact')
+    plt.plot(MPM2["pos"][:,frUL[i]],MPM2["Pi"][:,frUL[i]],'y-x',lw=2.,ms=8.,label='MPM UL')
+    # plt.plot(DGMPM2["pos"][:,2*n1],DGMPM2["Pi"][:,2*n1],'r-o',lw=2.,ms=8.,label='DGMPM 2ppc')
     
     
     plt.title('Contrainte longitudinale dans la barre au temps t='+str(time)+' s.',size=24.)
-    ax1.set_xlabel('x (m)',size=24.)
-    ax1.set_ylabel(r'$\sigma (Pa)$',size=28.)
-    ax1.legend(numpoints=1)
-    ax1.grid()
-    ax2.legend(numpoints=1)
-    ax2.grid()
+    plt.xlabel('x (m)',size=24.)
+    plt.ylabel(r'$\sigma (Pa)$',size=28.)
+    plt.legend(numpoints=1)
+    plt.grid()
     plt.show()
-    # legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
-    # temps=time[:-4]
-    # if sigd>0.:
-    #     case=str(load)+'shock'
-    # else:
-    #     case='rare'
-    # subtitle=subtitles[i]+r' $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
-    # titles.append(subtitle)
+    legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+    temps=time[:-4]
+    if sigd>0.:
+        case=str(load)+'shock'
+    else:
+        case='rare'
+    subtitle=subtitles[i]+r' $t = '+str(temps)+r'\times 10^{-'+str(time[-1])+'} $ s.'
+    titles.append(subtitle)
     #export2DTeXFile(str(path)+'/he_stress_'+case+str(n1)+'.tex',np.array([MPM["pos"][:,mpm],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1],DGMPM["pos"][:,n1]]),'$x (m)$',r'$\Pi (Pa)$',str(subtitle),np.array([MPM["Pi"][:,mpm],DGMPM["Pi"][:,n1],DGMPM2["Pi"][:,2*n1],DGMPM3["Pi"][:,n1],DGMPM["Pi_th"][:,n1]]),legend)
 
     # export2DTeXFile(str(path)+'/dgmpm_mpm_velo'+case+str(n1)+'.tex',np.array([MPM["pos"][:,2*n1],MPM2["pos"][:,2*n1],DGMPM["pos"][:,n1],DGMPM2["pos"][:,2*n1],DGMPM3["pos"][:,n1]]),'$x (m)$','$v (m/s)$',str(subtitle),np.array([MPM["velo"][:,2*n1],MPM2["velo"][:,2*n1],DGMPM["velo"][:,n1],DGMPM2["velo"][:,2*n1],DGMPM3["velo"][:,n1]]),legend)
@@ -303,7 +298,7 @@ colFields=np.array([[frmpm[0],frames[0],2*frames[0],frames[0],frames[0]],[frmpm[
 legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\Pi (Pa)$']
 
-#export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
+export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 """
 ####################################################################
 fig, (ax1) = plt.subplots(1,1)
