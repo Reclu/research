@@ -69,7 +69,7 @@ if t_order==1:
 elif t_order==2:
     CFL=1.
 
-CFL,t_order=cfl.computeCourantNumber(mesh,parent,Map,t_order)
+if updated_lagrangian: CFL,t_order=cfl.computeCourantNumber(mesh,parent,Map,t_order)
         
 # Time discretization
 dt=CFL*dx/c0 
@@ -211,15 +211,14 @@ for n in range(NTMaxi)[1:]:
     w[2*parent[-1]+3,0] = -np.copy(w[2*parent[-1]+2,0])
     w[2*parent[-1]+3,1] = np.copy(w[2*parent[-1]+2,1])
 
-    mesh.updateMassDensity(u[:,0])
+    if updated_lagrangian:
+        mesh.updateMassDensity(u[:,0])
     
     Jmax=np.max(u[2*parent[0]:,0]*mesh.rho0[2*parent[0]:])
     nodeMax=np.where(u[2*parent[0]:,0]*mesh.rho0[2*parent[0]:]==Jmax)[0]
     if len(nodeMax)>1:
         nodeMax=nodeMax[0]
-    else :
-        pdb.set_trace()
-        print Jmax,u[:,0]*mesh.rho0
+
     dt=computeTimeStep(mesh.rho0[nodeMax],Tangent,Jmax,dx,CFL)
     
     if ((time[n-1]+dt)>tfinal):
@@ -270,7 +269,8 @@ for n in range(NTMaxi)[1:]:
         print "HYPERBOLIC LIMIT OF SVK MODEL REACHED"
         increments=n
         break
-    density=1./U[:,0]
+
+    if updated_lagrangian : density=1./U[:,0]
     
     if (time[n]==tfinal):
         increments=n
@@ -283,7 +283,7 @@ for n in range(NTMaxi)[1:]:
 
 x=mesh.xn
 time=time[0:increments]
-
+"""
 #Sigma
 fig = plt.figure()
 plt.grid()
@@ -328,3 +328,4 @@ plt.grid()
 #anim.save('StressBar.mp4', extra_args=['-vcodec', 'libx264'])
 plt.show()
 
+"""
