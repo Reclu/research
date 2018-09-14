@@ -141,8 +141,12 @@ mv=np.sum(np.dot(np.dot(Map,Md),Map.T),axis=1)
 
 alpha=1e0 # for effective mass matrix
 
-def computeTimeStep(J,dx,c0,CFL):
-    c=np.sqrt(J)*c0
+# def computeTimeStep(J,dx,c0,CFL):
+#     c=np.sqrt(J)*c0
+#     dt = CFL*dx/c
+#     return dt
+def computeTimeStep(rho,Tangent,J,dx,CFL):
+    c=np.sqrt(Tangent*(3.*J**2 -1.)/(2.*rho))
     dt = CFL*dx/c
     return dt
 
@@ -150,16 +154,23 @@ J=np.ones(Mp)
 Def[:,0]=np.copy(J)
 
 algo = 'USF'
+density=rho*np.ones(Mp)
 #print "DGMPM time step ",Dt*factor,C
 for n in range(NTMaxi)[1:]:    
     
     # Convection
     v[Dofs]=np.dot(Map[Dofs,:],np.dot(Md,V))/mv[Dofs]
-    v[connect[parent[-1],1]]=0.
+    #v[connect[parent[-1],1]]=0.
 
     
-    Jmax=np.max(J)
-    Dt=computeTimeStep(Jmax,lx,c,CFL)
+    # Jmax=np.max(J)
+    # Dt=computeTimeStep(Jmax,lx,c,CFL)
+    Jmax=np.max(Def[:,n-1])
+    point=np.where(Def[:,n-1]==Jmax)[0]
+    if len(point)>1:
+        point=point[0]
+    #if updated_lagrangian: c =  celerity(C,density[point],f0)
+    Dt=computeTimeStep(density[point],C,Jmax,lx,CFL)
     
     if ((time[n-1]+Dt)>tfinal):
         Dt = tfinal - time[n-1]
@@ -171,16 +182,21 @@ for n in range(NTMaxi)[1:]:
     
     # Solve motion equation
     a[Dofs]=(Fe[Dofs]+Fi[Dofs])/mv[Dofs]
-    a[connect[parent[-1],1]]=0.
+    #a[connect[parent[-1],1]]=0.
     v+=a*Dt
-    v[connect[parent[-1],1]]=0.
+    #v[connect[parent[-1],1]]=0.
     
     # Gradient and constitutive model
-    dF=Dt*np.dot(Grad[Dofs,:].T,v[Dofs])
-    Def[:,n]=(1.+dF)*Def[:,n-1]
-    
+    ## Velocity gradient
+    L=np.dot(Grad[Dofs,:].T,v[Dofs])
+    dF=Dt*L
+    if updated_lagrangian:
+        Def[:,n]=(1.+dF)*Def[:,n-1]
+    else:
+        Def[:,n]=Def[:,n-1]+dF
+        
     for i in range (Mp):
-        Sig[i]=C*(Def[i,n]**3 -Def[i,n])/(2.*rho) 
+        Sig[i]=C*(Def[i,n]**3 -Def[i,n])/(2.*density[i]) 
         
     
     
@@ -199,10 +215,12 @@ for n in range(NTMaxi)[1:]:
     v=np.zeros(Nn)
 
     Velocity[:,n]=V
-    Pi[:,n]=rho*Sig
+    Pi[:,n]=density*Sig
     Pos[:,n]=np.copy(xp[:,0])
     #Def[:,n]=np.copy(J)
-    
+    if updated_lagrangian :
+        density= rho/Def[:,n]
+        
     if (time[n]==tfinal):
         increments=n
         break
