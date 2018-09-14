@@ -161,7 +161,7 @@ factor=1.
 timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
-sigd = -20.*Sigy
+sigd = -0.05*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 updated_lagrangian=False
@@ -227,11 +227,10 @@ frames=[]
 frmpm=[]
 frUL=[]
 
-pdb.set_trace()
 for i in MPM["time"]:
     for j in DGMPM["time"]:
         for k in MPM2["time"]:
-            if abs(i-j)<1.e-4 and abs(i-k)<1.e-4:
+            if abs(i-j)<5.e-7 and abs(i-k)<5.e-7:
                 ndg = np.where(DGMPM["time"]==j)[0][0]
                 nmpm = np.where(MPM["time"]==i)[0][0]
                 nUL = np.where(MPM2["time"]==k)[0][0]
@@ -244,6 +243,7 @@ for i in MPM["time"]:
                 frmpm.append(nmpm)
                 frUL.append(nUL)
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
+#pdb.set_trace()
 
 if sigd>0.:
     if sigd==5.*Sigy:
@@ -254,21 +254,27 @@ if sigd>0.:
     elif sigd==50.*Sigy:
         frames=[44,88]
         frmpm=[80,160]
+        frUL=[80,160]
         #frmpm=[160,320]
         load=50
+else:
+    frames=[40,80]
+    frmpm=[80,160]
+    frUL=[80,160]
 pdb.set_trace()
 start=0
 titles=[]
 for i,n1 in enumerate(frames[start:]):
     time = '%.2e' % DGMPM["time"][n1]
     mpm=frmpm[start+i]
+    uL=frUL[start+i]
     print n1,mpm," time t=",time
     fig, (ax1,ax2) = plt.subplots(1,2)
     plt.plot(MPM["pos"][:,mpm],MPM["Pi"][:,mpm],'b-x',lw=2.,ms=8.,label='MPM')
     plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi"][:,n1],'g-o',lw=2.,ms=8.,label='DGMPM')
     # plt.plot(DGMPM3["pos"][:,n1],DGMPM3["Pi"][:,n1],'r-',lw=2.,ms=8.,label='DGMPM RK2')
     # plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi_th"][:,n1],'k',lw=2.,ms=8.,label='exact')
-    plt.plot(MPM2["pos"][:,frUL[i]],MPM2["Pi"][:,frUL[i]],'y-x',lw=2.,ms=8.,label='MPM UL')
+    plt.plot(MPM2["pos"][:,uL],MPM2["Pi"][:,uL],'y-x',lw=2.,ms=8.,label='MPM UL')
     # plt.plot(DGMPM2["pos"][:,2*n1],DGMPM2["Pi"][:,2*n1],'r-o',lw=2.,ms=8.,label='DGMPM 2ppc')
     
     
