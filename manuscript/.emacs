@@ -2,6 +2,9 @@
 ;; (require 'latex) ; pour être sur d'avoir le mode LaTeX
 (require 'reftex)
 
+;; no startup msg  
+(setq inhibit-startup-message t)        ; Disable startup message
+
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")  ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (setq package-enable-at-startup nil)
