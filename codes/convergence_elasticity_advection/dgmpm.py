@@ -112,12 +112,15 @@ s0=sd/rho
 
 #print '       Algorithmic parameters'
 # Time discretization
-CFL=computeCourantNumber(t_order,parent,Map)
-if CFL==1.:
-    #print "CFL=1 changed to CFL=0.99999999999"
-    CFL=0.99999999999
+if compute_CFL:
+    CFL=computeCourantNumber(t_order,parent,Map)
+    if CFL==1.:
+        #print "CFL=1 changed to CFL=0.99999999999"
+        CFL=0.99999999999
+else:
+    CFL=0.5    
 Dt=CFL*dx/c 
-
+#print "DGMPM CFL=",CFL," time order :",t_order
 #Dt=(0.5*L/c)/100.
 tfinal=0.5*L/c
 tf=2.*tfinal#0.75*L/c;
