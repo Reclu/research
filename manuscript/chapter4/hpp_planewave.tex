@@ -19,6 +19,8 @@ The solid is initially in a free stress state and the initial velocity is set so
 where $Y_H=(\lambda+2\mu)/2\mu$ denotes the Hugoniot elastic limit, $c_L=\sqrt{(\lambda+2\mu)/\rho}$ is the elastic pressure wave speed, and $(\lambda,\mu)$ Lam\'e's parameters. Both ends of the medium are traction free so that rightward and leftward compression elastic waves reflect as unloading waves that interact with the incident plastic ones \cite{Thomas_EVP}.
 
 \subsubsection{Elastoviscoplasticity}
+ADD 1D EQUATIONS
+
 The elastic-viscoplastic problem is solved with the MPM using both USL and USF formulations, the DGMPM-Euler with Godunov splitting, and the DGMPM-RK2 coupled to Strang splitting. The latter formulation is however not used for the stiff setting since this fractional method is known to not be well-suited in that case \cite{Thomas_EVP,Leveque_stiff}. The ODE systems resulting from fractional approaches are discretized with an implicit backward Euler scheme for Godunov and a backward differentiation formula of order 3 for Strang splitting. The viscoplastic flow rule is then integrated explicitly at the end of the time step to update viscoplastic strains. On the other hand, constitutive equations are integrated with a radial return algorithm \cite{Simo} within the MPM. First, the relaxation system is considered in a non-stiff setting characterized by a relaxation time bigger than the time step governed by the convection part, that is $\tau=50\Delta t$. Figure \ref{fig:nonstiff_elastoviscoplastic_RP} shows a comparison of numerical stress and plastic strain with the exact solutions of the elastoplastic limit.
 %Pas de RK2 godunov car le RK2 n'a une influence que sur la partie convective qui est équivalent au 1ppc Euler.
 \begin{figure}[h!]
@@ -48,6 +50,8 @@ The two simulations performed in this section show that the DGMPM enables more f
 
 \subsubsection{Elastoplasticity}
 %% On utilise la forme quasi linear pour la dgmpm donc on est un peu différent des volumes finis car on a un retour radial en plus. Il faut que ca soit clair ça !
+ADD 1D EQUATIONS
+
 Recall that the conservative form corresponding to elastic-plastic under small strains, on which the DGMPM weak form is based, and an associated quasi-linear form used for the computation of intercell fluxes, have been derived in section \ref{sec:general-formulation}. Those two systems respectively involves the vector of conserved quantities and an auxiliary vector and read:
 \begin{equation*}
   \begin{aligned}
