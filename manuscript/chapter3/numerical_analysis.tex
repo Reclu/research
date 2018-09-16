@@ -217,14 +217,17 @@ Hence, the DGMPM scheme is stable for a given discretization if the Courant numb
 \begin{equation}
   \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: \alpha = 1,...,N_p
 \end{equation}
-The stability of the scheme is thus ensured by using the lowest CFL number resulting from the solution of \eqref{eq:stability} for every material points. According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
+The stability of the scheme is thus ensured by using the lowest CFL number satisfying \eqref{eq:stability}. \thomas{Note however that the use of the triangle inequality leads to a more severe constraint so that in practice, the Courant number may be set to higher values than that resulting from the solution of \eqref{eq:stability}.} 
+
+%According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
+According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, the stability condition \eqref{eq:stability} can be very hard to find analytically for general discretizations. 
 \begin{table}[h]
   \centering
   \input{chapter3/tabular/CFL_comparison}
   \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
   \label{tab:CFL_comparison}
 \end{table}
-However, though the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particles distribution in every elements of a one-dimensional regular mesh. 
+Nevertheless, though the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particles distribution in every elements of a one-dimensional regular mesh. 
 % so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. 
 First, the DGMPM scheme is stable for all CFL number lower than or equal to one when cells contain one particle only regardless of their positions. This property characterized the FOU method that is retrieved with this discretization. 
 Then, when many material points share the same element, several configurations are considered:
@@ -291,12 +294,27 @@ Note that errors are computed at time $t=0.5 T$ so that no reflection of waves o
   \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells.}
   \label{fig:convergence_stress}
 \end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   {\input{chapter3/pgfFigures/convS_2ppclowCFL.tex}}
+%   {\input{chapter3/pgfFigures/convS_6ppclowCFL.tex}}
+%   {\input{chapter3/pgfFigures/convS_10ppclowCFL.tex}}
+%   {\input{chapter3/pgfFigures/convS_20ppclowCFL.tex}}
+%   \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells CFL set to 0.5 for DGMPM.}
+%   \label{fig:convergence_stress}
+% \end{figure}
 \begin{table}[h!]
   \centering
   \input{chapter3/tabular/accuracy}
   \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
   \label{tab:accuracy}
 \end{table}
+% \begin{table}[h!]
+%   \centering
+%   \input{chapter3/tabular/accuracy_lowCFL}
+%   \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
+%   \label{tab:accuracy}
+% \end{table}
 Second, an increase in the number of particles per cell provides slightly higher convergence rates, according to table \ref{tab:accuracy}, and shifts DGMPM curves upward as can be seen in figures \ref{fig:convergence_stress}\subref{subfig:convS_2ppc} to \ref{fig:convergence_stress}\subref{subfig:convS_20ppc}. On the other hand, the MPM error curves do not exhibit this behavior as observed in \cite{MPM_BSpline1}. At last, for coarse grids (\textit{i.e. $\Delta X= l/2^i$ for $i \leq 3$}) the DGMPM--Euler leads to the lowest error but its smaller rate of convergence makes it quickly less accurate than the two other methods. Similar behaviors can be seen for the velocity, which convergence curves are depicted in figure \ref{fig:convergence_velocity} for the same discretizations. Again, the DGMPM shows lower rates of convergence than the MPM, and increasing the number of particles per cell leads to more error in DGMPM solutions. The same order of accuracy for velocity and stress resulting from the DGMPM (see table \ref{tab:accuracy}) was expected since the writing of the weak form of system \eqref{eq:conv_hyperbolic} leads to the same approximation for both fields. The MPM is on the other hand, as FEM, characterized by a higher order of convergence for velocity than stress owing to the use of shape functions derivatives for the computation of gradients. Hence, the MPM rate of convergence in terms of velocity is getting closer to two. 
 
 \begin{figure}[h!]

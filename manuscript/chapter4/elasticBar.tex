@@ -1,27 +1,36 @@
 To begin with, let us focus on the problem that has been used in section \ref{sec:MPM} to illustrate shortcomings of the MPM and that motivated the derivation of the DGMPM.
-We thus consider an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$ and of length $L=6\:m$ in direction $\vect{e}_1$. The Cauchy stress and infinitesimal strain tensor are of the form:
+We thus consider a bar of length $L=6\:m$ in direction $\vect{e}_1$ in which the Cauchy stress and infinitesimal strain tensors are of the form:
 \begin{align*}
   & \tens{\sigma} = \sigma \: \vect{e}_1\otimes \vect{e}_1 \\
   & \tens{\eps} = \eps \: \vect{e}_1\otimes \vect{e}_1
 \end{align*}
-so that the bar assumption holds. Riemann-type initial conditions on the horizontal velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed in the bar, that is, $v=v_0>0$ for $x_1\in\[0,L/2\]$ and $v=-v_0$ for $x_1\in \:]L/2,L]$. In addition, both ends of the domain are traction free. The bar is assumed elastic with density $\rho=7800 \: kg.m^{-3}$, Poisson ration $\nu=0.3$ and Young's modulus $E=2\times 10^{11}\:Pa$.
-The exact solution of this problem \cite[Ch.1]{Wang} has been recalled in section \ref{subsec:charac_Linear_problems} and consists of two elastic discontinuities propagating left and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$. 
+The stress is initially zero everywhere and Riemann-type initial conditions on the axial velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed: $v=v_0>0$ for $x_1\in [0,L/2[$ and $v=-v_0$ for $x_1\in \:]L/2,L]$. In addition, both ends of the domain are traction free.
+%The bar is assumed elastic with density $\rho=7800 \: kg.m^{-3}$, Poisson ration $\nu=0.3$ and Young's modulus $E=2\times 10^{11}\:Pa$.
+The exact solution of this problem \cite[Ch.1]{Wang} has been recalled in section \ref{subsec:charac_Linear_problems} and consists of two elastic discontinuities propagating leftward and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$. 
 
-The domain is discretized with material points in a grid made of $50$ regular cells which contain either one centered particle or two material points symmetrically placed with respect to element centers. The problem is solved with the DGMPM coupled with both Euler and RK2 time integration, and MPM formulations. Since more numerical noise appears in the USF formulation of the MPM (see section \ref{sec:MPM}), only the USL implementation is used. In addition, the projection of the updated velocity from nodes to particles is made by means of FLIP back mappings for the 1 Particle Per Cell (ppc) discretization, and of both PIC and FLIP projection for the 2ppc discretization. The Courant number is set to $1/2$ for MPM implementations while that of DGMPM schemes satisfy the stability condition \eqref{eq:stability} derived in section \ref{sec:DGMPM_analysis}.
-
-Figure \ref{fig:elastic_stress} numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
+A regular grid made of $50$ regular cells contain material points that discretized the domain. Two different discretizations are used:
+\begin{itemize}
+\item[(a)] each cell contains one particle that coincides with the element centroid
+\item[(b)] each cell contains two particles symmetrically placed with respect to element centers.
+\end{itemize}
+Those two configurations using either one or two Particles Per Cell are respectively referred to as $1ppc$ and $2ppc$ hereinafter.
+% The domain is discretized with material points in a grid made of $50$ regular cells which contain either one centered particle or two material points symmetrically placed with respect to element centers.
+The problem is solved on the one hand with the MPM-USL in which the nodal velocity is based on either FLIP of PIC mappings ($CFL=0.5$), and with the DGMPM coupled with both Euler and RK2 time integration on the other hand ($CFL$ satisfying the stability condition \eqref{eq:stability} in section \ref{sec:DGMPM_analysis}).
+%The problem is solved with the MPM formulations and the DGMPM coupled with both Euler and RK2 time integration.
+%Since more numerical noise appears in the USF formulation of the MPM (see section \ref{sec:MPM}), only the USL implementation is used. In addition, the projection of the updated velocity from nodes to particles is made by means of FLIP back mappings for 1ppc, and of both PIC and FLIP projection for 2ppc. The Courant number is set to $1/2$ for MPM implementations while that of DGMPM schemes satisfy the stability condition \eqref{eq:stability} derived in section \ref{sec:DGMPM_analysis}.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption \label{subfig:rp_elastic1}}
   {\phantomsubcaption \label{subfig:rp_elastic2}}
   % \input{chapter4/pgfFigures/dgmpm_mpm_stress}
   \input{chapter4/pgfFigures/dgmpm_mpm_elasticity}
-  \caption{Stress (first row) and velocity (second row) solutions of the Riemann problem in an isotropic elastic at two different times (columns \subref{subfig:rp_elastic1} and \subref{subfig:rp_elastic2}). Comparison between DGMPM coupled with Euler or RK2 time integration, MPM-USL formulation using either PIC and FLIP mapping of the updated velocity, and the exact solution for an initial velocity set to $v_0=\frac{c}{200}$.}
+  \caption{Stress (first row) and velocity (second row) solutions of the Riemann problem in an isotropic elastic at two different times (columns \subref{subfig:rp_elastic1} and \subref{subfig:rp_elastic2}). Comparison between DGMPM coupled with Euler or RK2 time integration, MPM-USL formulation using either PIC or FLIP mapping of the updated velocity, and the exact solution for an initial velocity set to $v_0=\frac{c}{200}$.}
   \label{fig:elastic_stress}
 \end{figure}
-First, since Courant number can be set at one for the DGMPM-Euler when 1ppc is used, the method allows to capture the discontinuities and yield solutions fiting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while in that case the DGMPM-Euler exhibits a more restrictive stability condition that prevents the accurate resolution of waves. Nevertheless, as expected by the PIC mapping it uses, DGMPM formulations do not suffer from oscillations. 
+Figure \ref{fig:elastic_stress} numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
+First, since Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fiting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while in that case, the DGMPM-Euler is restricited by a lower CFL number that prevents the accurate resolution of waves. As expected by the PIC mapping they use, DGMPM formulations do not suffer from oscillations. 
 %%
-Second, this projection of updated fields from nodes to particles that allows to avoid the locking of velocity in the central region in USL solution also enables the correct assessment of the velocity with DGMPM schemes.
+In addition, this projection of updated fields from nodes to particles allows to avoid in DGMPM solutions the locking of velocity in the central region that can be seen in USL-FLIP ones.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/dgmpm_mpm_energies}
@@ -31,7 +40,7 @@ Second, this projection of updated fields from nodes to particles that allows to
 %%
 At last, the introduction of DG approximation within the USL-PIC leads to a reduction of numerical diffusion, though less significant than that permitted by using FLIP mapping as originally proposed for the MPM. This can be seen in figure \ref{fig:energy_elastic_RP} in which the evolution of total energy is depicted for every methods.
 One can also see in this figure that the situations for which the CFL number is set to unity for DGMPM formulations, leads to an exact conservation of the total energy during the computation.
-As already mentioned in section \ref{sec:MPM}, the number of material points per cell has little influence on USL results. Hence, only the 1ppc discretization is considered for this approach hereinafter.
+As already mentioned in section \ref{sec:MPM}, the number of material points per cell has little influence on USL results. Hence, only the 1ppc discretization is considered for this approach hereinafter. Furthermore, since PIC mapping has been used here within the MPM for comparison purposes, it is no longer considered in the following.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

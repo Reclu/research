@@ -22,6 +22,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yfields,*kwargs):
     TeXFile=open(fileName,"w")
     n_fields = np.shape(yfields)[0]
     n_labels = np.shape(kwargs)[0]
+    ## MPM,DGMPM,DGMPM2ppc,DGMPMRK2,Exact
     # Define Paul Tol's colors (purple to red)
     marker=['+','none','none','x','square','none','none','pentagone*']
     marker=['none','none','+','x','none','none','star','pentagone*']
@@ -69,9 +70,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
+    marker=['+','none','none','x','square','none','none','pentagone*']
     marker=['none','none','+','x','none','none','star','pentagone*']
     style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
-    thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
+    thickness=['very thick','very thick','very thick','thick','thick','very thick','very thick','thin','thin','thick']
     couleur=['Red','Blue','Orange','Purple','black','Orange','Green','Duck','Green']
     maxim=[]
     minim=[]
@@ -161,7 +163,7 @@ factor=1.
 timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
-sigd = -50.*Sigy
+sigd = 5.*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 updated_lagrangian=False
@@ -183,6 +185,7 @@ DGMPM = dict(parameters)
 print 'Computing  DGMPM'
 execfile('dgmpm/hyperelasticity.py', DGMPM)
 
+
 # for i,t in enumerate(DGMPM["time"]):
 #     print i,t
 ppc=2
@@ -192,10 +195,6 @@ parameters = {"CFL":CFL,"Nelem":Nelem,"NTmaxi":NTmaxi,"ppc":ppc,"length":length,
 
 print "=============== 2PPC COMPUTATIONS ===================="
 
-##MPM: Material Point Method
-MPM2 = dict(parameters)
-print 'Computing MPM'
-execfile('mpm/hyperelasticity.py', MPM2)
 
 ##DGMPM: Discontinous Galerkin Material Point Method
 DGMPM2 = dict(parameters)
@@ -222,54 +221,49 @@ rcParams['legend.fontsize'] = 16
 
 frames=[]
 frmpm=[]
-fr2ppc=[]
 
-if sigd>0.:
-    for i in MPM["time"]:
-        for j in DGMPM["time"]:
-            if abs(i-j)<5.e-7:
-                ndg = np.where(DGMPM["time"]==j)[0][0]
-                nmpm = np.where(MPM["time"]==i)[0][0]
+for i in MPM["time"]:
+    for j in DGMPM["time"]:
+        if abs(i-j)<5.e-6 :
+            ndg = np.where(DGMPM["time"]==j)[0][0]
+            nmpm = np.where(MPM["time"]==i)[0][0]
             
-                tdg = '%.2e' % j ; tmpm = '%.2e' % i
-                print "dgmpm increment ",ndg
-                print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
-                print "mpm time: ",tmpm," ; dgmpm time:",tdg
-                frames.append(ndg)
-                frmpm.append(nmpm)
-else:
-    frames=[40,80]
-    frmpm=[80,160]
-start=0
+            tdg = '%.2e' % j ; tmpm = '%.2e' % i
+            print "dgmpm increment ",ndg," ; mpm increment ",nmpm," ; dgmpm time:",tdg, " ; time difference: ",'%.2e' %abs(j-i)
+            print "mpm increment ",nmpm, " ; time difference: ",'%.2e' %abs(j-i)
+            #print "mpm time: ",tmpm," ; dgmpm time:",tdg
+            frames.append(ndg)
+            frmpm.append(nmpm)
 
-# frames=[5,20]
-# frames=[]
-# frames=[20,30,45]
 subtitles=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)']
+
 
 if sigd>0.:
     if sigd==5.*Sigy:
-        frames=[43,89]
-        frmpm=[85,176]
+        frames=[41,81]
+        frmpm=[82,163]
         #frmpm=[2*85,2*176]
         load=5
     elif sigd==50.*Sigy:
         frames=[44,88]
-        frmpm=[80,160]
+        frmpm=[90,180]
         #frmpm=[160,320]
         load=50
-    start=0
-titles=[]
+else:
+    frames=[40,80]
+    frmpm=[80,160]
 
+start=0
+titles=[]
 for i,n1 in enumerate(frames[start:]):
     time = '%.2e' % DGMPM["time"][n1]
     mpm=frmpm[start+i]
     print n1,mpm," time t=",time
-    plt.plot(DGMPM3["pos"][:,n1],DGMPM3["Pi"][:,n1],'r-',lw=2.,ms=8.,label='DGMPM RK2')
-    plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi_th"][:,n1],'k',lw=2.,ms=8.,label='exact')
-    plt.plot(MPM2["pos"][:,frmpm[i]],MPM2["Pi"][:,frmpm[i]],'y-x',lw=2.,ms=8.,label='MPM 2ppc')
-    plt.plot(MPM["pos"][:,frmpm[i]],MPM["Pi"][:,frmpm[i]],'y-x',lw=2.,ms=8.,label='MPM 2ppc')
-    plt.plot(DGMPM2["pos"][:,2*n1],DGMPM2["Pi"][:,2*n1],'r-o',lw=2.,ms=8.,label='DGMPM 2ppc')
+    plt.plot(MPM["pos"][:,mpm],MPM["Pi"][:,mpm],'b-x',lw=2.,ms=8.,label='MPM')
+    plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi"][:,n1],'g-o',lw=2.,ms=8.,label='DGMPM')
+    # plt.plot(DGMPM3["pos"][:,n1],DGMPM3["Pi"][:,n1],'r-',lw=2.,ms=8.,label='DGMPM RK2')
+    # plt.plot(DGMPM["pos"][:,n1],DGMPM["Pi_th"][:,n1],'k',lw=2.,ms=8.,label='exact')
+    # plt.plot(DGMPM2["pos"][:,2*n1],DGMPM2["Pi"][:,2*n1],'r-o',lw=2.,ms=8.,label='DGMPM 2ppc')
     
     plt.title('Contrainte longitudinale dans la barre au temps t='+str(time)+' s.',size=24.)
     plt.xlabel('x (m)',size=24.)
@@ -277,7 +271,7 @@ for i,n1 in enumerate(frames[start:]):
     plt.legend(numpoints=1)
     plt.grid()
     plt.show()
-    # legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+    legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
     temps=time[:-4]
     if sigd>0.:
         case=str(load)+'shock'
@@ -297,7 +291,7 @@ colFields=np.array([[frmpm[0],frames[0],2*frames[0],frames[0],frames[0]],[frmpm[
 legend=['mpm','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\Pi (Pa)$']
 
-#export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
+export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 """
 ####################################################################
 fig, (ax1) = plt.subplots(1,1)

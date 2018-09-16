@@ -105,7 +105,7 @@ s0 =-0.5*Sy
 
 # Time discretization
 #factor=2.
-CFL=0.4
+CFL=0.5
 tfinal=0.5*L/c
 tf=2.*tfinal#0.75*L/c
 Dt=CFL*lx/c
@@ -145,6 +145,7 @@ mv=np.sum(np.dot(np.dot(Map,MD),Map.T),axis=1)
 
 # Storage
 Stress=np.zeros((Mp,int(inc)+2))
+Sth=np.zeros((Mp,int(inc)+2))
 p=np.zeros((Mp,int(inc)+2))
 Epsp=np.zeros((Mp,int(inc)+2))
 dEpsp=np.zeros((Mp,int(inc)+2))
@@ -169,6 +170,8 @@ def smoothSolution(x,c,t,tfinal,tf):
     else:
         val=loadingFunction((t-x/c),tfinal,tf)
     return val
+
+Sth[0,0]=s0*loadingFunction(0.,tfinal,tf)
 
 alg='USF'
 while T<tfinal:
@@ -244,6 +247,10 @@ while T<tfinal:
     
     n+=1
     T+=Dt
+
+    for i in range(Mp):
+        Sth[i,n]=s0*smoothSolution(xp[i,0],c,T,tfinal,tf)
+    
     Stress[:,n]=Sig[:]
     Pos[:,n]=xp[:,0]
     Velocity[:,n]=V[:]
