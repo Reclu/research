@@ -38,18 +38,33 @@ At last, no body forces are considered here.
 
 \section{Large strains framework}
 \label{sec:he_simulations}
-The DGMPM is now applied to problems involving finite deformations in hyperelastic solids in order to see how the discontinuous Galerkin material point method behaves for nonlinear hyperbolic problems.
+The DGMPM is now applied to problems involving finite deformations in hyperelastic solids in order to see how the discontinuous Galerkin material point method behaves for non-linear hyperbolic problems.
 \subsection{Plane wave in a hyperelastic medium}
 \label{subsec:he_planewave}
 \input{chapter4/he_planewave}
 
-\subsection{Plane strain problem}
+\subsection{Two-dimensional plane strain problem}
 \label{subsec:he_plate}
 \input{chapter4/he_plate}
 
 
 
 \section{Conclusion}
+The Discontinuous Galerkin Material Point method has been applied here to hyperbolic problems of solid mechanics.
+It has first been shown on a Riemann problem in a linear elastic bar under small strains in section \ref{subsec:hpp_bar}, that the method is able to capture the exact solution that consist of two elastic discontinuities propagating in the medium.
+Indeed, the stability properties of the one-dimensional schemes derived in section \ref{subsec:scheme_equations} enables, for particular space discretizations, the use of a CFL number set to unity.
+In such situations, the DGMPM exactly conserves the total energy despite the use of PIC mapping, which is known to introduce dissipation within the MPM.
+Nevertheless, once the optimal stability condition is lost, that is $CFL <1$, the method is slightly more diffusive than the MPM.
+Next, the solution of problems in history-dependent solids emphasized (sections \ref{subsec:hpp_planewave}), through the use of splitting methods or a one-dimensional elastic-plastic Riemann solver, the versatility of the method.
+In addition, the results of section \ref{subsec:he_planewave} highlights that the total Lagrangian formulation of the DGMPM allows to avoid the eventual grid crossing occuring in updated Lagrangian MPM for problems involving waves in finite deforming solids.
+As a consequence, the numerical scheme also provides solutions that are close to exact ones for non-linear problems, although an updated Lagrangian formulation of the method that would lead to numerical issues still has to be derived. 
+% extend it to updated Lagrangian formulations ?
+
+At last, the two-dimensional simulations performed in sections \ref{subsec:el_planestrain}, \ref{subsec:ep_planestrain} and \ref{subsec:he_plate} show that DGMPM results are in good agreements with FEM while eliminating spurious oscillations.
+Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. This is the case of splitting procedures that should enable the DGMPM to accurately follow waves travelling in elastic-viscoplastic solids in 2D. Nevertheless, approximate elastic-plastic Riemann solvers, as that used in section \ref{subsec:hpp_planewave}, do not exist for general two-dimensional problems. Such solvers for the computation of intercell fluxes, which would improve the computation of plastic flows and hence a better assessement of residual stresses and strains, are discussed in the next chapter. 
+
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

@@ -1,9 +1,9 @@
-A plane wave state is considered in an semi-infinite medium of length $L=6m$ in direction $\vect{e}_1$, made of a hyperelastic Saint-Venant-Kirchhoff material:
+A plane wave state is considered in an semi-infinite medium of length $l=6m$ in direction $\vect{e}_1$, made of a hyperelastic Saint-Venant-Kirchhoff material:
 \begin{align*}
   & \tens{F} = F \vect{e}_1 \otimes \vect{e}_1 + \vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3 \\
   & \tens{\Pi} = \Pi \vect{e}_1 \otimes \vect{e}_1 + \Pi_r \(\vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3\)
 \end{align*}
-where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. A traction force is enforced on the left boundary of the solid initially at rest $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$. The exact solutions of the Picard problem thus formulated have been developed in section \ref{sec:SVK_solution}. Recall that since the characteristic speeds of this nonlinear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
+where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. A traction force is enforced on the left boundary of the solid initially at rest $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$. The exact solutions of the Picard problem thus formulated have been developed in section \ref{sec:SVK_solution}. Recall that since the characteristic speeds of this non-linear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
 Moreover, it has been established that the problem is no longer hyperbolic if the deformation gradient is such that $F<\sqrt{\frac{1}{3}}$ (see remark \ref{rq:hyperbolicity_limit_SVK} in section \ref{sec:SVK_solution}). As a consequence, we consider here loading conditions that do not yield a loss of hyperbolicity. 
 
 The one-dimensional medium is discretized by using either $100$ or $200$ material points lying in $100$ regular grid cells.
@@ -19,7 +19,7 @@ To begin with, the body is submitted to a compression load on its left end so th
 \end{figure}
 Both MPM solutions suffer from spurious oscillations, as for small strains problems. It is noteworthy that the numerical noise is the same for the two Lagrangian approach, in spite of an instability arising at the left end in the updated Lagrangian solution due to the displacement of particles. Nevertheless, no grid crossing occurs in this computation.
 
-On the other hand, DGMPM solutions show the same bahavior than for linear problems. Note however that the load amplitude is not high enough to make the nonlinearity significant, as shown by the exact solution that looks like a shock. The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
+On the other hand, DGMPM solutions show the same bahavior than for linear problems. Note however that the load amplitude is not high enough to make the non-linearity significant, as shown by the exact solution that looks like a shock. The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
 
 Significant differences between numerical methods and the exact solution are thus seen in figure \ref{fig:he_rarefaction}.
 \begin{figure}[h!]
@@ -30,13 +30,13 @@ Significant differences between numerical methods and the exact solution are thu
 \end{figure}
 First, grid crossing now occurs during the updated Lagrangian MPM computation so that the solution is no longer correct. Therefore, the updated Lagrangian formulation of the MPM will be omitted from the simulations from now on.
 The total Lagrangian approach, on the other hand, provides a solution in which the wave travel at the correct speed, although spurious oscillations still arise.
-Next, as expected from the use of an approximate-state Riemann solver for nonlinear problems, DGMPM stresses, though close to the analytical solution, no longer fit it exactly.
+Next, as expected from the use of an approximate-state Riemann solver for non-linear problems, DGMPM stresses, though close to the analytical solution, no longer fit it exactly.
 Furthermore, the use of DGMPM-Euler with 2ppc leads one more time to a smoother solution.
 
-In order to reduce the error made in the DGMPM, one can imagine to use an exact Riemann solver based on the exact solution. However, such an implementation requires to solve a nonlinear problem at each cell interface and is very costly. Moreover, an analytical solution is available for a SVK material but it is not the case for other constitutive models, which prevents the use of an exact solver.
+In order to reduce the error made in the DGMPM, one can imagine to use an exact Riemann solver based on the exact solution. However, such an implementation requires to solve a non-linear problem at each cell interface and is very costly. Moreover, an analytical solution is available for a SVK material but it is not the case for other constitutive models, which prevents the use of an exact solver.
 
 \begin{remark}
-  The problem considered here is solved in a two-dimensional setting in \cite{DGMPM} by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed. The results coming from the two-dimensional simulation show a good agreement with the exact solution of the problem that is still valid.
+  A two-dimensional setting may be used to solve this problem by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed. In that case, DGMPM results still show a good agreement with the exact solution of the problem \cite{DGMPM}.
 \end{remark}
 
 
