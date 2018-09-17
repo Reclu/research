@@ -12,40 +12,51 @@ The one-dimensional medium is discretized by using either $100$ or $200$ materia
 The 1ppc and 2ppc discretizations used here are the same as before as well as material parameters of table \ref{tab:material}.
 
 \subsubsection{Compression impact on a SVK medium}
-To begin with, the body is submitted to a compression load on its left end so that the solution of this problem consists of a right-going rarefaction. The total and updated Lagrangian formulation of the MPM are here used to solve the problem, along with DGMPM schemes. First of all, the compression load is set to $\Pi^d= 4\times 10^{8} \: Pa$ and numerical solutions are compared in figure \ref{fig:he_rarefaction_UL} at two different times.
+To begin with, the body is submitted to a compression load on its left end so that a rarefaction wave propagates rightward. The total and updated Lagrangian formulations of the MPM are here used along with DGMPM schemes. First of all, the compression load is set to $\Pi^d= 4\times 10^{8} \: Pa$ and numerical solutions are compared in figure \ref{fig:he_rarefaction_UL} at two different times.
 \begin{figure}[h!]
   \centering
   {\input{chapter4/pgfFigures/he_stress_low_UL}}
   \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem $\Pi^d= 4\times 10^{8} \: Pa$. Comparison between updated and total Lagrangian MPMs ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_rarefaction_UL}
 \end{figure}
-Both MPM solutions suffer from spurious oscillations, as for small strains problems. It is noteworthy that the numerical noise is the same for the two Lagrangian approach, in spite of an instability arising at the left end in the updated Lagrangian solution due to the displacement of particles. Nevertheless, no grid crossing occurs in this computation.
-
-On the other hand, DGMPM solutions show the same bahavior than for linear problems. Note however that the load amplitude is not high enough to make the non-linearity significant, as shown by the exact solution that looks like a shock. The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
-
-Significant differences between numerical methods and the exact solution are thus seen in figure \ref{fig:he_rarefaction}.
+Both updated and total Lagrangian formulations of the MPM lead to noise arising in the stress solution.
 \begin{figure}[h!]
   \centering
+  {\phantomsubcaption{\label{subfig:he_rarefaction1}}}
+  {\phantomsubcaption{\label{subfig:he_rarefaction2}}}
   {\input{chapter4/pgfFigures/he_stress_high_UL}}
   \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem $\Pi^d= 2\times 10^{10} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_rarefaction}
 \end{figure}
-First, grid crossing now occurs during the updated Lagrangian MPM computation so that the solution is no longer correct. Therefore, the updated Lagrangian formulation of the MPM will be omitted from the simulations from now on.
-The total Lagrangian approach, on the other hand, provides a solution in which the wave travel at the correct speed, although spurious oscillations still arise.
-Next, as expected from the use of an approximate-state Riemann solver for non-linear problems, DGMPM stresses, though close to the analytical solution, no longer fit it exactly.
-Furthermore, the use of DGMPM-Euler with 2ppc leads one more time to a smoother solution.
+It is noteworthy that these two stress profiles are superimposed except at the left end of the domain where an instability occurs in updated Lagrangian solution due to the displacement of particles.
+Nevertheless, no grid crossing occurs in this simulation.
+On the other hand, DGMPM solutions show the same bahavior than for linear problems due to the low amplitude of load.
 
-In order to reduce the error made in the DGMPM, one can imagine to use an exact Riemann solver based on the exact solution. However, such an implementation requires to solve a non-linear problem at each cell interface and is very costly. Moreover, an analytical solution is available for a SVK material but it is not the case for other constitutive models, which prevents the use of an exact solver.
+The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
+Significant differences between numerical methods and the exact solution are now visible in figure \ref{fig:he_rarefaction}.
+First, grid crossing now occurs so that the MPM results based on the updated Lagrangian formulation are no longer correct. Hence, this formulation is omitted from now on.
+On the other hand, the total Lagrangian MPM scheme yield a solution which does not oscillate more than for linear cases.
+%The total Lagrangian approach, on the other hand, provides a solution in which the wave travel at the correct speed, although spurious oscillations still arise.
+Next, as expected from the use of an approximate-state Riemann solver for non-linear problems, DGMPM stresses, though close to the analytical solution, no longer fit it exactly (see figure \ref{fig:he_rarefaction}\subref{subfig:he_rarefaction2}).
+Furthermore, the use of DGMPM-Euler with 2ppc leads to a smoother solution.
+
+One can imagine to employ an exact Riemann solver based on the exact solution in order to reduce the error made in the DGMPM.
+% In order to reduce the error made in the DGMPM, one can imagine to use an exact Riemann solver based on the exact solution.
+However, such an implementation requires to solve a non-linear problem at each cell interface and is very costly.
+Moreover, an exact solution is available for a SVK material but it is not the case for other constitutive models, which prevents the use of an exact solver.
 
 \begin{remark}
-  A two-dimensional setting may be used to solve this problem by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed. In that case, DGMPM results still show a good agreement with the exact solution of the problem \cite{DGMPM}.
+  This problem can be solved in a two-dimensional setting by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed.
+  %A two-dimensional setting may be used to solve this problem by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed.
+  In that case, DGMPM results still show a good agreement with the exact solution of the problem \cite{DGMPM}.
 \end{remark}
 
 
 \subsubsection{Tensile impact on a SVK medium}
-A tensile load of magnitude $\Pi^d= 4\times 10^{8} \: Pa$ that gives rise to a shock wave in the medium is now studied. Recall that for this problem, the characteristic speeds read: $c=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }$ (see equation \eqref{eq:SVK_charac_fields} in section \ref{sec:SVK_solution}). It then follows that the higher the deformation gradient, the faster waves propagate. Hence, the celerity of the fastest wave is given by the deformation gradient on the upwind side and must be used to adapt the time step to satisfy the CFL condition for fixed Courant number. This situation did not arise in the above case of a rarefaction wave since the highest deformation gradient value was that of rest state on the downwind side. 
+A tensile load of magnitude $\Pi^d= -2\times 10^{10} \: Pa$ that gives rise to a shock wave in the medium is now studied. Recall that for this problem, the characteristic speeds read: $c=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }$ (see equation \eqref{eq:SVK_charac_fields} in section \ref{sec:SVK_solution}).
+It then follows that the higher the deformation gradient, the faster waves propagate. Hence, the celerity of the fastest wave is given by the deformation gradient on the upwind side and must be used to adapt the time step and hence, satisfy the CFL condition for fixed Courant number.
+This situation did not arise in the above case of a rarefaction wave since the highest deformation gradient value was (constant) on the downwind side. 
 
-Total Lagrangian MPM and DGMPM are used to solve this problem, and compared to the exact solution in figure \ref{fig:he_shock}. Slight oscillations appear after the shock in DGMPM solutions based on a unit Courant number. This numerical noise (figure \ref{fig:he_shock}\subref{subfig:he_shock1}) does not appear in the DGMPM-Euler using 2ppc due to the lower Courant number used.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption \label{subfig:he_shock1}}
@@ -54,18 +65,24 @@ Total Lagrangian MPM and DGMPM are used to solve this problem, and compared to t
   \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{10} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_shock}
 \end{figure}
+Total Lagrangian MPM and DGMPM are used to solve this problem, and compared to the exact solution in figure \ref{fig:he_shock}.
 %% MPM
-Furthermore, the error in the MPM solutions grows during the computation, implying that the method is no longer stable even for a CFL number set to $0.5$ as for linear problems.
+The error made in the MPM solutions grows during the computation, implying that the method is no longer stable even for a CFL number set to $0.5$ as for linear problems.
+Slight oscillations also appear after the shock in DGMPM solutions based on a unit Courant number (see figure \ref{fig:he_shock}\subref{subfig:he_shock1}) but not in the DGMPM-Euler using 2ppc due to the lower Courant number used.
+%This numerical noise (figure \ref{fig:he_shock}\subref{subfig:he_shock1}) does not appear in the DGMPM-Euler using 2ppc due to the lower Courant number used.
+However, the oscillations do not increase with time as can be seen in figure \ref{fig:he_shock}\subref{subfig:he_shock2}, meaning that this noise is not an instability.
 %% Lower shock
 \begin{figure}[h!]
   \centering
+  {\phantomsubcaption \label{subfig:he_low_shock1}}
+  {\phantomsubcaption \label{subfig:he_low_shock2}}
   {\input{chapter4/pgfFigures/he_stress_5shock}}
   \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{9} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_low_shock}
 \end{figure}
 %% Capturing shocks
 Next, in spite of a CFL number set to one, the DGMPM-Euler and DGMPM-RK2 do not perfectly capture the discontinuity, though a good behavior is shown. Indeed, according to Lax entropy condition \eqref{eq:Lax_entropy}, the wave celerity used for the time step evaluation is an upper bound of the shock speed so that such a wave cannot be captured.
-Nevertheless, the loading conditions are deliberately extreme for the purpose of visualization. A lower tensile load will lead to a numerical solution closer to analytical results as can be seen in figure \ref{fig:he_low_shock} which shows the comparison for a load magnitude $\Pi^d=-2\times 10^{9} \: Pa$. In addition, the oscillations appearing in DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc solutions are significantly reduced with this load. The MPM solution on the other hand, still exhibits an increasing error although a Courant number ensuring the stability in the scheme for linear problems is used.
+Nevertheless, the loading conditions are deliberately extreme for the purpose of visualization. A lower tensile load leads to a numerical solution closer to analytical results as can be seen in figure \ref{fig:he_low_shock}, which shows the comparison for $\Pi^d=-2\times 10^{9} \: Pa$. In addition, the oscillations appearing in DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc solutions are almost eliminated in figure \ref{fig:he_low_shock}\subref{subfig:he_low_shock1}. The MPM solution on the other hand, still exhibits an increasing error although a Courant number ensuring the stability in the scheme for linear problems is used.
 
 %% Previous figures
 % \begin{figure}[h!]

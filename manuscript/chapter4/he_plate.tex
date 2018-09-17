@@ -1,4 +1,4 @@
-A two-dimensional rectangular plate is now made of the compressible hyperelastic neo-Hookean material and considered here in the plane strain case. Unlike for the Saint-Venant-Kirchhoff model, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the problem (see section \ref{sec:constitutive-equations}).
+A two-dimensional rectangular plate made of the compressible hyperelastic neo-Hookean material is considered here in the plane strain case. Unlike for the Saint-Venant-Kirchhoff model, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the problem (see section \ref{sec:constitutive-equations}).
 Geometry, boundary and loading conditions are given in figure \ref{fig:2d_heDomain}.
 \begin{figure}[h!]
   \centering
@@ -7,14 +7,14 @@ Geometry, boundary and loading conditions are given in figure \ref{fig:2d_heDoma
   \label{fig:2d_heDomain}
 \end{figure}
 
-The solid is discretized such that material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 33 \times 25$ material points and $l \times h \equiv 32 \times 24$ $Q1$ elements for FEM. Moreover, only one particle lies at the center of each cell of the arbitrary grid. The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus}, using an explicit time discretization with no artificial viscosity added. These numerical results are compared to those obtained from MPM and DGMPM using CTU computations. The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{MPM}=6.60 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}. Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison on the deformed shape of the body.
+The solid is discretized such that material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 33 \times 25$ material points. Moreover, only one particle lies at the center of each cell of the arbitrary grid. The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus} using an explicit time discretization with no artificial viscosity added. These numerical results are compared to those obtained from MPM and DGMPM using CTU computations. The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{MPM}=6.60 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}. Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison on the deformed shape of the body.
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Dhestress}
   \caption{Isovalues of Cauchy stress tensor component $\sigma_{11}$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
   \label{fig:2dhe_stress}
 \end{figure}
-At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations are visible in FEM and MPM solutions. These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo}
+At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations are visible in FEM and MPM solutions. These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo}.
 \begin{figure}[h!]
   \centering
   \input{chapter4/2Dhevelo}
