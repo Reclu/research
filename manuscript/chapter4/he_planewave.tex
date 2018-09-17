@@ -3,12 +3,14 @@ A plane wave state is considered in an semi-infinite medium of length $l=6m$ in 
   & \tens{F} = F \vect{e}_1 \otimes \vect{e}_1 + \vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3 \\
   & \tens{\Pi} = \Pi \vect{e}_1 \otimes \vect{e}_1 + \Pi_r \(\vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3\)
 \end{align*}
-where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. A traction force is enforced on the left boundary of the solid initially at rest $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$. The exact solutions of the Picard problem thus formulated have been developed in section \ref{sec:SVK_solution}. Recall that since the characteristic speeds of this non-linear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
-Moreover, it has been established that the problem is no longer hyperbolic if the deformation gradient is such that $F<\sqrt{\frac{1}{3}}$ (see remark \ref{rq:hyperbolicity_limit_SVK} in section \ref{sec:SVK_solution}). As a consequence, we consider here loading conditions that do not yield a loss of hyperbolicity. 
+where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. A traction force is enforced on the left boundary of the solid initially at rest: $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$. The exact solutions of the Picard problem thus formulated have been developed in section \ref{sec:SVK_solution}.
+With characteristic speeds depending on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium. Both cases are considered hereinafter before reflection on the right end.
+%Recall that since the characteristic speeds of this non-linear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
+Moreover, it has been established that the problem is no longer hyperbolic if the deformation gradient is such that $F<\sqrt{\frac{1}{3}}$ (see remark \ref{rq:hyperbolicity_limit_SVK} in section \ref{sec:SVK_solution}). Hence, we consider here loading conditions that do not yield a loss of hyperbolicity. 
 
 The one-dimensional medium is discretized by using either $100$ or $200$ material points lying in $100$ regular grid cells.
-The 1ppc and 2ppc discretizations used here are the same as before.
-Finally, material parameters of table \ref{tab:material} are kept here.
+The 1ppc and 2ppc discretizations used here are the same as before as well as material parameters of table \ref{tab:material}.
+
 \subsubsection{Compression impact on a SVK medium}
 To begin with, the body is submitted to a compression load on its left end so that the solution of this problem consists of a right-going rarefaction. The total and updated Lagrangian formulation of the MPM are here used to solve the problem, along with DGMPM schemes. First of all, the compression load is set to $\Pi^d= 4\times 10^{8} \: Pa$ and numerical solutions are compared in figure \ref{fig:he_rarefaction_UL} at two different times.
 \begin{figure}[h!]
