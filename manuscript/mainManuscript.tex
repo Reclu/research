@@ -1,4 +1,6 @@
-\documentclass[10pt,a4paper,notitlepage,twoside]{report}
+\documentclass[10pt,a4paper,twoside]{report}
+%\documentclass[11pt,a4paper,twoside,openright]{book}
+
 % \usepackage[utf8]{inputenc}
 % \usepackage{tikz}
 % \usepackage{array}
@@ -87,23 +89,17 @@
 
 %\mathtoolsset{showonlyrefs}
 \input{cover/preamble}
-%\input{cover/Funct_TemplateECN}
-%\input{cover/Input_TemplateECN}
+\input{cover/Funct_TemplateECN}
+\input{cover/Input_TemplateECN}
 
 %\makeatother
 \begin{document}
+
 % \AddToShipoutPicture*{\BackgroundTPage}
 % \thispagestyle{empty}
 % ~~\\
 % \ClearShipoutPicture
-% \newpage
 
-
-% %%%
-% \AddToShipoutPicture*{\BackgroundBPage}
-% \thispagestyle{empty}
-% ~~\\
-% \ClearShipoutPicture
 
 \tableofcontents{}
 
@@ -147,6 +143,15 @@
 %\bibliographystyle{apalike}
 \bibliographystyle{ieeetr}
 \bibliography{Biblio}
+
+% \newpage
+
+
+% %%%
+% \AddToShipoutPicture*{\BackgroundBPage}
+% \thispagestyle{empty}
+% ~~\\
+% \ClearShipoutPicture
 
 \end{document}
 
