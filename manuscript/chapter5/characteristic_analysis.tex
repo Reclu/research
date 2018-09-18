@@ -10,6 +10,7 @@ The elastic part of the infinitesimal strain tensor is:
 \end{equation}
 
 \subsubsection*{The general case}
+Reparler de la surface de charge de von-Mises, et tout et tout.
 The governing equations of dynamics in elastic-plastic solids are written in the following quasi-linear form:
 \begin{equation}
   \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \Scb \qquad \text{with: }\Absf^i = -\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\ \Cbb^{ep}\cdot \vect{e}_i & \tens{0}^4}  \label{eq:ch5_quasilinear}
@@ -23,7 +24,7 @@ where $x_n=\vect{x}\cdot\vect{n}$ and the Jacobian matrix $\Jbsf=\Absf^in_i$ ari
   \label{eq:ch5_eigen_system}
   \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0}
 \end{equation}
-As seen in section \ref{sec:characteristic_analysis}, $6$ couples of characteristic speeds $c_K$ and left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ are determined based on those of the acoustic tensor $\tens{A}=\vect{n}\cdot\Cbb^{ep}\cdot \vect{n}$, that are $\{\omega^p;\vect{l}^p\}$ for $p=1,2,3$:
+As seen in section \ref{sec:characteristic_analysis}, $6$ couples of characteristic speeds $c_K$ and left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ are determined based on those of the acoustic tensor $\tens{A}^{ep}=\vect{n}\cdot\Cbb^{ep}\cdot \vect{n}$, that are $\{\omega^p;\vect{l}^p\}$ for $p=1,2,3$:
 \begin{equation}
   \label{eq:ch5_left_eigenfields}
   \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
@@ -58,7 +59,7 @@ with associated left eigenvector:
   \label{eq:ch5_eigenvectAcc}
   \vect{l}^p=\matrice{-A_{12} \\ A_{11}-\omega_p} = \matrice{ A_{22}-\omega_p \\ -A_{12}}
 \end{equation}
-From equation \eqref{eq:ch5_left_eigenfields}, one gets that the problem involves two families of waves travelling at speeds $c_1 = \pm \sqrt{\omega_1/\rho}$ and $c_2 = \pm \sqrt{\omega_2/\rho}$. For elastic evolutions, th
+From equation \eqref{eq:ch5_left_eigenfields}, one gets that the problem involves two families of waves travelling at speeds $c_1 = \pm \sqrt{\omega_1/\rho}$ and $c_2 = \pm \sqrt{\omega_2/\rho}$. For load yielding a stress state that remains in the elastic convex, the acoustic tensor identifies to the elastic one in such a way that $c_1$ and $c_2$ respectively corresponds to elastic shear and pressure (discontinuous) waves. On the other hand, the acoustic tensor and hence the characteristic speed, depend on $\tens{\sigma}$ when plastic flow occurs (see Clifton for the definition of simple waves).
 
 that are referred to as \textit{slow} and \textit{fast} waves, travelling respectively at speeds $c_s = \pm \sqrt{\omega_1/\rho}$ and $c_f = \pm \sqrt{\omega_2/\rho}$.
 Considering equation \eqref{eq:ch5_left_eigenfields}, the problems involve 
