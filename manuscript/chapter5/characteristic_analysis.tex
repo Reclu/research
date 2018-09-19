@@ -8,9 +8,35 @@ The elastic part of the infinitesimal strain tensor is:
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
 \end{equation}
+Linear hardening
+\begin{equation}
+  \label{eq:ch5_von-Mises_yield}
+  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(Cp+\sigma^y\) \equiv 0
+\end{equation}
+$\tens{Y}=\frac{2}{3}C\tens{\eps}^p$ $C$ is the \textit{hardening modulus}.
+At last, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution} can be successively introduced in the elastic law so that one gets \cite[eq (2.2.22)]{Simo}:
+\begin{equation}
+  \label{eq:elastoplastic_tangent}
+  \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +(C+R')}\tens{m}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
+\end{equation}
+with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}.
+The \textit{elastoplastic acoustic tensor} is defined as:
+\begin{equation}
+  \label{eq:EP_acoustic}
+  A_{ij}^{ep}= n_k C^{ep}_{kijl}n_l = A_{ij}^{elast} -  \frac{6\mu^2}{3\mu +(C+R')} (n_k m_{ki})(m_{jl}n_l)
+\end{equation}
 
 \subsubsection*{The general case}
 Reparler de la surface de charge de von-Mises, et tout et tout.
+\begin{equation}
+  \label{eq:ch5_conservative}
+  \Ucb_t + \sum_{i=1}^D \drond{\Fcb\cdot \vect{e}_i}{x_i} = \Scb
+\end{equation}
+ where the conserved quantities, fluxes and source term vectors are:
+\begin{equation}
+  \label{eq:ch5_vectorU}
+  \Ucb =\matrice{\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb\cdot\vect{e}_i = \matrice{-\frac{1}{\rho}\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} } \quad ; \quad \Scb = \matrice{ \vect{b} \\\tens{0}} 
+\end{equation}
 The governing equations of dynamics in elastic-plastic solids are written in the following quasi-linear form:
 \begin{equation}
   \Qcb_t + \Absf^i \drond{\Qcb}{x_i} = \Scb \qquad \text{with: }\Absf^i = -\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\ \Cbb^{ep}\cdot \vect{e}_i & \tens{0}^4}  \label{eq:ch5_quasilinear}
@@ -24,10 +50,10 @@ where $x_n=\vect{x}\cdot\vect{n}$ and the Jacobian matrix $\Jbsf=\Absf^in_i$ ari
   \label{eq:ch5_eigen_system}
   \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0}
 \end{equation}
-As seen in section \ref{sec:characteristic_analysis}, $6$ couples of characteristic speeds $c_K$ and left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ are determined based on those of the acoustic tensor $\tens{A}^{ep}=\vect{n}\cdot\Cbb^{ep}\cdot \vect{n}$, that are $\{\omega^p;\vect{l}^p\}$ for $p=1,2,3$:
+As seen in section \ref{sec:characteristic_analysis}, $6$ couples of characteristic speeds $c_K$ and left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{S}^K \]$ are determined based on those of the acoustic tensor $\tens{A}^{ep}=\vect{n}\cdot\Cbb^{ep}\cdot \vect{n}=\tens{A}^{elast} -  \beta (\vect{n}\cdot\tens{m})\otimes(\tens{m}\cdot \vect{n})$, that are $\{\omega^p;\vect{l}^p\}$ for $p=1,2,3$:
 \begin{equation}
   \label{eq:ch5_left_eigenfields}
-  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
+  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho}} ; \quad \[\: \pm \rho\sqrt{\frac{\omega_p}{\rho}} \vect{l}^p , -\vect{l}^p\otimes \vect{n} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
 In addition, three independent left eigenvectors associated to the zero eigenvalue of system \eqref{eq:ch5_quasilinear_normal}, which is of multiplicity $3$, are found by solving:
 \begin{equation}
@@ -36,10 +62,10 @@ In addition, three independent left eigenvectors associated to the zero eigenval
 \end{equation}
 
 \subsubsection*{Problems in two space dimensions}
-We now focus on the solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-infty,infty[ \times [-e,e]$ in a Cartesian coordinates system, where $e$ is an arbitrary length.
-The solid is subject on the plane $x_1=0$ to a traction force $\vect{T}$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$. It is moreover assumed that all quantities except the velocity component $v_3$ depend solely on $x_1$ and $x_2$.
+We now focus on the solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-\infty,\infty[ \times [-e,e]$ in a Cartesian coordinates system, where $e$ is an arbitrary length.
+The solid is subject on the plane $x_1=0$ to a traction force $\vect{T}$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$. It is moreover assumed that all quantities except the velocity component $v_3$ depend solely on $x_1$ and $x_2$. Given the geometry of the problem, the vector $\vect{n}$ may be reduced to $\vect{e}_1$ or $\vect{e}_2$.
 
-First, the solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $v_3$ vanishes on both ends $x_3=\pm h$. Thus, combination of equations \eqref{eq:ch5_partition} and \eqref{eq:ch5_elastic_inverse}, along with the kinematic condition $\eps_{33}=0$, allows to write a relation between $\sigma_{33}$ and other stress components:
+First, the solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if for instance the velocity $v_3$ vanishes on both ends $x_3=\pm h$. In such a case, combination of equations \eqref{eq:ch5_partition} and \eqref{eq:ch5_elastic_inverse}, along with the kinematic condition $\eps_{33}=0$, allows to write a relation between $\sigma_{33}$ and other stress components:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
@@ -49,21 +75,75 @@ Conversely, if the planes $x_3=\pm e$ are traction free, a plane stress state re
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:ch5_eigenAcc1}
-    &\omega_1 = \frac{1}{2}\(A_{11}+A_{22} - \sqrt{(A_{11}-A_{22})^2+4A_{12}}\) \\
+    &\omega_1 = \frac{1}{2}\(A^{ep}_{11}+A^{ep}_{22} + \sqrt{(A^{ep}_{11}-A^{ep}_{22})^2+{4A^{ep}_{12}}^2}\) \\
     \label{eq:ch5_eigenAcc2}
-    &\omega_2 = \frac{1}{2}\(A_{11}+A_{22} + \sqrt{(A_{11}-A_{22})^2+4A_{12}}\) 
+    &\omega_2 = \frac{1}{2}\(A^{ep}_{11}+A^{ep}_{22} - \sqrt{(A^{ep}_{11}-A^{ep}_{22})^2+{4A^{ep}_{12}}^2}\)     
   \end{alignat}
 \end{subequations}
 with associated left eigenvector:
 \begin{equation}
   \label{eq:ch5_eigenvectAcc}
-  \vect{l}^p=\matrice{-A_{12} \\ A_{11}-\omega_p} = \matrice{ A_{22}-\omega_p \\ -A_{12}}
+  \vect{l}^p=\matrice{-A^{ep}_{12} \\ A^{ep}_{11}-\omega_p} = \matrice{ A^{ep}_{22}-\omega_p \\ -A^{ep}_{12}}
 \end{equation}
-From equation \eqref{eq:ch5_left_eigenfields}, one gets that the problem involves two families of waves travelling at speeds $c_1 = \pm \sqrt{\omega_1/\rho}$ and $c_2 = \pm \sqrt{\omega_2/\rho}$. For load yielding a stress state that remains in the elastic convex, the acoustic tensor identifies to the elastic one in such a way that $c_1$ and $c_2$ respectively corresponds to elastic shear and pressure (discontinuous) waves. On the other hand, the acoustic tensor and hence the characteristic speed, depend on $\tens{\sigma}$ when plastic flow occurs (see Clifton for the definition of simple waves).
+One gets from equation \eqref{eq:ch5_left_eigenfields} that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ which are respectively referred to as \textit{fast} and \textit{slow} waves, may travel in the domain.
+Four left eigenfields of the Jacobian matrix then read:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:ch5_Jac_eigenfield_fast}
+    &\left\lbrace \pm c_f ; \quad \Lcb^{c_f^\pm}=\[\: \pm \rho c_f \vect{l}^1 , -\vect{l}^1\otimes \vect{n} \:\]  \right\rbrace \\
+  \label{eq:ch5_Jac_eigenfield_slow}
+    &\left\lbrace \pm c_s ; \quad \Lcb^{c_s^\pm}=\[\: \pm \rho c_s \vect{l}^2 , -\vect{l}^2\otimes \vect{n} \:\]  \right\rbrace
+  \end{alignat}
+\end{subequations}
+where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-goind fast waves respectively. The same goes for $\Lcb^{c_s^-}$ and $\Lcb^{c_s^-}$. In addition, one stationary wave associated to the zero eigenvalue of the Jacobian matrix has to be added. The left eigenvector of the corresponding characteristic field satisfies equation \eqref{eq:ch5_null_eigen} and can be taken as:
+\begin{equation}
+  \label{eq:ch5_null_left_eigen}
+  {\Lcb^0}^T = \matrice{v_1^0 \\[5.pt] v_2^0 \\[5.pt] \sigma_{11}^0 \\[5.pt] \sigma^0_{22} \\[5.pt] \sigma^0_{12} }= \matrice{0 \\[5.pt] 0 \\[5.pt] \(C^{ep}_{121i}C^{ep}_{222j}-C^{ep}_{221i}C^{ep}_{122j}\)n_in_j \\[5.pt] \(C^{ep}_{111i}C^{ep}_{122j}-C^{ep}_{112i}C^{ep}_{121j}\)n_in_j \\[5.pt] \(C^{ep}_{112i}C^{ep}_{221j}-C^{ep}_{111i}C^{ep}_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
+\end{equation}
 
-that are referred to as \textit{slow} and \textit{fast} waves, travelling respectively at speeds $c_s = \pm \sqrt{\omega_1/\rho}$ and $c_f = \pm \sqrt{\omega_2/\rho}$.
-Considering equation \eqref{eq:ch5_left_eigenfields}, the problems involve 
+Thus, the characteristic equations $\Lcb^K \cdot d\Qcb = 0$ yield:
+\begin{subequations}
+  \label{eq:ch5_ODEs}
+  \begin{alignat}{3}
+    \label{eq:charac_fr}
+    & \rho c_f \vect{l}^1 \cdot d\vect{v} - l^1_i n_j d\sigma_{ij} =0 \qquad && \text{along }\: dx/dt = c_f\\
+    \label{eq:charac_fl}
+    -& \rho c_f \vect{l}^1 \cdot d\vect{v} - l^1_i n_j d\sigma_{ij} =0 \qquad && \text{along }\: dx/dt = - c_f \\
+    \label{eq:charac_sr}
+    & \rho c_s \vect{l}^2 \cdot d\vect{v} - l^2_i n_j d\sigma_{ij} =0 \qquad  && \text{along }\: dx/dt =  c_s \\
+    \label{eq:charac_sl}
+    -& \rho c_s \vect{l}^2 \cdot d\vect{v} - l^2_i n_j d\sigma_{ij} =0 \qquad  && \text{along }\: dx/dt = - c_s \\
+    \label{eq:charac_contact}
+    &\alpha_{11}d\sigma_{11} + \alpha_{12}d\sigma_{12} + \alpha_{22}d\sigma_{22}=0 \qquad && \text{along }\: dx/dt =0 
+  \end{alignat}
+\end{subequations}
+Is is shown in \cite{Ting73} that the plastic celerities only depends on $\tens{\sigma}/\norm{\tens{\sigma}}$ so that they are constant along in ray of the stress space $(\sigma_{11}, \sigma_{22}, \sigma_{12})$.
+For now, it is assumed that the characteristic speeds satisfy: $c_1 \geq c_f \geq c_2 \geq c_s \geq 0$ and that the plastic celerities are monotonically decreasing functions of the stress.
 
+Using the following expressions for the eigenvectors of the acoustic tensor:
+\begin{equation*}
+  \vect{l}^1=\matrice{ A^{ep}_{22}- \rho c_f^2 \\ -A^{ep}_{12}} \quad ;\quad  \vect{l}^2=\matrice{ -A^{ep}_{12} \\A^{ep}_{11}-\rho c_s^2  }
+\end{equation*}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter5/pgfFigures/simpleWaves}}
+  \caption{Characteristics of slow, fast and stationary waves in the $(x_n,t)$ plane.}
+  \label{fig:ch5_charac_method}
+\end{figure}
+%This is in particular true if we restrict our attention to the quarter-space $(\sigma_{11} \geq 0, \sigma_{22} \geq 0 , \sigma_{12}\geq 0)$ in which every components of the tensor  
+%Assuming that no shock occurs, the integration of ODEs \eqref{eq:ch5_ODEs} yields simple wave solutions of the problem.
+%This assumption seems to be valid with the convex flux function used in equation \eqref{eq:ch5_conservative} that leads to monotonically decreasing wave speeds with respect to the stress tensor. Furthermore, the medium is homogeneous 
+%% Ne pas regarder genuinely non-linear car ça n'apporte rien. Ca donne juste une indication sur la variation des vitesses le long des courbes intégrales mais pas en fonction de la contrainte.
+
+
+
+
+
+% It has been shown in \cite{Ting69} (homogeneous function so that c are constant along radial lines in the stress space)
+
+%This is in paticular true when looking at the normal vectors $\vect{n} = \vect{e}_1$ and $\vect{n} = \vect{e}_2$ that yield an acoustic tensor $A_{ij}^{ep}=A_{ij}^{elas} - \beta m_{pi}m_{jq}n_p n_q\deta_{pq}$.
+
+Clifton écrit l'équation caractéristique et ensuite cherche des solutions d'ondes simples. Donc on peut faire de même et regarder après l'équation caractéristiques comment évoluent les vitesses.
 
 
 
