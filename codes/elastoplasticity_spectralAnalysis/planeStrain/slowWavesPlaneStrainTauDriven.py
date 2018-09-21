@@ -31,7 +31,7 @@ sigy = 100.0e6
 H = 100.08e6
 beta=(6.*mu**2)/(3.*mu+H)
 
-def build2DTeXFiles(names,pgfFiles,xlabels,ylabels,subtitle,srcX,srcY):
+def buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY):
     # srcX and srcY contain key to get the correct column (i.e. fields) in pgfFiles for instance "sigma_11"
     for i,nom in enumerate(names):
         TeXFile=open(nom,"w")
@@ -39,20 +39,32 @@ def build2DTeXFiles(names,pgfFiles,xlabels,ylabels,subtitle,srcX,srcY):
         marker=['none','none','+','x','none','none','star','pentagone*']
         style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
         thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
-        couleur=['Red','Blue','Orange','Purple','black','Orange','Green','Duck','Green']
+        couleur=['Red','Blue','Orange','Purple','Green','Duck']
         TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
-        if subtitle[i][:3]=='(b)':
-            TeXFile.write(r'\begin{axis}[colorbar,colorbar style={title= {$\rho c_s^2 \: (m/s)$},title style={font=\scriptsize,at={(1.5,.6)},anchor=north west}},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true,title={'+subtitle[i]+'}]');TeXFile.write('\n')
-        else :
-            TeXFile.write(r'\begin{axis}[xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true,title={'+subtitle[i]+'}]');TeXFile.write('\n')
-        for j,name in enumerate(pgfFiles[i]):
-            #pdb.set_trace()
-            if name[25:25+12]=='DPslow_yield': ##  yield surface
-                TeXFile.write(r'\addplot[gray,thin] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
-                TeXFile.write('\n')
-            else:
-                TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
-                TeXFile.write('\n')
+        if subtitle[i][:3]=='(c)':
+            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty]');TeXFile.write('\n')
+            for j,name in enumerate(pgfFiles[i][:len(couleur)]):
+                #pdb.set_trace()
+                if name[25:25+12]=='CylindreDevP': ##  yield surface
+                    TeXFile.write(r'\addplot3+[gray,thin,no markers] file {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write('\n')
+                else:
+                    TeXFile.write(r'\addplot3+['+couleur[j]+',very thick,no markers] file {chapter5/pgfFigures/'+name+'};')
+                    #TeXFile.write(r'\addplot3+[black,thick,no markers] file {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write('\n')
+        else:
+            if subtitle[i][:3]=='(b)':
+                TeXFile.write(r'\begin{axis}[colorbar,colorbar style={title= {$p$}},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true]');TeXFile.write('\n')
+            else :
+                TeXFile.write(r'\begin{axis}[xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true]');TeXFile.write('\n')
+            for j,name in enumerate(pgfFiles[i]):
+                #pdb.set_trace()
+                if name[25:25+12]=='DPslow_yield': ##  yield surface
+                    TeXFile.write(r'\addplot[gray,thin] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write('\n')
+                else:
+                    TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write('\n')
         TeXFile.write('\n')    
         TeXFile.write(r'\end{axis}')
         TeXFile.write('\n')
@@ -323,7 +335,7 @@ def orthogonal_proj(zfront, zback):
                         [0,0,0,zback]])
 proj3d.persp_transformation = orthogonal_proj
 
-Samples=6
+Samples=6#
 
 # Sample constant stress component sig22
 sig22=np.linspace(0.,sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
@@ -381,6 +393,7 @@ tangent='planeStrain'
 pgfFilesList=[]
 yields11_s12=[]
 yields22_s12=[]
+deviatorPlots=[]
 for k in range(len(sig22)-1)[1:]:
     s22=sig22[k]
     sigM=1.25*np.max(sig[:,k])
@@ -472,13 +485,14 @@ for k in range(len(sig22)-1)[1:]:
         print "Final equivalent plastic strain after slow wave : ",plast
         fileName=path+'DPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
-        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
-        fileName='DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
+        fileName=path+'DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
-        #export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
+        export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
+        deviatorPlots.append(fileName)
         """
         if k==1:
             fileName='slowWave_DevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
@@ -489,11 +503,12 @@ for k in range(len(sig22)-1)[1:]:
     
     if k==1:
         cylindre=vonMisesYieldSurface(sigy)
-        fileName='CylindreDevPlane.pgf'
-        #export2pgfPlot3D(str(fileName),cylindre[0,:],cylindre[1,:],cylindre[2,:])
-    
+        fileName=path+'CylindreDevPlane.pgf'
+        export2pgfPlot3D(str(fileName),cylindre[0,:],cylindre[1,:],cylindre[2,:])
+        deviatorPlots.append(fileName)
     TAU_MAX_S=np.max(ordonnees)
     SIG_MAX_S=np.max(abscisses)
+
 
     plot_path=True
     ### SUBPLOTS SETTINGS
@@ -597,21 +612,48 @@ for k in range(len(sig22)-1)[1:]:
         plt.suptitle(r'Loading paths through slow waves for $\sigma_{22}$ ='+'{:.2e}'.format(sig22[k])+'Pa.', fontsize=24.)
         #plt.show()
 
-files=[pgfFilesList,yields11_s12,yields22_s12]
+        ## sig22 value will change here
+    xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
+    ylabels=['$\sigma_{12} $','$\sigma_{12} $','$s_2 $'] #size=number of .tex files
+    zlabels=['','','$s_3$'] #size=number of .tex files
 
-xlabels=['$\sigma_{11}$','$\sigma_{22}$'] #size=number of .tex files
-ylabels=['$\sigma_{12}$','$\sigma_{12}$'] #size=number of .tex files
 
-subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane']
+    subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane',r'(c) Deviatoric plane']
 
-srcX=['sigma_11','sigma_22']
-srcY=['sigma_12','sigma_12']
+    srcX=['sigma_11','sigma_22']
+    srcY=['sigma_12','sigma_12']
 
-name1="slowWaves_sig11_tau.tex"
-name2="slowWaves_sig22_tau.tex"
-names=[name1,name2]
+    name1='slowWaves_sig11_tau'+str(k)+'.tex'
+    name2='slowWaves_sig22_tau'+str(k)+'.tex'
+    name3='slowWaves_deviator'+str(k)+'.tex'
+    names=[name1,name2,name3]
 
-files1=np.concatenate([pgfFilesList,yields11_s12])
-files2=np.concatenate([pgfFilesList,yields22_s12])
-pgfFiles=[files1,files2]
-build2DTeXFiles(names,pgfFiles,xlabels,ylabels,subtitle,srcX,srcY)
+    files1=np.concatenate([pgfFilesList,yields11_s12])
+    #files2=np.concatenate([pgfFilesList,yields22_s12])
+    files2=pgfFilesList
+    pgfFiles=[files1,files2,deviatorPlots]
+    buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY)
+    pgfFilesList=[];yields11_s12=[];
+
+# files=[pgfFilesList,yields11_s12,yields22_s12,deviatorPlots]
+
+# xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
+# ylabels=['$\sigma_{12} $','$\sigma_{12} $','$s_2 $'] #size=number of .tex files
+# zlabels=['','','$s_3$'] #size=number of .tex files
+
+
+# subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane',r'(c) Deviatoric plane']
+
+# srcX=['sigma_11','sigma_22']
+# srcY=['sigma_12','sigma_12']
+
+# name1="slowWaves_sig11_tau.tex"
+# name2="slowWaves_sig22_tau.tex"
+# name3="slowWaves_deviator.tex"
+# names=[name1,name2,name3]
+
+# files1=np.concatenate([pgfFilesList,yields11_s12])
+# #files2=np.concatenate([pgfFilesList,yields22_s12])
+# files2=pgfFilesList
+# pgfFiles=[files1,files2,deviatorPlots]
+# buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY)
