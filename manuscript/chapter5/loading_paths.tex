@@ -63,7 +63,8 @@ Since the denominator is positive for $c_f \geq c_2$, it comes out that $\sign (
 
 Next, from the expressions of the acoustic tensor components, we see that particular cases leading to $\psi^f_1\rightarrow \infty$ or $\psi^f_1\rightarrow 0$ arise when $s_{11}=0$ and $s_{12}=0$. 
 \paragraph*{Condition $s_{12}=0$ :} 
-We first look at the shear-free state for which the subtraction of the acoustic tensor diagonal entries reads: $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu -\beta s_{11}^2$. Hence, the \textbf{undeterminancy} of the functions $\psi^$ arises for $s_{11} = \pm \sqrt{\frac{\lambda+\mu}{\beta}}$ (on the dowstream side), while if $s_{11} \neq \pm \sqrt{\frac{\lambda+\mu}{\beta}}$, $\psi^f_1 \rightarrow \infty$ and $\psi^s_1 \rightarrow 0$.
+We first look at the shear-free state for which the subtraction of the acoustic tensor diagonal entries reads: $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu -\beta s_{11}^2$. 
+%Hence, the \textbf{undeterminancy} of the functions $\psi^$ arises for $s_{11} = \pm \sqrt{\frac{\lambda+\mu}{\beta}}$ (on the dowstream side), while if $s_{11} \neq \pm \sqrt{\frac{\lambda+\mu}{\beta}}$, $\psi^f_1 \rightarrow \infty$ and $\psi^s_1 \rightarrow 0$.
 
 Recall that $\psi^f_1$ tending to infinity implies that tha loading path are horizontal in $(\sigma_{11},\sigma_{12})$ plane and hence, tha fast wave has no influence on the shear stress if, and only if, $\sigma_{12}=0$ downstream. Conversely, the stress paths through slow simple waves are vertical. Moreover, with regard the last row of table \ref{tab:simpleWavesEquations}, $\sigma_{22}$ is also unchanged in that case. As a consequence, if the initial state is shear-free the solution no longer contain combined waves, but longitudinal stress and shear stress simple waves.
 
@@ -77,6 +78,59 @@ so that $s_{11}=0$ occurs for:
   \label{eq:plane_strain_s11=0}
   \sigma_{11}=\frac{1+\nu}{2-\nu}\sigma_{22}-E\eps^p_{33}
 \end{equation}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes}{\input{chapter5/pgfFigures/fastWaves0.tex}}
+  \subcaptionbox{Loading path in deviatoric plane}{\input{chapter5/pgfFigures/fastWaves_deviator0.tex}}
+  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface. Stresses in Pa}
+  \label{fig:fast_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/slowWaves1.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/slowWaves_deviator1.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/slowWaves2.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/slowWaves_deviator2.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/slowWaves3.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/slowWaves_deviator3.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+
+
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/fastWaves2.tex}}
+%   \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/fastWaves_deviator2.tex}}
+%   \caption{loading paths through fast simple waves. Stresses in Pa (if required)}
+%   \label{fig:fast_path_plane_strains}
+% \end{figure}
+
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/fastWaves3.tex}}
+%   \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/fastWaves_deviator3.tex}}
+%   \caption{loading paths through fast simple waves. Stresses in Pa (if required)}
+%   \label{fig:fast_path_plane_strains}
+% \end{figure}
 
 
 \subsection{The plane stress case}
