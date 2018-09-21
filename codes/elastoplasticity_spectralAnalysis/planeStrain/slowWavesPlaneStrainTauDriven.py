@@ -1,0 +1,617 @@
+# !\usr\bin\python
+import numpy as np
+from mpl_toolkits import mplot3d
+import matplotlib.pyplot as plt
+import scipy.optimize
+from matplotlib import animation
+from scipy.integrate import ode
+import pdb
+from matplotlib import rcParams
+import os
+import sys
+
+directory=os.path.basename(__file__)[:20]
+if not os.path.exists('pgf_'+str(directory)+'/'):
+    os.system('mkdir pgf_'+str(directory)+'/')
+path='pgf_'+str(directory)+'/'
+
+rcParams['axes.labelsize'] = 16
+rcParams['xtick.labelsize'] = 16
+rcParams['ytick.labelsize'] = 16
+rcParams['legend.fontsize'] = 16
+
+# Material parameters
+rho = 7800.
+E = 2.e11
+nu = 0.3
+mu = 0.5*E/(1.+nu)
+kappa = E/(3.*(1.-2.*nu))
+lamb = kappa-2.*mu/3.
+sigy = 100.0e6        
+H = 100.08e6
+beta=(6.*mu**2)/(3.*mu+H)
+
+def build2DTeXFiles(names,pgfFiles,xlabels,ylabels,subtitle,srcX,srcY):
+    # srcX and srcY contain key to get the correct column (i.e. fields) in pgfFiles for instance "sigma_11"
+    for i,nom in enumerate(names):
+        TeXFile=open(nom,"w")
+        ## For regular plots (i.e. not daviatoric plane)
+        marker=['none','none','+','x','none','none','star','pentagone*']
+        style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
+        thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
+        couleur=['Red','Blue','Orange','Purple','black','Orange','Green','Duck','Green']
+        TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
+        if subtitle[i][:3]=='(b)':
+            TeXFile.write(r'\begin{axis}[colorbar,colorbar style={title= {$\rho c_s^2 \: (m/s)$},title style={font=\scriptsize,at={(1.5,.6)},anchor=north west}},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true,title={'+subtitle[i]+'}]');TeXFile.write('\n')
+        else :
+            TeXFile.write(r'\begin{axis}[xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true,title={'+subtitle[i]+'}]');TeXFile.write('\n')
+        for j,name in enumerate(pgfFiles[i]):
+            #pdb.set_trace()
+            if name[25:25+12]=='DPslow_yield': ##  yield surface
+                TeXFile.write(r'\addplot[gray,thin] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
+                TeXFile.write('\n')
+            else:
+                TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[i])+',y='+str(srcY[i])+'] {chapter5/pgfFigures/'+name+'};')
+                TeXFile.write('\n')
+        TeXFile.write('\n')    
+        TeXFile.write(r'\end{axis}')
+        TeXFile.write('\n')
+        TeXFile.write('\end{tikzpicture}')
+        TeXFile.write('\n')
+        TeXFile.write('%%% Local Variables:')
+        TeXFile.write('\n')
+        TeXFile.write('%%% mode: latex')
+        TeXFile.write('\n')
+        TeXFile.write('%%% TeX-master: "../../mainManuscript"')
+        TeXFile.write('\n')
+        TeXFile.write('%%% End:')
+        TeXFile.write('\n')
+        TeXFile.close()
+
+def export2pgfPlot2D(fileName,field1,field2,dico={"xlabel":'x',"ylabel":'y'}):
+    #pdb.set_trace()
+    dataFile=open(fileName,"w")
+    xlabel=dico["xlabel"]
+    ylabel=dico["ylabel"]
+    dataFile.write('# Curve ('+str(xlabel)+';'+str(ylabel)+') '+str(len(field1))+' points.\n')
+    for i,x in enumerate(field1):
+        dataFile.write(str(x)+' '+str(field2[i])+' i\n')
+    dataFile.close()
+
+def export2pgfPlot3D(fileName,field1,field2,field3,dico={"xlabel":'x',"ylabel":'y',"zlabel":'z'}):
+    #pdb.set_trace()
+    dataFile=open(fileName,"w")
+    # 2D export
+    xlabel=dico["xlabel"]
+    ylabel=dico["ylabel"]
+    zlabel=dico["zlabel"]
+    dataFile.write('# Curve ('+str(xlabel)+';'+str(ylabel)+';'+str(zlabel)+') '+str(field1.shape[0])+' points.\n')
+    for i,x in enumerate(field1):
+        dataFile.write(str(x)+' '+str(field2[i])+' '+str(field3[i])+' i\n')
+    dataFile.close()
+
+def export2pgfPlotFile(fileName,fields,*kwargs):
+    #pdb.set_trace()
+    dataFile=open(fileName,"w")
+    # 2D export
+    n_fields = np.shape(fields)[0]
+    n_labels = np.shape(kwargs)[0]
+    if n_fields != n_labels : print n_fields-n_labels," missing in export to pgf File !"
+    labels=[]
+    line1 = ' # Curve ('
+    line2 = ''
+    for i in range(n_labels):
+        labels.append(str(kwargs[i]))
+        line1+=str(kwargs[i])+' ; '
+        line2+=str(kwargs[i])+' '
+        if i==n_labels-1 :
+            line1+=str(np.shape(fields)[1])+' points.)\n'
+            line2+=' \n'
+        
+    dataFile.write(line1)
+    dataFile.write(line2)
+    for i,x in enumerate(fields[0,:]):
+        dataFile.write(str(x))
+        for j in range(n_fields-1):
+            dataFile.write(' '+str(fields[j+1,i]))
+        dataFile.write(' i\n')
+    dataFile.close()
+
+    
+def tangentModulus(sigma,lamb,mu,beta,tangent):
+    H=np.zeros((3,3))
+    #    |H1111 H1112 H1122|
+    # H =|H1211 H1212 H1222|
+    #    |H2211 H2212 H2222|
+    # sigma = [sig11 , sig12 , sig22 , sig33 ]
+    sigDev = computeDeviatoricPart(sigma)
+    sigdnorm2=np.dot(sigDev,sigDev)
+    BETA=beta/sigdnorm2
+    s11=sigDev[0];s12=sigDev[1]/np.sqrt(2.);s22=sigDev[2];s33=sigDev[3]
+    
+    ## Plane stress tangent modulus Hijkl = Hijkl - Hij33*H33kl/H3333
+    H1133=(lamb -BETA*s11*s33)
+    H1233=(-BETA*s12*s33)
+    H1122=(lamb -BETA*s11*s22)
+    H2222=(lamb+2.*mu -BETA*s22**2)
+    H1222=(-BETA*s12*s22)
+    H2233=(lamb-BETA*s22*s33)
+    H3333=(lamb+2.*mu-BETA*s33*s33)
+    if tangent=='planeStress':
+        H[0,0]=lamb+2.*mu - BETA*s11**2 -H1133*H1133/H3333
+        H[0,1]=-BETA*s11*s12 -H1133*H1233/H3333
+        H[0,2]=lamb-BETA*s11*s22 -H1133*H2233/H3333
+        H[1,0]=-BETA*s12*s11-H1233*H1133/H3333
+        H[1,1]=mu-BETA*s12**2 -H1233*H1233/H3333
+        H[1,2]=-BETA*s12*s22-H1233*H2233/H3333
+        H[2,0]=lamb - BETA*s11*s22 -H2233*H1133/H3333
+        H[2,1]=-BETA*s22*s12 -H2233*H1233/H3333
+        H[2,2]=lamb+2.*mu-BETA*s22**2 -H2233*H2233/H3333
+    elif tangent=='thinWalled':
+        H[0,0]=lamb+2.*mu - BETA*s11**2 -H1122*(H1122+H1133)/(H2233+H2222)
+        H[0,1]=-BETA*s11*s12  -H1222*(H1122+H1133)/(H2233+H2222)
+        H[0,2]=lamb-BETA*s11*s22 
+        H[1,0]=-BETA*s12*s11-H1122*(H1222+H1233)/(H2233+H2222)
+        H[1,1]=mu-BETA*s12**2-H1222*(H1222+H1233)/(H2233+H2222)
+        H[1,2]=-BETA*s12*s22
+        H[2,0]=lamb - BETA*s11*s22 
+        H[2,1]=-BETA*s22*s12
+        H[2,2]=lamb+2.*mu-BETA*s22**2
+    else :
+        H[0,0]=lamb+2.*mu - BETA*s11**2 
+        H[0,1]=-BETA*s11*s12
+        H[0,2]=lamb-BETA*s11*s22
+        H[1,0]=-BETA*s12*s11
+        H[1,1]=mu-BETA*s12**2
+        H[1,2]=-BETA*s12*s22
+        H[2,0]=lamb-BETA*s11*s22
+        H[2,1]=-BETA*s12*s22
+        H[2,2]=lamb+2.*mu-BETA*s22**2
+    return H
+
+def acousticTensor(H,n):
+    n1=n[0] ; n2=n[1]
+    C11 = H[0,0]*n1**2 + H[1,1]*n2**2 + 2.*H[0,1]*n1*n2
+    C12 = H[0,1]*n1**2 + H[1,2]*n2**2 + (H[0,2]+H[1,1])*n1*n2
+    C22 = H[1,1]*n1**2 + H[2,2]*n2**2 + 2.*H[2,1]*n1*n2
+    return np.array([C11,C12,C22])
+
+
+def acousticEigenStructure(C):
+    C11=C[0];C12=C[1];C22=C[2]
+    ## omega1,w1 associated to cf
+    ## omega2,w2 associated to cs
+    omega1=0.5*(C11+C22 + np.sqrt((C11-C22)**2+4.*C12**2))
+    omega2=0.5*(C11+C22 - np.sqrt((C11-C22)**2+4.*C12**2))
+    w1=np.array([-C12,C11-omega1])
+    w2=np.array([-C12,C11-omega2])
+    return [omega1,w1],[omega2,w2]
+
+def vonMisesYieldSurface(sigma):
+    ## Version one : build a cylinder in sigma eigenspace and turn it around axis
+    
+    radius=np.sqrt((2./3.)*sigy**2)
+    theta=np.linspace(0,2*np.pi,50)
+    s2 = radius*np.cos(theta)
+    s3 = radius*np.sin(theta)
+    s1=0.
+    c=np.sqrt(2.)/2.;
+    s=np.sqrt(2.)/2.;
+    P2=np.array([[c,-c,0.],[c,c,0.],[0.,0.,1.]])
+    P1=np.array([[c,0.,-c],[0.,1.,0.],[c,0.,c]])
+    c=np.cos(np.arctan(1./np.sqrt(2.0)))
+    s=np.sin(np.arctan(1./np.sqrt(2.0)))
+    P1=np.array([[c,0.,-s],[0.,1.,0.],[s,0.,c]])
+    cylindre=np.zeros((3,len(s2)))
+
+    for i in range(len(s2)):
+        cylindre[:,i] = np.dot(P2,np.dot(P1,np.array([s1,s2[i],s3[i]])))
+    return cylindre
+
+def computeDeviatoricPart(T):
+    # T = [T11 T21 T22 T33]
+    Pdev=np.array([[1.-1/3.,0.,-1./3.,-1./3.],[0.,1.,0.,0.],[-1./3.,0.,1.-1./3.,-1./3.],[-1./3.,0.,-1./3.,1.-1./3.]])
+    Tdev=np.dot(Pdev,T)
+    return np.array([Tdev[0],np.sqrt(2.)*Tdev[1],Tdev[2],Tdev[3]])
+
+def computeCriterion(sig11,sig22,sig12,sig33,sigy):
+    # deviatoric stress
+    sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
+    normSDev=np.sqrt(np.dot(sDev,sDev))
+    f=np.sqrt(3./2.)*normSDev - sigy
+    return f
+
+def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0];sig22=sigma[1]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    alpha11= (H[0,1]*n1+H[1,1]*n2)*(H[1,2]*n1+H[2,2]*n2)-(H[0,2]*n1+H[1,2]*n2)*(H[1,1]*n1+H[1,2]*n2)
+    alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2)-(H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
+    alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2)-(H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
+    w1=eigenf[1][0];w2=eigenf[1][1]
+    psi11=-w2/(1.*w1)
+    psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
+    return np.array([psi11,psi22])
+
+def computeSpeedSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0];sig22=sigma[1]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    rcs2=eigens[0]
+    return rcs2
+
+def computeLodeAngle(sig11,sig22,sig12,sig33):
+    # deviatoric stress
+    sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
+    s11=sDev[0];s12=sDev[1]/np.sqrt(2.);s22=sDev[2];s33=sDev[3]
+    sig=computeEigenStresses(np.matrix([[s11,s12,0.],[s12,s22,0.],[0.,0.,s33]]))
+    # deviator 2nd and 3rd invariants
+    J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(0.5*np.dot(sDev,sDev))
+    tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
+    theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    theta=theta*360./(2.*np.pi)
+    return theta
+
+def updateEquivalentPlasticStrain(sig,sign,H):
+    # sig=[sig11^n , sqrt(2)*sig12^n , sig22 , sig33^n]
+    # sign=[sig11^n+1 , sqrt(2)*sig12^n+1 , sig22 , sig33^n+1]
+    sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
+    sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDev/norm
+    #dSig=sign-sig
+    dSig=sigDevn-sigDev
+    dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    return dp
+
+def computeEigenStresses(sig):
+    #    | sig11 sig12   0   |
+    #sig=| sig12 sig22   0   |
+    #    |   0     0   sig33 |
+    s3=sig[2,2]
+    delta=(sig[0,0]-sig[1,1])**2+4.*sig[0,1]**2
+    s1=0.5*(sig[0,0]+sig[1,1]-np.sqrt(delta))
+    s2=0.5*(sig[0,0]+sig[1,1]+np.sqrt(delta))
+    # eigenvectors
+    v1=np.array([sig[0,0]-sig[1,1]-np.sqrt(delta),sig[0,1],0])
+    v2=np.array([sig[0,0]-sig[1,1]+np.sqrt(delta),sig[0,1],0])
+    return np.array([s1,s2,s3])
+
+def eigenVects(sig):
+    #    | sig11 sig12   0   |
+    #sig=| sig12 sig22   0   |
+    #    |   0     0   sig33 |
+    s3=sig[2,2]
+    delta=(sig[0,0]-sig[1,1])**2+4.*sig[0,1]**2
+    s1=0.5*(sig[0,0]+sig[1,1]-np.sqrt(delta))
+    s2=0.5*(sig[0,0]+sig[1,1]+np.sqrt(delta))
+    # eigenvectors
+    v1=np.array([sig[0,0]-sig[1,1]-np.sqrt(delta),sig[0,1],0])
+    v2=np.array([sig[0,0]-sig[1,1]+np.sqrt(delta),sig[0,1],0])
+    v3=np.array([0.,0.,1.])
+    return v1,v2,v3
+
+
+def computePlasticResidual(epsp33,sig,epsp33n,sign,E,H,nu):
+    # sig = [sig11 , sig12*sqrt(2) , sig22 , sig33] (previous time step)
+    # sig33n = nu*(sig11+sig22)-E*epsp33n (updated time step)
+    sign[3]=nu*(sign[0]+sign[2])-E*epsp33n
+    sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
+    sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    #dSig=sign-sig
+    dSig=sigDevn-sigDev
+    dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    res=epsp33n-epsp33-np.sqrt(3./2.)*flow[3]*dp
+    return res
+
+
+from mpl_toolkits.mplot3d import proj3d
+def orthogonal_proj(zfront, zback):
+    a = (zfront+zback)/(zfront-zback)
+    b = -2*(zfront*zback)/(zfront-zback)
+    return np.array([[1,0,0,0],
+                        [0,1,0,0],
+                        [0,0,a,b],
+                        [0,0,0,zback]])
+proj3d.persp_transformation = orthogonal_proj
+
+Samples=6
+
+# Sample constant stress component sig22
+sig22=np.linspace(0.,sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
+sig22=np.linspace(-sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
+
+Samples*=10
+sig=np.zeros((Samples,Samples))
+tau=np.zeros((Samples,Samples))
+
+frames=[5,10,20,40]
+#frames=[10,15,20,25,30,35]
+#frames=[5]
+col=["r","g","b","y","c","m","k","p"]
+# purple to red
+col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
+tauM=1.5*sigy/np.sqrt(3.)
+sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
+tauM=sigM
+Niter=500
+TAU=np.zeros((Niter,len(frames),len(sig22)))
+SIG11=np.zeros((Niter,len(frames),len(sig22)))
+SIG22=np.zeros((Niter,len(frames),len(sig22)))
+SIG33=np.zeros((Niter,len(frames),len(sig22)))
+eigsigS=np.zeros((Niter,len(frames),len(sig22),3))
+criterionS=np.zeros((Niter,len(frames),len(sig22)))
+PsiS=np.zeros((Samples,len(sig22)))
+
+plast_S=np.zeros((Niter,len(frames),len(sig22)))
+Epsp33=np.zeros((Niter,len(frames),len(sig22)))
+LodeAngle_S=np.zeros((Niter,len(frames),len(sig22)))
+speed_S=np.zeros((Niter,len(frames),len(sig22)))
+
+# Boolean to plot the upadted yield surface
+updated_criterion=True
+for k in range(len(sig22)-1)[1:]:
+    s22=sig22[k]
+    
+    Delta=(4.*(nu**2-nu+1.)*sigy**2- 3.*(4.*nu**2-4.*nu+1.)*s22**2)
+    sigMax=(s22*(1.+2.*nu-2.*nu**2)+np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+    sigMin=(s22*(1.+2.*nu-2.*nu**2)-np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+    
+    # Sample stress component sig11
+    sig[:,k]=np.linspace(sigMin,sigMax,Samples)
+    
+    # Compute shear stress satisfying the criterion given sig11 and sig22
+    for i in range(Samples):
+        s11=sig[i,k]
+        delta=((nu-nu**2)*(s11+s22)**2 -s11**2-s22**2+s11*s22 + sigy**2)/3.
+        if np.abs(delta)<10. : delta=np.abs(delta)
+        tau[i,k]=np.sqrt(delta)
+        if np.isnan(tau[i,k]): print "Nan ",delta,s11,s22,i,k
+
+tangent='planeStrain'
+## LOADING PATHS PLOTS
+pgfFilesList=[]
+yields11_s12=[]
+yields22_s12=[]
+for k in range(len(sig22)-1)[1:]:
+    s22=sig22[k]
+    sigM=1.25*np.max(sig[:,k])
+    tauM=1.25*np.max(tau[:,k])
+    ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
+    approx=np.zeros((len(frames),2))
+    ordonnees=np.zeros((len(frames),Samples))
+    abscisses=np.zeros((len(frames),Samples))
+    radius_S=np.zeros(len(frames))
+    for s,i in enumerate(frames):
+        if s22==0:
+            continue
+        sig0=sig[-1-i,k]
+        tau0=tau[-1-i,k]
+
+        
+        dtau=(tauM-tau0)/Niter
+        
+        TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
+        
+        SIG11[0,s,k]=sig0
+        SIG22[0,s,k]=s22
+        
+        sig33=nu*(SIG11[0,s,k]+SIG22[0,s,k])
+        SIG33[0,s,k]=sig33
+        
+        
+        #rSlow = ode(computePsiSlow).set_integrator('vode',method='bdf',order=5)
+        rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
+        #rSlow = ode(computePsiSlow).set_integrator('dopri5')
+        
+        rSlow.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
+        sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
+        
+        sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],SIG33[0,s,k]]))
+        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        eigsig=computeEigenStresses(sigma)#np.linalg.eig(sigma)[0]
+        eigsigS[0,s,k,:]=eigsig
+        LodeAngle_S[0,s,k]=computeLodeAngle(sigma[0,0],SIG22[0,s,k],sigma[0,1],sig33)
+
+        speed_S[0,s,k]=computeSpeedSlow(TAU[0,s,k],[SIG11[0,s,k],SIG22[0,s,k]],sig33,lamb,mu,beta,tangent)
+            
+        plast=0.
+        epsp33=0.
+        for j in range(Niter-1):
+            rSlow.set_f_params(np.array([SIG11[j,s,k],SIG22[j,s,k]]),SIG33[j,s,k],lamb,mu,beta,tangent)
+            if not rSlow.successful():
+                print "Integration issues in slow wave path"
+                break
+            rSlow.integrate(rSlow.t+dtau)
+        
+            SIG11[j+1,s,k],SIG22[j+1,s,k]=rSlow.y
+            
+            sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
+            # Plastic update
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
+            res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
+            sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
+            epsp33=sol[0]
+            sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
+            criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
+            #pdb.set_trace()
+            
+            dp=updateEquivalentPlasticStrain(sigma,sigman,H)
+            plast+=dp
+            """
+            sol=scipy.optimize.root(criterion,plast,method='hybr',options={'xtol':1.e-24})
+            plast=sol.x[0]
+            """
+            SIG33[j+1,s,k]=sig33
+            criterionS[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
+            plast_S[j+1,s,k]=plast
+            speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
+            Epsp33[j+1,s,k]=epsp33
+            LodeAngle_S[j+1,s,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),sig33)
+            
+            # Eigenvalues of sigma (for deviatoric plane plots)
+            sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,SIG33[j+1,s,k]]])
+            
+            #eigsigS[j+1,s,k,:]=np.sort(np.linalg.eig(sigma)[0])#computeEigenStresses(sigma)
+            #pdb.set_trace()
+            sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
+            sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+            eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
+            radi=np.sqrt(np.dot(eigsigS[j,s,k,:],eigsigS[j,s,k,:]))
+            radi2=np.sqrt(2./3.)*sigy
+            #pdb.set_trace()
+        print "Final equivalent plastic strain after slow wave : ",plast
+        fileName=path+'DPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
+        ## color bar of p
+        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        ## color bar of rcs2
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        pgfFilesList.append(fileName)
+        fileName='DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
+        dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
+        #export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
+        """
+        if k==1:
+            fileName='slowWave_DevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
+            dico={"xlabel":r'$\sigma_1$',"ylabel":r'$\sigma_2$',"zlabel":r'$\sigma_3$'}
+            export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
+        """
+        radius_S[s]=sigy+H*plast
+    
+    if k==1:
+        cylindre=vonMisesYieldSurface(sigy)
+        fileName='CylindreDevPlane.pgf'
+        #export2pgfPlot3D(str(fileName),cylindre[0,:],cylindre[1,:],cylindre[2,:])
+    
+    TAU_MAX_S=np.max(ordonnees)
+    SIG_MAX_S=np.max(abscisses)
+
+    plot_path=True
+    ### SUBPLOTS SETTINGS
+    if plot_path :
+        fig = plt.figure(figsize=(10,10))
+        ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
+    
+        cylindre=vonMisesYieldSurface(sigy)
+        ax3.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+        elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
+        angle_degree= 180.*elevation_Angle_radian/np.pi
+        radius=1.*np.sqrt((2./3.)*sigy**2)
+        ax3.set_xlim(-1.*radius,1.*radius)
+        ax3.set_ylim(-1.*radius,1.*radius)
+        ax3.set_zlim(-1.*radius,1.*radius)
+        ax3.view_init(angle_degree,45.)
+        ax3.scatter(sigy,0.,0.);ax3.scatter(-sigy,0.,0.)
+        ax3.scatter(0.,sigy,0.);ax3.scatter(0.,-sigy,0.)
+        ax3.scatter(0.,0.,sigy);ax3.scatter(0.,0.,-sigy)
+        ax3.plot([0.,sigy],[0.,sigy],[0.,sigy],color="k")
+        ax3.set_xlabel(r'$s_1$',size=24.)
+        ax3.set_ylabel(r'$s_2$',size=24.)
+        ax3.set_zlabel(r'$s_3$',size=24.)
+        
+        fig = plt.figure()
+        ax4=plt.subplot2grid((2,2),(1,0),colspan=2)
+        ax1=plt.subplot2grid((2,2),(0,0))
+        ax2=plt.subplot2grid((2,2),(0,1))
+        ax1.set_xlabel(r'$\sigma_{11}$')
+        ax1.set_ylabel(r'$\sigma_{12}$')
+        ax2.set_xlabel(r'$\sigma_{22}$')
+        ax2.set_ylabel(r'$\sigma_{12}$')
+        ax4.set_xlabel(r'$\tau$')
+        ax4.set_ylabel('p')
+        ax1.grid()
+        ax2.grid()
+        ax4.grid()
+
+        ax1.plot(sig[:,k],tau[:,k],'k')
+        ## export to pgf file
+        fileName=path+'DPslow_yield0_s11s12_Stress'+str(k)+'.pgf'
+        export2pgfPlotFile(fileName,np.array([tau[:,k],sig[:,k]]),'sigma_12','sigma_11')
+        yields11_s12.append(fileName)
+        for p,i in enumerate(frames):
+            plast=plast_S[-1,p,k]
+            sig0=sig[-1-i,k]
+            Delta=(4.*(nu**2-nu+1.)*sigy**2- 3.*(4.*nu**2-4.*nu+1.)*sig0**2)
+            s22max=(sig0*(1.+2.*nu-2.*nu**2)+np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+            s22min=(sig0*(1.+2.*nu-2.*nu**2)-np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+            s22=np.linspace(s22min,s22max,Samples)
+            delta=((nu-nu**2)*(sig0+s22)**2 -s22**2-sig0**2+s22*sig0 + sigy**2)/3.
+            if (np.abs(delta)<10.).any() : delta=np.abs(delta)
+            s12=np.sqrt(delta)
+            ## export to pgf file
+            fileName=path+'DPslow_yield0_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
+            export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
+            yields22_s12.append(fileName)
+            ax2.plot(s22,s12,'k')
+            if updated_criterion :
+                # plot updated yield surface that takes into account hardening in both planes
+                sig0=SIG11[-1,p,k]
+                maxCrit=0.5*(sig0*(2.*nu**2-2.*nu-1.)+E*Epsp33[-1,p,k]*(1.-2.*nu))/(nu-nu**2-1.)
+                Delta=(4.*(nu**2-nu+1.)*(sigy+H*plast)**2- 3.*(E*Epsp33[-1,p,k]+(1.-2.*nu)*sig0)**2)
+                s22max=(sig0*(1.+2.*nu-2.*nu**2) +E*Epsp33[-1,p,k]*(2.*nu-1.) +np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+                s22min=(sig0*(1.+2.*nu-2.*nu**2)  +E*Epsp33[-1,p,k]*(2.*nu-1.) -np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+                s22=np.linspace(s22min,s22max,Samples)
+                delta=(-(E*Epsp33[-1,p,k])**2 +E*Epsp33[-1,p,k]*(sig0+s22)*(2.*nu-1) + sig0*s22*(2.*nu+1.-2.*nu**2) + (sig0**2+s22**2)*(nu-nu**2-1.)+ (sigy+H*plast)**2)/3.
+                if (np.abs(delta)<10.).any() : delta=np.abs(delta)
+                s12=np.sqrt(delta)
+                ax2.plot(s22,s12,color=col[p],linestyle='--')
+                ax2.plot([maxCrit,maxCrit],[0.,tauM],color=col[p],linestyle='-.')
+                ## export to pgf file
+                fileName=path+'DPslow_yieldfin_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
+                export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
+        
+                ## The same on ax1
+                s22=SIG22[-1,p,k]
+                Delta=(4.*(nu**2-nu+1.)*(sigy+H*plast)**2- 3.*(E*Epsp33[-1,p,k]+(1.-2.*nu)*s22)**2)
+                sigMax=(s22*(1.+2.*nu-2.*nu**2) +E*Epsp33[-1,p,k]*(2.*nu-1.) +np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+                sigMin=(s22*(1.+2.*nu-2.*nu**2) +E*Epsp33[-1,p,k]*(2.*nu-1.) -np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+                s11=np.linspace(sigMin,sigMax,Samples)
+                maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.)+E*Epsp33[-1,p,k]*(1.-2.*nu))/(nu-nu**2-1.)
+                delta=(-(E*Epsp33[-1,p,k])**2 +E*Epsp33[-1,p,k]*(s11+s22)*(2.*nu-1) + s11*s22*(2.*nu+1.-2.*nu**2) + (s11**2+s22**2)*(nu-nu**2-1.)+ (sigy+H*plast)**2)/3.
+                if (np.abs(delta)<10.).any() : delta=np.abs(delta)
+                s12=np.sqrt(delta)
+                ## export to pgf file
+                fileName=path+'DPslow_yieldfin_s11s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
+                export2pgfPlotFile(fileName,np.array([s12,s11]),'sigma_12','sigma_11')
+        
+                ax1.plot(s11,s12,color=col[p],linestyle='--')
+                ax1.plot([maxCrit,maxCrit],[0.,tauM],color=col[p],linestyle='-.')
+        
+            ax1.plot(SIG11[:,p,k],TAU[:,p,k],color=col[p],lw=2.5)
+            ax2.plot(SIG22[:,p,k],TAU[:,p,k],color=col[p],lw=2.5)
+            ax4.semilogy(LodeAngle_S[:,p,k],plast_S[:,p,k],color=col[p],lw=2.5)
+            #ax4.plot(TAU[:,p,k],plast_S[:,p,k],color=col[p],lw=2.5)
+            ax3.plot(eigsigS[:,p,k,0],eigsigS[:,p,k,1],eigsigS[:,p,k,2],color=col[p],lw=2.5)
+        ax3.plot([-sigy,sigy],[0.,0.],[0.,0.],color="k",linestyle="--",lw=1.)
+        ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
+        ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
+        plt.suptitle(r'Loading paths through slow waves for $\sigma_{22}$ ='+'{:.2e}'.format(sig22[k])+'Pa.', fontsize=24.)
+        #plt.show()
+
+files=[pgfFilesList,yields11_s12,yields22_s12]
+
+xlabels=['$\sigma_{11}$','$\sigma_{22}$'] #size=number of .tex files
+ylabels=['$\sigma_{12}$','$\sigma_{12}$'] #size=number of .tex files
+
+subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane']
+
+srcX=['sigma_11','sigma_22']
+srcY=['sigma_12','sigma_12']
+
+name1="slowWaves_sig11_tau.tex"
+name2="slowWaves_sig22_tau.tex"
+names=[name1,name2]
+
+files1=np.concatenate([pgfFilesList,yields11_s12])
+files2=np.concatenate([pgfFilesList,yields22_s12])
+pgfFiles=[files1,files2]
+build2DTeXFiles(names,pgfFiles,xlabels,ylabels,subtitle,srcX,srcY)
