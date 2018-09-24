@@ -9,7 +9,7 @@ def buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY):
     for i,nom in enumerate(names):
         TeXFile=open(nom,"w")
         ## For regular plots (i.e. not daviatoric plane)
-        marker=['none','none','+','x','none','none','star','pentagone*']
+	marker=['+','x','star','asterisk','none','none','star','pentagone*']
         style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
         thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
         couleur=['Red','Blue','Orange','Purple','Green','Duck']
@@ -57,7 +57,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
     # srcX and srcY contain key to get the correct column (i.e. fields) in pgfFiles for instance "sigma_11"
     for i,nom in enumerate(names):
         ## For regular plots (i.e. not daviatoric plane)
-        marker=['none','none','+','x','none','none','star','pentagone*']
+        marker=['star','asterisk','+','x','none','none','none','none']
         style=['dashed','solid','solid','solid','solid','dashed','solid','pentagone*']
         thickness=['very thick','very thick','very thick','thick','thin','very thick','very thick','thin','thin','thick']
         couleur=['Red','Blue','Orange','Purple','Green','Duck']
@@ -71,7 +71,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\addplot3+[gray,dashed,thin,no markers] file {chapter5/pgfFigures/'+name+'};')
                     TeXFile.write('\n')
                 else:
-                    TeXFile.write(r'\addplot3+['+couleur[j]+',very thick,no markers] file {chapter5/pgfFigures/'+name+'};\n')
+                    TeXFile.write(r'\addplot3+['+couleur[j]+',mark='+marker[j]+',mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/'+name+'};\n')
 		    TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
             TeXFile.write(r'\end{axis}')
@@ -88,7 +88,10 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                 if k==0 :
                     TeXFile.write(r'\nextgroupplot[xlabel='+str(xlabels[i][k])+']')
                 elif k==1 :
-                    TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$p$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+                    if rando[2:6]=='slow':
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_s^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+                    elif rando[2:6]=='fast':
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_f^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
                 TeXFile.write('\n')
                 for j,name in enumerate(pgfFiles[i][k]):
                     

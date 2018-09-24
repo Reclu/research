@@ -196,6 +196,16 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
         psi22=0.
     return np.array([psi11,psi22])
 
+def computeSpeed(sigma,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigens[0]
+
+
 def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     sigma=np.array([sig0,sig22_0])
     # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
@@ -292,7 +302,7 @@ sig=np.zeros((Samples,Samples))
 tau=np.zeros((Samples,Samples))
 
 frames=[5,10,15,20,25,30,35,40,45]
-frames=[5,10,20,40]
+frames=[5,20,30,40]
 #frames=[5]
 col=["r","g","b","y","c","m","k","p"]
 col=['#332288','#88CCEE','#44AA99','#117733','#999933','#DDCC77','#CC6677','#882255','#AA4499']
@@ -312,6 +322,7 @@ PsiS=np.zeros((Samples,len(sig22)))
 
 plast_S=np.zeros((Niter,len(frames),len(sig22)))
 LodeAngle_S=np.zeros((Niter,len(frames),len(sig22)))
+rcs2=np.zeros((Niter,len(frames),len(sig22)))
 # Boolean to plot the upadted yield surface
 updated_criterion=False
 ## LOADING PATHS PLOTS
@@ -372,6 +383,8 @@ for k in range(len(sig22)-1)[1:]:
         # rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
         # rSlow.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,0.]])
+        rcs2[0,s,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+        
         sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
         eigsigS[0,s,k,:]=computeEigenStresses(sigma)
@@ -404,6 +417,8 @@ for k in range(len(sig22)-1)[1:]:
             
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,0.]])
+            rcs2[j+1,s,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
@@ -411,9 +426,9 @@ for k in range(len(sig22)-1)[1:]:
         print "Final equivalent plastic strain after slow wave : ",plast
         fileName=path+'CPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
-        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
         fileName=path+'CPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -546,4 +561,4 @@ for k in range(len(sig22)-1)[1:]:
     TauMax=1.1*np.max(TAU[0:-1:Niter/100,:,k])
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
-    pgfFilesList=[];yields11_s12=[];
+    pgfFilesList=[];yields11_s12=[];deviatorPlots=[]

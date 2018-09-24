@@ -194,6 +194,16 @@ def computePsiFast(sig12,sigma,sig33,lamb,mu,beta,tangent):
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
     return np.array([psi11,psi22])
 
+def computeSpeed(sigma,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigenf[0]
+
+
 def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     sigma=np.array([sig0,sig22_0])
     # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
@@ -281,6 +291,7 @@ PsiS=np.zeros((Samples,len(sig22)))
 
 plast_F=np.zeros((Niter,len(frames),len(sig22)))
 LodeAngle_F=np.zeros((Niter,len(frames),len(sig22)))
+rcf2=np.zeros((Niter,len(frames),len(sig22)))
 # Boolean to plot the upadted yield surface
 updated_criterion=False
 ## LOADING PATHS PLOTS
@@ -339,6 +350,8 @@ for k in range(len(sig22)):
         rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
         rFast.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,0.]])
+        rcf2[0,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+
         sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
         eigsigS[0,s,k,:]=computeEigenStresses(sigma)
@@ -366,18 +379,23 @@ for k in range(len(sig22)):
             
             criterionF[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],0.,sigy+H*plast)
             plast_F[j+1,s,k]=plast
+
             LodeAngle_F[j+1,s,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),0.)
             
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,0.]])
+            rcf2[j+1,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+            sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
+            sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
             
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'CPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_F[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_F[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
-        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_F[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcf2[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
         fileName=path+'CPfastDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -482,7 +500,7 @@ for k in range(len(sig22)):
     ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
     ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
     plt.tight_layout()
-    plt.show()
+    #plt.show()
     
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
