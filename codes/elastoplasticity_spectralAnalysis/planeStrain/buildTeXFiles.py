@@ -27,7 +27,7 @@ def buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY):
                     TeXFile.write('\n')
         else:
             if subtitle[i][:3]=='(b)':
-                TeXFile.write(r'\begin{axis}[colorbar,colorbar style={title= {$\rho c^2$}},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true]');TeXFile.write('\n')
+                TeXFile.write(r'\begin{axis}[colorbar,colorbar style={title= {$ c$}},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true]');TeXFile.write('\n')
             else :
                 TeXFile.write(r'\begin{axis}[xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',ymajorgrids=true,xmajorgrids=true]');TeXFile.write('\n')
             for j,name in enumerate(pgfFiles[i]):
@@ -84,15 +84,15 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
             TeXFile.write('xticklabels at=edge bottom,xlabels at=edge bottom},');TeXFile.write('\n')
             TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,');TeXFile.write('\n')
             TeXFile.write('axis on top,scale only axis,width=0.45\linewidth,ymin=0,ymax='+str(ylim));TeXFile.write('\n')
-            TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]');TeXFile.write('\n')
+            TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={bw}{gray(0cm)=(1); gray(1cm)=(0.05)}]');TeXFile.write('\n')
             for k,rando in enumerate(nom):
                 if k==0 :
                     TeXFile.write(r'\nextgroupplot[xlabel='+str(xlabels[i][k])+']')
                 elif k==1 :
    		    if rando[2:6]=='slow':
-		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_s^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$ c_s \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
                     elif rando[2:6]=='fast':
-		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_f^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$ c_f \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
                 TeXFile.write('\n')
                 for j,name in enumerate(pgfFiles[i][k]):
                     
@@ -100,7 +100,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                         TeXFile.write(r'\addplot[gray,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
                         TeXFile.write('\n')
                     else:
-                        TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right] {$\textbf{'+str(j+1)+'}$};')
+                        TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right,black] {$\textbf{'+str(j+1)+'}$};')
                     TeXFile.write('\n')
             TeXFile.write(r'\end{groupplot}')
                     
