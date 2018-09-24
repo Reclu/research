@@ -197,6 +197,16 @@ def computePsiFast(sig11,sigma,sig33,lamb,mu,beta,tangent):
     
     return np.array([psi12,psi22])
 
+def computeSpeed(sigma,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigenf[0]
+
+
 def computeLodeAngle(sig11,sig22,sig12,sig33):
     # deviatoric stress
     sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
@@ -283,7 +293,7 @@ Samples*=10
 sig=np.zeros((Samples,Samples))
 tau=np.zeros((Samples,Samples))
 
-frames=[5,10,20,40]
+frames=[5,10,20,48]
 #frames=[1,2,5]
 #frames=[10,15,20,25,30,35]
 col=["r","g","b","y","c","m","k","p"]
@@ -306,6 +316,7 @@ plast_F=np.zeros((Niter,len(frames),len(sig22)))
 Epsp33=np.zeros((Niter,len(frames),len(sig22)))
 LodeAngle_F=np.zeros((Niter,len(frames),len(sig22)))
 radius_F=np.zeros((len(frames),len(sig22)))
+rcf2=np.zeros((Niter,len(frames),len(sig22)))
 # Boolean to plot the upadted yield surface
 updated_criterion=False
 
@@ -377,6 +388,9 @@ for k in range(len(sig22)):
         
         rFast.set_initial_value(np.array([TAU[0,s,k],SIG22[0,s,k]]),SIG11[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
+
+        rcf2[0,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+        
         sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],SIG33[0,s,k]]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             
@@ -399,19 +413,16 @@ for k in range(len(sig22)):
             sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
             criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
             #if criterion(plast)>0.:
-            if 2.<3.:
-                sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-                res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-                sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-                epsp33=sol[0]
-                sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-                dp=updateEquivalentPlasticStrain(sigma,sigman,H)
-                if dp<0.:
-                    print "equivalent plastic strain increment negative"
-                    pdb.set_trace()
-                plast+=dp
-            else:
-                sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
+            res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
+            sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
+            epsp33=sol[0]
+            sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
+            dp=updateEquivalentPlasticStrain(sigma,sigman,H)
+            if dp<0.:
+                print "equivalent plastic strain increment negative"
+                pdb.set_trace()
+            plast+=dp
             
             SIG33[j+1,s,k]=sig33
             criterionF[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
@@ -421,7 +432,8 @@ for k in range(len(sig22)):
             
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,SIG33[j+1,s,k]]])
-
+            rcf2[j+1,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+        
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
@@ -429,7 +441,8 @@ for k in range(len(sig22)):
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'DPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         pgfFilesList.append(fileName)
-        if exportPgf: export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_F[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        #if exportPgf: export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_F[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        if exportPgf: export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcf2[0:-1:Niter/100,s,k],LodeAngle_F[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         fileName=path+'DPfastDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         deviatorPlots.append(fileName)
         dico={"xlabel":r'$\sigma_1$',"ylabel":r'$\sigma_2$',"zlabel":r'$\sigma_3$'}
@@ -566,9 +579,9 @@ for k in range(len(sig22)):
     srcX=['sigma_11','sigma_22']
     srcY=['sigma_12','sigma_12']
 
-    name1='fastWaves_sig11_tau'+str(k)+'.tex'
-    name2='fastWaves_sig22_tau'+str(k)+'.tex'
-    name3='fastWaves_deviator'+str(k)+'.tex'
+    name1='DPfastWaves_sig11_tau'+str(k)+'.tex'
+    name2='DPfastWaves_sig22_tau'+str(k)+'.tex'
+    name3='DPfastWaves_deviator'+str(k)+'.tex'
     names=[[name1,name2],name3]
     
     files1=np.concatenate([pgfFilesList,yields11_s12])
@@ -581,4 +594,4 @@ for k in range(len(sig22)):
     TauMax=1.*sigy
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
-    pgfFilesList=[];yields11_s12=[];
+    pgfFilesList=[];yields11_s12=[];deviatorPlots=[]

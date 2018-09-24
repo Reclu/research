@@ -201,6 +201,16 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
     return np.array([psi11,psi22])
 
+def computeSpeed(sigma,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigens[0]
+
+
 def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     sigma=np.array([sig0,sig22_0])
     # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
@@ -315,7 +325,7 @@ Samples*=10
 sig=np.zeros((Samples,Samples))
 tau=np.zeros((Samples,Samples))
 
-frames=[5,10,20,40]
+frames=[5,20,30,40]
 #frames=[10,15,20,25,30,35]
 #frames=[5]
 col=["r","g","b","y","c","m","k","p"]
@@ -334,14 +344,14 @@ criterionS=np.zeros((Niter,len(frames),len(sig22)))
 PsiS=np.zeros((Samples,len(sig22)))
 
 plast_S=np.zeros((Niter,len(frames),len(sig22)))
+rcs2=np.zeros((Niter,len(frames),len(sig22)))
 Epsp33=np.zeros((Niter,len(frames),len(sig22)))
 LodeAngle_S=np.zeros((Niter,len(frames),len(sig22)))
 speed_S=np.zeros((Niter,len(frames),len(sig22)))
 
 # Boolean to plot the upadted yield surface
 updated_criterion=True
-#for k in range(len(sig22)-1)[1:]:
-for k in range(len(sig22)):
+for k in range(len(sig22)-1)[1:]:
     s22=sig22[k]
     
     Delta=(4.*(nu**2-nu+1.)*sigy**2- 3.*(4.*nu**2-4.*nu+1.)*s22**2)
@@ -366,8 +376,8 @@ yields11_s12=[]
 yields22_s12=[]
 deviatorPlots=[]
 for k in range(len(sig22)-1)[1:]:
-#for k in range(len(sig22)):
     s22=sig22[k]
+    print "sigma22=",s22
     sigM=1.25*np.max(sig[:,k])
     tauM=1.25*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
@@ -399,7 +409,8 @@ for k in range(len(sig22)-1)[1:]:
         
         rSlow.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
-        
+        rcs2[0,s,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+                    
         sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],SIG33[0,s,k]]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
         eigsig=computeEigenStresses(sigma)
@@ -446,7 +457,7 @@ for k in range(len(sig22)-1)[1:]:
             
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,SIG33[j+1,s,k]]])
-            
+            rcs2[j+1,s,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
             #eigsigS[j+1,s,k,:]=np.sort(np.linalg.eig(sigma)[0])#computeEigenStresses(sigma)
             #pdb.set_trace()
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
@@ -458,9 +469,9 @@ for k in range(len(sig22)-1)[1:]:
         print "Final equivalent plastic strain after slow wave : ",plast
         fileName=path+'DPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
-        #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],speed_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
         fileName=path+'DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -554,7 +565,7 @@ for k in range(len(sig22)-1)[1:]:
                 ax2.plot([maxCrit,maxCrit],[0.,tauM],color=col[p],linestyle='-.')
                 ## export to pgf file
                 fileName=path+'DPslow_yieldfin_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
-                export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
+                #export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
         
                 ## The same on ax1
                 s22=SIG22[-1,p,k]
@@ -568,7 +579,7 @@ for k in range(len(sig22)-1)[1:]:
                 s12=np.sqrt(delta)
                 ## export to pgf file
                 fileName=path+'DPslow_yieldfin_s11s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
-                export2pgfPlotFile(fileName,np.array([s12,s11]),'sigma_12','sigma_11')
+                #export2pgfPlotFile(fileName,np.array([s12,s11]),'sigma_12','sigma_11')
         
                 ax1.plot(s11,s12,color=col[p],linestyle='--')
                 ax1.plot([maxCrit,maxCrit],[0.,tauM],color=col[p],linestyle='-.')
@@ -595,9 +606,9 @@ for k in range(len(sig22)-1)[1:]:
     srcX=['sigma_11','sigma_22']
     srcY=['sigma_12','sigma_12']
 
-    name1='slowWaves_sig11_tau'+str(k)+'.tex'
-    name2='slowWaves_sig22_tau'+str(k)+'.tex'
-    name3='slowWaves_deviator'+str(k)+'.tex'
+    name1='DPslowWaves_sig11_tau'+str(k)+'.tex'
+    name2='DPslowWaves_sig22_tau'+str(k)+'.tex'
+    name3='DPslowWaves_deviator'+str(k)+'.tex'
     names=[name1,name2,name3]
     
     files1=np.concatenate([pgfFilesList,yields11_s12])
@@ -614,7 +625,7 @@ for k in range(len(sig22)-1)[1:]:
     TauMax=1.1*np.max(TAU[0:-1:Niter/100,:,k])
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
-    pgfFilesList=[];yields11_s12=[];
+    pgfFilesList=[];yields11_s12=[];deviatorPlots=[]
 
 # files=[pgfFilesList,yields11_s12,yields22_s12,deviatorPlots]
 
