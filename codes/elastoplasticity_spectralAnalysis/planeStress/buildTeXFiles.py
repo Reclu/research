@@ -89,9 +89,9 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\nextgroupplot[xlabel='+str(xlabels[i][k])+']')
                 elif k==1 :
                     if rando[2:6]=='slow':
-		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_s^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$ c_s \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
                     elif rando[2:6]=='fast':
-		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$\rho c_f^2 \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
+		        TeXFile.write(r'\nextgroupplot[colorbar,colorbar style={title= {$c_f \: (m/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel='+str(xlabels[i][k])+']')
                 TeXFile.write('\n')
                 for j,name in enumerate(pgfFiles[i][k]):
                     

@@ -310,7 +310,7 @@ for k in range(len(sig22)):
 
     # Sample stress component sig11
     sig[:,k]=np.linspace(sigMin,sigMax,Samples)
-    sig[:,k]=np.linspace(0.,sigMax,Samples)
+    #sig[:,k]=np.linspace(0.,sigMax,Samples)
     
     # Compute shear stress satisfying the criterion given sig11 and sig22
     for i in range(Samples):
@@ -350,7 +350,7 @@ for k in range(len(sig22)):
         rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
         rFast.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,0.]])
-        rcf2[0,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+        rcf2[0,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
 
         sigDev=computeDeviatoricPart(np.array([SIG11[0,s,k],TAU[0,s,k],SIG22[0,s,k],0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
@@ -384,7 +384,7 @@ for k in range(len(sig22)):
             
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,0.]])
-            rcf2[j+1,s,k] = computeSpeed(sigma,lamb,mu,beta,tangent)
+            rcf2[j+1,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
