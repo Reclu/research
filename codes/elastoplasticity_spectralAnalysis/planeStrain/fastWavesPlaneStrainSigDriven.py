@@ -255,8 +255,19 @@ def computePlasticResidual(epsp33,sig,epsp33n,sign,E,H,nu):
     res=epsp33n-epsp33-np.sqrt(3./2.)*flow[3]*dp
     return res
 
-def integrateODE(dsig,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
-    sigma=np.array([tau0,sig22_0])
+def computePlasticResidual2(sig,sign,H):
+    # sig = [sig11 , sig12*sqrt(2) , sig22 , sig33] (previous time step)
+    sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
+    sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    dSig=sigDevn-sigDev
+    dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    res=np.sqrt(3./2.)*flow[3]*dp # = epsp33n -epsp33
+    return res
+
+def integrateODE(dsig,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent):
+    sigma=np.array([tau0,sig22_0,epsp33])
     # computePsiFast(sig11,sigma,sig33,lamb,mu,beta,tangent)
     # subdivision of time step
     sub_steps = 1
@@ -265,21 +276,12 @@ def integrateODE(dsig,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma + dSIG*(theta*computePsiFast(sig0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
-        #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        # R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dSIG,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - np.array([dSIG*(theta*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent))[0],dSIG*(theta*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent))[1],theta*computePlasticResidual2(np.array([sig0,sigma[0]*np.sqrt(2.),sigma[1],nu*(sig0+sigma[1])-E*sigma[2]]),np.array([sig0+dSIG,x[0]*np.sqrt(2.),x[1],nu*(sig0+dSIG+x[1])-E*x[2]]),H)])
+
+        solution = scipy.optimize.fsolve(R,np.array([sigma[0],sigma[1],epsp33]))
         sigma = solution
     return solution
-
-# from mpl_toolkits.mplot3d import proj3d
-# def orthogonal_proj(zfront, zback):
-#     a = (zfront+zback)/(zfront-zback)
-#     b = -2*(zfront*zback)/(zfront-zback)
-#     return np.array([[1,0,0,0],
-#                         [0,1,0,0],
-#                         [0,0,a,b],
-#                         [0,0,0,zback]])
-# proj3d.persp_transformation = orthogonal_proj
 
 Samples=6
 
@@ -293,7 +295,7 @@ Samples*=10
 sig=np.zeros((Samples,Samples))
 tau=np.zeros((Samples,Samples))
 
-frames=[5,10,20,48]
+frames=[5,10,20,40,50,55]
 #frames=[1,2,5]
 #frames=[10,15,20,25,30,35]
 col=["r","g","b","y","c","m","k","p"]
@@ -353,10 +355,10 @@ tangent='planeStrain'
 for k in range(len(sig22)):
     s22=sig22[k]
     ## ensure that path goes out of yield surface
-    if np.max(sig[:,k])<0.:
-        sigM = -np.min(sig[:,k])
-    else :
-        sigM=1.5*np.max(sig[:,k])
+    # if np.max(sig[:,k])<0.:
+    #     sigM = -np.min(sig[:,k])
+    # else :
+    #     sigM=1.5*np.max(sig[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
     ordonnees=np.zeros((len(frames),Samples))
@@ -369,11 +371,11 @@ for k in range(len(sig22)):
 
         maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
         if sig0<maxCrit :
-            sigM*=-1.
+            sigMax=-1.*sigM
+        print "Maximum stress ",sigMax
+        dsig=(sigMax-sig0)/Niter
         
-        dsig=(sigM-sig0)/Niter
-        
-        SIG11[:,s,k]=np.linspace(sig0,sigM,Niter)
+        SIG11[:,s,k]=np.linspace(sig0,sigMax,Niter)
         
         TAU[0,s,k]=tau0
         SIG22[0,s,k]=s22
@@ -382,11 +384,11 @@ for k in range(len(sig22)):
         SIG33[0,s,k]=sig33
         
         
-        #rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
-        #rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
-        rFast = ode(computePsiFast).set_integrator('dopri5')
+        # rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
+        # rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
+        # rFast = ode(computePsiFast).set_integrator('dopri5')
         
-        rFast.set_initial_value(np.array([TAU[0,s,k],SIG22[0,s,k]]),SIG11[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
+        # rFast.set_initial_value(np.array([TAU[0,s,k],SIG22[0,s,k]]),SIG11[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
 
         rcf2[0,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
@@ -405,26 +407,26 @@ for k in range(len(sig22)):
             #     print "Integration issues in fast wave path"
             #     break
             # rFast.integrate(rFast.t+dsig)
-        
+            
             # TAU[j+1,s,k],SIG22[j+1,s,k]=rFast.y
-            TAU[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],lamb,mu,beta,tangent)
+
+            TAU[j+1,s,k],SIG22[j+1,s,k],epsp33=integrateODE(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
             # Plastic update
             sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-            criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
-            #if criterion(plast)>0.:
+            # criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
+            # #if criterion(plast)>0.:
             sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-            res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-            sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-            epsp33=sol[0]
-            sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
+            # res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
+            # sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
+            # epsp33=sol[0]
+            # sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
             if dp<0.:
                 print "equivalent plastic strain increment negative"
-                pdb.set_trace()
+                #pdb.set_trace()
             plast+=dp
             
-            SIG33[j+1,s,k]=sig33
             criterionF[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
             plast_F[j+1,s,k]=plast
             Epsp33[j+1,s,k]=epsp33
@@ -559,7 +561,7 @@ for k in range(len(sig22)):
         ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
         ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
         plt.suptitle(r'Loading paths through fast waves for $\sigma_{22}$ ='+'{:.2e}'.format(sig22[k])+'Pa.', fontsize=24.)
-        plt.show()
+        #plt.show()
 
     else:
         fig = plt.figure()
@@ -585,7 +587,7 @@ for k in range(len(sig22)):
     names=[[name1,name2],name3]
     
     files1=np.concatenate([pgfFilesList,yields11_s12])
-    files2=pgfFilesList
+    files2=np.concatenate([pgfFilesList,yields22_s12]) 
     pgfFiles=[[files1,files2],deviatorPlots]
     xlabels=[['$\sigma_{11} (Pa)$','$\sigma_{22}  (Pa)$'],'$s_1 $'] #size=number of .tex files
     ylabels=[['$\sigma_{12}  (Pa)$','$\sigma_{12}  (Pa)$'],'$s_2 $'] #size=number of .tex files
@@ -594,4 +596,4 @@ for k in range(len(sig22)):
     TauMax=1.*sigy
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
-    pgfFilesList=[];yields11_s12=[];deviatorPlots=[]
+    pgfFilesList=[];yields11_s12=[];deviatorPlots=[];yields22_s12=[]

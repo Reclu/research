@@ -211,8 +211,8 @@ def computeSpeed(sigma,lamb,mu,beta,tangent):
     return eigens[0]
 
 
-def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
-    sigma=np.array([sig0,sig22_0])
+def integrateODE(dtau,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent):
+    sigma=np.array([sig0,sig22_0,epsp33])
     # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
     # subdivision of time step
     sub_steps = 1
@@ -221,11 +221,27 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma + dTAU*(theta*computePsiSlow(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        #R=lambda x: x - sigma - dTAU*(theta*computePsiSlow(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        # pdb.set_trace()
+        # test=dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([sigma[0],sigma[1]]),nu*(sigma[0]+sigma[1])-E*sigma[2],lamb,mu,beta,tangent))
+        # test2=computePlasticResidual2(np.array([sigma[0],(tau0+dTAU)*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),sigma[2],np.array([sigma[0],(tau0+dTAU)*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),E,H,nu)
+        R=lambda x: x - sigma - np.array([dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[0],dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[1],theta*computePlasticResidual2(np.array([sigma[0],tau0*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),np.array([x[0],(tau0+dTAU)*np.sqrt(2.),x[1],nu*(x[0]+x[1])-E*x[2]]),H)])
         #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        
+        solution = scipy.optimize.fsolve(R,np.array([sigma[0],sigma[1],epsp33]))
         sigma = solution
     return solution
+
+def computePlasticResidual2(sig,sign,H):
+    # sig = [sig11 , sig12*sqrt(2) , sig22 , sig33] 
+    sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
+    sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    dSig=sigDevn-sigDev
+    dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    res=np.sqrt(3./2.)*flow[3]*dp # = epsp33n -epsp33
+    return res
 
 def computeSpeedSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     # sig12 driven
@@ -404,8 +420,8 @@ for k in range(len(sig22)-1)[1:]:
         
         
         #rSlow = ode(computePsiSlow).set_integrator('vode',method='bdf',order=5)
-        #rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
-        rSlow = ode(computePsiSlow).set_integrator('dopri5')
+        rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
+        #rSlow = ode(computePsiSlow).set_integrator('dopri5')
         
         rSlow.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
@@ -429,26 +445,27 @@ for k in range(len(sig22)-1)[1:]:
             # rSlow.integrate(rSlow.t+dtau)
         
             # SIG11[j+1,s,k],SIG22[j+1,s,k]=rSlow.y 
-            SIG11[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],lamb,mu,beta,tangent)
+            SIG11[j+1,s,k],SIG22[j+1,s,k],epsp33=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
             
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
-            # Plastic update
-            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-            res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-            sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-            epsp33=sol[0]
+            
             sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
+            SIG33[j+1,s,k]=sig33
+            # Plastic update
+            # sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
+            # res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
+            # sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
+            # epsp33=sol[0]
+            # sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
             sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
-            criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
-            #pdb.set_trace()
+            # criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
+            # pdb.set_trace()
             
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
+            # if dp <0.:
+            #     pdb.set_trace()
             plast+=dp
-            """
-            sol=scipy.optimize.root(criterion,plast,method='hybr',options={'xtol':1.e-24})
-            plast=sol.x[0]
-            """
-            SIG33[j+1,s,k]=sig33
+            # SIG33[j+1,s,k]=sig33
             criterionS[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
             plast_S[j+1,s,k]=plast
             speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
@@ -614,6 +631,7 @@ for k in range(len(sig22)-1)[1:]:
     files1=np.concatenate([pgfFilesList,yields11_s12])
     #files2=np.concatenate([pgfFilesList,yields22_s12])
     files2=pgfFilesList
+    files2=np.concatenate([pgfFilesList,yields22_s12]) 
     pgfFiles=[files1,files2,deviatorPlots]
     #buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY)
     names=[[name1,name2],name3]
@@ -625,27 +643,4 @@ for k in range(len(sig22)-1)[1:]:
     TauMax=1.1*np.max(TAU[0:-1:Niter/100,:,k])
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
-    pgfFilesList=[];yields11_s12=[];deviatorPlots=[]
-
-# files=[pgfFilesList,yields11_s12,yields22_s12,deviatorPlots]
-
-# xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
-# ylabels=['$\sigma_{12} $','$\sigma_{12} $','$s_2 $'] #size=number of .tex files
-# zlabels=['','','$s_3$'] #size=number of .tex files
-
-
-# subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane',r'(c) Deviatoric plane']
-
-# srcX=['sigma_11','sigma_22']
-# srcY=['sigma_12','sigma_12']
-
-# name1="slowWaves_sig11_tau.tex"
-# name2="slowWaves_sig22_tau.tex"
-# name3="slowWaves_deviator.tex"
-# names=[name1,name2,name3]
-
-# files1=np.concatenate([pgfFilesList,yields11_s12])
-# #files2=np.concatenate([pgfFilesList,yields22_s12])
-# files2=pgfFilesList
-# pgfFiles=[files1,files2,deviatorPlots]
-# buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY)
+    pgfFilesList=[];yields11_s12=[];deviatorPlots=[];yields22_s12=[]
