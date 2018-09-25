@@ -214,7 +214,7 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma + dTAU*(theta*computePsiFast(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - dTAU*(theta*computePsiFast(tau0+dTAU,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
         solution = scipy.optimize.fsolve(R,sigma)
         sigma = solution
@@ -346,8 +346,10 @@ for k in range(len(sig22)):
         SIG22[0,s,k]=s22
 
         
-        rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
-        rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
+        #rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
+        #rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
+        rFast = ode(computePsiFast).set_integrator('dopri5')
+        
         rFast.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,0.]])
         rcf2[0,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
@@ -361,15 +363,15 @@ for k in range(len(sig22)):
         plast=0.
         epsp33=0.
         for j in range(Niter-1):
-            # rFast.set_f_params(np.array([SIG11[0,s,k],SIG22[0,s,k]]),0.,lamb,mu,beta,tangent)
-            # if not rFast.successful():
-            #     print "Integration issues in fast wave path"
-            #     break
-            # rFast.integrate(rFast.t+dtau)
+            rFast.set_f_params(np.array([SIG11[0,s,k],SIG22[0,s,k]]),0.,lamb,mu,beta,tangent)
+            if not rFast.successful():
+                print "Integration issues in fast wave path"
+                break
+            rFast.integrate(rFast.t+dtau)
         
-            # SIG11[j+1,s,k],SIG22[j+1,s,k]=rFast.y
-
-            SIG11[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
+            SIG11[j+1,s,k],SIG22[j+1,s,k]=rFast.y
+            
+            #SIG11[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
             
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],0.])
             sigman = np.array([SIG11[j+1,s,k],np.sqrt(2.)*TAU[j+1,s,k],SIG22[j+1,s,k],0.])
@@ -420,7 +422,7 @@ for k in range(len(sig22)):
     ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
 
     cylindre=vonMisesYieldSurface(sigy)
-    ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+    #ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
     elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
     angle_degree= 180.*elevation_Angle_radian/np.pi
     radius=1.*np.sqrt((2./3.)*sigy**2)
@@ -500,7 +502,7 @@ for k in range(len(sig22)):
     ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
     ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
     plt.tight_layout()
-    #plt.show()
+    plt.show()
     
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files

@@ -69,6 +69,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
 	    	#pdb.set_trace()
 	    	if name[27:27+12]=='CylindreDevP': ##  yield surface
                     TeXFile.write(r'\addplot3+[gray,dashed,thin,no markers] file {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write(r'\addlegendentry{initial yield surface}')
                     TeXFile.write('\n')
                 else:
                     TeXFile.write(r'\addplot3+['+couleur[j]+',mark='+marker[j]+',mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/'+name+'};\n')
@@ -82,8 +83,14 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
             TeXFile.write('ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,');TeXFile.write('\n')
             TeXFile.write('xticklabels at=edge bottom,xlabels at=edge bottom},');TeXFile.write('\n')
             TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,');TeXFile.write('\n')
-            TeXFile.write('axis on top,scale only axis,width=0.45\linewidth,ymin=0,ymax='+str(ylim));TeXFile.write('\n')
-            TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]');TeXFile.write('\n')
+            TeXFile.write('axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax='+str(ylim));TeXFile.write('\n')
+            #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]');TeXFile.write('\n')
+            ## Black to white color map
+            #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={bw}{gray(0cm)=(1); gray(1cm)=(0.05)}]');TeXFile.write('\n')
+            ## Red to yellow color map
+            TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={ry}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(255,0,0)}]');TeXFile.write('\n')
+            ## Green to yellow color map
+            #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={gy}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(0,128,0)}]');TeXFile.write('\n')
             for k,rando in enumerate(nom):
                 if k==0 :
                     TeXFile.write(r'\nextgroupplot[xlabel='+str(xlabels[i][k])+']')
@@ -96,7 +103,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                 for j,name in enumerate(pgfFiles[i][k]):
                     
                     if name[31:31+6]=='_yield': ##  yield surface
-                        TeXFile.write(r'\addplot[gray,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
+                        TeXFile.write(r'\addplot[gray,dashed,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
                         TeXFile.write('\n')
                     else:
                         TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right] {$\textbf{'+str(j+1)+'}$};')

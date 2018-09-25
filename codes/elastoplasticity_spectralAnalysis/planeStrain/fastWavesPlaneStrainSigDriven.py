@@ -229,6 +229,7 @@ def updateEquivalentPlasticStrain(sig,sign,H):
     #dSig=sign-sig
     dSig=sigDevn-sigDev
     dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    if dp<0.: pdb.set_trace()
     return dp
 
 def computeEigenStresses(sig):
@@ -276,10 +277,11 @@ def integrateODE(dsig,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        # R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dSIG,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
-        R=lambda x: x - sigma - np.array([dSIG*(theta*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent))[0],dSIG*(theta*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent))[1],theta*computePlasticResidual2(np.array([sig0,sigma[0]*np.sqrt(2.),sigma[1],nu*(sig0+sigma[1])-E*sigma[2]]),np.array([sig0+dSIG,x[0]*np.sqrt(2.),x[1],nu*(sig0+dSIG+x[1])-E*x[2]]),H)])
+        R=lambda x: x - sigma - theta*np.array([dSIG*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent)[0],dSIG*computePsiFast(sig0+dSIG,np.array([x[0],x[1]]),nu*(sig0+dSIG+x[1])-E*x[2],lamb,mu,beta,tangent)[1],computePlasticResidual2(np.array([sig0,sigma[0]*np.sqrt(2.),sigma[1],nu*(sig0+sigma[1])-E*sigma[2]]),np.array([sig0+dSIG,x[0]*np.sqrt(2.),x[1],nu*(sig0+dSIG+x[1])-E*x[2]]),H)]) #- (1.-theta)*np.array([dSIG*computePsiFast(sig0,np.array([sigma[0],sigma[1]]),nu*(sig0+sigma[1])-E*sigma[2],lamb,mu,beta,tangent)[0],dSIG*computePsiFast(sig0,np.array([sigma[0],sigma[1]]),nu*(sig0+sigma[1])-E*sigma[2],lamb,mu,beta,tangent)[1],computePlasticResidual2(np.array([sig0,sigma[0]*np.sqrt(2.),sigma[1],nu*(sig0+sigma[1])-E*sigma[2]]),np.array([sig0,sigma[0]*np.sqrt(2.),sigma[1],nu*(sig0+sigma[1])-E*sigma[2]]),H)])
 
-        solution = scipy.optimize.fsolve(R,np.array([sigma[0],sigma[1],epsp33]))
+        solution = scipy.optimize.fsolve(R,np.array([sigma[0],sigma[1],sigma[2]]))
+        
+        pdb.set_trace()
         sigma = solution
     return solution
 
@@ -298,12 +300,13 @@ tau=np.zeros((Samples,Samples))
 frames=[5,10,20,40,50,55]
 #frames=[1,2,5]
 #frames=[10,15,20,25,30,35]
+frames=[5]
 col=["r","g","b","y","c","m","k","p"]
 
 # purple to red
 col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 tauM=1.5*sigy/np.sqrt(3.)
-sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
+sigM=1.1*sigy/np.sqrt(1-nu+nu**2)
 tauM=sigM
 Niter=1000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
@@ -354,12 +357,7 @@ tangent='planeStrain'
 #for k in range(len(sig22)-1)[1:]:
 for k in range(len(sig22)):
     s22=sig22[k]
-    ## ensure that path goes out of yield surface
-    # if np.max(sig[:,k])<0.:
-    #     sigM = -np.min(sig[:,k])
-    # else :
-    #     sigM=1.5*np.max(sig[:,k])
-    ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
+    
     approx=np.zeros((len(frames),2))
     ordonnees=np.zeros((len(frames),Samples))
     abscisses=np.zeros((len(frames),Samples))
@@ -372,6 +370,8 @@ for k in range(len(sig22)):
         maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
         if sig0<maxCrit :
             sigMax=-1.*sigM
+        else:
+            sigMax=sigM
         print "Maximum stress ",sigMax
         dsig=(sigMax-sig0)/Niter
         
@@ -409,18 +409,13 @@ for k in range(len(sig22)):
             # rFast.integrate(rFast.t+dsig)
             
             # TAU[j+1,s,k],SIG22[j+1,s,k]=rFast.y
-
+            
             TAU[j+1,s,k],SIG22[j+1,s,k],epsp33=integrateODE(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
             # Plastic update
             sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-            # criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
-            # #if criterion(plast)>0.:
-            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-            # res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-            # sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-            # epsp33=sol[0]
-            # sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
+            SIG33[j+1,s,k]=sig33
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
             if dp<0.:
                 print "equivalent plastic strain increment negative"
@@ -439,7 +434,13 @@ for k in range(len(sig22)):
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
-            
+        time=np.linspace(0,j+1,Niter)
+        # plt.plot(time,SIG11[:,s,k],label='sig11')
+        # plt.plot(time,SIG22[:,s,k],label='sig22')
+        plt.plot(time,plast_F[:,s,k],label='sig33')
+        plt.legend()
+        plt.grid()
+        plt.show()
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'DPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         pgfFilesList.append(fileName)

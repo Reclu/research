@@ -201,6 +201,7 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
     return np.array([psi11,psi22])
 
+
 def computeSpeed(sigma,lamb,mu,beta,tangent):
     # sig12 driven
     n1=1.;n2=0.
@@ -221,10 +222,6 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        #R=lambda x: x - sigma - dTAU*(theta*computePsiSlow(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
-        # pdb.set_trace()
-        # test=dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([sigma[0],sigma[1]]),nu*(sigma[0]+sigma[1])-E*sigma[2],lamb,mu,beta,tangent))
-        # test2=computePlasticResidual2(np.array([sigma[0],(tau0+dTAU)*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),sigma[2],np.array([sigma[0],(tau0+dTAU)*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),E,H,nu)
         R=lambda x: x - sigma - np.array([dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[0],dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[1],theta*computePlasticResidual2(np.array([sigma[0],tau0*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),np.array([x[0],(tau0+dTAU)*np.sqrt(2.),x[1],nu*(x[0]+x[1])-E*x[2]]),H)])
         #pdb.set_trace()
         
@@ -462,8 +459,9 @@ for k in range(len(sig22)-1)[1:]:
             # pdb.set_trace()
             
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
-            # if dp <0.:
-            #     pdb.set_trace()
+            if dp <0.:
+                print "equivalent plastic strain increment negative"
+                # pdb.set_trace()
             plast+=dp
             # SIG33[j+1,s,k]=sig33
             criterionS[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)

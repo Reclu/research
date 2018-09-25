@@ -216,7 +216,7 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma + dTAU*(theta*computePsiSlow(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - dTAU*(theta*computePsiSlow(tau0+dTAU,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
         solution = scipy.optimize.fsolve(R,sigma)
         sigma = solution
@@ -450,7 +450,7 @@ for k in range(len(sig22)-1)[1:]:
     ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
 
     cylindre=vonMisesYieldSurface(sigy)
-    ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+    #ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
     elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
     angle_degree= 180.*elevation_Angle_radian/np.pi
     radius=1.*np.sqrt((2./3.)*sigy**2)
@@ -533,7 +533,7 @@ for k in range(len(sig22)-1)[1:]:
     ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
     plt.tight_layout()
     plt.suptitle(r'Loading paths through slow wave for $\sigma_{22}$ ='+str(sig22[k]), fontsize=16)
-    #plt.show()
+    plt.show()
     
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files

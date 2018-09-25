@@ -16,21 +16,21 @@ With the left eigenvectors of the acoustic tensor defined in equation \eqref{eq:
 In other words, $\vect{l}^1 \cdot \vect{l}^2=0$ so that the eigenvectors of the acoustic tensor are orthogonal regardless of the stress state (je pense que c'est normal). This allows us to restrict the study of the functions $\psi_1$ to $\psi^s_1$.
 A similar property is identified in \cite{Clifton} for the thin-walled tube problem consisting in a superimposition of a plane wave and a pure shear wave.(il y en a un autre qui en parle et qui précise que c'est valable si les courbes intégrales ont une intersection \cite[p.13]{Ting68})
 \begin{remark}
-  The orthogonality property of the loading pass is also valid for the vector $\vect{n}=\vect{e}_2$ since the functions involved in the intergal curves are $\psi^s_2=1/\psi^s_1$ and $\psi^s_2=1/\psi^s_1$.
+  The orthogonality property of the loading pass is also valid for the vector $\vect{n}=\vect{e}_2$ since the functions involved in the intergal curves are $\psi^s_2=1/\psi^s_1$ and $\psi^f_2=1/\psi^f_1$.
 \end{remark}
 
 %\subsubsection*{Degeneracy of the hyperbolic system}
 
 A vanishing function $\psi_1^f$ yields a longitudinal stress $\sigma_{11}$ that is constant along a loading path according to equation \eqref{eq:sigSlow_n=e1}. Conversely, the stress $\sigma_{12}$ is constant if $\psi_1^f\rightarrow \infty$. Such situations make the integration of the integral curve easier, some of them are now identified.
 
-Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to find roots of the components of $\vect{l}^2$. Thus:
+Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to finding roots of the components of $\vect{l}^2$. Thus:
 \begin{align}
   & l_1^2 = 0 \Leftrightarrow A_{12}^{ep}=0  \\
   & l_2^2 = 0 \Leftrightarrow A_{11}^{ep}-\rho c_s^2 =0
 \end{align}
 Introduction of this condition in the second yields:
 \begin{equation}
-  A_{11}^{ep}-\rho c_s^2 = \frac{1}{2}\(A^{ep}_{11}-A^{ep}_{22} + \abs{A^{ep}_{11}-A^{ep}_{22}}\) = \left\langle A^{ep}_{11}-A^{ep}_{22} \right\rangle
+  A_{11}^{ep}-\rho c_s^2 = \frac{1}{2}\(A^{ep}_{11}-A^{ep}_{22} + \abs{A^{ep}_{11}-A^{ep}_{22}}\) = \left\langle A^{ep}_{11}-A^{ep}_{22}  \right\rangle
 \end{equation}
 where $\left\langle \bullet \right\rangle$ denotes the positive part operator.
 
@@ -60,31 +60,65 @@ where $s_{ij}$ are the components of the deviatoric part of Cauchy stress tensor
   & A_{22}^{ep}= \mu -\beta s_{12}^2 \\
   & A_{12}^{ep}=-\beta s_{11}s_{12}
 \end{align}
-We first study the sign of the functions $\psi^s$ by $\mu=\rho c_2^2$ so that:
+The eigenvalues of the acoustic tensor are then:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:eigen_acc_DP1}
+    & \rho c_s^2 = \frac{1}{2}\( \lambda +3\mu -\beta (s_{11}^2+ s_{12}^2) - \sqrt{(\lambda + \mu -\beta (s_{11}^2-s_{12}^2) )^2 +4(\beta s_{11}s_{12})^2} \) \\
+    \label{eq:eigen_acc_DP2}
+    & \rho c_f^2 = \frac{1}{2}\( \lambda +3\mu -\beta (s_{11}^2+ s_{12}^2) + \sqrt{(\lambda + \mu -\beta (s_{11}^2-s_{12}^2) )^2 +4(\beta s_{11}s_{12})^2}  \)
+  \end{alignat}
+\end{subequations}
+We first study the sign of the functions $\psi^f$ by noticing that $\mu=\rho c_2^2$ so that $A_{22}^{ep}$ may be rewritten to yield:
 \begin{equation*}
-  \psi^f = -\frac{A_{12}^{ep}}{A_{22}-\rho c_f^2}=\frac{\beta s_{11}s_{12}}{\rho c_2^2 -\rho c_f^2 -\beta s_{12}^2 } = -\frac{\beta s_{11}s_{12}}{\rho c_f^2-\rho c_2^2 +\beta s_{12}^2 }
+  \psi^f = -\frac{A_{12}^{ep}}{A_{22}-\rho c_f^2}= -\frac{\beta s_{11}s_{12}}{\rho c_f^2-\rho c_2^2 +\beta s_{12}^2 }
 \end{equation*}
-Since the denominator is positive for $c_f \geq c_2$, it comes out that $\sign (\psi^f) = - \sign(s_{12}) \sign(s_{11})$.
+Since the denominator is positive for $c_f \geq c_2$, it comes out that $\sign (\psi^f) = - \sign(s_{12}) \sign(s_{11})$. Moreover, two roots of the loading function $\psi^f$ can be identified.
 
-Next, from the expressions of the acoustic tensor components, we see that particular cases leading to $\psi^f_1\rightarrow \infty$ or $\psi^f_1\rightarrow 0$ arise when $s_{11}=0$ and $s_{12}=0$. In particular, such stress values yield respectively $\rho c_s^2(s_{12}=0) = \mu/\rho = \rho c_2^2$ and $\rho c_f^2(s_{11}=0) = (\lambda + 2\mu)/\rho = \rho c_1^2$ according to equations \eqref{eq:eigen_acc_planeStrain1} and \eqref{eq:eigen_acc_planeStrain2}.
+%Next, from the expressions of the acoustic tensor components, we see that particular cases leading to $\psi^f_1\rightarrow \infty$ or $\psi^f_1\rightarrow 0$ arise when $s_{11}=0$ and $s_{12}=0$. In particular, such stress values yield respectively $\rho c_s^2(s_{12}=0) = \mu/\rho = \rho c_2^2$ and $\rho c_f^2(s_{11}=0) = (\lambda + 2\mu)/\rho = \rho c_1^2$ according to equations \eqref{eq:eigen_acc_planeStrain1} and \eqref{eq:eigen_acc_planeStrain2}. (supposing $\abs{s_{11}}\leq \sqrt{\frac{\lambda+\mu}{\beta}}$)
 
 \paragraph*{Condition $s_{12}=0$ :} 
-We first look at the shear-free state for which the subtraction of the acoustic tensor diagonal entries reads: $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu -\beta s_{11}^2$. 
+According to equation \eqref{eq:eigen_acc_DP1}, the eigenvalue of the acoustic tensor associated to the speed of slow waves reads for a shear-free state:
+\begin{align*}
+  & \rho c_s^2 = \frac{1}{2}\( \lambda +3\mu -\beta s_{11}^2 - \abs{\lambda + \mu -\beta s_{11}^2 } \) \\
+  & \rho c_f^2 = \frac{1}{2}\( \lambda +3\mu -\beta s_{11}^2 + \abs{\lambda + \mu -\beta s_{11}^2 } \) 
+\end{align*}
+Then, assuming that $\beta s_{11}^2 < \lambda + \mu$, the expression further reduces to:
+\begin{align*}
+  & \rho c_s^2 = \mu
+  & \rho c_f^2 = \lambda +2\mu -\beta s_{11}^2 
+\end{align*}
+so that the characteristic speed of slow waves reduces to that of elastic shear waves $c_s=c_2=\sqrt{\mu/\rho}$. Conversely, assuming that $\beta s_{11}^2 > \lambda + \mu$, one gets from equation \eqref{eq:eigen_acc_DP2}:
+\begin{align*}
+  & \rho c_s^2 = \lambda +2\mu -\beta s_{11}^2  \\
+  & \rho c_f^2 =  \mu \\
+\end{align*}
+The first equation may however lead to a loss of hyperbolicity of the problem since for $\beta s_{11}^2 > \lambda +2\mu$, the characteristic speed of slow waves becomes complex.
+At last, the equality $\beta s_{11}^2 = \lambda + \mu$ leads to $A_{11}^{ep}-A_{22}^{ep}=0$. It then appears that $\abs{s_{11}} \neq \sqrt{\frac{\lambda+\mu}{\beta}}$ must be satisfied in order to ensure the hyperbolicity of the problem.
+%We first look at the shear-free state for which the subtraction of the acoustic tensor diagonal entries reads: $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu -\beta s_{11}^2$. 
 %Hence, the \textbf{undeterminancy} of the functions $\psi^$ arises for $s_{11} = \pm \sqrt{\frac{\lambda+\mu}{\beta}}$ (on the dowstream side), while if $s_{11} \neq \pm \sqrt{\frac{\lambda+\mu}{\beta}}$, $\psi^f_1 \rightarrow \infty$ and $\psi^s_1 \rightarrow 0$.
 
 Recall that $\psi^f_1$ tending to infinity implies that the loading path are horizontal in $(\sigma_{11},\sigma_{12})$ plane and hence, the fast wave has no influence on the shear stress if, and only if, $\sigma_{12}=0$ downstream. Conversely, the stress paths through slow simple waves are vertical. Moreover, with regard the last row of table \ref{tab:simpleWavesEquations}, $\sigma_{22}$ is also unchanged in that case. As a consequence, if the initial state is shear-free the solution no longer contain combined waves, but longitudinal stress and shear stress simple waves.
 
-\paragraph*{Condition $s_{11}=0$ :} The functions $psi$ cannot be undetermined in the case $s_{11}=0$ since the equation $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu + \beta s_{12}^2$ does not admit real solutions.
-However, one can try to give a "physical meaning" to the condition $s_{11}=0$ by considering the relation \eqref{eq:plane_strain_stress33} between stress components for plane strain:
+\paragraph*{Condition $s_{11}=0$ :} The functions $\psi$ cannot be undetermined in the case $s_{11}=0$ since the equation $A_{11}^{ep}-A_{22}^{ep}=\lambda + \mu + \beta s_{12}^2$ does not admit real solutions. Considering the relation \eqref{eq:plane_strain_stress33} between stress components for plane strain, one has:
+%However, one can try to give a "physical meaning" to the condition $s_{11}=0$ by considering the relation \eqref{eq:plane_strain_stress33} between stress components for plane strain:
 \begin{equation*}
   s_{11}= \frac{2}{3}\sigma_{11}-\frac{1}{3}(\sigma_{22}+\nu(\sigma_{11}+\sigma_{22})-E\eps^p_{33})
 \end{equation*}
-so that $s_{11}=0$ occurs for:
+so that the previous condition is equivalent to:
 \begin{equation}
   \label{eq:plane_strain_s11=0}
   \sigma_{11}=\frac{1+\nu}{2-\nu}\sigma_{22}-E\eps^p_{33}
 \end{equation}
+In such a stress state, the characteristic speeds are of the form:
+\begin{align*}
+  & \rho c_s^2 = \mu -\beta s_{12}^2 \\
+  & \rho c_f^2 = \lambda +2\mu 
+\end{align*}
+so that the celerity of fast waves identifies to that of elastic pressure wave $c_f=\sqrt{(\lambda + 2\mu)/\rho}=c_1$.
 
+
+\paragraph*{Integration of loading paths under plane strain:}
 It is assumed that the stress $\sigma_{22}$ in initially zero everywhere in the domain. Several stress paths followed through a fast simple wave and starting from an arbitrary point of the initial yield surface are plotted in figure \ref{fig:fast_path_plane_strains}. Figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_stress} shows the projections in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes while figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_dev} shows the stress path in the principal deviatoric stress components space. Note that the projection in that space is orthogonal to the hydrostatic axis $s_1+s_2+s_3=0$ so that the von-Mises yield surface is a circle. Rather, the von-Mises yield surface in that space is a cylindre which axis is used to look at the stress paths in the deviator plane.
 
 Remark, the characteristic speeds are supposed to decrease along the integral curves. It is not the case for all the stress paths depicted in the figures below. In addition, both slow and fast waves lead to loading paths restricted to the yield surface until the direction of pure shear is reached.
@@ -125,6 +159,17 @@ Remark, the characteristic speeds are supposed to decrease along the integral cu
 
 \subsection{The plane stress case}
 Under plane stress, the elastoplastic tangent modulus can be rewritten by taking into account the vanishing stress component $\sigma_{33}$:
+
+\begin{figure}[h!]
+  \centering
+  {\input{chapter5/pgfFigures/thinwalledStress}}
+  \caption{comparison between Clifton and own solution}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\input{chapter5/pgfFigures/thinwalledDev}}
+  \caption{Projection in deviatoric plane}
+\end{figure}
 \begin{equation*}
   \dot{\sigma}_{33}=C^{ep}_{33ij} \dot{\eps}_{ij} =0
 \end{equation*}
@@ -137,21 +182,28 @@ Hence, the constitutive equation reads:
   \label{eq:CP_constitutive}
   \dot{\sigma}_{ij}=C^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\dot{\eps}_{kl} \qquad i,j,k,l=\{1,2\} 
 \end{equation}
-
-Thus, the components of the acoustic tensor read:
+Thus, the components of the acoustic tensor, after some simplifications, read:
 \begin{align}
   & A_{11}^{ep}= C^{ep}_{1111} - \frac{{C^{ep}_{1133}}^2}{C^{ep}_{3333}} = \lambda + 2\mu -\beta s_{11}^2 -\frac{\(\lambda -\beta s_{11}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
-  & A_{22}^{ep}= C^{ep}_{1212} - \frac{{C^{ep}_{1233}}^2}{C^{ep}_{3333}}= \mu - \beta s_{12}^2 -\frac{\(\mu -\beta s_{12}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
-  & A_{12}^{ep}=C^{ep}_{1112} - \frac{C^{ep}_{1133}C^{ep}_{1233}}{C^{ep}_{3333}} = -\beta s_{11}s_{12}- \frac{\(\lambda - \beta s_{11}s_{33}\)\( -\beta s_{12}s_{33}\)}{\lambda + 2\mu - \beta s_{33}^2}
+  & A_{22}^{ep}= C^{ep}_{1212} - \frac{{C^{ep}_{1233}}^2}{C^{ep}_{3333}}= \mu - \beta s_{12}^2 -\frac{\(\beta s_{12}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
+  & A_{12}^{ep} = C^{ep}_{1112} - \frac{C^{ep}_{1133}C^{ep}_{1233}}{C^{ep}_{3333}} =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
+  % & A_{12}^{ep}=C^{ep}_{1112} - \frac{C^{ep}_{1133}C^{ep}_{1233}}{C^{ep}_{3333}} = -\beta s_{11}s_{12}- \frac{\(\lambda - \beta s_{11}s_{33}\)\( -\beta s_{12}s_{33}\)}{\lambda + 2\mu - \beta s_{33}^2}
 \end{align}
-\begin{equation*}
-  A_{12}^{ep} = \beta s_{12} \( s_{33}\frac{\lambda - \beta s_{11}s_{33}}{\lambda + 2\mu - \beta s_{33}^2} -s_{11}  \) =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
-\end{equation*}
-From the last equation, $s_{12}=0$ is obviously a root of the equation $A_{12}^{ep}=0$. In addition, the second solution $s_{11}=\lambda/(\lambda+2\mu)s_{33}$ leads to $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. Hence, the function $\psi^f_1 \rightarrow \infty$ for $s_{12}=0$ and $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. In order to ensure the hyperbolicity of the system, the component of the acoustic tensor also have to be defined, that is $C^{ep}_{3333}\neq 0$. This condition leads to:
+% \begin{equation*}
+%   A_{12}^{ep} = \beta s_{12} \( s_{33}\frac{\lambda - \beta s_{11}s_{33}}{\lambda + 2\mu - \beta s_{33}^2} -s_{11}  \) =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
+% \end{equation*}
+From the last equation, $A_{12}^{ep}$ obviously vanishes for $s_{12}=0$ and $s_{11}=\lambda s_{33}/(\lambda+2\mu)$, the latter condition leading to $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. Hence, the function $\psi^f_1 \rightarrow \infty$ for $s_{12}=0$ and $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. In order to ensure the hyperbolicity of the system, the component of the acoustic tensor also have to be defined, that is $C^{ep}_{3333}\neq 0$. This condition leads to:
 \begin{equation*}
   \lambda + 2\mu - \beta s_{33}^2 \neq 0 \quad \Leftrightarrow \quad s_{33}\neq \frac{\lambda + 2\mu}{\beta}
 \end{equation*}
-Undefined if $A^{ep}_{11}=A^{ep}_{22}$
+
+\paragraph*{Case $s_{12}=0$ :}
+\begin{align}
+  & \rho c_s^2 =\frac{1}{2}\(A_{11}^{ep}+A_{22}^{ep} - \abs{A_{11}^{ep}-A_{22}^{ep}}\) \\
+  & \rho c_f^2 =\frac{1}{2}\(A_{11}^{ep}+A_{22}^{ep} + \abs{A_{11}^{ep}-A_{22}^{ep}}\)
+\end{align}
+
+The other singularity $A^{ep}_{11}=A^{ep}_{22}$ is on the other hand, more complex to deal with.
 
 \begin{figure}[h!]
   \centering
@@ -160,9 +212,6 @@ Undefined if $A^{ep}_{11}=A^{ep}_{22}$
   \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface. Stresses in Pa}
   \label{fig:fast_path_plane_strains}
 \end{figure}
-% \pgfplotstableread{chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_frame3_Stress0.pgf}\loadedtable
-% %\pgfplotstabletypeset[columns={sigma_11,sigma_12}]\loadedtable
-% % \pgfplotstablegetelem{〈row〉}{〈col〉}\of〈table〉
 
 
 \begin{figure}[h!]
