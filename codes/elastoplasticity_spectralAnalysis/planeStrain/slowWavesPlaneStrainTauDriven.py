@@ -186,10 +186,10 @@ def computeCriterion(sig11,sig22,sig12,sig33,sigy):
     f=np.sqrt(3./2.)*normSDev - sigy
     return f
 
-def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
-    # sig12 driven
+def loadingPath(dtau,sigma,sigman,h,lamb,mu,beta,tangent):
+    # Stress part
     n1=1.;n2=0.
-    sig11=sigma[0];sig22=sigma[1]
+    sig11=sigman[0];sig12=sigman[1];sig22=sigman[2];sig33=sigman[3]
     H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
     C=acousticTensor(H,np.array([n1,n2]))
     eigenf,eigens=acousticEigenStructure(C)
@@ -199,18 +199,18 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     w1=eigenf[1][0];w2=eigenf[1][1]
     psi11=-w2/(1.*w1)
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
-    return np.array([psi11,psi22])
-
-
-def computeSpeed(sigma,lamb,mu,beta,tangent):
-    # sig12 driven
-    n1=1.;n2=0.
-    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
-    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
-    C=acousticTensor(H,np.array([n1,n2]))
-    eigenf,eigens=acousticEigenStructure(C)
-    return eigens[0]
-
+    ## Plastic strain part
+    sigDev=computeDeviatoricPart(np.array([sigma[0],sigma[1],sigma[2],sigma[3]]))
+    sigDevn=computeDeviatoricPart(np.array([sigman[0],sigman[1],sigman[2],sigman[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    dSig=sigman-sigma
+    dSig[1]*=np.sqrt(2.)
+    #dSig=sigDevn-sigDev
+    dp=(1./h)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    depsp33=np.sqrt(3./2.)*flow[3]*dp
+    # return dsig11,dsig22,depsp33
+    return np.array([psi11*dtau,psi22*dtau,depsp33])
 
 def integrateODE(dtau,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent):
     sigma=np.array([sig0,sig22_0,epsp33])
@@ -222,23 +222,23 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma - np.array([dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[0],dTAU*(theta*computePsiSlow(tau0+dTAU,np.array([x[0],x[1]]),nu*(x[0]+x[1])-E*x[2],lamb,mu,beta,tangent))[1],theta*computePlasticResidual2(np.array([sigma[0],tau0*np.sqrt(2.),sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),np.array([x[0],(tau0+dTAU)*np.sqrt(2.),x[1],nu*(x[0]+x[1])-E*x[2]]),H)])
+        
+        R=lambda x: x - sigma - theta*loadingPath(dTAU,np.array([sigma[0],tau0,sigma[1],nu*(sigma[0]+sigma[1])-E*sigma[2]]),np.array([x[0],tau0+dTAU,x[1],nu*(x[0]+x[1])-E*x[2]]),H,lamb,mu,beta,tangent)
         #pdb.set_trace()
         
         solution = scipy.optimize.fsolve(R,np.array([sigma[0],sigma[1],epsp33]))
         sigma = solution
-    return solution
+    return solution[0],solution[1],solution[2],nu*(solution[0]+solution[1])-E*solution[2]
 
-def computePlasticResidual2(sig,sign,H):
-    # sig = [sig11 , sig12*sqrt(2) , sig22 , sig33] 
-    sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
-    sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
-    norm=np.sqrt(np.dot(sigDevn,sigDevn))
-    flow=sigDevn/norm
-    dSig=sigDevn-sigDev
-    dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
-    res=np.sqrt(3./2.)*flow[3]*dp # = epsp33n -epsp33
-    return res
+def computeSpeed(sigma,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0,0];sig22=sigma[1,1];sig12=sigma[0,1];sig33=sigma[2,2]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigens[0]
+
 
 def computeSpeedSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     # sig12 driven
@@ -269,8 +269,8 @@ def updateEquivalentPlasticStrain(sig,sign,H):
     sigDev=computeDeviatoricPart(np.array([sig[0],sig[1]/np.sqrt(2.),sig[2],sig[3]]))
     norm=np.sqrt(np.dot(sigDevn,sigDevn))
     flow=sigDev/norm
-    #dSig=sign-sig
-    dSig=sigDevn-sigDev
+    dSig=sign-sig
+    #dSig=sigDevn-sigDev
     dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
     return dp
 
@@ -310,12 +310,26 @@ def computePlasticResidual(epsp33,sig,epsp33n,sign,E,H,nu):
     sigDevn=computeDeviatoricPart(np.array([sign[0],sign[1]/np.sqrt(2.),sign[2],sign[3]]))
     norm=np.sqrt(np.dot(sigDevn,sigDevn))
     flow=sigDevn/norm
-    #dSig=sign-sig
-    dSig=sigDevn-sigDev
+    dSig=sign-sig
+    dSig[1]*=np.sqrt(2.)
+    #dSig=sigDevn-sigDev
     dp=(1./H)*np.sqrt(3./2.)*np.dot(flow,dSig)
     res=epsp33n-epsp33-np.sqrt(3./2.)*flow[3]*dp
     return res
 
+def updateEpsilon(Eps,sigma,sigman,E,nu,h):
+    sigDevn=computeDeviatoricPart(np.array([sigman[0],sigman[1],sigman[2],sigman[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    dSig=sigman-sigma
+    sigmaDot=np.array([dSig[0],dSig[1]*np.sqrt(2.),dSig[2],dSig[3]])
+    deps11=(1.+nu)*dSig[0]/E-nu*(dSig[0]+dSig[2]+dSig[3])/E +(3./(2.*h))*flow[0]*np.dot(flow,sigmaDot)
+    deps22=(1.+nu)*dSig[2]/E-nu*(dSig[0]+dSig[2]+dSig[3])/E +(3./(2.*h))*flow[2]*np.dot(flow,sigmaDot)
+    deps33=(1.+nu)*dSig[3]/E-nu*(dSig[0]+dSig[2]+dSig[3])/E +(3./(2.*h))*flow[3]*np.dot(flow,sigmaDot)
+    deps12=(1.+nu)*dSig[1]/E +(3./(2.*h))*flow[1]*np.dot(flow,sigmaDot)/np.sqrt(2.)
+    Eps+=np.array([deps11,deps12,deps22,deps33])
+    return Eps
+            
 
 from mpl_toolkits.mplot3d import proj3d
 def orthogonal_proj(zfront, zback):
@@ -359,6 +373,7 @@ PsiS=np.zeros((Samples,len(sig22)))
 plast_S=np.zeros((Niter,len(frames),len(sig22)))
 rcs2=np.zeros((Niter,len(frames),len(sig22)))
 Epsp33=np.zeros((Niter,len(frames),len(sig22)))
+Eps=np.zeros((4,Niter,len(frames),len(sig22)))
 LodeAngle_S=np.zeros((Niter,len(frames),len(sig22)))
 speed_S=np.zeros((Niter,len(frames),len(sig22)))
 
@@ -416,11 +431,6 @@ for k in range(len(sig22)-1)[1:]:
         SIG33[0,s,k]=sig33
         
         
-        #rSlow = ode(computePsiSlow).set_integrator('vode',method='bdf',order=5)
-        rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
-        #rSlow = ode(computePsiSlow).set_integrator('dopri5')
-        
-        rSlow.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(sig33,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
         rcs2[0,s,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
                     
@@ -435,45 +445,35 @@ for k in range(len(sig22)-1)[1:]:
         plast=0.
         epsp33=0.
         for j in range(Niter-1):
-            # rSlow.set_f_params(np.array([SIG11[j,s,k],SIG22[j,s,k]]),SIG33[j,s,k],lamb,mu,beta,tangent)
-            # if not rSlow.successful():
-            #     print "Integration issues in slow wave path"
-            #     break
-            # rSlow.integrate(rSlow.t+dtau)
-        
-            # SIG11[j+1,s,k],SIG22[j+1,s,k]=rSlow.y 
-            SIG11[j+1,s,k],SIG22[j+1,s,k],epsp33=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
+            SIG11[j+1,s,k],SIG22[j+1,s,k],epsp33,SIG33[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
             
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
             
-            sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-            SIG33[j+1,s,k]=sig33
-            # Plastic update
-            # sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-            # res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-            # sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-            # epsp33=sol[0]
-            # sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
-            # criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
-            # pdb.set_trace()
+            sig33=SIG33[j+1,s,k]
             
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
+            speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
+            if speed_S[j+1,s,k]>speed_S[j,s,k]:
+                print "Simple wave condition violated"
+                break
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
-            if dp <0.:
-                print "equivalent plastic strain increment negative"
+            if dp <-1.e-7:
+                print "equivalent plastic strain increment negative",dp
                 # pdb.set_trace()
             plast+=dp
-            # SIG33[j+1,s,k]=sig33
+
             criterionS[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
             plast_S[j+1,s,k]=plast
-            speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
+            
             Epsp33[j+1,s,k]=epsp33
             LodeAngle_S[j+1,s,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),sig33)
-            
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,SIG33[j+1,s,k]]])
             rcs2[j+1,s,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
-            #eigsigS[j+1,s,k,:]=np.sort(np.linalg.eig(sigma)[0])#computeEigenStresses(sigma)
+
+            #Eps=np.zeros((4,Niter,len(frames),len(sig22)))
+            Eps[:,j+1,s,k]=updateEpsilon(Eps[:,j,s,k],np.array([SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]]),np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]),E,nu,H)
+            
             #pdb.set_trace()
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
@@ -481,6 +481,15 @@ for k in range(len(sig22)-1)[1:]:
             radi=np.sqrt(np.dot(eigsigS[j,s,k,:],eigsigS[j,s,k,:]))
             radi2=np.sqrt(2./3.)*sigy
             #pdb.set_trace()
+        time=np.linspace(0,j+1,Niter)
+
+        plt.plot(time[1:],Eps[0,1:,s,k],label='eps11')
+        plt.plot(time[1:],Eps[1,1:,s,k],label='eps12')
+        plt.plot(time[1:],Eps[2,1:,s,k],label='eps22')
+        plt.plot(time[1:],Eps[3,1:,s,k],label='eps33')
+        plt.legend()
+        plt.grid()
+        plt.show()
         print "Final equivalent plastic strain after slow wave : ",plast
         fileName=path+'DPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
