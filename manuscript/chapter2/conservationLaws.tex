@@ -92,7 +92,6 @@ Since equation \eqref{eq:mass_conservation_law} holds regardless of the volume $
   \label{eq:mass_balance}
   \rho\(\vect{\phi}(\vect{X},t),t\) = \frac{\rho_0\(\vect{X}\)}{J} \qquad \forall \: \vect{X},t \: \in \Omega_0\times \tau
 \end{equation}
-%\thomas{In particular, equation \eqref{eq:mass_balance} is automatically satisfied within the infinitesimal theory since current and reference configurations are the same (\textit{i.e.} $\rho=\rho_0 \: \forall\: \vect{x},t \: \in \Omega\times \tau$).}
 
 Furthermore, \textit{Newton's second law} states the equilibrium between inertia and external forces undergone by a solid $\Omega$. In the current configuration this conservation law consists of the \textit{translational} and \textit{rotational} balances, also known as \textit{linear momentum} and \textit{angular momentum} balance equations, which are respectively:
 \begin{subequations}
@@ -418,10 +417,9 @@ with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}.
 The \textit{elastoplastic acoustic tensor} is defined as:
 \begin{equation}
   \label{eq:EP_acoustic}
-  A_{ij}^{ep}= n_k C^{ep}_{kijl}n_l = A_{ij}^{elast} -  \frac{6\mu^2}{3\mu +(C+R')} (n_k m_{ki})(m_{jl}n_l)
+  A_{ij}^{ep}= n_k C^{ep}_{ikjl}n_l = A_{ij}^{elast} -  \frac{6\mu^2}{3\mu +(C+R')} (n_k m_{ik})(m_{jl}n_l)
 \end{equation}
 which is positive-definite for positive linear hardening ($C>0 \:;\: R'>0$).
-% Note that (positive) linear hardening ensure the positive definiteness of the elastoplastic acoustic tensor $\tens{A}^{ep}=\tens{A}^{elast} -  \frac{6\mu^2}{3\mu +(C+R')} \thomas{(\tens{m}\cdot{n})\otimes(\tens{m}\cdot{n})}$.  
 \end{example}
 
 
