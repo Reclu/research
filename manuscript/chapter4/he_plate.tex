@@ -21,6 +21,12 @@ At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}),
   \caption{Isovalues of velocity component $v_1$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
   \label{fig:2dhe_velo}
 \end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/linePlotshyp}
+  \caption{plot along bottom line}
+\end{figure}
 MPM solution moreover exhibits, as for small strains problems, a concentration of stress in the high gradients region on the left boundary. It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
 % Then, interactions between shear and tension-compression waves occurring in the left part of the plate give rise to a decrease of the stress level on the wave front which is managed differently by the two methods. Thus, additional oscillations are introduced in the FEM solution leading to a more diffuse wave profile (right colored map in figure \ref{figure:2D_partial_impact}\subref{subfig:2Dpartialplate2}).
 The deformed shapes of the plate resulting from the three numerical approaches hence remain close, except at the junction of the loaded and free zones of the left edge.

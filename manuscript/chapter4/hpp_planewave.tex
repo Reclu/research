@@ -33,8 +33,9 @@ Figure \ref{fig:nonstiff_elastoviscoplastic_RP} shows a comparison of numerical 
 For this non-stiff configuration, viscous effects lead to much smoother solutions compared to the elastic-plastic ones as can be seen in figures \ref{fig:nonstiff_elastoviscoplastic_RP}\subref{subfig:evp_nonstiff1}.
 %% SPLITER 1PPC puis 2ppc
 First, USL and USF results are quite similar in terms of stress, up to some oscillations on the plastic plateau that leads to a different assessement of viscoplastic strain. 
-Then, Godunov splitting, when used with 1ppc, and Strang splitting solutions both result in an overestimated apparent tensile yield stress. On the other hand, elastic and plastic waves cannot even be distinguished in MPM solution and in DGMPM-Euler results on 2ppc due to the diffusion the shcemes suffer from.
-Furthermore, local overshoots appear in the viscoplastic strain computed with the MPM and the DGMPM-Euler when one ppc is used. While the former can be explained by the velocity locking at the middle of the bar, the latter can be eliminated by integrating implicitly the viscoplastic flow rule \cite{Thomas_EVP}.
+Then, while Godunov splitting used with 1ppc, and Strang splitting provide solutions in which two left-going and two right-going waves are visible, elastic and plastic waves cannot even be distinguished in MPM solution and in DGMPM-Euler results on 2ppc due to the diffusion the schemes suffer from.
+% Then, Godunov splitting, when used with 1ppc, and Strang splitting solutions both result in an overestimated apparent tensile yield stress. On the other hand, elastic and plastic waves cannot even be distinguished in MPM solution and in DGMPM-Euler results on 2ppc due to the diffusion the schemes suffer from.
+Furthermore, local overshoots appear in the viscoplastic strain computed with the MPM and the DGMPM-Euler when one ppc is used. While the former can be explained by the velocity locking at the middle of the bar, the latter can be eliminated by integrating implicitly the viscoplastic flow rule together with the source term \cite{Thomas_EVP}.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption \label{subfig:evp_stiff1}}
@@ -45,15 +46,18 @@ Furthermore, local overshoots appear in the viscoplastic strain computed with th
   \label{fig:siff_elastoviscoplastic_RP}
 \end{figure}
 
-The same remarks as before can be made with a lower relaxation time $\tau=\Delta t \times 10^{-2}$ as can be seen in figure \ref{fig:siff_elastoviscoplastic_RP}. However, numerical solutions are sharper and get closer to the elastic-plastic stress and strain.
-%A lower relaxation time $\tau=\Delta t \times 10^{-2}$, leading to a stiffer system, is set for the results of figure \ref{fig:siff_elastoviscoplastic_RP}.
-%The same remarks as before can be made though numerical solutions are sharper and get closer to the elastic-plastic stress and strain.
-Once again, the overshoots arising in the DGMPM-Euler viscoplastic strain can be removed by integrating implicitly the flow rule. This is also the case for the spurious oscillations that can be observed in the stress solution in figure \ref{fig:siff_elastoviscoplastic_RP}\subref{subfig:evp_stiff1} \cite{Thomas_EVP}. %Moreover, Strang splitting yield an underestimated plastic wave that leads to a delayed solution compared to that of Godunov splitting and MPM. This behaviour is known for Strang splitting applied to stiff problems \cite{Leveque_stiff,Thomas_EVP}.
+The same remarks as before can be made with a lower relaxation time $\tau=\Delta t \times 10^{-2}$ as can be seen in figure \ref{fig:siff_elastoviscoplastic_RP}. However, numerical solutions are sharper and get closer to the elastic-plastic stress and strain. Furthermore, the decrease in the relaxation time which makes the system tends to the elastic-plastic limit leads to an apparent yield stress tending to that of the elastoplastic solution for Godunov splitting with 1ppc, and Strang splitting.
+Once again, the overshoots arising in the DGMPM-Euler viscoplastic strain can be removed by integrating implicitly the flow rule. This is also the case for the spurious oscillations that can be observed in the stress solution in figure \ref{fig:siff_elastoviscoplastic_RP}\subref{subfig:evp_stiff1} \cite{Thomas_EVP}. 
 
-Although only Godunov and Strang splittings have been considered above, other strategies based on high order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, can be employed.
-Thus, the DGMPM enables more flexibility than the original MPM in order to adapt the scheme to solve a problem in a more accurate manner.
-This versatility is further demonstrated on the elastic-plastic problem that is now considered.
 
+The above simulations show that the elastic-plastic solution can be computed as the stiff limit of the elastic-viscoplastic system. Though this approach allows to avoid the integration of plastic flow which can become complex for multi-dimensional or large strains problems, additional numerical effort must be made. Indeed, splitting procedures as these used here fail in computing the elastic-plastic solution so that other strategies based on high order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
+Nevertheless, it is worth noticing that the DGMPM enables the use of such numerical procedure while the MPM formulation does not.
+
+% Thus, the DGMPM enables more flexibility than the original MPM in order to adapt the scheme to solve a problem in a more accurate manner.
+% This versatility is further demonstrated on the elastic-plastic problem that is now considered.
+
+
+%% Faire le lien en disant qu'on peut également, pour les problèmes 1D, utiiser un solveur EP dédié afin de s'affranchir des problèmes liés à l'intégration d'une ODE stiff.
 \subsubsection{Elastoplasticity}
 %% On utilise la forme quasi linear pour la dgmpm donc on est un peu différent des volumes finis car on a un retour radial en plus. Il faut que ca soit clair ça !
 Recall that the conservative form and associated quasi-linear form governing elastoplasticity under small strains have been derived in section \ref{sec:general-formulation}.
