@@ -217,7 +217,7 @@ Hence, the DGMPM scheme is stable for a given discretization if the Courant numb
 \begin{equation}
   \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: \alpha = 1,...,N_p
 \end{equation}
-The stability of the scheme is thus ensured by using the lowest CFL number satisfying \eqref{eq:stability}. \thomas{Note however that the use of the triangle inequality leads to a more severe constraint so that in practice, the Courant number may be set to higher values than that resulting from the solution of \eqref{eq:stability}.} 
+The stability of the scheme is thus ensured by using the lowest CFL number satisfying \eqref{eq:stability}. Note however that the use of the triangle inequality leads to a more severe constraint than that really admissible. As a consequence, the Courant number can be set in practice to higher values than that resulting from the solution of \eqref{eq:stability}. 
 
 %According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
 According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, the stability condition \eqref{eq:stability} can be very hard to find analytically for general discretizations. 
@@ -284,7 +284,7 @@ The continuum system \eqref{eq:conv_hyperbolic} is discretized with both MPM (US
     & \epsilon_v(t) = \(\Delta X \sum_{\alpha=1}^{N_p}\frac{(v_\alpha - v_{\text{exact}}(X_\alpha,t))^2}{v_{\text{exact}}(X_\alpha,t)^2}\)^{\frac{1}{2}}
   \end{alignat}
 \end{subequations}
-Note that errors are computed at time $t=0.5 T$ so that no reflection of waves on the right boundary occurs and the stress amplitude is set at $\tilde{\sigma}=4\times 10^4\:Pa$. Figure \ref{fig:convergence_stress} shows the evolution of the $L^2$ errors $\epsilon_\sigma$ with regard to the grid size for the MPM and the DGMPM using Euler and RK2 time discretizations for several number of particles per element. We see that despite the rates of convergence of stress (obtained by means of non-linear least squares fitting and reported in table \ref{tab:accuracy}) are close to one, the DGMPM--Euler and DGMPM--RK2 exhibit lower ones compared to that of the MPM. 
+The errors are computed at time $t=0.5 T$ so that no reflection of waves on the right boundary occurs and the stress amplitude is set at $\tilde{\sigma}=4\times 10^4\:Pa$. Figure \ref{fig:convergence_stress} shows the evolution of the $L^2$ errors $\epsilon_\sigma$ with regard to the grid size for the MPM and the DGMPM using Euler and RK2 time discretizations for several number of particles per element. We see that despite the rates of convergence of stress (obtained by means of non-linear least squares fitting and reported in table \ref{tab:accuracy}) are close to one, the DGMPM--Euler and DGMPM--RK2 exhibit lower ones compared to that of the MPM. 
 \begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/convS_2ppc.tex}\phantomsubcaption\label{subfig:convS_2ppc}}
@@ -294,29 +294,16 @@ Note that errors are computed at time $t=0.5 T$ so that no reflection of waves o
   \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells.}
   \label{fig:convergence_stress}
 \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter3/pgfFigures/convS_2ppclowCFL.tex}}
-%   {\input{chapter3/pgfFigures/convS_6ppclowCFL.tex}}
-%   {\input{chapter3/pgfFigures/convS_10ppclowCFL.tex}}
-%   {\input{chapter3/pgfFigures/convS_20ppclowCFL.tex}}
-%   \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells CFL set to 0.5 for DGMPM.}
-%   \label{fig:convergence_stress}
-% \end{figure}
 \begin{table}[h!]
   \centering
   \input{chapter3/tabular/accuracy}
   \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
   \label{tab:accuracy}
 \end{table}
-% \begin{table}[h!]
-%   \centering
-%   \input{chapter3/tabular/accuracy_lowCFL}
-%   \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
-%   \label{tab:accuracy}
-% \end{table}
 Second, an increase in the number of particles per cell provides slightly higher convergence rates, according to table \ref{tab:accuracy}, and shifts DGMPM curves upward as can be seen in figures \ref{fig:convergence_stress}\subref{subfig:convS_2ppc} to \ref{fig:convergence_stress}\subref{subfig:convS_20ppc}. On the other hand, the MPM error curves do not exhibit this behavior as observed in \cite{MPM_BSpline1}. At last, for coarse grids (\textit{i.e. $\Delta X= l/2^i$ for $i \leq 3$}) the DGMPM--Euler leads to the lowest error but its smaller rate of convergence makes it quickly less accurate than the two other methods. Similar behaviors can be seen for the velocity, which convergence curves are depicted in figure \ref{fig:convergence_velocity} for the same discretizations. Again, the DGMPM shows lower rates of convergence than the MPM, and increasing the number of particles per cell leads to more error in DGMPM solutions. The same order of accuracy for velocity and stress resulting from the DGMPM (see table \ref{tab:accuracy}) was expected since the writing of the weak form of system \eqref{eq:conv_hyperbolic} leads to the same approximation for both fields. The MPM is on the other hand, as FEM, characterized by a higher order of convergence for velocity than stress owing to the use of shape functions derivatives for the computation of gradients. Hence, the MPM rate of convergence in terms of velocity is getting closer to two. 
 
+The loss of accuracy in velocity in DGMPM can be explained by the mapping procedure it uses from nodes to particles since FLIP mapping has been introduced in order to reach second-order accuracy \cite{PIC_Nishiguchi}.
+Convergence properties of the MPM using PIC projection shown in table \ref{tab:accuracy} and figure \ref{fig:convergence_velocity} confirm the previous remark. Indeed, modifying the way fields are projected from nodes to particles does not affect dramatically the rate of convergence of stress but leads to a significant decrease in velocity accuracy.
 \begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/convV_2ppc.tex}\phantomsubcaption\label{subfig:convV_2ppc}}
@@ -326,10 +313,28 @@ Second, an increase in the number of particles per cell provides slightly higher
   \caption{Evolution of the $L^2$ error on velocity with regard to the number of particles lying in every cells.}
   \label{fig:convergence_velocity}
 \end{figure}
-The loss of accuracy in velocity in DGMPM can be explained by the mapping procedure it uses from nodes to particles since FLIP mapping has been introduced in order to reach second-order accuracy \cite{PIC_Nishiguchi}.
-Convergence properties of the MPM using PIC projection shown in table \ref{tab:accuracy} and figure \ref{fig:convergence_velocity} confirm the previous remark. Indeed, modifying the way fields are projected from nodes to particles does not affect dramatically the rate of convergence of stress but leads to a significant decrease in velocity accuracy.
 
-Since the DGMPM aims at capturing non-regular solutions (discontinuities), the first-order accuracy it exhibits appears better suited than a higher-order one since the achievable accuracy for such solutions is at most one \cite[p.149]{Leveque}. %that would introduce additional regularity in the approximation.
+We now propose to set the Courant number to $0.1$ for the MPM and the DGMPM-Euler in order to compare the accuracy of those first order in time schemes with the same time steps.
+\begin{figure}[h!]
+  \centering
+  {\label{subfig:lowCFL_stress}\input{chapter3/pgfFigures/convS_2ppclowCFL.tex}}
+  {\label{subfig:lowCFL_velo}\input{chapter3/pgfFigures/convV_2ppclowCFL.tex}}
+  \caption{Evolution of the $L^2$ errors on stress and velocity for two particles per cell. CFL set to 0.1.}
+  \label{fig:convergence_lowCFL}
+\end{figure}
+% \begin{table}[h!]
+%   \centering
+%   \input{chapter3/tabular/accuracy_lowCFL}
+%   \caption{Order of accuracy of MPM and DGMPM for two particles per cell and CFL number set to 0.1.}
+%   \label{tab:accuracy_low}
+% \end{table}
+A comparison between the convergence curves obtained for a CFL set to $0.1$ and the previous results (\textit{i.e. figures \ref{fig:convergence_stress} and \ref{fig:convergence_velocity}}) is made in figure \ref{fig:convergence_lowCFL}.
+The results first show that the order of accuracy of the DGMPM-Euler is also lower than that of the MPM when the same CFL is used in the methods.
+Second, as can be seen in figure \ref{fig:convergence_lowCFL}, the reduction of the time step yields additional error that can be explained by the numerical diffusion introduced in the solutions.
+As a consequence, the curves resulting from computations performed with a Courant number set to $0.1$ are above those obtained previously.
+However, a lower CFL enables an improvement of the accuracy of the methods. Indeed, the rates of convergence for both velocity and stress are in that case $0.66$ for the DGMPM-Euler, and $1.00$ for the MPM.
+
+Since the DGMPM aims at capturing non-regular solutions (discontinuities), its first-order of convergence is sufficient. Indeed, the achievable accuracy for such solutions is at most one \cite[p.149]{Leveque}. 
 Nevertheless, one might be interested in solving problems that involve smooth solutions so that the need of higher-order accuracy arises. Although linear shape functions has been employed so far, the method may handle higher-order approximation by using Legendre polynomials or B-Spline functions for instance (higher-order Lagrange polynomials being to be avoided for moving particles \cite{MPM_BSpline1}). Furthermore, DG features enable to locally increase the approximation order in regions where the solution is smooth. Note however that the particle-based quadrature rule limits the shape functions order one can select since few material points may lead to reduced integration. 
 This issue can however be avoided by means of function reconstruction techniques allowing to build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particles locations and which can be evaluated everywhere in a cell. In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1,MPM_BSpline2} within the MPM, enables to evaluate a reconstructed function at Gauss points locations in order to improve the quadrature rule.
 Nonetheless, the introduction of such reconstruction techniques in the DGMPM might lead to a restrictive stability condition as it would make the method closer to DGFEM.

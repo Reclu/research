@@ -83,25 +83,21 @@ However, the oscillations do not increase with time as can be seen in figure \re
 %% Capturing shocks
 Next, in spite of a CFL number set to one, the DGMPM-Euler and DGMPM-RK2 do not perfectly capture the discontinuity, though a good behavior is shown. Indeed, according to Lax entropy condition \eqref{eq:Lax_entropy}, the wave celerity used for the time step evaluation is an upper bound of the shock speed so that such a wave cannot be captured.
 Nevertheless, the loading conditions are deliberately extreme for the purpose of visualization. A lower tensile load leads to a numerical solution closer to analytical results as can be seen in figure \ref{fig:he_low_shock}, which shows the comparison for $\Pi^d=-2\times 10^{9} \: Pa$. In addition, the oscillations appearing in DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc solutions are almost eliminated in figure \ref{fig:he_low_shock}\subref{subfig:he_low_shock1}. The MPM solution on the other hand, still exhibits an increasing error although a Courant number ensuring the stability in the scheme for linear problems is used.
+\subsubsection{Impact problem}
 
-%% Previous figures
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/he_stress_50shock44}}
-%   {\input{chapter4/pgfFigures/he_stress_50shock88}}
-%   \caption{shock stress $50\sigma^y$}
-%   \label{fig:he_shock}
-% \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   {\input{chapter4/pgfFigures/he_stress_5shock43}}
-%   {\input{chapter4/pgfFigures/he_stress_5shock89}}
-%   \caption{shock stress lower shock $5\sigma^y$}
-%   \label{fig:he_low_shock}
-% \end{figure}
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/2dplaneWave}
+  \caption{test}
+  \label{fig:2dplane_Wave}
+\end{figure}
 
-
-
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/HE_PW_energies}
+  \caption{Evolution of total energy}
+  \label{fig:pw_energy}
+\end{figure}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

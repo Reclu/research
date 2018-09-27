@@ -70,7 +70,7 @@ Multiplying equation \eqref{eq:conservative_form} by a test function $\Vcb$ yiel
 \end{equation}
 The key idea of DG methods is to allow jump of fields across mesh elements faces by using broken polynomial spaces for the approximate solution \cite[Ch.1]{DiPietro}:
 \begin{equation}
-\Vscr^k = \{ \Vcb \in H^k\Omega^e) \} \quad ;\quad \Vscr_h^k = \{\Vcb \in \Pscr^k(\Omega^e) \} \subset \Vscr^k
+\Vscr^k = \{ \Vcb \in H^k(\Omega^e) \} \quad ;\quad \Vscr_h^k = \{\Vcb \in \Pscr^k(\Omega^e) \} \subset \Vscr^k
 \end{equation}
 with $H^k(\Omega^e)$, the Sobolev space and $\Pscr^k(\Omega^e)$, the space of polynomials of degree $k$ in $\Omega^e$. We restrict our attention here to linear polynomials ($k=1$). Those broken polynomials spaces allows to rewrite the weak form element-wise. After integration by parts, one gets:
 \begin{equation}
@@ -91,7 +91,7 @@ combined with the definition of mass density \eqref{eq:mass_density_DGMPM}, lead
   \label{eq:DGMPM_discrete_weak}
   \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Ucb}}{t}  \vect{\Vc} - \bar{\Fcb}_{\alpha} \drond{\vect{\Vc}}{X_\alpha} -\bar{\Scb}  \vect{\Vc} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \Fcb_N  \vect{\Vc} \: d\Gamma = 0 \quad \forall \: \vect{\Vc},e,t \in  \Vscr_h^1\times \[1,E\]\times \tau
 \end{equation}
-\thomas{As a first development step of the method, only the total Lagrangian formulation is considered in order to eliminate the grid crossing instability.}
+As a first development step of the method, only the total Lagrangian formulation is considered in order to eliminate the grid crossing instability.
 
 Introduction of the DGMPM approximation \eqref{eq:DGMPM_node2points} and arbitrariness of the test field in the weak form \eqref{eq:DGMPM_discrete_weak} finally provide the semi-discrete system that must be solved on the grid:
 \begin{equation}
@@ -237,7 +237,7 @@ Hence, the calculation of Godunov's fluxes requires the integration of constitut
         \right.
   \end{aligned}
 \end{equation}
-avoids the computation of constitutive equations. Indeed, the auxiliary vectors introduced in section \ref{sec:general-formulation} are rearrangements of the flux components, that is $\Fcb_N(\Ucb)=\Lbsf \Qcb$ with $\Lbsf$ some localization matrix. Then, the intercell flux is $\Fcb_N(\Ucb^*)=\Lbsf \Qcb^*$ where $\Qcb^*$  is the stationary solution of Riemann problem \eqref{eq:RP_quasilinear}. Note that this approach requires that stress as well as velocity and strain are projected back and forth between material points and nodes within the DGMPM.
+avoids the computation of constitutive equations. Indeed, the auxiliary vectors introduced in section \ref{sec:general-formulation} are rearrangements of the flux components, that is $\Fcb_N(\Ucb)=\Lbsf \Qcb$ with $\Lbsf$ some localization matrix. Then, the intercell flux is $\Fcb_N(\Ucb^*)=\Lbsf \Qcb^*$ where $\Qcb^*$  is the stationary solution of Riemann problem \eqref{eq:RP_quasilinear}. Note that this approach requires that stress as well as velocity and strain are projected back and forth between material points and nodes within the DGMPM. Moreover, solving Riemann problems for the auxiliary vector $\Qcb^*$ does not avoid the integration of constitutive equations on the grid when a multi-stage time integrator as the RK2 is used. Indeed, every subsequent steps $0 \leq k \leq 1$ of the time integrator require an initial auxiliary vector $\Qcb^{n+k}$, which is computed from the vector of conserved quantities $\Ucb^{n+k}$.
 %Indeed, the stationary solution $\Qcb^*$ of \eqref{eq:RP_quasilinear} is a rearrangement of the flux components, that is $\Qcb^*=\matrice{\vect{v}^* \\ \tens{\sigma}^*}$ for the infinitesimal theory and $\Qcb^* = \matrice{\vect{v}^* \\ \tens{\Pi}^*}$ for finite deformations. Thus, stress as well as velocity and strain must be projected back and forth between material points and nodes within the DGMPM. $\Fcb_N(\Ucb^*)=\Lbsf \Qcb^*$ 
 
 \subsubsection*{Transverse corrections}

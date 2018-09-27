@@ -1,11 +1,14 @@
 \chapter{Numerical Results}
 \section*{Introduction}
-The Discontinuous Galerkin Material Point Method is now illustrated and compared to other numerical schemes and exact solutions. 
+The Discontinuous Galerkin Material Point Method is now illustrated by comparing some of its solutions to these of and compared to other numerical schemes and to exact solutions.
+% Recall that the problems and applications aimed by this work involve waves travelling in (dissipative) solids undergoing large deformations.
+% The results presented in this chapter allow to emphasize the ability of the method to accurately track sharp solutions on the one hand, 
+% In addition, it will be seen that numerical tools may be employed within the DGMPM in order to improve the solution of problems involving history-dependent constitutive models.
+%%
 First, problems falling in the small deformation framework are considered in section \ref{sec:hpp_simulations}. More specifically, DGMPM and MPM solutions of the Riemann problem in an elastic bar are compared in section \ref{subsec:hpp_bar}. The methods are then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{subsec:hpp_planewave}, and a plane strain state in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact (when existing) solutions are shown for elastic, elastic-viscoplastic and elastoplastic solids.
-%one and two-dimensional problems that fall within the infinitesimal theory will be considered for elastic, elastic-viscoplastic and elastoplastic materials in sections \ref{sec:hpp_bar} and \ref{sec:hpp_planewave}.
+Those simulations highlight the ability of the method to track sharp solutions and the possibility of using dedicated numerical tools to accurately deal with history-dependent constitutive models, which of particular interest for the applications aimed by the DGMPM. % limiter les ondes plastiques avec un solver ep ; 
 
 In section \ref{sec:he_simulations}, attention is paid to problems involving waves travelling in finite deforming solids, for which history-dependent constitutive models are not considered.
-%For that purpose, the propagation of plane waves in a hyperelastic Saint-Venant-Kirchhoff medium and a plane strain state problem in a Neo-Hookean solid are considered (sections \ref{subsec:he_planewave} and \ref{subsec:he_plate}). The DGMPM simulations performed on the former cases are compared to the MPM solution and the exact one, while comparisons with MPM and FEM are proposed on the latter.
 For that purpose, DGMPM simulations performed on plane wave problems in a hyperelastic Saint-Venant-Kirchhoff medium are compared to MPM and exact solutions in section \ref{subsec:he_planewave}. Then, a comparison between DGMPM, FEM and MPM solutions of a plane strain state problem in a Neo-Hookean solid is proposed in section \ref{subsec:he_plate}.
 
 Although several constitutive models are assumed in this chapter, elastic, viscous and plastic properties considered are the same for every materials. Table \ref{tab:material} summarizes the values of Young's modulus $E$, Poisson ratio $\nu$ and reference mass density $\rho_0$.
@@ -42,6 +45,7 @@ The DGMPM is now applied to problems involving finite deformations in hyperelast
 \subsection{Plane wave in a hyperelastic medium}
 \label{subsec:he_planewave}
 \input{chapter4/he_planewave}
+
 
 \subsection{Two-dimensional plane strain problem}
 \input{chapter4/he_planewave2d}

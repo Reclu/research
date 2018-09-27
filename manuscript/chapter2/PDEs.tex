@@ -107,7 +107,7 @@ Similarly to quasi-linear PDEs, given values of $\Ucb$ are prescribed along a re
 Making use of the total derivative of $\Ucb$ along the initial curve:
 \begin{equation}
   \label{eq:dtot_Uvect}
-  \ddroit{\Ucb}{\eta}=\Ucb_x\ddroit{x}{\eta}+\Ucb_t\ddroit{t}{\eta}
+  \ddroit{\Ucb}{\eta}=\Ucb_x\ddroit{x}{\eta}+\Ucb_t\ddroit{t}{\eta} \quad \rightarrow \quad \Ucb_t = \left.\ddroit{\Ucb}{t}\right|_{t\in\Cscr_0} - \Ucb_x  \ddroit{x}{t}
 \end{equation}
 system \eqref{eq:1st_order_quasi-linear_syst} can be rewritten:
 \begin{equation}
@@ -124,7 +124,7 @@ With $\Scb$ and $\Absf^t\left.\ddroit{\Ucb}{t}\right|_{t\in\Cscr_0}$ known along
   \label{eq:characteristic_determinant}
   D=\abs{\Absf^x - \lambda \Absf^t} \ne 0
 \end{equation}
-where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. If D does not have real roots along $\Cscr_0$, the problem is said \textit{elliptic} and the Cauchy problem can be solved. Indeed, in that case the knowledge of $\Ucb$ along the initial curve allows the computation of derivatives and hence, the building of an integral strip defined by $\Ucb,\Ucb_x,\Ucb_t$. If equation \eqref{eq:1st_order_quasi-linear_syst} admits $I$ real roots on the other hand, system \eqref{eq:normal_form} can no longer be solved. Those eigenvalues come along with left and right eigenvectors respectively defined as:
+where D is called the \textit{characteristic determinant} of system \eqref{eq:1st_order_quasi-linear_syst}. If D does not have real roots along $\Cscr_0$, the problem is said \textit{elliptic} and the Cauchy problem can be solved. Indeed, in that case the knowledge of $\Ucb$ along the initial curve allows the computation of derivatives and hence, the building of an integral strip defined by $\Ucb,\Ucb_x,\Ucb_t$. If the characteristic determinant admits $I$ real roots on the other hand, system \eqref{eq:normal_form} can no longer be solved. Those eigenvalues come along with left and right eigenvectors respectively defined as:
 \begin{equation}
   \label{eq:eigenvectors}
   \Lc^k_i  \Asf^x_{ij} = \lambda_k \Lc^k_i \Asf^t_{ij} \quad ; \quad \Asf^x_{ij}\Rc^k_j = \lambda_k \Asf^t_{ij}\Rc^k_j \qquad k=1,...,I
