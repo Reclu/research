@@ -1,50 +1,69 @@
-A two-dimensional rectangular plate made of the compressible hyperelastic neo-Hookean material is considered here in the plane strain case. Unlike for the Saint-Venant-Kirchhoff model, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the problem (see section \ref{sec:constitutive-equations}).
-Geometry, boundary and loading conditions are given in figure \ref{fig:2d_heDomain}.
+\subsubsection*{Two-dimensional plane strain problem}
+% A two-dimensional rectangular plate made of the compressible hyperelastic neo-Hookean material is considered here in the plane strain case.
+% Unlike for the Saint-Venant-Kirchhoff model, the polyconvexity of the neo-Hookean stored energy function ensures the hyperbolicity of the problem (see section \ref{sec:constitutive-equations}).
+%Geometry, boundary and loading conditions are given in figure \ref{fig:2d_heDomain}.
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter4/pgfFigures/2d_heDomain}
+%   \caption{Geometry, boundary and loading conditions of the two-dimensional problem in plane strain with a hyperelastic neo-Hookean material.}
+%   \label{fig:2d_heDomain}
+% \end{figure}
+The plane strain problem studied in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain} is now considered in a compressible hyperelastic neo-Hookean material submitted to a imposed velocity $v_1=-1000 \: m/s$ on the bottom part of its left end.
+The solid is discretized such that material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 28 \times 28$ material points, only with the 1ppc configuration.
+The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus} using an explicit time discretization with no artificial viscosity added.
+These numerical results are compared to those obtained from MPM and DGMPM using CTU computations.
+The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.41 \times 10^{-5}s$ and $\Delta t_{MPM}=6.13 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_{FEM}=1.27 \times 10^{-5} s$.
+Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}, particularized to the present two-dimensional plane strain case.
+Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison on the deformed shape of the body.
 \begin{figure}[h!]
   \centering
-  \input{chapter4/pgfFigures/2d_heDomain}
-  \caption{Geometry, boundary and loading conditions of the two-dimensional problem in plane strain with a hyperelastic neo-Hookean material.}
-  \label{fig:2d_heDomain}
-\end{figure}
-
-The solid is discretized such that material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 33 \times 25$ material points. Moreover, only one particle lies at the center of each cell of the arbitrary grid. The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus} using an explicit time discretization with no artificial viscosity added. These numerical results are compared to those obtained from MPM and DGMPM using CTU computations. The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.57 \times 10^{-5}s$ and $\Delta t_{MPM}=6.60 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_ {FEM}=1.43 \times 10^{-5} s$. Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}. Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison on the deformed shape of the body.
-\begin{figure}[h!]
-  \centering
-  \input{chapter4/2Dhestress}
-  \caption{Isovalues of Cauchy stress tensor component $\sigma_{11}$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
+  \input{chapter4/pgfFigures/2Dhestress}
+  \caption{Isovalues of Cauchy stress tensor component $\sigma_{11}$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end.}
   \label{fig:2dhe_stress}
 \end{figure}
-At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations are visible in FEM and MPM solutions. These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo}.
 \begin{figure}[h!]
   \centering
-  \input{chapter4/2Dhevelo}
-  \caption{Isovalues of velocity component $v_1$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end. Comparison bewteen FEM, DGMPM-CTU and MPM solutions.}
-  \label{fig:2dhe_velo}
+  \input{chapter4/pgfFigures/linePlotshyp_stress}
+  \caption{Evolution of longitudinal Cauchy stress $\sigma_{11}$ along the bottom boundary of the domain.}
+  \label{fig:he_lineplots_stress}
 \end{figure}
-
-\begin{figure}[h!]
-  \centering
-  \input{chapter4/pgfFigures/linePlotshyp}
-  \caption{plot along bottom line}
-\end{figure}
-MPM solution moreover exhibits, as for small strains problems, a concentration of stress in the high gradients region on the left boundary. It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
-% Then, interactions between shear and tension-compression waves occurring in the left part of the plate give rise to a decrease of the stress level on the wave front which is managed differently by the two methods. Thus, additional oscillations are introduced in the FEM solution leading to a more diffuse wave profile (right colored map in figure \ref{figure:2D_partial_impact}\subref{subfig:2Dpartialplate2}).
+At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations are visible in FEM and MPM solutions.
+This can also be seen in figure \ref{fig:he_lineplots_stress}, in which stress is plotted along the bottom boundary of the domain.
+However, MPM solution moreover exhibits, as for small strains problems, a concentration of stress in the high gradients region on the left boundary.
+It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
 The deformed shapes of the plate resulting from the three numerical approaches hence remain close, except at the junction of the loaded and free zones of the left edge.
 
-When the pressure wave reflects on the fixed boundary at time $t=6.5\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the homogeneous Dirichlet boundary condition is not exactly enforced in DGMPM as shown in \cite{DGMPM}.
-Indeed, considering a boundary cell of the arbitrary grid (\textit{i.e. containing one material point that belong to the right end of the domain}) that is about to be reached by the wave through the upwind interface.
+When the pressure wave reflects on the fixed boundary at time $t=5.0\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the stress profiles are still similar though, FEM and MPM solutions oscillates even more.
+
+These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo} as wall as in figure \ref{fig:he_lineplots_stress} and \ref{fig:he_lineplots_velo} which depicts the velocity the bottom boundary.
+Furthermore, one can see in figure \ref{fig:he_lineplots_velo}\subref{subfig:he_velo2} that the homogeneous Dirichlet boundary condition is not exactly enforced in DGMPM when the incident wave hits the right end.
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/2Dhevelo}
+  \caption{Isovalues of velocity component $v_1$ in a two-dimensional plate made of a neo-Hookean material, submitted to a velocity $\vect{v}\cdot\vect{e}_1=-1000 \: m/s$ on a part of its left end.}
+  \label{fig:2dhe_velo}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\phantomsubcaption \label{subfig:he_velo1}}
+  {\phantomsubcaption \label{subfig:he_velo2}}
+  {\phantomsubcaption \label{subfig:he_velo3}}
+  \input{chapter4/pgfFigures/linePlotshyp_velo}
+  \caption{Evolution of horizontal velocity $v_1$ along the bottom boundary of the domain.}
+  \label{fig:he_lineplots_velo}
+\end{figure}
+This can be explained by considering a boundary cell of the arbitrary grid (\textit{i.e. containing one material point that belong to the right end of the domain}) that is about to be reached by the wave through the upwind interface.
 The intercell flux on the upwind interface resulting from the discontinuity, and subsequently the conserved quantities vector resulting from the solution of the discrete system on the grid, are non-zero.
-In particular, the horizontal velocity at upwind nodes of the boundary cell does not vanish will that of downwind edge satisfy the homogeneous Dirichlet condition. 
+In particular, the horizontal velocity at upwind nodes of the boundary cell does not vanish while that of the downwind edge satisfies the homogeneous Dirichlet condition. 
 Hence, the interpolation of the velocity from nodes to the particle yield a non-zero field at the material point level.
 Note that it holds for the MPM as well in which the enforcement of boundary conditions is still a challenging question \cite{BC_MPM}.
-Nevertheless, no significant displacements of particles can be seen on the right end in MPM and DGMPM solutinos in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}.
 
+Nevertheless, no significant displacements of particles can be seen on the right end in MPM and DGMPM solutions in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}.
 At last, oscillations remain in FEM and MPM solutions until the end of the simulation. 
-Since the velocity field depicted in figure \ref{fig:2dhe_velo} is used to update the shape of the solid in FEM and DGMPM, this numerical noise yield final configurations that are slightly different.
-On the orther hand, updating particles position with the grid velocity within the MPM allows to get better results than if the oscillating material points velocity was used.
+Since the velocity field depicted in figures \ref{fig:2dhe_velo} and \ref{fig:he_lineplots_velo} is used to update the shape of the solid in FEM, the numerical noise yields final configurations that are slightly different.
+On the other hand, updating particles position with the grid velocity within the MPM allows to get better results than if the oscillating material points velocity was used.
 
-% Those curves show the horizontal component of velocity along bottom boundary at different times. First, figures \ref{figure:2D_partial_velo}\subref{subfig:2Dpartialvelo1} and \ref{figure:2D_partial_velo}\subref{subfig:2Dpartialvelo2} show that spurious oscillations also appear in FEM velocity solution before reflection of the wave on fixed boundary. Those oscillations remain in the solution until the end of the computation (figure \ref{figure:2D_partial_velo}\subref{subfig:2Dpartialvelo4}). On the other hand, the prescribed velocity boundary condition at the right end of the plate is not enforced exactly in the DGMPM solutions as shown in figure \ref{figure:2D_partial_velo}\subref{subfig:2Dpartialvelo4}.
-%Indeed, the enforcement of boundary conditions in MPM is still a challenging question \cite{BC_MPM} which does not spare the DGMPM. However, this point has not been investigated yet. Nonetheless, boundary conditions do not disturb much waves profiles as seen with all the simulations presented above. Hence, the final DGMPM stresses plotted in figure \ref{figure:2D_partial_impact}\subref{subfig:2Dpartialplate4}, as well as previous ones, do not exhibit overshoots. The absence of such over-stresses in hyperelastic regime is expected to allow a better management of history-dependent constitutive models including threshold such as elastoplasticity. In those models, non physical overshoots can lead to a wrong assessment of residual stresses and strains.
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

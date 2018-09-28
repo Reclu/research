@@ -25,11 +25,10 @@ The problem is solved on the one hand with the MPM-USL in which the nodal veloci
   \label{fig:elastic_stress}
 \end{figure}
 Figure \ref{fig:elastic_stress} shows the numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
-First, since Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fitting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while, for the same discretization, the DGMPM-Euler is restricited by a lower CFL number that prevents the accurate resolution of waves.
+First, since Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fitting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while for the same discretization the DGMPM-Euler is restricted by a lower CFL number that prevents the accurate resolution of waves.
 As identified in section \ref{sec:MPM}, the use of PIC mapping within the DGMPM leads to solutions that do not exhibit oscillations.
-As expected by the PIC mapping they use, DGMPM formulations do not suffer from oscillations. 
 %%
-In addition, this projection of updated fields from nodes to particles allows to eliminate the locking of velocity in the central region that can be seen in USL-FLIP ones.
+In addition, this projection of updated fields from nodes to particles allows to eliminate the locking of velocity in the central region that can be seen in USL-FLIP solutions.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/dgmpm_mpm_energies}
@@ -37,9 +36,12 @@ In addition, this projection of updated fields from nodes to particles allows to
   \label{fig:energy_elastic_RP}
 \end{figure}
 %%
-Moreover, the introduction of DG approximation within the USL-PIC leads to a reduction of numerical diffusion, though less significant than that permitted by using FLIP mapping as originally proposed for the MPM. This can be seen in figure \ref{fig:energy_elastic_RP} in which the evolution of total energies resulting from every numerical schemes is depicted.
-Then, the situations for which the CFL number is set to unity for DGMPM formulations obviously yields an exact conservation of the total energy during the computation.
-Since, the number of material points per cell has little influence on USL results, the MPM is from now only used with the 1ppc discretization. Furthermore, PIC mapping has been used here within the MPM for comparison purposes and is no longer considered in the following.
+Moreover, the introduction of DG approximation within the USL-PIC leads to a reduction of numerical diffusion, though less significant than that permitted by using FLIP mapping as originally proposed in the MPM.
+This can be seen in figure \ref{fig:energy_elastic_RP} in which the evolution of total energies resulting from every numerical schemes is depicted.
+The situations for which the CFL number is set to unity for DGMPM formulations obviously yields an exact conservation of the total energy during the computation while other results suffer from diffusion.
+
+Since, the number of material points per cell has little influence on USL results, the MPM is from now only used with the 1ppc discretization.
+Furthermore, PIC mapping has been used here within the MPM for comparison purposes and is no longer considered in the remainder simulations.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"

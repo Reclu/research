@@ -1,0 +1,80 @@
+\begin{tikzpicture}[scale=0.8]
+  \begin{groupplot}[group style={group size=2 by 4,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=4.ex,
+      vertical sep=4ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=10., ymin=-0.,ymax=2.
+    ,axis equal image
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.45\linewidth,
+    ,colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(-2.,-1.25)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
+      ,at={(current axis.south east)},anchor=south west
+    }]
+    %% FIRST ROW (time 1 = 3.5e-4s)
+    %%% RANGE -2.0e7 -- 2.9e8
+    \nextgroupplot[title={(a) $t= 9.94 \times 10^{-4}\:s$},ylabel={dgmpm (1ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=-0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_dgmpm1ppc_65.png};
+    \nextgroupplot[title={(b) $t= 2.54 \times 10^{-4}\:s$},ylabel={\color{white}dgmpm (1pc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=-0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_dgmpm1ppc_132.png};
+
+    \nextgroupplot[ylabel={dgmpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_dgmpm4ppc_65.png};
+    \nextgroupplot[ylabel={\color{white}dgmpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=-0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_dgmpm4ppc_132.png};
+    
+    \nextgroupplot[ylabel={mpm (1ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_mpm1ppc_65.png};
+    \nextgroupplot[,ylabel={\color{white}mpm (1ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=-0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_mpm1ppc_132.png};
+    
+    \nextgroupplot[ylabel={mpm (4ppc)},ylabel style={font=\footnotesize},colorbar horizontal,colorbar  style={
+      title style={yshift=-1.5cm},
+      title= {$\Pi_{11}\: (GPa)$},
+      xtick={0.,20.},
+      xticklabels={-6.2,0},
+    }]
+    %\addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-5.7e-2) (0.,2.9e-1)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(0.,0.) (20.,0.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_mpm4ppc_65.png};
+    
+    \nextgroupplot[colorbar horizontal,colorbar style={
+      title= {$\Pi_{11}\: (GPa)$},
+      title style={yshift=-1.5cm},
+      xtick={0.,20.},
+      xticklabels={-6.8,0},
+    },ylabel={\color{white}mpm (4ppc)},ylabel style={font=\footnotesize}]
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(0.,0.) (20.,0.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=10., ymin=-0.,ymax=2.] {chapter4/pngFigures/PW_mpm4ppc_132.png};   
+    
+
+    % \nextgroupplot[title={(c) DGMPM 4ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_stress_115.png};
+    % \nextgroupplot[title={(d) MPM 1ppc},
+    % colorbar,colorbar style={
+    % title= {$\sigma_{11}\: (MPa)$},
+    %   ytick={-5.7e-2,2.e-1,2.9e-1},
+    %   yticklabels={-57,200,290},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-5.7e-2) (0.,2.9e-1)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/mpm_stress_115.png};
+
+    % %% SECOND ROW (time 2 =1.e-3s)
+    % %%% RANGE -4.4e7 -- 4.2e8
+    % \nextgroupplot[ylabel={$t=1.0\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/fem_stress_338.png};
+    % \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm1ppc_stress_338.png};
+    % \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/dgmpm4ppc_stress_338.png};
+    % \nextgroupplot[colorbar,colorbar style={
+    %   title= {$\sigma_{11}\: (MPa)$},
+    %   ytick={-4.3e-2,2.e-1,4.8e-1},
+    %   yticklabels={-43,200,480},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-4.3e-2) (0.,4.8e-1)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/mpm_stress_338.png};
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

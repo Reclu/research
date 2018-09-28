@@ -1,50 +1,44 @@
-The above solid is now supposed made of an elastic-plastic material with linear isotropic hardening. A tensile impact of amplitude $\sigma^d=2\sigma^y$, leading to plastic flow, is considered. 
+The above solid is now supposed made of an elastic-plastic material with linear isotropic hardening. A tensile impact of amplitude $\sigma^d=2\sigma^y$ leading to plastic flow is considered. 
 % is still considered on the bottom left part of the domain, as depicted in figure \ref{fig:2D_planeStrain}\subref{subfig:2D_problem}, with the traction force $\sigma^d=2\sigma^y$ so that plastic flow occurs.
 
-Comparison between FEM (Cast3M Drexus), MPM and DGMPM using either one or four particles per element is made on the equivalent plastic strain $p$ (similar observation as above being made on the longitudinal stress $\sigma_{11}$).
+Comparison between FEM (Cast3M), MPM and DGMPM using either one or four particles per element is made.
+%on the equivalent plastic strain $p$ (similar observation as above being made on the longitudinal stress $\sigma_{11}$).
 The computation of intercell fluxes within the DGMPM is based on an elastic Riemann solver, and plastic flow is integrated by means of a radial return algorithm.
-\begin{figure}[h!]
-  \centering
-  \input{chapter4/2delastoplasticity}
-  \caption{Isovalues of equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at two different times. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
-  \label{fig:2dEP_comparison}
-\end{figure}
-Figure \ref{fig:2dEP_comparison} shows FEM and DGMPM solutions before and after reflection of the longitudinal pressure wave on the right end of the domain. MPM results for the same time steps are plotted separately in figure \ref{fig:2dEP_mpm} due to the large amplitude of equivalent plastic strain. A good agreement between FEM and DGMPM equivalent plastic strains can be seen in figure \ref{fig:2dEP_comparison}. 
+The evolution of longitudinal stress $\sigma_{11}$ and plastic strain $\eps^p_{11}$ are depicted in figure \ref{fig:elastlines_stress}.
+It can first be seen that similar remarks as above can be made on the longitudinal stress though the integration of plastic flow leads to less oscillations in the finite element stress.
+Next, DGMPM longitudinal plastic strains before the reflection of the pressure wave (figure \ref{fig:elastlines_stress}\subref{subfig:2dplast1}) are quite close.
+On the other hand, the FEM plastic strain curve is above the others and the MPM one is in advance compared to the other solutions.
+After the reflection (figure \ref{fig:elastlines_stress}\subref{subfig:2dplast2}), the stress profiles are rather close from one to another.
+However, the MPM solution is far higher than the others on the right end of the domain.
+The same observations can be made on the longitudinal plastic strain which is quite similar for both DGMPM and FEM solutions, though the DGMPM maximum value computed with one ppc is higher than the others.
 
 \begin{figure}[h!]
+  {\phantomsubcaption \label{subfig:2dplast1}}
+  {\phantomsubcaption \label{subfig:2dplast2}}
+  \input{chapter4/pgfFigures/linePlotsplast_stress}
+  %\input{chapter4/pgfFigures/linePlotsplast_epsp}
+  \caption{Evolution of longitudinal stress $\sigma_{11}$ and plastic strain $\eps^p_{11}$ along the bottom boundary of the elastic-plastic square. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMPM using 4ppc ($CFL=0.23$) solutions.}
+  \label{fig:elastlines_stress}
+\end{figure}
+
+Figure \ref{fig:2dEP_comparison} furthermore shows FEM and DGMPM solutions in terms of equivalent plastic strain $p$, before and after reflection of the longitudinal pressure wave on the right end of the domain.
+MPM results for the same time steps are plotted separately in figure \ref{fig:2dEP_mpm} due to the large amplitude of equivalent plastic strain.
+\begin{figure}[h!]
   \centering
-  \input{chapter4/2dEP_mpm2}
+  \input{chapter4/pgfFigures/2delastoplasticity}
+  \caption{Isovalues of equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at two different times. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMPM using 4ppc ($CFL=0.23$) solutions.}
+  \label{fig:2dEP_comparison}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \input{chapter4/pgfFigures/2dEP_mpm2}
   \caption{MPM isovalues of plastic strain $p$ in an elastic-plastic plate made of a linear isotropic hardening material at two different times ($CFL=0.7$).}
   \label{fig:2dEP_mpm}
 \end{figure}
-Nevertheless, a concentration of plastic strains occurs at the interface between loaded and traction free parts of the left boundary of the domain in DGMPM solutions. 
-Such concentrations in the high gradients region can also be seen in MPM solutions depicted in figure \ref{fig:2dEP_mpm} so that this phenomenon seems to be a geometric effect arrising due to the space discretization.
-
-\begin{figure}[h!]
-  \input{chapter4/pgfFigures/linePlotsplast}
-  \caption{tes}
-  \label{fig:elastlines}
-\end{figure}
-%% Also plot stress
-% \begin{figure}[h!]
-%   \centering
-%   \input{chapter4/2dEP_1}
-%   \caption{Isovalues of longitudinal stress $\sigma_{11}$ and equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at time $t=3.5e-4 \:s$. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
-%   \label{fig:2dEP_comparison1}
-% \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   \input{chapter4/2dEP_2}
-%   \caption{Isovalues of longitudinal stress $\sigma_{11}$ and equivalent plastic strain $p$ in an elastic-plastic plate linear isotropic hardening material at time $t=1.0e-3 \:s$. Comparison between FEM ($CFL=0.9$), DGMPM using 1ppc ($CFL=1$) and DGMP using 4ppc ($CFL=0.23$) solutions.}
-%   \label{fig:2dEP_comparison2}
-% \end{figure}
-% \begin{figure}[h!]
-%   \centering
-%   \input{chapter4/2dEP_mpm}
-%   \caption{Isovalues of MPM longitudinal stress $\sigma_{11}$ and plastic strain $p$ in an elastic-plastic plate made of a linear isotropic hardening material at two different times.}
-%   \label{fig:2dEP_mpm}
-% \end{figure}
-
+A concentration of plastic strains occurs at the interface between loaded and traction free parts of the left boundary of the domain in DGMPM solutions. 
+Such concentrations in the high gradients region can also be seen in MPM solutions depicted in figure \ref{fig:2dEP_mpm} so that this phenomenon seems to be a singularity owed to boundary conditions.
+Although the final DGMPM and FEM profiles of equivalent plastic strains have the same shape, the results highlight the fact that different numerical methods yield different assessment of irreversible deformations.
+This point is crucial for the accurate simulation of solid mechanics applications such as forming techniques or crash problems.
 
 
 

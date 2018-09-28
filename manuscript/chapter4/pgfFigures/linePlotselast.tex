@@ -4,13 +4,14 @@ ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
 xticklabels at=edge bottom,xlabels at=edge bottom},
 ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,
 axis on top,scale only axis,width=0.4\linewidth, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},ymin=-0.5e6,ymax=.5e9]
-\nextgroupplot[ylabel=$\sigma_{11} (Pa)$,xlabel=$x (m)$]
+\nextgroupplot[ylabel=$\sigma_{11} (Pa)$,xlabel=$x (m)$,title={(a) $t=2.5 \times 10^{-4} \: s$}]
 \addplot[Red,very thick,no markers] table[x=Points:0,y=S11] {chapter4/csvFiles/2delast_fem_115.csv};
+
 \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=stress_11] {chapter4/csvFiles/2delast_ctu1ppc_115.csv};
 \addplot[Purple,very thick,mark=square*,only marks] table[x=Points:0,y=stress_11] {chapter4/csvFiles/2delast_ctu4ppc_115.csv};
 \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/2delast_mpm_115.csv};
 
-\nextgroupplot[legend style={at={($(0.12,-0.35)+(0.9cm,1cm)$)},legend columns=2},xlabel=$x (m)$]
+\nextgroupplot[legend style={at={($(0.12,-0.35)+(0.9cm,1cm)$)},legend columns=2},xlabel=$x (m)$,title={(b) $t=1.0 \times 10^{-3} \: s$}]
 \addplot[Red,very thick,no markers] table[x=Points:0,y=S11] {chapter4/csvFiles/2delast_fem_338.csv};
 \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=stress_11] {chapter4/csvFiles/2delast_ctu1ppc_338.csv};
 \addplot[Purple,very thick,mark=square*,only marks] table[x=Points:0,y=stress_11] {chapter4/csvFiles/2delast_ctu4ppc_338.csv};

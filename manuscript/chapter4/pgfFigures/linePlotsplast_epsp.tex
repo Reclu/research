@@ -1,0 +1,70 @@
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=2 by 1,
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,ymin=-0.1e-3,ymax=6.75e-3,
+axis on top,scale only axis,width=0.4\linewidth, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]
+\nextgroupplot[ylabel=$\eps^p_{11}$,xlabel=$x (m)$,title={(a) $t=2.5 \times 10^{-4} \: s$}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=EP11] {chapter4/csvFiles/2dEP_fem_115.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=epsp_11] {chapter4/csvFiles/2dEP_ctu1ppc_115.csv};
+\addplot[Purple,very thick,mark=square*,only marks] table[x=Points:0,y=epsp_11] {chapter4/csvFiles/2dEP_ctu4ppc_115.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_epsp11] {chapter4/csvFiles/2dEP_mpm_115.csv};
+
+\nextgroupplot[legend style={at={($(0.12,-0.35)+(0.9cm,1cm)$)},legend columns=2},xlabel=$x (m)$,title={(b) $t=1.0 \times 10^{-3} \: s$}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=EP11] {chapter4/csvFiles/2dEP_fem_338.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=epsp_11] {chapter4/csvFiles/2dEP_ctu1ppc_338.csv};
+\addplot[Purple,very thick,mark=square*,only marks] table[x=Points:0,y=epsp_11] {chapter4/csvFiles/2dEP_ctu4ppc_338.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_epsp11] {chapter4/csvFiles/2dEP_mpm_338.csv};
+\addlegendentry{fem}
+\addlegendentry{ctu 1ppc}
+\addlegendentry{ctu 4ppc}
+\addlegendentry{mpm}
+   
+  \end{groupplot}
+\end{tikzpicture}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

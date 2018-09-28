@@ -1,0 +1,85 @@
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=2 by 1,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=5.ex,
+      vertical sep=2ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.27\linewidth,
+    colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
+      ,at={(current axis.south east)},anchor=south west
+    }]
+    %% FIRST ROW (first stress sigma11)
+    
+    % \nextgroupplot[title={(a) MPM results at time $t=3.5e-4 \:s$},
+    % colorbar,colorbar style={
+    %   title= {$\sigma_{11}\: (MPa)$},
+    %   ytick={-0.27,8,9.2},
+    %   yticklabels={-27,800,920},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.27) (0.,9.2)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_stress115.png};
+    
+    % \nextgroupplot[title={(b) MPM results at time $t=1.0e-3 \:s$},
+    % colorbar,colorbar style={
+    %   title= {$\sigma_{11}\: (MPa)$},
+    %   ytick={-0.210,0.8,1.4},
+    %   yticklabels={-210,800,1.4e3},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.210) (0.,1.4)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_stress338.png};
+    
+    %% SECOND ROW (first plastic strain epsp11)
+    % \nextgroupplot[
+    % colorbar,colorbar style={
+    %   title= {$\eps^p_{11}$},
+    %   ytick={-2.6,9.5},
+    %   yticklabels={-2.6e-3,9.5e-3},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-2.6) (0.,9.5)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_epsp115.png};
+    
+    % \nextgroupplot[
+    % colorbar,colorbar style={
+    %   title= {$\eps^p_{11}$},
+    %   ytick={-0.42,2.5},
+    %   yticklabels={-4.2e-3,2.5e-2},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.42) (0.,2.5)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_epsp338.png};
+    
+    %% THIRD ROW (equivalent plastic strain)
+    \nextgroupplot[title={(a) time $t=3.5e-4 \:s$},
+    colorbar horizontal ,colorbar style={
+      title style={yshift=-1.5cm},
+      title= {$p \: (\%)$},
+      xtick={0,0.97},
+      xticklabels={0,0.97},
+    }]
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(0.,0) (0.97,0.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_p115.png};
+    
+    \nextgroupplot[title={(b) time $t=1.0e-3 \:s$},
+    colorbar horizontal,colorbar style={
+      title style={yshift=-1.5cm},
+      title= {$p \: (\%)$},
+      xtick={0,2.9},
+      xticklabels={0,2.9},
+    }]
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(0.,0) (2.9,0.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_p338.png};
+   
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
