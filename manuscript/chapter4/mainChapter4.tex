@@ -6,7 +6,7 @@ The Discontinuous Galerkin Material Point Method is now illustrated by comparing
 % In addition, it will be seen that numerical tools may be employed within the DGMPM in order to improve the solution of problems involving history-dependent constitutive models.
 %%
 First, problems falling in the small deformation framework are considered in section \ref{sec:hpp_simulations}. More specifically, DGMPM and MPM solutions of the Riemann problem in an elastic bar are compared in section \ref{subsec:hpp_bar}. The methods are then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{subsec:hpp_planewave}, and a plane strain state in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact (when existing) solutions are shown for elastic, elastic-viscoplastic and elastoplastic solids.
-Those simulations highlight the ability of the method to track sharp solutions and the possibility of using dedicated numerical tools to accurately deal with history-dependent constitutive models, which of particular interest for the applications aimed by the DGMPM. % limiter les ondes plastiques avec un solver ep ; 
+Those simulations highlight the ability of the method to track sharp solutions and the possibility of using dedicated numerical tools to accurately deal with history-dependent constitutive models, which of particular interest for the applications aimed by the DGMPM. 
 
 In section \ref{sec:he_simulations}, attention is paid to problems involving waves travelling in finite deforming solids, for which history-dependent constitutive models are not considered.
 For that purpose, DGMPM simulations performed on plane wave problems in a hyperelastic Saint-Venant-Kirchhoff medium are compared to MPM and exact solutions in section \ref{subsec:he_planewave}. Then, a comparison between DGMPM, FEM and MPM solutions of a plane strain state problem in a Neo-Hookean solid is proposed in section \ref{subsec:he_plate}.
@@ -48,6 +48,8 @@ The DGMPM is now applied to problems involving finite deformations in hyperelast
 
 
 \subsection{Two-dimensional plane strain problem}
+\input{chapter4/he_planewave2d}
+
 \label{subsec:he_plate}
 \input{chapter4/he_plate}
 
@@ -67,7 +69,7 @@ As a consequence, the numerical scheme also provides solutions that are close to
 At last, the two-dimensional simulations performed in sections \ref{subsec:el_planestrain}, \ref{subsec:ep_planestrain} and \ref{subsec:he_plate} show that DGMPM results are in good agreements with FEM while eliminating spurious oscillations.
 Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. This is the case of splitting procedures that should enable the DGMPM to accurately follow waves travelling in elastic-viscoplastic solids in 2D. Nevertheless, approximate elastic-plastic Riemann solvers, as that used in section \ref{subsec:hpp_planewave}, do not exist for general two-dimensional problems. Such solvers for the computation of intercell fluxes, which would improve the computation of plastic flows and hence a better assessement of residual stresses and strains, are discussed in the next chapter. 
 
-
+% limiter les ondes plastiques avec un solver ep ; 
 
 %%% Local Variables:
 %%% mode: latex

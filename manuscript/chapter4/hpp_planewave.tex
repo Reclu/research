@@ -49,15 +49,11 @@ Furthermore, local overshoots appear in the viscoplastic strain computed with th
 The same remarks as before can be made with a lower relaxation time $\tau=\Delta t \times 10^{-2}$ as can be seen in figure \ref{fig:siff_elastoviscoplastic_RP}. However, numerical solutions are sharper and get closer to the elastic-plastic stress and strain. Furthermore, the decrease in the relaxation time which makes the system tends to the elastic-plastic limit leads to an apparent yield stress tending to that of the elastoplastic solution for Godunov splitting with 1ppc, and Strang splitting.
 Once again, the overshoots arising in the DGMPM-Euler viscoplastic strain can be removed by integrating implicitly the flow rule. This is also the case for the spurious oscillations that can be observed in the stress solution in figure \ref{fig:siff_elastoviscoplastic_RP}\subref{subfig:evp_stiff1} \cite{Thomas_EVP}. 
 
+The above simulations show that the elastic-plastic solution can be computed as the stiff limit of the elastic-viscoplastic system providing that the use of suitable ODE integrators. 
+The splitting procedures coupled here to the DGMPM however fail in computing the elastoplastic solution so that high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed. It is worth noticing that the DGMPM enables the use of such numerical procedure while the MPM formulation does not.
 
-The above simulations show that the elastic-plastic solution can be computed as the stiff limit of the elastic-viscoplastic system. Though this approach allows to avoid the integration of plastic flow which can become complex for multi-dimensional or large strains problems, additional numerical effort must be made. Indeed, splitting procedures as these used here fail in computing the elastic-plastic solution so that other strategies based on high order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
-Nevertheless, it is worth noticing that the DGMPM enables the use of such numerical procedure while the MPM formulation does not.
+On the other hand, one dimensional elastic-plastic problems can be solved by means of a dedicated approximate Riemann solver avoiding numerical difficulties related to stiff problems as seen hereinafter.
 
-% Thus, the DGMPM enables more flexibility than the original MPM in order to adapt the scheme to solve a problem in a more accurate manner.
-% This versatility is further demonstrated on the elastic-plastic problem that is now considered.
-
-
-%% Faire le lien en disant qu'on peut également, pour les problèmes 1D, utiiser un solveur EP dédié afin de s'affranchir des problèmes liés à l'intégration d'une ODE stiff.
 \subsubsection{Elastoplasticity}
 %% On utilise la forme quasi linear pour la dgmpm donc on est un peu différent des volumes finis car on a un retour radial en plus. Il faut que ca soit clair ça !
 Recall that the conservative form and associated quasi-linear form governing elastoplasticity under small strains have been derived in section \ref{sec:general-formulation}.
