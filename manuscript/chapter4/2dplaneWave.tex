@@ -1,0 +1,46 @@
+\begin{tikzpicture}%[scale=0.8]
+  \begin{groupplot}[group style={group size=2 by 4,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=4.ex,
+      vertical sep=2.ex,},
+    %enlargelimits=0,
+    xmin=0.,xmax=20., ymin=-0.,ymax=1.5,
+    %,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.45\linewidth,
+    colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
+      ,at={(current axis.south east)},anchor=south west
+    }]
+    %% FIRST ROW (equivalent plastic strain)
+    %%% RANGE 0 -- 4.3e-3
+    \nextgroupplot[ylabel={dgmpm (1ppc)},ylabel style={font=\footnotesize},title={$t=1.0\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_dgmpm1ppc_65.png};
+    \nextgroupplot[ylabel={\color{white} dgmpm (1ppc)},ylabel style={font=\footnotesize},title={$t=2.5\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_dgmpm1ppc_132.png};
+
+    \nextgroupplot[ylabel={dgmpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_dgmpm4ppc_65.png};
+    \nextgroupplot[ylabel={\color{white} dgmpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_dgmpm4ppc_132.png};
+
+    \nextgroupplot[ylabel={mpm (1ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_mpm1ppc_65.png};
+    \nextgroupplot[ylabel={\color{white} mpm (1ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_mpm1ppc_132.png};
+
+    \nextgroupplot[ylabel={mpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_mpm4ppc_65.png};
+    \nextgroupplot[ylabel={\color{white} mpm (4ppc)},ylabel style={font=\footnotesize}]\addplot graphics[xmin=0.,xmax=20., ymin=-0.,ymax=1.5] {chapter4/pngFigures/PW_mpm4ppc_132.png};
+
+    % \nextgroupplot[colorbar,colorbar style={
+    %   title= {$p \: (\%)$},
+    %   ytick={0.,2.},
+    %   yticklabels={0,2},
+    % }]
+    % \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,2.)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=-0.,xmax=20., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p338.png};
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
