@@ -1,29 +1,37 @@
-\chapter{Contribution to the solution elastic-plastic problems in two space dimensions}
+\chapter{Contribution to the solution of elastic-plastic problems in two space dimensions}
 %% Faire un historique des formulations faites.
-%% Formuler le problème à notre sauce et identifier les cas évoqués en intro en particularisont les modules tangents etc. a ce moment, parler des trajets de chargement et des types d'ondes
+%% Formuler le problème à notre sauce et identifier les cas évoqués en intro en particularisant les modules tangents etc. a ce moment, parler des trajets de chargement et des types d'ondes
 
 \section*{Introduction}
-Researches done on the elastic-plastic bahavior of material at high strain rates for characterization purposes. To this end, uni-axial stress or strain, pure bending or pure torsion problems have been investigated until the late 50's (vérifier ça). Rakmathulin et Cristescu ont ouvert la voie à des problèmes plus complexes impliquant des chargements combinés.
+It has been shown throughout this manuscript that hyperbolic problems of solid mechanics are solved in a different manner depending on the numerical explicit method employed. 
+In particular, irreversible deformations which are usually computed numerically based on well-known constitutive integrators, may greatly differ from one scheme to another, even for one-dimensional problems.
+However, the accurate assessment of residual stresses and strains are of major importance for many industrial applications such as, among others, high-speed metal forming, crash-proof design or the study of earthquakes impact on structures.
+The simulations performed in chapter \ref{chap:chap4} emphasized the improvements enabled by the knowledge of the characteristic structure of the solution of conservation laws systems, especially for elastoplastic solids.
+Nevertheless, the introduction of the exact solution by means of approximate Riemann solvers is so far only carried out for one-dimensional and specific multi-dimensional loading cases for elastic-plastic solids.
 
-Elastic solver used previously
+The purpose of this chapter is to provide solutions and cues for future works for more general two-dimensional elastoplasticity problems under small strains. 
+More information on the structure of solutions to these problems allow a better understanding of physical phenomena occuring in media on the one hand, and the ability of accurately deal with them numerically on the other hand.
+The chapter is organized as follows.
+A brief historical review of the solution of plastic waves in two-dimension space is made in section \ref{sec:review}.
+Then, the equations of plastic flow, which characteristic analysis is carried out, are recalled in section \ref{sec:charac_plast}.
+Attention is next paid in section \ref{sec:stress_paths} to the evolution of stress components through simple waves possibly arising in the solution. 
+Some thus identified loading paths are finally discussed in section \ref{sec:ep_Riemman_solver} in the context of the development of dedicated approximate Riemann solvers. 
 
-\cite{Clifton_thesis} development of a method of characteristics in 3 independent variables that is then numerically approximated (Notion of bicharacteristics). Nous on n'en a pas besoin puisqu'on a déjà notre schéma numérique. En ravanche, on cherche à résoudre le problème dans une direction donnée pour lequel la méthode des caractéristiques s'applique.
-
-This is for instance the case for the simulation of forming technics that cannot, in general, be modeled in a one-dimensional setting.
-
-Assumptions (isothermal, linear hardenings though extendable, small deformation, cartesian,concave constitutive model,rate independent)
-
-Un intérêt de développer ce qui est fait là est de s'autoriser à limiter les ondes plastique dans des méthodes de haut ordre.
-\section{State of the art}
+\section{Historical review}
+\label{sec:review}
 \input{chapter5/review}
 
 \section{Characteristic analysis}
+\label{sec:charac_plast}
 \input{chapter5/characteristic_analysis}
 
 \section{Loading paths through simple waves}
+\label{sec:stress_paths}
 \input{chapter5/loading_paths}
 
 \section{Towards an elastoplastic approximate Riemann solver}
+\label{sec:ep_Riemman_solver}
+
 Parler du solver de Lin et Ballman qui cause problème dans le cas général mais je ne sais plus pourquoi...(je crois que c'est en lien avec des problèmes de Picard et non Riemann)
 On propose ici d'approximer toutes les ondes simples par des discontinuités (motivé par les trajets de chargement tracés au-dessus)
 \cite{Lin_et_Ballman}
