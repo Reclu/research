@@ -1,0 +1,21 @@
+\begin{tikzpicture}[scale=0.7]
+  % \draw[thick] (0,0) --(4,0)--(4,3)--(0,3)--(0,0);
+  \draw[thick] (0,0) --(6,0)--(6,1)--(0,1)--(0,0);
+  \foreach \x in {0.5,1.,...,5.5} 
+  \draw(\x,-0.2)circle(0.2);
+  \foreach \x in {0.5,1.,...,5.5} 
+  \draw(\x,1.2)circle(0.2);
+  \draw(0,-0.4)--(6.,-0.4);
+  \draw(0,1.4)--(6.,1.4);
+  \fill [pattern=north east lines](0.0,-0.8)rectangle+(6.,0.4);
+  \fill [pattern=north east lines](0.,1.4)rectangle+(6.,0.4);
+  \draw[>=stealth,<->](6.2,0)--node[right]{ $h=2.28 \times 10^{-1} \: m$}(6.2,1.);
+  \draw[>=stealth,<->](0,1.9)--node[above=1pt]{$l=6 \: m$}(6,1.9);
+  \draw[>=stealth,->](-3.2+1.75,0.)--(-2.2+1.75,0.)node(a)[anchor=north]{$\vect{e}_1$};
+  \draw[>=stealth,->](-3.2+1.75,0.)--(-3.2+1.75,1)node(a)[anchor=east]{$\vect{e}_2$};
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

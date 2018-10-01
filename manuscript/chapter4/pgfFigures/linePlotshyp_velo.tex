@@ -1,0 +1,52 @@
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=3 by 1, % 3 columns 2 rows
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=2.ex,vertical sep=3.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,
+axis on top,scale only axis,width=0.28\linewidth, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]
+%%%%%%%%%%%%%%%%%%%%
+% \nextgroupplot[ylabel=$\sigma_{11} \:(Pa)$,title={(a) $t = 1.8 \times 10^{-4}\: s$},ymin=-7.5e9,ymax=100.e9]
+% \addplot[Red,very thick,no markers] table[x=Points:0,y=PK2:0] {chapter4/csvFiles/he_fem31.csv};
+% \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=P_11] {chapter4/csvFiles/he_dgmpm31.csv};
+% \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/he_mpm31.csv};
+
+% \nextgroupplot[title={(b) $t = 5.0 \times 10^{-4}\: s$},ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}]
+% \addplot[Red,very thick,no markers] table[x=Points:0,y=PK2:0] {chapter4/csvFiles/he_fem176.csv};
+% \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=P_11] {chapter4/csvFiles/he_dgmpm176.csv};
+% \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/he_mpm176.csv};
+
+
+% \nextgroupplot[title={(c) $t = 1.0 \times 10^{-3}\: s$},ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}]
+% \addplot[Red,very thick,no markers] table[x=Points:0,y=PK2:0] {chapter4/csvFiles/he_fem444.csv};
+% \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=P_11] {chapter4/csvFiles/he_dgmpm444.csv};
+% \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/he_mpm444.csv};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\nextgroupplot[ylabel=$v_{1} \: (m/s)$,xlabel=$x \: (m)$,title={(a) $t = 1.8 \times 10^{-4}\: s$},ymin=-1200.,ymax=120,scaled y ticks={real:1.e3},ytick scale label code/.code={$\cdot 10^{3}$}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=Spatial_velocity:0] {chapter4/csvFiles/he_fem31.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=velocity_x] {chapter4/csvFiles/he_dgmpm31.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_V1] {chapter4/csvFiles/he_mpm31.csv};
+
+\nextgroupplot[title={(b) $t = 5.0 \times 10^{-4}\: s$},xlabel=$x \: (m)$,ymin=-1200.,ymax=120,legend style={at={($(0.75,-0.4)+(0.9cm,0.6cm)$)},legend columns=3}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=Spatial_velocity:0] {chapter4/csvFiles/he_fem176.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=velocity_x] {chapter4/csvFiles/he_dgmpm176.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_V1] {chapter4/csvFiles/he_mpm176.csv};
+\addlegendentry{fem}
+\addlegendentry{dgmpm}
+\addlegendentry{mpm}
+
+
+\nextgroupplot[title={(c) $t = 1.0 \times 10^{-3}\: s$},xlabel=$x \: (m)$,ymin=-1200.,ymax=120]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=Spatial_velocity:0] {chapter4/csvFiles/he_fem444.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=velocity_x] {chapter4/csvFiles/he_dgmpm444.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_V1] {chapter4/csvFiles/he_mpm444.csv};
+
+  \end{groupplot}
+\end{tikzpicture}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
+

@@ -1,0 +1,47 @@
+\begin{tikzpicture}[scale=0.8]
+  \begin{groupplot}[group style={group size=3 by 2,
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=1.ex,
+      vertical sep=2.ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.27\linewidth,
+    colorbar style={
+      title style={
+        font=\scriptsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\scriptsize}
+      ,at={(current axis.south east)},anchor=south west
+    }]
+    %% FIRST ROW (equivalent plastic strain)
+    %%% RANGE 0 -- 4.3e-3
+    \nextgroupplot[ylabel={$t=3.5\times 10^{-4} \:s$},title={(a) FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p115.png};
+    \nextgroupplot[title={(b) DGMPM 1ppc}]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p115.png};
+    \nextgroupplot[title={(c) DGMPM 4ppc},colorbar,colorbar style={
+      title= {$p \: (\%)$},
+      ytick={0.,4.3},
+      yticklabels={0,0.43},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,4.3)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p115.png};
+    %% THIRD ROW (equivalent plastic strain)
+    %%% RANGE 0 -- 2.e-2
+    \nextgroupplot[ylabel={$t=1.0\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_fem_p338.png};
+    \nextgroupplot[]\addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm1ppc_p338.png};
+    \nextgroupplot[colorbar,colorbar style={
+      title= {$p \: (\%)$},
+      ytick={0.,2.},
+      yticklabels={0,2},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,0.) (0.,2.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_dgmpm4ppc_p338.png};
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
