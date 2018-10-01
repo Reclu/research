@@ -8,70 +8,42 @@
 
 % This is for instance the case for the simulation of forming technics that cannot, in general, be modeled in a one-dimensional setting.
 
-Until the 50s, researches on dynamic problems in plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, (Voir \cite{Clifton_thesis}) and were led for materials characterization purposes.
+Until the 50s, researches on dynamic problems in plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for materials characterization purposes.
 The first references that brought some understanding about the response of linearly hardening solids to combined shear and pressure loads are those of Rakhmatulin \cite{Rakhmatulin} and Cristescu \cite{CRISTESCU19591605}.
 Those early analytical investigations, made on plane stress impacts in the plastic regime, led to the conclusion that both elastic and combined-stress simple waves can occur in two-dimensional solids. 
 While the former were well-known, the latter were shown to fall into the two \textit{fast waves} and \textit{slow waves} families.
 Moreover, the maximal value of fast waves (\textit{resp. slow waves}) is higher than that of pressure (\textit{resp. shear}) plastic discontinuity in one-dimensional problem, at a given compression (\textit{resp. shear}) load amplitude.
 
-Later, Bleich \cite{Bleich} considered sumperimposed plane and shear waves in an ideally elastic-plastic materials.
-It has been shown in this work that different loading cases yield different characteristic structures of the solution of a Picard initial boundary value problem, thus revealing the complexity of plastic flows in more that one dimension. 
-\thomas{see \cite[p.56 pdf]{Nowacki},\cite{Goel}}. 
-% Clifton a ensuite pris un autre problème et est arrivé aux mêmes conclusions. Il a part ailleur ajouté le préchargement pour modifier la structure de la solution. Travaux qui ont été confirmés expérimentalement.
-The same conclusions have been made by Clifton \cite{Clifton} for possibly nonlinear hardening materials.
+Later, Bleich and Nelson \cite{Bleich} considered sumperimposed plane and shear waves in an ideally elastic-plastic materials submitted to step loads.
+It has been shown in this work that different loading cases yield different characteristic structures of the solution of a Picard initial boundary value problem, thus revealing the complexity of plastic flows in more that one dimension.
+Distinguer un peu plus ces deux contributions.
+%\thomas{see \cite[p.56 pdf]{Nowacki},\cite{Goel}}. 
+The same conclusions have been made by Clifton \cite{Clifton} for hardening materials under tension-torsion, who furthermore studied the influence of plastic pre-loading on the solution.
+This contribution established the existence of loading paths through the simple waves by means of ordinary differential equations arising from the characteristic analysis of the hyperbolic system.
+Indeed, the study mathematical properties of relations between stress components of the form $d\sigma_{11}=\psi d\sigma_{12}$, satisifed inside fast and slow simple waves, allows to connect the applied stress state of the Picard problem $(\sigma^d_{11},\sigma^d_{12})$ to the initial state of the medium.
+It is for instance shown that if the solid is acted upon by a traction force such that $\sigma^d_{11}=0$ and $\sigma^d_{12}$ lies outside the elastic convex, only an elastic shear discontinuity followed by a slow simple wave propagate.
+Conversely, other loading conditions may lead to the combination of elastic pressure discontinuity and a fast wave, possibly followed by a slow wave.
+Another notable conclusion is that the combined loading paths followed inside simple waves may lead to plastic unloading, while only elastic unloading occurs in the one-dimensional theory.
+%In addition, it is possible to meet unloading plastic simple waves with contrast to the one-dimensional theory in which the unloading waves propagate at elastic speeds (c'est pas vraiment ça attention).
+%Such loading paths are supplemented by ODEs satisfied by the velocity components so that a closed form of the solution of the problem can be derived.
 
-, who furthermore studied the influence of plastic pre-loading on the solution.
-These works have been supplementend and confirmed with experimental researches on a thin-walled \cite{Clifton_exp}.
-Those two works were based on a strain formulation of the plastc flow theory. (Briefly recall equations and show some results ?)
+Experimental data collected on a thin-walled tube submitted to a dynamic tensile load \cite{Clifton_exp,Clifton_exp2} confirmed the existence of two distinct families of  simple waves, both involving combined stress paths.
+These work, which investigated the effects of dynamic longitudinal loading on a statically pre-twisted tube in the plastic regime, nevertheless showed some discrepancies between the theory and experimental results that were attributed to the assumption made on the von-Mises yield surface.
+Indeed, a constant strain region lying between the fast and slow waves that is predicted by the theory \cite{Clifton}, could not be seen in experimental results.
+Following the endochronic theory of plasticity \cite{Valanis}, which does not require the introduction of a yield surface, Wu and Lin \cite{Wu_experimental} obtained numerical results that better fitted the experimental data provided by Lipkin and Clifton \cite{Clifton_exp2}.
+The good agreement showed between numerical and experimental results shown in \cite{Wu_experimental} thus validated the theory.
 
-On ne regarde qu'une dimension spatiale en faisant des hypothèse sur les champs alors que nous on se limite à une direction particulière $\vect{n}$.
-\begin{itemize}
-%% plane stress
-%\item \cite{Rakhmatulin} ; \cite{CRISTESCU19591605} : $\tens{\sigma}=\matrice{\sigma & \tau & \\ \tau &\sigma_{22} & \\ & & }$;$\tens{\eps}=\matrice{\eps & \gamma/2 & \\ \gamma/2 &  & \\ & & }$ Strong discontinuity; Distinction between plastic waves ($c_1,c_2$) of strong discontinuities, and combined waves ($c_f,c_s$)
-%% superimposition of plane wave and shear wave
-%\item \cite{Bleich}: $\tens{\sigma}=\matrice{\sigma & \tau & \\ \tau & \sigma_{22} & \\ & & \sigma_{22}}$;$\tens{\eps}=\matrice{\eps & \gamma/2 & \\ \gamma/2 &  & \\ & & }$ ideal elastic-plastic continuum ; shock front at p.15 and subsection B + exact solutions ; identification of particular loading cases that lead to different characteristic structures.
-%% combined shear and longitudinal waves
-\item \cite{Clifton}: $\tens{\sigma}=\matrice{\sigma & \tau & \\ \tau & & \\ & & }$;$\tens{\eps}=\matrice{\eps & \gamma/2 & \\ \gamma/2 &  & \\ & & }$ Not a strong discontinuity + hardening + Emphasis unexpected stress structure (prestressed tubes)
-%% superimposition of plane wave and shear wave
-\item \cite{Ting68}: $\tens{\sigma}=\matrice{\sigma & \tau & \\ \tau & \sigma_{22} & \\ & & \sigma_{22}}$;$\tens{\eps}=\matrice{\eps & \gamma/2 & \\ \gamma/2 &  & \\ & & }$ with linear hardening materials; identification of particular loading cases that lead to different characteristic structures (p.8). Generalization of \cite{Bleich} to hardening materials and of \cite{Clifton} to more complex loadings ; Emphasis unexpected stress structure (prestressed tubes)
-%% superimposition of plane wave and shear waveS
-\item \cite{Ting69}:  $\tens{\sigma}=\matrice{\sigma & \tau_y & \tau_z\\ \tau_y & \sigma_{22} & \\\tau_z & & \sigma_{22}}$;$\tens{\eps}=\matrice{\eps & \gamma_y/2 & \gamma_z/2\\ \gamma_y/2 &  & \\ \gamma_z/2& & }$ ; superimposition of plane wave and shear waveS ; Emphasis unexpected stress structure (prestressed tubes)
-\item \cite{Ting73}: c'est pas un peu une review des deux papiers d'avant ?
-%% superimposition of plane wave and shear wave
-\item \cite{Li_planeStress_EP}:$\tens{\sigma}=\matrice{\sigma & \tau & \\ \tau & \sigma_{22} & \\ & & \sigma_{22}}$;$\tens{\eps}=\matrice{\eps & \gamma/2 & \\ \gamma/2 &  & \\ & & }$
-\end{itemize}
+The work of Bleich and Nelson have then been generalized to hardening materials by Ting and Nan \cite{Ting68}, and Ting \cite{Ting69} widened those of Clifton to more complex loadings, that is a superimposition of one plane wave and two shear waves states.
+Once again, the mathematical study of the ODE system governing the stresses evolution inside fast and slow simple waves led to the construction of loading paths in the stress space that depend on the external loads. A review of governing equations for all the cases depending on one space dimension considered above may be found in \cite{Nowacki}.
 
-Il y a la question des vitesses charactéristiques plastiques... sont-elles collées aux vitesses élastiques ?
+The information on characteristic structures thus provided may be used in numerical methods for simulating the propagation of waves in elastic-plastic solids. 
+Lin and Ballman for instance \cite{Lin_et_Ballman} developed an iterative Riemann solver in which, by successively assuming stress states in the stationary region, the loading paths preticted by the theory of Clifton \cite{Clifton} are integrated numerically.
+Nevertheless, the theoretical investigations carried out so far restrict the development of such numerical tools to problems that depend on one space dimension.
+Additional knowledge on the more general plane strain and plane stress problems is hence required.
+Recall that the Riemann problems solved for computing intercell fluxes in finite volumes of in discontinuous Galerkin material point methods are written in an arbitrary direction of space.
+%As a result, the method of characteristics can be employed rather than apply the more complex "bi-characteristic" method as proposed in \cite{Clifton_thesis}.
+As a result, rather than seeking a solution of a quasi-linear form by looking for bi-characteristic as proposed in \cite{Clifton_thesis}, the more classical and less complex method of characteristics can be employed.
 
-
-% Assumptions (isothermal, linear hardenings though extendable, small deformation, cartesian,concave constitutive model,rate independent)
-
-% Un intérêt de développer ce qui est fait là est de s'autoriser à limiter les ondes plastique dans des méthodes de haut ordre.
-
-
-% \subsection{The complexity of elastoplasticity}
-% % Bibliography about:
-% % - what has been done so far (thin-walled ; plane wave + shear wave)
-% % - what is missing (solution of more general problems [i.e plane strain or stress] ; development of approximate Riemann solvers)
-% % - what it will allow (comparison with experimental data in order to track plastic shocks) internal structure of plastic shock
-% % - what is currently done in fluid or solid mechanics numerically
-% Biblio, 
-% %\section{State of the art}
-% \subsection{The thin-walled tube problem}
-% \cite{Clifton} + thesis
-% \subsection{Superimposition of plane wave and shear waves}
-% Citer Ting
-% \section{Plane strain and plane stress problem}
-% \subsection{General multi-dimensional formulation}
-% % Based on the tangent modulus -> independent on the hardening model
-% \subsection{Plane strain problems}
-% \subsection{Plane stress problems}
-% \section{Characteristic analysis}
-% dependance des vitesses caractéristiques à l'angle entre la direction principale de sigma et la direction de propagation, c'est dit dans la thèse de Clifou en page 90.
-% \subsection{Structure of the solution}
-% \subsection{Integral curves and loading paths}
-% \subsection{The plane strain case}
-% \subsection{The plane stress case}
 
 
 

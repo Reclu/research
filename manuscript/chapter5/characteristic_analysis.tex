@@ -1,30 +1,31 @@
-We assume the infinitesimal strain tensor can be additively decomposed into an elastic part and a plastic part according to:
-\begin{equation}
-  \label{eq:ch5_partition}
-  \tens{\eps}=\tens{\eps}^e+\tens{\eps}^p
-\end{equation}
-The elastic part of the infinitesimal strain tensor is:
+We are concerned here with linear hardening materials which elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
+The elastic-plastic constitutive equations, derived from thermodynamics in section \ref{sec:constitutive-equations} are recalled here for convenience:
+
+\begin{subequations}
+  \begin{empheq}[left=\empheqlbrace]{align}
+    \label{eq:ch5_von-Mises_yield}
+    & f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(R(p)+\sigma^y\) \equiv 0,\quad \text{with }\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma} \tens{I} \\
+    \label{eq:ch5_kin_hard}
+    & \tens{Y}=\frac{2}{3}C\tens{\eps}^p \\
+    \label{eq:ch5_iso_hard}
+    & R(p)=C \: p \\
+    \label{eq:elastoplastic_tangent}
+    & \tens{\dot{\sigma}}=\(\Cbb - \beta\tens{m}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}} \\
+    \label{eq:ch5_plastic_flow}
+    & \tens{m} = \frac{\tens{s}}{\norm{\tens{s}}}\\
+    \label{eq:ch5_EP_acoustic}
+    & A_{ij}^{ep}=  A_{ij}^{elast} -  \beta (n_k m_{ki})(m_{jl}n_l)
+  \end{empheq}
+\end{subequations}
+In von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the Parger-Ziegler linear kinematic hardening \eqref{eq:ch5_kin_hard} is considered by removing the linear isotropic harding law \eqref{eq:ch5_iso_hard} and conversely.
+Hardening parameters are thus also involved in the elastoplastic tangent modulus \eqref{eq:elastoplastic_tangent} through the parameter $\beta = \frac{6\mu^2}{3\mu +(C+R')}$ which depends on Lam\'e's constants as well.
+In addition, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is here decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow \eqref{eq:ch5_plastic_flow}.
+At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
 \begin{equation}
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
 \end{equation}
-Linear hardening
-\begin{equation}
-  \label{eq:ch5_von-Mises_yield}
-  f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{Y}} - \(Cp+\sigma^y\) \equiv 0
-\end{equation}
-$\tens{Y}=\frac{2}{3}C\tens{\eps}^p$ $C$ is the \textit{hardening modulus}.
-At last, equations \eqref{eq:plastic_strain_rate} and \eqref{eq:p_evolution} can be successively introduced in the elastic law so that one gets \cite[eq (2.2.22)]{Simo}:
-\begin{equation}
-  \label{eq:elastoplastic_tangent}
-  \tens{\dot{\sigma}}=\(\Cbb - \frac{6\mu^2}{3\mu +(C+R')}\tens{m}\otimes\tens{m} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}}
-\end{equation}
-with $\Cbb^{ep}$ the \textit{elastoplastic tangent modulus}.
-The \textit{elastoplastic acoustic tensor} is defined as:
-\begin{equation}
-  \label{eq:EP_acoustic}
-  A_{ij}^{ep}= n_k C^{ep}_{kijl}n_l = A_{ij}^{elast} -  \frac{6\mu^2}{3\mu +(C+R')} (n_k m_{ki})(m_{jl}n_l)
-\end{equation}
+with Young's modulus $E$ and Poisson's ration $\nu$.
 
 \subsection{Governing equations in the general case}
 Reparler de la surface de charge de von-Mises, et tout et tout.
@@ -65,7 +66,7 @@ In addition, three independent left eigenvectors associated to the zero eigenval
 We now focus on the solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-\infty,\infty[ \times [-e,e]$ in a Cartesian coordinates system, where $e$ is an arbitrary length.
 The solid is subject on the plane $x_1=0$ to a traction force $\vect{T}$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$. It is moreover assumed that all quantities except the velocity component $v_3$ depend solely on $x_1$ and $x_2$. Given the geometry of the problem, the vector $\vect{n}$ may be reduced to $\vect{e}_1$ or $\vect{e}_2$.
 
-First, the solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if for instance the velocity $v_3$ vanishes on both ends $x_3=\pm h$. In such a case, combination of equations \eqref{eq:ch5_partition} and \eqref{eq:ch5_elastic_inverse}, along with the kinematic condition $\eps_{33}=0$, allows to write a relation between $\sigma_{33}$ and other stress components:
+First, the solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if for instance the velocity $v_3$ vanishes on both ends $x_3=\pm h$. In such a case, combination of the additive partition of the infinitesimal strain tensor $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$ and \eqref{eq:ch5_elastic_inverse}, along with the kinematic condition $\eps_{33}=0$, allows to write a relation between $\sigma_{33}$ and other stress components:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
