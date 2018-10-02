@@ -347,7 +347,7 @@ Samples*=10
 sig=np.zeros((Samples,Samples))
 tau=np.zeros((Samples,Samples))
 
-frames=[5,10,20,40,50,55]
+frames=[5,10,20,30,50,55]
 #frames=[5]
 #frames=[10,15,20,25,30,35]
 
@@ -358,7 +358,7 @@ col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=sigM
-Niter=15000
+Niter=50000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -417,13 +417,13 @@ for k in range(len(sig22)):
         sig0=sig[-1-i,k]
         tau0=tau[-1-i,k]
 
-        # maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
-        # if sig0<maxCrit :
-        #     sigMax=-1.1*sigM
-        # else:
-        #     sigMax=sigM
-        # print "Maximum stress ",sigMax
-        sigMax=1.1*sig0
+        maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
+        if sig0<maxCrit :
+            sigMax=-1.5*sigM
+        else:
+            sigMax=1.5*sigM
+        print "Maximum stress ",sigMax
+        
         dsig=(sigMax-sig0)/Niter
         
         SIG11[:,s,k]=np.linspace(sig0,sigMax,Niter)
@@ -482,13 +482,13 @@ for k in range(len(sig22)):
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
         time=np.linspace(0,j+1,Niter)
 
-        # plt.plot(time[1:],Eps[0,1:,s,k],label='eps11')
-        # plt.plot(time[1:],Eps[1,1:,s,k],label='eps12')
-        # plt.plot(time[1:],Eps[2,1:,s,k],label='eps22')
-        # plt.plot(time[1:],Eps[3,1:,s,k],label='eps33')
-        # plt.legend()
-        # plt.grid()
-        # plt.show()
+        plt.plot(time[1:],Eps[0,1:,s,k],label='eps11')
+        plt.plot(time[1:],Eps[1,1:,s,k],label='eps12')
+        plt.plot(time[1:],Eps[2,1:,s,k],label='eps22')
+        plt.plot(time[1:],Eps[3,1:,s,k],label='eps33')
+        plt.legend()
+        plt.grid()
+        plt.show()
         # plt.plot(time[1:],SIG11[1:,s,k],label='sig11')
         # plt.plot(time[1:],SIG22[1:,s,k],label='sig22')
         # plt.plot(time[1:],SIG33[1:,s,k],label='sig33')

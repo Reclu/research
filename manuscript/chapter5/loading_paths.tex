@@ -1,52 +1,118 @@
-\subsection{Properties of the integral curves}
-%\subsubsection*{Orthogonality of loading paths}
-With the left eigenvectors of the acoustic tensor defined in equation \eqref{eq:ch5_eigenvectAcc}, the functions $\psi^s_1$ and $\psi^f_1$ introduced in the previous section satisfy the following orthogonality condition: $\psi^s_1\psi^f_1=-1$. 
+% On ne regarde qu'une dimension spatiale en faisant des hypothèse sur les champs alors que nous on se limite à une direction particulière $\vect{n}$.
+% En plus, on se limite à l'étude d'ondes simples alors que des chocs peuvent exister (voir Mandell car il semble y etre démontré que les shock n'arrivent que pour $\tau=0$).
+% Il y a la question des vitesses charactéristiques plastiques... sont-elles collées aux vitesses élastiques ?
+% dependance des vitesses caractéristiques à l'angle entre la direction principale de sigma et la direction de propagation, c'est dit dans la thèse de Clifou en page 90.
 
-\begin{proof}
-  We first write the product of the two functions according to equation \eqref{eq:ch5_eigenvectAcc}:
-  \begin{equation*}
-    \psi^s_1\psi^f_1 = \frac{l^1_2}{l^1_1}\: \frac{l_2^2}{l^2_1} = \frac{(A_{11}^{ep}-\rho c_s^2)A^{ep}_{12}}{(A_{22}^{ep}-\rho c_f^2)A^{ep}_{12}}
-  \end{equation*}
-  Introduction of the expressions of $\rho c_f^2 = \omega_1$ and $\rho c_s^2 = \omega_2$ given by equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc1} leads to:
-  \begin{equation*}
-    \psi^s_1\psi^f_1 = \frac{A_{11}^{ep}-A_{22}^{ep}+\sqrt{(A_{11}^{ep}-A_{22}^{ep})^2 + 4A_{12}^{ep}}}{A_{22}^{ep}-A_{11}^{ep}-\sqrt{(A_{11}^{ep}-A_{22}^{ep})^2 + 4A_{12}^{ep}}}=-1
-  \end{equation*}
-  This ends the proof.
-\end{proof}
-In other words, $\vect{l}^1 \cdot \vect{l}^2=0$ so that the eigenvectors of the acoustic tensor are orthogonal regardless of the stress state (je pense que c'est normal). This allows us to restrict the study of the functions $\psi_1$ to $\psi^s_1$.
-A similar property is identified in \cite{Clifton} for the thin-walled tube problem consisting in a superimposition of a plane wave and a pure shear wave.(il y en a un autre qui en parle et qui précise que c'est valable si les courbes intégrales ont une intersection \cite[p.13]{Ting68})
-\begin{remark}
-  The orthogonality property of the loading pass is also valid for the vector $\vect{n}=\vect{e}_2$ since the functions involved in the intergal curves are $\psi^s_2=1/\psi^s_1$ and $\psi^f_2=1/\psi^f_1$.
-\end{remark}
+\subsection{Properties of the loading paths}
+The stress paths followed within slow and fast simple waves is governed by the mathematical properties of functions $\psi^s_1$ and $\psi^f_1$ involved in the relations of table \ref{tab:simpleWavesEquations}.
+Then, before specializing the discussion to plane stress and plane strain cases, some general properties holding regardless of the loading conditions are highlighted.
+The analysis is here carried out for the special case $\vect{n}=\vect{e}_1$, similar results being obtained for the other situation $\vect{n}=\vect{e}_2$.
 
-%\subsubsection*{Degeneracy of the hyperbolic system}
+First, the functions are orthogonal, that is $\psi^s_1\psi^f_1=-1$.
+Indeed, considering the left eigenvectors of the acoustic tensor in equation \eqref{eq:ch5_eigenvectAcc}, the product $\psi^s_1\psi^f_1$ reads:
+\begin{equation*}
+  \psi^s_1\psi^f_1 = \frac{l^1_2}{l^1_1}\: \frac{l_2^2}{l^2_1} = \frac{(A_{11}-\omega_2)A_{12}}{(A_{22}-\omega_1)A_{12}}
+\end{equation*}
+Introduction of the expressions of eigenvalues $\omega_i$ from equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc1} further yields:
+\begin{equation*}
+  \psi^s_1\psi^f_1 = \frac{A_{11} -A_{22} +\sqrt{(A_{11} -A_{22} )^2 + 4A_{12} }}{A_{22} -A_{11} -\sqrt{(A_{11} -A_{22} )^2 + 4A_{12} }}=-1
+\end{equation*}
+In other words, $\vect{l}^1 \cdot \vect{l}^2=0$ as expected by the symmetry of $\tens{A}$.
+This orthogonality has already been noticed for particular plane strain and plane stress cases \cite{Clifton,Ting68} but now obviously appears as true for all problems in two space dimensions.
+%Moreover, since $\psi^s_2=1/\psi^s_1$ and $\psi^f_2=1/\psi^f_1$, the same holds for the functions $\psi^s_2$ and $\psi^f_2$.
+Therefore, it allows us to restrict the study to one function only, say $\psi_1^f$.
 
-A vanishing function $\psi_1^f$ yields a longitudinal stress $\sigma_{11}$ that is constant along a loading path according to equation \eqref{eq:sigSlow_n=e1}. Conversely, the stress $\sigma_{12}$ is constant if $\psi_1^f\rightarrow \infty$. Such situations make the integration of the integral curve easier, some of them are now identified.
-
-Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to finding roots of the components of $\vect{l}^2$. Thus:
-\begin{align}
-  & l_1^2 = 0 \Leftrightarrow A_{12}^{ep}=0  \\
-  & l_2^2 = 0 \Leftrightarrow A_{11}^{ep}-\rho c_s^2 =0
-\end{align}
-Introduction of this condition in the second yields:
-\begin{equation}
-  A_{11}^{ep}-\rho c_s^2 = \frac{1}{2}\(A^{ep}_{11}-A^{ep}_{22} + \abs{A^{ep}_{11}-A^{ep}_{22}}\) = \left\langle A^{ep}_{11}-A^{ep}_{22}  \right\rangle
-\end{equation}
-where $\left\langle \bullet \right\rangle$ denotes the positive part operator.
-
-Therefore, if $A_{12}^{ep}=0$ and $A_{11}^{ep}\neq A_{22}^{ep}$, the functions satisfy $\psi^f_1 \rightarrow \infty$ and $\psi^s_1 \rightarrow 0$ so that the stress path in the ($\sigma_{11},\sigma_{12}$) plane are (locally) horizontal (\textit{resp. vertical}) through a fast (\textit{resp. slow}) wave. 
-On the other hand, if $A_{11}^{ep} = A_{22}^{ep}$, both components of the eigenvectors vanish and $\psi^f_1$ and $\psi^s_1$ are undetermined. The latter situation moreover leads to characteristic speeds that "collide" according to equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc2}, namely:
+Second, if the function $\psi_1^f$ vanishes at some point of the stress space, the prejection of the stress path in the $(\sigma_{11},\sigma_{12})$ plane is vertical according to the ODE \eqref{eq:sigSlow_n=e1}.
+Conversely, if the inverse of $\psi_1^f\rightarrow \infty$, the loading path is horizontal in the $(\sigma_{11},\sigma_{12})$ plane.
+%Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to finding roots of the components of $\vect{l}^2$:
+It then comes out:
 \begin{subequations}
   \begin{alignat}{1}
-    \label{eq:eigen_acc_planeStrain1}
-    & \rho c_s^2 = \frac{1}{2}\(A^{ep}_{11}+A^{ep}_{22} - \sqrt{(A^{ep}_{11}-A^{ep}_{22})^2+{4A^{ep}_{12}}^2}\) = \frac{A^{ep}_{11}+A^{ep}_{22}}{2}\\
-    \label{eq:eigen_acc_planeStrain2}
-    & \rho c_f^2 = \frac{1}{2}\(A^{ep}_{11}+A^{ep}_{22} + \sqrt{(A^{ep}_{11}-A^{ep}_{22})^2+{4A^{ep}_{12}}^2}\)= \frac{A^{ep}_{11}+A^{ep}_{22}}{2} 
+    \label{eq:first_root}
+    \psi_1^f = 0  & \Leftrightarrow A_{12} =0  \\
+    \label{eq:second_root}
+    \psi_1^f\rightarrow \infty & \Leftrightarrow A_{11} -\omega_2 =0
   \end{alignat}
 \end{subequations}
-The system thus degenerates in that case since the solution no longer involves two but only one family of simple waves. 
+In particular, if $A_{12}=0$ the second equation reads:
+\begin{equation}
+  A_{11} -\omega_2 = \frac{1}{2}\(A_{11} -A_{22} +\sqrt{(A_{11} -A_{22} )^2 + 4A_{12} }\) = \left\langle A _{11}-A _{22}  \right\rangle
+\end{equation}
+where $\left\langle \bullet \right\rangle$ denotes the positive part operator.
+Hence, if $A_{12} =0$ and $A_{11} \neq A_{22} $, one has $\psi^f_1 \rightarrow \infty$ and $\psi^s_1 = 0$, so that the stress path in the ($\sigma_{11},\sigma_{12}$) plane are (locally) horizontal (\textit{resp. vertical}) through a fast (\textit{resp. slow}) wave. 
+On the other hand, if $A_{11}  = A_{22} $, both components of the eigenvectors vanish and the functions $\psi^f_1$ and $\psi^s_1$ are undetermined.
+At last, it follows from equation \eqref{eq:diff_celerities} that the simultaneous of conditions \eqref{eq:first_root} and \eqref{eq:second_root} leads to characteristic speeds of simple waves that are identical. Hence, the situation $c_f=c_s$ corresponds to a loss of hyperbolicity of the system.
 
-The above discussion is now specified to plane strain and plane stress cases, for which loading conditions that lead to $A_{12}^{ep}=0$ and $A^{ep}_{11}-A^{ep}_{22}=0$ are identified. Without loss of generality, attention is paid to only one direction of space, say $\vect{n}=\vect{e}_1$ and right-going simple waves.
+
+The above discussion is now specified to plane stress and plane strain, for which loading conditions leading to $A_{12} =0$ and $A _{11}-A _{22}=0$ are identified.
+\subsection{The plane stress case}
+The case of plane stress is first considered by using the tengent modulus of equation \eqref{eq:CP_constitutive}.
+Thus, the components of the acoustic tensor $\tens{\tilde{A}}^{ep}$, after some simplifications, read:
+\begin{align}
+  & \tilde{A}_{11}^{ep}= \tilde{C}^{ep}_{1111} - \frac{(\tilde{C}^{ep}_{1133})^2}{\tilde{C}^{ep}_{3333}} = \lambda + 2\mu -\beta s_{11}^2 -\frac{\(\lambda -\beta s_{11}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
+  & \tilde{A}_{22}^{ep}= \tilde{C}^{ep}_{1212} - \frac{(\tilde{C}^{ep}_{1233})^2}{\tilde{C}^{ep}_{3333}}= \mu - \beta s_{12}^2 -\frac{\(\beta s_{12}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
+  & \tilde{A}_{12}^{ep} = \tilde{C}^{ep}_{1112} - \frac{\tilde{C}^{ep}_{1133}\tilde{C}^{ep}_{1233}}{\tilde{C}^{ep}_{3333}} =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
+  % & \tilde{A}_{12}^{ep}=\tilde{C}^{ep}_{1112} - \frac{\tilde{C}^{ep}_{1133}\tilde{C}^{ep}_{1233}}{\tilde{C}^{ep}_{3333}} = -\beta s_{11}s_{12}- \frac{\(\lambda - \beta s_{11}s_{33}\)\( -\beta s_{12}s_{33}\)}{\lambda + 2\mu - \beta s_{33}^2}
+\end{align}
+% \begin{equation*}
+%   \tilde{A}_{12}^{ep} = \beta s_{12} \( s_{33}\frac{\lambda - \beta s_{11}s_{33}}{\lambda + 2\mu - \beta s_{33}^2} -s_{11}  \) =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
+% \end{equation*}
+From the last equation, $\tilde{A}_{12}^{ep}$ obviously vanishes for $s_{12}=0$ and $s_{11}=\lambda s_{33}/(\lambda+2\mu)$, the latter condition leading to $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. Hence, the function $\psi^f_1 \rightarrow \infty$ for $s_{12}=0$ and $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. In order to ensure the hyperbolicity of the system, the component of the acoustic tensor also have to be defined, that is $\tilde{C}^{ep}_{3333}\neq 0$. This condition leads to:
+\begin{equation*}
+  \lambda + 2\mu - \beta s_{33}^2 \neq 0 \quad \Leftrightarrow \quad s_{33}\neq \frac{\lambda + 2\mu}{\beta}
+\end{equation*}
+
+\paragraph*{Case $s_{12}=0$ :}
+\begin{align}
+  & \rho c_s^2 =\frac{1}{2}\(\tilde{A}_{11}^{ep}+\tilde{A}_{22}^{ep} - \abs{\tilde{A}_{11}^{ep}-\tilde{A}_{22}^{ep}}\) \\
+  & \rho c_f^2 =\frac{1}{2}\(\tilde{A}_{11}^{ep}+\tilde{A}_{22}^{ep} + \abs{\tilde{A}_{11}^{ep}-\tilde{A}_{22}^{ep}}\)
+\end{align}
+
+The other singularity $\tilde{A}^{ep}_{11}=\tilde{A}^{ep}_{22}$ is on the other hand, more complex to deal with.
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane}{\input{chapter5/pgfFigures/thinwalledStress}} \qquad
+  \subcaptionbox{Stress path in deviatoric plane}{\input{chapter5/pgfFigures/thinwalledDev}}
+  \caption{comparison between Clifton and own solution}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes}{\input{chapter5/pgfFigures/CPfastWaves0.tex}}
+  \subcaptionbox{Loading path in deviatoric plane}{\input{chapter5/pgfFigures/CPfastWaves_deviator0.tex}}
+  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface. Stresses in Pa}
+  \label{fig:fast_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves1.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator1.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves2.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator2.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator3.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
 
 \subsection{The plane strain case}
 The expressions of the tangent modulus and the acoustic tensors are recalled here for convenience:
@@ -157,88 +223,6 @@ Remark, the characteristic speeds are supposed to decrease along the integral cu
 \end{figure}
 
 
-\subsection{The plane stress case}
-Under plane stress, the elastoplastic tangent modulus can be rewritten by taking into account the vanishing stress component $\sigma_{33}$:
-
-\begin{figure}[h!]
-  \centering
-  {\input{chapter5/pgfFigures/thinwalledStress}}
-  \caption{comparison between Clifton and own solution}
-\end{figure}
-\begin{figure}[h!]
-  \centering
-  {\input{chapter5/pgfFigures/thinwalledDev}}
-  \caption{Projection in deviatoric plane}
-\end{figure}
-\begin{equation*}
-  \dot{\sigma}_{33}=C^{ep}_{33ij} \dot{\eps}_{ij} =0
-\end{equation*}
-Then, one gets:
-\begin{equation*}
-  C^{ep}_{3333} \dot{\eps}_{33} = - C^{ep}_{33ij}\dot{\eps}_{ij} \qquad i,j=\{1,2\}
-\end{equation*}
-Hence, the constitutive equation reads:
-\begin{equation}
-  \label{eq:CP_constitutive}
-  \dot{\sigma}_{ij}=C^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\dot{\eps}_{kl} \qquad i,j,k,l=\{1,2\} 
-\end{equation}
-Thus, the components of the acoustic tensor, after some simplifications, read:
-\begin{align}
-  & A_{11}^{ep}= C^{ep}_{1111} - \frac{{C^{ep}_{1133}}^2}{C^{ep}_{3333}} = \lambda + 2\mu -\beta s_{11}^2 -\frac{\(\lambda -\beta s_{11}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
-  & A_{22}^{ep}= C^{ep}_{1212} - \frac{{C^{ep}_{1233}}^2}{C^{ep}_{3333}}= \mu - \beta s_{12}^2 -\frac{\(\beta s_{12}s_{33}\)^2}{\lambda + 2\mu - \beta s_{33}^2} \\
-  & A_{12}^{ep} = C^{ep}_{1112} - \frac{C^{ep}_{1133}C^{ep}_{1233}}{C^{ep}_{3333}} =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
-  % & A_{12}^{ep}=C^{ep}_{1112} - \frac{C^{ep}_{1133}C^{ep}_{1233}}{C^{ep}_{3333}} = -\beta s_{11}s_{12}- \frac{\(\lambda - \beta s_{11}s_{33}\)\( -\beta s_{12}s_{33}\)}{\lambda + 2\mu - \beta s_{33}^2}
-\end{align}
-% \begin{equation*}
-%   A_{12}^{ep} = \beta s_{12} \( s_{33}\frac{\lambda - \beta s_{11}s_{33}}{\lambda + 2\mu - \beta s_{33}^2} -s_{11}  \) =\beta s_{12} \frac{\lambda s_{33} - (\lambda + 2\mu)s_{11} }{\lambda + 2\mu - \beta s_{33}^2}  
-% \end{equation*}
-From the last equation, $A_{12}^{ep}$ obviously vanishes for $s_{12}=0$ and $s_{11}=\lambda s_{33}/(\lambda+2\mu)$, the latter condition leading to $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. Hence, the function $\psi^f_1 \rightarrow \infty$ for $s_{12}=0$ and $\sigma_{11}=\frac{1-2\nu}{2-\nu} \sigma_{22}$. In order to ensure the hyperbolicity of the system, the component of the acoustic tensor also have to be defined, that is $C^{ep}_{3333}\neq 0$. This condition leads to:
-\begin{equation*}
-  \lambda + 2\mu - \beta s_{33}^2 \neq 0 \quad \Leftrightarrow \quad s_{33}\neq \frac{\lambda + 2\mu}{\beta}
-\end{equation*}
-
-\paragraph*{Case $s_{12}=0$ :}
-\begin{align}
-  & \rho c_s^2 =\frac{1}{2}\(A_{11}^{ep}+A_{22}^{ep} - \abs{A_{11}^{ep}-A_{22}^{ep}}\) \\
-  & \rho c_f^2 =\frac{1}{2}\(A_{11}^{ep}+A_{22}^{ep} + \abs{A_{11}^{ep}-A_{22}^{ep}}\)
-\end{align}
-
-The other singularity $A^{ep}_{11}=A^{ep}_{22}$ is on the other hand, more complex to deal with.
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes}{\input{chapter5/pgfFigures/CPfastWaves0.tex}}
-  \subcaptionbox{Loading path in deviatoric plane}{\input{chapter5/pgfFigures/CPfastWaves_deviator0.tex}}
-  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface. Stresses in Pa}
-  \label{fig:fast_path_plane_strains}
-\end{figure}
-
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves1.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator1.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
-  \label{fig:slow_path_plane_strains}
-\end{figure}
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves2.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator2.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
-  \label{fig:slow_path_plane_strains}
-\end{figure}
-
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator3.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
-  \label{fig:slow_path_plane_strains}
-\end{figure}
-
 
 
 
@@ -252,11 +236,6 @@ The other singularity $A^{ep}_{11}=A^{ep}_{22}$ is on the other hand, more compl
 %This assumption seems to be valid with the convex flux function used in equation \eqref{eq:ch5_conservative} that leads to monotonically decreasing wave speeds with respect to the stress tensor. Furthermore, the medium is homogeneous 
 %% Ne pas regarder genuinely non-linear car ça n'apporte rien. Ca donne juste une indication sur la variation des vitesses le long des courbes intégrales mais pas en fonction de la contrainte.
 
-
-
-
-
-% It has been shown in \cite{Ting69} (homogeneous function so that c are constant along radial lines in the stress space)
 
 %This is in paticular true when looking at the normal vectors $\vect{n} = \vect{e}_1$ and $\vect{n} = \vect{e}_2$ that yield an acoustic tensor $A_{ij}^{ep}=A_{ij}^{elas} - \beta m_{pi}m_{jq}n_p n_q\deta_{pq}$.
 

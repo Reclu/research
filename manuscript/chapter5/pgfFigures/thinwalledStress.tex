@@ -1,5 +1,5 @@
-\begin{tikzpicture}
-  \begin{axis}[ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,xlabel=$\sigma_{11} \: (Pa)$]
+\begin{tikzpicture}[scale=0.9]
+  \begin{axis}[ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12}$,xlabel=$\sigma_{11}$]
     %%
     \addplot[Green,dashed,very thick] table [x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/slowStressPlane_Stress0.pgf};
     \addplot[Green,thin] table [x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslowStressPlane_Stress0.pgf};
