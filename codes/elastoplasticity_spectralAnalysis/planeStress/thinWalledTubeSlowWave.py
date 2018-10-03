@@ -232,7 +232,7 @@ tau0=np.sqrt((sigy**2-sig0**2)/3.)
 
 parameter="tau"
 
-tauEnd=1.5*sigy
+tauEnd=0.75*sigy
 sigEnd=1.*sigy
 
 
@@ -273,8 +273,11 @@ export2pgfPlot3D(str(fileName),cylindre[0,:],cylindre[1,:],cylindre[2,:])
 
 
 for k,s in enumerate(sig0):
-    sig = np.matrix([[s,tau0[k],0.],[tau0[k],0.,0.],[0.,0.,0.]])
-    eigSigDev=computeEigenStresses(sig)
+    # sig = np.matrix([[s,tau0[k],0.],[tau0[k],0.,0.],[0.,0.,0.]])
+    # eigSigDev=computeEigenStresses(sig)
+    sigDev=computeDeviatoricPart(np.array([s,tau0[k],0.,0.]))
+    sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+    eigSigDev=computeEigenStresses(sigma)
     sigdev1[k,0]=eigSigDev[0]
     sigdev2[k,0]=eigSigDev[1]
     sigdev3[k,0]=eigSigDev[2]
@@ -293,8 +296,13 @@ for k,s in enumerate(sig0):
         
         # SIG[k,i+1]=r.y   
         SIG[k,i+1]=integrateODE(dtau,SIG[k,i],TAU[k,i],lamb,mu,beta)
-        sig = np.matrix([[SIG[k,i+1],TAU[k,i+1],0.],[TAU[k,i+1],0.,0.],[0.,0.,0.]])
-        eigSigDev=computeEigenStresses(sig)
+
+        sigDev=computeDeviatoricPart(np.array([SIG[k,i+1],TAU[k,i+1],0.,0.]))
+        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        eigSigDev=computeEigenStresses(sigma)
+
+        # sig = np.matrix([[SIG[k,i+1],TAU[k,i+1],0.],[TAU[k,i+1],0.,0.],[0.,0.,0.]])
+        # eigSigDev=computeEigenStresses(sig)
         sigdev1[k,i+1]=eigSigDev[0]
         sigdev2[k,i+1]=eigSigDev[1]
         sigdev3[k,i+1]=eigSigDev[2]
@@ -312,12 +320,16 @@ for k,s in enumerate(sig0):
         
         SIGC[k,i+1]=r.y
 
-        sig = np.matrix([[SIGC[k,i+1],TAUC[k,i+1],0.],[TAUC[k,i+1],0.,0.],[0.,0.,0.]])
-        eigSigDev=computeEigenStresses(sig)
+        sigDev=computeDeviatoricPart(np.array([SIG[k,i+1],TAU[k,i+1],0.,0.]))
+        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        eigSigDev=computeEigenStresses(sigma)
+
+        # sig = np.matrix([[SIGC[k,i+1],TAUC[k,i+1],0.],[TAUC[k,i+1],0.,0.],[0.,0.,0.]])
+        # eigSigDev=computeEigenStresses(sig)
         sigdev1C[k,i+1]=eigSigDev[0]
         sigdev2C[k,i+1]=eigSigDev[1]
         sigdev3C[k,i+1]=eigSigDev[2]
-
+    print path
     fileName=path+'slowStressPlane_Stress'+str(k)+'.pgf'
     export2pgfPlotFile(fileName,np.array([TAU[k,0:-1:Niter/100],SIG[k,0:-1:Niter/100]]),'sigma_12','sigma_11')
     pgfFilesList.append(fileName)
@@ -332,79 +344,79 @@ for k,s in enumerate(sig0):
     export2pgfPlot3D(fileName,sigdev1C[k,0:-1:Niter/100],sigdev2C[k,0:-1:Niter/100],sigdev3C[k,0:-1:Niter/100],dico)
     deviatorPlots.append(fileName)
 
-# ###################################### POST PROCESSING
-# from mpl_toolkits.mplot3d import proj3d
-# def orthogonal_proj(zfront, zback):
-#     a = (zfront+zback)/(zfront-zback)
-#     b = -2*(zfront*zback)/(zfront-zback)
-#     return np.array([[1,0,0,0],
-#                         [0,1,0,0],
-#                         [0,0,a,b],
-#                         [0,0,0,zback]])
-# proj3d.persp_transformation = orthogonal_proj
+###################################### POST PROCESSING
+from mpl_toolkits.mplot3d import proj3d
+def orthogonal_proj(zfront, zback):
+    a = (zfront+zback)/(zfront-zback)
+    b = -2*(zfront*zback)/(zfront-zback)
+    return np.array([[1,0,0,0],
+                        [0,1,0,0],
+                        [0,0,a,b],
+                        [0,0,0,zback]])
+proj3d.persp_transformation = orthogonal_proj
 
-# Samples=100
-# s11=0.*sigy
-# s12=np.linspace(0.,np.sqrt(1./3.)*sigy ,Samples)
-# s22=np.zeros(len(s12))
-# s22=np.zeros(Samples)
-# for i in range(Samples-1):
-#     fvm = lambda x : criterion(s12[i],x,0.,sigy,0.)
-#     s22[i] = scipy.optimize.brentq(fvm,0.*sigy,2.5*sigy)
+Samples=100
+s11=0.*sigy
+s12=np.linspace(0.,np.sqrt(1./3.)*sigy ,Samples)
+s22=np.zeros(len(s12))
+s22=np.zeros(Samples)
+for i in range(Samples-1):
+    fvm = lambda x : criterion(s12[i],x,0.,sigy,0.)
+    s22[i] = scipy.optimize.brentq(fvm,0.*sigy,2.5*sigy)
 
-# ax2d = plt.subplot2grid((1,2),(0,0))
-# ax2d.set_xlabel(r'$\sigma$',size=24.)
-# ax2d.set_ylabel(r'$\tau$',size=24.)
-# ax2d.set_ylim([0.,sigy])
-# ax2d.set_xlim([0.,2.*sigy])
+ax2d = plt.subplot2grid((1,2),(0,0))
+ax2d.set_xlabel(r'$\sigma$',size=24.)
+ax2d.set_ylabel(r'$\tau$',size=24.)
+ax2d.set_ylim([0.,sigy])
+ax2d.set_xlim([0.,2.*sigy])
 
-# ##3d subplot settings
-# ax = plt.subplot2grid((1,2),(0,1),projection='3d')
-# ax.set_aspect("equal")
-# ax.set_xlabel(r'$\sigma_1$',size=24.)
-# ax.set_ylabel(r'$\sigma_2$',size=24.)
-# ax.set_zlabel(r'$\sigma_3$',size=24.)
+##3d subplot settings
+ax = plt.subplot2grid((1,2),(0,1),projection='3d')
+ax.set_aspect("equal")
+ax.set_xlabel(r'$\sigma_1$',size=24.)
+ax.set_ylabel(r'$\sigma_2$',size=24.)
+ax.set_zlabel(r'$\sigma_3$',size=24.)
 
-# radius=np.sqrt((2./3.)*sigy**2)
+radius=np.sqrt((2./3.)*sigy**2)
 
-# ax.set_xlim(-1.*radius,1.*radius)
-# ax.set_ylim(-1.*radius,1.*radius)
-# ax.set_zlim(-1.*radius,1.*radius)
+ax.set_xlim(-1.*radius,1.*radius)
+ax.set_ylim(-1.*radius,1.*radius)
+ax.set_zlim(-1.*radius,1.*radius)
 
-# ## 3d and 2d subplots
-# ax2d.plot(s22,s12,'k',lw=1.,label='Initial yield surface (vM)')
-# # draw von Mises Criterion
-# r=np.sqrt((2./3.)*sigy**2)
+## 3d and 2d subplots
+ax2d.plot(s22,s12,'k',lw=1.,label='Initial yield surface (vM)')
+# draw von Mises Criterion
+r=np.sqrt((2./3.)*sigy**2)
     
-# theta=np.linspace(0,2*np.pi,50)
-# s2 = r*np.cos(theta)
-# s3 = r*np.sin(theta)
-# s1=0.
-# c=np.sqrt(2.)/2.;
-# s=np.sqrt(2.)/2.;
-# P2=np.array([[c,-c,0.],[c,c,0.],[0.,0.,1.]])
-# P1=np.array([[c,0.,-c],[0.,1.,0.],[c,0.,c]])
-# c=np.cos(np.arctan(1./np.sqrt(2.0)))
-# s=np.sin(np.arctan(1./np.sqrt(2.0)))
-# P1=np.array([[c,0.,-s],[0.,1.,0.],[s,0.,c]])
-# cylindre=np.zeros((3,len(s2)))
+theta=np.linspace(0,2*np.pi,50)
+s2 = r*np.cos(theta)
+s3 = r*np.sin(theta)
+s1=0.
+c=np.sqrt(2.)/2.;
+s=np.sqrt(2.)/2.;
+P2=np.array([[c,-c,0.],[c,c,0.],[0.,0.,1.]])
+P1=np.array([[c,0.,-c],[0.,1.,0.],[c,0.,c]])
+c=np.cos(np.arctan(1./np.sqrt(2.0)))
+s=np.sin(np.arctan(1./np.sqrt(2.0)))
+P1=np.array([[c,0.,-s],[0.,1.,0.],[s,0.,c]])
+cylindre=np.zeros((3,len(s2)))
 
-# for i in range(len(s2)):
-#     cylindre[:,i] = np.dot(P2,np.dot(P1,np.array([s1,s2[i],s3[i]])))
-# ax.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
-# ax.plot([0.,sigy],[0.,sigy],[0.,sigy], color="k")
+for i in range(len(s2)):
+    cylindre[:,i] = np.dot(P2,np.dot(P1,np.array([s1,s2[i],s3[i]])))
+ax.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+ax.plot([0.,sigy],[0.,sigy],[0.,sigy], color="k")
 
-# ax2d.grid()
-# ax2d.legend(numpoints=1,loc='best')
-# elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
-# angle_degree= 180.*elevation_Angle_radian/np.pi
-# ax.view_init(angle_degree,45.)
-# for k in range(len(sig0)):
-#     ax2d.plot(SIG[k,:],TAU[k,:],color=col[k],lw=2.5,linestyle="--",label="Slow wave ")
-#     ax2d.plot(SIGC[k,:],TAUC[k,:],color=col[k],lw=1.,label="Slow wave (Clifton)")
-#     ax.plot(sigdev1[k,:],sigdev2[k,:],sigdev3[k,:],color=col[k],lw=2.5,linestyle="--")
-#     ax.plot(sigdev1C[k,:],sigdev2C[k,:],sigdev3C[k,:],color=col[k],lw=1.)
+ax2d.grid()
+ax2d.legend(numpoints=1,loc='best')
+elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
+angle_degree= 180.*elevation_Angle_radian/np.pi
+ax.view_init(angle_degree,45.)
+for k in range(len(sig0)):
+    ax2d.plot(SIG[k,:],TAU[k,:],color=col[k],lw=2.5,linestyle="--",label="Slow wave ")
+    ax2d.plot(SIGC[k,:],TAUC[k,:],color=col[k],lw=1.,label="Slow wave (Clifton)")
+    ax.plot(sigdev1[k,:],sigdev2[k,:],sigdev3[k,:],color=col[k],lw=2.5,linestyle="--")
+    ax.plot(sigdev1C[k,:],sigdev2C[k,:],sigdev3C[k,:],color=col[k],lw=1.)
 
-# #ax2d.legend(loc='best',numpoints=1)
-# plt.show()
+#ax2d.legend(loc='best',numpoints=1)
+plt.show()
 

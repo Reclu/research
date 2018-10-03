@@ -179,10 +179,10 @@ def computeCriterion(sig11,sig22,sig12,sig33,sigy):
     f=np.sqrt(3./2.)*normSDev - sigy
     return f
 
-def computePsiFast(sig12,sigma,sig33,lamb,mu,beta,tangent):
+def computePsiFast(sig11,sigma,sig33,lamb,mu,beta,tangent):
     # sig12 driven
     n1=1.;n2=0.
-    sig11=sigma[0];sig22=sigma[1]
+    sig12=sigma[0];sig22=sigma[1]
     H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
     C=acousticTensor(H,np.array([n1,n2]))
     eigenf,eigens=acousticEigenStructure(C)
@@ -190,9 +190,9 @@ def computePsiFast(sig12,sigma,sig33,lamb,mu,beta,tangent):
     alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2) - (H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
     alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2) - (H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
     w1=eigens[1][0];w2=eigens[1][1]
-    psi11=-w2/(1.*w1)
-    psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
-    return np.array([psi11,psi22])
+    psi12=-w1/w2
+    psi22=(w1*alpha12/w2-alpha11)/alpha22
+    return np.array([psi12,psi22])
 
 def computeSpeed(sigma,lamb,mu,beta,tangent):
     # sig12 driven
@@ -204,17 +204,17 @@ def computeSpeed(sigma,lamb,mu,beta,tangent):
     return eigenf[0]
 
 
-def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
-    sigma=np.array([sig0,sig22_0])
+def integrateODE(dsig,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
+    sigma=np.array([tau0,sig22_0])
     # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
     # subdivision of time step
     sub_steps = 1
-    dTAU = dtau/sub_steps
-    theta = 1.0
+    dSIG = dsig/sub_steps
+    theta = 1.
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma - dTAU*(theta*computePsiFast(tau0+dTAU,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dSIG,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
         solution = scipy.optimize.fsolve(R,sigma)
         sigma = solution
@@ -277,12 +277,11 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
-frames=[Samples-2]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
-sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
-tauM=0.*sigy#sigM
-Niter=10000
+sigM=1.25*sigy/np.sqrt(1-nu+nu**2)
+tauM=sigM
+Niter=5000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -327,7 +326,6 @@ for k in range(len(sig22)):
     s22=sig22[k]
     sigM=1.05*np.max(sig[:,k])
     tauM=1.25*np.max(tau[:,k])
-    tauM=0.
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
     ordonnees=np.zeros((len(frames),Samples))
@@ -340,19 +338,21 @@ for k in range(len(sig22)):
         tau0=tau[-1-i,k]
 
         
-        dtau=(tauM-tau0)/Niter
+        dsig=(sigM-sig0)/Niter
         
-        TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
+        SIG11[:,s,k]=np.linspace(sig0,sigM,Niter)
+        #TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
         
-        SIG11[0,s,k]=sig0
+        #SIG11[0,s,k]=sig0
+        TAU[0,s,k]=tau0
         SIG22[0,s,k]=s22
 
         
-        rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
-        #rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
+        #rFast = ode(computePsiFast).set_integrator('vode',method='bdf')
+        rFast = ode(computePsiFast).set_integrator('vode',method='adams',order=12)
         #rFast = ode(computePsiFast).set_integrator('dopri5')
         
-        rFast.set_initial_value(np.array([SIG11[0,s,k],SIG22[0,s,k]]),TAU[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
+        rFast.set_initial_value(np.array([TAU[0,s,k],SIG22[0,s,k]]),SIG11[0,s,k]).set_f_params(0.,lamb,mu,beta,tangent)
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,0.]])
         rcf2[0,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
 
@@ -365,15 +365,15 @@ for k in range(len(sig22)):
         plast=0.
         epsp33=0.
         for j in range(Niter-1):
-            # rFast.set_f_params(np.array([SIG11[0,s,k],SIG22[0,s,k]]),0.,lamb,mu,beta,tangent)
+            # rFast.set_f_params(np.array([TAU[0,s,k],SIG22[0,s,k]]),0.,lamb,mu,beta,tangent)
             # if not rFast.successful():
             #     print "Integration issues in fast wave path"
             #     break
-            # rFast.integrate(rFast.t+dtau)
-        
-            # SIG11[j+1,s,k],SIG22[j+1,s,k]=rFast.y
+            # rFast.integrate(rFast.t+dsig)
             
-            SIG11[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
+            # TAU[j+1,s,k],SIG22[j+1,s,k]=rFast.y
+            
+            TAU[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
             
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],0.])
             sigman = np.array([SIG11[j+1,s,k],np.sqrt(2.)*TAU[j+1,s,k],SIG22[j+1,s,k],0.])
@@ -424,7 +424,7 @@ for k in range(len(sig22)):
     ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
 
     cylindre=vonMisesYieldSurface(sigy)
-    ax3.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+    #ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
     elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
     angle_degree= 180.*elevation_Angle_radian/np.pi
     radius=1.*np.sqrt((2./3.)*sigy**2)

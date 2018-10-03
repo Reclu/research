@@ -15,8 +15,16 @@ def buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY):
         couleur=['Red','Blue','Orange','Purple','Green','Duck']
         TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
         if subtitle[i][:3]=='(c)':
-            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty]');TeXFile.write('\n')
-            for j,name in enumerate(pgfFiles[i][:len(couleur)]):
+	    TeXFile.write(r'\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},cross/.default={2.5pt}}');TeXFile.write('\n')
+	    
+	
+            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north}]');TeXFile.write('\n')
+	    TeXFile.write(r'\node[below] at (1.1e8,0.,0.) {$\sigma^y$};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};');TeXFile.write('\n')
+	    TeXFile.write(r'\draw (1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
+	    TeXFile.write(r'\draw (-1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[white]  at (0,0.,1.42e8) {};');TeXFile.write('\n')
+	    for j,name in enumerate(pgfFiles[i][:len(couleur)]):
                 #pdb.set_trace()
                 if name[25:25+12]=='CylindreDevP': ##  yield surface
                     TeXFile.write(r'\addplot3+[gray,dashed,thin,no markers] file {chapter5/pgfFigures/'+name+'};')
@@ -63,8 +71,15 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
         couleur=['Red','Blue','Orange','Purple','Green','Duck']
         if len(nom)!=2:
 	    TeXFile=open(nom,"w")
-            TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
-            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty,legend style={at={(.225,.59)}}]');TeXFile.write('\n')
+            TeXFile.write(r'\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},cross/.default={2.5pt}}');TeXFile.write('\n')
+	    TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
+            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.225,.59)}}]');TeXFile.write('\n')
+	    TeXFile.write(r'\node[below] at (1.1e8,0.,0.) {$\sigma^y$};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};');TeXFile.write('\n')
+	    TeXFile.write(r'\draw (1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
+	    TeXFile.write(r'\draw (-1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[white]  at (0,0.,1.42e8) {};');TeXFile.write('\n')
+	    #TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty,legend style={at={(.225,.59)}}]');TeXFile.write('\n')
             for j,name in enumerate(pgfFiles[i][:len(couleur)]):
 	    	#pdb.set_trace()
 	    	if name[27:27+12]=='CylindreDevP': ##  yield surface
@@ -106,7 +121,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                         TeXFile.write(r'\addplot[gray,dashed,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
                         TeXFile.write('\n')
                     else:
-                        TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right] {$\textbf{'+str(j+1)+'}$};')
+                        TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right,black] {$\textbf{'+str(j+1)+'}$};')
                     TeXFile.write('\n')
             TeXFile.write(r'\end{groupplot}')
                     
