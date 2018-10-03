@@ -30,34 +30,37 @@ Thus, inverting the above equation and introducing it in the constitutive equati
 where $\widetilde{\Cbb}^{ep}$ is referred to as the thin-walled tube tangent modulus.
 The characteristic analysis of the hyperbolic system based on this tangent modulus also leads to loading paths followed across slow and fast waves, involving nevertheless two components of stress only.
 
-%% Procédure d'intégration numérique
-Those equations as well as these of Clifton \cite{Clifton} have been numerically integrated numerically, starting from several points lying on the initial yield surface.
+Those equations as well as these of Clifton \cite{Clifton} have been numerically integrated numerically, starting from several points lying on the initial yield surface. Since the loading functions in \cite{Clifton} are odd functions of $\sigma_{11}$ and $\sigma_{12}$, the study is restricted to the quarter-plane $\sigma_{11}>0,\sigma_{12}>0$.
+
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane \label{eq:tw_fast_stress}}{\input{chapter5/pgfFigures/thinwalledStress_fast}} \qquad
-  \subcaptionbox{Stress path in deviatoric plane\label{eq:tw_fast_dev}}{\input{chapter5/pgfFigures/thinwalledDev_fast}}
+  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane \label{subfig:tw_fast_stress}}{\input{chapter5/pgfFigures/thinwalledStress_fast}} \qquad
+  \subcaptionbox{Stress path in deviatoric plane\label{subfig:tw_fast_dev}}{\input{chapter5/pgfFigures/thinwalledDev_fast}}
   \caption{Stress path followed in a fast simple wave for the thin-walled tube problem. Comparison between the equations of table \ref{tab:simpleWavesEquations} and these of \cite{Clifton}. Stresses in Pa.}
   \label{fig:fast_clifton}
 \end{figure}
 Figure \ref{fig:fast_clifton} shows one stress path resulting from the integration of the right-going fast wave with $\sigma_{11}$ used as a driving parameter.
-Moreover, the loading functions in \cite{Clifton} being odd functions of $\sigma_{11}$ and $\sigma_{12}$, the study restricts to the quarter-plane $\sigma_{11}>0,\sigma_{12}>0$.
 The initial stress state lies on the yield surface at $\sigma_{11}=0$ and the fast wave ODE is discretized by means of backward Euler method, the integration being performed until the stress reaches the value $\sigma_{11}=\sigma^y$.
-The path is respectively depicted in the stress space and in the deviatoric plane in figures \ref{fig:fast_clifton}\subref{eq:tw_fast_stress} and \ref{fig:fast_clifton}\subref{eq:tw_fast_dev}.
+The path is respectively depicted in the stress space and in the deviatoric plane in figures \ref{fig:fast_clifton}\subref{subfig:tw_fast_stress} and \ref{fig:fast_clifton}\subref{subfig:tw_fast_dev}.
+The deviatoric plane projection is obtained by drawing the paths in the principal deviatoric stress space and projecting them onto the plane perpendicular to the hydrostatic axis $s_1+s_2+s-3=0$.
+In this plane, the von-Mises yield surface is a cricle drawn with dashed lines.
 The ODEs derived in section \ref{sec:stress_paths} for plane stress problems thus allow to retrieve the solution originally proposed for thin-walled tubes undergoing combined longitudinal and torsional loading.
 %Furthermore, the direction of the path is given by the arrows in figure \ref{sec:stress_paths}.
 Furthermore, as already observed the path inside fast waves first follow the initial yield surface until the intersection of $\sigma_{11}=0$ axis.
 Then, the loading path is such that $d\sigma_{12}=0$ while $\sigma_{11}$ increase as far as hyperbolicity holds, that is for $c_f < c_2 = \sqrt{\mu/\rho}$ \cite{Clifton}.
 
-%% It is moreover shown that the characteristic speeds decrease along those curves \cite{Clifton}. (on en a fait l'hypothèse)
-%% Tracé dans le plan du déviateur
-
+By applying the same approach with $\sigma_{12}$ as driving parameter, some stress paths through slow waves have been reported in figure \ref{fig:tw_slow}.
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane}{\input{chapter5/pgfFigures/thinwalledStress}} \qquad
-  \subcaptionbox{Stress path in deviatoric plane}{\input{chapter5/pgfFigures/thinwalledDev}}
-  \caption{Stress paths followed in a slow simple wave for the thin-walled tube problem. Comparison between the equations of table \ref{tab:simpleWavesEquations} and these \cite{Clifton}. Stresses in Pa.}
+  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane \label{subfig:tw_slow_stress}}{\input{chapter5/pgfFigures/thinwalledStress}} \qquad
+  \subcaptionbox{Stress path in deviatoric plane \label{subfig:tw_slow_dev}}{\input{chapter5/pgfFigures/thinwalledDev}}
+  \caption{Stress paths followed in a slow simple wave for the thin-walled tube problem. Comparison between the equations of table \ref{tab:simpleWavesEquations} (cross markers) and these of \cite{Clifton} (solid lines). Stresses in Pa.}
+  \label{fig:tw_slow}
 \end{figure}
-
+Starting from several stress values along the initial yield surface, the orthogonality of the loading functions leads to stresses moving away from the elastic convex.
+Since the stress path in a fast wave follow the yield surface, those of a slow wave are perpendicular to the yield surface in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_stress}.
+This is however not the case in the deviatoric plane (\ref{fig:tw_slow}\subref{subfig:tw_slow_dev}).
+Furthermore, we see that the initial condition $\sigma_{11}=0$ leads to a stress path following the direction of pure shear in the deviatoric plane (horizontal dotted line in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_dev}).
 \subsection{Plane stress}
 
 \begin{figure}[h!]

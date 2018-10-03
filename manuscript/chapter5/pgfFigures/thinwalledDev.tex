@@ -36,6 +36,9 @@ cross/.default={2.5pt}}
     \addplot3[Yellow,thick] file {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress6.pgf};
     %% Yield surface
     \addplot3[black,dashed] file {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWCylindreDevPlane.pgf};
+    \newcommand\radius{0.82e8}
+    \addplot3[dotted,very thick] coordinates {(1.05*\radius,-1.05*\radius,0.) (-1.05*\radius,1.05*\radius,0.)};
+
   \end{axis}
 \end{tikzpicture}
 
