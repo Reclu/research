@@ -21,6 +21,17 @@
 \usetikzlibrary{pgfplots.groupplots}
 \usetikzlibrary{external} % avoid the systematic compilation of figures
 \usetikzlibrary{spy,backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+  arrows along my path/.style={
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=between positions 0.03 and 1 step 24pt with {\arrow{Stealth[length=8pt]}},
+   }}}}
 
 \usepackage{pgfplotstable}
 \usepackage[font=normal]{caption}
