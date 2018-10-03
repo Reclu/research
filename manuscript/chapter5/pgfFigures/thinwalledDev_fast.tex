@@ -1,0 +1,27 @@
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={2.5pt}}
+\begin{tikzpicture}[scale=0.9]
+  \begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$s_1 $,
+    ylabel=$s_2 $,zlabel=$s_3$,xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,
+    every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west},
+    every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east},
+    every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north}
+    ]
+    \node[below] at (1.1e8,0.,0.) {$\sigma^y$};
+    \node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};
+    \draw (1.e8,0.,0.) node[cross,rotate=10] {};
+    \draw (-1.e8,0.,0.) node[cross,rotate=10] {};
+    \node[white]  at (0,0.,1.42e8) {};
+    %%
+    \addplot3[Blue,mark=x,only marks,mark repeat=20,very thick,mark size=3pt] file {chapter5/pgfFigures/pgf_thinWalledTubeFastWave/fastDevPlane_Stress.pgf};
+    \addplot3[Red,arrows along my path,thick] file {chapter5/pgfFigures/pgf_thinWalledTubeFastWave/fastDevPlane_Stress.pgf};
+    %% Yield surface
+    \addplot3[black,dashed] file {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWCylindreDevPlane.pgf};
+  \end{axis}
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
