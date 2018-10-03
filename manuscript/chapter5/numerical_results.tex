@@ -1,0 +1,158 @@
+Although some properties of the simple waves have been given in section \ref{sec:stress_paths}, the complexity of the equations prevents the complete characterization of the loading paths followed.
+In order to get additional information about the evolution of the stress states within, the systems of ODEs gathered in table \ref{tab:simpleWavesEquations} are numerically integrated in this section for plane stress and plane strain loadings.
+In particular, the thin-walled tube problem considered by Clifton \cite{Clifton} is first looked at so that the above developments can be validated.
+Next, the plane stress and plane strain cases are treated.
+The identified behaviors should provide some simplification assumptions for the building of a procedure that lead to approximate solutions of the problems.
+
+\subsection{Thin-walled tube problem}
+%% Hypothèses du problème
+Consider the semi-infinite domain in Cartesian coordinate system: $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-\infty,\infty[ \times [-\infty,\infty]$, being acted upon by a traction vector $\vect{T}^d$ at $x_1=0$.
+Only the first two components of $\vect{T}^d$ are non-null so that the stress and strain tensor within the medium are of the form:
+\begin{equation}
+  \tens{\sigma} = \matrice{\sigma_{11} & \sigma_{12} & \\ \sigma_{12} & 0 & \\ & & 0} \quad ;\quad\tens{\eps} = \matrice{\eps_{11} & \eps_{12} & \\ \eps_{12} & \eps_{22}& \\ & & \eps_{33}}
+\end{equation}
+Such a state corresponds to that holding in a hollow cylinder with radius and length much bigger that its thickness, submitted to combined longitudinal and torsional loads.
+Hence the name of thin-walled tube problem. 
+As a particular plane stress case, the set of ODEs along characteristic derived in section \ref{sec:stress_paths} applies with nevertheless, taking into account the vanishing stress component $\sigma_{22}$.
+Indeed, for plane stress one has:
+\begin{equation*}
+  \dot{\sigma}_{22}=\widetilde{C}^{ep}_{22ij} \dot{\eps}_{ij} =0 \quad i,j=\{1,2\}
+\end{equation*}
+where $\widetilde{\Cbb}^{ep}$ is the plane stress tangent modulus \eqref{eq:CP_constitutive}.
+\begin{equation*}
+  \widetilde{C}^{ep}_{2222} \dot{\eps}_{22} = - \widetilde{C}^{ep}_{22ij}\dot{\eps}_{ij} \quad ij=\{11,12,21\}
+\end{equation*}
+Thus, inverting the above equation and introducing it in the constitutive equation, we are left with the following law:
+\begin{equation}
+  \label{eq:ch5_TW_tangent}
+  \dot{\sigma}_{ij}=\widetilde{C}^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{\widetilde{C}^{ep}_{ij22}\widetilde{C}^{ep}_{22kl}}{\widetilde{C}^{ep}_{2222}}\dot{\eps}_{kl}= \widehat{C}^{ep}_{ijkl} \dot{\eps}_{kl}\qquad ij,kl=\{11,12,21\} 
+\end{equation}
+where $\widetilde{\Cbb}^{ep}$ is referred to as the thin-walled tube tangent modulus.
+The characteristic analysis of the hyperbolic system based on this tangent modulus also leads to loading paths followed across slow and fast waves, involving nevertheless two components of stress only.
+
+%% Procédure d'intégration numérique
+Those equations as well as these of Clifton \cite{Clifton} have been numerically integrated numerically, starting from several points lying on the initial yield surface.
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane \label{eq:tw_fast_stress}}{\input{chapter5/pgfFigures/thinwalledStress_fast}} \qquad
+  \subcaptionbox{Stress path in deviatoric plane\label{eq:tw_fast_dev}}{\input{chapter5/pgfFigures/thinwalledDev_fast}}
+  \caption{Stress path followed in a fast simple wave for the thin-walled tube problem. Comparison between the equations of table \ref{tab:simpleWavesEquations} and these of \cite{Clifton}. Stresses in Pa.}
+  \label{fig:fast_clifton}
+\end{figure}
+Figure \ref{fig:fast_clifton} shows one stress path resulting from the integration of the right-going fast wave with $\sigma_{11}$ used as a driving parameter.
+Moreover, the loading functions in \cite{Clifton} being odd functions of $\sigma_{11}$ and $\sigma_{12}$, the study restricts to the quarter-plane $\sigma_{11}>0,\sigma_{12}>0$.
+The initial stress state lies on the yield surface at $\sigma_{11}=0$ and the fast wave ODE is discretized by means of backward Euler method, the integration being performed until the stress reaches the value $\sigma_{11}=\sigma^y$.
+The path is respectively depicted in the stress space and in the deviatoric plane in figures \ref{fig:fast_clifton}\subref{eq:tw_fast_stress} and \ref{fig:fast_clifton}\subref{eq:tw_fast_dev}.
+The ODEs derived in section \ref{sec:stress_paths} for plane stress problems thus allow to retrieve the solution originally proposed for thin-walled tubes undergoing combined longitudinal and torsional loading.
+%Furthermore, the direction of the path is given by the arrows in figure \ref{sec:stress_paths}.
+Furthermore, as already observed the path inside fast waves first follow the initial yield surface until the intersection of $\sigma_{11}=0$ axis.
+Then, the loading path is such that $d\sigma_{12}=0$ while $\sigma_{11}$ increase as far as hyperbolicity holds, that is for $c_f < c_2 = \sqrt{\mu/\rho}$ \cite{Clifton}.
+
+%% It is moreover shown that the characteristic speeds decrease along those curves \cite{Clifton}. (on en a fait l'hypothèse)
+%% Tracé dans le plan du déviateur
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Stress path in $(\sigma_{11},\sigma_{12})$ plane}{\input{chapter5/pgfFigures/thinwalledStress}} \qquad
+  \subcaptionbox{Stress path in deviatoric plane}{\input{chapter5/pgfFigures/thinwalledDev}}
+  \caption{Stress paths followed in a slow simple wave for the thin-walled tube problem. Comparison between the equations of table \ref{tab:simpleWavesEquations} and these \cite{Clifton}. Stresses in Pa.}
+\end{figure}
+
+\subsection{Plane stress}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes}{\input{chapter5/pgfFigures/CPfastWaves0.tex}}
+  \subcaptionbox{Loading path in deviatoric plane}{\input{chapter5/pgfFigures/CPfastWaves_deviator0.tex}}
+  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface. Stresses in Pa}
+  \label{fig:fast_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves1.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator1.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves2.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator2.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/CPslowWaves_deviator3.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+
+\subsection{Plane strain}
+It is assumed that the stress $\sigma_{22}$ in initially zero everywhere in the domain. Several stress paths followed through a fast simple wave and starting from an arbitrary point of the initial yield surface are plotted in figure \ref{fig:fast_path_plane_strains}. Figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_stress} shows the projections in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes while figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_dev} shows the stress path in the principal deviatoric stress components space. Note that the projection in that space is orthogonal to the hydrostatic axis $s_1+s_2+s_3=0$ so that the von-Mises yield surface is a circle. Rather, the von-Mises yield surface in that space is a cylindre which axis is used to look at the stress paths in the deviator plane.
+
+Remark, the characteristic speeds are supposed to decrease along the integral curves. It is not the case for all the stress paths depicted in the figures below. In addition, both slow and fast waves lead to loading paths restricted to the yield surface until the direction of pure shear is reached.
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:fastDP_stress}}{\input{chapter5/pgfFigures/DPfastWaves0.tex}}
+  \subcaptionbox{Loading path in deviatoric plane \label{subfig:fastDP_dev}}{\input{chapter5/pgfFigures/DPfastWaves_deviator0.tex}}
+  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface.}
+  \label{fig:fast_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves1.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator1.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves2.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves3.tex}}
+  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \label{fig:slow_path_plane_strains}
+\end{figure}
+
+
+
+
+
+%%%% REMARQUES A LA VOLEE
+% It is shown in \cite{Ting73} that the plastic celerities only depends on $\tens{\sigma}/\norm{\tens{\sigma}}$ so that they are constant along in ray of the stress space $(\sigma_{11}, \sigma_{22}, \sigma_{12})$. Thus, look at the loading path along integral curves and see the evolution of celerities.
+
+% For now, it is assumed that the characteristic speeds satisfy: $c_1 \geq c_f \geq c_2 \geq c_s \geq 0$ and that the plastic celerities are monotonically decreasing functions of the stress. The latter assumption is in particular satisfied in the quarter-space $(\sigma_{11}\geq 0, \sigma_{22}\geq 0, \sigma_{12}\geq 0)$ for in that case, every elements of the acoustic tensor $\tens{A}^{ep}$ decrease with increasing stress (pas assez général. Vrai en écrouissage isotrope. Dépend de la normale. Vrai pour un état de contrainte donnée mais dépend du trajet de chargement. Peut-être qu'il faut ommettre ça pour le moment).
+
+%This is in particular true if we restrict our attention to the quarter-space $(\sigma_{11} \geq 0, \sigma_{22} \geq 0 , \sigma_{12}\geq 0)$ in which every components of the tensor  
+%Assuming that no shock occurs, the integration of ODEs \eqref{eq:ch5_ODEs} yields simple wave solutions of the problem.
+%This assumption seems to be valid with the convex flux function used in equation \eqref{eq:ch5_conservative} that leads to monotonically decreasing wave speeds with respect to the stress tensor. Furthermore, the medium is homogeneous 
+%% Ne pas regarder genuinely non-linear car ça n'apporte rien. Ca donne juste une indication sur la variation des vitesses le long des courbes intégrales mais pas en fonction de la contrainte.
+
+
+%This is in paticular true when looking at the normal vectors $\vect{n} = \vect{e}_1$ and $\vect{n} = \vect{e}_2$ that yield an acoustic tensor $A_{ij}^{ep}=A_{ij}^{elas} - \beta m_{pi}m_{jq}n_p n_q\deta_{pq}$.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

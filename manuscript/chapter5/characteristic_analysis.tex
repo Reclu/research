@@ -81,12 +81,12 @@ frow which one writes:
 \begin{equation*}
   C^{ep}_{3333} \dot{\eps}_{33} = - C^{ep}_{33ij}\dot{\eps}_{ij} \quad i,j=\{1,2\}
 \end{equation*}
-Hence, the constitutive equations are rewritten by means of a two-dimensional tangent modulus $\tilde{\Cbb}^{ep}$:
+Hence, the constitutive equations are rewritten by means of a two-dimensional tangent modulus $\widetilde{\Cbb}^{ep}$:
 \begin{equation}
   \label{eq:CP_constitutive}
-  \dot{\sigma}_{ij}=C^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\dot{\eps}_{kl}= \tilde{C}^{ep}_{ijkl} \dot{\eps}_{kl}\qquad i,j,k,l=\{1,2\} 
+  \dot{\sigma}_{ij}=C^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\dot{\eps}_{kl}= \widetilde{C}^{ep}_{ijkl} \dot{\eps}_{kl}\qquad i,j,k,l=\{1,2\} 
 \end{equation}
-The characteristic structure of the problem is then given by this of the associated acoustic tensor $\tens{\tilde{A}}^{ep}=\vect{n}\cdot\tilde{\Cbb}^{ep}\cdot \vect{n}$.
+The characteristic structure of the problem is then given by this of the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
 
 The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strain and plane stress cases allows to solve the problem in a two-dimensional setting.
 Then, generically denoting the acoustic tensor by $\tens{A}$, the characteristic structures are given by the eigenvalues:
@@ -120,14 +120,14 @@ The four left eigenfields of the Jacobian matrix moreover read:
     &\left\lbrace \pm c_s ; \quad \Lcb^{c_s^\pm}=\[\: \pm \rho c_s \vect{l}^2 , -\vect{l}^2\otimes \vect{n} \:\]  \right\rbrace
   \end{alignat}
 \end{subequations}
-where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-goind fast waves respectively.
+where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-going fast waves respectively.
 The same goes for $\Lcb^{c_s^-}$ and $\Lcb^{c_s^-}$.
 In addition, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and which left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
 \begin{equation}
   \label{eq:ch5_null_left_eigen}
   {\Lcb^0}^T = \matrice{v_1^0 \\[5.pt] v_2^0 \\[5.pt] \sigma_{11}^0 \\[5.pt] \sigma^0_{22} \\[5.pt] \sigma^0_{12} }= \matrice{0 \\[5.pt] 0 \\[5.pt] \(C_{121i}C_{222j}-C_{221i}C_{122j}\)n_in_j \\[5.pt] \(C_{111i}C_{122j}-C_{112i}C_{121j}\)n_in_j \\[5.pt] \(C_{112i}C_{221j}-C_{111i}C_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
 \end{equation}
-with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\tilde{\Cbb}^{ep}$ for plane stress.
+with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plane stress.
 In particular, $\Cbb$ reduces to the elastic stiffness tensor when no plastic flow occurs so that the characteristic structure involves the speeds of elastic pressure waves $c_1$ and shear waves $c_2$. 
 
 As already seen in section \ref{sec:SVK_solution}, the solutions of non-linear problems may contain shock and/or simple waves.
