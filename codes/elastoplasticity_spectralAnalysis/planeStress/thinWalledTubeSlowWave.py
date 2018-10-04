@@ -218,7 +218,7 @@ lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.08e6
 beta=(6.*mu**2)/(3.*mu+H)
-Niter=500
+Niter=1000
 
 
 # purple to red
@@ -278,12 +278,12 @@ for k,s in enumerate(sig0):
     sigDev=computeDeviatoricPart(np.array([s,tau0[k],0.,0.]))
     sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
     eigSigDev=computeEigenStresses(sigma)
-    sigdev1[k,0]=eigSigDev[0]
-    sigdev2[k,0]=eigSigDev[1]
-    sigdev3[k,0]=eigSigDev[2]
-    sigdev1C[k,0]=eigSigDev[0]
-    sigdev2C[k,0]=eigSigDev[1]
-    sigdev3C[k,0]=eigSigDev[2]
+    # sigdev1[k,0]=eigSigDev[0]
+    # sigdev2[k,0]=eigSigDev[1]
+    # sigdev3[k,0]=eigSigDev[2]
+    # sigdev1C[k,0]=eigSigDev[0]
+    # sigdev2C[k,0]=eigSigDev[1]
+    # sigdev3C[k,0]=eigSigDev[2]
 
     dtau=(tauEnd-tau0[k])/Niter
     TAU[k,:]=np.linspace(tau0[k],tauEnd,Niter)
