@@ -226,7 +226,7 @@ col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 col=['#332288','#88CCEE','#44AA99','#117733','#999933','#DDCC77','#CC6677','#882255','#AA4499']
 
 
-sig0=np.array([0.,0.25*sigy,0.5*sigy,0.75*sigy,0.8*sigy,0.85*sigy,0.9*sigy,0.999999*sigy])
+sig0=np.array([0.,0.25*sigy,0.5*sigy,0.75*sigy,0.85*sigy,0.9*sigy,0.99999*sigy])
 
 tau0=np.sqrt((sigy**2-sig0**2)/3.)
 
@@ -284,7 +284,7 @@ for k,s in enumerate(sig0):
     sigdev1C[k,0]=eigSigDev[0]
     sigdev2C[k,0]=eigSigDev[1]
     sigdev3C[k,0]=eigSigDev[2]
-
+    
     dtau=(tauEnd-tau0[k])/Niter
     TAU[k,:]=np.linspace(tau0[k],tauEnd,Niter)
     SIG[k,0]=s
@@ -329,6 +329,7 @@ for k,s in enumerate(sig0):
         sigdev1C[k,i+1]=eigSigDev[0]
         sigdev2C[k,i+1]=eigSigDev[1]
         sigdev3C[k,i+1]=eigSigDev[2]
+    
     print path
     fileName=path+'slowStressPlane_Stress'+str(k)+'.pgf'
     export2pgfPlotFile(fileName,np.array([TAU[k,0:-1:Niter/100],SIG[k,0:-1:Niter/100]]),'sigma_12','sigma_11')
