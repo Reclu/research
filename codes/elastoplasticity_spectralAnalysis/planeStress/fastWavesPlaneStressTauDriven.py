@@ -231,6 +231,9 @@ def computePsiFastSig(sig11,sigma,sig33,lamb,mu,beta,tangent):
     alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2) - (H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
     alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2) - (H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
     w1=eigens[1][0];w2=eigens[1][1]
+    sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
+    if w1==0. and w2==0.:
+        pdb.set_trace()
     psi12=-w1/w2
     psi22=(w1*alpha12/w2-alpha11)/alpha22
     #pdb.set_trace()
@@ -308,12 +311,12 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
-frames=[Samples-1,Samples-2]
+frames=[Samples-1,Samples-2,10,20]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=0.*sigy#sigM
-Niter=2500
+Niter=5000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -372,10 +375,13 @@ for k in range(len(sig22)):
         elif i==Samples-2:
             tau0=tau[1,k]
             sig0=-sig[1,k]
-
+        else:
+            tau0=tau[i,k]
+            sig0=sig[i,k]
+        
         dtau=(tauM-tau0)/Niter
         
-        TAU[:Niter,s,k]=np.linspace(tau0,tauM,Niter)
+        TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
         
         SIG11[0,s,k]=sig0
         SIG22[0,s,k]=s22
@@ -426,15 +432,16 @@ for k in range(len(sig22)):
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
-
+        
         # ## Second part: integrate by driving with sigma along the axis tau=0
-        # sig0=SIG11[j+1,k]
-        # sigM=1.1*sig0#1.1*np.sign(sig0)*np.max(sig[:,k])
+        # sig0=1.0000*SIG11[j+1,k]
+        # sigM=1.05*sig0#1.1*np.sign(sig0)*np.max(sig[:,k])
         # dsig=(sigM-sig0)/Niter
-        # pdb.set_trace()
         # SIG11[j+1:-1,s,k]=np.linspace(sig0,sigM,Niter)
         # for j in range(2*Niter-1)[Niter-1:]:
 
+        #     if abs(SIG22[j+1,s,k]*2.*mu/(3.*lamb+4.*mu) - SIG11[j+1,s,k])<1.e2:
+        #         pdb.set_trace()
         #     TAU[j+1,s,k],SIG22[j+1,s,k]=integrateODE_sigdriven(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
             
         #     sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],0.])

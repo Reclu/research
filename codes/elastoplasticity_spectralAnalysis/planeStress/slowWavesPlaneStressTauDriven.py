@@ -354,7 +354,7 @@ for k in range(len(sig22)-1)[1:]:
 for k in range(len(sig22)-1)[1:]:
     s22=sig22[k]
     sigM=1.05*np.max(sig[:,k])
-    tauM=1.25*np.max(tau[:,k])
+    tauM=2.*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
     ordonnees=np.zeros((len(frames),Samples))
@@ -554,8 +554,8 @@ for k in range(len(sig22)-1)[1:]:
     files2=pgfFilesList
     names=[[name1,name2],name3]
     pgfFiles=[[files1,files2],deviatorPlots]
-    xlabels=[['$\sigma_{11} (Pa)$','$\sigma_{22}  (Pa)$'],'$s_1 $'] #size=number of .tex files
-    ylabels=[['$\sigma_{12}  (Pa)$','$\sigma_{12}  (Pa)$'],'$s_2 $'] #size=number of .tex files
+    xlabels=[[r'$\sigma_{11} \: (Pa)$',r'$\sigma_{22} \: (Pa)$'],'$s_1 $'] #size=number of .tex files
+    ylabels=[[r'$\sigma_{12} \: (Pa)$',r'$\sigma_{12} \: (Pa)$'],'$s_2 $'] #size=number of .tex files
     zlabels=[['',''],'$s_3$'] #size=number of .tex files
 
     TauMax=1.1*np.max(TAU[0:-1:Niter/100,:,k])

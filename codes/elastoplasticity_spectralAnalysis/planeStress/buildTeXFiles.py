@@ -90,6 +90,12 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\addplot3+['+couleur[j]+',mark='+marker[j]+',mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/'+name+'};\n')
 		    TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
+
+	    TeXFile.write(r'\newcommand\radius{0.82e8}');TeXFile.write('\n')
+    	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};');TeXFile.write('\n')
+    	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};');TeXFile.write('\n')
+    	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};');TeXFile.write('\n')
+
             TeXFile.write(r'\end{axis}')
         else:
             TeXFile=open(nom[0][:11]+nom[0][-5:],"w")
@@ -121,6 +127,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                         TeXFile.write(r'\addplot[gray,dashed,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
                         TeXFile.write('\n')
                     else:
+    			TeXFile.write(r'\addplot[arrows along my path,Red,thick] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'};')
                         TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right,black] {$\textbf{'+str(j+1)+'}$};')
                     TeXFile.write('\n')
             TeXFile.write(r'\end{groupplot}')

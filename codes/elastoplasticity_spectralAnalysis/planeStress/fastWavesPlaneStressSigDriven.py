@@ -84,7 +84,7 @@ def tangentModulus(sigma,lamb,mu,beta,tangent):
     #    |H2211 H2212 H2222|
     # sigma = [sig11 , sig12 , sig22 , sig33 ]
     sigDev = computeDeviatoricPart(sigma)
-    sigdnorm2=np.dot(sigDev,sigDev)
+    sigdnorm2=np.dot(sigDev.T,sigDev)
     BETA=beta/sigdnorm2
     s11=sigDev[0];s12=sigDev[1]/np.sqrt(2.);s22=sigDev[2];s33=sigDev[3]
     
@@ -189,9 +189,15 @@ def computePsiFast(sig11,sigma,sig33,lamb,mu,beta,tangent):
     alpha11= (H[0,1]*n1+H[1,1]*n2)*(H[1,2]*n1+H[2,2]*n2) - (H[0,2]*n1+H[1,2]*n2)*(H[1,1]*n1+H[1,2]*n2)
     alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2) - (H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
     alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2) - (H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
+    w1=eigenf[1][0];w2=eigenf[1][1]
+    psi12S=-w1/w2 # dsig/dtau through a slow wave
     w1=eigens[1][0];w2=eigens[1][1]
+    psi12F=-w1/w2 # dsig/dtau through a fast wave
+    if w1==0. and w2==0.:
+        pdb.set_trace()
     psi12=-w1/w2
     psi22=(w1*alpha12/w2-alpha11)/alpha22
+    #pdb.set_trace()
     return np.array([psi12,psi22])
 
 def computeSpeed(sigma,lamb,mu,beta,tangent):
@@ -214,7 +220,7 @@ def integrateODE(dsig,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dSIG,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dsig,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
         solution = scipy.optimize.fsolve(R,sigma)
         sigma = solution
@@ -278,6 +284,7 @@ tau=np.zeros((Samples,Samples))
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
 frames=[Samples-1,Samples-2]
+frames=[0]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.25*sigy/np.sqrt(1-nu+nu**2)
@@ -288,7 +295,7 @@ SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
 eigsigS=np.zeros((Niter,len(frames),len(sig22),3))
 criterionF=np.zeros((Niter,len(frames),len(sig22)))
-PsiS=np.zeros((Samples,len(sig22)))
+PsiS=np.zeros((2*Samples,len(sig22)))
 
 plast_F=np.zeros((Niter,len(frames),len(sig22)))
 LodeAngle_F=np.zeros((Niter,len(frames),len(sig22)))
@@ -325,7 +332,7 @@ tangent='planeStress'
 ## LOADING PATHS PLOTS
 for k in range(len(sig22)):
     s22=sig22[k]
-    sigM=1.0*np.max(sig[:,k])
+    sigM=1.5*np.max(sig[:,k])
     tauM=1.25*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
@@ -337,11 +344,17 @@ for k in range(len(sig22)):
         #     continue
         if i == Samples-2:
             sigM*=-1
-        else: sigM=1.0*np.max(sig[:,k])
-
-        sig0=sig[-1-i,k]
-        tau0=tau[-1-i,k]
-
+            sig0=sig[-1-i,k]
+            tau0=tau[-1-i,k]
+        elif i==0:
+            sigM=1.5*np.max(sig[:,k])
+            sig0=sig[-1,k]
+            tau0=tau[-1,k]
+        else:
+            sigM=1.5*np.max(sig[:,k])
+            sig0=sig[-1-i,k]
+            tau0=tau[-1-i,k]
+        
         
         dsig=(sigM-sig0)/Niter
         
@@ -370,13 +383,6 @@ for k in range(len(sig22)):
         plast=0.
         epsp33=0.
         for j in range(Niter-1):
-            # rFast.set_f_params(np.array([TAU[0,s,k],SIG22[0,s,k]]),0.,lamb,mu,beta,tangent)
-            # if not rFast.successful():
-            #     print "Integration issues in fast wave path"
-            #     break
-            # rFast.integrate(rFast.t+dsig)
-            
-            # TAU[j+1,s,k],SIG22[j+1,s,k]=rFast.y
             
             TAU[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dsig,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],0.,lamb,mu,beta,tangent)
             
@@ -398,7 +404,7 @@ for k in range(len(sig22)):
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
-            
+        
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'CPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
@@ -410,7 +416,11 @@ for k in range(len(sig22)):
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
         export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
         deviatorPlots.append(fileName)
-        
+
+        #print SIG22[-1,s,k],SIG11[-1,s,k]
+        # plt.plot(np.arange(0,Niter,1),2.*mu/(3.*lamb+4.*mu)*SIG22[:,s,k]-SIG11[:,s,k])
+        # plt.grid()
+        # plt.show()
         
         radius_F[s]=sigy+H*plast
 
