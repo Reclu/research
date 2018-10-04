@@ -27,7 +27,7 @@ sigy = 100.0e6
 H = 100.08e6
 beta=(6.*mu**2)/(3.*mu+H)
 
-        
+print "elastic shear wave celerity", np.sqrt(mu/rho)
 def export2pgfPlot2D(fileName,field1,field2,dico={"xlabel":'x',"ylabel":'y'}):
     #pdb.set_trace()
     dataFile=open(fileName,"w")
@@ -277,6 +277,7 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
+frames=[Samples-1,Samples-2]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.25*sigy/np.sqrt(1-nu+nu**2)
@@ -324,7 +325,7 @@ tangent='planeStress'
 ## LOADING PATHS PLOTS
 for k in range(len(sig22)):
     s22=sig22[k]
-    sigM=1.05*np.max(sig[:,k])
+    sigM=1.0*np.max(sig[:,k])
     tauM=1.25*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
@@ -332,8 +333,12 @@ for k in range(len(sig22)):
     abscisses=np.zeros((len(frames),Samples))
     radius_F=np.zeros(len(frames))
     for s,i in enumerate(frames):
-        if i==0:
-            continue
+        # if i==0:
+        #     continue
+        if i == Samples-2:
+            sigM*=-1
+        else: sigM=1.0*np.max(sig[:,k])
+
         sig0=sig[-1-i,k]
         tau0=tau[-1-i,k]
 
@@ -465,6 +470,15 @@ for k in range(len(sig22)):
     for i in range(len(sig22)):
         ax.plot(sig[:,i],tau[:,i],sig22[i],'k')
 
+    sig[:,k]=np.linspace(sigMin,sigMax,Samples)
+    #sig[:,k]=np.linspace(0.,sigMax,Samples)
+    # Compute shear stress satisfying the criterion given sig11 and sig22
+    for i in range(Samples):
+        s11=sig[i,k]
+        delta=(s11*s22 -s11**2-s22**2 + sigy**2)/3.
+        if np.abs(delta)<10. : delta=np.abs(delta)
+        tauMax=np.sqrt(delta)
+        tau[i,k]=np.sqrt(delta)
     fileName=path+'CPfast_yield0_s11s12_Stress'+str(k)+'.pgf'
     export2pgfPlotFile(fileName,np.array([tau[:,k],sig[:,k]]),'sigma_12','sigma_11')
     yields11_s12.append(fileName)
@@ -529,8 +543,8 @@ for k in range(len(sig22)):
     #buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY)
     names=[[name1,name2],name3]
     pgfFiles=[[files1,files2],deviatorPlots]
-    xlabels=[['$\sigma_{11} (Pa)$','$\sigma_{22}  (Pa)$'],'$s_1 $'] #size=number of .tex files
-    ylabels=[['$\sigma_{12}  (Pa)$','$\sigma_{12}  (Pa)$'],'$s_2 $'] #size=number of .tex files
+    xlabels=[[r'$\sigma_{11} \: (Pa)$',r'$\sigma_{22} \: (Pa)$'],'$s_1 $'] #size=number of .tex files
+    ylabels=[[r'$\sigma_{12} \: (Pa)$',r'$\sigma_{12} \: (Pa)$'],'$s_2 $'] #size=number of .tex files
     zlabels=[['',''],'$s_3$'] #size=number of .tex files
 
     TauMax=1.1*np.max(TAU[0:-1:Niter/100,:,k])

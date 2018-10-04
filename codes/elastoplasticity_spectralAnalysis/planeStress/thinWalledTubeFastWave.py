@@ -151,6 +151,8 @@ def computeCliftonTangentFastSig(sig22,sig12,lamb,mu,h):
     rcs2 = 0.5*(M+N-np.sqrt((M-N)**2+4.*(H*sig12*sig22)**2))/L
     B = (1./mu)+H*(sig12*thet)**2-1./rcf2
     A = H*sig22*sig12
+    # B = (1./E)+H*(sig22*thet)**2-1./rcs2
+    # A = -H*sig22*sig12
     
     return -A/B
 
@@ -229,6 +231,16 @@ def computeEigenStresses(sig):
     s2=0.5*(sig[0,0]+sig[1,1]+np.sqrt(delta))
     return np.array([s1,s2,s3])
 
+def computecf2(sig11,sig12,lamb,mu,beta):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig22=0.;sig33=0.
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,'thinWalled')
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    return eigenf[0]
+
+
 def computeTangentFastSig(sig11,sig12,lamb,mu,beta):
     # sig12 driven
     n1=1.;n2=0.
@@ -240,7 +252,10 @@ def computeTangentFastSig(sig11,sig12,lamb,mu,beta):
     alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2) - (H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
     alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2) - (H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
     w1=eigens[1][0];w2=eigens[1][1]
+    #pdb.set_trace()
     psi11=-w1/w2
+    # print psi11,w1,w2
+    # pdb.set_trace()
     return psi11
 
 def computeTangentFastTau(sig12,sig11,lamb,mu,beta):
@@ -297,7 +312,7 @@ lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.08e6
 beta=(6.*mu**2)/(3.*mu+H)
-Niter=10000
+Niter=5000
 
 ## Initial yield surface
 Samples=100
@@ -323,7 +338,8 @@ parameter="sig"
 
 
 TAU=np.zeros(Niter)    
-SIG=np.zeros(Niter)    
+SIG=np.zeros(Niter)
+rcf2=np.zeros(Niter)
 TAUC=np.zeros(Niter)    
 SIGC=np.zeros(Niter)    
 
@@ -390,7 +406,7 @@ if parameter=='tau':
         sigdev3C[i+1]=eigSigDev[2]
 elif parameter=='sig':
 
-    sig0=0.000*sigy
+    sig0=.0*sigy
     tau0=np.sqrt((-sig0**2+ sigy**2)/3.)
     sigEnd=1.*sigy
 
@@ -411,7 +427,8 @@ elif parameter=='sig':
     
     r = ode(computeTangentFastSig).set_integrator('vode',method='bdf',order=5)
     r.set_initial_value(TAU[0],SIG[0]).set_f_params(lamb,mu,beta)
-
+    rcf2[0]=computecf2(SIG[0],TAU[0],lamb,mu,beta)
+        
     for i in range(Niter-1):
         # r.set_f_params(TAU[i],lamb,mu,beta)
         # r.integrate(r.t+dsig)
@@ -419,7 +436,7 @@ elif parameter=='sig':
         # TAU[i+1]=r.y
     
         TAU[i+1]=integrateODE_sigDriven(dsig,SIG[i],TAU[i],lamb,mu,beta)
-
+        rcf2[i+1]=computecf2(SIG[i+1],TAU[i+1],lamb,mu,beta)
         sigDev=computeDeviatoricPart(np.array([SIG[i+1],TAU[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
         eigSigDev=computeEigenStresses(sigma)
@@ -449,8 +466,9 @@ elif parameter=='sig':
         sigdev2C[i+1]=eigSigDev[1]
         sigdev3C[i+1]=eigSigDev[2]
 
-
-
+plt.plot(np.arange(0,Niter,1),rcf2)
+plt.grid()
+plt.show()
     
 fileName=path+'fastStressPlane_Stress.pgf'
 export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100],SIG[0:-1:Niter/100]]),'sigma_12','sigma_11')

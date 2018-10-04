@@ -6,7 +6,7 @@ ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,
 axis on top,scale only axis,width=0.45\linewidth,ymin=0,ymax=76730954.2949
 , every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel}]
 \nextgroupplot[xlabel=$\sigma_{11} (Pa)$]
-\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_frame0_Stress1.pgf};
+\addplot[mesh,point meta = \thisrow{p},very thick,arrows along my path] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_frame0_Stress1.pgf};
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_frame1_Stress1.pgf};
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_frame2_Stress1.pgf};
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_frame3_Stress1.pgf};
