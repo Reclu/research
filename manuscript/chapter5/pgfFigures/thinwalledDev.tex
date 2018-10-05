@@ -37,7 +37,12 @@ cross/.default={2.5pt}}
     %% Yield surface
     \addplot3[black,dashed] file {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWCylindreDevPlane.pgf};
     \newcommand\radius{0.82e8}
-    \addplot3[dotted,very thick] coordinates {(1.05*\radius,-1.05*\radius,0.) (-1.05*\radius,1.05*\radius,0.)};
+    \addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+    \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+    \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+
+    % \newcommand\radius{0.82e8}
+    % \addplot3[dotted,very thick] coordinates {(1.05*\radius,-1.05*\radius,0.) (-1.05*\radius,1.05*\radius,0.)};
 
   \end{axis}
 \end{tikzpicture}

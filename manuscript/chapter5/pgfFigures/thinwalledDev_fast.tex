@@ -18,6 +18,11 @@ cross/.default={2.5pt}}
     \addplot3[Red,arrows along my path,thick] file {chapter5/pgfFigures/pgf_thinWalledTubeFastWave/fastDevPlane_Stress.pgf};
     %% Yield surface
     \addplot3[black,dashed] file {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWCylindreDevPlane.pgf};
+    \newcommand\radius{0.82e8}
+    \addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+    \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+    \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+
   \end{axis}
 \end{tikzpicture}
 
