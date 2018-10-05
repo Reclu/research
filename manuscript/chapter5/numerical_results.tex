@@ -29,7 +29,7 @@ Thus, inverting the above equation and introducing it in the constitutive equati
   \dot{\sigma}_{ij}=\widetilde{C}^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{\widetilde{C}^{ep}_{ij22}\widetilde{C}^{ep}_{22kl}}{\widetilde{C}^{ep}_{2222}}\dot{\eps}_{kl}= \widehat{C}^{ep}_{ijkl} \dot{\eps}_{kl}\qquad ij,kl=\{11,12,21\} 
 \end{equation}
 where $\widetilde{\Cbb}^{ep}$ is referred to as the thin-walled tube tangent modulus.
-The characteristic analysis of the hyperbolic system based on this tangent modulus also leads to loading paths followed across slow and fast waves, involving nevertheless two components of stress only. For the sake of simplicity, the stress components are denoted by $\sigma_{11}=\sigma$ and $\sigma_{12}=\tau$ while the velocity components reads $v_1=u$ and $v_2=v$ in what follows.
+The characteristic analysis of the hyperbolic system based on this tangent modulus also leads to loading paths followed across slow and fast waves, involving nevertheless two components of stress only. For the sake of simplicity, the stress components are denoted by $\sigma_{11}=\sigma$ and $\sigma_{12}=\tau$ whereas the velocity components reads $v_1=u$ and $v_2=v$ in what follows.
 
 Those equations as well as these of Clifton \cite{Clifton} have been numerically integrated numerically, starting from several points lying on the initial yield surface.
 The loading functions are odd functions of $\sigma$ and $\tau$ \cite{Clifton} so that the loading paths have axial symmetries.
@@ -52,7 +52,7 @@ The ODEs derived in section \ref{sec:stress_paths} for plane stress problems thu
 Furthermore, as observed by Clifton, the path inside fast waves first follows the initial yield surface until the intersection of $\sigma=0$ axis.
 Then, the loading path is such that $d\tau=0$ while $\sigma$ increase as far as hyperbolicity holds, that is for $c_f < c_2 = \sqrt{\mu/\rho} $ \cite{Clifton}.
 
-By applying the same approach with $\tau$ as driving parameter, some stress paths through slow waves have been reported in figure \ref{fig:tw_slow}.
+Adopting the same approach with $\tau$ as driving parameter, some stress paths through slow waves have been reported in figure \ref{fig:tw_slow}.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Stress path in $(\sigma,\tau)$ plane \label{subfig:tw_slow_stress}}{\input{chapter5/pgfFigures/thinwalledStress}} \qquad
@@ -93,7 +93,12 @@ where the asterisk denotes the stationary state of the Riemann problem.
 First, a stress state ($\bar{\sigma},\bar{\tau}$) is assumed to be connected to $\tens{\sigma}^L$ and $\tens{\sigma}^R$ (see figure \ref{fig:lin_et_ballman} for the illustration of the method).
 \begin{figure}[h!]
   \centering
-  \input{chapter5/pgfFigures/iterativeRP} 
+  \begin{tikzpicture}[scale=1.5]
+    \draw[->] (0,0) --(3,0);
+    \draw[->] (0,0) --(0,3);
+    \node[below] at (1,0) {$v^L$};
+  \end{tikzpicture}
+  %\input{chapter5/pgfFigures/iterativeRP} 
   \caption{Schematic representation of the iterative Riemann solver proposed in \cite{Lin_et_Ballman}.}
   \label{fig:lin_et_ballman}
 \end{figure}
@@ -109,53 +114,98 @@ Although the equations of section \ref{sec:stress_paths} have been derived for t
 Indeed, it has been seen that similar properties of the loading paths inside the simple waves hold for both directions.
 
 One path through a fast simple wave is first looked at by assuming an initially free-stress state, brought to the yield surface at the point $ \sigma_{11}=\sigma_{22}=0 $.
-The ODEs of table \ref{tab:simpleWavesEquations} are thus integrated implicitly with $\sigma_{11}$ as driving parameter by means of the backward Euler algorithm, until the shear component $\sigma_{12}$ vanishes.
+The ODEs of table \ref{tab:simpleWavesEquations} are thus integrated implicitly with $\sigma_{12}$ as driving parameter by means of the backward Euler algorithm, until the shear component $\sigma_{12}$ vanishes.
 Two situations are considered for which the stress $\sigma_{11}$ increases or decreases.
 The resulting loading paths are depicted in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_stress} in $(\sigma_{11},\sigma_{12})$ and $(\sigma_{22},\sigma_{12})$ planes, while the projection in the deviatoric plane can be seen in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}.
 In addition, figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_stress} shows the evolution of the characteristic speed associated to the fast wave along the path by means of a colored gradient.
 Thus, it can be seen that for the loadings under consideration, the waves celerities are decreasing functions of the stress so that the simple wave solutions are valid.
-Second, it appears that the paths present axial symmetry, although the property has not been shown mathematically.
-
+Second, it appears that the paths have axial symmetry, although the property has not been shown mathematically.
+At last, analagously to the thin-walled cylinder solution, the stress components follow the initial yield surface, which is obvious in the deviatoric plane (figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}).
+Furthermore, according to the property \eqref{eq:CP_roots} the stress path must be horizontal in the $(\sigma_{11},\sigma_{12})$ and $(\sigma_{22},\sigma_{12})$ planes, once the intersection of with the $\sigma_{11}$-axis is reached.
+As depicted in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}, this point correspond to a direction of pure shear in the deviatoric plane.
+%As a result, the plastic flow becomes significant once a direction of pure shear is reached.
+Nevertheless, the numerical integration of ODEs once the shear stress $\sigma_{12}$ vanishes is not possible owing to an undeterminancy of the loading function $\psi_1^f$ that has not been identified so far.
+%condition \eqref{eq:CP_roots} yields $\psi^f_1 \rightarrow \infty$ and associated numerical issues so that the loading path cannot be integrated further.
+%The integration performed here nevertheless stops once $\sigma_{12}=0$ due to a singularity that has not been identified and leads to an undefined loading function $\psi_1^f$.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_fast_stress}}{\input{chapter5/pgfFigures/CPfastWaves0.tex}}
-  \subcaptionbox{Loading path in deviatoric plane \label{subfig:CP_fast_dev}}{\input{chapter5/pgfFigures/CPfastWaves_deviator0.tex}}
-  \caption{Loading paths through a fast simple wave with initial condition $\sigma_{11}=\sigma_{22}=0$ for different starting points on the initial yield surface.}
+  \subcaptionbox{Loading paths in deviatoric plane \label{subfig:CP_fast_dev}}{\input{chapter5/pgfFigures/CPfastWaves_deviator0.tex}}
+  \caption{Loading paths through a fast simple wave starting from the initial yield surface with initial condition $\sigma_{11}=\sigma_{22}=0$ in directions of decreasing and increasing $\sigma_{11}$.}
   \label{fig:fast_path_plane_stress}
 \end{figure}
 
-
+%% integration jusqu'à \tau=2\sigma^y pour \sigma_{22}=\{\pm 57735026.919,0\}
+We now focus on the stress evolution in slow waves.
+The same procedure is followed for several starting points on the initial yield surface.
+In addition, various initial values are considered for $\sigma_{22}$ since, even for a solid in a free stress state at $t=0$, a fast wave may lead, as seen above, to $\sigma_{22}\neq 0$.
+The loading paths thus obtained for the arbitrary initial values $\sigma_{22}=-5.8\times 10^7 \: Pa$, $\sigma_{22}=0$ and $\sigma_{22}=5.8\times 10^7 \: Pa$, are respecticely depicted in figures \ref{fig:slow_path_plane_stress1}, \ref{fig:slow_path_plane_stress2} and \ref{fig:slow_path_plane_stress3}.
+The projections in the stress space and the deviatoric plane are shown.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_slow_stress1}}{\input{chapter5/pgfFigures/CPslowWaves1.tex}}
-  \subcaptionbox{Deviatoric plane \label{subfig:CP_slow_dev1}}{\input{chapter5/pgfFigures/CPslowWaves_deviator1.tex}}
-  \caption{loading paths through slow simple waves.}
+  \subcaptionbox{Loading paths in deviatoric plane \label{subfig:CP_slow_dev1}}{\input{chapter5/pgfFigures/CPslowWaves_deviator1.tex}}
+  \caption{Stress paths in a slow simple wave for various starting point lying on the initial yield surface for $\sigma_{22}=-5.8\times 10^7 \: Pa$. Projections in the stress space (figure \subref{subfig:CP_slow_stress2})  and deviatoric plane (figure \subref{subfig:CP_slow_dev1}).}
   \label{fig:slow_path_plane_stress1}
 \end{figure}
+The evolution of the characteristic speed associated to the slow wave is also depicted by means of a color gradient.
+Once again the simple wave solution appears to be valid with the considered loading conditions.
+One can see that the stress paths are more complex in those case.
+For instance, for a negative initial value of the stress $\sigma_{22}$ (figure \ref{fig:slow_path_plane_stress1}), the projection in the $(\sigma_{11},\sigma_{12})$ plane does not allow to identify some symmetry.
+Moreover, the behavior is even more complex in the $(\sigma_{22},\sigma_{12})$ plane where first, the variations rather concern $\sigma_{22}$ and next, the slopes of curves roughly change so that the path are almost vertical.
+This sharp change in slopes is also notable in the deviatoric plane in figure \ref{fig:slow_path_plane_stress1}\subref{subfig:CP_slow_dev1}.
+%However, this figure does not help in finding some interpretations. 
 
+On the other hand, the observations made above no longer hold if the initial stress $\sigma_{22}$ is zero.
+Indeed, figure \ref{fig:slow_path_plane_stress2}\subref{subfig:CP_slow_stress2} shows that in this case, $\sigma_{22}$ is identically null.
+Hence, the results in figure \ref{fig:slow_path_plane_stress2} are these of the thin-walled cylinder problem already met in figure \ref{fig:tw_slow}.
+No break in slopes are then visible in stress plane as well as in the deviatoric plane and the paths are symmetrical in the $(\sigma_{11},\sigma_{12})$ plane.
+At last, the values taken by the characteristic speed $c_s$ are much lower for $\sigma_{22}=0$ than for the results depicted in figures \ref{fig:slow_path_plane_stress1} and \ref{fig:slow_path_plane_stress3}.
+Since the magnitudes of the initial stresses $\sigma_{11}$ and $\sigma_{12}$ are quite similar for the three simulations, namely those of figures \ref{fig:slow_path_plane_stress1}, \ref{fig:slow_path_plane_stress2} and \ref{fig:slow_path_plane_stress3}, this indicates that $\sigma_{22}$ has a great influence on the slow wave celerity.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_slow_stress2}}{\input{chapter5/pgfFigures/CPslowWaves2.tex}}
-  \subcaptionbox{Deviatoric plane  \label{subfig:CP_slow_dev2}}{\input{chapter5/pgfFigures/CPslowWaves_deviator2.tex}}
-  \caption{loading paths through slow simple waves.}
+  \subcaptionbox{Loading paths in deviatoric plane  \label{subfig:CP_slow_dev2}}{\input{chapter5/pgfFigures/CPslowWaves_deviator2.tex}}
+  \caption{Stress paths in a slow simple wave for various starting point lying on the initial yield surface for $\sigma_{22}=0$. Projections in the stress space (figure \subref{subfig:CP_slow_stress2}) and deviatoric plane (figure \subref{subfig:CP_slow_dev2}).}
   \label{fig:slow_path_plane_stress2}
 \end{figure}
-Note the amplitude of the charactristic speed in figure \ref{fig:slow_path_plane_stress2}\subref{subfig:CP_slow_dev2}.
 
+The last set of results obtained with the initial data $\sigma_{22}<0$, which can be see in figure \ref{fig:slow_path_plane_stress3}, shows a similar behavior to that of figure \ref{fig:slow_path_plane_stress1}.
+However, the paths now follow a direction opposite to the previous case in the $(\sigma_{22},\sigma_{12})$ plane, since $\sigma_{22}$ decreases rather than increases before the slopes of paths break (see figure \ref{fig:slow_path_plane_stress3}\subref{subfig:CP_slow_stress3}).
+The previous remark is also valid in the deviatoric plane in figure \ref{fig:slow_path_plane_stress3}\subref{subfig:CP_slow_dev3}.
+Indeed, the integral curves first describe clock-wise curved lines until the break in slopes occurs, after which a behavior closed to straight lines is seen.
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_slow_stress2}}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
-  \subcaptionbox{Deviatoric plane  \label{subfig:CP_slow_dev3}}{\input{chapter5/pgfFigures/CPslowWaves_deviator3.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_slow_stress3}}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
+  \subcaptionbox{Loading paths in deviatoric plane  \label{subfig:CP_slow_dev3}}{\input{chapter5/pgfFigures/CPslowWaves_deviator3.tex}}
+  \caption{Stress paths in a slow simple wave for various starting point lying on the initial yield surface for $\sigma_{22}=5.8\times 10^7 \: Pa$. Projections in the stress space (figure \subref{subfig:CP_slow_stress3}) and deviatoric plane (figure \subref{subfig:CP_slow_dev3}).}
   \label{fig:slow_path_plane_stress3}
 \end{figure}
 
+More generally, the loading paths resulting from the integration of ODEs governing the behavior inside simple waves in plane stress can be summarized as follows.
+Whereas the integral curves inside a fast wave first exhibits a phase in which the stress is restricted to the initial yield surface, the passage of a slow wave make the stress leave the elastic convex quasi-instantaneously.
+It is moreover noteworthy that the shear stress component $\sigma_{12}$ undergoes the biggest variation through a slow wave, though the visible combined-stress nature of the corresponding paths.
+In addition, rough change in the slopes of the \textit{integral curves} associated to slow waves occur.
+However, such phenomena may also be observed for fast waves once the shear waves vanishes but have not been highlighted in figure \ref{fig:fast_path_plane_stress} due to numerical issues in integrating a function tending to infinity.
+%Indeed, the theory (equation \eqref{eq:CP_roots}) predicts that this situation would lead to loading paths (locally) perpendicular to the yield surface rather than parallel.
+Furthermore, after the slopes of slow waves integral cruves broke, the paths are straight in both $(\sigma_{22},\sigma_{12})$ and deviatoric planes.
 
-
+\newpage
 \subsection{Plane strain}
-It is assumed that the stress $\sigma_{22}$ in initially zero everywhere in the domain. Several stress paths followed through a fast simple wave and starting from an arbitrary point of the initial yield surface are plotted in figure \ref{fig:fast_path_plane_strains}. Figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_stress} shows the projections in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes while figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_dev} shows the stress path in the principal deviatoric stress components space. Note that the projection in that space is orthogonal to the hydrostatic axis $s_1+s_2+s_3=0$ so that the von-Mises yield surface is a circle. Rather, the von-Mises yield surface in that space is a cylindre which axis is used to look at the stress paths in the deviator plane.
+Assuming that a solid initially at rest undergoes external loads leading to a plane strain case, the above approach is now repeated.
+However, the derivation of the hyperbolic system in a two-dimensional setting lies on the writing of the out-of-plane stress component as a function of plastic strain.
+Hence, the integral curves associated to simple waves are integrated implicitly, along with the plastic flow.
 
-Remark, the characteristic speeds are supposed to decrease along the integral curves. It is not the case for all the stress paths depicted in the figures below. In addition, both slow and fast waves lead to loading paths restricted to the yield surface until the direction of pure shear is reached.
+Since a fast wave propagates faster than a slow one, a material particle is first acted upon by the effects of the former. 
+Thus, figure \ref{fig:fast_path_plane_strains} shows the evolution of stress resulting from integration using $\sigma_{11}$ as driving parameter, for several starting points on the yield surface.
+The evolution of the celerity of fast waves along the integral curve confirms the validity of the simple wave solution.
+Furthermore, the starting are chosen in such a way that a symmetry of the loading path with respect to $\sigma_{11}=0$ and $\sigma_{22}=0$ planes is notable.
+Although the stress path depicted in figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_stress} are rather different to these resulting from a fast wave in plane strain, the behavior in the deviatoric plane is the same as can be seen in figure \ref{fig:fast_path_plane_strains}\subref{subfig:fastDP_dev}. 
+Indeed, the fact that the computed loading paths through a fast wave is parallel to the initial yield surface is obvious when looking at the deviatoric plane.
+More specifically, the von-Mises circle is traced by the integral surface even once the shear component $\sigma_{12}$ is zero (see paths $1$ and $6$ in figure \ref{fig:fast_path_plane_strains})).
+Notice that the integration of loading path in the plane $\sigma_{12}=0$ is possible for plane stress.
+Nevertheless, the results of figure \ref{fig:fast_path_plane_strains} must be taken carefully since the loading paths exhibits a cusp that is not explained so far (see the two external arrows pointing toward axes of pure tensile/compression).
+
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:fastDP_stress}}{\input{chapter5/pgfFigures/DPfastWaves0.tex}}
@@ -164,30 +214,52 @@ Remark, the characteristic speeds are supposed to decrease along the integral cu
   \label{fig:fast_path_plane_strains}
 \end{figure}
 
+%% For slow waves, integrated by driving with a decreasing \tau yields an increasing celerity (it goes for fast waves driven with tau in plane stress)
+On the other hand, the loading paths resulting from the integration of slow waves ODEs are depicted in figures \ref{fig:slow_path_plane_strains}, \ref{fig:slow_path_plane_strains2} and \ref{fig:slow_path_plane_strains3}.
+As for plane stress, even for a solid initially in a free-stress state, the component $\sigma_{22}$ may change due to the passage of a preceding fast waves.
+%Hence, three different initial values are studied separately, that is $\sigma_{22}=-1.3 \times 10^{8} \: Pa$, $\sigma_{22}=0$ and $\sigma_{22}=1.3 \times 10^8 \: Pa$. 
 
+A negative initial value of the transverse stress $\sigma_{22}=-1.3 \times 10^{8} \: Pa$ has been considered for obtaining the curves depicted in figure \ref{fig:slow_path_plane_strains}.
+%% Symmetry of the integral curve
+The projections of integral curves in the ($\sigma_{11},\sigma_{12}$) plane in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_stress1} leads, roughly speaking, to linear by part curves.
+Conversely, the loading paths exhibit more complex shapes in the ($\sigma_{22},\sigma_{12}$) plane.
+Analogously to the plane stress case, the slope of integral curves break at some point and then seem to be vertical.
+On the oher hand, it appears in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_dev1} that as for fast waves, the stress state remains on the initial yield surface until the direction of pure shear is reached.
+The direction then changes so that the loading paths are radial regardless of the initial conditions.
+Hence, there should exist a link between the break in slopes in the ($\sigma_{22},\sigma_{12}$) plane and these of deviatoric plane so that $\sigma_{11}$ and $\sigma_{22}$ no longer vary once the direction of pure shear is reached.
+%% Proposer graphe des contraintes axiales en fonction de l'angle de lode, ça ne correspond pas mais il faut en parler...
+
+The same remarks hold for the two other initial conditions on $\sigma_{22}$, the loading paths of which can be seen in figure \ref{fig:slow_path_plane_strains2}.% and \ref{fig:slow_path_plane_strains3}.
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves1.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator1.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:slowDP_stress1}}{\input{chapter5/pgfFigures/DPslowWaves1.tex}}
+  \subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev1}}{\input{chapter5/pgfFigures/DPslowWaves_deviator1.tex}}
+  \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=-1.3\times 10^{8} \: Pa$ for different starting points on the initial yield surface.}
   \label{fig:slow_path_plane_strains}
 \end{figure}
 
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves2.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
-  \label{fig:slow_path_plane_strains}
+  \subcaptionbox{}{\input{chapter5/pgfFigures/LodeAngle_s11.tex}}
+  \subcaptionbox{}{\input{chapter5/pgfFigures/LodeAngle_s22.tex}}
+  \caption{Lode Angle}
+  \label{fig:lode}
 \end{figure}
 
 
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Slice ($\sigma_{11},\sigma_{12}$) plane}{\input{chapter5/pgfFigures/DPslowWaves3.tex}}
-  \subcaptionbox{Deviatoric plane}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
-  \caption{loading paths through slow simple waves. Stresses in Pa (if required)}
-  \label{fig:slow_path_plane_strains}
+  \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=0$ \label{subfig:slowDP2}}{
+    \input{chapter5/pgfFigures/DPslowWaves2.tex} \newline
+    \input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+  %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev2}}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+  \newline
+  \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=1.3 \times 10^{8} \: Pa$ \label{subfig:slowDP3}}{
+    \input{chapter5/pgfFigures/DPslowWaves3.tex}\newline
+    \input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+  %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev3}}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+  \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface.}
+  \label{fig:slow_path_plane_strains2}
 \end{figure}
 
 
