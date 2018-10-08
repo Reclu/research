@@ -1,0 +1,33 @@
+\begin{tikzpicture}[scale=0.9]
+\begin{axis}[ymajorgrids=true,xmajorgrids=true,xlabel=$\sigma_{12} \: (Pa)$%,ymin=0,ymax=126473070.316
+,ylabel=$\sigma_{22} (Pa)$,legend pos=outer north east]
+% \begin{groupplot}[group style={group size=1 by 1,
+% ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+% xticklabels at=edge bottom,xlabels at=edge bottom},
+% ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,
+% axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax=126473070.316
+% , every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis,legend style={at={(1.97,-.2)},legend columns=4}]
+% \nextgroupplot[xlabel=$\sigma_{11} (Pa)$]
+\addplot[Red,very thick,mark=x,mark repeat=5,mark size=3pt,only marks] table[x=sigma_12,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} node[above,black] {$\textbf{1}$};
+\addplot[Blue,very thick,mark=+,mark repeat=5,mark size=3pt,only marks] table[x=sigma_12,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} node[above,black] {$\textbf{2}$};
+\addplot[Orange,very thick,mark=*,mark repeat=5,mark size=2pt,only marks] table[x=sigma_12,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} node[above,black] {$\textbf{3}$};
+\addplot[Purple,very thick,mark=asterisk,mark repeat=5,mark size=3pt,only marks] table[x=sigma_12,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} node[above,black] {$\textbf{4}$};
+\addlegendentry{loading path 1}
+\addlegendentry{loading path 2}
+\addlegendentry{loading path 3}
+\addlegendentry{loading path 4}
+%\nextgroupplot[xlabel=$\sigma \: (Pa)$]
+\addplot[Red,very thick,dashed] table[x=sigma_12,y=maxCrit] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} ;%node[above,black] {$\textbf{1}$};
+\addplot[Blue,very thick,dashed] table[x=sigma_12,y=maxCrit] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} ;%node[above,black] {$\textbf{2}$};
+\addplot[Orange,very thick,dashed] table[x=sigma_12,y=maxCrit] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} ;%node[above,black] {$\textbf{3}$};
+\addplot[Purple,very thick,dashed] table[x=sigma_12,y=maxCrit] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} ;%node[above,black] {$\textbf{4}$};
+\addlegendentry{maximum criterion 1}
+\addlegendentry{maximum criterion 2}
+\addlegendentry{maximum criterion 3}
+\addlegendentry{maximum criterion 4}
+\end{axis}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

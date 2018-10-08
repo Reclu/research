@@ -1,0 +1,28 @@
+\begin{tikzpicture}[scale=0.9]
+\begin{groupplot}[group style={group size=2 by 1,
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{22} \: (Pa)$,
+axis on top,scale only axis,width=0.4\linewidth%,ymin=0,ymax=126473070.316
+, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis,legend style={at={(1.97,-.2)},legend columns=4}]
+\nextgroupplot[xlabel=$s_3 (Pa)$,title={(a)}]
+\addplot[Red,very thick] table[x=s3,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} ;
+\addplot[Blue,very thick] table[x=s3,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} ;
+\addplot[Orange,very thick] table[x=s3,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} ;
+\addplot[Purple,very thick] table[x=s3,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} ;
+\addlegendentry{loading path 1}
+\addlegendentry{loading path 2}
+\addlegendentry{loading path 3}
+\addlegendentry{loading path 4}
+
+\nextgroupplot[xlabel=$\sigma \: (Pa)$,title={(b)}]
+\addplot[Red,very thick] table[x=hydro,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} ;
+\addplot[Blue,very thick] table[x=hydro,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} ;
+\addplot[Orange,very thick] table[x=hydro,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} ;
+\addplot[Purple,very thick] table[x=hydro,y=sigma_22] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} ;
+\end{groupplot}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
