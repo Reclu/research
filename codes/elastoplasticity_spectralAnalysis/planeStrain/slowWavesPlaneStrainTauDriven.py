@@ -28,10 +28,8 @@ nu = 0.3
 mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
-sigy = 100.0e6        
+sigy = 400.0e6        
 H = 100.0e6
-# sigy = 400.0e6        
-# H = 10.0e9
 beta=(6.*mu**2)/(3.*mu+H)
 
 def export2DTeXFile(fileName,xFields,xlabel,ylabel1,ylabel2,yfields1,yfields2,*kwargs):
@@ -428,8 +426,8 @@ sig22=np.linspace(-sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.))
 
 #sig22=[0.]
 Samples*=10
-sig=np.zeros((Samples,Samples))
-tau=np.zeros((Samples,Samples))
+sig=np.zeros((Samples,Samples/10))
+tau=np.zeros((Samples,Samples/10))
 
 frames=[5,20,30,40]
 #frames=[10,15,20,25,30,35]
@@ -445,6 +443,7 @@ TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
 SIG33=np.zeros((Niter,len(frames),len(sig22)))
+maxCrit=np.zeros((Niter,len(frames),len(sig22)))
 eigsigS=np.zeros((Niter,len(frames),len(sig22),3))
 eigsigDevS=np.zeros((Niter,len(frames),len(sig22),3))
 criterionS=np.zeros((Niter,len(frames),len(sig22)))
@@ -477,6 +476,7 @@ for k in range(len(sig22)):
         if np.abs(delta)<10. : delta=np.abs(delta)
         tau[i,k]=np.sqrt(delta)
         if np.isnan(tau[i,k]): print "Nan ",delta,s11,s22,i,k
+
 
 tangent='planeStrain'
 ## LOADING PATHS PLOTS
@@ -514,7 +514,9 @@ for k in range(len(sig22)-1)[1:]:
         sig33=nu*(SIG11[0,s,k]+SIG22[0,s,k])
         SIG33[0,s,k]=sig33
         
-        
+        sig0=SIG11[0,s,k];
+        maxCrit[0,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
+
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
         rcs2[0,s,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
                     
@@ -532,7 +534,9 @@ for k in range(len(sig22)-1)[1:]:
         epsp33=0.
         for j in range(Niter-1):
             SIG11[j+1,s,k],SIG22[j+1,s,k],epsp33,SIG33[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
-            
+            sig0=SIG11[j+1,s,k];
+            maxCrit[j+1,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.)+E*epsp33*(1.-2.*nu))/(nu-nu**2-1.)
+                
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
             
             sig33=SIG33[j+1,s,k]
@@ -580,7 +584,7 @@ for k in range(len(sig22)-1)[1:]:
         #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
         print np.min(LodeAngle_S[0:-1:Niter/100,s,k]),np.max(LodeAngle_S[0:-1:Niter/100,s,k])
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k],eigsigS[0:-1:Niter/100,0,k,2]+eigsigS[0:-1:Niter/100,0,k,1]+eigsigS[0:-1:Niter/100,0,k,0]]),'sigma_12','sigma_11','sigma_22','p','Theta','hydro')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k],eigsigS[0:-1:Niter/100,s,k,2]+eigsigS[0:-1:Niter/100,s,k,1]+eigsigS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,2],maxCrit[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta','hydro','s3','maxCrit')
         pgfFilesList.append(fileName)
         fileName=path+'DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -593,6 +597,17 @@ for k in range(len(sig22)-1)[1:]:
             export2pgfPlot3D(fileName,eigsigDevS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,1],eigsigDevS[0:-1:Niter/100,s,k,2],dico)
         """
         radius_S[s]=sigy+H*plast
+    plt.plot(TAU[:,0,k],maxCrit[:,0,k],'r')
+    plt.plot(TAU[:,0,k],SIG22[:,0,k],'r--')
+    plt.plot(TAU[:,1,k],maxCrit[:,1,k],'g')
+    plt.plot(TAU[:,1,k],SIG22[:,1,k],'g--')
+    plt.plot(TAU[:,2,k],maxCrit[:,2,k],'b')
+    plt.plot(TAU[:,2,k],SIG22[:,2,k],'b--')
+    plt.plot(TAU[:,3,k],maxCrit[:,3,k],'k')
+    plt.plot(TAU[:,3,k],SIG22[:,3,k],'k--')
+    plt.grid()
+    plt.show()
+        
     if k==1 or k==2 or k==3:
         ran=Niter
         plt.plot(eigsigDevS[0:ran,0,k,2],SIG22[0:ran,0,k],'r')
@@ -602,7 +617,10 @@ for k in range(len(sig22)-1)[1:]:
         plt.grid()
         plt.show()
         #pdb.set_trace()
-        
+
+        legend=['loading path 1','loading path 2','loading path 3','loading path 4']
+        #export2DTeXFile('maxCrit.tex.tex',np.array([LodeAngle_S[0:-1:Niter/100,0,k]]),r'$\Theta ()$',r'$\sigma_{11} \: (Pa)$','',np.array([SIG11[0:-1:Niter/100,0,k]]),legend)
+
         print "export Lode Angle"
         ## export Graph of Lode Angle 0:-1:Niter/100
         legend=['loading path 1','loading path 2','loading path 3','loading path 4']
@@ -726,7 +744,8 @@ for k in range(len(sig22)-1)[1:]:
             ax2.plot(SIG22[:,p,k],TAU[:,p,k],color=col[p],lw=2.5)
             ax4.semilogy(LodeAngle_S[:,p,k],plast_S[:,p,k],color=col[p],lw=2.5)
             #ax4.plot(TAU[:,p,k],plast_S[:,p,k],color=col[p],lw=2.5)
-            ax3.plot(eigsigDevS[:,p,k,0],eigsigDevS[:,p,k,1],eigsigDevS[:,p,k,2],color=col[p],lw=2.5)
+            #ax3.plot(eigsigDevS[:,p,k,0],eigsigDevS[:,p,k,1],eigsigDevS[:,p,k,2],color=col[p],lw=2.5)
+            ax3.plot(eigsigS[:,p,k,0],eigsigS[:,p,k,1],eigsigS[:,p,k,2],color=col[p],lw=2.5)
         ax3.plot([-sigy,sigy],[0.,0.],[0.,0.],color="k",linestyle="--",lw=1.)
         ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
         ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
@@ -765,3 +784,42 @@ for k in range(len(sig22)-1)[1:]:
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
     pgfFilesList=[];yields11_s12=[];deviatorPlots=[];yields22_s12=[]
+
+Samples=50#
+# Sample constant stress component sig22
+sig22=np.linspace(0.,sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
+sig22=np.linspace(-sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
+
+#sig22=[0.]
+sig=np.zeros((Samples,Samples))
+tau=np.zeros((Samples,Samples))
+
+fig = plt.figure(figsize=(10,10))
+ax=plt.subplot2grid((1,1),(0,0),projection='3d')
+ax.grid()
+
+for k in range(len(sig22)):
+    s22=sig22[k]
+    
+    Delta=(4.*(nu**2-nu+1.)*sigy**2- 3.*(4.*nu**2-4.*nu+1.)*s22**2)
+    sigMax=(s22*(1.+2.*nu-2.*nu**2)+np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+    sigMin=(s22*(1.+2.*nu-2.*nu**2)-np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+    
+    # Sample stress component sig11
+    sig[:,k]=np.linspace(sigMin,sigMax,Samples)
+    
+    # Compute shear stress satisfying the criterion given sig11 and sig22
+    for i in range(Samples):
+        s11=sig[i,k]
+        delta=((nu-nu**2)*(s11+s22)**2 -s11**2-s22**2+s11*s22 + sigy**2)/3.
+        if np.abs(delta)<10. : delta=np.abs(delta)
+        tau[i,k]=np.sqrt(delta)
+        if np.isnan(tau[i,k]): print "Nan ",delta,s11,s22,i,k
+    ax.plot(sig[:,k],tau[:,k],s22,'k')
+    ax.plot(sig[:,k],-tau[:,k],s22,'k')
+for i in range(SIG22.shape[2])[1:-1]:
+    for k in range(SIG22.shape[1]):
+        ax.plot(SIG11[:,k,i],TAU[:,k,i],SIG22[:,k,i],'r')
+
+plt.show()
+
