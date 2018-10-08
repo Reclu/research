@@ -235,10 +235,34 @@ def computeSpeed(sigma,lamb,mu,beta,tangent):
     eigenf,eigens=acousticEigenStructure(C)
     return eigenf[0]
 
+def loadingPath(dtau,sigma,sigman,E,nu,h,lamb,mu,beta,tangent):
+    # sig11 driven
+    n1=1.;n2=0.
+    # Stress part
+    sig11=sigman[0];sig12=sigman[1];sig22=sigman[2];sig33=sigman[3]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    alpha11= (H[0,1]*n1+H[1,1]*n2)*(H[1,2]*n1+H[2,2]*n2)-(H[0,2]*n1+H[1,2]*n2)*(H[1,1]*n1+H[1,2]*n2)
+    alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2)-(H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
+    alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2)-(H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
+    w1=eigens[1][0];w2=eigens[1][1]
+    psi11=-w2/w1
+    psi22=(w2*alpha11/w1-alpha12)/alpha22
+    ## Plastic strain part
+    sigDev=computeDeviatoricPart(np.array([sigma[0],sigma[1],sigma[2],sigma[3]]))
+    sigDevn=computeDeviatoricPart(np.array([sigman[0],sigman[1],sigman[2],sigman[3]]))
+    norm=np.sqrt(np.dot(sigDevn,sigDevn))
+    flow=sigDevn/norm
+    dSig=sigman-sigma
+    dSig[1]*=np.sqrt(2.)
+    dp=(1./h)*np.sqrt(3./2.)*np.dot(flow,dSig)
+    depsp33=np.sqrt(3./2.)*flow[3]*dp
+    # return dtau,dsig22,dsig33,depsp33
+    return np.array([psi11*dtau,psi22*dtau,nu*(psi11+psi22)*dtau-E*depsp33,depsp33])
 
-def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
-    sigma=np.array([sig0,sig22_0])
-    # computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent)
+def integrateODE(dtau,sig0,tau0,sig22_0,sig33,epsp33,nu,E,H,lamb,mu,beta,tangent):
+    sigma=np.array([sig0,sig22_0,sig33,epsp33])
     # subdivision of time step
     sub_steps = 1
     dTAU = dtau/sub_steps
@@ -246,11 +270,13 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
     for i in range(sub_steps):
         ## Nonlinear solution procedure
         ## R = s^{n+1} - s^{n} - RHS
-        R=lambda x: x - sigma + dTAU*(theta*computePsiFast(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
+        R=lambda x: x - sigma - theta*loadingPath(dTAU,np.array([sigma[0],tau0,sigma[1],sigma[2]]),np.array([x[0],tau0+dTAU,x[1],x[2]]),E,nu,H,lamb,mu,beta,tangent)
+        #R=lambda x: x - sigma + dTAU*(theta*computePsiFast(tau0,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        #solution = scipy.optimize.fsolve(R,sigma)
+        solution = scipy.optimize.root(R,np.array([sigma[0],sigma[1],sigma[2],sigma[3]])).x
         sigma = solution
-    return solution
+    return solution[0],solution[1],solution[2],solution[3]
 
 def computeLodeAngle(sig11,sig22,sig12,sig33):
     # deviatoric stress
@@ -316,7 +342,7 @@ Samples=5
 # Sample constant stress component sig22
 sig22=np.linspace(0.,sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
 #sig22=np.linspace(-sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),sigy*np.sqrt(4*(nu**2-nu+1.))/np.sqrt(3.*(4.*nu**2-4.*nu+1.)),Samples)
-
+sig22=[0.]
 
 Samples*=10
 sig=np.zeros((Samples,Samples))
@@ -324,14 +350,14 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,20,48]
 #frames=[10,15,20,25,30,35]
-frames=[1,2,3,4,5]
+frames=[2]
 col=["r","g","b","y","c","m","k","p"]
 # purple to red
 col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=sigM
-Niter=500
+Niter=50000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -364,6 +390,7 @@ for k in range(len(sig22)):
     
     # Sample stress component sig11
     sig[:,k]=np.linspace(sigMin,sigMax,Samples)
+    sig[:,k]=np.linspace(0.,sigMax,Samples)
 
     # Compute shear stress satisfying the criterion given sig11 and sig22
     for i in range(Samples):
@@ -377,11 +404,13 @@ for k in range(len(sig22)):
         
 tangent='planeStrain'
 ## LOADING PATHS PLOTS
-for k in range(len(sig22)-1)[1:]:
+#for k in range(len(sig22)-1)[1:]:
+for k in range(len(sig22)):
     #for k in range(len(sig22)):
     s22=sig22[k]
+    print "Initial yield surface"
     sigM=1.05*np.max(sig[:,k])
-    tauM=1.05*np.max(tau[:,k])
+    tauM=0.#1.05*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psif from yield surface to an arbitrary shear stress level
     approx=np.zeros((len(frames),2))
     ordonnees=np.zeros((len(frames),Samples))
@@ -389,10 +418,13 @@ for k in range(len(sig22)-1)[1:]:
     for s,i in enumerate(frames):
         if i==0:
             continue
-        sig0=sig[-1-i,k]
-        tau0=tau[-1-i,k]
-
-        
+        sig0=sig[i,k]
+        tau0=tau[i,k]
+        plt.plot(sig[:,k],tau[:,k],'k')
+        plt.plot([0,sig0],[0,tau0],'ro')
+        plt.grid()
+        plt.show()
+    
         dtau=(tauM-tau0)/Niter
         
         TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
@@ -428,28 +460,15 @@ for k in range(len(sig22)-1)[1:]:
             # rFast.integrate(rFast.t+dtau)
         
             # SIG11[j+1,s,k],SIG22[j+1,s,k]=rFast.y
-            SIG11[j+1,s,k],SIG22[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],lamb,mu,beta,tangent)
+            SIG11[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k],epsp33=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
 
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
+            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],SIG33[j+1,s,k]])
             # Plastic update
-            sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],0.])
-            sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-            criterion=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
-            if criterion>0.:
-                res=lambda x:computePlasticResidual(epsp33,sigma,x,sigman,E,H,nu)
-            
-                sol=scipy.optimize.root(res,epsp33,method='hybr',options={'xtol':1.e-24}).x
-                epsp33=sol[0]
-                sig33=nu*(SIG11[j+1,s,k]+SIG22[j+1,s,k])-E*epsp33
-                sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
-                plast+=updateEquivalentPlasticStrain(sigma,sigman,H)
-            else:
-                sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
-                epsp33+=0.
-                plast+=plast
-            criterion=lambda y:computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*y)
-            #plast=scipy.optimize.root(criterion,plast,method='hybr',options={'xtol':1.e-24}).x[0]
-            SIG33[j+1,s,k]=sig33
+            dp=updateEquivalentPlasticStrain(sigma,sigman,H)
+            plast+=dp
+            sig33=SIG33[j+1,s,k]
+
             criterionF[j+1,s,k]=computeCriterion(SIG11[j+1,s,k],SIG22[j+1,s,k],TAU[j+1,s,k],sig33,sigy+H*plast)
             plast_F[j+1,s,k]=plast
             Epsp33[j+1,s,k]=epsp33
@@ -463,7 +482,10 @@ for k in range(len(sig22)-1)[1:]:
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
             rcf2[j+1,s,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
-            
+        #plt.plot(TAU[:,s,k],SIG11[:,s,k])
+        plt.plot(np.arange(0,Niter,1),LodeAngle_F[:,s,k])
+        plt.grid()
+        plt.show()
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'DPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         pgfFilesList.append(fileName)
