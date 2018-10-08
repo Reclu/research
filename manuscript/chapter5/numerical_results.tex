@@ -228,7 +228,7 @@ Conversely, the loading paths exhibit more complex shapes in the ($\sigma_{22},\
 Analogously to the plane stress case, the slope of integral curves break at some point and then seems to be vertical in that plane.
 On the other hand, it appears in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_dev1} that as for fast waves, the stress state remains on the initial yield surface until the direction of pure shear is reached.
 The direction next changes so that the loading paths are radial regardless of the initial conditions considered.
-Parler des courbes en pointillés ?
+
 
 
 %% Trajectoire hors plan du déviateur donc on n'est pas purement déviatoric s12-s3 et s12-p pour voir ça
@@ -253,12 +253,28 @@ Parler des courbes en pointillés ?
   \caption{Loading paths through slow simple waves for different starting points on the initial yield surface.}
   \label{fig:slow_path_plane_strains}
 \end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:slowDP_stress1}}{\input{chapter5/pgfFigures/DPslowWaves3.tex}}
+%   \subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev1}}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+%   \caption{Loading paths through slow simple waves for different starting points on the initial yield surface.}
+%   \label{fig:slow_path_plane_strains}
+% \end{figure}
 
-Nevertheless, it can be seen in figure \ref{fig:pureShear}\subref{subfig:pureShear1} that the pure shear state in deviatoric plan is achieved before the stress $\sigma_{22}$ stops varying.
-Indeed, the starting points of every loading paths correspond to the intersection of curves with the $s_3$-axis in such a way that a first phase occurs during which $\sigma_{22}$ along with $s_3$ vary until the third eigenvalue of the stress deviator is zero.
-The second phase then consist in a variation of $\sigma_{12}$ whereas $s_3$ remains null.
-Figure \ref{fig:pureShear}\subref{subfig:pureShear2} shows on the other hand the evolution of the hydrostatic pressure with respect to the stress $\sigma_{22}$. 
-The curves in this figure do not admit no vertical nor horizontal asymptots so that once the hydrostatic pressure stops varying, the stress $\sigma_{22}$ is also constant.
+As a matter of fact, the pure shear state in deviatoric plane is achieved before the stress $\sigma_{22}$ stops varying so that the inflextion points is stress space or in the deviatoric plane do not correspond to the same stress state.
+Indeed, it can be seen in figure \ref{fig:pureShear}\subref{subfig:pureShear1} that the integral curve in $(s_3,\sigma_{22})$ plane break down in a first step in which both stresses vary, followed by one in which $s_3$ only is constant and equal to zero.
+%Nevertheless, it can be seen in figure \ref{fig:pureShear}\subref{subfig:pureShear1} that the pure shear state in deviatoric plane is achieved before the stress $\sigma_{22}$ stops varying.
+%Indeed, the starting points of every loading paths correspond to the intersection of curves with the $s_3$-axis in such a way that a first phase occurs during which $\sigma_{22}$ along with $s_3$ vary until the third eigenvalue of the stress deviator is zero.
+%The second phase then consist in a variation of $\sigma_{12}$ whereas $s_3$ remains null.
+%% evolution de la pression hydrostatique
+The loading paths are, however, not restricted to the deviatoric plane as can be seen in figure \ref{fig:pureShear}\subref{subfig:pureShear2}, which shows the evolution of the hydrostatic pressure $\sigma = \tr(\tens{\sigma})$ with respect to the stress $\sigma_{22}$.
+Since these curves do not admit vertical or horizontal asymptots, both stress variables are simultaneously constant.
+Hence, the stress paths in deviatoric plane are first restricted to the yield surface in the plane defined by the trace of the initial Cauchy stress tensor.
+Next, once the direction of pure shear is reached, the integral curve have a non-zero component on the hydrostatic axis (il faut le montrer graphiquement que $\sigma$ constante jusqu'à ce que $s_3$ soit nul) until some undetermined limit is achieved.
+Finally
+%Figure \ref{fig:pureShear}\subref{subfig:pureShear2} shows on the other hand the evolution of the hydrostatic pressure $\sigma = \tr(\tens{\sigma})$ with respect to the stress $\sigma_{22}$. 
+
+%The curves in this figure do not admit no vertical nor horizontal asymptots so that once the hydrostatic pressure stops varying, the stress $\sigma_{22}$ is also constant.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption \label{subfig:pureShear1}}
@@ -268,8 +284,11 @@ The curves in this figure do not admit no vertical nor horizontal asymptots so t
   \label{fig:pureShear}
 \end{figure}
 
-
-Talk  about material parameters !
+Questions:
+\begin{itemize}
+\item Est-ce étonnant d'avoir une variation sur l'axe hydrostatique ?
+\item Comment formuler la construction des lignes pointillées verticales
+\end{itemize}
 % \begin{figure}[h!]
 %   \centering
 %   \input{chapter5/pgfFigures/LodeAngle}
