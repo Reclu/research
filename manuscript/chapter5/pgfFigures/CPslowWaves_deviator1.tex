@@ -15,7 +15,7 @@
 \addplot3+[Purple,mark=x,mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame3_Stress1.pgf};
 \addlegendentry{loading path 4}
 \addplot3+[gray,dashed,thin,no markers] file {chapter5/pgfFigures/pgf_slowWavesPlaneStress/CPCylindreDevPlane.pgf};\addlegendentry{initial yield surface}
-\newcommand\radius{0.82e8}
+\newcommand\radius{1.*0.82e8}
 \addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
 \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
 \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};

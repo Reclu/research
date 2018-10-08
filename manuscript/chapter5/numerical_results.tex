@@ -3,7 +3,8 @@ In order to get additional information about the evolution of the stress states 
 In particular, the thin-walled tube problem considered by Clifton \cite{Clifton} is first looked at so that the above developments can be validated.
 Next, the plane stress and plane strain cases are treated.
 The identified behaviors should provide some simplification assumptions for the building of a procedure that lead to approximate solutions of the problems.
-
+The values of the elastic properties considered here are those use in the previous chapter (see table \ref{tab:material}).
+On the other hand, the tensile yield stress $\sigma^y=10\times{8} \: Pa$ and the hardening modulus $C=10\times 10^8 \: Pa$ are set here arbitrarily.
 
 \subsection{Thin-walled tube problem}
 %% Hypothèses du problème
@@ -93,12 +94,12 @@ where the asterisk denotes the stationary state of the Riemann problem.
 First, a stress state ($\bar{\sigma},\bar{\tau}$) is assumed to be connected to $\tens{\sigma}^L$ and $\tens{\sigma}^R$ (see figure \ref{fig:lin_et_ballman} for the illustration of the method).
 \begin{figure}[h!]
   \centering
-  \begin{tikzpicture}[scale=1.5]
-    \draw[->] (0,0) --(3,0);
-    \draw[->] (0,0) --(0,3);
-    \node[below] at (1,0) {$v^L$};
-  \end{tikzpicture}
-  %\input{chapter5/pgfFigures/iterativeRP} 
+  % \begin{tikzpicture}[scale=1.5]
+  %   \draw[->] (0,0) --(3,0);
+  %   \draw[->] (0,0) --(0,3);
+  %   \node[below] at (1,0) {$v^L$};
+  % \end{tikzpicture}
+  \input{chapter5/pgfFigures/iterativeRP} 
   \caption{Schematic representation of the iterative Riemann solver proposed in \cite{Lin_et_Ballman}.}
   \label{fig:lin_et_ballman}
 \end{figure}
@@ -267,6 +268,8 @@ The curves in this figure do not admit no vertical nor horizontal asymptots so t
   \label{fig:pureShear}
 \end{figure}
 
+
+Talk  about material parameters !
 % \begin{figure}[h!]
 %   \centering
 %   \input{chapter5/pgfFigures/LodeAngle}
