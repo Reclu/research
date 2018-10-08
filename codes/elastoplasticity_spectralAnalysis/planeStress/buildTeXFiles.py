@@ -91,7 +91,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
 		    TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
 
-	    TeXFile.write(r'\newcommand\radius{0.82e8}');TeXFile.write('\n')
+	    TeXFile.write(r'\newcommand\radius{1.*0.82e8}');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};');TeXFile.write('\n')
@@ -111,6 +111,8 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
             ## Red to yellow color map
             #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={ry}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(255,0,0)}]');TeXFile.write('\n')
             ## Green to yellow color map
+            ## Viridis
+	    TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]');TeXFile.write('\n')
             #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={gy}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(0,128,0)}]');TeXFile.write('\n')
             ## Viridis
 	    TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]');TeXFile.write('\n')

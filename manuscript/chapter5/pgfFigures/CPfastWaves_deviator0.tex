@@ -6,14 +6,12 @@
 \draw (1.e8,0.,0.) node[cross,rotate=10] {};
 \draw (-1.e8,0.,0.) node[cross,rotate=10] {};
 \node[white]  at (0,0.,1.42e8) {};
-%\addplot3+[Red,mark=star,mark repeat=20,mark size=3pt,very thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame0_Stress0.pgf};
-\addplot3[Orange,very thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame0_Stress0.pgf};
+\addplot3+[Red,mark=star,mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame0_Stress0.pgf};
 \addlegendentry{loading path 1}
-%\addplot3+[Blue,mark=asterisk,mark repeat=20,mark size=3pt,very thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame1_Stress0.pgf};
-\addplot3[Blue,very thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame1_Stress0.pgf};
+\addplot3+[Blue,mark=asterisk,mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPfastDevPlane_frame1_Stress0.pgf};
 \addlegendentry{loading path 2}
-\addplot3[gray,dashed,thin,no markers] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPCylindreDevPlane.pgf};\addlegendentry{initial yield surface}
-\newcommand\radius{0.82e8}
+\addplot3+[gray,dashed,thin,no markers] file {chapter5/pgfFigures/pgf_fastWavesPlaneStress/CPCylindreDevPlane.pgf};\addlegendentry{initial yield surface}
+\newcommand\radius{1.*0.82e8}
 \addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
 \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
 \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
