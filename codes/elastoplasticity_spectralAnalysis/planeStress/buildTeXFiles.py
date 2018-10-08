@@ -87,7 +87,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\addlegendentry{initial yield surface}')
                     TeXFile.write('\n')
                 else:
-                    TeXFile.write(r'\addplot3+['+couleur[j]+',mark='+marker[j]+',mark repeat=20,mark size=3pt,very thick] file {chapter5/pgfFigures/'+name+'};\n')
+                    TeXFile.write(r'\addplot3['+couleur[j]+',mark='+marker[j]+',very thick,arrows along my path] file {chapter5/pgfFigures/'+name+'};\n')
 		    TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
 
@@ -109,9 +109,11 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
             ## Black to white color map
             #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={bw}{gray(0cm)=(1); gray(1cm)=(0.05)}]');TeXFile.write('\n')
             ## Red to yellow color map
-            TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={ry}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(255,0,0)}]');TeXFile.write('\n')
+            #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={ry}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(255,0,0)}]');TeXFile.write('\n')
             ## Green to yellow color map
             #TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap={gy}{rgb255(0cm)=(255,255,0);rgb255(1cm)=(0,128,0)}]');TeXFile.write('\n')
+            ## Viridis
+	    TeXFile.write(', every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]');TeXFile.write('\n')
             for k,rando in enumerate(nom):
                 if k==0 :
                     TeXFile.write(r'\nextgroupplot[xlabel='+str(xlabels[i][k])+']')
@@ -127,7 +129,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                         TeXFile.write(r'\addplot[gray,dashed,thin] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+'};')
                         TeXFile.write('\n')
                     else:
-    			TeXFile.write(r'\addplot[arrows along my path,Red,thick] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'};')
+    			TeXFile.write(r'\addplot[arrows along my path,black,thick] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'};');TeXFile.write('\n')
                         TeXFile.write(r'\addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x='+str(srcX[k])+',y='+str(srcY[k])+'] {chapter5/pgfFigures/'+name+r'} node[above right,black] {$\textbf{'+str(j+1)+'}$};')
                     TeXFile.write('\n')
             TeXFile.write(r'\end{groupplot}')
