@@ -33,9 +33,13 @@ The numerical analysis of the scheme applied to the solution of one and two-dime
 This property allows to fully exploit the ability of the method to, for instance, rebuild the grid arbitrarily by employing adaptive mesh techniques on the reference configuration in order to accurately track waves in the current one. Indeed, after such a reconstruction, the number and positions of material points in grid cells can change and one must properly adapt the CFL number so that the scheme remains stable. An advantage on the original MPM is hence highlighted since no stability condition exists for the method. It is however worth noticing that the MPM seems less dependent to the particles distribution so that the CFL is usually set to an arbitrary value ($0.5$ or $0.7$ for one and two-dimensional problems).
 The DGMPM is on the other hand, characterized by a CFL number that can be set at one in particular cases.
 
-In addition to the stability of the method, the convergence properties of the DGMPM have been compared to that of the original MPM on a one-dimensional elastic problem. While the MPM, as FEM, shows a second-order accuracy in velocity and first-order in stress, the DGMPM exhibits a first-order accuracy for both fields. The loss of accuracy has been attributed to the back-mapping used in the DGMPM and strategies to handle higher-order approximations have been proposed. However, the purpose of this work being the accurate capturing of waves that can be non-regular, high-order accuracy goes beyond the scope of this thesis.%is not essential for it leads to more regularity in the numerical solution.
+In addition to the stability of the method, the convergence properties of the DGMPM have been compared to that of the original MPM on a one-dimensional elastic problem. 
+While the MPM, as FEM, shows a second-order accuracy in velocity and first-order in stress, the DGMPM exhibits a first-order accuracy for both fields. 
+The loss of accuracy has been attributed to the back-mapping used in the DGMPM and strategies to handle higher-order approximations have been proposed. 
+However, the purpose of this work being the accurate capturing of waves that can be non-regular, high-order accuracy goes beyond the scope of this thesis.%is not essential for it leads to more regularity in the numerical solution.
 
-In the following, attention is paid to the capturing of waves without oscillations unlike what has been highlighted for the MPM in section \ref{sec:MPM}. The object of the next chapter is the illustration of the DGMPM performances with one and two-dimensional simulations.
+In the following, attention is paid to the capturing of waves without oscillations unlike what has been highlighted for the MPM in section \ref{sec:MPM}. 
+The object of the next chapter is the illustration of the DGMPM performances with one and two-dimensional simulations.
 
 
 

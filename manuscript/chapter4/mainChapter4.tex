@@ -68,8 +68,12 @@ Nevertheless, an updated Lagrangian formulation of the method has to be derived.
 
 At last, the two-dimensional simulations performed in sections \ref{subsec:el_planestrain}, \ref{subsec:ep_planestrain} and \ref{subsec:he_plate} show that DGMPM results are in good agreements with FEM while eliminating spurious oscillations.
 %%
-Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. This is the case of splitting procedures that should enable the DGMPM to accurately follow waves traveling in elastic-viscoplastic solids in 2D. As discussed in section \ref{subsec:hpp_planewave}, elastoplastic problems can be solved as the stiff limit of elastoviscoplastic ones, at the cost of additional computational effort.
-Nevertheless, the use of approximate elastic-plastic Riemann solvers enables first to avoid the difficulties related to the integration of stiff ODEs, and to improve the resolution of plastic waves by means of limiters \cite{Thomas_EP}. However, this kind of solvers does not exist for general two-dimensional problems owing to the lack of knowledge of the characteristic structure of the solutions for multi-dimensional elastic-plastic problems. Such solvers for the computation of intercell fluxes, which would improve the computation of plastic flows and hence a better assessment of residual stresses and strains, are discussed in the next chapter. 
+Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. 
+This is the case of splitting procedures that should enable the DGMPM to accurately follow waves traveling in elastic-viscoplastic solids in 2D. 
+As discussed in section \ref{subsec:hpp_planewave}, elastoplastic problems can be solved as the stiff limit of elastoviscoplastic ones, at the cost of additional computational effort.
+On the other hand, the use of approximate elastic-plastic Riemann solvers enables first to avoid the difficulties related to the integration of stiff ODEs, and to improve the resolution of plastic waves by means of limiters \cite{Thomas_EP}. 
+However, this kind of solvers does not exist for general two-dimensional problems owing to the lack of knowledge of the characteristic structure of the solutions for multi-dimensional elastic-plastic problems. 
+Such solvers for the computation of intercell fluxes, which would improve the computation of plastic flows and hence a better assessment of residual stresses and strains, are discussed in the next chapter. 
 
 %%% Local Variables:
 %%% mode: latex
