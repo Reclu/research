@@ -215,69 +215,100 @@ Nevertheless, the results of figure \ref{fig:fast_path_plane_strains} must be ta
 \end{figure}
 
 %% For slow waves, integrated by driving with a decreasing \tau yields an increasing celerity (it goes for fast waves driven with tau in plane stress)
-On the other hand, the loading paths resulting from the integration of slow waves ODEs are depicted in figures \ref{fig:slow_path_plane_strains}, \ref{fig:slow_path_plane_strains2} and \ref{fig:slow_path_plane_strains3}.
-As for plane stress, even for a solid initially in a free-stress state, the component $\sigma_{22}$ may change due to the passage of a preceding fast waves.
+On the other hand, some loading paths resulting from the integration of slow waves ODEs are depicted in figure \ref{fig:slow_path_plane_strains}.
+In contrast to plane stress cases, different initial values of the stress $\sigma_{22}$ yield the same patterns for the integral curves.
+Hence, only one situation for which the initial state if  such that $\sigma_{22}=0$ si studied below.
 %Hence, three different initial values are studied separately, that is $\sigma_{22}=-1.3 \times 10^{8} \: Pa$, $\sigma_{22}=0$ and $\sigma_{22}=1.3 \times 10^8 \: Pa$. 
 
-A negative initial value of the transverse stress $\sigma_{22}=-1.3 \times 10^{8} \: Pa$ has been considered for obtaining the curves depicted in figure \ref{fig:slow_path_plane_strains}.
+%A negative initial value of the transverse stress $\sigma_{22}=-1.3 \times 10^{8} \: Pa$ has been considered for obtaining the curves depicted in figure \ref{fig:slow_path_plane_strains}.
 %% Symmetry of the integral curve
-The projections of integral curves in the ($\sigma_{11},\sigma_{12}$) plane in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_stress1} leads, roughly speaking, to linear by part curves.
+The projections of integral curves in the ($\sigma_{11},\sigma_{12}$) plane in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_stress1} show, roughly speaking, linear by part curves.
 Conversely, the loading paths exhibit more complex shapes in the ($\sigma_{22},\sigma_{12}$) plane.
-Analogously to the plane stress case, the slope of integral curves break at some point and then seem to be vertical.
-On the oher hand, it appears in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_dev1} that as for fast waves, the stress state remains on the initial yield surface until the direction of pure shear is reached.
-The direction then changes so that the loading paths are radial regardless of the initial conditions.
-Hence, there should exist a link between the break in slopes in the ($\sigma_{22},\sigma_{12}$) plane and these of deviatoric plane so that $\sigma_{11}$ and $\sigma_{22}$ no longer vary once the direction of pure shear is reached.
-%% Proposer graphe des contraintes axiales en fonction de l'angle de lode, ça ne correspond pas mais il faut en parler...
+Analogously to the plane stress case, the slope of integral curves break at some point and then seems to be vertical in that plane.
+On the other hand, it appears in figure \ref{fig:slow_path_plane_strains}\subref{subfig:slowDP_dev1} that as for fast waves, the stress state remains on the initial yield surface until the direction of pure shear is reached.
+The direction next changes so that the loading paths are radial regardless of the initial conditions considered.
+Parler des courbes en pointillés ?
 
-The same remarks hold for the two other initial conditions on $\sigma_{22}$, the loading paths of which can be seen in figure \ref{fig:slow_path_plane_strains2}.% and \ref{fig:slow_path_plane_strains3}.
+
+%% Trajectoire hors plan du déviateur donc on n'est pas purement déviatoric s12-s3 et s12-p pour voir ça
+% The Lode angle $\Theta$, based the second and third invariants of the stress deviator $J_2 = \frac{1}{2} \tens{s} : \tens{s}$ and $J_3 = \frac{1}{3}\det(\tens{s})$, and defined as:
+% \begin{equation*}
+%   \cos(3\Theta)=\frac{J_3}{2}\(\frac{3}{J_2}\)^{3/2}
+% \end{equation*}
+% can be used if the breaks in slopes arising in both ($\sigma_{22},\sigma_{12}$) and deviatoric planes are linked.
+% Indeed, Lode angle $\Theta$ measures the angle to the middle eigenvalue $s_2$ in the deviatoric plane so that it should reach a constant value of $30^o$ for the stress paths depicted in figure \ref{fig:slow_path_plane_strains}.
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:slowDP_stress1}}{\input{chapter5/pgfFigures/DPslowWaves1.tex}}
+%   \subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev1}}{\input{chapter5/pgfFigures/DPslowWaves_deviator1.tex}}
+%   \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=-1.3\times 10^{8} \: Pa$ for different starting points on the initial yield surface.}
+%   \label{fig:slow_path_plane_strains}
+% \end{figure}
+
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:slowDP_stress1}}{\input{chapter5/pgfFigures/DPslowWaves1.tex}}
-  \subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev1}}{\input{chapter5/pgfFigures/DPslowWaves_deviator1.tex}}
-  \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=-1.3\times 10^{8} \: Pa$ for different starting points on the initial yield surface.}
+  \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:slowDP_stress1}}{\input{chapter5/pgfFigures/DPslowWaves2.tex}}
+  \subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev1}}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+  \caption{Loading paths through slow simple waves for different starting points on the initial yield surface.}
   \label{fig:slow_path_plane_strains}
 \end{figure}
 
+Nevertheless, it can be seen in figure \ref{fig:pureShear}\subref{subfig:pureShear1} that the pure shear state in deviatoric plan is achieved before the stress $\sigma_{22}$ stops varying.
+Indeed, the starting points of every loading paths correspond to the intersection of curves with the $s_3$-axis in such a way that a first phase occurs during which $\sigma_{22}$ along with $s_3$ vary until the third eigenvalue of the stress deviator is zero.
+The second phase then consist in a variation of $\sigma_{12}$ whereas $s_3$ remains null.
+Figure \ref{fig:pureShear}\subref{subfig:pureShear2} shows on the other hand the evolution of the hydrostatic pressure with respect to the stress $\sigma_{22}$. 
+The curves in this figure do not admit no vertical nor horizontal asymptots so that once the hydrostatic pressure stops varying, the stress $\sigma_{22}$ is also constant.
 \begin{figure}[h!]
   \centering
-  \subcaptionbox{}{\input{chapter5/pgfFigures/LodeAngle_s11.tex}}
-  \subcaptionbox{}{\input{chapter5/pgfFigures/LodeAngle_s22.tex}}
-  \caption{Lode Angle}
-  \label{fig:lode}
+  {\phantomsubcaption \label{subfig:pureShear1}}
+  {\phantomsubcaption \label{subfig:pureShear2}}
+  \input{chapter5/pgfFigures/pureShearReached}
+  \caption{Evolution of Lode parameter along the loading path followed in slow simple waves depicted in figure \ref{fig:slow_path_plane_strains}.}
+  \label{fig:pureShear}
 \end{figure}
 
-
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=0$ \label{subfig:slowDP2}}{
-    \input{chapter5/pgfFigures/DPslowWaves2.tex} \newline
-    \input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
-  %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev2}}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
-  \newline
-  \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=1.3 \times 10^{8} \: Pa$ \label{subfig:slowDP3}}{
-    \input{chapter5/pgfFigures/DPslowWaves3.tex}\newline
-    \input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
-  %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev3}}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
-  \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface.}
-  \label{fig:slow_path_plane_strains2}
-\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter5/pgfFigures/LodeAngle}
+%   \caption{Evolution of Lode parameter along the loading path followed in slow simple waves depicted in figure \ref{fig:slow_path_plane_strains}.}
+%   \label{fig:lode}
+% \end{figure}
 
 
+% \begin{figure}[h!]
+%   \centering
+%   \input{chapter5/pgfFigures/maxCriterion}
+%   \caption{Evolution of Lode parameter along the loading path followed in slow simple waves depicted in figure \ref{fig:slow_path_plane_strains}.}
+%   \label{fig:lode}
+% \end{figure}
 
+%% Il faut encore réfléchir à la manière d'identifier le comportement a sigma22=Cte en terme de tracés de courbes. Ca devrait modifier les conclusions...
+% Thus, the integral curves are represented in figure \ref{fig:lode} in the $\sigma_{12},\sigma_{22}$ along with the $\Theta-\sigma_{12}$ curves.
+% As can be seen, the asymptotic limit of Lode angle $\Theta=30$ if reached before these of stress $\sigma_{22}=C^{te}$ for paths $1$ and $4$.
+% As a consequence, the longitudinal stress $\sigma_{22}$, as well as $\sigma_{11}$, still vary along the radial direction in the deviatoric plane until some limit value is achieved.
+% Once this point is reached, only the shear component $\sigma_{12}$ varies (at least more significantly than the longitudinal components).
+%Unfortunately, this singular stress state has not been identified so far.
+%As a matter of fact, it would be crucial to determine this state beyond which the slow waves are no longer combined loads ones but pure shear waves.
+
+%The same remarks hold for the two other initial conditions on $\sigma_{22}$, the loading paths of which can be seen in figure \ref{fig:slow_path_plane_strains2}.% and \ref{fig:slow_path_plane_strains3}.
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=0$ \label{subfig:slowDP2}}{
+%     \input{chapter5/pgfFigures/DPslowWaves2.tex} \newline
+%     \input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+%   %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev2}}{\input{chapter5/pgfFigures/DPslowWaves_deviator2.tex}}
+%   \newline
+%   \subcaptionbox{Slow waves loading paths projections for $\sigma_{22}=1.3 \times 10^{8} \: Pa$ \label{subfig:slowDP3}}{
+%     \input{chapter5/pgfFigures/DPslowWaves3.tex}\newline
+%     \input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+%   %\subcaptionbox{Loading path in deviatoric plane \label{subfig:slowDP_dev3}}{\input{chapter5/pgfFigures/DPslowWaves_deviator3.tex}}
+%   \caption{Loading paths through slow simple waves with initial condition $\sigma_{22}=0$ for different starting points on the initial yield surface.}
+%   \label{fig:slow_path_plane_strains2}
+% \end{figure}
 
 
 %%%% REMARQUES A LA VOLEE
-% It is shown in \cite{Ting73} that the plastic celerities only depends on $\tens{\sigma}/\norm{\tens{\sigma}}$ so that they are constant along in ray of the stress space $(\sigma_{11}, \sigma_{22}, \sigma_{12})$. Thus, look at the loading path along integral curves and see the evolution of celerities.
-
-% For now, it is assumed that the characteristic speeds satisfy: $c_1 \geq c_f \geq c_2 \geq c_s \geq 0$ and that the plastic celerities are monotonically decreasing functions of the stress. The latter assumption is in particular satisfied in the quarter-space $(\sigma_{11}\geq 0, \sigma_{22}\geq 0, \sigma_{12}\geq 0)$ for in that case, every elements of the acoustic tensor $\tens{A}^{ep}$ decrease with increasing stress (pas assez général. Vrai en écrouissage isotrope. Dépend de la normale. Vrai pour un état de contrainte donnée mais dépend du trajet de chargement. Peut-être qu'il faut ommettre ça pour le moment).
-
-%This is in particular true if we restrict our attention to the quarter-space $(\sigma_{11} \geq 0, \sigma_{22} \geq 0 , \sigma_{12}\geq 0)$ in which every components of the tensor  
-%Assuming that no shock occurs, the integration of ODEs \eqref{eq:ch5_ODEs} yields simple wave solutions of the problem.
-%This assumption seems to be valid with the convex flux function used in equation \eqref{eq:ch5_conservative} that leads to monotonically decreasing wave speeds with respect to the stress tensor. Furthermore, the medium is homogeneous 
-%% Ne pas regarder genuinely non-linear car ça n'apporte rien. Ca donne juste une indication sur la variation des vitesses le long des courbes intégrales mais pas en fonction de la contrainte.
-
-
-%This is in paticular true when looking at the normal vectors $\vect{n} = \vect{e}_1$ and $\vect{n} = \vect{e}_2$ that yield an acoustic tensor $A_{ij}^{ep}=A_{ij}^{elas} - \beta m_{pi}m_{jq}n_p n_q\deta_{pq}$.
+% It is shown in \cite{Ting73} that the plastic celerities only depends on $\tens{\sigma}/\norm{\tens{\sigma}}$ so that they are constant along rays of the stress space $(\sigma_{11}, \sigma_{22}, \sigma_{12})$. Thus, look at the loading path along integral curves and see the evolution of celerities.
 
 
 %%% Local Variables:
