@@ -1,0 +1,24 @@
+\begin{tikzpicture}[scale=0.9]
+\begin{axis}[ymajorgrids=true,xmajorgrids=true,xlabel=$\sigma_{22} \: Pa$,ylabel=$s_3 \: (Pa)$
+,legend style={at={(.97,-.2)},legend columns=2}]
+\addplot[Red,thick] table[x=sigma_22,y=s3] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} ;
+\addplot[Blue,thick] table[x=sigma_22,y=s3] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} ;
+\addplot[Orange,thick] table[x=sigma_22,y=s3] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} ;
+\addplot[Purple,thick] table[x=sigma_22,y=s3] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} ;
+\addlegendentry{loading path 1}
+\addlegendentry{loading path 2}
+\addlegendentry{loading path 3}
+\addlegendentry{loading path 4}
+\end{axis}
+\begin{axis}[ymajorgrids=true,xmajorgrids=true,xlabel=$\sigma_{22} \: Pa$,ylabel=$\sigma \: (Pa)$
+,legend style={at={(1.97,-.2)},legend columns=4},axis y line*=right]
+\addplot[Red,thick,densely dotted] table[x=sigma_22,y=hydro] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress2.pgf} ;
+\addplot[Blue,thick,densely dotted] table[x=sigma_22,y=hydro] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress2.pgf} ;
+\addplot[Orange,thick,densely dotted] table[x=sigma_22,y=hydro] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress2.pgf} ;
+\addplot[Purple,thick,densely dotted] table[x=sigma_22,y=hydro] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress2.pgf} ;
+\end{axis}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

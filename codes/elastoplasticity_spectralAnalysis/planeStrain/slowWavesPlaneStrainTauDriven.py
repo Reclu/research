@@ -438,12 +438,12 @@ col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=sigM
-Niter=500
+Niter=5000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
 SIG33=np.zeros((Niter,len(frames),len(sig22)))
-maxCrit=np.zeros((Niter,len(frames),len(sig22)))
+MaxCrit=np.zeros((Niter,len(frames),len(sig22)))
 eigsigS=np.zeros((Niter,len(frames),len(sig22),3))
 eigsigDevS=np.zeros((Niter,len(frames),len(sig22),3))
 criterionS=np.zeros((Niter,len(frames),len(sig22)))
@@ -486,8 +486,8 @@ yields22_s12=[]
 deviatorPlots=[]
 for k in range(len(sig22)-1)[1:]:
 #for k in range(len(sig22)):
-    if k==1 or k==3:
-        continue
+    # if k==1 or k==3:
+    #     continue
     s22=sig22[k]
     print "sigma22=",s22
     sigM=1.25*np.max(sig[:,k])
@@ -502,7 +502,6 @@ for k in range(len(sig22)-1)[1:]:
         #     continue
         sig0=sig[-1-i,k]
         tau0=tau[-1-i,k]
-
         
         dtau=(tauM-tau0)/Niter
         
@@ -515,7 +514,7 @@ for k in range(len(sig22)-1)[1:]:
         SIG33[0,s,k]=sig33
         
         sig0=SIG11[0,s,k];
-        maxCrit[0,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
+        MaxCrit[0,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
 
         sigma = np.matrix([[SIG11[0,s,k],TAU[0,s,k],0.],[TAU[0,s,k],SIG22[0,s,k],0.],[0.,0.,sig33]])
         rcs2[0,s,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
@@ -535,7 +534,7 @@ for k in range(len(sig22)-1)[1:]:
         for j in range(Niter-1):
             SIG11[j+1,s,k],SIG22[j+1,s,k],epsp33,SIG33[j+1,s,k]=integrateODE(dtau,SIG11[j,s,k],TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k],epsp33,nu,E,H,lamb,mu,beta,tangent)
             sig0=SIG11[j+1,s,k];
-            maxCrit[j+1,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.)+E*epsp33*(1.-2.*nu))/(nu-nu**2-1.)
+            MaxCrit[j+1,s,k]=0.5*(sig0*(2.*nu**2-2.*nu-1.)+E*epsp33*(1.-2.*nu))/(nu-nu**2-1.)
                 
             sigma = np.array([SIG11[j,s,k],np.sqrt(2.)*TAU[j,s,k],SIG22[j,s,k],SIG33[j,s,k]])
             
@@ -543,9 +542,10 @@ for k in range(len(sig22)-1)[1:]:
             
             sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
             speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
-            # if speed_S[j+1,s,k]>speed_S[j,s,k]:
-            #     print "Simple wave condition violated"
-            #     #break
+
+            if speed_S[j+1,s,k]>speed_S[j,s,k]:
+                print "Simple wave condition violated"
+                break
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
             plast+=dp
 
@@ -570,6 +570,7 @@ for k in range(len(sig22)-1)[1:]:
             radi=np.sqrt(np.dot(eigsigDevS[j,s,k,:],eigsigDevS[j,s,k,:]))
             radi2=np.sqrt(2./3.)*sigy
             #pdb.set_trace()
+        
         time=np.linspace(0,j+1,Niter)
         # plt.plot(time[1:],Eps[0,1:,s,k],label='eps11')
         # plt.plot(time[1:],Eps[1,1:,s,k],label='eps12')
@@ -584,7 +585,7 @@ for k in range(len(sig22)-1)[1:]:
         #export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],plast_S[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         ## color bar of rcs2
         print np.min(LodeAngle_S[0:-1:Niter/100,s,k]),np.max(LodeAngle_S[0:-1:Niter/100,s,k])
-        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k],eigsigS[0:-1:Niter/100,s,k,2]+eigsigS[0:-1:Niter/100,s,k,1]+eigsigS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,2],maxCrit[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta','hydro','s3','maxCrit')
+        export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100,s,k],SIG11[0:-1:Niter/100,s,k],SIG22[0:-1:Niter/100,s,k],rcs2[0:-1:Niter/100,s,k],LodeAngle_S[0:-1:Niter/100,s,k],eigsigS[0:-1:Niter/100,s,k,2]+eigsigS[0:-1:Niter/100,s,k,1]+eigsigS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,2],MaxCrit[0:-1:Niter/100,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta','hydro','s3','maxCrit')
         pgfFilesList.append(fileName)
         fileName=path+'DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -605,9 +606,9 @@ for k in range(len(sig22)-1)[1:]:
     # plt.plot(TAU[:,2,k],SIG22[:,2,k],'b--')
     # plt.plot(TAU[:,3,k],maxCrit[:,3,k],'k')
     # plt.plot(TAU[:,3,k],SIG22[:,3,k],'k--')
-    plt.plot(TAU[:,0,k],SIG11[:,0,k]+SIG22[:,0,k]+SIG33[:,0,k],'r')
-    plt.grid()
-    plt.show()
+    # plt.plot(TAU[:,0,k],SIG11[:,0,k]+SIG22[:,0,k]+SIG33[:,0,k],'r')
+    # plt.grid()
+    # plt.show()
         
     if k==1 or k==2 or k==3:
         # ran=Niter

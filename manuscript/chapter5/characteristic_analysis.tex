@@ -56,16 +56,14 @@ In addition, three independent left eigenvectors associated to the zero eigenval
 \end{equation}
 
 \subsection{Problems in two space dimensions}
-????????????????????????????
-See that
-????????????????????????????
-We now focus on a solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-\infty,\infty[ \times [-h,h]$ in a Cartesian coordinates system, where $e$ is an arbitrary length.
-The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
-It is moreover assumed that all quantities depend solely on $x_1$ and $x_2$, except the velocity component $v_3$ that may depend on $x_3$.
+We now focus on a solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-h,h[ \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are an arbitrary length.
+%The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
+It is assumed that all quantities depend solely on $x_1$ and $x_2$, except the velocity component $v_3$ that may depend on $x_3$.
+In particular, it is the case if $h \ll e$
 Given the geometry of the problem, the vector $\vect{n}$ may be reduced to $\vect{e}_1$ or $\vect{e}_2$.
 
-The solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $v_3$ vanishes on both ends $x_3=\pm h$.
-Then, combinating the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
+The solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $v_3$ vanishes on both ends $x_3=\pm e$.
+Then, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
