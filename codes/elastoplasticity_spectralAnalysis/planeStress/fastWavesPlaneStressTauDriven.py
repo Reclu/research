@@ -311,12 +311,12 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
-frames=[Samples-1,Samples-2,10,20]
+frames=[Samples-1,Samples-2]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=0.*sigy#sigM
-Niter=5000
+Niter=500
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -376,9 +376,9 @@ for k in range(len(sig22)):
             tau0=tau[1,k]
             sig0=-sig[1,k]
         else:
-            tau0=tau[i,k]
-            sig0=sig[i,k]
-        
+            tau0=tau[-1-i,k]
+            sig0=sig[-1-i,k]
+        print sig0,tau0
         dtau=(tauM-tau0)/Niter
         
         TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
@@ -428,6 +428,8 @@ for k in range(len(sig22)):
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,s,k],TAU[j+1,s,k],0.],[TAU[j+1,s,k],SIG22[j+1,s,k],0.],[0.,0.,0.]])
             rcf2[j+1,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
+            if rcf2[j+1,s,k]>rcf2[j,s,k]:
+                print "Simple wave condition violated"
             sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
@@ -532,6 +534,21 @@ for k in range(len(sig22)):
         fvm=ax4.twinx()
         fvm.set_ylabel('f',size=26.)
 
+    Delta=(4.*sigy**2- 3.*s22**2)
+    sigMax=(s22+np.sqrt(Delta))/2.
+    sigMin=(s22-np.sqrt(Delta))/2.
+
+    # Sample stress component sig11
+    sig[:,k]=np.linspace(sigMin,sigMax,Samples)
+    
+    # Compute shear stress satisfying the criterion given sig11 and sig22
+    for i in range(Samples):
+        s11=sig[i,k]
+        delta=(s11*s22 -s11**2-s22**2 + sigy**2)/3.
+        if np.abs(delta)<10. : delta=np.abs(delta)
+        tauMax=np.sqrt(delta)
+        tau[i,k]=np.sqrt(delta)
+    
     for i in range(len(sig22)):
         ax.plot(sig[:,i],tau[:,i],sig22[i],'k')
 

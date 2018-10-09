@@ -193,8 +193,8 @@ def computePsiFast(sig11,sigma,sig33,lamb,mu,beta,tangent):
     psi12S=-w1/w2 # dsig/dtau through a slow wave
     w1=eigens[1][0];w2=eigens[1][1]
     psi12F=-w1/w2 # dsig/dtau through a fast wave
-    if w1==0. and w2==0.:
-        pdb.set_trace()
+    # if w1==0. and w2==0.:
+    #     pdb.set_trace()
     psi12=-w1/w2
     psi22=(w1*alpha12/w2-alpha11)/alpha22
     #pdb.set_trace()
@@ -284,7 +284,7 @@ tau=np.zeros((Samples,Samples))
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
 frames=[Samples-1,Samples-2]
-frames=[0]
+frames=[-1]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.25*sigy/np.sqrt(1-nu+nu**2)
@@ -352,12 +352,11 @@ for k in range(len(sig22)):
             tau0=tau[-1,k]
         else:
             sigM=1.5*np.max(sig[:,k])
-            sig0=sig[-1-i,k]
-            tau0=tau[-1-i,k]
-        
+            sig0=sig[i,k]
+            tau0=tau[i,k]
         
         dsig=(sigM-sig0)/Niter
-        
+        pdb.set_trace()
         SIG11[:,s,k]=np.linspace(sig0,sigM,Niter)
         #TAU[:,s,k]=np.linspace(tau0,tauM,Niter)
         

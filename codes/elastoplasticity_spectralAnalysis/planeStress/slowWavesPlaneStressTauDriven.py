@@ -353,6 +353,7 @@ for k in range(len(sig22)-1)[1:]:
 ## LOADING PATHS PLOTS
 for k in range(len(sig22)-1)[1:]:
     s22=sig22[k]
+    print "initial value of sig22",s22
     sigM=1.05*np.max(sig[:,k])
     tauM=2.*np.max(tau[:,k])
     ## For each value of sig22 trace the loading paths given by psis from yield surface to an arbitrary shear stress level
