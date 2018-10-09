@@ -28,7 +28,7 @@ nu = 0.3
 mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
-sigy = 400.0e6        
+sigy = 100.0e6        
 H = 100.0e6
 beta=(6.*mu**2)/(3.*mu+H)
 
@@ -438,7 +438,7 @@ col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=sigM
-Niter=5000
+Niter=500
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -543,9 +543,9 @@ for k in range(len(sig22)-1)[1:]:
             
             sigman=np.array([SIG11[j+1,s,k],TAU[j+1,s,k]*np.sqrt(2.),SIG22[j+1,s,k],sig33])
             speed_S[j+1,s,k]=computeSpeedSlow(TAU[j+1,s,k],[SIG11[j+1,s,k],SIG22[j+1,s,k]],sig33,lamb,mu,beta,tangent)
-            if speed_S[j+1,s,k]>speed_S[j,s,k]:
-                print "Simple wave condition violated"
-                #break
+            # if speed_S[j+1,s,k]>speed_S[j,s,k]:
+            #     print "Simple wave condition violated"
+            #     #break
             dp=updateEquivalentPlasticStrain(sigma,sigman,H)
             plast+=dp
 
@@ -564,8 +564,8 @@ for k in range(len(sig22)-1)[1:]:
             
             #pdb.set_trace()
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
-            sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
-            sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+            # sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],SIG33[j+1,s,k]]))
+            # sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
             eigsigDevS[j+1,s,k,:]=computeEigenStresses(sigma)
             radi=np.sqrt(np.dot(eigsigDevS[j,s,k,:],eigsigDevS[j,s,k,:]))
             radi2=np.sqrt(2./3.)*sigy
@@ -588,7 +588,7 @@ for k in range(len(sig22)-1)[1:]:
         pgfFilesList.append(fileName)
         fileName=path+'DPslowDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
-        export2pgfPlot3D(fileName,eigsigDevS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,1],eigsigDevS[0:-1:Niter/100,s,k,2],dico)
+        export2pgfPlot3D(fileName,eigsigS[0:-1:Niter/100,s,k,0],eigsigS[0:-1:Niter/100,s,k,1],eigsigS[0:-1:Niter/100,s,k,2],dico)
         deviatorPlots.append(fileName)
         """
         if k==1:
@@ -597,25 +597,26 @@ for k in range(len(sig22)-1)[1:]:
             export2pgfPlot3D(fileName,eigsigDevS[0:-1:Niter/100,s,k,0],eigsigDevS[0:-1:Niter/100,s,k,1],eigsigDevS[0:-1:Niter/100,s,k,2],dico)
         """
         radius_S[s]=sigy+H*plast
-    plt.plot(TAU[:,0,k],maxCrit[:,0,k],'r')
-    plt.plot(TAU[:,0,k],SIG22[:,0,k],'r--')
-    plt.plot(TAU[:,1,k],maxCrit[:,1,k],'g')
-    plt.plot(TAU[:,1,k],SIG22[:,1,k],'g--')
-    plt.plot(TAU[:,2,k],maxCrit[:,2,k],'b')
-    plt.plot(TAU[:,2,k],SIG22[:,2,k],'b--')
-    plt.plot(TAU[:,3,k],maxCrit[:,3,k],'k')
-    plt.plot(TAU[:,3,k],SIG22[:,3,k],'k--')
+    # plt.plot(TAU[:,0,k],maxCrit[:,0,k],'r')
+    # plt.plot(TAU[:,0,k],SIG22[:,0,k],'r--')
+    # plt.plot(TAU[:,1,k],maxCrit[:,1,k],'g')
+    # plt.plot(TAU[:,1,k],SIG22[:,1,k],'g--')
+    # plt.plot(TAU[:,2,k],maxCrit[:,2,k],'b')
+    # plt.plot(TAU[:,2,k],SIG22[:,2,k],'b--')
+    # plt.plot(TAU[:,3,k],maxCrit[:,3,k],'k')
+    # plt.plot(TAU[:,3,k],SIG22[:,3,k],'k--')
+    plt.plot(TAU[:,0,k],SIG11[:,0,k]+SIG22[:,0,k]+SIG33[:,0,k],'r')
     plt.grid()
     plt.show()
         
     if k==1 or k==2 or k==3:
-        ran=Niter
-        plt.plot(eigsigDevS[0:ran,0,k,2],SIG22[0:ran,0,k],'r')
-        #plt.plot(SIG22[0:ran,0,k],TAU[0:ran,0,k],'r--')
-        plt.plot(eigsigDevS[0:ran,3,k,2],SIG22[0:ran,3,k],'b')
-        #plt.plot(SIG22[0:ran,3,k],TAU[0:ran,3,k],'b--')
-        plt.grid()
-        plt.show()
+        # ran=Niter
+        # plt.plot(eigsigDevS[0:ran,0,k,2],SIG22[0:ran,0,k],'r')
+        # #plt.plot(SIG22[0:ran,0,k],TAU[0:ran,0,k],'r--')
+        # plt.plot(eigsigDevS[0:ran,3,k,2],SIG22[0:ran,3,k],'b')
+        # #plt.plot(SIG22[0:ran,3,k],TAU[0:ran,3,k],'b--')
+        # plt.grid()
+        # plt.show()
         #pdb.set_trace()
 
         legend=['loading path 1','loading path 2','loading path 3','loading path 4']
@@ -815,11 +816,29 @@ for k in range(len(sig22)):
         if np.abs(delta)<10. : delta=np.abs(delta)
         tau[i,k]=np.sqrt(delta)
         if np.isnan(tau[i,k]): print "Nan ",delta,s11,s22,i,k
-    ax.plot(sig[:,k],tau[:,k],s22,'k')
-    ax.plot(sig[:,k],-tau[:,k],s22,'k')
-for i in range(SIG22.shape[2])[1:-1]:
-    for k in range(SIG22.shape[1]):
-        ax.plot(SIG11[:,k,i],TAU[:,k,i],SIG22[:,k,i],'r')
+    ax.plot(sig[:,k],tau[:,k],s22,'k-.',lw=0.5)
+
+ax.view_init(0.,0.)
+#ax.set_xlabel(r'$\sigma_{11}$',size=24.)
+ax.set_ylabel(r'$\sigma_{12}$',size=24.)
+ax.set_zlabel(r'$\sigma_{22}$',size=24.)
+ax.plot(SIG11[:,0,2],TAU[:,0,2],SIG22[:,0,2])                
+# for k in range(len(sig[])):
+#     s22=sig22[k]
+# sig0=SIG11[-1,p,k]
+# maxCrit=0.5*(sig0*(2.*nu**2-2.*nu-1.)+E*Epsp33[-1,p,k]*(1.-2.*nu))/(nu-nu**2-1.)
+# Delta=(4.*(nu**2-nu+1.)*(sigy+H*plast)**2- 3.*(E*Epsp33[-1,p,k]+(1.-2.*nu)*sig0)**2)
+# s22max=(sig0*(1.+2.*nu-2.*nu**2) +E*Epsp33[-1,p,k]*(2.*nu-1.) +np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+# s22min=(sig0*(1.+2.*nu-2.*nu**2)  +E*Epsp33[-1,p,k]*(2.*nu-1.) -np.sqrt(Delta))/(2.*(nu**2-nu+1.))
+# s22=np.linspace(s22min,s22max,Samples)
+# delta=(-(E*Epsp33[-1,p,k])**2 +E*Epsp33[-1,p,k]*(sig0+s22)*(2.*nu-1) + sig0*s22*(2.*nu+1.-2.*nu**2) + (sig0**2+s22**2)*(nu-nu**2-1.)+ (sigy+H*plast)**2)/3.
+# if (np.abs(delta)<10.).any() : delta=np.abs(delta)
+# s12=np.sqrt(delta)
+# ax2.plot(s22,s12,color=col[p],linestyle='--')
+                
+# for i in range(SIG22.shape[2])[1:-1]:
+#     for k in range(SIG22.shape[1]):
+#         ax.plot(SIG11[:,k,i],TAU[:,k,i],SIG22[:,k,i],'r')
 
 plt.show()
 
