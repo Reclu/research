@@ -24,7 +24,8 @@ mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
-H = 100.08e6
+H = 100.0e6
+#H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
 print "elastic shear wave celerity", np.sqrt(mu/rho)
@@ -222,7 +223,7 @@ def integrateODE(dsig,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
         ## R = s^{n+1} - s^{n} - RHS
         R=lambda x: x - sigma - dSIG*(theta*computePsiFast(sig0+dsig,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(sig0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        solution = scipy.optimize.root(R,sigma).x
         sigma = solution
     return solution
 
@@ -284,7 +285,8 @@ tau=np.zeros((Samples,Samples))
 frames=[5,10,20,58]
 #frames=[10,15,20,25,30,35]
 frames=[Samples-1,Samples-2]
-frames=[0]
+frames=[Samples-3]
+frames=[1]
 col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.25*sigy/np.sqrt(1-nu+nu**2)
@@ -404,7 +406,9 @@ for k in range(len(sig22)):
             sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
-        
+            if rcf2[j+1,s,k]>rcf2[j,s,k]:
+                print "simple wave condition violated"
+                break
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'CPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         ## color bar of p
@@ -439,7 +443,7 @@ for k in range(len(sig22)):
     ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
 
     cylindre=vonMisesYieldSurface(sigy)
-    #ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+    ax3.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
     elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
     angle_degree= 180.*elevation_Angle_radian/np.pi
     radius=1.*np.sqrt((2./3.)*sigy**2)

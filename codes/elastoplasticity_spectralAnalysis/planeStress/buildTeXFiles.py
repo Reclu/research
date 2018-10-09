@@ -23,7 +23,7 @@ def buildTeXFiles(names,pgfFiles,xlabels,ylabels,zlabels,subtitle,srcX,srcY):
 	    TeXFile.write(r'\node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (-1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
-	    TeXFile.write(r'\node[white]  at (0,0.,1.42e8) {};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[white]  at (0,0.,1.1e8) {};');TeXFile.write('\n')
 	    for j,name in enumerate(pgfFiles[i][:len(couleur)]):
                 #pdb.set_trace()
                 if name[25:25+12]=='CylindreDevP': ##  yield surface
