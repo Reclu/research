@@ -70,7 +70,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
 	    TeXFile.write(r'\node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (-1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
-	    TeXFile.write(r'\node[white]  at (0,0.,1.42e8) {};');TeXFile.write('\n')
+	    TeXFile.write(r'\node[white]  at (0,0.,1.1e8) {};');TeXFile.write('\n')
 	    #TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty,legend style={at={(.225,.65)}}]');TeXFile.write('\n')
             for j,name in enumerate(pgfFiles[i][:len(couleur)]):
                 #pdb.set_trace()
@@ -83,7 +83,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     #TeXFile.write(r'\addplot3[black,thick,no markers] file {chapter5/pgfFigures/'+name+'};')
                     TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
-	    TeXFile.write(r'\newcommand\radius{0.82e8}');TeXFile.write('\n')
+	    TeXFile.write(r'\newcommand\radius{1.*0.82e8}');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};');TeXFile.write('\n')
     	    TeXFile.write(r'\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};');TeXFile.write('\n')

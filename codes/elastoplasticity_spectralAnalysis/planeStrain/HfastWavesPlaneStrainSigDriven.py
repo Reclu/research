@@ -29,7 +29,7 @@ mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
-H = 100.0e6
+H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
 def export2pgfPlot2D(fileName,field1,field2,dico={"xlabel":'x',"ylabel":'y'}):
@@ -698,9 +698,9 @@ for k in range(len(sig22)):
     srcX=['sigma_11','sigma_22']
     srcY=['sigma_12','sigma_12']
 
-    name1='DPfastWaves_sig11_tau'+str(k)+'.tex'
-    name2='DPfastWaves_sig22_tau'+str(k)+'.tex'
-    name3='DPfastWaves_deviator'+str(k)+'.tex'
+    name1='DPfastWaveH_sig11_tau'+str(k)+'.tex'
+    name2='DPfastWaveH_sig22_tau'+str(k)+'.tex'
+    name3='DPfastWaveH_deviator'+str(k)+'.tex'
     names=[[name1,name2],name3]
     
     files1=np.concatenate([pgfFilesList,yields11_s12])
