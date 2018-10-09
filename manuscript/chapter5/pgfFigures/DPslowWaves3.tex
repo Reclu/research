@@ -1,9 +1,9 @@
-\begin{tikzpicture}[scale=0.9]
+\begin{tikzpicture}[scale=0.7]
 \begin{groupplot}[group style={group size=2 by 1,
 ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
 xticklabels at=edge bottom,xlabels at=edge bottom},
 ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (Pa)$,
-axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax=109429035.556
+axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax=82204260.70414487
 , every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]
 \nextgroupplot[xlabel=$\sigma_{11} (Pa)$]
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame0_Stress3.pgf} node[above,black] {$\textbf{1}$};
@@ -17,13 +17,6 @@ axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax=109429035.556
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame1_Stress3.pgf} node[above,black] {$\textbf{2}$};
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame2_Stress3.pgf} node[above,black] {$\textbf{3}$};
 \addplot[mesh,point meta = \thisrow{p},very thick,no markers] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslowStressPlane_frame3_Stress3.pgf} node[above,black] {$\textbf{4}$};
-\addplot[gray,dashed,thin] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslow_yieldfin_s22s12_frame0_Stress3.pgf};
-
-\addplot[gray,dashed,thin] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslow_yieldfin_s22s12_frame1_Stress3.pgf};
-
-\addplot[gray,dashed,thin] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslow_yieldfin_s22s12_frame2_Stress3.pgf};
-
-\addplot[gray,dashed,thin] table[x=sigma_22,y=sigma_12] {chapter5/pgfFigures/pgf_slowWavesPlaneStrain/DPslow_yieldfin_s22s12_frame3_Stress3.pgf};
 \end{groupplot}
 \end{tikzpicture}
 %%% Local Variables:

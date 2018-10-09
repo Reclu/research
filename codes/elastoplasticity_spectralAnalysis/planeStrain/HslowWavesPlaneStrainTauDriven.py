@@ -29,9 +29,7 @@ mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
-H = 100.0e6
-# sigy = 400.0e6        
-# H = 100.0e8                     
+H = 100.0e8 
 beta=(6.*mu**2)/(3.*mu+H)
 
 def export2DTeXFile(fileName,xFields,xlabel,ylabel1,ylabel2,yfields1,yfields2,*kwargs):
@@ -817,7 +815,7 @@ for k in range(len(sig22)-1)[1:]:
         ax3.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
         ax3.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
         plt.suptitle(r'Loading paths through slow waves for $\sigma_{22}$ ='+'{:.2e}'.format(sig22[k])+'Pa.', fontsize=24.)
-        plt.show()
+        #plt.show()
 
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
@@ -830,9 +828,9 @@ for k in range(len(sig22)-1)[1:]:
     srcX=['sigma_11','sigma_22']
     srcY=['sigma_12','sigma_12']
 
-    name1='DPslowWaves_sig11_tau'+str(k)+'.tex'
-    name2='DPslowWaves_sig22_tau'+str(k)+'.tex'
-    name3='DPslowWaves_deviator'+str(k)+'.tex'
+    name1='DPslowWaveH_sig11_tau'+str(k)+'.tex'
+    name2='DPslowWaveH_sig22_tau'+str(k)+'.tex'
+    name3='DPslowWaveH_deviator'+str(k)+'.tex'
     names=[name1,name2,name3]
     
     files1=np.concatenate([pgfFilesList,yields11_s12])

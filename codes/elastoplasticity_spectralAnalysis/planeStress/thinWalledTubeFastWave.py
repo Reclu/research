@@ -310,7 +310,7 @@ mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
-H = 100.08e6
+H = 100.0e6
 beta=(6.*mu**2)/(3.*mu+H)
 Niter=5000
 
@@ -378,6 +378,7 @@ if parameter=='tau':
 
         sigDev=computeDeviatoricPart(np.array([SIG[i+1],TAU[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
 
         sigdev1[i+1]=eigSigDev[0]
@@ -399,6 +400,7 @@ if parameter=='tau':
     
         sigDev=computeDeviatoricPart(np.array([SIGC[i+1],TAUC[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
         
         sigdev1C[i+1]=eigSigDev[0]
@@ -412,6 +414,7 @@ elif parameter=='sig':
 
     sigDev=computeDeviatoricPart(np.array([sig0,tau0,0.,0.]))
     sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+    sigma = np.matrix([[sig0,tau0,0.],[tau0,0.,0.],[0.,0.,0.]])
     eigSigDev=computeEigenStresses(sigma)
 
     sigdev1[0]=eigSigDev[0]
@@ -439,6 +442,7 @@ elif parameter=='sig':
         rcf2[i+1]=computecf2(SIG[i+1],TAU[i+1],lamb,mu,beta)
         sigDev=computeDeviatoricPart(np.array([SIG[i+1],TAU[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
 
         sigdev1[i+1]=eigSigDev[0]
@@ -460,6 +464,7 @@ elif parameter=='sig':
     
         sigDev=computeDeviatoricPart(np.array([SIGC[i+1],TAUC[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
         
         sigdev1C[i+1]=eigSigDev[0]

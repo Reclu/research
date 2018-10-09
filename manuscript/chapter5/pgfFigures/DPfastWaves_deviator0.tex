@@ -5,7 +5,7 @@
 \node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};
 \draw (1.e8,0.,0.) node[cross,rotate=10] {};
 \draw (-1.e8,0.,0.) node[cross,rotate=10] {};
-\node[white]  at (0,0.,1.42e8) {};
+\node[white]  at (0,0.,1.1e8) {};
 \addplot3[Red,thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStrain/DPfastDevPlane_frame0_Stress0.pgf};\addlegendentry{loading path 1}
 \addplot3[Blue,thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStrain/DPfastDevPlane_frame1_Stress0.pgf};\addlegendentry{loading path 2}
 \addplot3[Orange,thick,arrows along my path] file {chapter5/pgfFigures/pgf_fastWavesPlaneStrain/DPfastDevPlane_frame2_Stress0.pgf};\addlegendentry{loading path 3}
@@ -18,9 +18,8 @@
 \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
 \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
 \begin{scope}
-\spy[black,size=1.75cm] on (6.75,3.2) in node [fill=none] at (9.5,5.5);
+\spy[black,size=1.75cm] on (6.7,3.2) in node [fill=none] at (9.5,5.5);
 \end{scope}
-
 \end{axis}
 \end{tikzpicture}
 %%% Local Variables:
