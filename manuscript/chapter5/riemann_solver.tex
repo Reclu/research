@@ -1,21 +1,33 @@
-Commencer par un résumé du ce qui a été identifié au dessus.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Revenir sur ce qui a été fait dans le chapitre du point de vue analytique
 
-Eventuellement ne parler que d'un cas pour lequel c'est plus simple comme les defs planes (encore que...).
+% Parler des résultats numériques qui donnent quelques indices sur la structure de la solution
 
-On pourrait faire comme Lin et Ballman \cite{Lin_et_Ballman} en se donnant 3 composantes de contraintes et en intégrant. 
-C'est ce qui paraît le plus faisable dans l'état. 
-Sauf que sigma22 fout la merde à cause car on a 3 inconnues en contraintes alors que pour le thin-walled tube on en n'avait que 2 et on pouvait itérer comme ça.
-En effet, les interscetions dans les plans u,sigma et v,tau des courbes intégrales nous donnait des nouveaux états de contraintes pour l'étape d'après. 
-Qu'en est-il avec sigma22 ?
+% Parler de pistes qui peuvent être suivies en vue de prendre en compte ces informations
+%% Utiliser une forme quasi-linéaire en valeur propres de cauchy
+%% Lin et Ballman
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The complexity of hyperbolic problems in elastic-plastic solids has been recalled and emphasized in this chapter.
+In contrast to linear elasticity and one-dimensional plasticity, the characteristic structures of dynamic problems in elastoplastic solids under plane strain or plane stress involve waves of combined stress even for linear hardening materials.
+%% Simple waves even for linear hardening
+%% Combined stress waves
+
+% Eventuellement ne parler que d'un cas pour lequel c'est plus simple comme les defs planes (encore que...).
+
+% On pourrait faire comme Lin et Ballman \cite{Lin_et_Ballman} en se donnant 3 composantes de contraintes et en intégrant. 
+% C'est ce qui paraît le plus faisable dans l'état. 
+% Sauf que sigma22 fout la merde à cause car on a 3 inconnues en contraintes alors que pour le thin-walled tube on en n'avait que 2 et on pouvait itérer comme ça.
+% En effet, les interscetions dans les plans u,sigma et v,tau des courbes intégrales nous donnait des nouveaux états de contraintes pour l'étape d'après. 
+% Qu'en est-il avec sigma22 ?
 
 
-Pour un solveur approximé:
-Identifier le trajet ?? A priori, on ne peut pas sans intégrer.
-Sauf si on fait une projection radiale de l'état trial sur le critère et qu'on cherche quelle onde part de là.
-Il semblerait tout de même que la plasticité est surtout répendue par les ondes slow.
-Les ondes fast font tourner autour du critère. 
-Clifton suppose qu'elles n'existent que si leurs point de départ est à tau=0. On peut faire la même chose ?
-On peut approximer les trajets par la tangente sur le critère pour les ondes slow.
+% Pour un solveur approximé:
+% Identifier le trajet ?? A priori, on ne peut pas sans intégrer.
+% Sauf si on fait une projection radiale de l'état trial sur le critère et qu'on cherche quelle onde part de là.
+% Il semblerait tout de même que la plasticité est surtout répendue par les ondes slow.
+% Les ondes fast font tourner autour du critère. 
+% Clifton suppose qu'elles n'existent que si leurs point de départ est à tau=0. On peut faire la même chose ?
+% On peut approximer les trajets par la tangente sur le critère pour les ondes slow.
 %% Tracer des structures charactéristiques (revoir dans la biblio où on met une discontinuité et où on n'en met pas)
 
 
