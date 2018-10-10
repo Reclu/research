@@ -1,17 +1,17 @@
 %% Comment the possibility of widening the approach to kinematic hardening ?
-\subsection{Governing equations -- Three-dimensional cases}
-We are concerned here with linear isotropic hardening materials which elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
+\subsection{Governing equations}
+We are concerned with linear isotropic hardening materials which elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
 The balance equation of linear momentum with neglected body forces, and the geometrical balance equations are:  
-\begin{subequations}
+\begin{equation}
   \label{eq:ch5_balance_equations}
-  \begin{empheq}[left=\empheqlbrace]{align}
-    \label{eq:ch5_linear_momentum}
+  \left\lbrace \begin{aligned}
+    %\label{eq:ch5_linear_momentum}
     & \rho \dot{\vect{v}} - \nablav \cdot \tens{\sigma} = \vect{0} \\
-    \label{eq:ch5_linear_momentum}
+    %\label{eq:ch5_linear_momentum}
     &  \dot{\tens{\eps}} - \nablav \cdot \(\frac{\vect{v}\otimes \tens{I} + \tens{I} \otimes \vect{v}}{2}\) = \vect{0} 
-  \end{empheq}
-\end{subequations}
-In addition, the elastic-plastic constitutive equations derived from thermodynamics in section \ref{sec:constitutive-equations} read:
+  \end{aligned} \right.
+\end{equation}
+In addition, the elastic-plastic constitutive equations derived from thermodynamics in section \ref{sec:constitutive-equations} are recalled here:
 \begin{subequations}
   \label{eq:ch5_plasticity_equations}
   \begin{empheq}[left=\empheqlbrace]{align}
@@ -30,21 +30,22 @@ In addition, the elastic-plastic constitutive equations derived from thermodynam
   \end{empheq}
 \end{subequations}
 In the expression of von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
-In addition, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is here decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow \eqref{eq:ch5_plastic_flow}.
-At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
+Moreover, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:ch5_plastic_flow}.
+%At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
+By inverting the (isotropic)elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written:
 \begin{equation}
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
 \end{equation}
 with Young's modulus $E$ and Poisson's ration $\nu$.
 
-The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a cartesian coordinates system and in an arbitrary direction $\vect{n}$ is:
+The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a cartesian coordinates system and an arbitrary direction $\vect{n}$ is:
 \begin{equation}
   \label{eq:ch5_quasilinear_normal}
   \Qcb_t + \Jbsf \drond{\Qcb}{x_n} = \vect{0} 
 \end{equation}
 where $x_n=\vect{x}\cdot\vect{n}$, $\Qcb=\matrice{\vect{v}\\ \tens{\sigma}}$, and $\Jbsf$ is the Jacobian matrix.
-In section  \ref{sec:characteristic_analysis}, it has been shown that the $3$ eigenvalues and eigenvectors of the acoustic tensor: $\{\omega^p;\vect{l}^p\}$, yield $6$ left characteristic fields of the Jacobian matrix $\{c_K;\Lcb^K\}$ according to:
+It has been shown in section \ref{sec:characteristic_analysis} that the $3$ eigenvalues $\omega^p$ and eigenvectors $\vect{l}^p$ of the acoustic tensor lead to $6$ left characteristic fields of the Jacobian matrix $\{c_K;\Lcb^K\}$ according to:
 \begin{equation}
   \label{eq:ch5_left_eigenfields}
   \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho}} ; \quad \[\: \pm \rho\sqrt{\frac{\omega_p}{\rho}} \vect{l}^p , -\vect{l}^p\otimes \vect{n} \:\]  \right\rbrace ,\quad p=1,2,3
@@ -55,15 +56,15 @@ In addition, three independent left eigenvectors associated to the zero eigenval
   \tens{\sigma}^K:\(\Cbb^{ep}\cdot  \vect{n}\) =\vect{0},\quad K=1,2,3
 \end{equation}
 
+In what follows, the above equations are specified to plane strain and plane stress cases.
 \subsection{Problems in two space dimensions}
-We now focus on a solid domain bounded by $x_1 \times x_2 \times x_3 \in [0,\infty[ \times ]-h,h[ \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are an arbitrary length.
+We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are an arbitrary length.
 %The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
-It is assumed that all quantities depend solely on $x_1$ and $x_2$, except the velocity component $v_3$ that may depend on $x_3$.
-In particular, it is the case if $h \ll e$
-Given the geometry of the problem, the vector $\vect{n}$ may be reduced to $\vect{e}_1$ or $\vect{e}_2$.
+It is assumed that all quantities depend solely on $x_1$ and $x_2$ except the velocity component $v_3$ that may depend on $x_3$.
+In particular, it is the case for $h \ll e$.
 
 The solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $v_3$ vanishes on both ends $x_3=\pm e$.
-Then, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
+Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
@@ -71,14 +72,14 @@ Then, combining the additive partition of the infinitesimal strain tensor: $\ten
 Hence, the quasi-linear form \eqref{eq:ch5_quasilinear_normal} reduces for plane strain problems to a system of dimension $5$.
 
 
-In contrast, a plane stress state ($\tens{\sigma}\cdot\vect{e}_3=\vect{0}$) holds if the planes $x_3=\pm h$ are traction free.
-As a result, the stress component $\sigma_{33}$ can be removed from system \eqref{eq:ch5_quasilinear_normal}.
-Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress component.
-Specializing equation \eqref{eq:elastoplastic_tangent} to $\sigma_{33}$ yields:
+Alternatively, a plane stress state ($\tens{\sigma}\cdot\vect{e}_3=\vect{0}$) holds if the planes $x_3=\pm h$ are traction free.
+As a result, the stress component $\sigma_{33}$ can be removed from the system \eqref{eq:ch5_quasilinear_normal}.
+Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress.
+Specialization of equation \eqref{eq:elastoplastic_tangent} to $\sigma_{33}$ yields:
 \begin{equation*}
   \dot{\sigma}_{33}=C^{ep}_{33ij} \dot{\eps}_{ij} =0
 \end{equation*}
-frow which one writes:
+from which one writes:
 \begin{equation*}
   C^{ep}_{3333} \dot{\eps}_{33} = - C^{ep}_{33ij}\dot{\eps}_{ij} \quad i,j=\{1,2\}
 \end{equation*}
@@ -89,7 +90,7 @@ Hence, the constitutive equations are rewritten by means of a two-dimensional ta
 \end{equation}
 The characteristic structure of the problem is then given by this of the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
 
-The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strain and plane stress cases allows to solve the problem in a two-dimensional setting.
+The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strains and plane stresses allows to solve the problem in a two-dimensional setting.
 Then, generically denoting the acoustic tensor by $\tens{A}$, the characteristic structures are given by the eigenvalues:
 \begin{subequations}
   \begin{alignat}{1}
@@ -105,14 +106,15 @@ and the associated eigenvectors:
    \vect{l}^1=[ A_{22}-  \omega_1 \:,\: -A_{12}] \qquad ;\qquad  \vect{l}^2=[ -A_{12} \:,\:A_{11}- \omega_2 ]
 \end{equation}
 From equation \eqref{eq:ch5_left_eigenfields}, we see that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ may travel in the domain.
-Those waves are respectively referred to as \textit{fast} and \textit{slow} waves.
+Those waves are respectively referred to as fast and slow waves.
 Note that subtracting equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc2} leads to:
 \begin{equation}
   \label{eq:diff_celerities}
   \rho c_f^2 - \rho c_s^2 = \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2} \geq 0
 \end{equation}
 Hence, the characteristic speed associated to fast waves is always greater than of equal to that of slow waves.
-The four left eigenfields of the Jacobian matrix moreover read:
+
+The four left eigenfields of the Jacobian matrix thus read:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:ch5_Jac_eigenfield_fast}
@@ -123,15 +125,15 @@ The four left eigenfields of the Jacobian matrix moreover read:
 \end{subequations}
 where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-going fast waves respectively.
 The same goes for $\Lcb^{c_s^-}$ and $\Lcb^{c_s^-}$.
-In addition, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and which left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
+Furthermore, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and which left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
 \begin{equation}
   \label{eq:ch5_null_left_eigen}
   {\Lcb^0}^T = \matrice{v_1^0 \\[5.pt] v_2^0 \\[5.pt] \sigma_{11}^0 \\[5.pt] \sigma^0_{22} \\[5.pt] \sigma^0_{12} }= \matrice{0 \\[5.pt] 0 \\[5.pt] \(C_{121i}C_{222j}-C_{221i}C_{122j}\)n_in_j \\[5.pt] \(C_{111i}C_{122j}-C_{112i}C_{121j}\)n_in_j \\[5.pt] \(C_{112i}C_{221j}-C_{111i}C_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
 \end{equation}
 with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plane stress.
-In particular, $\Cbb$ reduces to the elastic stiffness tensor when no plastic flow occurs so that the characteristic structure involves the speeds of elastic pressure waves $c_1$ and shear waves $c_2$. 
+%In particular, $\Cbb$ reduces to the elastic stiffness tensor when no plastic flow occurs so that the characteristic structure involves the speeds of elastic pressure waves $c_1$ and shear waves $c_2$. 
 
-As already seen in section \ref{sec:SVK_solution}, the solutions of non-linear problems may contain shock and/or simple waves.
+It has been seen in section \ref{sec:SVK_solution} that the solution of non-linear problems may contain shock and/or simple waves.
 Nevertheless, we restrict here to simple waves by assuming that the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $ and monotonically decrease with the hardening of the material.
 The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
 \begin{subequations}
@@ -149,8 +151,8 @@ The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
     &\alpha_{11}d\sigma_{11} + \alpha_{12}d\sigma_{12} + \alpha_{22}d\sigma_{22}=0 \qquad && \text{along }\: dx/dt =0 
   \end{alignat}
 \end{subequations}
-Integration of equations \eqref{eq:charac_fr}-\eqref{eq:charac_contact} leads to integral curves through simple waves in which several stress components vary, hence the name of combined stress simple waves \cite{CRISTESCU19591605}.
-Following \cite{Clifton}, the method of characteristic is applied by combining equations \eqref{eq:charac_fr}-\eqref{eq:charac_contact}.
+Integration of equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact} leads to integral curves through simple waves in which several stress components vary, hence the name of combined stress simple waves \cite{CRISTESCU19591605}.
+Following \cite{Clifton}, the method of characteristic is applied by combining equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact}.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Slow simple wave \label{subfig:slowWave}}{\input{chapter5/pgfFigures/slowWave}} \qquad
@@ -159,14 +161,16 @@ Following \cite{Clifton}, the method of characteristic is applied by combining e
   \label{fig:ch5_charac_method}
 \end{figure}
 The approach consists in tracing every characteristics from some downstream point of a wave where the state vector $\Qcb$ is known, to an upstream point where the solution is seeked. Figures \ref{fig:ch5_charac_method}\subref{subfig:slowWave} and \ref{fig:ch5_charac_method}\subref{subfig:fastWave} schematically illustrate the method for slow and fast simple waves in which the state is known along the head wave and is looked for at point $P$ lying on the tail wave. 
-The integral curves through slow and fast simple waves are derived in the next section by applying the above approach.
+The integral curves through slow and fast simple waves are derived in the next section.
 
 \subsection{Integral curves through simple waves}
 The right-going slow waves are first looked at by adding equations \eqref{eq:charac_fr} and \eqref{eq:charac_fl}:
 \begin{equation}
   l_i^1 n_j d\sigma_{ij}=0
 \end{equation}
-In particular, for a vector $\vect{n}$ that is restricted to the axis of the $(\vect{e}_1,\vect{e}_2)$ plane, one gets:
+Given the geometry of the problem, the vector $\vect{n}$ may be reduced to $\vect{e}_1$ or $\vect{e}_2$.
+It therefore comes out:
+%In particular, for a vector $\vect{n}$ that is restricted to the axis of the $(\vect{e}_1,\vect{e}_2)$ plane, one gets:
 \begin{subequations}
   \begin{alignat}{2}
     \label{eq:sigSlow_n=e1}
@@ -175,7 +179,8 @@ In particular, for a vector $\vect{n}$ that is restricted to the axis of the $(\
     & d\sigma_{22}=- \frac{l_1^1}{l_2^1}  d\sigma_{12} = \psi^s_{2}d\sigma_{12} && \qquad \text{for } \:\vect{n}=\vect{e}_2
   \end{alignat}
 \end{subequations}
-Next, the characteristic equation related to the contact wave \eqref{eq:charac_contact} yields:
+With the above equations, the characteristic equation related to the contact wave \eqref{eq:charac_contact} reads:
+%Next, the characteristic equation related to the contact wave \eqref{eq:charac_contact} yields:
 \begin{subequations}
   \begin{alignat}{2}
     \label{eq:sigContact_n=e1}
@@ -184,8 +189,9 @@ Next, the characteristic equation related to the contact wave \eqref{eq:charac_c
     & d\sigma_{11}= -\frac{\psi^s_{2}\alpha_{22}+\alpha_{12}}{\alpha_{11}} d\sigma_{12} && \qquad \text{for } \:\vect{n}=\vect{e}_2
   \end{alignat}
 \end{subequations}
+The sets of equations \eqref{eq:sigSlow_n=e1}-\eqref{eq:sigContact_n=e1} and \eqref{eq:sigSlow_n=e2}-\eqref{eq:sigContact_n=e2} show the combined stress nature of slow simple waves.
 % Hence, one stress component may be used as a driving parameter for the two others, as it is the case for $\sigma_{12}$ in equations \eqref{eq:sigSlow_n=e1}, \eqref{eq:sigSlow_n=e2}, \eqref{eq:sigContact_n=e1} and \eqref{eq:sigContact_n=e2}.
-Futhermore, the subtraction of equations \eqref{eq:charac_fr} and \eqref{eq:charac_fl} leads to:
+On the other hand, the subtraction of equations \eqref{eq:charac_fr} and \eqref{eq:charac_fl} leads to:
 \begin{equation*}
   dv_1 = \psi^s_{1}dv_2 = \frac{1}{\psi^s_2}dv_2
 \end{equation*}
@@ -201,28 +207,34 @@ which, once combined with equations \eqref{eq:sigSlow_n=e1}-\eqref{eq:sigSlow_n=
 
 \begin{remark}
   The integral curves through a left-going slow wave result from the combination of equations \eqref{eq:sigSlow_n=e1}-\eqref{eq:sigSlow_n=e2} introduced in \eqref{eq:charac_sr} rather than \eqref{eq:charac_sl}.
-  Therefore, the only difference is in the signs in equations \eqref{eq:vSlow_n=e1} and \eqref{eq:vSlow_n=e2}
+  Therefore, the only difference lies in the signs in equations \eqref{eq:vSlow_n=e1} and \eqref{eq:vSlow_n=e2}
 \end{remark}
 
-Similar results are obtained for right-going fast simple waves.
-However, the integral curves involve $\vect{l}^2$ and $c_f$ instead of $\vect{l}^1$ and $c_s$. 
-Thus, introducing $\psi^f_1=-l_2^2/l_1^2$ and $\psi^f_2=-l_1^2/l_2^2$, the equations satisfied through slow and fast simples waves are summarized in table \ref{tab:simpleWavesEquations}.
+Similar results are obtained for right-going fast simple waves by using $\vect{l}^2$ instead of $\vect{l}^1$ and $c_f$ rather than $c_s$.
+%However, the integral curves involve $\vect{l}^2$ and $c_f$ instead of $\vect{l}^1$ and $c_s$. 
+Hence, the evolution in slow and fast waves is governed by the \textit{loading functions}:
+\begin{equation}
+  \label{eq:loading_func}
+  \psi^s_{1}=- \frac{l^1_2}{l_1^1}\quad ,\quad  \psi^s_{2}=- \frac{l_1^1}{l_2^1} \quad ,\quad \psi^f_1=-\frac{l_2^2}{l_1^2} \quad ,\quad \psi^f_2=-\frac{l_1^2}{l_2^2}
+\end{equation}
+The equations satisfied across right-going slow and fast simple waves are summarized in table \ref{tab:simpleWavesEquations}.
 \begin{table}[h!]
   \centering
   \input{chapter5/tabular/simpleWavesEquations}
-  \caption{Summary of the ODEs satisfied through slow and fast simple waves.}
+  \caption{Summary of the ODEs satisfied inside right-going slow and fast simple waves.}
   \label{tab:simpleWavesEquations}
 \end{table}
 
-The integration of equations gathered in table \ref{tab:simpleWavesEquations} should provide the complete solution of a given problem by means of integral curves or \textit{loading paths}.
+The integration of equations gathered in table \ref{tab:simpleWavesEquations} should provide the complete solution of a given problem by means of integral curves or loading paths.
 For instance, the velocity resulting from the passage of right-going waves in the direction $\vect{e}_1$ obeys:
 \begin{equation}
   \label{eq:integral_example}
   v_1 = v_1^0 - \int_{\tens{\sigma}^0}^{\tens{\sigma}} \frac{d \sigma_{11}}{\rho c^2} \quad ;\quad v_2 = v_2^0 - \int_{\tens{\sigma}^0}^{\tens{\sigma}} \frac{d \sigma_{12}}{\rho c^2}
 \end{equation}
 where the zero superscript denotes the downstream state.
-Nevertheless, Clifton \cite{Clifton} emphasized that, depending on the loading conditions, both simple waves or only one may arise in the solution so that the stress path followed influences such an integral.
-It is thus important to qualify the stress paths through fast and slow waves in order to properly define the upper bound of the integrals of the form \eqref{eq:integral_example}.
+Nevertheless, Clifton \cite{Clifton} emphasized that depending on the loading conditions, only one simple waves or both may arise in the solution.
+Therefore, it is crucial to identify the stress path followed to properly compute such an integral.
+%It is thus important to qualify the stress paths through fast and slow waves in order to properly define the upper bound of the integrals of the form \eqref{eq:integral_example}.
 This is the purpose of the next section.
 
 

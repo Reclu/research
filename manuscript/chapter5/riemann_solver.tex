@@ -10,49 +10,52 @@
 %% Lin et Ballman
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Summary of the chapter}
-
-In this chapter, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids in two space dimensions has been highlighted.
-It is known since the 50s that plastic flow in two-dimensional solids yields two families of waves which speeds depend on the stress state, the slow and fast waves.
-As a result, shock and simple waves may occur in an elastoplastic medium even for linear hardening material.
-In addition, these plastic waves may have an impact on several stresses in contrast to elastic discontinuities across which one stress component varies, hence the name of combined stress waves.
-During the 60s, attention has been paid to simple waves in particular two-dimensional problems thus providing, among other, solutions of Picard problems in elastic-plastic medium undergoing step loadings \cite{Clifton,Ting68,Ting69,Ting73}. % Idem pour ting ? c'est dit dans l'intro ? voir ce qui est fait dans le 73
-The singular nature of such problems lies in the fact that the characteristic structure of the solution depends on the external loading undergone.
-Indeed, it has been shown \cite{Clifton} that boundary conditions can lead to plastic flow involvingon fast, one slow, or both simple waves.
-Therefore, it is crucial to be able to identify typical stress paths followed in each simple waves in order to link the initial data to a given stress state, and subsequently to determine the occurring wave pattern.
-
-%% Lin et Ballman
-Based on those works, an iterative Riemann solver \cite{Lin_et_Ballman}, which procedure has been recalled in section \ref{sec:stress_paths_num}, has been developed for the numerical solution of the thin-walled tube problem. % Voir s'ils sont contents de ce que ça apporte parce que ça a pas l'air top quand même
-% parler de Toro le 4-rarefactions RS
-%% http://www.global-sci.com/issue/v22/n5/pdf/1224.pdf 4-rarefaction waves elastic-plastic RS
-% L'idée ici c'est de généraliser cette approche pour tous les problèmes 2D
-Following this approach, identifying characteristic wave patterns for general elastoplastic problems in two space dimensions should allow to enrich the numerical solution with the knowledge one has of physical phenomena.
-%% Donc analyse math en plane stress et plane strain qui montrent certains comportement typiques.
-
-%% Ensuite, puisque les équations sont quand même chaudes, on est passé au numérique et on a montré deux trois trucs intéressants.
 
 % | prendre en compte ce qu'on vient de trouver pour construire un solveur à la Lin et Ballman
-% v si on cherche la solution d'un problème de Picard. ou pas d'ailleurs à cause de sigma_22 que l'on ne connait pas dans Picard
-\subsection*{Towards a two-dimensional elastoplastic Riemann solver}
-% Eventuellement ne parler que d'un cas pour lequel c'est plus simple comme les defs planes (encore que...).
+% v si on cherche la solution d'un problème de Picard.
+The physical structures emphasized in this chapter enable a better understanding of the propagation of waves in two-dimensional elastoplastic medium, although further investigations are required.
+On the other hand, the loading paths followed in fast and slow simple waves can be used in order to improve the numerical simulation of those problems.
 
-% On pourrait faire comme Lin et Ballman \cite{Lin_et_Ballman} en se donnant 3 composantes de contraintes et en intégrant. 
-% C'est ce qui paraît le plus faisable dans l'état. 
-% Sauf que sigma22 fout la merde à cause car on a 3 inconnues en contraintes alors que pour le thin-walled tube on en n'avait que 2 et on pouvait itérer comme ça.
-% En effet, les interscetions dans les plans u,sigma et v,tau des courbes intégrales nous donnait des nouveaux états de contraintes pour l'étape d'après. 
-% Qu'en est-il avec sigma22 ?
+%% Lin et Ballman
+First, the approach proposed by Lin and Ballman \cite{Lin_et_Ballman} can be generalized by identifying elementary stress paths which allow the solution of Picard problems.
+Namely, for a given stationary stress state, one should be able to trace backward integral curves corresponding to slow and fast waves so that initial data are recovered.
+Thus, an interative procedure for the solution of Riemann problems could be constructed.
 
+%% Approximate Riemann solver
+Second, one can imagine a non-iterative approximate Riemann solver based on the behaviors emphasized above.
+Indeed, the analytical and numerical results for both plane strain and plane stress indicate that the fast waves significantly harden the material once the shear stress $\sigma_{12}$ is zero.
+In addition, slow waves more notably tend to make the stress state "move away" from the elastic convex.
+Therefore, one possibility for the building of an approximate Riemann solver would be to first make an elastic prediction which leads to two situations depending on its projection onto the yield surface:
+\begin{itemize}
+\item[(i)] if the intersection of the straight line joining the initial stress state $\tens{\sigma}^0$ to the trial stress and the yield surface, say $\widetilde{\tens{\sigma}}$, is such that $\widetilde{\sigma}_{12}\neq 0$, the plastic flow is assumed to be only due to a slow wave.
+  Then, the wave can be approximate as a plastic discontinuity operating on several stress components and moving at the constant speed $c_s(\widetilde{\tens{\sigma}})$.
+  This situation is illustrated in figure \ref{fig:approx_RP_EP_slow}.
+  \begin{figure}[h!]
+    \centering
+    \input{chapter5/pgfFigures/approximateRP_slow}
+    %\subcaptionbox{Approximation of the characteristic structure with only one fast wave \label{subfig:approx_fast}}{\input{chapter5/pgfFigures/approximateRP_fast}}
+    \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
+    \label{fig:approx_RP_EP_slow}
+  \end{figure}
+  Since across the pressure wave one has $\saut{\sigma_{11}}\neq 0$ only, the state lying in the region bounded by this discontinuity and the shear wave is known and is such that  $\saut{\sigma_{11}} = \widetilde{\sigma}_{11}-\sigma_{11}^0$.
+  Thus, one can remove the pressure discontinuity and add one plastic discontinuity from the characteristic structure.
+  
+  %% Revoir cette hypothèse
+\item[(ii)] alternatively, if $\widetilde{\sigma}_{12}= 0$ one can assume that only a fast wave occurs, which can be approximated in a similar manner with the celerity $c_f(\widetilde{\tens{\sigma}})$ (see figure \ref{fig:approx_RP_EP_fast}).
+  \begin{figure}[h!]
+    \centering
+    \input{chapter5/pgfFigures/approximateRP_fast}
+    \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
+    \label{fig:approx_RP_EP_fast}
+  \end{figure}
+  In a similar manner, the state lying between the pressure wave and the plastic disontinuity is known since the elastic wave only carries a jump of $\sigma_{11}$, so that the pressure wave may be removed.
+\end{itemize}
 
-% Pour un solveur approximé:
-% Identifier le trajet ?? A priori, on ne peut pas sans intégrer.
-% Sauf si on fait une projection radiale de l'état trial sur le critère et qu'on cherche quelle onde part de là.
-% Il semblerait tout de même que la plasticité est surtout répendue par les ondes slow.
-% Les ondes fast font tourner autour du critère. 
-% Clifton suppose qu'elles n'existent que si leurs point de départ est à tau=0. On peut faire la même chose ?
-% On peut approximer les trajets par la tangente sur le critère pour les ondes slow.
-%% Tracer des structures charactéristiques (revoir dans la biblio où on met une discontinuité et où on n'en met pas)
-
-
+Applying the procedures $(i)$ and/or $(ii)$ from both sides of the interface $x_1=0$, the Riemann problem then reduces to a linear problem involving two left-going and two right-going discontinuities which can easily solved.
+ 
+The development of such a heuristic approach, which is based on strong assumptions, enables nevertheless some improvements numerically speaking.
+Indeed, rather than considering the propagation of elastic waves, an elastic-plastic Riemann solver for problems in two space dimensions account for both elastic and plastic characteristics.
+More specifically, the error introduced by the plastic approximation may be partially balanced by using limiters for elastic and plastic waves.
 
 
 

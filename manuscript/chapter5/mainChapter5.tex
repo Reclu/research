@@ -3,19 +3,25 @@
 %% Formuler le problème à notre sauce et identifier les cas évoqués en intro en particularisant les modules tangents etc. a ce moment, parler des trajets de chargement et des types d'ondes
 
 \section*{Introduction}
-It has been shown throughout this manuscript that hyperbolic problems of solid mechanics are solved in a different manner depending on the numerical explicit method employed. 
-In particular, irreversible deformations which are usually computed numerically based on well-known constitutive integrators, may greatly differ from one scheme to another, even for one-dimensional problems.
-However, the accurate assessment of residual stresses and strains are of major importance for many industrial applications such as, among others, high-speed metal forming, crash-proof design or the study of earthquakes impact on structures.
-The simulations performed in chapter \ref{chap:chap4} emphasized the improvements enabled by the knowledge of the characteristic structure of the solution of conservation laws systems, especially for elastoplastic solids.
-Nevertheless, the introduction of the exact solution by means of approximate Riemann solvers is so far only carried out for one-dimensional and specific multi-dimensional loading cases for elastic-plastic solids.
+It has been shown throughout this manuscript that hyperbolic problems in solid mechanics are solved in a different manner depending on the numerical explicit method employed. 
+In particular, irreversible deformations which are usually numerically computed based on well-known constitutive integrators, may greatly differ from one scheme to another even for one-dimensional problems.
+However, the accurate assessment of residual stresses and strains are of major importance for many industrial applications such as, among others, high-speed metal forming, crash-proof design or the studyof the impact of earthquakes on structures.
+The simulations performed in chapter \ref{chap:chap4} emphasized the improvements enabled by the knowledge of the characteristic structure of the solutions of conservation laws systems, especially for elastoplastic solids.
+Nevertheless, the introduction of the exact solution by means of approximate Riemann solvers is so far only possible for problems in one space dimension in elastic-plastic solids.
 
-The purpose of this chapter is to provide solutions and clues for future works for general two-dimensional elastoplasticity problems under small strains. 
-More information on the structure of solutions to these problems allow a better understanding of physical phenomena occuring in media on the one hand, and the ability of accurately deal with them numerically on the other hand.
+The purpose of this chapter is to identify typical behaviors of the solutions of two-dimensional elastoplasticity problems under small strains.
+%The purpose of this chapter is to provide solutions and clues for future works for general two-dimensional elastoplasticity problems under small strains. 
+The knowledge one can get about these solutions allows a better understanding of the physical phenomena occuring and hence, the ability to accurately deal with them numerically.
+% More information on the structure of solutions to these problems allow a better understanding of physical phenomena occuring in media on the one hand, and the ability of accurately deal with them numerically on the other hand.
+
 The chapter is organized as follows.
-A brief historical review of the solution of plastic waves in two-dimension space is made in section \ref{sec:review}.
-Then, the equations of plastic flow, which characteristic analysis is carried out, are recalled in section \ref{sec:charac_plast}.
-Attention is next paid in section \ref{sec:stress_paths} to the evolution of stress components through simple waves possibly arising in the solution. 
-Some thus identified loading paths are finally discussed in section \ref{sec:ep_Riemman_solver} in the context of the development of dedicated approximate Riemann solvers. 
+A brief historical review of the solution of dynamic problems in two-dimensional elastic-plastic solids is made in section \ref{sec:review}.
+%A brief historical review of the solution of plastic waves in two-dimension space is made in section \ref{sec:review}.
+Then, the equations of plasticity are recalled in section \ref{sec:charac_plast} so that the characteristic analysis, followed by the application of the method of characteristics, can be carried out.
+In section \ref{sec:stress_paths}, attention is paid to the evolution of stress components inside the simple waves that might propagate by means of a mathematical study of the ODEs satisfied within the simple waves.
+Since the developments rapidly become cumbersome, the analysis is supplemented with numerical results in section \ref{sec:stress_paths_num}.
+%Attention is next paid in section \ref{sec:stress_paths} to the evolution of stress components through simple waves possibly arising in the solution. 
+At last, some identified trends are discussed in section \ref{sec:ep_Riemman_solver} in order to use them for the building of a dedicated approximate Riemann solver. 
 
 \section{Historical review}
 \label{sec:review}
@@ -34,9 +40,54 @@ Some thus identified loading paths are finally discussed in section \ref{sec:ep_
 \label{sec:stress_paths_num}
 \input{chapter5/numerical_results}
 
-\section*{Conclusion}
+\section{Towards a two-dimensional elastoplastic Riemann solver}
 \label{sec:ep_Riemman_solver}
 \input{chapter5/riemann_solver}
+
+
+\section*{Conclusion}
+
+In this chapter, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids in two space dimensions has been highlighted.
+It is known since the 50s that plastic flow in two-dimensional solids yields two families of waves which speeds depend on the stress state, the slow and fast waves.
+As a result, shock and simple waves may occur in an elastoplastic medium even for linear hardening material.
+In addition, these plastic waves may have an impact on several stresses in contrast to elastic discontinuities across which one stress component varies, hence the name of combined stress waves.
+During the 60s, attention has been paid to simple waves in particular two-dimensional problems thus providing, among other, solutions of Picard problems in elastic-plastic medium undergoing step loadings \cite{Clifton,Ting68,Ting73}. % Idem pour ting ? c'est dit dans l'intro ? voir ce qui est fait dans le 73
+The singular nature of such problems lies in the fact that the characteristic structure of the solution depends on the external loading undergone.
+Indeed, it has been shown \cite{Clifton} that boundary conditions can lead to plastic flow involving one fast, one slow, or both simple waves.
+Therefore, it is crucial to be able to identify typical stress paths followed in each simple waves in order to link the initial data to a given stress state, and subsequently to determine the occurring wave pattern.
+
+$\newline$
+%% Lin et Ballman
+Based on those works, an iterative Riemann solver \cite{Lin_et_Ballman}, which procedure has been recalled in section \ref{sec:stress_paths_num}, has been developed for the numerical solution of the thin-walled tube problem. 
+% L'idée ici c'est de généraliser cette approche pour tous les problèmes 2D
+Following this approach, identifying characteristic wave patterns for general elastoplastic problems in two space dimensions should allow to enrich the numerical solution with the knowledge of physics.
+For that purpose, the characteristic analysis of two-dimensional problems in elastic-plastic materials with linear isotropic hardening under plane strain and plane stress, in projection in an arbitrary direction of space, has been carried out in section \ref{sec:charac_plast}.
+Fast and slow waves are also involved in the solution so that applying the method of characteristic through the simple waves provides a system of ODE.
+Integration of this system leads to combined stress paths that are followed between initial and final stress states on the one hand, and to the integral curves in terms of velocity components involving integral along those loading paths on the other hand.
+Specializing the ODEs to one direction of a Cartesian grid, it has been shown in section \ref{sec:stress_paths} that the loading paths satisfied through slow and fast waves are perpendicular in the stress space for both plane strain and plaen stress.
+Moreover, it has been established that the stress paths exhibit particular behavior in the space $(\sigma_{11},\sigma_{22},\sigma_{12})$, that is $d\sigma_{11}=0$, $d\sigma_{12}=0$ or $d\sigma_{22}=0$, for special values of the components of the acoustic tensor.
+These situations are achieved for different stress states depending on wheter the problem involves plane stresses of plane strains as shown in section \ref{sec:stress_paths}.
+
+$\newline$
+The complexity of the ODEs derived in section \ref{sec:charac_plast} prevents from identifying all the singularities which may occur along the loading paths.
+Hence, the mathematical analysis has been supplemented with numerical results consisting in the integration of stress paths from arbitrary initial stress values lying on the initial yield surface, for the particular direction of space $\vect{e}_1$.
+
+%% Thin-walled tube
+First, in section \ref{sec:num_thin-walled} the loading paths resulting from the integration of the ODEs derived in section \ref{sec:charac_plast} have been compared to those of Clifton \cite{Clifton}.
+The two different formulations, respectively based on elastoplastic stiffnesses and softnesses, show a good agreement.
+
+%% Cont. planes
+Second, some the evolution of stress components across fast and slow waves under plane stress has been looked at in section \ref{sec:num_plane_stress}.
+It appears that though the loading paths are rather complex in stress space through a fast wave, the stress evolution in the deviatoric plane is restricted to the initial yield surface until one direction of pure shear is reached.
+A singularity then occurs so that the numerical integration cannot be pursued.
+On the other hand, the loading paths resulting from the integration of ODEs satisfied inside a slow wave, except that $\sigma_{11}$ varies much less than the other stress components.
+
+%% Def. planes
+Third, the plane strain case has been considered in section \ref{sec:num_plane_strain}.
+Once again, the integral curves inside a fast wave show complex shapes in stress space, and an evolution restricted to the initial yield surface in the deviatoric plane.
+In that case, however, the paths may follow a direction of pure tensile/compression in the latter plane so that the plastic flow is radial. 
+In contrast, the slow waves lead to a stress state of pure shear in the deviatoric plane.
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"
