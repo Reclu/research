@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=.8]
+  \fill[pattern=north west lines] (0,0) ellipse (1.95 and 0.25);
+  \draw (0,0) ellipse (1.95 and 0.25);
+  \draw[thick,->] (0,0,0) -- (0,3,0) node[right] {$\sigma_3$};
+  \draw[thick,->] (0,0,0) -- (3,0,0) node[right] {$\sigma_1$};
+  \draw[thick,->] (0,0,0) -- (0,0,-3) node[right] {$\sigma_2$};
+  \draw[dashed,->] (0,0,0) -- (2,1,-2) node [right] {\text{hydrostatic axis}};%{$\tr \tens{\sigma}$};
+  \begin{scope}[rotate=30]
+    \draw (-3.,-1) -- (3.,-1);
+    \draw (-3.,1) -- (3,1);
+    \draw (3.,0) ellipse (0.35 and 1);
+    \draw (-3.,0) ellipse (0.35 and 1);
+  \end{scope}
+  
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

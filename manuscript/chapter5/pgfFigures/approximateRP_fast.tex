@@ -1,0 +1,25 @@
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},cross/.default={2.5pt}}
+\begin{tikzpicture}
+  \draw[thick,->] (0.,0.) -- (4.,0.) node [right] {$\sigma_{11}$};
+  \draw[thick,->] (0.,0.) -- (0.,4.) node [above] {$\sigma_{12}$};
+  % \draw (\x,{sqrt((9.-\x*\x)/3)) -- (\x,{sqrt((9.-\x*\x)/3)});
+  \draw [black, very thick, domain=0:3, samples=50] plot (\x,{sqrt((9.-\x*\x)/3)})  ;
+  \draw (2.,.5) node[left] {$\tens{\sigma}^0$} -- (4.,-.5)node[right] {$\tens{\sigma}^{trial}$};
+  \draw (3,0.) node[cross,rotate=10] {};
+  \node[below] at (3,0.) {$\widetilde{\tens{\sigma}}$};
+  %% paths
+  \draw (3.,0.) .. controls (3.5,1.) and (2.5,2.) .. (4.,3.5) node[above] {\text{loading path}};
+  \draw[dotted] (3.,0.) -- (3.85,2.5) node[right] {\text{approximate path}} ;
+  %%
+  %%
+  \newcommand\shift{8.}
+  \draw[thick,->] (0.+\shift,0.) -- (4.+\shift,0.) node [right] {$x_1$};
+  \draw[thick,->] (0.+\shift,0.) -- (0.+\shift,4.) node [above] {$t$};
+  \draw[very thick] (0+\shift,0) -- (4+\shift,1) node [right] {$c_1$};
+  \draw[thick] (0+\shift,0) -- (4+\shift,1.5) node [right] {$c_f(\widetilde{\tens{\sigma}})$};
+  \draw[very thick] (0+\shift,0) -- (4+\shift,2.5) node [right] {$c_2$};
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
