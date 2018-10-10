@@ -196,6 +196,9 @@ Indeed, the integral curves first describe clock-wise curved lines until the bre
   \caption{Stress paths in a slow simple wave for various starting point lying on the initial yield surface for $\sigma_{22}=5.8\times 10^7 \: Pa$. Projections in the stress space (figure \subref{subfig:CP_slow_stress3}) and deviatoric plane (figure \subref{subfig:CP_slow_dev3}).}
   \label{fig:slow_path_plane_stress3}
 \end{figure}
+It is worth noticing that the driving parameter used for slow waves has not been chosen arbitrarily.
+As a matter of fact, the numerical integration does not go well when driven with $\sigma_{11}$.
+Furthermore, numerical issues occur if the starting point is such that $\sigma_{12}=0$, thus indicating that slow waves mainly live outside of that plane.
 
 More generally, the loading paths resulting from the integration of ODEs governing the behavior inside simple waves in plane stress can be summarized as follows.
 Whereas the integral curves inside a fast wave first exhibits a phase in which the stress is restricted to the initial yield surface, the passage of a slow wave make the stress leave the elastic convex quasi-instantaneously.
