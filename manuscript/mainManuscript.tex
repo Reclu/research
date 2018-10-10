@@ -93,7 +93,21 @@
 \definecolor{Orange}{RGB}{231,133,50}
 \definecolor{Red}{RGB}{217,33,32}
 
-
+% \def\tkzCylinder{\pgfutil@ifnextchar[{\tkz@cylinder}{\tkz@cylinder[]}} 
+% \def\tkz@cylinder[#1]#2#3#4{% 
+% \pgfmathsetmacro{\bb}{#2*#3}          
+% \pgfmathsetmacro{\yy}{\bb*\bb/#4}  
+% \pgfmathsetmacro{\xx}{#2*sqrt((1-\yy)/#4)}
+%   \fill[color=Maroon!10] (-\xx cm,0)--(-\xx cm,#4 cm)  
+%          arc(180:360:\xx cm and .5 cm)--(\xx cm,0) 
+%          arc(360:180:\xx cm and .5 cm);   
+% \ellipseThreeD[color=Maroon!30](0,0)(\xx cm,.5 cm)
+% \begin{scope}[yshift=#4 cm]
+%   \draw[fill=\cmdTKZ@ell@color,opacity=0.5,shade](0,0) ellipse (\xx cm and .5 cm) ;  
+% \end{scope}
+% \draw (\xx cm,0)--(\xx cm,#4 cm);
+% \draw (-\xx cm,0)--(-\xx cm,#4 cm); 
+% }%  
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{example}{Example}
