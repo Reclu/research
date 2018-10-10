@@ -1,5 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Revenir sur ce qui a été fait dans le chapitre du point de vue analytique
+% Revenir sur ce qui a été fait dans le chapitre du point de vue analytique: ok
+% Parler de Lin et Ballman (dire à la fin que c'est la seule tentative à notre connaissance pour prendre en compte la structure dans un schéma volume finis)
+% Parler de l'importance de connaitre la solution analytique
 
 % Parler des résultats numériques qui donnent quelques indices sur la structure de la solution
 
@@ -7,11 +9,31 @@
 %% Utiliser une forme quasi-linéaire en valeur propres de cauchy
 %% Lin et Ballman
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The complexity of hyperbolic problems in elastic-plastic solids has been recalled and emphasized in this chapter.
-In contrast to linear elasticity and one-dimensional plasticity, the characteristic structures of dynamic problems in elastoplastic solids under plane strain or plane stress involve waves of combined stress even for linear hardening materials.
-%% Simple waves even for linear hardening
-%% Combined stress waves
 
+\subsection*{Summary of the chapter}
+
+In this chapter, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids in two space dimensions has been highlighted.
+It is known since the 50s that plastic flow in two-dimensional solids yields two families of waves which speeds depend on the stress state, the slow and fast waves.
+As a result, shock and simple waves may occur in an elastoplastic medium even for linear hardening material.
+In addition, these plastic waves may have an impact on several stresses in contrast to elastic discontinuities across which one stress component varies, hence the name of combined stress waves.
+During the 60s, attention has been paid to simple waves in particular two-dimensional problems thus providing, among other, solutions of Picard problems in elastic-plastic medium undergoing step loadings \cite{Clifton,Ting68,Ting69,Ting73}. % Idem pour ting ? c'est dit dans l'intro ? voir ce qui est fait dans le 73
+The singular nature of such problems lies in the fact that the characteristic structure of the solution depends on the external loading undergone.
+Indeed, it has been shown \cite{Clifton} that boundary conditions can lead to plastic flow involvingon fast, one slow, or both simple waves.
+Therefore, it is crucial to be able to identify typical stress paths followed in each simple waves in order to link the initial data to a given stress state, and subsequently to determine the occurring wave pattern.
+
+%% Lin et Ballman
+Based on those works, an iterative Riemann solver \cite{Lin_et_Ballman}, which procedure has been recalled in section \ref{sec:stress_paths_num}, has been developed for the numerical solution of the thin-walled tube problem. % Voir s'ils sont contents de ce que ça apporte parce que ça a pas l'air top quand même
+% parler de Toro le 4-rarefactions RS
+%% http://www.global-sci.com/issue/v22/n5/pdf/1224.pdf 4-rarefaction waves elastic-plastic RS
+% L'idée ici c'est de généraliser cette approche pour tous les problèmes 2D
+Following this approach, identifying characteristic wave patterns for general elastoplastic problems in two space dimensions should allow to enrich the numerical solution with the knowledge one has of physical phenomena.
+%% Donc analyse math en plane stress et plane strain qui montrent certains comportement typiques.
+
+%% Ensuite, puisque les équations sont quand même chaudes, on est passé au numérique et on a montré deux trois trucs intéressants.
+
+% | prendre en compte ce qu'on vient de trouver pour construire un solveur à la Lin et Ballman
+% v si on cherche la solution d'un problème de Picard. ou pas d'ailleurs à cause de sigma_22 que l'on ne connait pas dans Picard
+\subsection*{Towards a two-dimensional elastoplastic Riemann solver}
 % Eventuellement ne parler que d'un cas pour lequel c'est plus simple comme les defs planes (encore que...).
 
 % On pourrait faire comme Lin et Ballman \cite{Lin_et_Ballman} en se donnant 3 composantes de contraintes et en intégrant. 
