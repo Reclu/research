@@ -19,11 +19,11 @@ The domain is modeled by a finite medium, with zero shear stress and transverse 
 In addition zero out-of-plane velocity and strain components are assumed so that plane waves can be simulated.
 The solid is discretized with $80\times 4$ material points in a regular gird made of either $80\times 4$ or $40\times 2$ cells so that the 1ppc and 4ppc discretizations are used.
 %The first space discretization in which the particles are located at elements centers is referred to as $1ppc$ while the second, consisting in material points that are symemtrically placed with respect to cells centers, is referred to as $4ppc$.  
-The simulation has been performed with the DGMPM-DCU, since BCs reproduce a plane wave that does not involve Poisson effect, and compared to MPM solutions. A similar problem is considered in \cite{DGMPM} with a traction force on the left boundary applied on a SVK material, for which a comparison with the exact solution shows a good agreement.
+The simulation has been performed with the DGMPM-DCU, since BCs reproduce a plane wave that does not involve Poisson's effect, and compared to MPM solutions. A similar problem is considered in \cite{DGMPM} with a traction force on the left boundary applied on a SVK material, for which a comparison with the exact solution shows a good agreement.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/2DplaneWave}
-  \caption{Isovalues of the longitudinal PK1 stress $\Pi_{11}$ solution of the plane wave problem in a two-dimensional compressible neo-Hookean material with Riemann-type data on the initial velocity. Comparison between DGMPM-DCU with 1ppc ($CFL=0.57$) or 4ppc ($CFL=0.23$) and MPM solutions also using 1ppc and 2ppc ($CFL=0.7$).}
+  \caption{Isovalues of the longitudinal PK1 stress $\Pi_{11}$ solution of the plane wave problem in a two-dimensional compressible neo-Hookean material with Riemann-type data on the initial velocity. Comparison between DGMPM-DCU with 1ppc ($CFL=0.57$) or 4ppc ($CFL=0.23$) and MPM solutions also using 1ppc and 4ppc ($CFL=0.7$).}
   \label{fig:2dplane_Wave}
 \end{figure}
 
@@ -33,7 +33,7 @@ Nevertheless, the one-dimensional dependency of the solution is not disturbed wi
 While it has been seen that a compression load on a SVK material led to a rarefaction wave, it is not the case for the neo-Hookean model for which a compression load as that studied here involves a shock wave (see remark \ref{rq:charach_neoHook}).
 
 In contrast to the above simulations, the lower CFL numbers used for this two-dimensional problem lead to a less accurate resolution of the shock wave with additional numerical diffusion.
-The evolutions of total energy during DGMPM and MPM computations are compared in figure \ref{fig:pw_energy}. As for the elastic case, it can be seen that the DGMPM is more diffusive than the MPM. It is however worth noticing the both methods diffuse more energy than in the elastic case. 
+The evolutions of total energy during DGMPM and MPM computations are compared in figure \ref{fig:pw_energy}. As for the elastic case, it can be seen that the DGMPM is more diffusive than the MPM. It is however worth noticing the both methods diffuse more energy than in the linear elastic case. 
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/HE_PW_energies}

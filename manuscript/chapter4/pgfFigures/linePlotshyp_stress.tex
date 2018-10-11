@@ -11,10 +11,13 @@ every y tick scale label/.style={at={(yticklabel* cs:1.1,-0.8cm)},anchor=near yt
 \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=P_11] {chapter4/csvFiles/he_dgmpm31.csv};
 \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/he_mpm31.csv};
 
-\nextgroupplot[title={(b) $t = 5.0 \times 10^{-4}\: s$},xlabel=$x \: (m)$,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}]
+\nextgroupplot[title={(b) $t = 5.0 \times 10^{-4}\: s$},xlabel=$x \: (m)$,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={},legend style={at={($(0.75,-0.4)+(0.9cm,0.6cm)$)},legend columns=3}]
 \addplot[Red,very thick,no markers] table[x=Points:0,y=PK2:0] {chapter4/csvFiles/he_fem176.csv};
 \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=P_11] {chapter4/csvFiles/he_dgmpm176.csv};
 \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y=mpm_S11] {chapter4/csvFiles/he_mpm176.csv};
+\addlegendentry{fem}
+\addlegendentry{dgmpm}
+\addlegendentry{mpm}
 
 
 \nextgroupplot[title={(c) $t = 1.0 \times 10^{-3}\: s$},xlabel=$x \: (m)$,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}]

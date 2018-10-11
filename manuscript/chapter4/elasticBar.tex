@@ -25,7 +25,7 @@ The problem is solved on the one hand with the MPM-USL in which the nodal veloci
   \label{fig:elastic_stress}
 \end{figure}
 Figure \ref{fig:elastic_stress} shows the numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
-First, since Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fitting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while for the same discretization the DGMPM-Euler is restricted by a lower CFL number that prevents the accurate resolution of waves.
+First, since the Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fitting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while for the same discretization the DGMPM-Euler is restricted by a lower CFL number that prevents the accurate resolution of waves.
 As identified in section \ref{sec:MPM}, the use of PIC mapping within the DGMPM leads to solutions that do not exhibit oscillations.
 %%
 In addition, this projection of updated fields from nodes to particles allows to eliminate the locking of velocity in the central region that can be seen in USL-FLIP solutions.
