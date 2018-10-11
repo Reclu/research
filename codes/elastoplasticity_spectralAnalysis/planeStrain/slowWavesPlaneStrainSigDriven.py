@@ -431,7 +431,7 @@ tau=np.zeros((Samples,Samples/10))
 
 frames=[5,20,30,40]
 #frames=[10,15,20,25,30,35]
-#frames=[5]
+frames=[0]
 col=["r","g","b","y","c","m","k","p"]
 # purple to red
 col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
