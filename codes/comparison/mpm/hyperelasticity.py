@@ -207,7 +207,13 @@ for n in range(NTMaxi)[1:]:
     xp[:,0]+=np.dot(Map[Dofs,:].T,v[Dofs])*Dt
     if updated_lagrangian:
         # Compute new mapping (convective phase)
+        prevParent=parent
         Map,Grad,Dofs,parent=buildApproximation1D(np.asmatrix(xp),xn,connect)
+        if (parent!=prevParent).any():
+            print "********************************"
+            print "*    GRID CROSSING OCCURING    *"
+            print "********************************"
+            
         mg=np.dot(np.dot(Map[Dofs,:],Md),Map[Dofs,:].T)
         md=np.diag(np.sum(mg,axis=1))
     

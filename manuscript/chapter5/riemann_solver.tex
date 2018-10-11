@@ -10,48 +10,47 @@
 %% Lin et Ballman
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % | prendre en compte ce qu'on vient de trouver pour construire un solveur à la Lin et Ballman
 % v si on cherche la solution d'un problème de Picard.
 The physical structures emphasized in this chapter enable a better understanding of the propagation of waves in two-dimensional elastoplastic medium, although further investigations are required.
 On the other hand, the loading paths followed in fast and slow simple waves can be used in order to improve the numerical simulation of those problems.
 
 %% Lin et Ballman
-First, the approach proposed by Lin and Ballman \cite{Lin_et_Ballman} can be generalized by identifying elementary stress paths which allow the solution of Picard problems.
+First, the approach proposed by Lin and Ballman \cite{Lin_et_Ballman} can be generalized by identifying elementary stress paths allowing the solution of Picard problems.
 Namely, for a given stationary stress state, one should be able to trace backward integral curves corresponding to slow and fast waves so that initial data are recovered.
 Thus, an interative procedure for the solution of Riemann problems could be constructed.
 
-%% Approximate Riemann solver
-Second, one can imagine a non-iterative approximate Riemann solver based on the behaviors emphasized above.
-Indeed, the analytical and numerical results for both plane strain and plane stress indicate that the fast waves significantly harden the material once the shear stress $\sigma_{12}$ is zero.
-In addition, slow waves more notably tend to make the stress state "move away" from the elastic convex.
-Therefore, one possibility for the building of an approximate Riemann solver would be to first make an elastic prediction which leads to two situations depending on its projection onto the yield surface:
-\begin{itemize}
-\item[(i)] if the intersection of the straight line joining the initial stress state $\tens{\sigma}^0$ to the trial stress and the yield surface, say $\widetilde{\tens{\sigma}}$, is such that $\widetilde{\sigma}_{12}\neq 0$, the plastic flow is assumed to be only due to a slow wave.
-  Then, the wave can be approximate as a plastic discontinuity operating on several stress components and moving at the constant speed $c_s(\widetilde{\tens{\sigma}})$.
-  This situation is illustrated in figure \ref{fig:approx_RP_EP_slow}.
-  \begin{figure}[h!]
-    \centering
-    \input{chapter5/pgfFigures/approximateRP_slow}
-    %\subcaptionbox{Approximation of the characteristic structure with only one fast wave \label{subfig:approx_fast}}{\input{chapter5/pgfFigures/approximateRP_fast}}
-    \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
-    \label{fig:approx_RP_EP_slow}
-  \end{figure}
-  Since across the pressure wave one has $\saut{\sigma_{11}}\neq 0$ only, the state lying in the region bounded by this discontinuity and the shear wave is known and is such that  $\saut{\sigma_{11}} = \widetilde{\sigma}_{11}-\sigma_{11}^0$.
-  Thus, one can remove the pressure discontinuity and add one plastic discontinuity from the characteristic structure.
+%% Approximate Riemann solver (not very robust)
+% Second, one can imagine a non-iterative approximate Riemann solver based on the behaviors emphasized above.
+% Indeed, the analytical and numerical results for both plane strain and plane stress indicate that the fast waves significantly harden the material once the shear stress $\sigma_{12}$ is zero.
+% In addition, slow waves more notably tend to make the stress state "move away" from the elastic convex.
+% Therefore, one possibility for the building of an approximate Riemann solver would be to first make an elastic prediction which leads to two situations depending on its projection onto the yield surface:
+% \begin{itemize}
+% \item[(i)] if the intersection of the straight line joining the initial stress state $\tens{\sigma}^0$ to the trial stress and the yield surface, say $\widetilde{\tens{\sigma}}$, is such that $\widetilde{\sigma}_{12}\neq 0$, the plastic flow is assumed to be only due to a slow wave.
+%   Then, the wave can be approximate as a plastic discontinuity operating on several stress components and moving at the constant speed $c_s(\widetilde{\tens{\sigma}})$.
+%   This situation is illustrated in figure \ref{fig:approx_RP_EP_slow}.
+%   \begin{figure}[h!]
+%     \centering
+%     \input{chapter5/pgfFigures/approximateRP_slow}
+%     %\subcaptionbox{Approximation of the characteristic structure with only one fast wave \label{subfig:approx_fast}}{\input{chapter5/pgfFigures/approximateRP_fast}}
+%     \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
+%     \label{fig:approx_RP_EP_slow}
+%   \end{figure}
+%   Since across the pressure wave one has $\saut{\sigma_{11}}\neq 0$ only, the state lying in the region bounded by this discontinuity and the shear wave is known and is such that  $\saut{\sigma_{11}} = \widetilde{\sigma}_{11}-\sigma_{11}^0$.
+%   Thus, one can remove the pressure discontinuity and add one plastic discontinuity from the characteristic structure.
   
-  %% Revoir cette hypothèse
-\item[(ii)] alternatively, if $\widetilde{\sigma}_{12}= 0$ one can assume that only a fast wave occurs, which can be approximated in a similar manner with the celerity $c_f(\widetilde{\tens{\sigma}})$ (see figure \ref{fig:approx_RP_EP_fast}).
-  \begin{figure}[h!]
-    \centering
-    \input{chapter5/pgfFigures/approximateRP_fast}
-    \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
-    \label{fig:approx_RP_EP_fast}
-  \end{figure}
-  In a similar manner, the state lying between the pressure wave and the plastic disontinuity is known since the elastic wave only carries a jump of $\sigma_{11}$, so that the pressure wave may be removed.
-\end{itemize}
+%   %% Revoir cette hypothèse
+% \item[(ii)] alternatively, if $\widetilde{\sigma}_{12}= 0$ one can assume that only a fast wave occurs, which can be approximated in a similar manner with the celerity $c_f(\widetilde{\tens{\sigma}})$ (see figure \ref{fig:approx_RP_EP_fast}).
+%   \begin{figure}[h!]
+%     \centering
+%     \input{chapter5/pgfFigures/approximateRP_fast}
+%     \caption{Procedure for the building of an elastic-plastic approximate Riemann-solver for a propagation in the direction $\vect{e}_1$.}
+%     \label{fig:approx_RP_EP_fast}
+%   \end{figure}
+%   In a similar manner, the state lying between the pressure wave and the plastic disontinuity is known since the elastic wave only carries a jump of $\sigma_{11}$, so that the pressure wave may be removed.
+% \end{itemize}
 
-Applying the procedures $(i)$ and/or $(ii)$ from both sides of the interface $x_1=0$, the Riemann problem then reduces to a linear problem involving two left-going and two right-going discontinuities which can easily solved.
+% Applying the procedures $(i)$ and/or $(ii)$ from both sides of the interface $x_1=0$, the Riemann problem then reduces to a linear problem involving two left-going and two right-going discontinuities which can easily solved.
  
 The development of such a heuristic approach, which is based on strong assumptions, enables nevertheless some improvements numerically speaking.
 Indeed, rather than considering the propagation of elastic waves, an elastic-plastic Riemann solver for problems in two space dimensions account for both elastic and plastic characteristics.

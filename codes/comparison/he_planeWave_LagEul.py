@@ -69,7 +69,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    marker=['none','*','none','+','x','none','none','star','pentagone*']
+    marker=['square','+','none','*','x','none','none','star','pentagone*']
     style=['dashed','solid','solid','solid','solid','solid','solid','pentagone*']
     thickness=['very thick','very thick','very thick','thick','thick','very thick','very thick','thin','thin','thick']
     couleur=['Red','Green','Blue','Orange','Purple','black','Orange','Duck','Green']
@@ -161,7 +161,7 @@ factor=1.
 timeOut = 1.*length/c
 t_order=1
 timeUnload = 2*timeOut
-sigd = -50.*Sigy
+sigd = -5.*Sigy
 v0=0.*Sigy/(rho*c)
 algo = 'USL'
 updated_lagrangian=False
@@ -305,7 +305,7 @@ Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["Pi"]=DGMPM["Pi_th"]
 containers=np.array([MPM,MPM2,DGMPM,DGMPM2,DGMPM3,Exact])
 rowFields=['Pi']
 colFields=np.array([[frmpm[0],frUL[0],frames[0],2*frames[0],frames[0],frames[0]],[frmpm[1],frUL[1],frames[1],2*frames[1],frames[1],frames[1]]])
-legend=['mpm','mpm (UL)','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
+legend=['mpm (TL)','mpm (UL)','dgmpm','dgmpm 2ppc','dgmpm 2ppc (RK2)','exact']
 Ylabels=[r'$\Pi (Pa)$']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)

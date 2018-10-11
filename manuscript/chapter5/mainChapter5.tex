@@ -5,7 +5,7 @@
 \section*{Introduction}
 It has been shown throughout this manuscript that hyperbolic problems in solid mechanics are solved in a different manner depending on the numerical explicit method employed. 
 In particular, irreversible deformations which are usually numerically computed based on well-known constitutive integrators, may greatly differ from one scheme to another even for one-dimensional problems.
-However, the accurate assessment of residual stresses and strains are of major importance for many industrial applications such as, among others, high-speed metal forming, crash-proof design or the studyof the impact of earthquakes on structures.
+However, the accurate assessment of residual stresses and strains are of major importance for many industrial applications such as, among others, high-speed metal forming, crash-proof design or the study of the impact of earthquakes on structures.
 The simulations performed in chapter \ref{chap:chap4} emphasized the improvements enabled by the knowledge of the characteristic structure of the solutions of conservation laws systems, especially for elastoplastic solids.
 Nevertheless, the introduction of the exact solution by means of approximate Riemann solvers is so far only possible for problems in one space dimension in elastic-plastic solids.
 
@@ -21,7 +21,7 @@ Then, the equations of plasticity are recalled in section \ref{sec:charac_plast}
 In section \ref{sec:stress_paths}, attention is paid to the evolution of stress components inside the simple waves that might propagate by means of a mathematical study of the ODEs satisfied within the simple waves.
 Since the developments rapidly become cumbersome, the analysis is supplemented with numerical results in section \ref{sec:stress_paths_num}.
 %Attention is next paid in section \ref{sec:stress_paths} to the evolution of stress components through simple waves possibly arising in the solution. 
-At last, some identified trends are discussed in section \ref{sec:ep_Riemman_solver} in order to use them for the building of a dedicated approximate Riemann solver. 
+At last, some identified trends are discussed at the end of the chapter in order to use them for the building of a dedicated Riemann solver. 
 
 \section{Historical review}
 \label{sec:review}
@@ -40,12 +40,14 @@ At last, some identified trends are discussed in section \ref{sec:ep_Riemman_sol
 \label{sec:stress_paths_num}
 \input{chapter5/numerical_results}
 
-\section{Towards a two-dimensional elastoplastic Riemann solver}
-\label{sec:ep_Riemman_solver}
-\input{chapter5/riemann_solver}
+% \section{Towards a two-dimensional elastoplastic Riemann solver}
+% \label{sec:ep_Riemman_solver}
+% \input{chapter5/riemann_solver}
 
 
 \section*{Conclusion}
+
+\subsection*{Summary of the chapter}
 
 In this chapter, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids in two space dimensions has been highlighted.
 It is known since the 50s that plastic flow in two-dimensional solids yields two families of waves which speeds depend on the stress state, the slow and fast waves.
@@ -87,6 +89,42 @@ Third, the plane strain case has been considered in section \ref{sec:num_plane_s
 Once again, the integral curves inside a fast wave show complex shapes in stress space, and an evolution restricted to the initial yield surface in the deviatoric plane.
 In that case, however, the paths may follow a direction of pure tensile/compression in the latter plane so that the plastic flow is radial. 
 In contrast, the slow waves lead to a stress state of pure shear in the deviatoric plane.
+
+\subsection*{Towards a two-dimensional elastoplastic Riemann solver}
+The physical structures emphasized in this chapter enable a better understanding of the propagation of waves in two-dimensional elastoplastic medium, although further investigations are required.
+On the other hand, the loading paths followed in fast and slow simple waves can be used in order to improve the numerical simulation of those problems.
+
+%% Lin et Ballman
+One possibility is to generalized the approach proposed by Lin and Ballman \cite{Lin_et_Ballman} based on the clues provided above.
+The idea would be to successively assume stationary states of the Riemann problem in terms of stress $\sigma_{11}$, $\sigma_{12}$ and $\sigma_{22}$ in order to build stress paths starting from the initial data.
+Namely, considering the direction $\vect{e}_1$, the loading paths followed through a fast wave can be integrated backward starting from the guess state.
+Then, different situations may occur:
+\begin{itemize}
+\item[(1-a)] the curve thus obtained crosses the initial yield surface at a point where $\sigma_{22}$ satisfy the initial data.
+  In that case, the elastic dicontinuities led to that stress state so that the characterisitc structure correspond to this depicted in figure \ref{fig:charac}\subref{subfig:charac1}.
+\item[(1-b)] if on the other hand the point reached on the initial yield does not satisfy the initial stress $\sigma_{22}$, a fast wave is added in order to browse the initial yield surface until the initial data is recovered.
+  This situation is depicted in figure \ref{fig:charac}\subref{subfig:charac2}.
+\item[(2-a)] the curve resulting from the reverse integration across a slow wave intersects the plane $\sigma_{12}=0$.
+  Then, assuming that the paths of slow waves are symmetric with respect to that plane, a fast wave is added in order to reach the initial yield surface at the initial value of $\sigma_{22}$.
+  Indeed, the fast waves have been shown to yield horizontal path in the ($\sigma_{11},\sigma_{12}$) plane in such a way that only that type of wave enables to achieve the initial elastic convex.
+  This also corresponds to figure \ref{fig:charac}\subref{subfig:charac2}.
+\item[(2-b)] if at last, the guessed state is such that $\sigma_{12}=0$, a fast wave enables to reach the initial yield surface as depicted in figure \ref{fig:charac}\subref{subfig:charac3}.
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{One slow wave \label{subfig:charac1}}{\input{chapter5/pgfFigures/charac_structuresSl}} \qquad 
+  \subcaptionbox{Both simple waves \label{subfig:charac2}}{\input{chapter5/pgfFigures/charac_structuresSlFa}} \qquad 
+  \subcaptionbox{One fast wave \label{subfig:charac3}}{\input{chapter5/pgfFigures/charac_structuresFa}}
+  \caption{Characteristic stuctures possibly occuring in two-dimensional elastic-plastic solids.}
+  \label{fig:charac}
+\end{figure}
+Notice however that the above elementary loading paths are based on strong assumptions about the symmetry of the loading paths that have not been shown so far.
+As a result, additional work must be performed in order to develop this approach and to introduce it in numerical methods.
+Moreover, the hardening of the material may modifiy the behavior of the loading paths and have not been considered yet.
+On the other hand, generalize the approach followed in this chapter to more complex hardening models (kinematic, nonlinear etc.) and other yield surfaces would be very interesting for the understanding of physics.
+%On the other hand, generalized the approach followed in this chapter to more complex hardening models (kinematic, nonlinear etc.) and other yield surface would be of major interest for the understanding of physics.
+
 
 %%% Local Variables:
 %%% mode: latex

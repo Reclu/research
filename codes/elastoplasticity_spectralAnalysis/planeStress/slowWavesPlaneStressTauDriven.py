@@ -26,7 +26,7 @@ kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.0e6
-H = 100.0e8
+# H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
         
 def export2pgfPlot2D(fileName,field1,field2,dico={"xlabel":'x',"ylabel":'y'}):
@@ -193,8 +193,6 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     w1=eigenf[1][0];w2=eigenf[1][1]
     psi11=-w2/(1.*w1)
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
-    if tangent=='thinWalled':
-        psi22=0.
     return np.array([psi11,psi22])
 
 def computeSpeed(sigma,lamb,mu,beta,tangent):
@@ -219,7 +217,7 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
         ## R = s^{n+1} - s^{n} - RHS
         R=lambda x: x - sigma - dTAU*(theta*computePsiSlow(tau0+dTAU,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiSlow(tau0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        solution = scipy.optimize.root(R,sigma).x
         sigma = solution
     return solution
 
@@ -304,7 +302,7 @@ tau=np.zeros((Samples,Samples))
 
 frames=[5,10,15,20,25,30,35,40,45]
 frames=[5,20,30,40]
-#frames=[5]
+frames=[0]
 col=["r","g","b","y","c","m","k","p"]
 col=['#332288','#88CCEE','#44AA99','#117733','#999933','#DDCC77','#CC6677','#882255','#AA4499']
 col=['#4477AA','#44AAAA','#44AA77','#AAAA44','#AA77AA','#AA4455','#AA4488']
@@ -350,7 +348,7 @@ for k in range(len(sig22)-1)[1:]:
         if np.abs(delta)<10. : delta=np.abs(delta)
         tau[i,k]=np.sqrt(delta)
         
-
+tangent='planeStress'
 ## LOADING PATHS PLOTS
 for k in range(len(sig22)-1)[1:]:
     s22=sig22[k]
@@ -363,8 +361,8 @@ for k in range(len(sig22)-1)[1:]:
     abscisses=np.zeros((len(frames),Samples))
     radius_S=np.zeros(len(frames))
     for s,i in enumerate(frames):
-        if i==0:
-            continue
+        # if i==0:
+        #     continue
         sig0=sig[-1-i,k]
         tau0=tau[-1-i,k]
 
@@ -376,10 +374,10 @@ for k in range(len(sig22)-1)[1:]:
         SIG11[0,s,k]=sig0
         SIG22[0,s,k]=s22
 
-        if s22==0.:
-            tangent='thinWalled'
-        else :
-            tangent='planeStress'
+        # if s22==0.:
+        #     tangent='thinWalled'
+        # else :
+        #     tangent='planeStress'
 
         #rSlow = ode(computePsiSlow).set_integrator('vode',method='bdf')
         # rSlow = ode(computePsiSlow).set_integrator('vode',method='adams',order=12)
@@ -431,10 +429,18 @@ for k in range(len(sig22)-1)[1:]:
                 break
         print "Final equivalent plastic strain after slow wave : ",plast
         fileName=path+'CPslowStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
-        if Nfinal/100>5:
+        # if Nfinal/100>5:
+        #     pas=Nfinal/100
+        # else:
+        #     pas=2
+        
+        if Nfinal/100>1:
             pas=Nfinal/100
+            ranging=np.linspace(0,Nfinal-1,Nfinal/100,True,False,np.int)
         else:
-            pas=2
+            pas=1
+            ranging=np.linspace(0,Nfinal-1,Nfinal,True,False,np.int)
+        
         ## color bar of rcs2
         export2pgfPlotFile(fileName,np.array([TAU[0:Nfinal:pas,s,k],SIG11[0:Nfinal:pas,s,k],SIG22[0:Nfinal:pas,s,k],rcs2[0:Nfinal:pas,s,k],LodeAngle_S[0:Nfinal:pas,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
@@ -458,7 +464,7 @@ for k in range(len(sig22)-1)[1:]:
     ax3=plt.subplot2grid((1,1),(0,0),projection='3d')
 
     cylindre=vonMisesYieldSurface(sigy)
-    #ax3.plot_wireframe(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
+    ax3.plot(cylindre[0,:],cylindre[1,:],cylindre[2,:], color="k")
     elevation_Angle_radian=np.arctan(1./np.sqrt(2.0))
     angle_degree= 180.*elevation_Angle_radian/np.pi
     radius=1.*np.sqrt((2./3.)*sigy**2)
@@ -515,9 +521,9 @@ for k in range(len(sig22)-1)[1:]:
         if np.abs(delta).any()<10. : delta=np.abs(delta)
         s12=np.sqrt(delta)
         ## export to pgf file
-        fileName=path+'DPslow_yield0_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
+        fileName=path+'CPslow_yield0_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
         export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
-        yields22_s12.append(fileName)
+        #yields22_s12.append(fileName)
         #ax.plot(np.ones(Samples)*sig0,s12,s22,'k')
         ax2.plot(s22,s12,'k')
         maxCriterion=sig0/2.
