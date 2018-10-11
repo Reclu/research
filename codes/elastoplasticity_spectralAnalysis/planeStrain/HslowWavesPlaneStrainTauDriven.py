@@ -476,9 +476,8 @@ Samples*=10
 sig=np.zeros((Samples,Samples/10))
 tau=np.zeros((Samples,Samples/10))
 
-frames=[5,20,30,40]
-#frames=[10,15,20,25,30,35]
-#frames=[5]
+
+frames=[0,5,20,30,40]
 col=["r","g","b","y","c","m","k","p"]
 # purple to red
 col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
@@ -782,7 +781,7 @@ for k in range(len(sig22)-1)[1:]:
                 ## export to pgf file
                 fileName=path+'DPslow_yieldfin_s22s12_frame'+str(p)+'_Stress'+str(k)+'.pgf'
                 #export2pgfPlotFile(fileName,np.array([s12,s22]),'sigma_12','sigma_22')
-                export2pgfPlotFile(fileName,np.array([limitY,limitX]),'sigma_12','sigma_22')
+                #export2pgfPlotFile(fileName,np.array([limitY,limitX]),'sigma_12','sigma_22')
                 #yields22_s12.append(fileName)
                 ## The same on ax1
                 s22=SIG22[iteration[p,k],p,k]
@@ -802,7 +801,7 @@ for k in range(len(sig22)-1)[1:]:
                 ax1.plot([maxCrit,maxCrit],[0.,tauM],color=col[p],linestyle='-.')
                 limitX=np.array([maxCrit,maxCrit])
                 limitY=np.array([0.,tauM])
-                export2pgfPlotFile(fileName,np.array([limitY,limitX]),'sigma_12','sigma_11')
+                #export2pgfPlotFile(fileName,np.array([limitY,limitX]),'sigma_12','sigma_11')
                 #yields11_s12.append(fileName)
                 
             ax1.plot(SIG11[:iteration[p,k],p,k],TAU[:iteration[p,k],p,k],color=col[p],lw=2.5)

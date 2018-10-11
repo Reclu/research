@@ -65,13 +65,13 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
             TeXFile=open(nom,"w")
             TeXFile.write(r'\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},cross/.default={2.5pt}}');TeXFile.write('\n')
             TeXFile.write(r'\begin{tikzpicture}[scale=0.9]');TeXFile.write('\n')
-            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.225,.59)}}]');TeXFile.write('\n')
+            TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.2,.67)}}]');TeXFile.write('\n')
 	    TeXFile.write(r'\node[below] at (1.1e8,0.,0.) {$\sigma^y$};');TeXFile.write('\n')
 	    TeXFile.write(r'\node[above] at (-1.1e8,0.,0.) {$-\sigma^y$};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
 	    TeXFile.write(r'\draw (-1.e8,0.,0.) node[cross,rotate=10] {};');TeXFile.write('\n')
 	    TeXFile.write(r'\node[white]  at (0,0.,1.1e8) {};');TeXFile.write('\n')
-	    #TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty,legend style={at={(.225,.65)}}]');TeXFile.write('\n')
+	    #TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel='+str(xlabels[i])+',ylabel='+str(ylabels[i])+',zlabel='+str(zlabels[i])+',xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,ztick=\empty,legend style={at={(.2,.68)}}]');TeXFile.write('\n')
             for j,name in enumerate(pgfFiles[i][:len(couleur)]):
                 #pdb.set_trace()
                 if name[25:25+12]=='CylindreDevP': ##  yield surface
@@ -79,7 +79,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\addlegendentry{initial yield surface}')
                     TeXFile.write('\n')
                 else:
-                    TeXFile.write(r'\addplot3['+couleur[j]+',thick,arrows along my path] file {chapter5/pgfFigures/'+name+'};')
+                    TeXFile.write(r'\addplot3[arrows along my path,'+couleur[j]+',very thick] file {chapter5/pgfFigures/'+name+'};')
                     #TeXFile.write(r'\addplot3[black,thick,no markers] file {chapter5/pgfFigures/'+name+'};')
                     TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')

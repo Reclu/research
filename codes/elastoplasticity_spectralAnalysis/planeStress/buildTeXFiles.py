@@ -87,7 +87,7 @@ def buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,ylim):
                     TeXFile.write(r'\addlegendentry{initial yield surface}')
                     TeXFile.write('\n')
                 else:
-                    TeXFile.write(r'\addplot3['+couleur[j]+',mark='+marker[j]+',very thick,arrows along my path] file {chapter5/pgfFigures/'+name+'};\n')
+                    TeXFile.write(r'\addplot3['+couleur[j]+',mark='+marker[j]+',very thick] file {chapter5/pgfFigures/'+name+'};\n')
 		    TeXFile.write(r'\addlegendentry{loading path '+str(j+1)+'}')
                     TeXFile.write('\n')
 

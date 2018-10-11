@@ -376,7 +376,7 @@ tau=np.zeros((Samples,Samples))
 
 
 frames=[0,10,29,31,49,Samples-1]
-#frames=[0]
+frames=[0]
 
 col=["r","g","b","y","c","m","k","p"]
 
@@ -450,12 +450,13 @@ for k in range(len(sig22)):
         #     sig0=sig[-1-i+1,k]
         #     tau0=tau[-1-i+1,k]
         #     sigMax=1.*sigM
-        sig0=sig[i,k]
-        tau0=tau[i,k]
-        if i<Samples/2:
-            sigMax=-1.*sigM
+        sig0=sig[-1-i,k]
+        tau0=tau[-1-i,k]
+        
+        if i>Samples/2:
+            sigMax=-2.*sigM
         else:
-            sigMax=1.*sigM
+            sigMax=5.*sigM
         
         # maxCrit=0.5*(s22*(2.*nu**2-2.*nu-1.))/(nu-nu**2-1.)
         # if sig0<maxCrit :

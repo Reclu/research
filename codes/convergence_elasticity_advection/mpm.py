@@ -105,7 +105,7 @@ s0 =-0.5*Sy
 
 # Time discretization
 #factor=2.
-CFL=0.5
+CFL=0.1
 tfinal=0.5*L/c
 tf=2.*tfinal#0.75*L/c
 Dt=CFL*lx/c

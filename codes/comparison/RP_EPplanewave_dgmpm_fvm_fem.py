@@ -64,10 +64,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    marker=['+','none','none','x','none','pentagone*','none','triangle*']
+    marker=['+','none','x','none','none','pentagone*','none','triangle*']
     style=['solid','dotted','solid','solid','solid','solid','solid']
-    thickness=['very thick','very thick','very thick','thick','thin','very thick','thin','thick']
-    couleur=['Red','Orange','Blue','Purple','black','Yellow','black','Green']
+    thickness=['very thick','very thick','thick','thin','very thick','very thick','thin','thick']
+    couleur=['Blue','Orange','Purple','black','Blue','Yellow','black','Green']
     maximum=np.zeros(row)
     minimum=np.zeros(row)
     # sum over rows (fields sigma of epsp)
@@ -100,7 +100,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,leg
             TeXFile.write(r'\nextgroupplot[')
             if i==0: TeXFile.write(r'title={'+str(titles[j])+'},ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
             elif j==0: TeXFile.write(r'ylabel='+str(Ylabels[i])+',ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
-            elif j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.25,-0.45)+(0.cm,1cm)$)},legend columns=5},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
+            elif j==col-1 and i==row-1: TeXFile.write(r'legend style={at={($(0.15,-0.45)+(0.cm,1cm)$)},legend columns=5},ymin='+str(minimum[i])+',ymax='+str(maximum[i]))
             else: TeXFile.write('ymin='+str(minimum[i])+',ymax='+str(maximum[i])+',')
             TeXFile.write(']');TeXFile.write('\n')
             for k in range(fields_in_plots):
@@ -263,10 +263,10 @@ fileName=str(path)+'/ep_dgmpm_fvm_fem.tex'
 Exact=dict();Exact["pos"]=DGMPM["pos"];Exact["sig"]=sig_th;Exact["epsp"]=epsp_th
 FEM["pos"]=DGMPM["pos"];FVM["pos"]=DGMPM["pos"];FVM2["pos"]=DGMPM["pos"]
 # DGMPM["pos"][:,n1],FEM["centroids"],FVM["centroids"],FVM2["centroids"],DGMPM["pos"][:,n1]
-containers=np.array([DGMPM,FEM,FVM,FVM2,Exact])
+containers=np.array([DGMPM,FEM,FVM2,Exact])
 rowFields=['sig','epsp']
-colFields=np.array([[20,20,20,20,0],[30,30,30,30,1],[45,45,45,45,2]])
-legend=['dgmpm','fem','fvm','fvm (SB)','exact']
+colFields=np.array([[20,20,20,0],[30,30,30,1],[45,45,45,2]])
+legend=['dgmpm','fem','fvm (SB)','exact']
 Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
 export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)

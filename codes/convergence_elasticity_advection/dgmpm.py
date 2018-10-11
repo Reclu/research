@@ -53,7 +53,7 @@ def computeCourantNumber(order,parent,Map):
         #sol.append(optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12}).x)
         sol.append(optimize.newton(Residual,1.))
     solution_CFL=np.min(sol)
-    #print "Courant number set to :",solution_CFL
+    print "Courant number set to :",solution_CFL
     return solution_CFL
     
 
@@ -118,7 +118,7 @@ if compute_CFL:
         #print "CFL=1 changed to CFL=0.99999999999"
         CFL=0.99999999999
 else:
-    CFL=0.5    
+    CFL=0.1    
 Dt=CFL*dx/c 
 #print "DGMPM CFL=",CFL," time order :",t_order
 #Dt=(0.5*L/c)/100.

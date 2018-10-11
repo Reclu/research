@@ -25,7 +25,7 @@ kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.0e6
-H = 100.0e8
+#H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
         
@@ -217,7 +217,7 @@ def integrateODE(dtau,sig0,tau0,sig22_0,sig33,lamb,mu,beta,tangent):
         ## R = s^{n+1} - s^{n} - RHS
         R=lambda x: x - sigma - dTAU*(theta*computePsiFast(tau0+dTAU,x,sig33,lamb,mu,beta,tangent)+(1.0-theta)*computePsiFast(tau0,sigma,sig33,lamb,mu,beta,tangent))
         #pdb.set_trace()
-        solution = scipy.optimize.fsolve(R,sigma)
+        solution = scipy.optimize.root(R,sigma).x
         sigma = solution
     return solution
 
@@ -317,7 +317,7 @@ col=["r","g","b","y","c","m","k","p"]
 tauM=1.5*sigy/np.sqrt(3.)
 sigM=1.5*sigy/np.sqrt(1-nu+nu**2)
 tauM=0.*sigy#sigM
-Niter=500
+Niter=15000
 TAU=np.zeros((Niter,len(frames),len(sig22)))
 SIG11=np.zeros((Niter,len(frames),len(sig22)))
 SIG22=np.zeros((Niter,len(frames),len(sig22)))
@@ -431,8 +431,8 @@ for k in range(len(sig22)):
             rcf2[j+1,s,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
             if rcf2[j+1,s,k]>rcf2[j,s,k]:
                 print "Simple wave condition violated"
-            sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
-            sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+            # sigDev=computeDeviatoricPart(np.array([SIG11[j+1,s,k],TAU[j+1,s,k],SIG22[j+1,s,k],0.]))
+            # sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
 
             eigsigS[j+1,s,k,:]=computeEigenStresses(sigma)
 
@@ -474,16 +474,22 @@ for k in range(len(sig22)):
         
         print "Final equivalent plastic strain after fast wave : ",plast
         fileName=path+'CPfastStressPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
-        if Nfinal/100>5:
+        # if Nfinal/100>5:
+        #     pas=Nfinal/100
+        # else:
+        #     pas=2
+        if Nfinal/100>1:
             pas=Nfinal/100
+            ranging=np.linspace(0,Nfinal-1,Nfinal/100,True,False,np.int)
         else:
-            pas=2
+            pas=1
+            ranging=np.linspace(0,Nfinal-1,Nfinal,True,False,np.int)
         ## color bar of rcf2
-        export2pgfPlotFile(fileName,np.array([TAU[0:Nfinal:pas,s,k],SIG11[0:Nfinal:pas,s,k],SIG22[0:Nfinal:pas,s,k],rcf2[0:Nfinal:pas,s,k],LodeAngle_F[0:Nfinal:pas,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+        export2pgfPlotFile(fileName,np.array([TAU[ranging,s,k],SIG11[ranging,s,k],SIG22[ranging,s,k],rcf2[ranging,s,k],LodeAngle_F[ranging,s,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
         pgfFilesList.append(fileName)
         fileName=path+'CPfastDevPlane_frame'+str(s)+'_Stress'+str(k)+'.pgf'
         dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
-        export2pgfPlot3D(fileName,eigsigS[0:Nfinal:pas,s,k,0],eigsigS[0:Nfinal:pas,s,k,1],eigsigS[0:Nfinal:pas,s,k,2],dico)
+        export2pgfPlot3D(fileName,eigsigS[ranging,s,k,0],eigsigS[ranging,s,k,1],eigsigS[ranging,s,k,2],dico)
         deviatorPlots.append(fileName)
         
         
@@ -642,7 +648,7 @@ for k in range(len(sig22)):
     ylabels=[['$\sigma_{12}  (Pa)$','$\sigma_{12}  (Pa)$'],'$s_2 $'] #size=number of .tex files
     zlabels=[['',''],'$s_3$'] #size=number of .tex files
 
-    TauMax=1.1*np.max(TAU[0:Nfinal:pas,:,k])
+    TauMax=1.1*np.max(TAU[ranging,:,k])
     buildTeXFiles2(names,pgfFiles,xlabels,ylabels,zlabels,srcX,srcY,TauMax)
     
     pgfFilesList=[];yields11_s12=[];

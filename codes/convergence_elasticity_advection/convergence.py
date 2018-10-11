@@ -69,7 +69,7 @@ ppc=[2]
 MP = [4,8,16,32,64,128]
 ppc=[2,3,4,8]
 #ppc=[2,6,10,20]
-
+ppc=[2]
 #MP = [120,160,200,240,300]
 loading=-75.
 dx = np.zeros((len(MP),len(ppc)))
@@ -91,7 +91,7 @@ Error_order1=2
 Error_order2=2
 period=0.4
 DX=[]
-compute_CFL=True
+compute_CFL=False
 for p in range(len(ppc)):
     print "==============================",ppc[p],"PPC =============================="
     for i,Ne in enumerate(MP):
