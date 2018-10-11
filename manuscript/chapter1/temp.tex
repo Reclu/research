@@ -1,0 +1,22 @@
+
+%% Ne pas dire trop tôt que la solution analytique doit être introduite dans la simulation. GArder ça pour la fin en disant que c'est un point de vue adopté ici
+A domain is discretized by means of a collection of points that are given a support which could be compared to the size of finite elements.
+The points interact with each other when their supports overlap.
+
+In particular, the Material Point Method (MPM) inherits from the family of Particle-in-Cells methods which can be viewed as a meshfree extension of FEM. 
+%\textit{The Material Point Method (MPM)} developed in the 90's \cite{Sulsky94} can be viewed as an extension of the FEM in which quadrature points can move in an arbitrary computational grid. Those \textit{material points} represent a continuum with a Lagrangian description and are used to store all the fields and internal variables of the problem. The underlying mesh is only used to compute gradients, apply boundary conditions and solve discrete equations. The method hence uses many transfer steps of fields between material points and nodes. Since the data are stored at material points, the grid can be discarded at each time step and re-constructed for computational convenience without additional projections, thus avoiding mesh entanglement.
+% this approach seems unable to accurately deal with discontinuities owing to numerical oscillations, diffusion introduced by mapping steps, and its low maximum admissible Courant number.
+
+%% DG
+%The \textit{discontinuous Galerkin (DG)} approximation \cite{Hesthaven} enables to build numerical schemes that benefit from both finite element and finite volume methods. 
+%DG-methods are based on piece-wise polynomial shape functions and their combination with the finite element formulation (DGFEM) led to several development steps to reach \textit{Total Variation Diminishing in the Means (TVDM)} and \textit{Total Variation Bounded (TVB)} high order schemes that ensure convergence to entropy-satisfying solutions \cite{Cockburn}. 
+%In addition, the same order of accuracy is reached for velocity and gradients within a finite element framework when the weak form is based on a conservation laws system. Although this approach can easily handle mesh-adaption strategies due to the relaxation of fields continuity, the mesh tangling problems do not vanish. 
+%Furthermore, the Courant condition that applies is restrictive \cite{Cockburn} and prevents to accurately capture discontinuities.
+
+%% DGMPM
+% The purpose of this work is to develop a numerical method gathering the strengths of both material point and DG methods and avoiding their respective limits by means of the discontinuous Galerkin approximation. The computational grid of the MPM is used to build a piece-wise linear approximation of the solution of conservation laws, which weak form is written on each element. Boundary integrals arising from integration by parts involve numerical fluxes that connect the elements together and are computed with an approximate Riemann solver \cite{Toro}. Projection steps between the underlying mesh, used to solve the discrete equations, and material points that store the fields of the problem, provide a Lagrangian description of the deformation in an arbitrary computational grid. The resulting \textit{Discontinuous Galerkin Material Point Method} (DGMPM) hence aims to enable an accurate wave paths tracking in solid media undergoing large strains.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
