@@ -1,0 +1,39 @@
+In the present manuscript, a numerical method for applications in solid mechanics aiming at benefiting from the schemes mentioned in the previous section is developed.
+%% Lagrangian
+A material description of the motion is here desired so as to handle history-dependent constitutive models while avoiding the diffusion inherent in ALE and Eulerian methods.
+%% Meshfree
+In addition, in order not to suffer from mesh tangling instabilities, it seems better to turn to a mesh-free method.
+%% DG approximation
+This method method is wanted to mimic the physics of hyperbolic problems by accounting for their intrinsic structure.
+
+%% MPM + DG
+It is therefore proposed here to mix the above features by extending the material point method to the discontinuous Galerkin approximation.
+%% Pourquoi pas SDG ou TDG
+The Discontinuous Galerkin approximation provides an appealing framework for describing moving discontinuities such as waves propagating in solids.
+Moreover, the numerical fluxes naturally arising from the use of DG approximation enables to introduce the structure on the one hand, and to take advantage of interesting functionalities of finite volumes schemes on the other hand.
+%% Pourquoi MPM
+Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the commodity it allows in computing the numerical fluxes at finite elements interfaces.
+%% Réduire la diffusion de la pic grace à DG
+A balance between diffusion and oscillations exists in PIC methods in such a way that there is some freedom in regard to the MPM setting used since.
+It is however thought that the employment of DG approximation leads to a reduction of the influence domain of the particles and hence, to a reduction of the numerical diffusion. 
+Therefore, it is preferred here to avoid oscillations at the risk of introducing diffusion, which should be limited by the DG approximation.
+At last, as a first development step of the Discontinuous Galerkin Material Point Method, we restrict our attention to space-DG.
+
+%% Travail sur la modélisation des écoulements plastiques en 2D
+The approach described previously should be able to account for the characteristic structure of hyperbolic problems.
+Indeed, the point of view adopted here is that a numerical scheme can properly mimic the solution providing that a sufficient amount of information about the physics is available.
+Nonetheless, it is not the case for all the constitutive models considered in this work.
+More specifically, while the response of one-dimensional elastoplastic solids is well-known, there are some lacks in describing the behavior of such materials in more dimension. 
+As a consequence, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids is also investigated in the present work.
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:
+
