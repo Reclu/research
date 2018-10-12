@@ -1,4 +1,3 @@
-\chapter{The Discontinuous Galerkin Material Point Method}
 
 \section*{Introduction}
 It has been highlighted in the previous chapter that even though exact solutions of hyperbolic systems have been derived, it is not possible in general. It is indeed well known that in addition to the mathematical complexity of PDEs, physics often involves multidimensional problems in domains with complex geometries that cannot be solved analytically. Numerical strategies may then be employed in order to compute an approximate solution to such problems.
@@ -23,7 +22,7 @@ In what follows, a brief historical review of developments that led to the MPM f
 \label{sec:DGMPM_analysis}
 \input{chapter3/numerical_analysis}
 
-\section*{Conclusion}
+\section{Conclusion}
 In this chapter, the formulation of the MPM has been recalled and some drawbacks of the method when applied to hyperbolic problems have been emphasized in section \ref{sec:MPM}. It has been seen that the projection of the nodal velocity field to material points inherited from FLIP, though it reduces the numerical diffusion, introduces noise in the solution.
 Hence, an alternative method using both PIC mapping procedure and Discontinuous Galerkin approximation has been proposed in section \ref{sec:DGMPM} in order to avoid spurious oscillations.
 % Hence, an alternative to this mapping procedure in order to avoid numerical dissipation within the MPM without introducing numerical noise has been proposed by means of the Discontinuous Galerkin approximation in section \ref{sec:DGMPM}.

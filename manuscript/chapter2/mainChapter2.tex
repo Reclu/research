@@ -1,4 +1,3 @@
-\chapter{Hyperbolic partial differential equations for solid dynamics}
 \section*{Introduction}
 In this chapter, generalities about systems of Partial Differential Equations (PDEs) are first introduced. More specifically, the notions of \textit{characteristics} and \textit{hyperbolicity} for hyperbolic PDEs are introduced in section \ref{sec:PDEs} for first order systems which will be of particular interest in the following of the manuscript.
 Then, introduction of balance laws of solid dynamics and derivation of constitutive equations from the thermodynamics in section \ref{sec:solidMech_equations} will lead to first order hyperbolic PDEs.
@@ -26,7 +25,7 @@ At last, strategies enabling the computation of approximate solutions of non-lin
 \label{sec:riemann_solvers}
 \input{chapter2/riemann_solvers}
 
-\section*{Conclusion}
+\section{Conclusion}
 It has been seen in this chapter that solid dynamics balance equations can be written as a first order hyperbolic system whose theory has been recalled in section \ref{sec:PDEs}. Indeed, the thermodynamics framework assuming generalized standard materials combined to conservation laws allowed in section \ref{sec:solidMech_equations} the building of conservative or quasi-linear forms. Those systems of partial differential equations admit non-complex eigenvalues and independent eigenvectors providing that some requirements on the stored energy function are satisfied (positive definiteness of the acoustic tensor). Then, the characteristic analysis of the quasi-linear form in section \ref{sec:characteristic_analysis} enabled to highlight specific wave types involved in the solutions of dynamic problems, that is: discontinuous, shock and simple waves. Even though exact solutions of linear and non-linear problems have been developed in section \ref{sec:riemann_problems}, it is not possible in general, hence the introduction of approximate-state Riemann solvers in section \ref{sec:riemann_solvers}. This solution strategy will be used in what follows as an element of the \textit{Discontinuous Galerkin Material Point Method}, which is the object of the next chapter.
 
 %%% Local Variables:
