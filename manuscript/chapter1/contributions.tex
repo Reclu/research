@@ -12,7 +12,7 @@ It is therefore proposed here to mix the above features by extending the materia
 The Discontinuous Galerkin approximation provides an appealing framework for describing moving discontinuities such as waves propagating in solids.
 Moreover, the numerical fluxes naturally arising from the use of DG approximation enables to introduce the structure on the one hand, and to take advantage of interesting functionalities of finite volumes schemes on the other hand.
 %% Pourquoi MPM
-Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the commodity it allows in computing the numerical fluxes at finite elements interfaces.
+Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the commodity it allows in computing the numerical fluxes at finite elements interfaces by means of an approximate Riemann solver \cite{Toro}.
 %% Réduire la diffusion de la pic grace à DG
 A balance between diffusion and oscillations exists in PIC methods in such a way that there is some freedom in regard to the MPM setting used since.
 It is however thought that the employment of DG approximation leads to a reduction of the influence domain of the particles and hence, to a reduction of the numerical diffusion. 

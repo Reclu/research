@@ -1,0 +1,32 @@
+This manuscript starts with a review of some basics about general hyperbolic problems in chapter \ref{chap:chap2}.
+Then, the governing equations of solid mechanics including balance laws and constitutive models are recalled so that hyperbolic systems of solid mechanics are written.
+Thus, applying the tools of characteristic analysis, it will be seen that wave solutions naturally arise from the equations. % may generate shocks by interacting with each other.
+In particular, the exact solutions of Riemann problems in linear elastic and elastic-plastic solids are recalled and a plane wave solution in a hyperelastic medium is developed.
+Given the complexity in computing the exact solution of Riemann problems for nonlinear problems, a well-known approximate Riemann solver is at last presented.
+
+
+A historical review of PIC methods is made and both Eulerian and Lagrangian formulation of the MPM are derived in \ref{chap:chap3}.
+After illustrating some shortcomings of the latter scheme on a simple test case, the extension of the MPM to the discontinuous Galerkin approximation is developed.
+First, an overview existing DG schemes is provided.
+Second, the DGMPM is derived with a total Lagrangian formulation.
+As we shall see, this new approach enables the use of fractional-steps methods for non-homogeneous systems as well as Riemann solvers for the computation of intercell fluxes.
+The remaining of the chapter concerns the numerical analysis of the DGMPM in terms of stability and accuracy.
+
+
+Chapter \ref{chap:chap4} is devoted to the comparison of the performances of the method with other existing schemes and exact solutions.
+To begin with, problems falling in the linearized geometrical framework will be consideredin one and two space dimensions.
+More specifically, the consitutive models assumed include elasticity, elasto-viscoplasticity and elastoplasticity.
+Then, hyperbolic problems in one-dimensional and two-dimensional hyperelastic media are looked at.
+
+The simulations performed on elastic-plastic solids in chapter \ref{chap:chap4} emphasize that the numerical solutions can be improved by the understanding one has of the physics.
+The purpose of chapter \ref{chap:chap5} is therefore to tackle hyperbolic problems in two-dimensional elastic-plastic solids undergoing dynamic step-loadings. 
+Indeed, though a lot of numerical results of this class of problems may be found in the litterature, the structure of the solutions is rather unknown, as shown by the major works presented in the chapter. 
+Thus, the proposed characteristic analysis of plane strain and plane stress problems highlights the combined-stress wave nature of the solutions.
+Then, the mathematical study of loading paths followed across plastic waves, suplemented by numerical results, emphasize typical responses of solids to given loading conditions.
+Finally, the idea of benefit from the identified stress paths in numerical schemes by means of a dedicated Riemann solver is discussed.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../mainManuscript"
+%%% End:

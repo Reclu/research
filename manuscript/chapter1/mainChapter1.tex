@@ -1,48 +1,19 @@
-\chapter{Introduction}
 
 \section{General context}
-%\input{chapter1/generalities}
+\input{chapter1/generalities}
 
 
 \section{Numerical methods for hyperbolic problems in solid mechanics}
-%\input{chapter1/simulation}
+\input{chapter1/simulation}
 
 
 \section{Approach followed in this work}
-%\input{chapter1/contributions}
+\input{chapter1/contributions}
 
 \section{Organization of the manuscript}
-etc.
-
-
-
+\input{chapter1/outline}
 
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../mainManuscript"
 %%% End:
-
-
-
-%%% MPM
-% The Material Point Method (MPM) developed in the 90’s [1] can be viewed as an extension of the FEM in which quadrature points can move in an arbitrary computational grid. Those material points represent a continuum with a Lagrangian description and are used to store all the fields and internal variables of the problem. The underlying mesh is only used to compute gradients, apply boundary conditions and solve discrete equations. The method hence uses many transfer steps of fields between material points and nodes. Since the data are stored at material points, the grid can be discarded at each time step and re-constructed for computational convenience without additional projections, thus avoiding mesh entanglement.
-
-
-
-%%% DG
-% The discontinuous Galerkin (DG) approximation [2] enables to build numerical schemes that benefit from both finite element and finite volume methods. DG-methods are based on piece-wise polynomial shape functions and their combination with the finite element formulation (DGFEM) led to several development steps to reach Total Variation Diminishing in the Means (TVDM) and Total Variation Bounded (TVB) high order schemes that ensure convergence to entropy-satisfying solutions [14]. In addition, the same order of accuracy is reached for velocity and gradients within a finite element framework when the weak form is based on a conservation laws system. Although this approach can easily handle mesh-adaption strategies due to the relaxation of fields continuity, the mesh tangling problems do not vanish. Furthermore, the Courant condition that applies is restrictive [14] and prevents to accurately capture discontinuities.
-
-%%% Purpose
-%The purpose of this work is to develop a numerical method gathering the strengths of both material point and DG methods and avoiding their respective limits by means of the discontinuous Galerkin approximation. The computational grid of the MPM is used to build a piece-wise linear approximation of the solution of conservation laws, which weak form is written on each element. Boundary integrals arising from integration by parts involve numerical fluxes that connect the elements together and are computed with an approximate Riemann solver [3]. Projection steps between the underlying mesh, used to solve the discrete equations, and material points that store the fields of the problem, provide a Lagrangian description of the deformation in an arbitrary computational grid. The resulting Discontinuous Galerkin Material Point Method (DGMPM) hence aims to enable an accurate wave paths tracking in solid media undergoing large strains. A similar approach based on the Particle-In-Cell (PIC) method has already been developed in [15] for electromagnetism equations. This discontinuous Galerkin version of PIC, unlike the DGMPM, uses classical Gauss points to integrate the weak form. Moreover, electric and magnetic fields are stored at nodes whereas charge and current densities are stored at particles which prevent the arbitrariness of the grid.
-
-
-
-
-%%%
-%In what follows, after a brief review of continuum equations (section 2), the DGMPM formulation is derived within the large strains framework with a total Lagrangian approach for hyperelasticity in section 3. Section 4 is dedicated to the computation of interface fluxes arising in the weak form. First, Riemann problems are written at interfaces with a quasi-linear form which spectral analysis is performed. Second, an approximate Riemann solver that can take into
-% account transverse corrections for multi-dimensional problems is derived. Finally, the enforcement of boundary conditions
-% is discussed. Next, after a summary of the numerical procedure in section 5, the stability analysis of the one-dimensional
-% scheme is carried out in section 6. This analysis shows that a reduced integration of the weak form provides an improve-
-% ment of the stability condition that limits the DGFEM. At last, the method is illustrated in section 7 on one-dimensional
-% cases in order to compare it to analytical solutions, and two-dimensional problems for which comparisons are performed
-% with the Finite Element Method.
