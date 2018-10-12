@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+    \draw[thick, ->] (0,0) -- (3.,0) node [right] {$x_1$};
+    \draw[thick, ->] (0,0) -- (0,3) node [above] {$t$};
+    \draw[very thick] (0,0) -- (3,1) node [right] {$c_1$};
+    \foreach \x in {0.1,0.2,...,0.5}
+    \draw (0,0) -- (3,1+\x);
+    \draw (0,0) -- (3,1.6) node [right] {$c_f$};
+    \draw[very thick] (0,0) -- (3,2) node [right] {$c_2$};
+    \foreach \x in {0.1,0.2,...,0.9}
+    \draw (0,0) -- (3,2+\x);
+    \draw (0,0) -- (3,3) node [right] {$c_s$};
+\end{tikzpicture}
