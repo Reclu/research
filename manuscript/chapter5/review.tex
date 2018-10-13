@@ -1,20 +1,12 @@
-% Researches done on the elastic-plastic bahavior of material at high strain rates for characterization purposes. 
-% To this end, uni-axial stress or strain, pure bending or pure torsion problems have been investigated until the late 50's (vérifier ça). 
-% Rakmathulin et Cristescu ont ouvert la voie à des problèmes plus complexes impliquant des chargements combinés.
-
-% Elastic solver used previously
-
-% \cite{Clifton_thesis} development of a method of characteristics in 3 independent variables that is then numerically approximated (Notion of bicharacteristics). Nous on n'en a pas besoin puisqu'on a déjà notre schéma numérique. En ravanche, on cherche à résoudre le problème dans une direction donnée pour lequel la méthode des caractéristiques s'applique.
-
-% This is for instance the case for the simulation of forming technics that cannot, in general, be modeled in a one-dimensional setting.
-
-Until the 50s, researches on dynamic problems in plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for materials characterization purposes.
+Until the 50s, researches on dynamic problems in elastic-plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for materials characterization purposes.
 The first references that brought some understanding about the response of linearly hardening solids to combined shear and pressure loads are those of Rakhmatulin \cite{Rakhmatulin} and Cristescu \cite{CRISTESCU19591605}.
 These early analytical investigations on plane stress impacts in the plastic regime led to the conclusion that elastic waves, as well as plastic combined-stress simple waves, can propagate in two-dimensional solids. 
 While the former were well-known, the latter were shown to fall into the two \textit{fast waves} and \textit{slow waves} families.
-The maximal value of fast waves (\textit{resp. slow waves}) is higher than that of pressure (\textit{resp. shear}) plastic discontinuity occuring in one-dimensional problems, for a given compression (\textit{resp. shear}) load amplitude.
+% It has been moreover shown that the fast waves propagate faster than the plastic pressure discontinuity in uni-axial problems would, for a given compression load amplitude.
+% Likewise, slow waves propa
+% The maximal value of fast waves (\textit{resp. slow waves}) is higher than that of pressure (\textit{resp. shear}) plastic discontinuity occuring in one-dimensional problems, for a given compression (\textit{resp. shear}) load amplitude.
 
-Later, Bleich and Nelson \cite{Bleich} considered sumperimposed plane and shear waves in an ideally elastic-plastic materials submitted to step loads.
+Later, Bleich and Nelson \cite{Bleich} considered superimposed plane and shear waves in an ideally elastic-plastic materials submitted to step loads.
 It has thus been highlighted that different loading cases yield different characteristic structures of the solution of a Picard problem, thus revealing the complexity of plastic flows in more than one dimension.
 % Distinguer un peu plus ces deux contributions.
 %\thomas{see \cite[p.56 pdf]{Nowacki},\cite{Goel}}. 
@@ -39,15 +31,17 @@ Ting and Nan \cite{Ting68} then generalized the work of Bleich and Nelson to har
 Once again, the mathematical study of the ODE system governing the stresses evolution inside fast and slow simple waves led to the construction of loading paths in the stress space that depend on the external loads. A review of governing equations for all the cases depending on one space dimension considered above can be found in \cite{Nowacki}.
 
 The information on characteristic structures thus provided has then be used by Lin and Ballman \cite{Lin_et_Ballman} for the development of an iterative Riemann solver.
-This procedure is based on successive guesses on the stress state lying in the stationary region so that the loading paths preticted by the theory of Clifton \cite{Clifton} can integrated numerically until convergence.
-The implementation of this solver within a second-order Godunov scheme provided results that were in good agreement the exact solutions.
+This procedure is based on successive guesses on the stress state lying in the stationary region so that the loading paths predicted by the theory of Clifton \cite{Clifton} can be integrated numerically until convergence.
+The implementation of this solver within a second-order Godunov scheme provided results that were in good agreement with the exact solutions.
 Nevertheless, the theoretical investigations mentioned above restrict the development of such numerical tools to problems that depend on one space dimension.
 %%
 Clifton tackled the solution of plane strain problems in elastic-plastic solids by looking for bi-characteristics \cite{Clifton_thesis} in order to build finite difference schemes that account for plastic waves.
-The point of view adopted here is that one can benefit from the simplifications introduced by the writing of Riemann problems in an arbitray direction of space.
-Indeed, the method of characteristics rather than the more complex method of bi-characteristics can be employed with the quasilinear forms presented in chapter \ref{chap:chap2}.
+The point of view adopted here is that one can benefit from the simplifications introduced by the writing of Riemann problems in an arbitrary direction of space.
+Indeed, the method of characteristics rather than the more complex method of bi-characteristics can be employed with the quasi-linear forms presented in chapter \ref{chap:chap2}.
 
-
+?????????????????
+PLASTIC SHOCKS
+?????????????????
 
 
 %%% Local Variables:

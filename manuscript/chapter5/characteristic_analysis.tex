@@ -32,14 +32,14 @@ In addition, the elastic-plastic constitutive equations derived from thermodynam
 In the expression of von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
 Moreover, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:ch5_plastic_flow}.
 %At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
-By inverting the (isotropic)elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written:
+By inverting the (isotropic)elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written in the isotropic case:
 \begin{equation}
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
 \end{equation}
 with Young's modulus $E$ and Poisson's ration $\nu$.
 
-The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a cartesian coordinates system and an arbitrary direction $\vect{n}$ is:
+The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a Cartesian coordinates system and an arbitrary direction $\vect{n}$ is:
 \begin{equation}
   \label{eq:ch5_quasilinear_normal}
   \Qcb_t + \Jbsf \drond{\Qcb}{x_n} = \vect{0} 
@@ -56,25 +56,27 @@ In addition, three independent left eigenvectors associated to the zero eigenval
   \tens{\sigma}^K:\(\Cbb^{ep}\cdot  \vect{n}\) =\vect{0},\quad K=1,2,3
 \end{equation}
 
-In what follows, the above equations are specified to plane strain and plane stress cases.
+The present formulation differs from those of Bleich \cite{Bleich}, Clifton \cite{Clifton}, and hence these of Ting and Nan \cite{Ting68} and Ting \cite{Ting69}, in that equation  \eqref{eq:ch5_quasilinear_normal} is based on the elastoplastic stiffnesses rather than softenesses.
+As a consequence, it will be seen in what follows that the equations can be easily specialized to plane strain and plane stress cases.
+%In what follows, the above equations are specified to plane strain and plane stress cases.
 \subsection{Problems in two space dimensions}
-We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are an arbitrary length.
+We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are arbitrary lengths.
 %The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
 It is assumed that all quantities depend solely on $x_1$ and $x_2$ except the velocity component $v_3$ that may depend on $x_3$.
-In particular, it is the case for $h \ll e$.
+In particular, it is the case for $e \ll h$.
 
-The solid is under plane strain, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $v_3$ vanishes on both ends $x_3=\pm e$.
+The solid is under plane strain conditions, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $\vect{v}$ does not depend on $x_3$ and if $v_3$ vanishes.
 Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
 \end{equation}
-Hence, the quasi-linear form \eqref{eq:ch5_quasilinear_normal} reduces for plane strain problems to a system of dimension $5$.
+Hence, the quasi-linear form \eqref{eq:ch5_quasilinear_normal} reduces for plane strain problems to a system of dimension $5$ with unknowns $v_1,v_2, \sigma_{11},\sigma_{12}$, and $\sigma_{22}$.
 
 
-Alternatively, a plane stress state ($\tens{\sigma}\cdot\vect{e}_3=\vect{0}$) holds if the planes $x_3=\pm h$ are traction free.
+Alternatively, a plane stress state ($\tens{\sigma}\cdot\vect{e}_3=\vect{0}$) is assumed if the planes $x_3=\pm h$ are traction free and $e\ll h$.
 As a result, the stress component $\sigma_{33}$ can be removed from the system \eqref{eq:ch5_quasilinear_normal}.
-Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress.
+Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress component.
 Specialization of equation \eqref{eq:elastoplastic_tangent} to $\sigma_{33}$ yields:
 \begin{equation*}
   \dot{\sigma}_{33}=C^{ep}_{33ij} \dot{\eps}_{ij} =0
@@ -124,7 +126,7 @@ The four left eigenfields of the Jacobian matrix thus read:
   \end{alignat}
 \end{subequations}
 where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-going fast waves respectively.
-The same goes for $\Lcb^{c_s^-}$ and $\Lcb^{c_s^-}$.
+The same goes for $\Lcb^{c_s^+}$ and $\Lcb^{c_s^-}$.
 Furthermore, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and which left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
 \begin{equation}
   \label{eq:ch5_null_left_eigen}
@@ -134,7 +136,8 @@ with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plan
 %In particular, $\Cbb$ reduces to the elastic stiffness tensor when no plastic flow occurs so that the characteristic structure involves the speeds of elastic pressure waves $c_1$ and shear waves $c_2$. 
 
 It has been seen in section \ref{sec:SVK_solution} that the solution of non-linear problems may contain shock and/or simple waves.
-Nevertheless, we restrict here to simple waves by assuming that the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $ and monotonically decrease with the hardening of the material.
+Nevertheless, we restrict here to simple waves by assuming that: (i) the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $, where $c_1$ and $c_2$ are the speeds of elastic pressure and shear discontinuities respectively; (ii) $c_f$ and $c_s$ monotonically decrease with the hardening of the material; (ii) the computational domain is in an initial natural, plastic strain free state.
+
 The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
 \begin{subequations}
   %\label{eq:ch5_ODEs}
@@ -179,6 +182,8 @@ It therefore comes out:
     & d\sigma_{22}=- \frac{l_1^1}{l_2^1}  d\sigma_{12} = \psi^s_{2}d\sigma_{12} && \qquad \text{for } \:\vect{n}=\vect{e}_2
   \end{alignat}
 \end{subequations}
+where $\psi^s_1$ and $\psi^s_2$ are functions of all components of $\tens{\sigma}$. 
+Moreover, the $s$ and $f$ superscripts stand for slow and fast waves respectively in the remainder of the manuscript.
 With the above equations, the characteristic equation related to the contact wave \eqref{eq:charac_contact} reads:
 %Next, the characteristic equation related to the contact wave \eqref{eq:charac_contact} yields:
 \begin{subequations}
@@ -215,7 +220,7 @@ Similar results are obtained for right-going fast simple waves by using $\vect{l
 Hence, the evolution in slow and fast waves is governed by the \textit{loading functions}:
 \begin{equation}
   \label{eq:loading_func}
-  \psi^s_{1}=- \frac{l^1_2}{l_1^1}\quad ,\quad  \psi^s_{2}=- \frac{l_1^1}{l_2^1} \quad ,\quad \psi^f_1=-\frac{l_2^2}{l_1^2} \quad ,\quad \psi^f_2=-\frac{l_1^2}{l_2^2}
+  \psi^s_{1}=- \left.\frac{l^1_2}{l_1^1}\right\rvert_{\vect{n}=\vect{e}_1}\quad ,\quad  \psi^s_{2}=- \left.\frac{l_1^1}{l_2^1}\right\rvert_{\vect{n}=\vect{e}_2} \quad ,\quad \psi^f_1=-\left.\frac{l_2^2}{l_1^2}\right\rvert_{\vect{n}=\vect{e}_1} \quad ,\quad \psi^f_2=-\left.\frac{l_1^2}{l_2^2}\right\rvert_{\vect{n}=\vect{e}_2}
 \end{equation}
 The equations satisfied across right-going slow and fast simple waves are summarized in table \ref{tab:simpleWavesEquations}.
 \begin{table}[h!]

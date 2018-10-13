@@ -52,14 +52,21 @@ The same remarks as before can be made with a lower relaxation time $\tau=\Delta
 Furthermore, the decrease in the relaxation time leads, as expected, to an apparent yield stress tending to that of the elastoplastic solution for Godunov splitting with 1ppc and Strang splitting.
 Once again, the overshoots arising in the DGMPM-Euler viscoplastic strain can be removed by integrating implicitly the flow rule. This is also the case for the spurious oscillations that can be observed in the stress solution in figure \ref{fig:siff_elastoviscoplastic_RP}\subref{subfig:evp_stiff1} \cite{Thomas_EVP}. 
 
-The above simulations show that the elastic-plastic solution can be rather poorly computed as the stiff limit of the elastic-viscoplastic system.
-Nevertheless, the use of splitting methods coupled to suitable ODEs integrators allows to achieve more accurate results.
-The ability to employ such numerical strategy within the DGMPM can then be seen as an advantage over the MPM which formulation does not allow the use of fractional methods.
-However, it is worth emphasizing that the splitting procedures coupled here to the DGMPM however fail in computing the elastoplastic solution so that high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
-Furthermore, although one can benefit from the use of splitting methods, care must be taken that these approaches do not pollute from the solution of the convective part, which is rather accurate for the DGMPM.
-% The above simulations show that the elastic-plastic solution can be computed as the stiff limit of the elastic-viscoplastic system, providing the use of suitable ODEs integrators. 
-% The splitting procedures coupled here to the DGMPM however fail in computing the elastoplastic solution so that high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
-% It is worth noticing that the DGMPM enables the use of such numerical procedure while the MPM formulation does not.
+
+As for FVM, the DGMPM can benefit from splitting methods to compute source terms.
+Though these methods are convenient and easy to implement, some of them can lead to non-physical solutions in the stiff limit in such a way that the solution of the source term pollutes that of the convective part (\textit{i.e. as shown for Strang splitting}).
+The Godunov one is a robust and leads to acceptable results but is only first order accurate.
+Higher order of accuracy may require the employment of high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}.
+These questions do not formulate the same for MPM since classical elastic-viscoplastic integrators are used (which may still have convergence troubles in the stiff limit).
+
+% The above simulations show that the elastic-plastic solution can be rather poorly computed as the stiff limit of the elastic-viscoplastic system.
+% Nevertheless, the use of splitting methods coupled to suitable ODEs integrators allows to achieve more accurate results.
+% The ability to employ such numerical strategy within the DGMPM can then be seen as an advantage over the MPM which formulation does not allow the use of fractional methods.
+% However, it is worth emphasizing that the splitting procedures coupled here to the DGMPM however fail in computing the elastoplastic solution so that high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
+% Furthermore, although one can benefit from the use of splitting methods, care must be taken that these approaches do not pollute from the solution of the convective part, which is rather accurate for the DGMPM.
+% % The above simulations show that the elastic-plastic solution can be computed as the stiff limit of the elastic-viscoplastic system, providing the use of suitable ODEs integrators. 
+% % The splitting procedures coupled here to the DGMPM however fail in computing the elastoplastic solution so that high-order time integrators for stiff systems, such as implicit-explicit IMEX Runge-Kutta schemes \cite{Pareschi_stiff}, must be employed.
+% % It is worth noticing that the DGMPM enables the use of such numerical procedure while the MPM formulation does not.
 
 %% On peut utiliser du splitting
 %% Cependant intégrateurs adaptés
@@ -86,7 +93,7 @@ The vector of conserved quantities $\Ucb$ resulting from the solution of discret
 On the other hand, the Riemann solver can be based on exact solutions for linear hardening one-dimensional media \cite{Thomas_EP,Wang} by following a prediction-correction procedure: (i) the stationary state is computed based on elastic characteristics only; (ii) the characteristic structure is corrected by adding plastic waves in regions where the yield criterion is violated as described in section \ref{subsec:elasto-plastic_problem}.
 %Thus, a prediction-correction procedure is followed in the Riemann solver by first computing stationary states considering only elastic characteristics that are subsequently corrected by adding plastic waves in regions where the yield criterion is violated as described in section \ref{subsec:elasto-plastic_problem}.
 Approximate elastoplastic Riemann solvers, in which non-linear waves are solved as discontinuous ones, can also be employed for non-linear hardening one-dimensional media based on the same solution scheme.
-This type of solvers, by accounting for both elastic and plastic waves, should yield more accurate results but do not avoid the integration of plastic flow by radial return algorithms if a quasi-linear form \eqref{eq:ch4_quasi} inolving $\tens{\eps}$ is used.
+This type of solvers, by accounting for both elastic and plastic waves, should yield more accurate results but do not avoid the integration of plastic flow by radial return algorithms if a quasi-linear form \eqref{eq:ch4_quasi} involving $\tens{\eps}$ is used.
 
 The solutions of DGMPM-Euler scheme, combined with the two approaches discussed above, are compared to MPM and exact solutions on the 1ppc space discretization in figure \ref{fig:RP_EP_dgmpm_mpm}.
 It can be seen in figure \ref{fig:RP_EP_dgmpm_mpm}\subref{subfig:ep_dgmpm_mpm1} that the use of an elastic Riemann solver in DGMPM yields slight oscillations on the plastic plateau before the reflection of waves.
@@ -130,7 +137,7 @@ After reflection of waves on the free boundaries (figure \ref{fig:RP_EP_dgmpm_fv
 Those oscillations however occur mainly on elastic waves so that the finite element plastic strain does not exhibit more overshoots.
 Moreover, the elastic unloading waves are differently solved by FVM and DGMPM.
 As a result, the plastic strain profiles in figures \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm1} and \ref{fig:RP_EP_dgmpm_fvm}\subref{subfig:ep_dgmpm_fvm3} are not identical, the best solution being provided by second-order TVD finite volumes. %, thus highlighting the gain in accuracy enabled by wave limiters.
-Thus, limiting elastic waves as well as plastic ones as it is allowed by an elastoplastic Riemann solver, enables a significant improvement of the accuracy.
+Thus, limiting elastic waves as well as plastic ones as it is allowed by an elastoplastic Riemann solver, enables a significant improvement of the accuracy on plastic waves.
 
 The results presented above show the better accuracy allowed by the introduction of an elastic-plastic Riemann solver.
 Although the characteristic structure of the solution for one-dimensional media considered here is known, it is not the case in general.
