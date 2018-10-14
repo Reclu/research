@@ -162,7 +162,6 @@ The \textit{fractional-step method} \eqref{eq:godunov_splitting}, known as Godun
 Two sub-problems are thus solved separately at each time step, the solution of the first one being used as initial conditions in the second. Thus, fractional-step methods \eqref{eq:godunov_splitting} and \eqref{eq:Strang_splitting} enable to take advantage of efficient tools already developed for homogeneous systems of conservation laws and of ODEs solvers. However, it is worth noticing that even though the use of an implicit solver for equation \eqref{eq:Splitting_ODE} eliminates the influence of the relaxation time on the CFL condition, a L-stable solver as the Euler implicit method \cite{Book_ODE} is required to compute the correct solution. 
 
 
-
 \subsection{Intercell fluxes}
 \label{subsec:interface_fluxes}
 The DGMPM solution scheme reduces to the discrete solution operator $H^{(\Delta t)}$, or $H$ for simplicity, which in turn, aims at finding approximate similarity solutions since it only solves homogeneous systems (recall remark \ref{rq:similarity_solution} in section \ref{sec:characteristic_analysis}).
@@ -273,7 +272,7 @@ which contributes to the flux between cells $L$ and $T$ ($\Delta X^j$ being the 
 In-going transverse corrections must be counted positively while outgoing ones must be subtracted from intercell fluxes. At last, numerical fluxes computed at interfaces can be then integrated over cells faces in order to complete the discrete system.%With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
 
 %With duplicated nodes introduced by the DG approximation this contribution must be counted negatively for nodes belonging to cell L (outgoing fluctuation) and positively for nodes belonging to cell T (incoming fluctuation).
-
+ 
 \begin{remark} 
   For linear elasticity, there is no need of an auxiliary vector of conserved quantity so that transverse contributions are computed with the same eigenbasis than that of the approximate-state Riemann solver.
 \end{remark}
