@@ -14,7 +14,7 @@ The discretization of the domain lies on a regular background grid made of $50$ 
 % \end{itemize}
 % Those two configurations using either one or two Particles Per Cell are respectively referred to as $1ppc$ and $2ppc$ hereinafter.
 
-The problem is solved on the one hand with the MPM-USL in which the nodal velocity is based on either FLIP of PIC mappings ($CFL=0.5$), and with the DGMPM coupled with both Euler and RK2 time integration on the other hand.
+The problem is solved on the one hand with the MPM-USL in which the nodal velocity is based on either FLIP of PIC mappings ($CFL=0.5$), and with the DGMPM coupled with both Euler ($CFL=1$ with 1 ppc and $CFL=0.5$ for 2ppc) and RK2 (2ppc only and $CFL=1$) time integration on the other hand.
 % The Courant number is set at $CFL=1$ for the DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc, while it must be reduced to $CFL=0.5$ if 2ppc are used within or the DGMPM-Euler 
 %  ($CFL$ satisfying the stability condition \eqref{eq:stability} in section \ref{sec:DGMPM_analysis}).
 \begin{figure}[h!]
@@ -26,7 +26,7 @@ The problem is solved on the one hand with the MPM-USL in which the nodal veloci
   \caption{Stress and velocity solutions of the Riemann problem in an isotropic elastic at two different times (columns \subref{subfig:rp_elastic1} and \subref{subfig:rp_elastic2}). Comparison between DGMPM coupled with Euler or RK2 time integration, MPM-USL formulation using either PIC or FLIP mapping, and the exact solution for an initial velocity set to $v_0=\frac{c}{200}$.}
   \label{fig:elastic_stress}
 \end{figure}
-According to the stability condition \eqref{eq:stability}, the Courant number is set to unity within the DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc, while the use of 2ppc within the DGMPM-Euler leads to $CFL=0.5$.   
+%According to the stability condition \eqref{eq:stability}, the Courant number is set to unity within the DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc, while the use of 2ppc within the DGMPM-Euler leads to $CFL=0.5$.   
 Figure \ref{fig:elastic_stress} shows the numerical solutions at two different times in terms of stress and velocity, compared to exact ones. 
 First, since the Courant number can be set to one for the DGMPM-Euler with 1ppc, the method is able to capture the discontinuities and yields solutions fitting perfectly the analytical ones. The same property holds for the DGMPM-RK2 with 2ppc while for the same discretization the DGMPM-Euler is restricted by a lower CFL number that prevents the accurate resolution of waves.
 As identified in section \ref{sec:MPM}, the use of PIC mapping within the DGMPM leads to solutions that do not exhibit oscillations.
