@@ -2,23 +2,85 @@
 The purpose of that work was the development of a numerical method allowing the accurate solution of hyperbolic problems in solid mechanics.
 This class of mathematical problems governs the propagation of waves in finite deforming media.
 Given the ability in dealing with large deformation enabled by meshless methods and the possiblity of describing discontinuous solutions provided by the DG approximation, it has been proposed to merge those to approaches.
-Furthermore, particular attention has been paid throughout this manuscript to the characteristic structure of the solution of hyperbolic problems due to: (i) provide qualitative and quantitative comparisons between numerical solutions and exact ones; (ii) allowing numerical schemes to mimic the behavior of physical systems.
+Furthermore, particular attention has been paid throughout this manuscript to the characteristic structure of the solution of hyperbolic problems in order to: (i) provide qualitative and quantitative comparisons between numerical solutions and exact ones; (ii) allow numerical schemes to mimic the behavior of physical systems.
 
+$\newline$
 %% Chapter2: Hyperbolic partial differential equations for solid dynamics
-% Method of Charac
-% Governing Equations of solid dynamics -> hyperbolic system
-% Charac analysis
-% Exact solutions -> existence of waves
-% Approximate Riemann solver
+In chapter \ref{chap:chap2} the balance laws and constitutive equations of solid mechanics have been derived and written as a system of conservation laws in conservative form.
+The characteristic analysis of the associated quasi-linear form then leads to the formulation of a hyperbolicity condition of the system in terms of the eigen structure of the acoustic tensor.
 
+% Type of waves
+Exact solutions of one-dimensional problems have then be presented.
+First, the existing solutions of Riemann problems in elastic and elastoplastic with linear hardening solids under plane strain emphasized that discontinuous waves may propagate.
+Second, \textbf{the derivation of exact solutions of Picard problems in a one-dimensional Saint-Venant-Kirchhoff hyperelastic medium} highlighted the existence of shocks and rarefaction waves in solid dynamics.
+Given the complexity hyperbolic systems may present, especially for more than one space dimension or other constitutive models, a well-known approximate-state Riemann solver has been presented.
+Such solvers represent an ideal way to take into account the characteristic structure of the solutions within numerical schemes and are therefore widely used in finite volumes.
+
+$\newline$
 %% Chapter3: The Discontinuous Galerkin Material Point Method
-% Derivation of the MPM
-% Shortcomings: Oscillations -> re-introduction of PIC mapping + reduction of diffusion with DG a
+Eulerian and Lagrangian formulations of the Material Point Method have been recalled in chapter \ref{chap:chap3}.
+This method constitutes the starting point of the present work due to its ability to avoid the mesh instabilities caused by large deformation often met in solid mechanics.
+Nevertheless, the oscillating solutions provided by this numerical schemes prevent from accurately follow the waves.
+The aforementioned numerical noise can be eliminated by going back to the early version of the approach: the Particle-In-Cell method, at the cost of additional numerical diffusion.
+Thus, the approach proposed consisted of: (i) removing the oscillations by re-introducing within the MPM the diffusive mapping between material points and grid nodes used in PIC; (ii) reducing the diffusion thus introduced by means of the discontinuous Galerkin approximation.
 
+\textbf{The Discontinuous Galerkin Material Point Method has been therefore derived} with a total Lagrangian formulation.
+The method inherits appealing features of finite element, finite volumes and material point methods.
+%% Similarities with FVM
+First, it is based on the weak form of a conservation law system so that the same order of accuracy is achived for both velocities and gradients.
+Second, numerical fluxes defined at elements interfaces arising in the weak form are computed with the solution of Riemann problems by means of the approximate-state Riemann solver presented in chapter \ref{chap:chap2}.
+This approach not only allows to introduce the characteristic structure in the numerical solution, but it also enables to \textbf{take into account transverse corrections by adapting the Corner Transport Upwind method}.
+Third, the DGMPM solution scheme can be combined with performing ODEs integrators for source terms if fractional-step methods are considered. 
+The last three points are common with FVM.
+Then, the FEM approximation using polynomial shape functions is used, thus providing a convenient framework for high-order approximation.
+In particular, as for other DG-methods, the order of approximation may be modified element-wise.
+At last, the arbitrary grid of the MPM, in which the particles move while carrying fields and internal variables, enables the employment of mesh-adaption strategies without the need of additional diffusive projection steps.
+
+Then, the numerical analysis of DGMPM schemes showed that the stability properties of the method may be better than those of the original MPM depending on the space discretization used.
+% 1D stability
+Namely, if the DGMPM semi-discrete system is discretized with the forward Euler algorithm, the optimal Courant number can be achieved when one particle lies in every cells of a one-dimensional grid.
+The same result holds if the second-order Runge-Kutta time discretization is used, and even for more than one material point per cell depending on their positions.
+Even though the condition $CFL=1$ is not valid in general, \textbf{the provided formula for evaluating the critical Courant number allows to ensures that the scheme remains stable} whereas it is not possible for the MPM. 
+% 2D stability
+Analogously, the two-dimensional DGMPM scheme exhibits the optimal stability condition providing that one particle per cell is used along with the CTU algorithm for transverse corrections.
+It has been also shown the stability features of the two-dimensional scheme also depend on the ratio of the characteristic speeds involved in the linear advection equation in two space dimensions. 
+% Convergence (numerically)
+On the other hand, the convergence analysis of the method on a one-dimensional linear elasticity problem under small strains showed that by using first order shape functions, only first order accuracy can be achieved for velocity and gradients.
+Although one could expect second-order of convergence since the DGMPM approximation is similar to that of FEM, the PIC mapping of the updated nodal velocity from the grid to particles used is only first order and limits the accuracy of the method.
+
+$\newline$
 %% Chapter4: Numerical Results
+Chapter \ref{chap:chap4} was devoted to the illustration of the DGMPM on simulations of solid dynamics problems.
+Comparisons with other numerical methods and exact solutions showed a very good behavior.
+More specifically, since the optimal CFL number can be achieved, the DGMPM is able to capture the discontinuities arising in the Riemann problem in an elastic bar in the linearized geometrical framework.
+On the other hand, it has been shown that when this condition no long holds, that is $CFL<1$, the method suffer less from diffusion than the original MPM using PIC mapping.
+Furthermore, the same behavior has been observed for a two-dimensional problem in an elastic medium. 
+Hence, the method fulfills its objectives.
+
+%% History-dependent constitutive models
+Then, history-dependent constitutive models have been considered within the infinitesimal theory.
+First, the solutions of a plane wave in a elasto-viscoplastic solid resulting from DGMPM, MPM, FVM and FEM have been compared.
+In the stiff limit, that is when the viscosity is close to zero, the above solutions should tend to the elastic-plastic ones.
+The use of fractional-step methods within the DGMPM enables to get more accurate results to 
+% Hyperelasticity
 
 
+$\newline$
 %% Chapter5: Contribution to the solution of elastic-plastic problems in two space dimensions
+
+$\newline$
+\subsubsection*{Perspectives}
+%% Perspective:
+%%% DGMPM
+% Haut ordre -> limiteurs
+% Roe theorem to reach second order
+% BSpline ; Legendre
+%% Balance between accuracy and stability as emphasized in section numerical_analaysis
+
+% Adaptation de maillage
+% RK2 en 2D qui n'a pas été exploité pour le moment
+
+%%% Approx RP elastoplastic
 
 
 
