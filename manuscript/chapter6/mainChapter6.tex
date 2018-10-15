@@ -3,7 +3,7 @@
 %% Introduction:
 The purpose of that work was the development of a numerical method allowing the accurate solution of hyperbolic problems in solid mechanics.
 This class of mathematical problems governs the propagation of waves in finite deforming media.
-Given the ability in dealing with large deformation enabled by meshless methods and the possiblity of describing discontinuous solutions provided by the DG approximation, it has been proposed to merge those to approaches.
+Given the ability in dealing with large deformation enabled by meshless methods and the possiblity of describing discontinuous solutions provided by the DG approximation, it has been proposed to merge those two approaches.
 Furthermore, particular attention has been paid throughout this manuscript to the characteristic structure of the solution of hyperbolic problems in order to: (i) provide qualitative and quantitative comparisons between numerical solutions and exact ones; (ii) allow numerical schemes to mimic the behavior of physical systems.
 
 $\newline$
@@ -48,7 +48,7 @@ Analogously, the two-dimensional DGMPM scheme exhibits the optimal stability con
 It has been also shown the stability features of the two-dimensional scheme also depend on the ratio of the characteristic speeds involved in the linear advection equation in two space dimensions. 
 % Convergence (numerically)
 On the other hand, the convergence analysis of the method on a one-dimensional linear elasticity problem under small strains showed that by using first order shape functions, only first order accuracy can be achieved for velocity and gradients.
-Although one could expect second-order of convergence since the DGMPM approximation is similar to that of FEM, the PIC mapping of the updated nodal velocity from the grid to particles used is only first order and limits the accuracy of the method.
+Although one could expect second-order of convergence since the DGMPM approximation is similar to that of FEM, the PIC mapping of the updated nodal velocity from the grid to particles used is known to yield first order accuracy.
 
 $\newline$
 %% Chapter4: Numerical Results
@@ -72,10 +72,10 @@ Nevertheless, the structure of the solutions of hyperbolic problems in elastic-p
 
 $\newline$
 %% Chapter5: Contribution to the solution of elastic-plastic problems in two space dimensions
-The simulations on history-dependent materials performed in chapter \ref{chap:chap4} motivated the developments presented in chapter \ref{chap:chap5}.
+The simulations on history-dependent materials performed in chapter \ref{chap:chap4} motivated the developments presented in chapter \ref{chap:chap5} according to the point of view adopted in this thesis.
 Indeed, the need of a better understanding of the characteristic structure of elastic-plastic hyperbolic problems arises from the inability in building approximate Riemann solvers in more than one-dimension.
 %As a result, the spectral analysis of hyperbolic systems in elastoplastic solids under small strain has been proposed.
-Although some references have proposedsince the 60s the spectral analysis of hyperbolic systems in elastoplastic solids under small strain, the problems treated were particular cases of plane stress and plane strain conditions.
+Although some references have proposed the spectral analysis of hyperbolic systems in elastoplastic solids under small strain since the 60s, the problems treated were particular cases of plane stress and plane strain conditions.
 The present approach consisted in \textbf{rewriting the existing formulations by means of the elastoplastic stiffnesses to provide a unified framework for all two-dimensional problems in Cartesian coordinates system}.
 It is well-known that the particularity of elastoplastic problems in more than one space dimension lies in the fact that the wave pattern of the solution depends on the external loads.
 More precisely, one must be able to connect the stationary stress state of a Picard problem to the initial data through loading paths followed inside fast and slow simple waves of combined-stress.
