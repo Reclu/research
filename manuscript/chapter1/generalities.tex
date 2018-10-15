@@ -1,28 +1,29 @@
 %% Solid mechanics
-The work presented in this thesis is concerned with hyperbolic systems of conservation laws in mechanics used to described transient phenomena.
+The work presented in this thesis is concerned with hyperbolic systems of conservation laws in mechanics used to describe the propagation of mechanical waves.
 A wide variety of engineering problems including among others acoustics, aerodynamics, impacts, which are of major importance for plenty of applications, are modeled with this class of mathematical equations. 
-Although those applications may involve solids and fluids which differ on the response of the material to external loads, the focus is here on solid mechanics.
+Although those applications may involve solid and fluid media whose constitutive response differ, the focus is here on solid mechanics.
 %%% Specificities
 More specifically, an important class of models is that of dissipative solid behavior depending on the loading history undergone.
 Such materials are implicated in high-speed forming techniques, crash-proof design or in the reliability of structures.
 
-%% Simulation -- motivations
-In order to better apprehend misunderstood phenomena, the numerical simulation of solid mechanics problems allows to see what cannot be observed due to the time or space scales considered.
-Naturally, the simulation and the experiments are not decoupled but interact with mathematics so as to enrich each other, thus allowing a more and more precise knowledge of the physics.
-On the other hand, by simulating well-known problems, one can optimize industrial processes or design structures while avoiding the waste of material. 
-Hence, the development of numerical methods that reproduce and take into account the physics is crucial to provide qualitative and quantitative results.
-
-%% Complexity // Difficulties
-Hyperbolic problems are particular in that waves explicitly appear in the mathematical solutions.
-While carrying the information about the loading during their propagation, these waves can interact with each other or reflect on the boundary of a solid so that more complex structures arise.
+%% Complexity ofthe modeling
+In these solids the waves propagate while carrying the information about the loading, interacting with each other and reflecting on the boundary so that complex structures arise.
 The accurate assessment of irreversible deformations in dissipative solids therefore requires the correct description of those waves as well as the ability to account for their interactions.
-% Different time scales
-Furthermore, the time scale governing the propagation of waves may be different from that of other phenomena also involved in a deformation, as for some material behaviors.
-Such situations constitute additional difficulties for the numerical simulation.
+% Different time and space scales
+Furthermore, the time scale governing the propagation of waves may be different from that of other phenomena also involved in a deformation, as for viscous effects in solids for instance.
 % Large deformations
 At last, the problem may be even more complicated by possibly large displacements, rotations or strains, undergone by the solid.
 
+%% Simulation -- motivations
+% In order to better apprehend misunderstood phenomena, the numerical simulation of solid mechanics problems allows to see what cannot be observed due to the time or space scales considered.
+% Naturally, the simulation and the experiments are not decoupled but interact with mathematics so as to enrich each other, thus allowing a more and more precise knowledge of the physics.
+% On the other hand, by simulating well-known problems, one can optimize industrial processes or design structures while avoiding the waste of material. 
+% Hence, the development of numerical methods that reproduce and take into account the physics is crucial to provide qualitative and quantitative results.
 
+Given the complexity of the equations, the numerical simulation provides a framework for approximating the solutions of a model.
+It is a way to virtually experiment and highlight phenomena that are implicitly included in a model but not necessarily observed.
+The simulation can then be seen as a way to make the theory meaningful.
+Moreover, it enables to fill gaps left by experimental works for feasibility reasons and due to the higher amount of information it provides compared to instrumental devices.
 
 %%% Local Variables:
 %%% mode: latex
