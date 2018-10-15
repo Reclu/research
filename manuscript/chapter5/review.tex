@@ -1,16 +1,16 @@
 Until the 50s, researches on dynamic problems in elastic-plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for materials characterization purposes.
-The first references that brought some understanding about the response of linearly hardening solids to combined shear and pressure loads are those of Rakhmatulin \cite{Rakhmatulin} and Cristescu \cite{CRISTESCU19591605}.
+The first references that brought some understanding about the response of linearly hardening solids to combined shear and pressure loads are those of \textsc{Rakhmatulin} \cite{Rakhmatulin} and \textsc{Cristescu} \cite{CRISTESCU19591605}.
 These early analytical investigations on plane stress impacts in the plastic regime led to the conclusion that elastic waves, as well as plastic combined-stress simple waves, can propagate in two-dimensional solids. 
 While the former were well-known, the latter were shown to fall into the two \textit{fast waves} and \textit{slow waves} families.
 % It has been moreover shown that the fast waves propagate faster than the plastic pressure discontinuity in uni-axial problems would, for a given compression load amplitude.
 % Likewise, slow waves propa
 % The maximal value of fast waves (\textit{resp. slow waves}) is higher than that of pressure (\textit{resp. shear}) plastic discontinuity occuring in one-dimensional problems, for a given compression (\textit{resp. shear}) load amplitude.
 
-Later, Bleich and Nelson \cite{Bleich} considered superimposed plane and shear waves in an ideally elastic-plastic materials submitted to step loads.
+Later, \textsc{Bleich} and \textsc{Nelson} \cite{Bleich} considered superimposed plane and shear waves in an ideally elastic-plastic material submitted to step loads.
 It has then been highlighted that different loading cases yield different characteristic structures of the solution of a Picard problem, thus revealing the complexity of plastic flows in more than one dimension.
 % Distinguer un peu plus ces deux contributions.
 %\thomas{see \cite[p.56 pdf]{Nowacki},\cite{Goel}}. 
-The same conclusions have been drawn by Clifton \cite{Clifton} for hardening materials under tension-torsion, who furthermore studied the influence of plastic pre-loading on the solution.
+The same conclusions have been drawn by \textsc{Clifton} \cite{Clifton} for hardening materials under tension-torsion, who furthermore studied the influence of plastic pre-loading on the solution.
 This contribution established the existence of loading paths through the simple waves arising from the characteristic analysis of the hyperbolic system.
 Indeed, the combined-stress wave nature lies in ODEs which govern the evolution of stress components within the simple waves.
 The integration of these equations of the form $d\sigma_{11}=\psi d\sigma_{12}$ allows the building of curves that connect the applied stress state of the Picard problem $(\sigma^d_{11},\sigma^d_{12})$ to the initial state of the medium.
@@ -24,35 +24,45 @@ Another notable conclusion is that the combined loading paths followed inside si
 Experimental data collected on a thin-walled tube submitted to a dynamic tensile load \cite{Clifton_exp,Clifton_exp2} confirmed the existence of two distinct families of  simple waves, both involving combined stress paths.
 Those works nevertheless exhibited some discrepancies with the theory which have been attributed to the assumption made on the von-Mises yield surface.
 As a matter of fact, a constant strain region lying between the fast and slow waves that is predicted by the theory \cite{Clifton} could not be seen in experimental results.
-However, by following the endochronic theory of plasticity \cite{Valanis} which does not require the introduction of a yield surface, Wu and Lin \cite{Wu_experimental} obtained numerical results that better fitted the experimental data provided by Lipkin and Clifton \cite{Clifton_exp2}.
+However, by following the endochronic theory of plasticity \cite{Valanis} which does not require the introduction of a yield surface, \textsc{Wu} and \textsc{Lin} \cite{Wu_experimental} obtained numerical results that better fitted the experimental data provided by \textsc{Lipkin} and \textsc{Clifton} \cite{Clifton_exp2}.
 The good agreement showed between numerical and experimental results \cite{Wu_experimental} thus confirmed the theory.
 
-Ting and Nan \cite{Ting68} then generalized the work of Bleich and Nelson to hardening materials and Ting \cite{Ting69} widened this of Clifton to more complex loadings, that is a superimposition of one plane wave and two shear waves states.
+\textsc{Ting} and \textsc{Nan} \cite{Ting68} then generalized the work of \textsc{Bleich} and \textsc{Nelson} to hardening materials and \textsc{Ting} \cite{Ting69} widened this of \textsc{Clifton} to more complex loadings, that is a superimposition of one plane wave and two shear waves states.
 Once again, the mathematical study of the ODE system governing the stresses evolution inside fast and slow simple waves led to the construction of loading paths in the stress space that depend on the external loads. A review of governing equations for all the cases depending on one space dimension considered above can be found in \cite{Nowacki}.
 
-The information on characteristic structures thus provided has then be used by Lin and Ballman \cite{Lin_et_Ballman} for the development of an iterative Riemann solver.
-This procedure is based on successive guesses on the stress state lying in the stationary region so that the loading paths predicted by the theory of Clifton \cite{Clifton} can be integrated numerically until convergence.
+The information on characteristic structures thus provided has then be used by \textsc{Lin} and \textsc{Ballman} \cite{Lin_et_Ballman} for the development of an iterative Riemann solver.
+This procedure is based on successive guesses on the stress state lying in the stationary region so that the loading paths predicted by the theory of \textsc{Clifton} \cite{Clifton} can be integrated numerically until convergence.
 The implementation of this solver within a second-order Godunov scheme provided results that were in good agreement with the exact solutions.
 Nevertheless, the theoretical investigations mentioned above restrict the development of such numerical tools to problems that depend on one space dimension.
 %%
-Clifton tackled the solution of plane strain problems in elastic-plastic solids by looking for bi-characteristics \cite{Clifton_thesis} in order to build finite difference schemes that account for plastic waves.
+\textsc{Clifton} tackled the solution of plane strain problems in elastic-plastic solids by looking for bi-characteristics \cite{Clifton_thesis} in order to build finite difference schemes that account for plastic waves.
 The point of view adopted here is that one can benefit from the simplifications introduced by the writing of Riemann problems in an arbitrary direction of space.
 Indeed, the method of characteristics rather than the more complex method of bi-characteristics can be employed with the quasi-linear forms presented in chapter \ref{chap:chap2}.
 
-$\newline$
-On the other hand, the existence of plastic shocks in solids under the plane wave assumptions has been investigated by several authors \cite{Mandel1,Germain_shock,Mandel2,Claude}.
-In those references high pressure impacts were considered so that the problem may be approximated as falling into the hydrodynamics theory.
-Hence, the non-monotonic state law describing the evolution of the hydrostatic pressure is responsible for the creation of shock waves due to colliding characteristics.
-%%%%%
-This work gave rise to discussions on the internal structure of the shock and more precisely to the nature of the load paths followed in the infinitely thin layer in the vicinity of the shock.
-%% Mandel suppose un trajet radial dans le choc et donc s'affranchit de l'analyse de la structure interne.
+%$\newline$
+On the other hand, the existence of plastic shocks in solids under the plane wave assumptions has been investigated by several authors. % \cite{Mandel1,Germain_shock,Mandel2,Claude}.
+First, \textsc{Mandel} \cite{Mandel1} shown the existence of stable plastic shocks in three-dimensional elastoplastic media.
+In this work, Hugoniot curves has been built by assuming that the internal variables followed a radial path through a plastic shock.
+\textsc{Lee} and \textsc{Germain} \cite{Germain_shock} considered that Hugoniot curves in elastic-plastic solids can be constructed providing that the internal structure of the shock is studied.
+Namely, an elastic-viscoplastic continuum problem is solved by magnifying the narrow region in the vicinity of the shock in which the fields vary sharply.
+The shock solution was then taken as the limit when viscosity tends to zero.
+A study of the internal structure of the shock has also been made by \textsc{Stolz} \cite{Claude}.
+In the latter approach, a steady-state problem is solved through the shock.
+The author thus provided existence and unicity conditions for a shock in compression providing that elastic stiffening dominates the (concave) hardening saturation.
+Nevertheless, according to \textsc{Mandel} \cite{Mandel2}, such an analysis of the internal structure of the shock is not required to build Hugoniot curves.
+The propagation of plastic shock is still an open scientific issue.
+
+In what follows, simple waves are considered in elastic-plastic solids with natural initial conditions by assuming a concave hardening law with no stiffening so that plastic shocks do not arise.
+
+% In those references high pressure impacts were considered so that the problem may be approximated as falling into the hydrodynamics theory.
+% Hence, the state law describing the evolution of the hydrostatic pressure is responsible for the creation of shock waves due to colliding characteristics.
+% This work gave rise to discussions about the need of studying the internal structure of the shock and more precisely to the nature of the load paths followed in the infinitely thin layer in the vicinity of the shock.
+
+% While \textsc{Mandel} considered in \cite{Mandel1} that the radial plastic flow assumption holds across the shock, \textsc{Germain} and \textsc{Lee} \cite{Germain_shock}
+%% Mandel suppose un trajet radial dans le choc et s'affranchit donc de l'analyse de la structure interne.
 %% Germain utilise le travail plastic comme variable d'écrouissage. + regarde la structure interne du choc pour compléter les courbes d'hugoniot ?
 %% Désaccord sur la variable d'écrouissage
-%% Et puis Claude
-
-%% Trajets radiaux + hypothèses sur l'écrouissage
-
-% Structure interne + trajet radial de Mandel
+%% Et puis Claude qui dit que la structure interne ne peut pas être déterminée si on ne connait que les états amont et aval...
 
 
 

@@ -33,8 +33,8 @@ As a result, the study can be restricted to one function in each direction, say 
 % However, the eigenvectors of symmetric second-order tensors all satisfy this property in such a way that it is valid for all problems in two space dimensions.
 % As a result, the study can be restricted to one function in each direction, say $\psi_1^s$ and $\psi_2^s$.
 
-Second, if the function $\psi_1^s$ vanishes at some point of the stress space, the projection in the $(\sigma_{11},\sigma_{12})$ plane of the loading path followed inside a slow wave is vertical according to the ODE \eqref{eq:sigSlow_n=e1}.
-Conversely, if $\psi_1^s\rightarrow \infty$, the loading path is horizontal in the $(\sigma_{11},\sigma_{12})$ plane.
+Second, if the function $\psi_1^s$ vanishes at some point of the stress space, the projection in the $(\sigma_{11},\sigma_{12})$ plane of the loading path followed inside a slow wave is vertical according to the ODE \eqref{eq:sigSlow_n=e1} (\textit{i.e} $d\sigma_{11}=0$).
+Conversely, if $\psi_1^s\rightarrow \infty$, the loading path is horizontal in the $(\sigma_{11},\sigma_{12})$ plane (\textit{i.e} $d\sigma_{12}=0$).
 %Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to finding roots of the components of $\vect{l}^2$:
 These situations respectively correspond to:
 \begin{subequations}
@@ -45,7 +45,7 @@ These situations respectively correspond to:
     \psi_1^s \rightarrow \infty & \Leftrightarrow A_{22} -\omega_1 =0
   \end{alignat}
 \end{subequations}
-In particular, if $A_{12}=0$ the second equation reads:
+In particular, if $A_{12}=0$ equation \eqref{eq:second_root} reads:
 \begin{equation}
   A_{22} -\omega_1 = \frac{1}{2}\(A_{22} -A_{11} -\sqrt{(A_{11} -A_{22} )^2 + 4A_{12}^2 }\) = -\left\langle A _{11}-A _{22}  \right\rangle
 \end{equation}
@@ -279,7 +279,7 @@ It comes out that $\widetilde{A}_{12}^{ep}$ admits to roots:
 
 The complexity introduced by the plane stress tangent modulus prevents the finding of other singular configurations for the hyperbolic system. 
 In particular, it is difficult to deal with the equation $\widetilde{A}^{ep}_{11}=\widetilde{A}^{ep}_{22}$ due to the expressions given in equations \eqref{eq:CP_A11} and \eqref{eq:CP_A22}.
-Nevertheless, since the stress state $s_{12}=0$ also constitutes a singular point for plane stresses, the same remarks than the made for plane strains on the loading paths hold.
+Nevertheless, since the stress state $s_{12}=0$ also constitutes a singular point for plane stresses, the same remarks than these made for plane strains on the loading paths hold.
 Namely, $\sigma_{12}$ becomes constant if it falls to zero along the loading path followed inside a fast (\textit{resp. slow}) wave propagating in direction $\vect{e}_1$ (\textit{resp. $\vect{e}_2$}) as summarized in table \ref{tab:stress_paths_properties}.
 %Namely, if $\sigma_{12}$ falls to zero along the loading path followed inside a fast (\textit{resp. slow}) wave propagating in direction $\vect{e}_1$ (\textit{resp. $\vect{e}_2$}), is restricted to that value.
 %As we shall see below, more singular behaviors can be identified for plane strain.
