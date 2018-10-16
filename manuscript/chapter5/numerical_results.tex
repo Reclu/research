@@ -49,7 +49,7 @@ Therefore the study is restricted to the quarter-plane $\sigma>0,\tau>0$.
   \label{fig:fast_clifton}
 \end{figure}
 Figure \ref{fig:fast_clifton} shows one stress path resulting from the integration of the ODE related to right-going fast waves with $\sigma$ used as a driving parameter.
-The initial stress state lies on the yield surface at $\sigma=0$ and the ODE is discretized by means of backward Euler method, the integration being performed until the stress reaches the value $\sigma=\sigma^y$.
+The initial stress state lies on the yield surface at $\sigma=0$ and the ODE is discretized by means of backward Euler method, the integration being performed until the stress reaches the value $\sigma=\sigma^y $.
 The path is respectively depicted in the stress space and in the deviatoric plane in figures \ref{fig:fast_clifton}\subref{subfig:tw_fast_stress} and \ref{fig:fast_clifton}\subref{subfig:tw_fast_dev}.
 The deviatoric plane projection is obtained by drawing the paths in the eigenstresses space and projecting them onto the plane perpendicular to the hydrostatic axis $s_1+s_2+s_3=0$.
 In this plane, the von-Mises yield surface is a circle drawn with dashed lines.
@@ -71,6 +71,7 @@ Nonetheless, this property holds in $(\sigma,\tau)$ plane but not in the deviato
   \caption{Stress paths followed in a slow simple wave for the thin-walled tube problem. Comparison between the results obtained from equations \eqref{eq:tw_paths} (cross markers) and these of \cite{Clifton} (solid lines).}
   \label{fig:tw_slow}
 \end{figure}
+
 
 
 The behaviors highlighted above allow the solution of the Picard problem in a thin-walled cylinder, that is:
@@ -226,7 +227,6 @@ In addition, rough change in the slopes of the integral curves associated to slo
 However, such phenomena might also be observed for fast waves once the shear waves vanishes but have not been highlighted in figure \ref{fig:fast_path_plane_stress} due to numerical issues in integrating a function tending to infinity.
 %Indeed, the theory (equation \eqref{eq:CP_roots}) predicts that this situation would lead to loading paths (locally) perpendicular to the yield surface rather than parallel.
 Furthermore, after the slopes of slow waves integral curves broke, the paths are straight the deviatoric plane.
-
 
 \subsection{Plane strain}
 \label{sec:num_plane_strain}

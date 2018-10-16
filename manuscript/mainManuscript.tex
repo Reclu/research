@@ -1,124 +1,110 @@
 \documentclass[10pt,a4paper,twoside]{report}
 %\documentclass[11pt,a4paper,twoside]{report}
 
-\usepackage[utf8]{inputenc}
-\usepackage{tikz}
-\usepackage{array}
-\usepackage{pgfplots}
-\usepackage{todonotes}
-\usepackage{amsmath}
-\usepackage[tensorialbold]{userCommands}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{cancel}
-\usepackage[colorlinks,linkcolor=Blue,citecolor=black]{hyperref}
-\usepackage{empheq}
+% \usepackage[utf8]{inputenc}
+% \usepackage{tikz}
+% \usepackage{array}
+% \usepackage{pgfplots}
+% \usepackage{amsmath}
+% \usepackage[tensorialbold]{userCommands}
+% \usepackage{amsfonts}
+% \usepackage{amssymb}
+% \usepackage{graphicx}
+% \usepackage{cancel}
+% \usepackage[colorlinks,linkcolor=Blue,citecolor=black]{hyperref}
+% \usepackage{empheq}
     
-\usetikzlibrary{patterns} 
-\usetikzlibrary{shapes}
-\usetikzlibrary{snakes}
-\usetikzlibrary{pgfplots.groupplots}
-\usetikzlibrary{external} % avoid the systematic compilation of figures
-\usetikzlibrary{spy,backgrounds}
-\usetikzlibrary{decorations.markings}
-\usetikzlibrary{arrows.meta}
+% \usetikzlibrary{patterns} 
+% \usetikzlibrary{shapes}
+% \usetikzlibrary{snakes}
+% \usetikzlibrary{pgfplots.groupplots}
+% \usetikzlibrary{external} % avoid the systematic compilation of figures
+% \usetikzlibrary{spy,backgrounds}
+% \usetikzlibrary{decorations.markings}
+% \usetikzlibrary{arrows.meta}
 
-\tikzset{
-  arrows along my path/.style={
-    postaction={
-      decorate,
-      decoration={
-        markings,
-        mark=between positions 0.03 and 1 step 24pt with {\arrow{Stealth[length=8pt]}},
-   }}}}
+% \tikzset{
+%   arrows along my path/.style={
+%     postaction={
+%       decorate,
+%       decoration={
+%         markings,
+%         mark=between positions 0.03 and 1 step 24pt with {\arrow{Stealth[length=8pt]}},
+%    }}}}
 
-\usepackage{pgfplotstable}
-\usepackage[font=normal]{caption}
-\usepackage[font=normal]{subcaption}
-\usepackage[section]{placeins} % pictures restricted to \section
-\usepackage{geometry}
-\usepackage{fncylab}
-\usepackage{fancyhdr}
-\usepackage{mathtools}
-\usepackage{ifpdf}
-\ifpdf
-\pdfinfo {
-	/Author (Moi)
-	/Title (Titre du document)
-	/Subject (Titre du document)
-	/Keywords ()
-	/CreationDate (D:20090129171524)
-}
-\fi
+% \usepackage{pgfplotstable}
+% \usepackage[font=normal]{caption}
+% \usepackage[font=normal]{subcaption}
+% \usepackage[section]{placeins} % pictures restricted to \section
+% \usepackage{geometry}
+% \usepackage{fncylab}
+% \usepackage{fancyhdr}
+% \usepackage{mathtools}
+% \usepackage{ifpdf}
+% \ifpdf
+% \pdfinfo {
+% 	/Author (Moi)
+% 	/Title (Titre du document)
+% 	/Subject (Titre du document)
+% 	/Keywords ()
+% 	/CreationDate (D:20090129171524)
+% }
+% \fi
 
-\geometry{hmargin=2.cm,vmargin=3.5cm}
-\captionsetup{margin={1.5cm,1.5cm}}
-\captionsetup[subfigure]{position=top}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% The paper headers
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[RE]{\small \rightmark}
-\fancyhead[LO]{\small \leftmark}
-\fancyfoot[CE,CO]{\small \thepage}
-\newcommand{\thomas}[1]{\color{Red}#1\color{black}}
-\newcommand{\laurent}[1]{\color{Blue}#1\color{black}}
+% \geometry{hmargin=2.cm,vmargin=3.5cm}
+% \captionsetup{margin={1.5cm,1.5cm}}
+% \captionsetup[subfigure]{position=top}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%% The paper headers
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[RE]{\small \rightmark}
+% \fancyhead[LO]{\small \leftmark}
+% \fancyfoot[CE,CO]{\small \thepage}
+% \newcommand{\thomas}[1]{\color{Red}#1\color{black}}
+% \newcommand{\laurent}[1]{\color{Blue}#1\color{black}}
 
-\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
-\newcolumntype{N}{@{}m{0pt}@{}}
+% \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+% \newcolumntype{N}{@{}m{0pt}@{}}
 
-\renewcommand{\headrulewidth}{1pt}
+% \renewcommand{\headrulewidth}{1pt}
 
-\tikzexternalize[prefix=external/]
-\pgfplotsset{%compat=1.3,
-  %compat=1.8,
-  compat=newest,
-  grid=both,
-  tick label style={font=\normalsize},
-  label style={font=\normalsize},
-  legend style={font=\normalsize},
-  legend cell align={left},
-  yticklabel style={/pgf/number format/fixed},
-  %scaled y ticks=false,
-  % define user colormap
-  colormap={tol}{[1cm] rgb255(0cm)=(120,28,129) rgb255(1cm)=(63,96,174) rgb255(2cm)=(83,158,182) rgb255(3cm)=(109,179,136) rgb255(4cm)=(202,184,67) rgb255(5cm)=(231,133,50) rgb255(6cm)=(217,33,32)}
-}
+% \tikzexternalize[prefix=external/]
+% \pgfplotsset{%compat=1.3,
+%   %compat=1.8,
+%   compat=newest,
+%   grid=both,
+%   tick label style={font=\normalsize},
+%   label style={font=\normalsize},
+%   legend style={font=\normalsize},
+%   legend cell align={left},
+%   yticklabel style={/pgf/number format/fixed},
+%   %scaled y ticks=false,
+%   % define user colormap
+%   colormap={tol}{[1cm] rgb255(0cm)=(120,28,129) rgb255(1cm)=(63,96,174) rgb255(2cm)=(83,158,182) rgb255(3cm)=(109,179,136) rgb255(4cm)=(202,184,67) rgb255(5cm)=(231,133,50) rgb255(6cm)=(217,33,32)}
+% }
 
-%% User colors
-\definecolor{Purple}{RGB}{120,28,129}
-\definecolor{Blue}{RGB}{63,96,174}
-\definecolor{Duck}{RGB}{83,158,182}
-\definecolor{Green}{RGB}{109,179,136}
-\definecolor{Yellow}{RGB}{202,184,67}
-\definecolor{Orange}{RGB}{231,133,50}
-\definecolor{Red}{RGB}{217,33,32}
+% %% User colors
+% \definecolor{Purple}{RGB}{120,28,129}
+% \definecolor{Blue}{RGB}{63,96,174}
+% \definecolor{Duck}{RGB}{83,158,182}
+% \definecolor{Green}{RGB}{109,179,136}
+% \definecolor{Yellow}{RGB}{202,184,67}
+% \definecolor{Orange}{RGB}{231,133,50}
+% \definecolor{Red}{RGB}{217,33,32}
 
-% \def\tkzCylinder{\pgfutil@ifnextchar[{\tkz@cylinder}{\tkz@cylinder[]}} 
-% \def\tkz@cylinder[#1]#2#3#4{% 
-% \pgfmathsetmacro{\bb}{#2*#3}          
-% \pgfmathsetmacro{\yy}{\bb*\bb/#4}  
-% \pgfmathsetmacro{\xx}{#2*sqrt((1-\yy)/#4)}
-%   \fill[color=Maroon!10] (-\xx cm,0)--(-\xx cm,#4 cm)  
-%          arc(180:360:\xx cm and .5 cm)--(\xx cm,0) 
-%          arc(360:180:\xx cm and .5 cm);   
-% \ellipseThreeD[color=Maroon!30](0,0)(\xx cm,.5 cm)
-% \begin{scope}[yshift=#4 cm]
-%   \draw[fill=\cmdTKZ@ell@color,opacity=0.5,shade](0,0) ellipse (\xx cm and .5 cm) ;  
-% \end{scope}
-% \draw (\xx cm,0)--(\xx cm,#4 cm);
-% \draw (-\xx cm,0)--(-\xx cm,#4 cm); 
-% }%  
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{example}{Example}
-\newtheorem{definition}{Definition}
-\newtheorem{remark}{Remark}
-\newtheorem{proof}{Proof}
 
-\mathtoolsset{showonlyrefs}
-% \input{cover/preamble}
-% \input{cover/Funct_TemplateECN}
-% \input{cover/Input_TemplateECN}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{example}{Example}
+% \newtheorem{definition}{Definition}
+% \newtheorem{remark}{Remark}
+% \newtheorem{proof}{Proof}
+
+% \mathtoolsset{showonlyrefs}
+
+\input{cover/preamble}
+\input{cover/Funct_TemplateECN}
+\input{cover/Input_TemplateECN}
 
 %\makeatother
 \begin{document}
@@ -171,7 +157,7 @@
 % \newpage
 
 
-% %%%
+
 % \AddToShipoutPicture*{\BackgroundBPage}
 % \thispagestyle{empty}
 % ~~\\
