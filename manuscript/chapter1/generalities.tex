@@ -20,10 +20,23 @@ At last, the problem may be even more complicated by possibly large displacement
 % On the other hand, by simulating well-known problems, one can optimize industrial processes or design structures while avoiding the waste of material. 
 % Hence, the development of numerical methods that reproduce and take into account the physics is crucial to provide qualitative and quantitative results.
 
+$\newline$
+%% Simulation -- definition
 Given the complexity of the equations, the numerical simulation provides a framework for approximating the solutions of a model.
-It is a way to virtually experiment and highlight phenomena that are implicitly included in a model but not necessarily observed.
+It is a way to virtually experiment and highlight phenomena that are implicitly described by a model but not necessarily observed.
 The simulation can then be seen as a way to make the theory meaningful.
-Moreover, it enables to fill gaps left by experimental works for feasibility reasons and due to the higher amount of information it provides compared to instrumental devices.
+Moreover, it enables to fill gaps left by experimental works for feasibility reasons, or due to the higher amount of information provided by numerical investigations compared to those given by instrumental devices.
+Finally, the simulation allows to better understand the model and therefore, to better design so that subsequently a given problem is addressed as well as possible.
+Nevertheless, numerical methods need interactions with experimental works since they are based on parameters that have to be identified, especially for the constitutive models in solid mechanics that become more complex.
+Furthermore, non-physical parameters must sometimes be defined by the user in order to obtain results that are close to a phenomenon one is focusing on.
+
+%% Simulation -- motivations
+Naturally, the numerical simulation is not a straightforward undertaking and in particular in solid mechanics for the reasons mentioned above.
+In particular, the solution of hyperbolic problems in finite-deforming dissipative solids in still an open scientific issue.
+Indeed, the combination of large deformations with a wave structure can lead to complex loading paths that are not even apprehended at the model level.
+Most of the time, these aspects are drowned in constitutive numerical integrators, which however provide rather satisfactory results.
+
+
 
 %%% Local Variables:
 %%% mode: latex
