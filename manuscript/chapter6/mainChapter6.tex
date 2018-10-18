@@ -3,7 +3,7 @@
 %% Introduction:
 The purpose of this work was the development of a numerical method allowing the accurate solution of hyperbolic problems in solid mechanics.
 This class of mathematical problems governs the propagation of waves in finite deforming media.
-Given the ability in dealing with large deformation enabled by mesh-free methods and the possibility of describing discontinuous solutions provided by the DG approximation, it has been proposed to merge those two approaches.
+Given the ability in dealing with large deformations enabled by mesh-free methods and the possibility of describing discontinuous solutions provided by the DG approximation, it has been proposed to merge those two approaches.
 Furthermore, particular attention has been paid throughout this manuscript to the characteristic structure of the solution of hyperbolic problems in order to: (i) provide qualitative and quantitative comparisons between numerical solutions and exact ones; (ii) allow numerical schemes to mimic the behavior of physical systems.
 
 $\newline$
@@ -21,7 +21,7 @@ Such solvers represent an ideal way to take into account the characteristic stru
 $\newline$
 %% Chapter3: The Discontinuous Galerkin Material Point Method
 Eulerian and Lagrangian formulations of the Material Point Method have been recalled in chapter \ref{chap:chap3}.
-This method constitutes the starting point of the present work due to its ability to avoid the mesh instabilities caused by large deformation often met in solid mechanics.
+This method constitutes the starting point of the present work due to its ability to avoid the mesh instabilities caused by large deformations often met in solid mechanics.
 Nevertheless, the oscillating solutions provided by this numerical schemes prevent to accurately follow the waves.
 The aforementioned numerical noise can be eliminated by going back to the early version of the approach: the Particle-In-Cell method, at the cost of additional numerical diffusion.
 Thus, the approach proposed consisted of: (i) removing the oscillations by re-introducing within the MPM the diffusive mapping between material points and grid nodes used in PIC; (ii) reducing the diffusion thus introduced by means of the discontinuous Galerkin approximation.
@@ -58,7 +58,7 @@ More specifically, since the optimal CFL number can be achieved, the DGMPM is ab
 On the other hand, it has been shown that when this condition no longer holds, that is $CFL<1$, the method suffer less from diffusion than the original MPM using PIC mapping.
 Furthermore, the same behavior has been observed for a two-dimensional problem in an elastic medium. 
 % Hyperelasticity
-The DGMPM moreover provides good results on problems involving large deformation in one and two-dimensional solids.
+The DGMPM moreover provides good results on problems involving large deformations in one and two-dimensional solids.
 Hence, the method fulfills its objectives.
 
 %% History-dependent constitutive models

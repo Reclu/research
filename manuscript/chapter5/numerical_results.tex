@@ -3,14 +3,14 @@ In order to get additional information on the evolution of the stress states, th
 In particular, the thin-walled tube problem considered by \textsc{Clifton} \cite{Clifton} is first looked at so that the above developments can be validated.
 Next, the plane stress and plane strain cases are treated.
 %The identified behaviors should provide some simplification assumptions for the building of a procedure that lead to approximate solutions of the problems.
-The values of the elastic properties considered here are those use in the previous chapter (see table \ref{tab:material}).
-On the other hand, the tensile yield stress $\sigma^y=10^{8} \: Pa$ and the hardening modulus $C=1\times10^8 \: Pa$ are set here arbitrarily.
+The values of the elastic properties considered here are those used in the previous chapter (see table \ref{tab:material}).
+On the other hand, the tensile yield stress $\sigma^y=1 \times 10^{8} \: Pa$ and the hardening modulus $C=1\times10^8 \: Pa$ are set here arbitrarily.
 Finally, we restrict here to positive shear stress $\sigma_{12}\geq 0$.
 \subsection{Thin-walled tube problem}
 \label{sec:num_thin-walled}
 %% Hypothèses du problème
 Consider the semi-infinite domain in Cartesian coordinate system: $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$, being acted upon by a traction vector $\vect{T}^d$ at $x_1=0 $ and free surfaces $x_2=\pm h$ and $x_3=\pm e$.
-Only the first two components of $\vect{T}^d$ are non-null so that the stress and strain tensor within the medium are of the form:
+Only the first two components of $\vect{T}^d$ are non-null so that the stress and strain tensors within the medium are of the form:
 \begin{equation}
   \tens{\sigma} = \matrice{\sigma_{11} & \sigma_{12} & 0\\  & 0 & 0\\sym & & 0} \quad ;\quad\tens{\eps} = \matrice{\eps_{11} & \eps_{12} &0 \\  & \eps_{22}&0 \\sym & & \eps_{33}}
 \end{equation}
@@ -38,9 +38,9 @@ Thus, the ODEs governing the evolution of stress components inside the waves of 
   d\sigma = \psi^{s,f} d\tau
 \end{equation}
 where the loading functions $\psi^{s,f}$ depend on the component of the acoustic tensor that corresponds to the tangent modulus \eqref{eq:ch5_TW_tangent}.
-Equations \ref{eq:tw_paths} as well as these of \textsc{Clifton} \cite{Clifton} have been numerically integrated, starting from several arbitrary points lying on the initial yield surface.
+Equations \eqref{eq:tw_paths} as well as these of \textsc{Clifton} \cite{Clifton} have been numerically integrated, starting from several arbitrary points lying on the initial yield surface.
 Since the loading functions are odd functions of $\sigma$ and $\tau$ \cite{Clifton}, $\tau(\sigma)$ and $\sigma(\tau)$ are even functions and hence, the loading paths exhibit symmetries with respect to $\tau$ and $\sigma$ axes.
-Therefore the study is restricted to the quarter-plane $\sigma>0,\tau>0$.
+Therefore, the study is restricted to the quarter-plane ($\sigma>0,\tau>0$).
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Stress path in $(\sigma,\tau)$ plane \label{subfig:tw_fast_stress}}{\input{chapter5/pgfFigures/thinwalledStress_fast}} \qquad
@@ -49,20 +49,20 @@ Therefore the study is restricted to the quarter-plane $\sigma>0,\tau>0$.
   \label{fig:fast_clifton}
 \end{figure}
 Figure \ref{fig:fast_clifton} shows one stress path resulting from the integration of the ODE related to right-going fast waves with $\sigma$ used as a driving parameter.
-The initial stress state lies on the yield surface at $\sigma=0$ and the ODE is discretized by means of backward Euler method, the integration being performed until the stress reaches the value $\sigma=\sigma^y $.
+The initial stress state lies on the yield surface at $\sigma=0$ and the ODE is discretized by means of the backward Euler method, the integration being performed until the stress reaches the value $\sigma=\sigma^y $.
 The path is respectively depicted in the stress space and in the deviatoric plane in figures \ref{fig:fast_clifton}\subref{subfig:tw_fast_stress} and \ref{fig:fast_clifton}\subref{subfig:tw_fast_dev}.
-The deviatoric plane projection is obtained by drawing the paths in the eigenstresses space and projecting them onto the plane perpendicular to the hydrostatic axis $s_1+s_2+s_3=0$.
+The deviatoric plane projection is obtained by drawing the paths in the eigenstresses space and projecting them onto the plane perpendicular to the hydrostatic axis $\sigma_1=\sigma_2=\sigma_3$.
 In this plane, the von-Mises yield surface is a circle drawn with dashed lines.
 %Furthermore, the direction of the path is given by the arrows in figure \ref{sec:stress_paths}.
-Furthermore, as observed by \textsc{Clifton}, the path inside fast waves first follows the initial yield surface up to the intersection with the $\sigma$-axis.
-Then, the loading path is such that $d\tau=0$ while $\sigma$ increase as far as hyperbolicity holds, that is for $c_f < c_2 = \sqrt{\mu/\rho} $ \cite{Clifton}.
+As observed by \textsc{Clifton}, the path inside fast waves first follows the initial yield surface up to the intersection with the $\sigma$-axis.
+Then, the loading path is such that $d\tau=0$ while $\sigma$ increases as far as hyperbolicity holds, that is for $c_f < c_2 = \sqrt{\mu/\rho} $ \cite{Clifton}.
 Notice that these conclusions are similar to those made in the previous section.
 The ODEs derived in section \ref{sec:stress_paths} for plane stresses, once adapted to the thin walled-tube problem, then allow to retrieve the solution originally proposed by \textsc{Clifton}.
 
 Adopting the same approach with $\tau$ as driving parameter, some stress paths through slow waves have been reported in figure \ref{fig:tw_slow}.
 Since fast waves lead to loading paths following the initial yield surface, the orthogonality property of the loading functions implies that these of slow waves move away from it.
 It is seen in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_stress}.
-Nonetheless, this property holds in $(\sigma,\tau)$ plane but not in the deviatoric plane as can be seen in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_dev} since the quasi-linear form \eqref{eq:ch5_quasilinear_normal} and hence, the ODEs, are not written in terms of $s_1,s_2,s_3$.
+Nonetheless, this property holds in $(\sigma,\tau)$ plane but not in the deviatoric plane, as can be seen in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_dev}, since the quasi-linear form \eqref{eq:ch5_quasilinear_normal} and hence, the ODEs, are not written in terms of $s_1,s_2,s_3$.
 %This is however in general not the case in the deviatoric plane (\ref{fig:tw_slow}\subref{subfig:tw_slow_dev}) except for the initial condition $\sigma=0$ leads to a radial loading path following the direction of pure shear (horizontal dotted line in figure \ref{fig:tw_slow}\subref{subfig:tw_slow_dev}).
 \begin{figure}[h!]
   \centering
@@ -149,11 +149,11 @@ Two situations are considered for which the stress $\sigma_{11}$ increases or de
 \end{figure}
 The resulting loading paths are depicted in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_stress} in $(\sigma_{11},\sigma_{12})$ and $(\sigma_{22},\sigma_{12})$ planes, while the projection in the deviatoric plane can be seen in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}.
 In addition, figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_stress} shows the evolution of the characteristic speed associated to the fast wave along the path by means of a color gradient.
-Thus, it can be seen that for the loadings under consideration, the waves celerities are decreasing functions of the stress so that the simple wave solutions are valid.
-Next, it appears that $\sigma_{12}$ is an even function of $\sigma_{11}$ and $\sigma_{22}$.%the paths have axial symmetry, although the property has not been shown yet.
+Thus, it can be seen that for the loadings under consideration, the wave celerity is a decreasing function of the stress so that the simple wave solutions are valid.
+Next, it appears that $\sigma_{12}$ is an even function of $\sigma_{11}$ and $\sigma_{22}$. %the paths have axial symmetry, although the property has not been shown yet.
 At last, analogously to the thin-walled cylinder solution, the stress components follow the initial yield surface, which is obvious in the deviatoric plane (figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}).
-Furthermore, according to the property \eqref{eq:CP_roots} the stress path must be horizontal in the $(\sigma_{11},\sigma_{12})$ and $(\sigma_{22},\sigma_{12})$ planes, once the intersection of with the $\sigma_{11}$-axis is reached.
-As depicted in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}, this point correspond to a direction of pure shear in the deviatoric plane.
+Furthermore, according to the property \eqref{eq:CP_roots} the stress path must be horizontal in the $(\sigma_{11},\sigma_{12})$ and $(\sigma_{22},\sigma_{12})$ planes, once the $\sigma_{11}$-axis is reached.
+As depicted in figure \ref{fig:fast_path_plane_stress}\subref{subfig:CP_fast_dev}, this point corresponds to a direction of pure shear in the deviatoric plane.
 %As a result, the plastic flow becomes significant once a direction of pure shear is reached.
 Nevertheless, the numerical integration of ODEs once the shear stress $\sigma_{12}$ vanishes is not possible owing to an indeterminacy of the loading function $\psi_1^f$ that has not been identified so far.
 %condition \eqref{eq:CP_roots} yields $\psi^f_1 \rightarrow \infty$ and associated numerical issues so that the loading path cannot be integrated further.
@@ -190,7 +190,7 @@ The loading paths thus obtained for the (arbitrary) initial values $\sigma_{22}=
 The projections in the stress space and the deviatoric plane are shown.
 The evolution of the characteristic speed associated to the slow wave can also be seen by means of a color gradient.
 Once again, the simple wave solution appears to be valid with the considered loading conditions.
-Furthermore, one can see that the stress paths are now more complex in those case since, for instance, no symmetry appears in the $(\sigma_{11},\sigma_{12})$ plane.
+Furthermore, one can see that the stress paths are now more complex since, for instance, no symmetry appears in the $(\sigma_{11},\sigma_{12})$ plane.
 %For instance, for a negative initial value of the stress $\sigma_{22}$ (figure \ref{fig:slow_path_plane_stress1}), the projection in the $(\sigma_{11},\sigma_{12})$ plane does not allow to identify some symmetry.
 Moreover, the behavior is even more complex in the $(\sigma_{22},\sigma_{12})$ plane in which the variations first mainly concern $\sigma_{22}$ and next, the slopes of curves roughly change so that the paths are almost vertical.
 This sharp change in slopes is also notable in the deviatoric plane in figure \ref{fig:slow_path_plane_stress1}\subref{subfig:CP_slow_dev1}.
@@ -208,7 +208,7 @@ On the other hand, similar observations can be made for the other initial values
 However, the paths depicted in the ($\sigma_{22},\sigma_{12}$) plane in figure \ref{fig:slow_path_plane_stress3}\subref{subfig:CP_slow_stress3} follow a direction opposite to those corresponding to the initial condition $\sigma_{22}=-5.8\times 10^7 \: Pa$.
 %case in the $(\sigma_{22},\sigma_{12})$ plane, since $\sigma_{22}$ decreases rather than increases before the slopes of paths break (see figure \ref{fig:slow_path_plane_stress3}\subref{subfig:CP_slow_stress3}).
 The previous remark is also valid in the deviatoric plane in figure \ref{fig:slow_path_plane_stress3}\subref{subfig:CP_slow_dev3}.
-Indeed, the integral curves first describe clock-wise curved lines until the break in slopes occurs, after which a behavior closed to straight lines is seen.
+Indeed, the integral curves first describe clock-wise curved lines until the break in slopes occurs, after which a behavior close to straight lines is seen.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Projections of loading paths in ($\sigma_{11},\sigma_{12}$) and ($\sigma_{22},\sigma_{12}$) planes \label{subfig:CP_slow_stress3}}{\input{chapter5/pgfFigures/CPslowWaves3.tex}}
@@ -221,10 +221,10 @@ As a matter of fact, the numerical integration does not go well when driven with
 Furthermore, numerical issues occur if the starting point is such that $\sigma_{12}=0$.
 
 More generally, the loading paths resulting from the integration of ODEs governing the behavior inside simple waves in plane stress can be summarized as follows.
-Whereas the integral curves inside a fast wave first exhibits a phase in which the stress is restricted to the initial yield surface, the passage of a slow wave make the stress leave the elastic convex quasi-instantaneously.
+Whereas the integral curves inside a fast wave first exhibits a phase in which the stress is restricted to the initial yield surface, the passage of a slow wave makes the stress leave the elastic convex quasi-instantaneously.
 It is moreover noteworthy that the shear stress component $\sigma_{12}$ undergoes the biggest variation through a slow wave, in spite of the visible combined-stress nature of the corresponding paths.
-In addition, rough change in the slopes of the integral curves associated to slow waves occur.
-However, such phenomena might also be observed for fast waves once the shear waves vanishes but have not been highlighted in figure \ref{fig:fast_path_plane_stress} due to numerical issues in integrating a function tending to infinity.
+In addition, roughs change in the slopes of the integral curves associated to slow waves occur.
+However, such phenomena might also be observed for fast waves once the shear waves vanishes but have not been highlighted in figure \ref{fig:fast_path_plane_stress} due to numerical issues in integrating an undetermined function.
 %Indeed, the theory (equation \eqref{eq:CP_roots}) predicts that this situation would lead to loading paths (locally) perpendicular to the yield surface rather than parallel.
 Furthermore, after the slopes of slow waves integral curves broke, the paths are straight the deviatoric plane.
 
@@ -249,7 +249,7 @@ and the above consistency condition yields:
 %   \label{eq:flow_rule2}
 %   \tens{\dot{\eps}}^p = \frac{3}{2C}\frac{\tens{s}\otimes\tens{s}}{\norm{\tens{s}}^2} :\tens{\dot{\sigma}}
 % \end{equation}
-Thus, the system of ODE consist of the equations of table \ref{tab:simpleWavesEquations}:
+Thus, the system of ODE consists of the equations of table \ref{tab:simpleWavesEquations}:
 \begin{align}
   \label{eq:plane_strain_paths}
   & d\sigma_{11} = \psi_1^{s,f} d\sigma_{12} \\
@@ -301,10 +301,10 @@ The integral curves depicted in figure \ref{fig:slow_path_plane_strains1} result
 
 Whereas $\sigma_{11}$ varies little as shown by the projection of the path in the ($\sigma_{11},\sigma_{12}$) plane, it is not the case for $\sigma_{22}$ (see figure \ref{fig:slow_path_plane_strains1}\subref{subfig:slowDP_stress1}).
 Indeed, the projections of the integral curves in ($\sigma_{22},\sigma_{12}$) plane exhibit complex paths similar to these obtained for plane stress.
-In contrast, it can be seen in figure \ref{fig:slow_path_plane_strains1}\subref{subfig:slowDP_dev1} that the paths first follow the initial yield surface and then a direction of pure shear in the deviatoric plane, which differs from plane stress solutions.
+In contrast, it can be seen in figure \ref{fig:slow_path_plane_strains1}\subref{subfig:slowDP_dev1} that the paths first follow the initial yield surface and next a direction of pure shear in the deviatoric plane, which differs from plane stress solutions.
 Even though the paths for plane stress and plane strain have similar shapes in the stress space, one cannot expect the same observations in the deviatoric plane due to the out-of-plane stress component.
 %The fact that the curves have the same shape in stress space and not in the deviatoric plane can be explained by the out-of-plane stress that is zero are not.
-Namely, the loading paths are restricted to the $(\sigma_1,\sigma_2)$ under plane stress while they can take values in the whole space ($\sigma_1,\sigma_2,\sigma_3$) under plane strain.
+Namely, the loading paths are restricted to the $(\sigma_1,\sigma_2)$ plane under plane stress, while they can take values in the whole space ($\sigma_1,\sigma_2,\sigma_3$) under plane strain.
 
 The same behavior is observed in figures \ref{fig:slow_path_plane_strains2} and \ref{fig:slow_path_plane_strains3} which respectively show the loading paths resulting form the zero and the positive initial values of $\sigma_{22}$.
 \begin{figure}[h!]
@@ -330,21 +330,21 @@ Indeed, the characteristic speeds quickly start increasing so that the stress pa
 Furthermore, the projection in ($\sigma_{22},\sigma_{12}$) plane of the integral curves $2$ and $3$ show that the slow wave mainly influences $\sigma_{22}$.
 The projections in deviatoric plane in figure \ref{fig:slow_path_plane_strains2} however show that the stress paths first follow the initial yield surface until the direction of pure shear is reached, and next follow the radial direction.
 In addition, considering figures \ref{fig:slow_path_plane_strains1}, \ref{fig:slow_path_plane_strains2} and \ref{fig:slow_path_plane_strains3}, it can be seen that if the initial condition on $\sigma_{11}$ is greater than the value corresponding to the maximum shear stress on the initial yield surface, $\sigma_{22}$ increases along the loading path.
-Conversely, $\sigma_{22}$ decreases along the loading path if $\sigma_{11}$ is initially lower than the value corresponding to the maximum shear stress on the initial yield surface.
+Conversely, $\sigma_{22}$ decreases along the loading path if $\sigma_{11}$ is initially lower than the value that corresponds to the maximum shear stress on the initial yield surface.
 %In addition, considering figures \ref{fig:slow_path_plane_strains1}, \ref{fig:slow_path_plane_strains2} and \ref{fig:slow_path_plane_strains3}, it can be seen that the loading paths in $(\sigma_{22},\sigma_{12})$ plane lead to an increasing $\sigma_{22}$ if the initial condition is such that $\sigma_{11}$ is greater than this corresponding to the maximum shear on the initial yield surface in projection in the $(\sigma_{11},\sigma_{12})$ plane.
 %Conversely, an initial condition $\sigma_{11}$ lower than that associated to the maximum shear stress on the initial yield surface in the plane $(\sigma_{11},\sigma_{12})$ results in a decreasing $\sigma_{22}$ along the integral curves.
 Note that the same goes for $\sigma_{11}$.
 Thus, it seems that the property $\sign(d\sigma_{22})=\sign(d\sigma_{11})$ holds along the loading paths followed inside a slow simple wave in plane strain, though this has not been highlighted mathematically.
 
 Generally speaking, it appears that for the ranges of stress considered here, the hardening of the material is mainly due to slow simple waves for plane strain cases.
-Indeed, the latter may lead to radial loading paths that greatly increase the radius of the von-Mises cylinder in principal stress space, whereas the integral curves corresponding to fast waves are restricted to the initial yield surface. Notice, however, that the above results have been obtained by using a rather low hardening modulus.
+Indeed, the latter may lead to radial loading paths that greatly increase the radius of the von-Mises cylinder in principal stresses space, whereas the integral curves corresponding to fast waves are restricted to the initial yield surface. Notice, however, that the above results have been obtained by using a rather low hardening modulus.
 
 
 
 %If on the other hand, the hardening parameter is raised to $C=1\times10^{10} \: Pa$, the loading paths slightly differ.
 %To illustrate this, the same plane strain problems as before are considered by using the same driving parameters and initial conditions for both fast and slow waves.
 %The resulting integral curves are here depicted in deviatoric plane only in order to highlight particular behaviors.
-The curves resulting from the use of the tangent modulus $C=1\times10^{10} \: Pa$ exhibit slight differences.
+The curves resulting from the use of the hardening parameter $C=1\times10^{10} \: Pa$ exhibit slight differences.
 First, the integral curves of fast waves are depicted in figure \ref{fig:fast_H}.
 As before, the integral curves follow the initial yield surface but then branch off to reach a direction of pure tensile/compression loading.
 \begin{figure}[h!]
@@ -356,7 +356,7 @@ As before, the integral curves follow the initial yield surface but then branch 
 Moreover, the visible cusps in the loading paths $2$, $3$, $4$ and $5$, which already arise in the solutions based on a lower hardening modulus, indicate that the path followed inside fast waves converges to a direction of pure tensile/compression under plane strain. 
 
 The increase in hardening parameter also allows to eliminate the integration issues that occur for a lower one.
-As a result, the stress paths followed inside slow simple waves depicted in figure \ref{fig:slow_H} lead to stress state lying further outside of the initial elastic convex.
+As a result, the stress paths followed inside slow simple waves depicted in figure \ref{fig:slow_H} lead to stress states lying further outside of the initial elastic convex.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption \label{subfig:slow_H1}}
