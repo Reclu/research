@@ -1,11 +1,11 @@
-A wide variety of physical phenomena are modeled in the space-time domain by partial differential equations. The purpose of this section is to review generalities about PDEs and suited strategies depending on the natures of equations so that solutions can be derived.
+A wide variety of physical phenomena are modeled in the space-time domain by partial differential equations. The purpose of this section is to review generalities about PDEs and suited strategies depending on the nature of the equations so that solutions can be derived.
 \subsection{General concepts}
 A system of partial differential equations can be written by means of a vector operator $\vect{\Gc}$ of independent and dependent variables $(x_1,...,x_N)$ and $(u_1,...,u_I)$:
 \begin{equation}
   \label{eq:diff_operator}
   \vect{\Gc}\(x_1,...,x_N,u_1,...,u_I,\drond{u_1}{x_1},..., \drond{^Mu_I}{x_N^M}\) = \vect{0}
 \end{equation}
-The dimension of the system is given by the size $I$ of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system} $M$. In equation \eqref{eq:diff_operator} and in what follows, sans-serif symbols refer to matrices while calligraphic symbols stand for column arrays. Furthermore, the partial derivatives of a quantity $u$ with respect to a variable $x$ may be written $u_x$ when there will be no ambiguity. Making use of index notation and convention of implicit summation over repeated indices, a system of partial differential equations reads:
+The dimension of the system is given by the size $I$ of the array $\vect{\Uc}^T=[u_1,...,u_I] \in \Rbb^I$, referred to as the \textit{unknown vector}. The highest derivative of the unknown vector in the system defines the \textit{order of the system} $M$. In equation \eqref{eq:diff_operator} and in what follows, sans-serif symbols refer to matrices while calligraphic symbols stand for column arrays. Furthermore, the partial derivatives of a quantity $u$ with respect to a variable $x$ may be written $u_x$ when there is no ambiguity. Making use of index notation and convention of implicit summation over repeated indices, a system of partial differential equations reads:
 \begin{equation*}
    \sum_{k=1}^{N} \sum_{p=1}^{M}\Asf_{ij}^p \drond{^p\Uc_j}{x_k^p} + \Sc_i = 0
 \end{equation*}
@@ -14,16 +14,16 @@ or equivalently, in matrix form:
   \label{eq:diff_system_matrix}
   \sum_{k=1}^{N}\sum_{p=1}^{M}\tens{\Asf}^p \drond{^p\vect{\Uc}}{x_k^p} + \vect{\Sc} =  \vect{0}
 \end{equation}
-Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Sc}$ may depend on independent variables and the unknown vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ or not leads respectively to \textit{linear systems with variable coefficients} or to \textit{linear systems with constant coefficients}. The system remains \textit{linear} if $\vect{\Sc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if the $\tens{\Asf}^p$ depend on dependent variables $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
+Coefficients matrices $\tens{\Asf}^p$ and the vector $\vect{\Sc}$ may depend on independent variables and the unknown vector ($x_1,...,x_N,\vect{\Uc}$) leading to different types of partial differential systems. Namely, whether those terms are functions of the $x_k$ or not leads respectively to \textit{linear systems with variable coefficients} or to \textit{linear systems with constant coefficients}. The system remains \textit{linear} if $\vect{\Sc}$ depends linearly on $\vect{\Uc}$, and is \textit{semi-linear} if the relation is non-linear. Finally, if the $\tens{\Asf}^p$ depend on the dependent variables vector $\vect{\Uc}$ and its derivatives up to order $M-1$, the system is called \textit{quasi-linear}.
 
 
-The \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given prescribed values. Geometrically speaking, the solution of such a problem can be seen as the building of a hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first order Cauchy problem by using suitable changes of variables \cite[p.54]{PDEs}, we will therefore focus on first order PDEs.
+The \textit{Cauchy problem} consists in finding a solution $\vect{\Uc}$ of system \eqref{eq:diff_system_matrix} that satisfies a set of given prescribed values. Geometrically speaking, the solution of such a problem can be seen as the building of a hyper-surface surface of $\Rbb^{I+N}$, hence the term of \textit{integral surface} for $\vect{\Uc}$. Such a problem can be reduced to that of solving a first-order Cauchy problem by using suitable changes of variables \cite[p.54]{PDEs}, we will therefore focus on first-order PDEs.
 
 \subsection{Notion of characteristics -- Hyperbolic problems}
-The theorem of \textit{Cauchy--Kowalewski} locally ensures the existence of solutions of a Cauchy problem for partial differential systems and is based on the restrictive requirement of analytic coefficients matrices and initial data (see \cite[p.46]{PDEs}). The case of first order systems however, only requires continuity and differentiability conditions and lies on the concept of \textit{characteristics}, which makes the development of a solution more flexible.
+The theorem of \textit{Cauchy--Kowalewski} locally ensures the existence of solutions of a Cauchy problem for partial differential systems and is based on the restrictive requirement of analytic coefficients matrices and initial data (see \cite[p.46]{PDEs}). The case of first-order systems however, only requires continuity and differentiability conditions and lies on the concept of \textit{characteristics}, which makes the development of a solution more flexible.
 
-\subsubsection*{First order quasi-linear equations}
-To illustrate the aforementioned notions, we consider the first order quasi-linear PDE with independent variables $x$ and $t$:
+\subsubsection*{First-order quasi-linear equations}
+To illustrate the aforementioned notions, we consider the first-order quasi-linear PDE with independent variables $x$ and $t$:
 \begin{equation}
   \label{eq:1st_order_pde}
    a u_x + b u_t  = c
@@ -84,11 +84,11 @@ $\newline$
   \label{eq:monge_axis}
   \matrice{dx \\ dt \\ du} = \matrice{a \\ b \\c}
 \end{equation}
-Introduction of a parameter $\eta$ and integration of equation \eqref{eq:monge_axis} yields a one-parameter family of characteristic curves of the PDE:
+Introduction of a parameter $\eta$ and integration of equation \eqref{eq:monge_axis} yield a one-parameter family of characteristic curves of the PDE:
 \begin{equation*}
   x=x(\eta) \quad ; \quad t=t(\eta) \quad ; \quad u=u(\eta)
 \end{equation*}
-Hence, a characteristic curve is tangent at every point to all the integral surfaces, and an infinity of integral surfaces cross one characteristic curve. As a consequence, if the initial curve is a characteristic curve, infinitely many integral surfaces contain it so that the Cauchy problem can not be solved.
+Hence, a characteristic curve is tangent at every point to all the integral surfaces, and an infinity of integral surfaces cross one characteristic curve. As a consequence, if the initial curve is a characteristic curve, infinitely many integral surfaces contain it so that the Cauchy problem cannot be solved.
 However, the following statement holds \cite[p.63]{Courant}:
 \begin{theorem}[Courant]
   \label{th:integral_surface_generated}
@@ -97,8 +97,8 @@ However, the following statement holds \cite[p.63]{Courant}:
 This theorem will be used in what follows to solve the Cauchy problem.
 
 %\subsection{The method of characteristic}
-\subsubsection*{First order quasi-linear systems}
-The concept of characteristic curves is now extended to first order quasi-linear systems of dimension $I$. In matrix form:
+\subsubsection*{First-order quasi-linear systems}
+The concept of characteristic curves is now extended to first-order quasi-linear systems of dimension $I$. In matrix form:
 \begin{equation}
   \label{eq:1st_order_quasi-linear_syst}
   \Absf^t\(x,t,\vect{\Uc}\) \: \vect{\Uc}_t + \Absf^x\(x,t,\vect{\Uc}\)\: \vect{\Uc}_x + \vect{\Sc} = \vect{0}
@@ -135,13 +135,13 @@ where D is called the \textit{characteristic determinant} of system \eqref{eq:1s
 
 \begin{definition}
   \label{def:hyperbolic_system}
-  A first order system of $I$ partial differential equations is said \textbf{hyperbolic} if it admits $I$ real eigenvalues associated to independent eigenvectors \cite{Courant}.
+  A first-order system of $I$ partial differential equations is said \textbf{hyperbolic} if it admits $I$ real eigenvalues associated to independent eigenvectors \cite{Courant}.
 For those problems, one can draw a set of one-parameter families of characteristic curves $\varphi^k$ in the $(x,t)$ plane by integrating the relations $\lambda_k=dx/dt$ ($1 \leq k \leq I$).
 \end{definition}
 
 \begin{example}
   \label{ex:charac1}
-  Consider the first order system with variable coefficients
+  Consider the first-order system with variable coefficients
 \begin{equation*}
  \matrice{x &0 \\0 &-x} \drond{}{t} \matrice{\Uc_1 \\ \Uc_2} + \drond{}{x}\matrice{\Uc_1 \\ \Uc_2} = \matrice{0 \\0}
 \end{equation*}
@@ -157,7 +157,7 @@ Those curves are drawn in figure \ref{fig:exampleCharac}\subref{subfig:curve_lin
 \end{example}
 \begin{example}
   \label{ex:charac2}
-  Consider now the first order system with constant coefficients
+  Consider now the first-order system with constant coefficients
 \begin{equation*}
  \matrice{1 &0 \\0 &2} \drond{}{t} \matrice{\Uc_1 \\ \Uc_2} + \drond{}{x}\matrice{\Uc_1 \\ \Uc_2} = \matrice{0 \\0}
 \end{equation*}
@@ -169,13 +169,13 @@ Two real roots exist $\lambda_1=1 \: ; \: \lambda_2=1/2$, leading by integration
 \begin{equation*}
   t_1(x)=x+c_1  \quad \text{and} \quad t_2(x)=2x+c_2 
 \end{equation*}
-Unlike example \ref{ex:charac1}, coefficient matrices do not depend on independent variables, thus yielding to characteristic straight lines in the $(x,t)$ plane (see \ref{fig:exampleCharac}\subref{subfig:straight_lines}).
+Unlike example \ref{ex:charac1}, coefficient matrices do not depend on independent variables, thus yielding characteristic straight lines in the $(x,t)$ plane (see \ref{fig:exampleCharac}\subref{subfig:straight_lines}).
 \end{example}
 \begin{figure}[h]
   \centering
   \subcaptionbox{Example \ref{ex:charac1}: $\lambda_{1,2}=\pm 1/x$\label{subfig:curve_lines}}{\input{chapter2/pgfFigures/exampleCharac}}
   \subcaptionbox{Example \ref{ex:charac2}: $\lambda_{1}=1 \:\text{and} \: \lambda_2=1/2$\label{subfig:straight_lines}}{\input{chapter2/pgfFigures/exampleCharac_const}}
-  \caption{Family of characteristic curves corresponding to the eigenvalues of the first order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
+  \caption{Family of characteristic curves corresponding to the eigenvalues of the first-order systems given in examples \ref{ex:charac1} and \ref{ex:charac2}.}
   \label{fig:exampleCharac}
 \end{figure}
 

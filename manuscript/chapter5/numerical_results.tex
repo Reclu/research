@@ -4,7 +4,7 @@ In particular, the thin-walled tube problem considered by \textsc{Clifton} \cite
 Next, the plane stress and plane strain cases are treated.
 %The identified behaviors should provide some simplification assumptions for the building of a procedure that lead to approximate solutions of the problems.
 The values of the elastic properties considered here are those used in the previous chapter (see table \ref{tab:material}).
-On the other hand, the tensile yield stress $\sigma^y=1 \times 10^{8} \: Pa$ and the hardening modulus $H=1\times10^8 \: Pa$ are set here arbitrarily.
+On the other hand, the tensile yield stress $\sigma^y=1 \times 10^{8} \: Pa$ and the hardening modulus $C=1\times10^8 \: Pa$ are set here arbitrarily.
 Finally, we restrict here to positive shear stress $\sigma_{12}\geq 0$.
 \subsection{Thin-walled tube problem}
 \label{sec:num_thin-walled}
@@ -236,18 +236,18 @@ Hence, the integral curves associated to simple waves are integrated implicitly,
 To do so, the consistency condition (see section \ref{sec:constitutive-equations}) of the von-Mises yield surface \eqref{eq:ch5_von-Mises_yield} is written:
 \begin{equation}
   \label{eq:consistance}
-  \dot{f}=0 \quad \Leftrightarrow  \quad  \sqrt{\frac{3}{2}}\:\frac{\tens{s}:\tens{\dot{\sigma}}}{\norm{\tens{s}}}=H\dot{p}
+  \dot{f}=0 \quad \Leftrightarrow  \quad  \sqrt{\frac{3}{2}}\:\frac{\tens{s}:\tens{\dot{\sigma}}}{\norm{\tens{s}}}=C\dot{p}
 \end{equation}
 In addition, combination of the plastic flow rule \eqref{eq:plastic_strain_rate}: $\tens{\dot{\eps}}^p = \dot{p}\:\sqrt{\frac{3}{2}}\frac{\tens{s}}{\norm{\tens{s}}}$ ,
 and the above consistency condition yields:
 \begin{equation}
   \label{eq:flow_rule}
-  \tens{\dot{\eps}}^p = \frac{3}{2H}\frac{\tens{s}\otimes\tens{s}}{\norm{\tens{s}}^2} :\tens{\dot{\sigma}}
+  \tens{\dot{\eps}}^p = \frac{3}{2C}\frac{\tens{s}\otimes\tens{s}}{\norm{\tens{s}}^2} :\tens{\dot{\sigma}}
 \end{equation}
 % so that the evolution of the plastic strain tensor is governed by: 
 % \begin{equation}
 %   \label{eq:flow_rule2}
-%   \tens{\dot{\eps}}^p = \frac{3}{2H}\frac{\tens{s}\otimes\tens{s}}{\norm{\tens{s}}^2} :\tens{\dot{\sigma}}
+%   \tens{\dot{\eps}}^p = \frac{3}{2C}\frac{\tens{s}\otimes\tens{s}}{\norm{\tens{s}}^2} :\tens{\dot{\sigma}}
 % \end{equation}
 Thus, the system of ODE consists of the equations of table \ref{tab:simpleWavesEquations}:
 \begin{align}
@@ -341,16 +341,16 @@ Indeed, the latter may lead to radial loading paths that greatly increase the ra
 
 
 
-%If on the other hand, the hardening parameter is raised to $H=1\times10^{10} \: Pa$, the loading paths slightly differ.
+%If on the other hand, the hardening parameter is raised to $C=1\times10^{10} \: Pa$, the loading paths slightly differ.
 %To illustrate this, the same plane strain problems as before are considered by using the same driving parameters and initial conditions for both fast and slow waves.
 %The resulting integral curves are here depicted in deviatoric plane only in order to highlight particular behaviors.
-The curves resulting from the use of the hardening parameter $H=1\times10^{10} \: Pa$ exhibit slight differences.
+The curves resulting from the use of the hardening parameter $C=1\times10^{10} \: Pa$ exhibit slight differences.
 First, the integral curves of fast waves are depicted in figure \ref{fig:fast_H}.
 As before, the integral curves follow the initial yield surface but then branch off to reach a direction of pure tensile/compression loading.
 \begin{figure}[h!]
   \centering
   \input{chapter5/pgfFigures/DPfastWaveH_deviator0.tex}
-  \caption{Fast simple wave solutions of the plane strain problems $H=1\times10^{10} \: Pa$.}
+  \caption{Fast simple wave solutions of the plane strain problems $C=1\times10^{10} \: Pa$.}
   \label{fig:fast_H}
 \end{figure}
 Moreover, the visible cusps in the loading paths $2$, $3$, $4$ and $5$, which already arise in the solutions based on a lower hardening modulus, indicate that the path followed inside fast waves converges to a direction of pure tensile/compression under plane strain. 
@@ -363,7 +363,7 @@ As a result, the stress paths followed inside slow simple waves depicted in figu
   {\phantomsubcaption \label{subfig:slow_H2}}
   {\phantomsubcaption \label{subfig:slow_H3}}
   \input{chapter5/pgfFigures/DPslowWaves_H}
-  \caption{Slow simple wave solutions of the previous problems with $H=1\times10^{10} \: Pa$.}
+  \caption{Slow simple wave solutions of the previous problems with $C=1\times10^{10} \: Pa$.}
   \label{fig:slow_H}
 \end{figure}
 Moreover, for every initial values of $\sigma_{22}$ considered in figures \ref{fig:slow_H}\subref{subfig:slow_H1}, \ref{fig:slow_H}\subref{subfig:slow_H2} and \ref{fig:slow_H}\subref{subfig:slow_H3}, the slopes of the integral curves no longer break but smoothly vary to reach the direction of pure shear in the deviatoric plane.

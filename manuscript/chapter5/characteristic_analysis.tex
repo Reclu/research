@@ -18,13 +18,13 @@ In addition, the elastic-plastic constitutive equations derived from thermodynam
     \label{eq:ch5_von-Mises_yield}
     & f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}} - \(R(p)+\sigma^y\) \equiv 0,\quad \text{with }\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma} \tens{I} \\
     % \label{eq:ch5_kin_hard}
-    % & \tens{Y}=\frac{2}{3}H\tens{\eps}^p \\
+    % & \tens{Y}=\frac{2}{3}C\tens{\eps}^p \\
     \label{eq:ch5_iso_hard}
-    & R(p)=H \: p \\
+    & R(p)=C \: p \\
     \label{eq:elastoplastic_tangent}
     & \tens{\dot{\sigma}}=\(\Cbb^{elast} - \beta\:\tens{s}\otimes\tens{s} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}} \\
     \label{eq:ch5_plastic_flow}
-    & \beta = \frac{6\mu^2}{3\mu +H}\times\frac{1}{\tens{s}:\tens{s}}\\
+    & \beta = \frac{6\mu^2}{3\mu +C}\times\frac{1}{\tens{s}:\tens{s}}\\
     \label{eq:ch5_EP_acoustic}
     & A_{ij}^{ep}=  A_{ij}^{elast} -  \beta (n_k s_{ki})(s_{jl}n_l)
   \end{empheq}
