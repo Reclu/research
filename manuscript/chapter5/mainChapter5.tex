@@ -65,13 +65,13 @@ In this chapter, the characteristic structure of the solution of hyperbolic prob
 It is known since the 50s that plastic flow in two-dimensional solids yields two families of waves whose speeds depend on the stress state, the slow and fast waves.
 %As a result, shock and simple waves may occur in an elastoplastic medium even for linear hardening material.
 In addition, these plastic waves may have an impact on all stress components in contrast to elastic discontinuities, hence the name of combined-stress waves.
-During the 60s, attention has been paid to simple waves in particular two-dimensional problems thus providing, among other, solutions of Picard problems in elastic-plastic medium undergoing step loadings \cite{Clifton,Ting68,Ting73}. % Idem pour ting ? c'est dit dans l'intro ? voir ce qui est fait dans le 73
+During the 60s, attention has been paid to simple waves in particular two-dimensional problems thus providing, among others, solutions of Picard problems in elastic-plastic medium undergoing step loadings \cite{Clifton,Ting68,Ting73}. % Idem pour ting ? c'est dit dans l'intro ? voir ce qui est fait dans le 73
 The singular nature of such problems lies in the fact that the characteristic structure of the solution depends on the external loading undergone.
 Indeed, it has been shown \cite{Clifton} that boundary conditions can lead to plastic flow involving one fast, one slow, or both simple waves.
 Therefore, it is crucial to be able to identify typical stress paths followed in each simple waves in order to link the initial data to a given stress state, and subsequently to determine the occurring wave pattern.
 
-Besides these works, investigations on plastic shocks have been carried out.
-The existence of such solutions is due to the state law for the hydrostatic pressure which dominates deviatoric effects.
+%Besides these works, investigations on plastic shocks have been carried out.
+%The existence of such solutions is due to the state law for the hydrostatic pressure which dominates deviatoric effects.
 
 
 $\newline$
@@ -100,16 +100,16 @@ The two different formulations, respectively based on elastoplastic stiffnesses 
 Second, the evolution of stress components across fast and slow waves under plane stress has been looked at in section \ref{sec:num_plane_stress}.
 It appears that though the loading paths are rather complex in stress space through a fast wave, the stress evolution in the deviatoric plane is restricted to the initial yield surface until one direction of pure shear is reached.
 A singularity then occurs so that the numerical integration cannot be pursued.
-On the other hand, the loading paths resulting from the integration of ODEs satisfied inside a slow wave, except that $\sigma_{11}$ varies much less than the other stress components.
+On the other hand, the loading paths resulting from the integration of ODEs satisfied inside a slow wave exhibit complex shapes along which $\sigma_{11}$ varies much less than the other stress components.
 
 %% Def. planes
 Third, the plane strain case has been considered in section \ref{sec:num_plane_strain}.
 Once again, the integral curves inside a fast wave show complex shapes in stress space, and an evolution restricted to the initial yield surface in the deviatoric plane.
 In that case, however, the paths may follow a direction of pure tensile/compression in the latter plane so that the plastic flow is radial for high value of hardening modulus. 
-In contrast, the paths inside slow waves first rotates on the yield surface and then lead to a stress state of pure shear in the deviatoric plane.
+In contrast, the paths inside slow waves first rotate on the yield surface and then lead to a stress state of pure shear in the deviatoric plane.
 
 \subsection{Towards a two-dimensional elastoplastic Riemann solver}
-The physical structures emphasized in this chapter enable a better understanding of the propagation of waves in two-dimensional elastoplastic medium, although further investigations are required.
+The physical structures emphasized in this chapter enable a better understanding of the propagation of waves in two-dimensional elastoplastic media, although further investigations are required.
 On the other hand, the loading paths followed in fast and slow simple waves can be used in order to improve the numerical simulation of those problems.
 
 %% Lin et Ballman
@@ -124,7 +124,7 @@ Then, different situations may occur:
   This situation is depicted in figure \ref{fig:charac}\subref{subfig:charac2}.
 \item[(2-a)] the curve resulting from the reverse integration across a slow wave intersects the plane $\sigma_{12}=0$.
   Then, assuming that the paths of slow waves are symmetric with respect to that plane, a fast wave is added in order to reach the initial yield surface at the initial value of $\sigma_{22}$.
-  Indeed, the fast waves have been shown to yield horizontal path in the ($\sigma_{11},\sigma_{12}$) plane in such a way that only that type of wave enables to achieve the initial elastic convex.
+  Indeed, the fast waves have been shown to yield horizontal paths in the ($\sigma_{11},\sigma_{12}$) plane, in such a way that only that type of waves enables to achieve the initial elastic convex.
   This also corresponds to figure \ref{fig:charac}\subref{subfig:charac2}.
 \item[(2-b)] if at last, the guessed state is such that $\sigma_{12}=0$, a fast wave enables to reach the initial yield surface as depicted in figure \ref{fig:charac}\subref{subfig:charac3}.
 \end{itemize}

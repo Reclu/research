@@ -26,7 +26,7 @@ Though the low load amplitude applied results in a solution which looks like a d
   \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem $\Pi^d= 4\times 10^{8} \: Pa$. Comparison between updated and total Lagrangian MPMs ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
   \label{fig:he_rarefaction_UL}
 \end{figure}
-First, both solutions of updated and total Lagrangian formulations oscillate.
+First, both solutions of updated and total Lagrangian MPM formulations oscillate.
 It is noteworthy that these two stress profiles are superimposed except at the left end of the domain where an instability occurs in updated Lagrangian solution due to the displacement of particles.
 Second, DGMPM solutions still behave well and show a good agreement with the exact solution. However, the enforcement of a higher load amplitude is more relevant in order to see the error made by the DGMPM.
 The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
@@ -41,7 +41,7 @@ Significant differences between numerical methods and the exact solution are the
   \label{fig:he_rarefaction}
 \end{figure}
 First, grid crossing now occurs so that the MPM results based on the updated Lagrangian formulation are no longer correct. Hence, this formulation is omitted from now on.
-On the other hand, the total Lagrangian MPM scheme yield a solution which does not oscillate more than for linear cases.
+On the other hand, the total Lagrangian MPM scheme yields a solution which does not oscillate more than for linear cases.
 %The total Lagrangian approach, on the other hand, provides a solution in which the wave travel at the correct speed, although spurious oscillations still arise.
 Next, as expected from the use of an approximate-state Riemann solver for non-linear problems, DGMPM stresses, though close to the analytical solution, no longer fit it exactly (see figure \ref{fig:he_rarefaction}\subref{subfig:he_rarefaction2}).
 Furthermore, the use of DGMPM-Euler with 2ppc leads to a smoother solution.
@@ -74,7 +74,7 @@ This situation did not arise in the above case of a rarefaction wave since the h
 \end{figure}
 Total Lagrangian MPM and DGMPM are used to solve this problem, and compared to the exact solution in figure \ref{fig:he_shock}.
 %% MPM
-The error made in the MPM solutions grows during the computation, implying that the method is no longer stable in spite of the CFL number set to $0.5$, which ensured stability for the above problems.
+The error made in the MPM solution grows during the computation, implying that the method is no longer stable in spite of the CFL number set to $0.5$, which ensured stability for the above problems.
 Moreover, slight oscillations also appear after the shock in DGMPM solutions based on a unit Courant number (see figure \ref{fig:he_shock}\subref{subfig:he_shock1}) but not in the DGMPM-Euler using 2ppc due to the lower Courant number used.
 %This numerical noise (figure \ref{fig:he_shock}\subref{subfig:he_shock1}) does not appear in the DGMPM-Euler using 2ppc due to the lower Courant number used.
 Nevertheless, the oscillations do not increase with time as can be seen in figure \ref{fig:he_shock}\subref{subfig:he_shock2}, meaning that this noise is not an instability.
