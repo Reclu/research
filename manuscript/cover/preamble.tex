@@ -9,6 +9,19 @@
     matrix,shapes.symbols,shapes.multipart,patterns,shapes,snakes,pgfplots.groupplots,spy,backgrounds}
 \usetikzlibrary{external}
 \tikzexternalize[prefix=external/]
+\usetikzlibrary{spy,backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+  arrows along my path/.style={
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=between positions 0.03 and 1 step 24pt with {\arrow{Stealth[length=8pt]}},
+   }}}}
+   
 \usepackage{pgfplots} % pdf picture declaration
 \usepackage{eso-pic} % background picture
 \usepackage{subfiles} % many files used
@@ -19,7 +32,7 @@
 \usepackage{graphicx}
 \usepackage{cancel}
 \usepackage[colorlinks,linkcolor=Blue,citecolor=black]{hyperref}
-
+\usepackage{empheq}
 
 \usepackage[font=normal]{caption}
 \usepackage[font=normal]{subcaption}
