@@ -1,4 +1,4 @@
-The mathematical laws describing the deformation of a solid body are summarized in this section. First, the kinematic laws governing the motion of each material point belonging to a solid are considered. Then \textit{strain} measures are associated to internal forces through the thermodynamic framework so that \textit{constitutive equations} are derived. For a more exhaustive review of governing equations, see for instance \cite{Foundation_of_elasticity}, \cite{Truesdell}, \cite{Simo}, \cite{Belytschko}.
+The mathematical laws describing the deformation of a solid body are summarized in this section. First, the kinematic laws governing the motion of each material point belonging to a solid are considered. Then \textit{strain} measures are associated to internal forces through the thermodynamic framework so that \textit{constitutive equations} are derived. For a more exhaustive review of governing equations, see for instance \cite{Belytschko,Foundation_of_elasticity,Truesdell,Simo}.
 
 \subsection{Kinematic laws -- Strain measures}
 Consider a three-dimensional solid with volume denoted by $\Omega \subset \Rbb^3$ bounded by the surface $\partial \Omega$. This body undergoes external forces that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such loads, the domain may change within the time interval $\tau = \[0,T\]$ and is hence written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial configurations are identical. At a given time $t>0$, the volume is $\Omega(t)=\Omega_t$ and the state of the solid corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
@@ -60,7 +60,7 @@ with $\tens{\eps}$ the symmetric \textit{linearized strain tensor}. Such deforma
 
 \subsection{Balance equations}
 % In this section a solid domain $\Omega(t)$ undergoing a deformation is still considered within the time interval $\tau = \[0,T\]$.
-The time derivative of equations \eqref{eq:F_phi} and \eqref{eq:epsilon} combined with the definition of the velocity field \eqref{eq:velocity} yields respectively:
+The time derivative of equations \eqref{eq:F_phi} and \eqref{eq:epsilon} combined with the definition of the velocity field \eqref{eq:velocity} yield respectively:
 \begin{equation}
   \begin{aligned}
     & \tens{\dot{F}} - \nablat_0\vect{v} = \tens{0} \\
@@ -197,7 +197,7 @@ Note that the \textit{Fourier's law} of conduction is based on the non-negativen
 \end{equation*}
 where $\tens{k}$ is a positive-definite second-order tensor.
 
-We assume that the internal energy density is a function of strain, \textit{entropy} $\eta$ and additional internal variables $\Vc_p, \: (1\leq p \leq N)$ describing irreversible processes. The Helmholtz free energy density on the other hand, defined as the \textit{Legendre transform} of internal energy, is a function of temperature $\theta$ and not of entropy: $\psi\(\tens{F},\theta,\Vcb\)=e\(\tens{F},\eta,\Vcb\)-\theta \eta$. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation thus reads:
+We assume that the internal energy density is a function of strain, \textit{entropy} $\eta$ and additional internal variables $\Vc_p \: (1\leq p \leq N)$, describing irreversible processes. The Helmholtz free energy density on the other hand, defined as the \textit{Legendre transform} of internal energy, is a function of temperature $\theta$ and not of entropy: $\psi\(\tens{F},\theta,\Vcb\)=e\(\tens{F},\eta,\Vcb\)-\theta \eta$. The free energy density is supposed \textit{objective} or \textit{frame indifferent} \cite[p.255]{Simo}, concave with respect to temperature and convex with respect to other variables. The mechanical dissipation thus reads:
 \begin{equation*}
   \Dscr^{int} = \tens{\Pi}:\tens{\dot{F}} - \rho_0 \(\dot{\psi} +\eta \dot{\theta}\) 
 \end{equation*}
@@ -232,7 +232,7 @@ Similar considerations lead to the state laws for entropy and are assumed for ad
   \begin{equation*}
     \rho_0 C \dot{\theta} = \rho_0 r - \nablav_0 \cdot \vect{Q} - \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb} + \theta \(\drond{\tens{\Pi}}{\theta}:\tens{\dot{F}} - \drond{\Acb}{\theta}\dot{\Vcb} \)
   \end{equation*}
-  Nevertheless, we will restrict our attention in the following to isothermal deformations so that temperature can be omitted and internal energy balance equation \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} is not considered.
+  Nevertheless, we will restrict our attention in the following to isothermal deformations so that temperature can be omitted and internal energy balance equations \eqref{eq:energy_balance} or \eqref{eq:energy_balance_euler} are not considered.
   % automatically satisfied. Indeed, for isothermal processes the heat equation leads to:
   % \begin{equation*}
   %   \rho_0 r - \nablav_0 \cdot \vect{Q} = \rho_0 \drond{\psi}{\Vcb}\dot{\Vcb}
@@ -431,7 +431,7 @@ which is positive-definite for positive linear hardening ($C>0 \:;\: R'>0$).
     \label{eq:EVP_creep_law}
     \dot{p}=\left\langle \frac{f}{\eta}\right\rangle^n
   \end{equation}
-  where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters.% arising from the relaxation of the condition $f\leq 0$.
+  where $\left\langle\bullet\right\rangle=\frac{\bullet + \abs{\bullet}}{2}$ is the positive part function, and $n$ and $\eta$ are parameters. % arising from the relaxation of the condition $f\leq 0$.
   %%
   Hence, the plastic fluxes $\tens{\dot{\eps}}^p, \dot{\Vcb}$ are completely determined by \eqref{eq:flow_rule_plast} and \eqref{eq:hardening_rule_plast}.
   %%

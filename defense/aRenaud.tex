@@ -1,0 +1,242 @@
+\documentclass[11pt,aspectratio=169]{beamer}
+\usetheme{default}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{multimedia}
+\usepackage{media9}
+\usepackage{subfig}
+% \usepackage[font=small]{caption}
+% \usepackage[font=small]{subcaption}
+
+\usepackage[tensorialbold]{mescommandes}
+\usepackage[babel=true,kerning=true]{microtype}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{fancybox}
+\usepackage{textcomp}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\RequirePackage{tikz}
+\usetikzlibrary{patterns} 
+%\usepackage[hang,tight,scriptsize]{subfigure}
+\usetikzlibrary{shapes}
+\usetikzlibrary{snakes}
+\usepackage{pgfplots}
+%\usepackage{pgfplotsthemetol}
+\pgfplotsset{compat=newest,
+	grid=both,
+        tick label style={font=\normalsize},
+	label style={font=\normalsize},
+	legend style={font=\normalsize},
+	legend cell align={left},
+        yticklabel style={/pgf/number format/fixed},
+        % define user colormap
+	colormap={tol}{[1cm] rgb255(0cm)=(120,28,129) rgb255(1cm)=(63,96,174) rgb255(2cm)=(83,158,182) rgb255(3cm)=(109,179,136) rgb255(4cm)=(202,184,67) rgb255(5cm)=(231,133,50) rgb255(6cm)=(217,33,32)}
+}
+
+% define user color
+\definecolor{col1}{RGB}{51,34,136}
+\definecolor{col2}{RGB}{136,204,238}
+\definecolor{col3}{RGB}{17,119,51}
+\definecolor{col4}{RGB}{221,204,119}
+\definecolor{col4}{RGB}{204,102,119}
+\definecolor{col5}{RGB}{217,33,32}
+\definecolor{col6}{RGB}{170,68,153}
+\definecolor{col7}{RGB}{227,156,55}
+
+%% User colors
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
+
+%\setcounter{tocdepth}{1}
+\usefonttheme{professionalfonts}
+\usetheme[progressbar=foot,subsectionpage=progressbar,sectionpage=none]{metropolis}
+\useoutertheme{Headinfoline}
+\setbeamertemplate{section in toc}{{\inserttocsectionnumber.}~\inserttocsection    \vspace{-.1\baselineskip}}
+
+\setbeamerfont{section in toc}{size=\normalsize,series=\bfseries}
+\setbeamerfont{subsection in toc}{size=\footnotesize}
+    
+%% CHANGE COLOR SETTINGS
+\definecolor{mDarkBrown}{HTML}{604c38}
+\definecolor{mDarkTeal}{HTML}{23373b}
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{CNBlue}{RGB}{16,38,72}
+\definecolor{CNYellow}{RGB}{250,182,0}
+
+%% fg= ; bg= background 
+\setbeamercolor{normal text}{ fg= CNBlue!90 , bg= black!2 }
+%\setbeamercolor{alerted text}{ fg=mDarkTeal  }
+%\setbeamercolor{exemple text}{ fg=mDarkTeal  }
+
+
+
+
+
+\setbeamerfont{bibliography entry author}{size=\scriptsize,series=\normalfont}
+\setbeamerfont{bibliography entry title}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{bibliography entry location}{size=\scriptsize, series=\normalfont}
+\setbeamerfont{standout}{size=\Large,series=\bfseries}
+%%%%%%%%%%caracterisation du document %---------------------------------------------------------------------
+\hypersetup{
+	pdftitle    = {Formulation of the DGMPM},
+	pdfsubject  = {MS team meeting - March 2018},
+	linkcolor    = red,
+	pdfauthor   = {Adrien Renaud},
+	pdfkeywords = {numerical simulation, hyperbolic problems, discontinuous Galerkin}
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=blue,
+	urlcolor=blue
+}
+
+
+
+%%-------------- Construction de la page de presentation -------------------------------------------------------
+\title[The Discontinuous Galerkin Material Point Method]
+{\Large\bf  {The Discontinuous Galerkin Material Point Method: \\application to hyperbolic problems in solid mechanics}}
+
+\date[]{
+	\footnotesize{PhD defense} --
+	December 14 2018 \\ \hspace*{7.cm}\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}%\logo{ \includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}
+\author{A. Renaud \\ Supervisors: T. Heuz\'e, L. Stainier} 
+
+
+%------------------------------------------------------------------------
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+
+%% Baptist's beamer clock
+\newcommand{\myBeamerClock}[2]{
+  % #1 is the radius of the clock
+  % #2 is the vertical shift for inline placement
+  \tikz[baseline=#2]{
+    \filldraw (0,0) -- (0,#1) arc (90:(90-\insertframenumber/(\inserttotalframenumber)*360):#1);
+    \draw (0,0) circle (#1);
+  }
+}
+
+
+\begin{document}
+\begin{frame}[plain]
+  \maketitle
+\end{frame}
+
+\begin{frame}[plain]{Outline}
+  \tableofcontents%[hideallsubsections]
+\end{frame}
+\begin{frame}[plain]{Outline}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \tableofcontents%[hideallsubsections]
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \tableofcontents%[hideallsubsections]
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\section{Motivations}
+% \begin{frame}[plain]{Outline}
+%   \tableofcontents[currentsection]
+% \end{frame}
+
+\subsection{Physics // Mathematics}
+\begin{frame}
+  Problem $\rightarrow$ model for solid mechanics
+  % Problems considered -- dynamics + applications + solid mechanics (equations)
+  % Soit (i) on inclue les équations du modèle dans les motivations soit (ii) on parle d'abord des difficultés qu'après on illustre ?
+
+  % (i) - Problèmes de dynamique des solides: lois de conservations + lois constitutives => système hyperbolique
+  %     - EDP dont les solutions font intervenir des ondes
+  %     - Equations complexes (non-linéaires + multi-dimensionnelle) + solutions compliquées car ondes qui interagissent
+  %     - Intérêt de la simulation pour calculer des solutions approchées
+  %     - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
+  %     - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
+      
+  Model: hyperbolic problems + difficulties (finite deformations, waves that can interact $\rightarrow$ complex solution)
+\end{frame}
+\subsection{Numerical simulation}
+\begin{frame}
+  Allows to compute approximate solutions
+
+  Shortcomings of FEM -- FVM -- Meshfree
+
+  Fail to mimic the physical behavior due to the lack of information about the structure (talk about dammage, softening, plasticity)
+\end{frame}
+
+\subsection{Objectives and strategy}
+\begin{frame}{Objectives}
+  Numerical methods able to deal with finite deformation + waves
+
+  Solution of elastoplasticity problems in 2D
+\end{frame}
+
+\begin{frame}{Strategy}
+  PIC mapping in MPM + DG approx
+
+  Characteristic structure + loading path etc.
+
+  Il faut bien démarquer les deux parties dans le plan de la prez.
+\end{frame}
+
+\section{Derivation of the DGMPM}
+\subsection{Discrete system}
+\subsection{Non-homogeneous systems}
+\subsection{Interface fluxes}
+
+\section{Numerical analysis}
+\subsection{von-Neumann linear stability analysis}
+\subsection{Convergence analysis}
+
+\section{Numerical simulations}
+
+\section{Elastoplastic hyperbolic problems in two space dimensions}
+
+% \begin{frame}{Test video}
+%   %\href{comparison.ogv}{\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf}}
+%   \includemedia[width=0.6\linewidth,height=0.3375\linewidth, % 16:9
+% activate=pageopen,
+% addresource=comparison.ogv,
+% flashvars={source=comparison.ogv}
+% % flashvars={
+% % modestbranding=1 % no YT logo in control bar
+% % &autohide=1       % controlbar autohide
+% % &showinfo=0       % no title and other info before start
+% % &rel=0            % no related videos after end
+% % }
+% ]{}{VPlayer.swf}
+% \end{frame}
+
+
+\begin{frame}{Test2}
+  % \movie[showcontrols]{\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf}}{compare.mp4}
+  \begin{center}
+    % \movie[width=.9\textwidth,height=0.9\textheight,showcontrols,loop]{\includegraphics[scale=0.2]{Logo_GEM.pdf}}{compare.mp4}
+    \movie[width=.9\textwidth,height=0.9\textheight,showcontrols,loop]{\includegraphics[scale=0.2]{Logo_GEM.pdf}}{compare2.mp4}
+  \end{center}
+  add a hidden link to vlc player somewhere (frame title?)
+\end{frame}
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -1,17 +1,17 @@
 \section*{Introduction}
-The Discontinuous Galerkin Material Point Method is now illustrated by comparing some of its solutions to these of other numerical schemes and to exact solutions.
+The Discontinuous Galerkin Material Point Method is now illustrated by comparing some of its solutions to these of other numerical schemes and to exact solutions.  
 % Recall that the problems and applications aimed by this work involve waves travelling in (dissipative) solids undergoing large deformations.
 % The results presented in this chapter allow to emphasize the ability of the method to accurately track sharp solutions on the one hand, 
 % In addition, it will be seen that numerical tools may be employed within the DGMPM in order to improve the solution of problems involving history-dependent constitutive models.
-%%
-First, problems falling in the small deformation framework are considered in section \ref{sec:hpp_simulations}. More specifically, DGMPM and MPM solutions of the Riemann problem in an elastic bar are compared in section \ref{subsec:hpp_bar}. The methods are then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{subsec:hpp_planewave}, and a plane strain state in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact (when existing) solutions are shown for elastic, elastic-viscoplastic and elastoplastic solids.
+%% 
+First, problems falling in the small deformations framework are considered in section \ref{sec:hpp_simulations}. More specifically, DGMPM and MPM solutions of the Riemann problem in an elastic bar are compared in section \ref{subsec:hpp_bar}. The methods are then applied to the solution of problems involving multi-dimensional stress and one-dimensional strain states (plane wave problem) in section \ref{subsec:hpp_planewave}, and a plane strain state in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain}. Comparisons with MPM, FVM, FEM and exact (when existing) solutions are shown for elastic, elastic-viscoplastic and elastoplastic solids.
 Those simulations highlight the ability of the DGMPM to track sharp solutions and the possibility of using dedicated numerical tools to accurately deal with history-dependent constitutive models, which are of particular interest for the applications aimed by the method. 
 
 Second, in section \ref{sec:he_simulations} attention is paid to waves propagating in finite deforming solids, for which history effects are not considered.
 For that purpose, DGMPM simulations performed on plane wave problems in a hyperelastic Saint-Venant-Kirchhoff medium are compared to MPM and exact solutions in section \ref{subsec:he_planewave}. Then, a comparison between DGMPM, FEM and MPM solutions of a plane strain state problem in a neo-Hookean solid is proposed in section \ref{subsec:he_plate}.
 
 Although several constitutive models are assumed in this chapter, elastic, viscous and plastic properties considered are the same for every materials. Table \ref{tab:material} summarizes the values of Young's modulus $E$, Poisson's ratio $\nu$ and reference mass density $\rho_0$.
-In addition, linear isotropic or kinematic hardenings of modulus $H$ and tensile yield stress $\sigma^y$ are assumed for plastic evolutions, along with the viscosity $\eta$ and sensitivity $n$ for viscous ones.
+In addition, linear isotropic or kinematic hardenings of modulus $C$ and tensile yield stress $\sigma^y$ are assumed for plastic evolutions, along with the viscosity $\eta$ and sensitivity $n$ for viscous ones.
 \begin{table}[h!]
   \centering
   \input{chapter4/tabular/material}
@@ -55,18 +55,18 @@ At last, no body forces are considered here.
 
 
 \section{Conclusion}
-The Discontinuous Galerkin Material Point method has been applied here to hyperbolic problems of solid mechanics.
-It has first been shown on a Riemann problem in a linear elastic bar under small strains in section \ref{subsec:hpp_bar}, that the method is able to capture the exact solution that consist of two elastic discontinuities propagating in the medium.
+The Discontinuous Galerkin Material Point Method has been applied here to hyperbolic problems of solid mechanics.
+It has first been shown on a Riemann problem in a linear elastic bar under small strains in section \ref{subsec:hpp_bar}, that the method is able to capture the exact solution that consists of two elastic discontinuities propagating in the medium.
 Indeed, the stability properties of the one-dimensional schemes derived in section \ref{subsec:scheme_equations} enables, for particular space discretizations, the use of a CFL number set to unity.
 Nevertheless, once the optimal stability condition is lost, that is $CFL <1$, the method is slightly more diffusive than the MPM.
-Next, the solution of problems in history-dependent solids (sections \ref{subsec:hpp_planewave}) have shown that efficient tool can be embedded to the method in order to deal with (visco)plastic flows. 
-In particular, approximate elastic-plastic Riemann solvers can be employed providing that the characteristic structure of the problem is known.
-In addition, the results of section \ref{subsec:he_planewave} highlight that the total Lagrangian formulation of the DGMPM allows to avoid the eventual grid crossing occurring in updated Lagrangian MPM for problems involving waves in finite deforming solids.
+Next, the solution of problems in history-dependent solids (sections \ref{subsec:hpp_planewave}) have shown that efficient tools can be embedded to the method in order to deal with (visco)plastic flows. 
+In particular, approximate elastic-plastic Riemann solvers can be employed, providing that the characteristic structure of the problem is known.
+In addition, the results of section \ref{subsec:he_planewave} highlight that the total Lagrangian formulation of the DGMPM allows to avoid the eventual grid-crossing occurring in updated Lagrangian MPM for problems involving waves in finite deforming solids.
 As a consequence, the numerical scheme also provides solutions that are close to exact ones for non-linear problems.
 %% Parler de la reconstruction de la grille dans la configuration courante
 Moreover, the arbitrariness of the grid can be fully exploited by employing adaptive mesh techniques on the reference configuration so as to track accurately waves in the current one for problems involving complex geometries.
 %Nonetheless, an updated Lagrangian formulation of the method has to be derived. 
-At last, the two-dimensional simulations performed in sections \ref{subsec:el_planestrain}, \ref{subsec:ep_planestrain} and \ref{subsec:he_plate} show that DGMPM results are in good agreements with FEM while eliminating spurious oscillations.
+At last, the two-dimensional simulations performed in sections \ref{subsec:el_planestrain}, \ref{subsec:ep_planestrain} and \ref{subsec:he_plate} show that DGMPM results are in good agreement with FEM while eliminating spurious oscillations.
 
 %% Rappel des objectifs pour dire qu'ils sont remplis et ouvrir
 Recall that the approach followed in this work consisted in: (i) remove the spurious oscillations that appear in MPM solutions by reintroducing PIC mapping; (ii) reduce the numerical diffusion thus introduced by means of the Discontinuous Galerkin approximation.
@@ -77,7 +77,7 @@ It should be noted, however, that the adaptation of the method to high-order spa
 %% 
 Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. 
 This is the case of splitting procedures that should enable the DGMPM to accurately follow waves traveling in elastic-viscoplastic solids in 2D. 
-As discussed in section \ref{subsec:hpp_planewave}, elastoplastic problems can be solved as the stiff limit of elastoviscoplastic ones, providing that suitable ODEs integrators are employed.%at the cost of additional computational effort.
+As discussed in section \ref{subsec:hpp_planewave}, elastoplastic problems can be solved as the stiff limit of elastoviscoplastic ones, providing that suitable ODEs integrators are employed. %at the cost of additional computational effort.
 On the other hand, the use of approximate elastic-plastic Riemann solvers enables first to avoid the difficulties related to the integration of stiff ODEs, and to improve the resolution of plastic waves by means of limiters on both elastic and plastic waves \cite{Thomas_EP}.
 %Note that this is not possible for elasto-viscoplasticity since the characteristic structure only involves elastic waves.  
 However, this kind of solvers does not exist for general two-dimensional problems owing to the lack of knowledge of the characteristic structure of the solutions for multi-dimensional elastic-plastic problems. 

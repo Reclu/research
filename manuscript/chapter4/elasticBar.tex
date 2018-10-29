@@ -7,14 +7,14 @@ We thus consider a bar of length $l=6\:m$ in direction $\vect{e}_1$ in which the
 The stress is initially zero everywhere and Riemann-type initial conditions on the axial velocity $v=\vect{v}\cdot\vect{e}_1$ are prescribed: $v=v_0>0$ for $x_1\in [0,L/2[$ and $v=-v_0$ for $x_1\in \:]L/2,L]$. In addition, both ends of the domain are traction free.
 %The bar is assumed elastic with density $\rho=7800 \: kg.m^{-3}$, Poisson ration $\nu=0.3$ and Young's modulus $E=2\times 10^{11}\:Pa$.
 The exact solution of this problem \cite[Ch.1]{Wang}, recalled in section \ref{subsec:charac_Linear_problems}, consists of two elastic discontinuities propagating leftward and rightward in the bar at constant speeds $c=\pm\sqrt{E/\rho}$. 
-The discretization of the domain lies on a regular background grid made of $50$ regular cells containing material points distributed so that two situations are distinguished: each cell contains one particle that coincides with the element centroid for the $1ppc$ discretization; each cell contains two particles symmetrically placed with respect to element centers and regularly spaced in the grid for the $2ppc$ discretization.
+The discretization of the domain lies on a regular background grid made of $50$ cells containing material points distributed so that two situations are distinguished: each cell contains one particle that coincides with the element centroid for the $1ppc$ discretization; each cell contains two particles symmetrically placed with respect to element centers and regularly spaced in the grid for the $2ppc$ discretization.
 % \begin{itemize}
 % \item[(1)] $1ppc$ discretization: each cell contains one particle that coincides with the element centroid
 % \item[(2)] $2ppc$ discretization: each cell contains two particles symmetrically placed with respect to element centers. The particles are moreover regularly spaced in the grid.
 % \end{itemize}
 % Those two configurations using either one or two Particles Per Cell are respectively referred to as $1ppc$ and $2ppc$ hereinafter.
 
-The problem is solved on the one hand with the MPM-USL in which the nodal velocity is based on either FLIP of PIC mappings ($CFL=0.5$), and with the DGMPM coupled with both Euler ($CFL=1$ with 1 ppc and $CFL=0.5$ for 2ppc) and RK2 (2ppc only and $CFL=1$) time integration on the other hand.
+The problem is solved on the one hand with the MPM-USL in which the nodal velocity is based on either FLIP or PIC mappings ($CFL=0.5$), and with the DGMPM coupled with both Euler ($CFL=1$ with 1 ppc and $CFL=0.5$ for 2ppc) and RK2 (2ppc only and $CFL=1$) time integration on the other hand.
 % The Courant number is set at $CFL=1$ for the DGMPM-Euler with 1ppc and DGMPM-RK2 with 2ppc, while it must be reduced to $CFL=0.5$ if 2ppc are used within or the DGMPM-Euler 
 %  ($CFL$ satisfying the stability condition \eqref{eq:stability} in section \ref{sec:DGMPM_analysis}).
 \begin{figure}[h!]

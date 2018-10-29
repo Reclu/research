@@ -8,8 +8,9 @@
 %   \caption{Geometry, boundary and loading conditions of the two-dimensional problem in plane strain with a hyperelastic neo-Hookean material.}
 %   \label{fig:2d_heDomain}
 % \end{figure}
-The plane strain problem studied in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain} is now considered in a compressible hyperelastic neo-Hookean material submitted to a imposed velocity $v_1=-1000 \: m/s$ on the bottom part of its left end.
-The solid is discretized such that material points are equivalent to $Q1$ finite element nodes, thus the plate is represented with $l \times h \equiv 28 \times 28$ material points, only with the 1ppc configuration.
+The plane strain problem studied in sections \ref{subsec:el_planestrain} and \ref{subsec:ep_planestrain} is now considered in a compressible hyperelastic neo-Hookean material submitted to an imposed velocity $v_1=-1000 \: m/s$ on the bottom part of its left end.
+The solid is discretized such that material points are equivalent to $Q1$-finite element nodes.
+Thus, the plate is represented with $l \times h \equiv 28 \times 28$ material points, only with the 1ppc configuration.
 The finite element computation is performed with the software \textit{Abaqus} \cite{Abaqus} using an explicit time discretization with no artificial viscosity added.
 These numerical results are compared to those obtained from MPM and DGMPM using CTU computations.
 The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.41 \times 10^{-5}s$ and $\Delta t_{MPM}=6.13 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_{FEM}=1.27 \times 10^{-5} s$.
@@ -34,9 +35,9 @@ However, MPM solution moreover exhibits, as for small strains problems, a concen
 It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
 The deformed shapes of the plate resulting from the three numerical approaches hence remain close, except at the junction of the loaded and free zones of the left edge.
 
-When the pressure wave reflects on the fixed boundary at time $t=5.0\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the stress profiles are still similar though, FEM and MPM solutions oscillates even more.
+When the pressure wave reflects on the fixed boundary at time $t=5.0\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the stress profiles are still similar though, FEM and MPM solutions oscillate even more.
 
-These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo} as wall as in figure \ref{fig:he_lineplots_stress} and \ref{fig:he_lineplots_velo} which depicts the velocity the bottom boundary.
+These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo} as well as in figure \ref{fig:he_lineplots_stress} and \ref{fig:he_lineplots_velo} which depicts the velocity along the bottom boundary.
 Furthermore, one can see in figure \ref{fig:he_lineplots_velo}\subref{subfig:he_velo2} that the homogeneous Dirichlet boundary condition is not exactly enforced in DGMPM when the incident wave hits the right end.
 \begin{figure}[h!]
   \centering
@@ -56,7 +57,7 @@ Furthermore, one can see in figure \ref{fig:he_lineplots_velo}\subref{subfig:he_
 This can be explained by considering a boundary cell of the arbitrary grid (\textit{i.e. containing one material point that belong to the right end of the domain}) that is about to be reached by the wave through the upwind interface.
 The intercell flux on the upwind interface resulting from the discontinuity, and subsequently the conserved quantities vector resulting from the solution of the discrete system on the grid, are non-zero.
 In particular, the horizontal velocity at upwind nodes of the boundary cell does not vanish while that of the downwind edge satisfies the homogeneous Dirichlet condition. 
-Hence, the interpolation of the velocity from nodes to the particle yield a non-zero field at the material point level.
+Hence, the interpolation of the velocity from nodes to the particle yields a non-zero field at the material point level.
 Note that it holds for the MPM as well in which the enforcement of boundary conditions is still a challenging question \cite{BC_MPM}.
 
 Nevertheless, no significant displacements of particles can be seen on the right end in MPM and DGMPM solutions in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}.

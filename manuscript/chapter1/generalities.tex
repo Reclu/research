@@ -1,18 +1,18 @@
 %% Solid mechanics
-The work presented in this thesis is concerned with hyperbolic systems of conservation laws in mechanics used to describe the propagation of mechanical waves.
-A wide variety of engineering problems including among others acoustics, aerodynamics, impacts, which are of major importance for plenty of applications, are modeled with this class of mathematical equations. 
-Although those applications may involve solid and fluid media whose constitutive response differ, the focus is here on solid mechanics.
+The work presented in this thesis is concerned with hyperbolic systems of conservation laws, used in mechanics to describe the propagation of mechanical waves.
+A wide variety of engineering problems including among others acoustics, aerodynamics or impacts, which are of major importance for plenty of applications, are modeled with this class of mathematical equations. 
+Although those applications may involve solid and fluid media whose constitutive responses differ, the focus is here on solid mechanics.
 %%% Specificities
-More specifically, an important class of models is that of dissipative solid behavior depending on the loading history undergone.
+More specifically, an important class of models is that of dissipative solid behaviors depending on the loading history undergone.
 Such materials are implicated in high-speed forming techniques, crash-proof design or in the reliability of structures.
 
 %% Complexity ofthe modeling
 In these solids the waves propagate while carrying the information about the loading, interacting with each other and reflecting on the boundary so that complex structures arise.
 The accurate assessment of irreversible deformations in dissipative solids therefore requires the correct description of those waves as well as the ability to account for their interactions.
 % Different time and space scales
-Furthermore, the time scale governing the propagation of waves may be different from that of other phenomena also involved in a deformation, as for viscous effects in solids for instance.
+Moreover, the time scale governing the propagation of waves may be different from that of other phenomena also involved in a deformation, as for viscous effects in solids for instance.
 % Large deformations
-At last, the problem may be even more complicated by possibly large displacements, rotations or strains, undergone by the solid.
+At last, the problem may be further complicated by possibly large displacements, rotations or strains, undergone by the solid.
 
 %% Simulation -- motivations
 % In order to better apprehend misunderstood phenomena, the numerical simulation of solid mechanics problems allows to see what cannot be observed due to the time or space scales considered.
@@ -24,15 +24,16 @@ $\newline$
 %% Simulation -- definition
 Given the complexity of the equations, the numerical simulation provides a framework for approximating the solutions of a model.
 It is a way to virtually experiment and highlight phenomena that are implicitly described by a model but not necessarily observed.
-The simulation can then be seen as a way to make the theory meaningful.
-Moreover, it enables to fill gaps left by experimental works for feasibility reasons, or due to the higher amount of information provided by numerical investigations compared to those given by instrumental devices.
-Finally, the simulation allows to better understand the model and therefore, to better design so that subsequently a given problem is addressed as well as possible.
-Nevertheless, numerical methods need interactions with experimental works since they are based on parameters that have to be identified, especially for the constitutive models in solid mechanics that become more complex.
+The simulation can then be seen as a way to make the theory explicit.
+Furthermore, it enables to fill gaps left by experimental works for feasibility reasons, or due to the higher amount of information provided by numerical investigations compared to those given by instrumental devices.
+Finally, the simulation allows to better understand the model and therefore, to better design so that subsequently, a given problem is addressed as well as possible.
+%Nevertheless, numerical methods need interactions with experimental works since they are based on parameters that have to be identified, especially for the constitutive models in solid mechanics that become more and more complex.
+Nevertheless, numerical methods are based on parameters that require interactions with experimental works, especially for the constitutive models in solid mechanics that become more and more complex.
 Furthermore, non-physical parameters must sometimes be defined by the user in order to obtain results that are close to a phenomenon one is focusing on.
 
 %% Simulation -- motivations
-Naturally, the numerical simulation is not a straightforward undertaking and in particular in solid mechanics for the reasons mentioned above.
-In particular, the solution of hyperbolic problems in finite-deforming dissipative solids in still an open scientific issue.
+Naturally, the numerical simulation is not a straightforward undertaking, particularly in solid mechanics for the reasons mentioned above.
+More specifically, the solution of hyperbolic problems in finite deforming dissipative solids is still an open scientific issue.
 Indeed, the combination of large deformations with a wave structure can lead to complex loading paths that are not even apprehended at the model level.
 Most of the time, these aspects are drowned in constitutive numerical integrators, which however provide rather satisfactory results.
 

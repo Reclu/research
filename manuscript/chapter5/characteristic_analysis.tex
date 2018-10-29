@@ -32,7 +32,7 @@ In addition, the elastic-plastic constitutive equations derived from thermodynam
 In the expression of von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
 Moreover, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:ch5_plastic_flow}.
 %At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
-By inverting the (isotropic)elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written in the isotropic case:
+By inverting the (isotropic) elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written in the isotropic case:
 \begin{equation}
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
@@ -136,7 +136,7 @@ with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plan
 %In particular, $\Cbb$ reduces to the elastic stiffness tensor when no plastic flow occurs so that the characteristic structure involves the speeds of elastic pressure waves $c_1$ and shear waves $c_2$. 
 
 It has been seen in section \ref{sec:SVK_solution} that the solution of non-linear problems may contain shock and/or simple waves.
-Nevertheless, we restrict here to simple waves by assuming that: (i) the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $, where $c_1$ and $c_2$ are the speeds of elastic pressure and shear discontinuities respectively; (ii) $c_f$ and $c_s$ monotonically decrease with the hardening of the material; (ii) the computational domain is in an initial natural, plastic strain free state.
+Nevertheless, we restrict here to simple waves by assuming that: (i) the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $, where $c_1$ and $c_2$ are the speeds of elastic pressure and shear discontinuities respectively; (ii) $c_f$ and $c_s$ monotonically decrease with the hardening of the material; (iii) the computational domain is in an initial natural, plastic strain free state.
 
 The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
 \begin{subequations}
@@ -155,7 +155,7 @@ The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
   \end{alignat}
 \end{subequations}
 Integration of equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact} leads to integral curves through simple waves in which several stress components vary, hence the name of combined-stress simple waves \cite{CRISTESCU19591605}.
-Following \cite{Clifton}, the method of characteristic is applied by combining equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact}.
+Following \cite{Clifton}, the method of characteristics is applied by combining equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact}.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Slow simple wave \label{subfig:slowWave}}{\input{chapter5/pgfFigures/slowWave}} \qquad
@@ -230,14 +230,14 @@ The equations satisfied across right-going slow and fast simple waves are summar
   \label{tab:simpleWavesEquations}
 \end{table}
 
-The integration of equations gathered in table \ref{tab:simpleWavesEquations} should provide the complete solution of a given problem by means of integral curves or loading paths.
+The integration of equations gathered in table \ref{tab:simpleWavesEquations} should provide the complete solution of a given problem by means of integral curves, or loading paths.
 For instance, the velocity resulting from the passage of right-going waves in the direction $\vect{e}_1$ obeys:
 \begin{equation}
   \label{eq:integral_example}
   v_1 = v_1^0 - \int_{\tens{\sigma}^0}^{\tens{\sigma}} \frac{d \sigma_{11}}{\rho c^2} \quad ;\quad v_2 = v_2^0 - \int_{\tens{\sigma}^0}^{\tens{\sigma}} \frac{d \sigma_{12}}{\rho c^2}
 \end{equation}
 where the zero superscript denotes the downstream state.
-Nevertheless, \textsc{Clifton} \cite{Clifton} emphasized that depending on the loading conditions, only one simple waves or both may arise in the solution.
+Nevertheless, \textsc{Clifton} \cite{Clifton} emphasized that depending on the loading conditions, only one simple wave or both may arise in the solution.
 Therefore, it is crucial to identify the stress path followed to properly compute integrals \eqref{eq:integral_example}.
 %It is thus important to qualify the stress paths through fast and slow waves in order to properly define the upper bound of the integrals of the form \eqref{eq:integral_example}.
 This is the purpose of the next section.
