@@ -1,0 +1,27 @@
+% \begin{frame}
+% \begin{tikzpicture}[remember picture,overlay]
+%   \node[anchor=south west, inner sep=0pt] at (current page.south west) {%
+%     \includemedia[
+%     addresource=section4/animation/hyperelasticity_velo/video.mp4,
+%     activate=pageopen,transparent,
+%     flashvars={source=section4/animation/hyperelasticity_velo/video.mp4},
+%     width=\paperwidth,height=\paperheight
+%     ]{}{VPlayer.swf}%
+%   };
+% \end{tikzpicture}
+% \end{frame}
+
+\begin{frame}{\href{section4/animation/hyperelasticity_velo/video.mp4}{2D hyperelasticity}}
+  \begin{center}
+    \movie[width=1.\linewidth,showcontrols,loop]{\input{section4/pgfFigures/2d_heDomain}}{section4/animation/hyperelasticity_velo/video.mp4}
+    % \movie[height = \paperheight, width = \paperwidth, poster,showcontrols,loop]{\input{section4/pgfFigures/2d_heDomain}}{section4/animation/hyperelasticity_velo/video.mp4}
+    
+    % \animategraphics[loop,controls,width=1.\linewidth,autoplay]{10}{animation/hyperelasticity_velo/animation-}{0}{3}
+  \end{center}
+\end{frame}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../aRenaud"
+%%% End:

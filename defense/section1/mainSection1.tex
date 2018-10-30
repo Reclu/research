@@ -1,0 +1,48 @@
+\begin{frame}[plain]{Outline}
+  \tableofcontents[currentsection,hideothersubsections]
+\end{frame}
+
+\subsection{Physics // Mathematics}
+\begin{frame}
+  Problem $\rightarrow$ model for solid mechanics
+  % Problems considered -- dynamics + applications + solid mechanics (equations)
+  % Soit (i) on inclue les équations du modèle dans les motivations soit (ii) on parle d'abord des difficultés qu'après on illustre ?
+
+  % (i) - Problèmes de dynamique des solides: lois de conservations + lois constitutives => système hyperbolique
+  %     - EDP dont les solutions font intervenir des ondes
+  %     - Equations complexes (non-linéaires + multi-dimensionnelle) + solutions compliquées car ondes qui interagissent
+  %     - Intérêt de la simulation pour calculer des solutions approchées
+  %     - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
+  %     - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
+      
+  Model: hyperbolic problems + difficulties (finite deformations, waves that can interact $\rightarrow$ complex solution)
+\end{frame}
+\subsection{Numerical simulation}
+\begin{frame}
+  Allows to compute approximate solutions
+
+  Shortcomings of FEM -- FVM -- Meshfree
+
+  Fail to mimic the physical behavior due to the lack of information about the structure (talk about dammage, softening, plasticity)
+\end{frame}
+
+\subsection{Objectives and strategy}
+\begin{frame}{Objectives}
+  Numerical methods able to deal with finite deformation + waves
+
+  Solution of elastoplasticity problems in 2D
+\end{frame}
+
+\begin{frame}{Strategy}
+  PIC mapping in MPM + DG approx
+
+  Characteristic structure + loading path etc.
+
+  Il faut bien démarquer les deux parties dans le plan de la prez.
+\end{frame}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../aRenaud"
+%%% End:
