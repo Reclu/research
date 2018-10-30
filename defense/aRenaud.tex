@@ -4,9 +4,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{multimedia}
-\usepackage{animate}
-\usepackage{xmpmulti}
-\usepackage{media9}
+%\usepackage{animate}
+%\usepackage{xmpmulti}
+%\usepackage{media9}
 \usepackage{subfig}
 % \usepackage[font=small]{caption}
 % \usepackage[font=small]{subcaption}
@@ -133,34 +133,68 @@
   }
 }
 
+\defbeamertemplate*{footline}{mytheme}{%
+  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{}/\inserttotalframenumber{} 
+ \end{beamercolorbox}
+}
+%% OR with baptiste's clock
+% \defbeamertemplate*{footline}{mytheme}{%
+%   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{} \myBeamerClock{1ex}{-1ex} 
+%  \end{beamercolorbox}
+% }
+
+\AtBeginSection[]{%
+  \begin{frame}[plain]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
+
+
+\makeatletter
+\AtBeginPart{%
+  \beamer@tocsectionnumber=0\relax
+  \setcounter{section}{0}
+  \frame[plain,noframenumbering]{\partpage}%
+}
+\makeatother
+
+
 
 \begin{document}
 \begin{frame}[plain]
   \maketitle
 \end{frame}
 
-\begin{frame}[plain]{Outline}
-  \tableofcontents[hideallsubsections]
-\end{frame}
 
-
-
-% \begin{frame}[plain]{Outline}
-%   \begin{columns}
-%     \begin{column}{0.5\textwidth}
-%       \tableofcontents%[hideallsubsections]
-%     \end{column}
-%     \begin{column}{0.5\textwidth}
-%       \tableofcontents%[hideallsubsections]
-%     \end{column}
-%   \end{columns}
-% \end{frame}
-
-
-\section{Motivations}
+\section*{Motivations}
 
 \input{section1/mainSection1}
 
+\begin{frame}[plain]
+  \begin{columns}
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Part I: \nameref{part:part1} \insertpart}
+        \tableofcontents[part=1,hideallsubsections]
+      \end{block}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Part II: \nameref{part:part2}}
+        \tableofcontents[part=2,hideallsubsections]
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\part{Development of a numerical method}
+\label{part:part1}
+
+\defbeamertemplate*{footline}{mytheme2}{%
+  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertromanpartnumber:  \insertpart  \hfill \insertframenumber/\inserttotalframenumber
+ \end{beamercolorbox}
+} %insertpartromannumber
+%% OR with baptiste's clock
+% \defbeamertemplate*{footline}{mytheme2}{%
+%   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertpartnumber:  \insertpart  \hfill \insertframenumber{} \myBeamerClock{1ex}{-1ex}
+%  \end{beamercolorbox}
+% }
 
 \section{Derivation of the DGMPM}
 \input{section2/mainSection2}
@@ -175,10 +209,14 @@
 
 
 
-\section{Elastoplastic hyperbolic problems in two space dimensions}
+\part{Two-dimensional elastoplastic hyperbolic problems}\label{part:part2}
+\section{Plastic waves}
 
 \input{section5/mainSection5}
 
+\section{Loading paths through plastic waves}
+
+\section{Numerical results}
 
 
 
