@@ -4,6 +4,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{multimedia}
+\usepackage{animate}
+\usepackage{xmpmulti}
 \usepackage{media9}
 \usepackage{subfig}
 % \usepackage[font=small]{caption}
@@ -61,9 +63,11 @@
 
 %\setcounter{tocdepth}{1}
 \usefonttheme{professionalfonts}
-\usetheme[progressbar=foot,subsectionpage=progressbar,sectionpage=none]{metropolis}
+%\usetheme[progressbar=foot,subsectionpage=progressbar,sectionpage=none]{metropolis}
+\usetheme[progressbar=foot,subsectionpage=none,sectionpage=progressbar]{metropolis}
 \useoutertheme{Headinfoline}
-\setbeamertemplate{section in toc}{{\inserttocsectionnumber.}~\inserttocsection    \vspace{-.1\baselineskip}}
+\setbeamertemplate{section in toc}{{\inserttocsectionnumber.}~\inserttocsection    \vspace{-.05\baselineskip}}
+% \setbeamertemplate{subsection in toc}{{\inserttocsubsectionnumber.}~\inserttocsubsection    \vspace{-.1\baselineskip}}
 
 \setbeamerfont{section in toc}{size=\normalsize,series=\bfseries}
 \setbeamerfont{subsection in toc}{size=\footnotesize}
@@ -136,101 +140,45 @@
 \end{frame}
 
 \begin{frame}[plain]{Outline}
-  \tableofcontents%[hideallsubsections]
+  \tableofcontents[hideallsubsections]
 \end{frame}
-\begin{frame}[plain]{Outline}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \tableofcontents%[hideallsubsections]
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \tableofcontents%[hideallsubsections]
-    \end{column}
-  \end{columns}
-\end{frame}
+
+
+
+% \begin{frame}[plain]{Outline}
+%   \begin{columns}
+%     \begin{column}{0.5\textwidth}
+%       \tableofcontents%[hideallsubsections]
+%     \end{column}
+%     \begin{column}{0.5\textwidth}
+%       \tableofcontents%[hideallsubsections]
+%     \end{column}
+%   \end{columns}
+% \end{frame}
 
 
 \section{Motivations}
-% \begin{frame}[plain]{Outline}
-%   \tableofcontents[currentsection]
-% \end{frame}
 
-\subsection{Physics // Mathematics}
-\begin{frame}
-  Problem $\rightarrow$ model for solid mechanics
-  % Problems considered -- dynamics + applications + solid mechanics (equations)
-  % Soit (i) on inclue les équations du modèle dans les motivations soit (ii) on parle d'abord des difficultés qu'après on illustre ?
+\input{section1/mainSection1}
 
-  % (i) - Problèmes de dynamique des solides: lois de conservations + lois constitutives => système hyperbolique
-  %     - EDP dont les solutions font intervenir des ondes
-  %     - Equations complexes (non-linéaires + multi-dimensionnelle) + solutions compliquées car ondes qui interagissent
-  %     - Intérêt de la simulation pour calculer des solutions approchées
-  %     - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
-  %     - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
-      
-  Model: hyperbolic problems + difficulties (finite deformations, waves that can interact $\rightarrow$ complex solution)
-\end{frame}
-\subsection{Numerical simulation}
-\begin{frame}
-  Allows to compute approximate solutions
-
-  Shortcomings of FEM -- FVM -- Meshfree
-
-  Fail to mimic the physical behavior due to the lack of information about the structure (talk about dammage, softening, plasticity)
-\end{frame}
-
-\subsection{Objectives and strategy}
-\begin{frame}{Objectives}
-  Numerical methods able to deal with finite deformation + waves
-
-  Solution of elastoplasticity problems in 2D
-\end{frame}
-
-\begin{frame}{Strategy}
-  PIC mapping in MPM + DG approx
-
-  Characteristic structure + loading path etc.
-
-  Il faut bien démarquer les deux parties dans le plan de la prez.
-\end{frame}
 
 \section{Derivation of the DGMPM}
-\subsection{Discrete system}
-\subsection{Non-homogeneous systems}
-\subsection{Interface fluxes}
+\input{section2/mainSection2}
+
 
 \section{Numerical analysis}
-\subsection{von-Neumann linear stability analysis}
-\subsection{Convergence analysis}
+\input{section3/mainSection3}
+
 
 \section{Numerical simulations}
+\input{section4/mainSection4}
+
+
 
 \section{Elastoplastic hyperbolic problems in two space dimensions}
 
-% \begin{frame}{Test video}
-%   %\href{comparison.ogv}{\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf}}
-%   \includemedia[width=0.6\linewidth,height=0.3375\linewidth, % 16:9
-% activate=pageopen,
-% addresource=comparison.ogv,
-% flashvars={source=comparison.ogv}
-% % flashvars={
-% % modestbranding=1 % no YT logo in control bar
-% % &autohide=1       % controlbar autohide
-% % &showinfo=0       % no title and other info before start
-% % &rel=0            % no related videos after end
-% % }
-% ]{}{VPlayer.swf}
-% \end{frame}
+\input{section5/mainSection5}
 
-
-\begin{frame}{Test2}
-  % \movie[showcontrols]{\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf}}{compare.mp4}
-  \begin{center}
-    % \movie[width=.9\textwidth,height=0.9\textheight,showcontrols,loop]{\includegraphics[scale=0.2]{Logo_GEM.pdf}}{compare.mp4}
-    \movie[width=.9\textwidth,height=0.9\textheight,showcontrols,loop]{\includegraphics[scale=0.2]{Logo_GEM.pdf}}{compare2.mp4}
-  \end{center}
-  add a hidden link to vlc player somewhere (frame title?)
-\end{frame}
 
 
 
