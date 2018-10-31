@@ -1,42 +1,33 @@
-% \begin{frame}
-% \begin{tikzpicture}[remember picture,overlay]
-%   \node[anchor=south west, inner sep=0pt] at (current page.south west) {%
-%     \includemedia[
-%     addresource=section4/animation/hyperelasticity_velo/video.mp4,
-%     activate=pageopen,transparent,
-%     flashvars={source=section4/animation/hyperelasticity_velo/video.mp4},
-%     width=\paperwidth,height=\paperheight
-%     ]{}{VPlayer.swf}%
-%   };
-% \end{tikzpicture}
-% \end{frame}
+\begin{frame}{Hyperelastic plane wave -- Neo-Hookean material}
+  \begin{columns}
+    \begin{column}{.5\linewidth}
+      \input{section4/pgfFigures/2dbar}
+      a préciser car vitesse initiale (à voir d'ailleurs car ça n'apporte pas grand chose...)
+    \end{column}
 
-\begin{frame}%{\href{section4/animation/hyperelasticity_velo/video.mp4}{2D hyperelasticity}}
-  \begin{center}
-    % \movie[width=1.\linewidth,showcontrols,loop]{\input{section4/pgfFigures/2d_square}}{section4/animation/hyperelasticity_velo/video.mp4}
-    \href{section4/animation/hyperelasticity_velo/video.mp4}{\begin{tikzpicture}[scale=0.9]
-  \draw[thick] (0,0) --(3,0)--(3,3)--(0,3)--(0,0);
-  \foreach \x in {0.5,1.,...,2.5} 
-  \draw(\x,-0.2)circle(0.2);
-  \foreach \x in {0.25,0.75,...,2.75} 
-  \draw(3.2,\x)circle(0.2);
-  \draw(0,-0.4)--(3.,-0.4);
-  \draw(3.4,0)--(3.4,3);
-  \fill [pattern=north east lines](0.0,-0.8)rectangle+(3,0.4);
-  \fill [pattern=north east lines](3.4,0.)rectangle+(0.4,3);
-  \draw[>=stealth,<->](0,3.1)--node[above=1pt]{\footnotesize $l=3 \: m$}(3,3.1);
-  \draw[>=stealth,<->](0.1,0)--node[right=1pt]{\footnotesize $a=1 \: m$}(0.1,1);
-  \foreach \x in {0.,0.25,...,1} 
-  \draw[>=stealth,<-] (-0.5,\x)--(0.,\x);
-  \node(a)at(-1.75,0.5){\footnotesize $\tens{\sigma}\cdot\vect{e}_1=\matrice{\sigma^d\\0 \\0}$}; 
-  \draw[>=stealth,->](-1.5,2)--(-0.5,2)node(a)[anchor=north]{\footnotesize $\vect{e}_1$};
-  \draw[>=stealth,->](-1.5,2)--(-1.5,3)node(a)[anchor=south]{\footnotesize $\vect{e}_2$};
-\end{tikzpicture}
-% \input{section4/pgfFigures/2d_square}
-}
-    % \movie[height = \paperheight, width = \paperwidth, poster,showcontrols,loop]{\input{section4/pgfFigures/2d_heDomain}}{section4/animation/hyperelasticity_velo/video.mp4}
-    % \animategraphics[loop,controls,width=1.\linewidth,autoplay]{10}{animation/hyperelasticity_velo/animation-}{0}{3}
-  \end{center}
+    \begin{column}{.5\linewidth}
+      \input{section4/pgfFigures/HE_PW_energies}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}{\href{section4/animation/hyperelasticity_velo/video.mp4}{Plane strain hyperelasticity -- Neo-Hookean material}}
+  \begin{overprint}
+    \onslide<1>
+    \vspace{1.cm}
+    \begin{center}
+      \input{section4/pgfFigures/2d_squareHE}
+    \end{center}
+
+    \onslide<2>
+    \vspace{0.cm}
+    \begin{center}
+      % \movie[width=1.\linewidth,showcontrols,loop]{\input{section4/pgfFigures/2d_square}}{section4/animation/hyperelasticity_velo/video.mp4}
+      \movie[height = 0.7\paperheight,width=\linewidth, showcontrols,loop,poster,autostart]{%\input{section4/pgfFigures/2d_squareHE}
+      }{section4/animation/hyperelasticity_velo/video.mp4}
+    \end{center}
+  \end{overprint}
 \end{frame}
 
 
