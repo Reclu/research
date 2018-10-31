@@ -1,0 +1,82 @@
+\begin{tikzpicture}%{scale=0.5}
+  \begin{groupplot}[group style={group size=2 by 1,
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=1.5ex,vertical sep=4.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,
+axis on top,scale only axis,height=0.5\paperheight, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},xmin=0.,xmax=3.]
+% \nextgroupplot[ylabel=$\sigma_{11}$,title={$t=2.5 \times 10^{-4} \: s$},ymin=-0.5e6,ymax=1.5e9]
+% \addplot[Red,very thick,no markers] table[x=Points:0,y=S11] {section4/csvFiles/2dEP_fem_115.csv};
+% \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=stress_11] {section4/csvFiles/2dEP_ctu1ppc_115.csv};
+% \addplot[Purple,very thick,mark=asterisk,only marks] table[x=Points:0,y=stress_11] {section4/csvFiles/2dEP_ctu4ppc_115.csv};
+% \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_S11] {section4/csvFiles/2dEP_mpm_115.csv};
+
+% \nextgroupplot[title={$t=1.0 \times 10^{-3} \: s$},ymin=-0.5e6,ymax=1.5e9]
+% \addplot[Red,very thick,no markers] table[x=Points:0,y=S11] {section4/csvFiles/2dEP_fem_338.csv};
+% \addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=stress_11] {section4/csvFiles/2dEP_ctu1ppc_338.csv};
+% \addplot[Purple,very thick,mark=asterisk,only marks] table[x=Points:0,y=stress_11] {section4/csvFiles/2dEP_ctu4ppc_338.csv};
+% \addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_S11] {section4/csvFiles/2dEP_mpm_338.csv};
+
+\nextgroupplot[ylabel=$\eps^p_{11}$,xlabel=$x (m)$,ymin=-0.1e-3,ymax=6.75e-3,title={$t=2.5 \times 10^{-4} \: s$}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=EP11] {section4/csvFiles/2dEP_fem_115.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=epsp_11] {section4/csvFiles/2dEP_ctu1ppc_115.csv};
+\addplot[Purple,very thick,mark=asterisk,only marks] table[x=Points:0,y=epsp_11] {section4/csvFiles/2dEP_ctu4ppc_115.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_epsp11] {section4/csvFiles/2dEP_mpm_115.csv};
+
+\nextgroupplot[legend style={at={($(0.17,-0.35)+(0.9cm,1cm)$)},legend columns=2},xlabel=$x (m)$,ymin=-0.1e-3,ymax=6.75e-3,title={$t=1.0 \times 10^{-3} \: s$}]
+\addplot[Red,very thick,no markers] table[x=Points:0,y=EP11] {section4/csvFiles/2dEP_fem_338.csv};
+\addplot[Blue,very thick,mark=+,only marks,mark size=3pt] table[x=Points:0,y=epsp_11] {section4/csvFiles/2dEP_ctu1ppc_338.csv};
+\addplot[Purple,very thick,mark=asterisk,only marks] table[x=Points:0,y=epsp_11] {section4/csvFiles/2dEP_ctu4ppc_338.csv};
+\addplot[Orange,very thick,mark=x,only marks,mark size=3pt] table[x=Points:0,y= mpm_epsp11] {section4/csvFiles/2dEP_mpm_338.csv};
+\addlegendentry{fem}
+\addlegendentry{ctu 1ppc}
+\addlegendentry{ctu 4ppc}
+\addlegendentry{mpm}
+   
+  \end{groupplot}
+\end{tikzpicture}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../aRenaud"
+%%% End:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
