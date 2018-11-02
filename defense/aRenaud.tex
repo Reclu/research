@@ -5,9 +5,9 @@
 \usepackage{hyperref}
 \usepackage{multimedia}
 \usepackage{media9}
-\usepackage{subfig}
-% \usepackage[font=small]{caption}
-% \usepackage[font=small]{subcaption}
+%\usepackage{subfig}
+\usepackage[font=scriptsize]{caption}
+\usepackage[font=scriptsize]{subcaption}
 
 \usepackage[tensorialbold]{mescommandes}
 \usepackage[babel=true,kerning=true]{microtype}
@@ -16,6 +16,7 @@
 \usepackage{amssymb}
 \usepackage{mathrsfs}
 \usepackage{graphicx}
+\usepackage{wasysym}
 
 \usepackage{fancybox}
 \usepackage{textcomp}
@@ -64,8 +65,13 @@
 
 
 \usefonttheme{professionalfonts}
-%\usetheme[progressbar=foot,subsectionpage=progressbar,sectionpage=none]{metropolis}
-\usetheme[progressbar=foot,subsectionpage=none,sectionpage=progressbar]{metropolis}
+
+\usetheme[progressbar=foot,
+subsectionpage=none,
+sectionpage=progressbar,
+block=transparent%fill
+]{metropolis}
+
 \useoutertheme{Headinfoline}
 \setbeamertemplate{section in toc}{{\inserttocsectionnumber.}~\inserttocsection    \vspace{-.05\baselineskip}}
 % \setbeamertemplate{subsection in toc}{{\inserttocsubsectionnumber.}~\inserttocsubsection    \vspace{-.1\baselineskip}}
