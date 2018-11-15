@@ -212,7 +212,7 @@ A necessary condition to ensure the stability of a numerical scheme is that the 
 \begin{equation}
  \abs{\sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} \leq \sum_{\beta=1}^{N_p} \abs{e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} = \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \quad \forall j=-E,...,E
 \end{equation}
-where the triangle inequality, and the unit modulus of the complex number $e^{\alpha (\beta -\alpha)k_j \Delta X}$ have been used.
+where the triangle inequality, and the unit modulus of the complex number $e^{i (\beta -\alpha)k_j \Delta X}$ have been used.
 Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied for all material points:
 \begin{equation}
   \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: \alpha = 1,...,N_p
@@ -229,7 +229,7 @@ According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, 
 \end{table}
 Nevertheless, though the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particles distribution in every elements of a one-dimensional regular mesh. 
 % so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. 
-First, the DGMPM scheme is stable for all CFL number lower than or equal to one when cells contain one particle only regardless of their positions. This property characterized the FOU method that is retrieved with this discretization. 
+First, the DGMPM scheme is stable for all CFL number lower than or equal to one when cells contain one particle only regardless of their positions. This property characterizes the FOU method that is retrieved with this discretization. 
 Then, when many material points share the same element, several configurations are considered:
 \begin{itemize}
 \item[(i)] particles are positioned symmetrically with respect to cells centers and regularly spaced in the mesh. This space discretization is referred to as the natural configuration in the following.
@@ -368,7 +368,7 @@ Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2Dparent}
-  \caption{Parent and current configuration of a rectangular four-node bilinear element}
+  \caption{Parent and current configurations of a rectangular four-node bilinear element}
   \label{fig:2Dparent}
 \end{figure}
 With positions of nodes of cell $C$ denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y_i^C}$ as depicted in figure \ref{fig:2Dparent}, the current location $\vect{X}$ of an arbitrary point in cell $C$ maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
@@ -431,8 +431,9 @@ The CTU is adopted by subtracting from fluxes \eqref{eq:2d_Godunov_fluxes} trans
 with $c_t$ the speed in the tangent direction to the interface. The final expression of intercell fluxes is hence:
 \begin{equation}
   \label{eq:CTU-fluxes}
-  f^{(i)}= c_n q^{(i)}_U - c_t c_n (q^{(i)}_D -q^{(i)}_U)
+  f^{(i)}= c_n q^{(i)}_U - c_t c_n \frac{\Delta t}{2\Delta X^{(i)}}(q^{(i)}_D -q^{(i)}_U)
 \end{equation}
+%with $\Delta X^{(i)}$ the length of edge $(i)$.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2D_domain}
@@ -483,7 +484,7 @@ A condensed way of writing those fluxes is adopted by means of the middle point 
   \end{aligned}
   \right.
 \end{equation*}
-In addition, components of the outward normal vector to edges $N^{(i)}_X$ and $N^{(i)}_Y$ allows to take into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
+In addition, components of the outward normal vector to edges $N^{(i)}_X$ and $N^{(i)}_Y$ allow to take into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
 \begin{equation}
   \hat{f}_i^{*}= \frac{1}{2}\sum_j^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_{1/2})\(\Delta Y N^{(j)}_X + \Delta X N^{(j)}_Y\) f^{(j)}
 \end{equation}
@@ -540,7 +541,7 @@ Again, the single particle-per-cell discretization leads to a piece-wise constan
 \end{subequations}
 
 Configurations involving more particles in the computational grid cells are then studied numerically by assuming the same material points distribution in every elements. Furthermore, we consider only regular cells $\Delta Y = \Delta X$ and wave speeds satisfying $a\geq b >0$, so that Courant number reads $a\Delta t/\Delta X$. Coefficients $D_{\alpha \mu}$ depending on both horizontal and vertical wave speeds, the scheme equation \eqref{eq:2Dscheme_D_alphabeta} can be written as a function of the CFL number by means of the speed ratio  $a/b$. Hence, the maximal Courant number satisfying the stability condition \eqref{eq:2D_stability} also depends on the speed ratio.
-Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc} and \ref{tab:2DCFL_comparison_4ppc} for the DGMPM scheme using DCU and CTU methods. The first column of this table shows the positions of material points inside cells for discretizations based on $2$ or $4$ particles per element. 
+Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc} and \ref{tab:2DCFL_comparison_4ppc} for the DGMPM scheme using DCU and CTU methods. The first column of these tables shows the positions of material points inside cells for discretizations based on $2$ or $4$ particles per element. 
 
 %% 2ppc
 The space discretization leading to $2$ particles lying in every cell of the mesh is such that within an element, the two material points are both either on the horizontal axis or on the vertical axis of the cell, corresponding respectively to the results reported in first and second rows of table \ref{tab:2DCFL_comparison_2ppc}. Two situations are then to be distinguished:
@@ -554,12 +555,12 @@ The space discretization leading to $2$ particles lying in every cell of the mes
   \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the locations of the $2$ material points lying in every cells as a function of the speeds ratio $a/b$.}
   \label{tab:2DCFL_comparison_2ppc}
 \end{table}
-First, the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on speed ratio $a/b$ that asymptotically approach some value which depends on the particles distribution. Second, we see that a reduction of spacing between particles ensuring symmetry between them with respect to cells centers, as for one-dimensional case, yields an increase in the critical Courant number for both DCU and CTU approach. 
+First, the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on speed ratio $a/b$ that asymptotically approach some value which depends on the particles distribution. Second, we see that a reduction of spacing between particles ensuring symmetry between them with respect to cells centers, as for one-dimensional case, yields an increase in the critical Courant number for both DCU and CTU approaches. 
 Third, whether particles lie on the horizontal axis or the vertical axis of cells has a great influence on the critical Courant number one can expect. Hence, the configurations of the second row of table \ref{tab:2DCFL_comparison_2ppc} yield higher CFL numbers for given speed ratios. It then appears that in order to improve the stability of the scheme, one must use a lower number of material points in the direction of the dominating wave speed than in the perpendicular one. For a Cartesian distribution of particles $N_p^X \times N_p^Y$ this corresponds to $N_p^Y > N_p^X$ if $a>b$, and $N_p^X > N_p^Y$ if $b>a$.
 At last, it is worth noticing that the improvement brought by the CTU is much less significant than in the case of one single particle-per-cell discretization for which the Courant number can be set to one according to equations \eqref{eq:2DCFL_DCU} and \eqref{eq:2DCFL_CTU}.
 
 %% 4ppc
-We now move on to cases for which grid cells each contains $4$ material points, by considering a square shaped distribution of particles in every elements which centers coincides with cells centroids. This pattern can be contracted or simply translated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}. Two configurations are gathered in each row of the table and are distinguished by using either blue circles or red crosses for material points. Again, we observe that the increase in CFL number enabled by the use of the CTU approach is less important that in the case of one particle-per-cell. Next, as for one-dimensional cases and configurations studied in table \ref{tab:2DCFL_comparison_2ppc}, we see that the closer particles are from cell centers, the higher the CFL number is. Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particle inside elements does not have great influence of the evolution of Courant's number with respect to the speed ratio. 
+We now move on to cases for which grid cells each contains $4$ material points, by considering a square shaped distribution of particles in every elements which centers coincide with cells centroids. This pattern can be contracted or simply translated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}. Two configurations are gathered in each row of the table and are distinguished by using either blue circles or red crosses for material points. Again, we observe that the increase in CFL number enabled by the use of the CTU approach is less important that in the case of one particle-per-cell. Next, as for one-dimensional cases and configurations studied in table \ref{tab:2DCFL_comparison_2ppc}, we see that the closer particles are from cell centers, the higher the CFL number is. Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particle inside elements does not have great influence on the evolution of Courant's number with respect to the speed ratio. 
 \begin{table}[h!]
   \centering
   \input{chapter3/tabular/2DCFL_comparison_4ppc}
