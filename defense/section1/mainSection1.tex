@@ -102,14 +102,14 @@
       \end{column}
     \end{columns}
     
-    \begin{block}{Difficulties for the solution of equations:}
+    \begin{block}{Difficulties for the solution of hyperbolic equations:}
       \begin{itemize}
       \item complex geometries
       \item waves propagating/interacting in solids
       \item finite deformations
       \end{itemize}
     \end{block}
-    
+    \textbf{$\Rightarrow$ Resort to numerical simulation}
   \end{overprint}
 \end{frame}
 
@@ -123,101 +123,167 @@
 % - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
 % - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
 
-\begin{frame}{Numerical simulation}
-  \begin{block}{It allows to:}
+% \begin{frame}{The numerical simulation}
+%   \begin{block}{It allows to:}
+%     \begin{itemize}
+%     \item compute approximate solutions
+%     \item highlight phenomena implicitly described by the model
+%     \item perform virtual experiments
+%     \end{itemize}
+%   \end{block}
+%   \begin{block}{While struggling with:}
+%     \begin{itemize}
+%     \item the space discretization (mesh-based or mesh-free techniques)
+%     \item the regularity of the problem (discontinuous solutions)
+%     \item 
+%     \end{itemize}
+%   \end{block}
+% \end{frame}
+
+\begin{frame}{Suitability of some Lagrangian methods}
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Finite Element Method}
+        \begin{tikzpicture}
+          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
+          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
+          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
+          \fill[Blue,opacity=0.7] (0,1.40) -- (0.8660*0.35,-0.5*0.35) -- (-0.8660*0.65,-0.5*0.65) -- (0.,1.40);
+          % \node at (-1.,1.) {$\text{FEM}$};
+        \end{tikzpicture}
+      \end{block}
+    \end{column}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Finite Volume Method}
+        \begin{tikzpicture}
+          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
+          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
+          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
+          \fill[Red,opacity=0.7] (0,.5) -- (0.8660*0.5,-0.5*0.5) -- (-0.8660*1.40,-0.5*1.40) -- (0.,.5);
+        \end{tikzpicture}
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{Discontinuous Galerkin FEM}
+        \begin{tikzpicture}
+          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
+          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
+          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
+          \fill[Purple,opacity=0.7] (0,1.40) -- (0.8660*0.5,-0.5*0.5) -- (-0.8660*1.40,-0.5*1.40) -- (0.,1.40);
+        \end{tikzpicture}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method}
+  \begin{columns}
+    \begin{column}{0.3\textwidth}
+      \begin{block}{Material Point Method}
+        \begin{tikzpicture}
+          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
+          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Large deformations}};
+          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Wave tracking}};
+          \fill[Yellow,opacity=0.7] (0,1.40) -- (0.8660*1.40,-0.5*1.40) -- (-0.8660*.65,-0.5*.65) -- (0.,1.40);
+        \end{tikzpicture}
+      \end{block}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{block}{Discontinuous Galerkin MPM ?}
+        \begin{tikzpicture}
+          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
+          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Large deformations}};
+          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
+          \fill[Orange,opacity=0.7] (0,1.40) -- (-0.8660*1.40,-0.5*1.40) -- (0.8660*1.40,-0.5*1.40)--(-0.8660*.65,-0.5*.65) -- (0.,1.40);
+          \draw[Red, very thick] (-2.3,-0.85*1.5) rectangle (2.6,-0.55*1.5);
+          \fill[Yellow,opacity=0.7] (0,1.40) -- (0.8660*1.40,-0.5*1.40) -- (-0.8660*.65,-0.5*.65) -- (0.,1.40);
+        \end{tikzpicture}
+        %\animategraphics[autoplay,loop]{1}{section1/animation}{}{}
+      \end{block}
+    \end{column}
+  \end{columns}
+  $\newline$
+  \metroset{block=fill}
+  \begin{block}{Objective 1}
+    Merge the advantages of FEM, FVM and MPM by means of the DG approximation
+  \end{block}
+\end{frame}
+
+
+% \begin{frame}
+%   \metroset{block=fill}
+%   \begin{block}{Pros and cons of some mesh-based methods:}
+%     \metroset{block=transparent}
+%     \begin{footnotesize}
+%       \begin{columns}
+%         \begin{column}{.45\textwidth}
+%           \begin{block}{\footnotesize The Finite Element Method (FEM)}
+%             \begin{itemize}
+%             \item[$+$] handle nonlinear constitutive models
+%             \item[$+$] high-order approximation
+%             \item[$-$] oscillations near discontinuities
+%             \item[$-$] dealing with large deformations
+%             \end{itemize}
+%           \end{block}
+%         \end{column}
+%         \begin{column}{.45\textwidth}
+%           \begin{block}{\footnotesize The Finite Volume Method (FVM)}
+%             \begin{itemize}
+%             \item[$+$] handle nonlinear constitutive models
+%             \item[$-$] high-order approximation
+%             \item[$+$] removal of oscillations
+%             \item[$-$] dealing with large deformations
+%             \end{itemize}
+%           \end{block}
+%         \end{column}
+%       \end{columns}
+%     \end{footnotesize}
+%   \end{block}
+% \end{frame}
+
+% \begin{frame}{The numerical simulation}
+%   \metroset{block=fill}
+%   \begin{normalsize}
+%     \begin{block}{The Discontinuous Galerkin approximation: taking advantage of both FEM and FVM}
+%       \begin{itemize}
+%       \item[$+$] handle nonlinear constitutive models
+%       \item[$+$] high-order approximation
+%       \item[$+$] removal of oscillations
+%         \alert{\item[$-$] \textbf{dealing with large deformations $\rightarrow$ resort to mesh-free methods}}
+%       \end{itemize}
+%     \end{block}
+%     \pause
+%     \begin{block}{Particle-in-cell approaches -- the Material Point Method (MPM)}
+%       \begin{itemize}
+%       \item[$+$] handle nonlinear constitutive models
+%       \item[$+$] high-order approximation
+%       \item[$-$] numerical oscillations and diffusion
+%       \item[$+$] handle large deformation
+%       \end{itemize}
+%     \end{block}
+%   \end{normalsize}
+% \end{frame}
+
+\begin{frame}{The simulation is bounded by the model}
+  %%
+  \begin{block}{Inheritance from fluid dynamics}
+    Numerical tools to embed information about the solution in numerical approaches
+  \end{block}
+  \begin{block}{The point of view adopted here}
     \begin{itemize}
-    \item compute approximate solutions
-    \item highlight phenomena implicitly described by the model
-    \item perform virtual experiments
+    \item Combine such tools with robust discretization techniques should lead to accurate solutions
+    \item Make a numerical approach able to mimic the physical response
     \end{itemize}
+  \end{block}
+  \begin{block}{Limitations}
+    Gaps about some constitutive models (dammage, plasticity, thermo-mechanical coupling etc.)
   \end{block}
   \metroset{block=fill}
-  \begin{block}{Pros and cons of some mesh-based methods:}
-    \metroset{block=transparent}
-    \begin{scriptsize}
-      \begin{columns}
-        \begin{column}{.45\textwidth}
-          \begin{block}{\scriptsize The Finite Element Method (FEM)}
-            \begin{itemize}
-            \item[$+$] handle nonlinear constitutive models
-            \item[$+$] high-order approximation
-            \item[$-$] oscillations near discontinuities
-            \item[$-$] dealing with large deformations
-            \end{itemize}
-          \end{block}
-        \end{column}
-        \begin{column}{.45\textwidth}
-          \begin{block}{\scriptsize The Finite Volume Method (FVM)}
-            \begin{itemize}
-            \item[$+$] handle nonlinear constitutive models
-            \item[$-$] high-order approximation
-            \item[$+$] removal of oscillations
-            \item[$-$] dealing with large deformations
-            \end{itemize}
-          \end{block}
-        \end{column}
-      \end{columns}
-    \end{scriptsize}
+  \begin{block}{Objective 2}
+    Investigate the response of two-dimensional elastic-plastic solids to dynamic loading
   \end{block}
-  %% Dire que ces méthodes sont basées sur une discretization des domaines spatiaux et temporels
-  % \begin{block}{Mainly used methods:}
-  %   \metroset{block=transparent}
-  %   \begin{columns}
-  %     \begin{column}{0.47\textwidth}
-  %       \begin{block}{Mesh-based}
-  %         \begin{itemize}
-  %         \item[] Finite Element Method (FEM)
-  %         \item[] Finite Volume Method (FVM)
-  %         \end{itemize}
-  %       \end{block}
-  %     \end{column}
-  %     \begin{column}{0.47\textwidth}
-  %       \begin{block}{Mesh-free}
-  %         \begin{itemize}
-  %         \item[] Smooth Particle Hydrodynamics (SPH)
-  %         \item[] Particle In Cell methods (PIC)
-  %         \end{itemize}
-  %       \end{block}
-  %     \end{column}
-  %   \end{columns}    
-  % \end{block}
 \end{frame}
 
-\begin{frame}{Numerical simulation}
-  \begin{block}{The Discontinuous Galerkin approximation: take advantage of both FEM and FVM}
-    \begin{itemize}
-    \item[$+$] handle nonlinear constitutive models
-    \item[$+$] high-order approximation
-    \item[$+$] removal of oscillations
-    \item[$-$] dealing with large deformations
-    \end{itemize}
-  \end{block}
-
-  \begin{block}{Mesh-free methods: Particle in cell approaches}
-    \begin{itemize}
-    \item[$+$] handle nonlinear constitutive models
-    \item[$+$] high-order approximation
-    \item[$-$] numerical oscillations and diffusion near discontinuities
-    \item[$+$] handle large deformation
-    \end{itemize}
-  \end{block}
-  Fail to mimic the physical behavior due to the lack of information about the structure (talk about dammage, softening, plasticity)
-\end{frame}
-
-\subsection*{Objectives and strategy}
-\begin{frame}{Objectives}
-  Numerical methods able to deal with finite deformation + waves
-
-  Solution of elastoplasticity problems in 2D
-\end{frame}
-
-\begin{frame}{Strategy}
-  PIC mapping in MPM + DG approx
-
-  Characteristic structure + loading path etc.
-
-  Il faut bien démarquer les deux parties dans le plan de la prez.
-\end{frame}
 
 
 %%% Local Variables:
