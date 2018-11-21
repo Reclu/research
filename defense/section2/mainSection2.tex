@@ -1,8 +1,88 @@
+\subsection{Continuum equations}
+
+\begin{frame}
+  \begin{block}{Solid volume $\Omega_0$ bounded by $\partial \Omega$ in the reference configuration}
+    \metroset{block=fill}
+    % Cartesian coordinates system
+    \begin{footnotesize}
+      \begin{columns}
+        \begin{column}{0.5\textwidth}
+          \begin{block}{Finite strain}
+            \begin{flalign*}
+              \: \rho_0 & \drond{\vect{v}}{t} - \nablav_0 \cdot \tens{\Pi} = \rho_0\vect{b} &\\
+              & \drond{\tens{F}}{t} - \nablav_0 \cdot (\vect{v} \otimes \tens{I})= \tens{0} \\
+              & \Ucb = \matrice{\rho_0\vect{v} \\ \tens{F}} \: ; \: \Fcb=-\matrice{\tens{\Pi}\\ \vect{v} \otimes \tens{I}}\: ; \: \Scb=\matrice{\rho_0\vect{b} \\ \tens{0}}
+            \end{flalign*} 
+          \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{block}{Linearized geometrical framework}
+            \begin{flalign*}
+              \: \rho_0 & \drond{\vect{v}}{t} - \nablav_0 \cdot \tens{\sigma} = \rho_0\vect{b} &\\
+              & \drond{\tens{\eps}}{t} - \nablav_0 \cdot \frac{\vect{v} \otimes \tens{I} + \tens{I}\otimes \vect{v}}{2}= \tens{0} \\
+              & \Ucb = \matrice{\rho_0\vect{v} \\ \tens{\eps}} \: ; \: \Fcb=-\matrice{\tens{\sigma}\\ \frac{\vect{v} \otimes \tens{I} + \tens{I}\otimes \vect{v}}{2}}\: ; \: \Scb=\matrice{\rho_0\vect{b} \\ \tens{0}}
+            \end{flalign*}
+          \end{block}
+        \end{column}
+      \end{columns}
+      \pause
+      \textbf{\normalsize System of Lagrangian conservation laws \cite{Plohr}:}
+      \begin{equation*}
+        \drond{\Ucb}{t} + \nablav_0 \cdot \Fcb = \Scb
+      \end{equation*}
+    \end{footnotesize}
+    {\tiny
+      \usebibitemtemplate{\color{structure}\insertbiblabel} 
+      \usebibliographyblocktemplate{\color{structure}}{\color{black}}{\color{structure!75}}{\color{structure!75}} 
+      \begin{thebibliography}{ThomasEM}
+      \bibitem[1]{Plohr}
+        B.J. Plohr, D.H. Sharp.
+        \newblock A conservative Eulerian formulation of the equations for elastic flow
+        \newblock {\em Advances in Applied Mathematics (1988)}.
+      \end{thebibliography}}
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}
+  %% Alternatively by introducing the constitutive equations, one can write the quasi-linear form
+  %% Required ??
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Constitutive models}
+        \metroset{block=fill}
+        \begin{block}{Finite strains}
+          Hyperelasticity: $\dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}}$
+        \end{block}
+        \begin{block}{Linearized geometrical framework}
+          Linear elasticity: $\dot{\tens{\sigma}} = \Cbb : \dot{\tens{\eps}}$ \\
+          Elasto-viscoplasticity: $\dot{\tens{\sigma}} = \Cbb : (\dot{\tens{\eps}}-\dot{\tens{\eps}^p})$\\
+          Elastoplasticity: $\dot{\tens{\sigma}} = \Hbb(\tens{\sigma}) : \dot{\tens{\eps}}$
+        \end{block}    
+      \end{block}
+    \end{column}
+    \pause
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Quasi-linear forms}
+        \begin{block}{}
+          $\Qcb=\matrice{\tens{\Pi}\\\vect{v}} \rightarrow \drond{\Qcb}{t} + \nablav_0 \cdot \Fcb = \Scb$
+        \end{block}
+        \begin{block}{}
+          % Linear elasticity: $\dot{\tens{\sigma}} = \Cbb : \dot{\tens{\eps}}$ \\
+          % Elasto-viscoplasticity: $\dot{\tens{\sigma}} = \Cbb : (\dot{\tens{\eps}}-\dot{\tens{\eps}^p})$\\
+          % Elastoplasticity: $\dot{\tens{\sigma}} = \Hbb(\tens{\sigma}) : \dot{\tens{\eps}}$
+        \end{block}    
+      \end{block}
+    \end{column}
+  \end{columns}
+  
+  
+\end{frame}
 
 \subsection{Discrete system}
 \subsection{Non-homogeneous systems}
 \subsection{Interface fluxes}
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "../aRenaud"
+%%% TeX-master: "../presentation"
 %%% End:

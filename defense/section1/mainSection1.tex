@@ -109,7 +109,7 @@
       \item finite deformations
       \end{itemize}
     \end{block}
-    \textbf{$\Rightarrow$ Resort to numerical simulation}
+    \textbf{$\Rightarrow$ Resort to numerical simulation:} space and time discretization techniques
   \end{overprint}
 \end{frame}
 
@@ -140,36 +140,40 @@
 %   \end{block}
 % \end{frame}
 
-\begin{frame}{Suitability of some Lagrangian methods}
+\begin{frame}{Suitability of some Lagrangian explicit methods}
   \begin{columns}
     \begin{column}{0.3\textwidth}
       \begin{block}{Finite Element Method}
-        \begin{tikzpicture}
-          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
-          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
-          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
-          \fill[Blue,opacity=0.7] (0,1.40) -- (0.8660*0.35,-0.5*0.35) -- (-0.8660*0.65,-0.5*0.65) -- (0.,1.40);
-          % \node at (-1.,1.) {$\text{FEM}$};
+        \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,4)
         \end{tikzpicture}
       \end{block}
     \end{column}
     \begin{column}{0.3\textwidth}
       \begin{block}{Finite Volume Method}
-        \begin{tikzpicture}
-          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
-          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
-          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
-          \fill[Red,opacity=0.7] (0,.5) -- (0.8660*0.5,-0.5*0.5) -- (-0.8660*1.40,-0.5*1.40) -- (0.,.5);
+        \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
         \end{tikzpicture}
       \end{block}
     \end{column}
     \begin{column}{0.33\textwidth}
       \begin{block}{Discontinuous Galerkin FEM}
-        \begin{tikzpicture}
-          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
-          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Large deformations}};
-          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
-          \fill[Purple,opacity=0.7] (0,1.40) -- (0.8660*0.5,-0.5*0.5) -- (-0.8660*1.40,-0.5*1.40) -- (0.,1.40);
+        \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,4)
+          \tkzKiviatLine[thick,color = Red!70](4,4,1,4,1)
+          \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](2,4,1,4,4)
         \end{tikzpicture}
       \end{block}
     \end{column}
@@ -177,101 +181,78 @@
 \end{frame}
 
 \begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method}
+  \begin{block}{Collection of particles in an arbitrary grid}
+    \centering
+    \input{section1/continuum}
+    %Projection of fields Particles $\Leftrightarrow$ Nodes
+  \end{block}
   \begin{columns}
-    \begin{column}{0.3\textwidth}
-      \begin{block}{Material Point Method}
-        \begin{tikzpicture}
-          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
-          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Large deformations}};
-          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \color{Red} \text{Wave tracking}};
-          \fill[Yellow,opacity=0.7] (0,1.40) -- (0.8660*1.40,-0.5*1.40) -- (-0.8660*.65,-0.5*.65) -- (0.,1.40);
+    \begin{column}{0.4\textwidth}
+      \begin{block}{FLuid Implicit Particle mapping}
+        \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,3,4,1,3)
         \end{tikzpicture}
       \end{block}
     \end{column}
     \begin{column}{0.4\textwidth}
-      \begin{block}{Discontinuous Galerkin MPM ?}
-        \begin{tikzpicture}
-          \draw[->,  thick] (0.,0.) -- (0.,1.5) node[above] {\scriptsize \text{High-order}};
-          \draw[->,  thick] (0.,0.) -- (0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Large deformations}};
-          \draw[->,  thick] (0.,0.) -- (-0.8660*1.5,-0.5*1.5) node[below] {\scriptsize \text{Wave tracking}};
-          \fill[Orange,opacity=0.7] (0,1.40) -- (-0.8660*1.40,-0.5*1.40) -- (0.8660*1.40,-0.5*1.40)--(-0.8660*.65,-0.5*.65) -- (0.,1.40);
-          \draw[Red, very thick] (-2.3,-0.85*1.5) rectangle (2.6,-0.55*1.5);
-          \fill[Yellow,opacity=0.7] (0,1.40) -- (0.8660*1.40,-0.5*1.40) -- (-0.8660*.65,-0.5*.65) -- (0.,1.40);
+      \begin{block}{Particle-in-cell mapping}
+       \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,1,4,4,3)
         \end{tikzpicture}
-        %\animategraphics[autoplay,loop]{1}{section1/animation}{}{}
       \end{block}
     \end{column}
   \end{columns}
-  $\newline$
+\end{frame}
+
+\begin{frame}
   \metroset{block=fill}
   \begin{block}{Objective 1}
     Merge the advantages of FEM, FVM and MPM by means of the DG approximation
   \end{block}
+  \metroset{block=transparent}
+  \begin{block}{The Discontinuous Galerkin Material Point Method}
+    \begin{columns}
+      \begin{column}{0.6\textwidth}
+        \begin{tikzpicture}[scale=0.5]
+          \tkzKiviatDiagram[lattice=4,
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+          \tkzKiviatLine[thick,color = Yellow!70](3,1,4,4,3)
+          \tkzKiviatLine[thick,color = Purple!70](2,4,1,4,4)
+          \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,3,4,4,3)
+        \end{tikzpicture}
+      \end{column}
+      \begin{column}{0.4\textwidth}
+        \textbf{Ingredients:}
+        \begin{itemize}
+        \item MPM space discretization
+        \item PIC projection of fields
+        \item DG approximation
+        \end{itemize}
+      \end{column}
+    \end{columns}
+  \end{block}
+        
+      
 \end{frame}
-
-
-% \begin{frame}
-%   \metroset{block=fill}
-%   \begin{block}{Pros and cons of some mesh-based methods:}
-%     \metroset{block=transparent}
-%     \begin{footnotesize}
-%       \begin{columns}
-%         \begin{column}{.45\textwidth}
-%           \begin{block}{\footnotesize The Finite Element Method (FEM)}
-%             \begin{itemize}
-%             \item[$+$] handle nonlinear constitutive models
-%             \item[$+$] high-order approximation
-%             \item[$-$] oscillations near discontinuities
-%             \item[$-$] dealing with large deformations
-%             \end{itemize}
-%           \end{block}
-%         \end{column}
-%         \begin{column}{.45\textwidth}
-%           \begin{block}{\footnotesize The Finite Volume Method (FVM)}
-%             \begin{itemize}
-%             \item[$+$] handle nonlinear constitutive models
-%             \item[$-$] high-order approximation
-%             \item[$+$] removal of oscillations
-%             \item[$-$] dealing with large deformations
-%             \end{itemize}
-%           \end{block}
-%         \end{column}
-%       \end{columns}
-%     \end{footnotesize}
-%   \end{block}
-% \end{frame}
-
-% \begin{frame}{The numerical simulation}
-%   \metroset{block=fill}
-%   \begin{normalsize}
-%     \begin{block}{The Discontinuous Galerkin approximation: taking advantage of both FEM and FVM}
-%       \begin{itemize}
-%       \item[$+$] handle nonlinear constitutive models
-%       \item[$+$] high-order approximation
-%       \item[$+$] removal of oscillations
-%         \alert{\item[$-$] \textbf{dealing with large deformations $\rightarrow$ resort to mesh-free methods}}
-%       \end{itemize}
-%     \end{block}
-%     \pause
-%     \begin{block}{Particle-in-cell approaches -- the Material Point Method (MPM)}
-%       \begin{itemize}
-%       \item[$+$] handle nonlinear constitutive models
-%       \item[$+$] high-order approximation
-%       \item[$-$] numerical oscillations and diffusion
-%       \item[$+$] handle large deformation
-%       \end{itemize}
-%     \end{block}
-%   \end{normalsize}
-% \end{frame}
 
 \begin{frame}{The simulation is bounded by the model}
   %%
   \begin{block}{Inheritance from fluid dynamics}
     Numerical tools to embed information about the solution in numerical approaches
   \end{block}
-  \begin{block}{The point of view adopted here}
+  \begin{block}{Point of view adopted}
     \begin{itemize}
-    \item Combine such tools with robust discretization techniques should lead to accurate solutions
+    \item Such numerical tools + robust discretization techniques $\rightarrow$ accurate solutions
     \item Make a numerical approach able to mimic the physical response
     \end{itemize}
   \end{block}
@@ -288,5 +269,5 @@
 
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "../aRenaud"
+%%% TeX-master: "../presentation"
 %%% End:
