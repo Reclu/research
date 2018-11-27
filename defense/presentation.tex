@@ -10,6 +10,17 @@
 \usepackage[font=scriptsize]{caption}
 \usepackage[font=scriptsize]{subcaption}
 
+\usepackage[
+    backend=biber,
+    style=numeric,
+    natbib=true,
+    url=false, 
+    sorting=none,
+    doi=true,
+    eprint=false
+]{biblatex}
+\addbibresource{Biblio.bib}
+
 \usepackage[tensorialbold]{userCommands}
 \usepackage[babel=true,kerning=true]{microtype}
 \usepackage{amsmath}
@@ -143,6 +154,15 @@ block=transparent%fill
   }
 }
 
+\newcommand{\footnoteCite}[1]{
+  {\tiny 
+  \begin{flushleft}
+    \foreach \x in {#1}{\cite{\x}  \fullcite{\x}\\}
+  \end{flushleft}
+}
+}
+  
+
 \defbeamertemplate*{footline}{mytheme}{%
   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{}/\inserttotalframenumber{} 
  \end{beamercolorbox}
@@ -152,6 +172,7 @@ block=transparent%fill
 %   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{} \myBeamerClock{1ex}{-1ex} 
 %  \end{beamercolorbox}
 % }
+
 
 
 
@@ -180,7 +201,7 @@ block=transparent%fill
 
 \input{section1/mainSection1}
 
-\begin{frame}[plain]
+\begin{frame}[plain,noframenumbering]
   \begin{columns}
     \begin{column}{0.45\textwidth}
       \begin{block}{Part I: \nameref{part:part1} \insertpart}
@@ -196,19 +217,21 @@ block=transparent%fill
 \end{frame}
 
 \AtBeginSection[]{%
-  \begin{frame}[plain]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
+  \begin{frame}[plain,noframenumbering]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
 \part{Development of the DGMPM}
+
 \label{part:part1}
 
-\defbeamertemplate*{footline}{mytheme2}{%
-  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertromanpartnumber:  \insertpart  \hfill \insertframenumber/\inserttotalframenumber
- \end{beamercolorbox}
-} %insertpartromannumber
-%% OR with baptiste's clock
 % \defbeamertemplate*{footline}{mytheme2}{%
-%   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertpartnumber:  \insertpart  \hfill \insertframenumber{} \myBeamerClock{1ex}{-1ex}
+%   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertromanpartnumber:  \insertpart  \hfill \insertframenumber/\inserttotalframenumber
 %  \end{beamercolorbox}
 % }
+% insertpartromannumber
+%% OR with baptiste's clock
+\defbeamertemplate*{footline}{mytheme2}{%
+  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertpartnumber:  \insertpart  \hfill \insertframenumber{} \myBeamerClock{1ex}{-0.75ex}
+ \end{beamercolorbox}
+}
 
 
 \section{Derivation of the DGMPM}
@@ -228,15 +251,15 @@ block=transparent%fill
 \label{part:part2}
 \section{Plastic waves}
 
-\input{section5/mainSection5}
+%\input{section5/mainSection5}
 
 \section{Loading paths through plastic waves}
 
 \section{Numerical results}
 
 
-\bibliography{Biblio}
-\bibliographystyle{alpha}
+% \bibliography{Biblio}
+% \bibliographystyle{ieetr}
 \end{document}
 
 %%% Local Variables:

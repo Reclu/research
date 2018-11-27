@@ -1,87 +1,218 @@
 \subsection{Continuum equations}
 
-\begin{frame}
-  \begin{block}{Solid volume $\Omega_0$ bounded by $\partial \Omega$ in the reference configuration}
-    \metroset{block=fill}
-    % Cartesian coordinates system
-    \begin{footnotesize}
+%% Dévelopement de la méthode pour les grandes def seulement
+%% Au moment des cas test, on spécialize à d'autres modèle de comportement en citant des papiers ou livres
+\begin{frame}{Large deformations framework -- Balance equations}
+  \begin{footnotesize}
+    \begin{block}{Kinematics}
       \begin{columns}
-        \begin{column}{0.5\textwidth}
-          \begin{block}{Finite strain}
-            \begin{flalign*}
-              \: \rho_0 & \drond{\vect{v}}{t} - \nablav_0 \cdot \tens{\Pi} = \rho_0\vect{b} &\\
-              & \drond{\tens{F}}{t} - \nablav_0 \cdot (\vect{v} \otimes \tens{I})= \tens{0} \\
-              & \Ucb = \matrice{\rho_0\vect{v} \\ \tens{F}} \: ; \: \Fcb=-\matrice{\tens{\Pi}\\ \vect{v} \otimes \tens{I}}\: ; \: \Scb=\matrice{\rho_0\vect{b} \\ \tens{0}}
-            \end{flalign*} 
-          \end{block}
+        \begin{column}{0.45\textwidth}
+          \input{section2/pgfFigures/deformationFunction}
         \end{column}
         \begin{column}{0.5\textwidth}
-          \begin{block}{Linearized geometrical framework}
-            \begin{flalign*}
-              \: \rho_0 & \drond{\vect{v}}{t} - \nablav_0 \cdot \tens{\sigma} = \rho_0\vect{b} &\\
-              & \drond{\tens{\eps}}{t} - \nablav_0 \cdot \frac{\vect{v} \otimes \tens{I} + \tens{I}\otimes \vect{v}}{2}= \tens{0} \\
-              & \Ucb = \matrice{\rho_0\vect{v} \\ \tens{\eps}} \: ; \: \Fcb=-\matrice{\tens{\sigma}\\ \frac{\vect{v} \otimes \tens{I} + \tens{I}\otimes \vect{v}}{2}}\: ; \: \Scb=\matrice{\rho_0\vect{b} \\ \tens{0}}
-            \end{flalign*}
-          \end{block}
+          \begin{itemize}
+          \item Reference mass density $\rho(\vect{X},t=0)=\rho_0(\vect{X})$
+          \item Deformation gradient $\tens{F}(\vect{X},t)=\nablav_{\!0}\vect{\varphi}(\vect{X},t)$
+          \item Cartesian coordinates system
+          \end{itemize}
         \end{column}
       \end{columns}
-      \pause
-      \textbf{\normalsize System of Lagrangian conservation laws \cite{Plohr}:}
+    \end{block}
+    \begin{block}{Balance equations \cite{Plohr}}
       \begin{equation*}
-        \drond{\Ucb}{t} + \nablav_0 \cdot \Fcb = \Scb
+        \left.\begin{aligned}
+            & \rho_0 \dot{\vect{v}} - \nablav_{\!0} \cdot \tens{\Pi} = \vect{0} \\
+            & \dot{\tens{F}} - \nablav_{\!0} \cdot (\vect{v} \otimes \tens{I})= \tens{0}
+          \end{aligned}\right\rbrace \Rightarrow \text{Conservative form: } \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0}
       \end{equation*}
-    \end{footnotesize}
-    {\tiny
-      \usebibitemtemplate{\color{structure}\insertbiblabel} 
-      \usebibliographyblocktemplate{\color{structure}}{\color{black}}{\color{structure!75}}{\color{structure!75}} 
-      \begin{thebibliography}{ThomasEM}
-      \bibitem[1]{Plohr}
-        B.J. Plohr, D.H. Sharp.
-        \newblock A conservative Eulerian formulation of the equations for elastic flow
-        \newblock {\em Advances in Applied Mathematics (1988)}.
-      \end{thebibliography}}
-  \end{block}
-  
+      with $\Ucb = \matrice{\rho_0\vect{v} \\ \tens{F}} \: ; \: \Fcb\cdot\vect{E}_\alpha=\Fcb_\alpha=-\matrice{\tens{\Pi}\cdot\vect{E}_\alpha\\ \vect{v} \otimes\vect{E}_\alpha}$
+    \end{block}
+  \end{footnotesize}
+  \footnoteCite{Plohr}
 \end{frame}
 
-\begin{frame}
-  %% Alternatively by introducing the constitutive equations, one can write the quasi-linear form
-  %% Required ??
+\begin{frame}{Large deformations framework -- Constitutive equations}
+  \begin{footnotesize}
+    \begin{block}{Hyperelastic materials}
+      %% Polyconvex, hyperbolicity ??
+      From the thermodynamics: $\tens{\Pi}=\rho_0\drond{\psi}{\tens{F}}$ \\
+      $\rho_0\psi$: Stored energy function, polyconvex $\Rightarrow$ hyperbolicity ensured \cite{Kluth}
+    \end{block}
+    \begin{block}{Quasi-linear form}
+      Auxiliary vector $\Qcb$ \cite{Trangenstein91}: %$\Qcb=\matrice{\vect{v}\\\tens{\Pi}}$ 
+      \begin{gather}
+        % \dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}} \Rightarrow \text{Quasi-linear form: } \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+        \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \Leftrightarrow \quad \drond{\Ucb}{\alert{\Qcb}}\drond{\alert{\Qcb}}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{\alert{\Qcb}}\drond{\alert{\Qcb}}{X_\alpha}=\vect{0} \\
+        \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+      \end{gather}
+      where $\Qcb=\matrice{\vect{v}\\\tens{\Pi}} \: ; \: \Absf^\alpha = -\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{E}_\alpha \\ \Hbb\cdot\vect{E}_\alpha & \tens{0}^4}$
+    \end{block}
+  \end{footnotesize}
+  \footnoteCite{Kluth,Trangenstein91}
+\end{frame}
+
+
+
+\subsection{Discrete system}
+
+\begin{frame}{Weak formulation}
   \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Constitutive models}
-        \metroset{block=fill}
-        \begin{block}{Finite strains}
-          Hyperelasticity: $\dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}}$
-        \end{block}
-        \begin{block}{Linearized geometrical framework}
-          Linear elasticity: $\dot{\tens{\sigma}} = \Cbb : \dot{\tens{\eps}}$ \\
-          Elasto-viscoplasticity: $\dot{\tens{\sigma}} = \Cbb : (\dot{\tens{\eps}}-\dot{\tens{\eps}^p})$\\
-          Elastoplasticity: $\dot{\tens{\sigma}} = \Hbb(\tens{\sigma}) : \dot{\tens{\eps}}$
-        \end{block}    
+    \begin{column}{0.425\textwidth}
+      \begin{block}{MPM space discretization}
+        $N_p$ particles in $E$ elements
+        \input{section2/pgfFigures/continuum}
       \end{block}
     \end{column}
-    \pause
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Quasi-linear forms}
-        \begin{block}{}
-          $\Qcb=\matrice{\tens{\Pi}\\\vect{v}} \rightarrow \drond{\Qcb}{t} + \nablav_0 \cdot \Fcb = \Scb$
-        \end{block}
-        \begin{block}{}
-          % Linear elasticity: $\dot{\tens{\sigma}} = \Cbb : \dot{\tens{\eps}}$ \\
-          % Elasto-viscoplasticity: $\dot{\tens{\sigma}} = \Cbb : (\dot{\tens{\eps}}-\dot{\tens{\eps}^p})$\\
-          % Elastoplasticity: $\dot{\tens{\sigma}} = \Hbb(\tens{\sigma}) : \dot{\tens{\eps}}$
-        \end{block}    
+    \begin{column}{0.55\textwidth}
+      \begin{block}{DG approximation \cite{DiPietro}}
+        \vskip 14pt
+        Broken polynomial space $\Vscr^k_h = \{\Vcb \in \Pscr^k(\Omega^e)\}$\\
+        Approximate solution $\Ucb(\vect{X},t) \in \Vscr^k_h$ \\
+        $\Vcb(\vect{X},t) = \sum_{i=1}^{N_{nodes}} S_i(\vect{X}) \Vcb^i(t)$
+        \vskip 13pt
       \end{block}
     \end{column}
   \end{columns}
-  
-  
+  \begin{block}{Element-wise weak form}
+    \begin{equation*}
+      \begin{aligned}
+        & \text{Find $\Ucb\in \Vscr^1_h$ such that $\forall \:\Vcb,e,t \in \Vscr^1_h\times [1, E]\times \tau$:}\\
+        & \int_{\Omega^e} \[\drond{\Ucb}{t} \Vcb - \Fcb_\alpha \drond{\Vcb}{X_\alpha}\]d\Omega + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = 0%\int_{\Omega^e} \Scb\Vcb d\Omega
+      \end{aligned}
+    \end{equation*}
+  \end{block}
+  \footnoteCite{DiPietro}
 \end{frame}
 
-\subsection{Discrete system}
-\subsection{Non-homogeneous systems}
+\begin{frame}
+  \begin{block}{Specific quantities}
+    Approximation of the reference mass density \cite{Sulsky94}: $\rho_0(\vect{X})=\sum_{p=1}^{N_p}m_p \delta(\vect{X}^p-\vect{X})$ \\
+    $\Rightarrow \: \Ucb = \rho_0 \bar{\Ucb} \:; \: \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha$%\:; \: \Scb = \rho_0 \bar{\Scb}$
+  \end{block}
+
+  \begin{block}{Discrete weak form}
+    \begin{equation*}
+      \begin{aligned}
+        & \text{Find $\Ucb\in \Vscr^1_h$ such that $\forall \:\Vcb,e,t \in \Vscr^1_h\times [1, E]\times \tau$:}\\
+        & \sum_{p=1}^{N_p} m_p\[\ddroit{\bar{\Ucb}}{t} \Vcb - \bar{\Fcb}_\alpha \drond{\Vcb}{X_\alpha}\]_{\lvert_{\vect{X}=\vect{X}^p}} + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = \vect{0}
+      \end{aligned}
+    \end{equation*}
+  \end{block}
+  \footnoteCite{Sulsky94}
+\end{frame}
+
+
+\begin{frame}
+  \begin{footnotesize}
+    \begin{block}{Semi-discrete system}
+      Introduction of polynomial approximation %$\Rightarrow  M_{ij} \ddroit{\bar{\Ucb}^j}{t}  - K_{ij}^\alpha \bar{\Fcb}^j_{\alpha} - \Scb^i + \hat{\Fcb}^i=  \vect{0} $
+      \begin{equation*}
+        M_{ij} \ddroit{\bar{\Ucb}^j}{t}  - K_{ij}^\alpha \bar{\Fcb}^j_{\alpha}  + \hat{\Fcb}^i=  \vect{0}
+      \end{equation*}
+      Diagonally lumped mass matrix $M^L_i=\sum_j M_{ij}$ \cite{Love}
+    \end{block}
+    \metroset{block=fill}
+    \begin{block}{Explicit time discretization}
+      \metroset{block=transparent}
+      \begin{columns}
+        \begin{column}{.4\textwidth}
+          \begin{block}{\footnotesize Forward Euler}
+            \vskip 7pt
+            \begin{flalign*}
+              M^L_i \frac{\bar{\Ucb}^{i,n+1} - \bar{\Ucb}^{i,n}}{\Delta t^n}=K_{ij}^\alpha \bar{\Fcb}^{j,n}_{\alpha}  - \hat{\Fcb}^{i,n}
+            \end{flalign*}
+            \vskip 14pt
+          \end{block}
+        \end{column}
+        \begin{column}{.55\textwidth}
+          \begin{block}{\footnotesize Second-order Runge-Kutta (RK2)}
+            \vskip -5pt
+            \begin{align*}
+              & M^L_i \frac{\bar{\Ucb}^{i,n+1/2} - \bar{\Ucb}^{i,n}}{\Delta t^n}=\frac{1}{2}\(K_{ij}^\alpha \bar{\Fcb}^{j,n}_{\alpha}  - \hat{\Fcb}^{i,n}\) \\
+              &M^L_i \frac{\bar{\Ucb}^{i,n+1} - \bar{\Ucb}^{i,n}}{\Delta t^n}=K_{ij}^\alpha \bar{\Fcb}^{j,n+1/2}_{\alpha}  - \hat{\Fcb}^{i,n+1/2}
+            \end{align*}
+          \end{block}
+        \end{column}
+      \end{columns}
+    \end{block}
+  \end{footnotesize}
+  \footnoteCite{Love}
+\end{frame}
+
+
 \subsection{Interface fluxes}
+\begin{frame}
+  \begin{block}{Riemann problem}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{footnotesize}
+          \begin{align*}
+          (\Rc\Pc): \quad &\drond{\Ucb}{t} + \drond{\Fcb_N}{\Ucb} \drond{\Ucb}{\xi }= \vect{0} \\ 
+                          & \Ucb(\xi,0) = \left\lbrace 
+                            \begin{aligned}
+                              & \Ucb_L \: \text{if } \xi < 0 \\
+                              & \Ucb_R \: \text{if } \xi > 0 
+                            \end{aligned} \right.
+          \end{align*}
+        \end{footnotesize}
+      \end{column}
+      \begin{column}{0.3\textwidth}
+        \input{section2/pgfFigures/2DEdge}
+      \end{column}
+    \end{columns}
+  \end{block}
+  \begin{footnotesize}
+    \begin{block}{Approximate Riemann solver \cite{Toro}}
+      \begin{columns}
+        \begin{column}{0.4\textwidth}
+          \begin{itemize}
+          \item Characteristic speeds $\lambda^i(\tens{F})$
+          \item Simple waves
+          \end{itemize}
+        \end{column}  
+        \begin{column}{0.55\textwidth}
+          \input{section2/pgfFigures/approximate_RS}
+        \end{column}
+      \end{columns}
+    \end{block}
+    Computation of $\Ucb^* \Rightarrow$ corresponding (Godunov) flux: $\vect{\Fc}_N(\Ucb^*)$\\
+    \alert{Integration of constitutive equations}
+    
+  \end{footnotesize}
+   \footnoteCite{Toro}
+ \end{frame}
+
+\begin{frame}%{\normalsize Boundary conditions}
+  \begin{block}{\footnotesize Boundary Conditions: ghost nodes}
+    \begin{columns}
+      \begin{column}{0.3\textwidth}
+        \input{section2/pgfFigures/BCs}
+      \end{column}
+      \begin{column}{0.6\textwidth}
+        \begin{scriptsize}
+          \begin{itemize}
+          \item[] Enforce $\Ucb_L$ such that $\Ucb^*=\Ucb^{imp}$
+          \item[] Problem: apply strain rather than stress 
+          \end{itemize}
+        \end{scriptsize}
+      \end{column}	
+    \end{columns}
+  \end{block}
+  \begin{scriptsize}
+  $\Rightarrow $ Quasi-linear form with suitable $\Qcb$ (\textit{i.e. containing stress})\\
+  \alert{Also avoid the integration of constitutive equations at element interfaces !}
+  \end{scriptsize}
+  \begin{block}{\footnotesize Transverse corrections: Adaptation of the Corner Transport Upwind method \cite{Colella_CTU}}
+    \centering
+    \input{section2/pgfFigures/transverse}
+  \end{block}
+  \footnoteCite{Colella_CTU}
+\end{frame}
+
+\subsection{Solution scheme}
+%\input{section2/procedure}
+\input{section2/procedure2}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../presentation"

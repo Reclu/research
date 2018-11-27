@@ -38,21 +38,23 @@
       \begin{column}{0.55\textwidth}
       \end{column}
     \end{columns}
-
     \centering
-    \movie[height = 0.35\paperheight,width=0.25\linewidth,loop,poster,autostart]{}{%
+      \movie[height = 0.35\paperheight,width=0.25\linewidth,loop,poster,autostart]{}{%
       section1/animation/output3.mp4}\\
-    \scriptsize Electromagnetic forming \cite{Formage}
-    \vfill
-    {\tiny
-      \usebibitemtemplate{\color{structure}\insertbiblabel} 
-      \usebibliographyblocktemplate{\color{structure}}{\color{black}}{\color{structure!75}}{\color{structure!75}} 
-      \begin{thebibliography}{EMF}
-        \tiny \bibitem[1]{Formage}
-        Bon E.,Priem D.,Sow C., Heuzé T., Racineux G.
-        \newblock Electromagnetic bending of an aluminum sheet
-        \newblock {\em GeM, Ecole centrale de Nantes, 2015}.
-      \end{thebibliography}}  
+    \scriptsize Electromagnetic forming \cite{Guillaume}
+    \footnoteCite{Guillaume}
+    
+    % \vfill
+    % {\tiny
+    %   \usebibitemtemplate{\color{structure}\insertbiblabel} 
+    %   \usebibliographyblocktemplate{\color{structure}}{\color{black}}{\color{structure!75}}{\color{structure!75}} 
+    %   \begin{thebibliography}{EMF}
+    %     \tiny \bibitem[1]{Formage}
+    %     Bon E.,Priem D.,Sow C., Heuzé T., Racineux G.
+    %     \newblock Electromagnetic bending of an aluminum sheet
+    %     \newblock {\em GeM, Ecole centrale de Nantes, 2015}.
+    %   \end{thebibliography}}
+    
 
     \onslide<3>
     \begin{columns}
@@ -105,12 +107,14 @@
     \begin{block}{Difficulties for the solution of hyperbolic equations:}
       \begin{itemize}
       \item complex geometries
-      \item waves propagating/interacting in solids
+      \item waves propagating/interacting in solids \cite{Wang}
       \item finite deformations
       \end{itemize}
     \end{block}
     \textbf{$\Rightarrow$ Resort to numerical simulation:} space and time discretization techniques
+    \footnoteCite{Wang}
   \end{overprint}
+  
 \end{frame}
 
 % Problems considered -- dynamics + applications + solid mechanics (equations)
@@ -143,18 +147,18 @@
 \begin{frame}{Suitability of some Lagrangian explicit methods}
   \begin{columns}
     \begin{column}{0.3\textwidth}
-      \begin{block}{Finite Element Method}
+      \begin{block}{\footnotesize Finite Element Method \cite{Belytschko}}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
-          \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,4)
+          \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
         \end{tikzpicture}
       \end{block}
     \end{column}
     \begin{column}{0.3\textwidth}
-      \begin{block}{Finite Volume Method}
+      \begin{block}{\footnotesize Finite Volume Method \cite{Leveque}}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
@@ -165,30 +169,32 @@
       \end{block}
     \end{column}
     \begin{column}{0.33\textwidth}
-      \begin{block}{Discontinuous Galerkin FEM}
+      \begin{block}{\footnotesize Discontinuous Galerkin FEM \cite{Cockburn}}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
-          \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,4)
+          \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,3)
           \tkzKiviatLine[thick,color = Red!70](4,4,1,4,1)
           \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](2,4,1,4,4)
         \end{tikzpicture}
       \end{block}
     \end{column}
   \end{columns}
+  \footnoteCite{Belytschko,Leveque,Cockburn}
 \end{frame}
 
-\begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method}
-  \begin{block}{Collection of particles in an arbitrary grid}
-    \centering
-    \input{section1/continuum}
-    %Projection of fields Particles $\Leftrightarrow$ Nodes
-  \end{block}
+\begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method \cite{Sulsky94}}
+  \nocite{Sulsky94}
+  % \begin{block}{Collection of particles in an arbitrary grid}
+  %   \centering
+  %   \input{section1/continuum}
+  %   %Projection of fields Particles $\Leftrightarrow$ Nodes
+  % \end{block}
   \begin{columns}
     \begin{column}{0.4\textwidth}
-      \begin{block}{FLuid Implicit Particle mapping}
+      \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
@@ -199,7 +205,7 @@
       \end{block}
     \end{column}
     \begin{column}{0.4\textwidth}
-      \begin{block}{Particle-in-cell mapping}
+      \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
        \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
@@ -210,6 +216,7 @@
       \end{block}
     \end{column}
   \end{columns}
+  \footnoteCite{Sulsky94,PIC_Nishiguchi,PIC}
 \end{frame}
 
 \begin{frame}
@@ -257,7 +264,7 @@
     \end{itemize}
   \end{block}
   \begin{block}{Limitations}
-    Gaps about some constitutive models (dammage, plasticity, thermo-mechanical coupling etc.)
+    Gaps about some constitutive models (damage, plasticity, thermo-mechanical coupling etc.)
   \end{block}
   \metroset{block=fill}
   \begin{block}{Objective 2}
