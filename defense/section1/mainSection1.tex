@@ -127,63 +127,260 @@
 % - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
 % - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
 
-% \begin{frame}{The numerical simulation}
-%   \begin{block}{It allows to:}
-%     \begin{itemize}
-%     \item compute approximate solutions
-%     \item highlight phenomena implicitly described by the model
-%     \item perform virtual experiments
-%     \end{itemize}
-%   \end{block}
-%   \begin{block}{While struggling with:}
-%     \begin{itemize}
-%     \item the space discretization (mesh-based or mesh-free techniques)
-%     \item the regularity of the problem (discontinuous solutions)
-%     \item 
-%     \end{itemize}
-%   \end{block}
-% \end{frame}
-
-\begin{frame}{Suitability of some Lagrangian explicit methods}
-  \begin{columns}
-    \begin{column}{0.3\textwidth}
-      \begin{block}{\footnotesize Finite Element Method \cite{Belytschko}}
-        \begin{tikzpicture}[scale=0.5]
-          \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
-          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-          
-          \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
-        \end{tikzpicture}
-      \end{block}
-    \end{column}
-    \begin{column}{0.3\textwidth}
-      \begin{block}{\footnotesize Finite Volume Method \cite{Leveque}}
-        \begin{tikzpicture}[scale=0.5]
-          \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
-          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-          
-          \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
-        \end{tikzpicture}
-      \end{block}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \begin{block}{\footnotesize Discontinuous Galerkin FEM \cite{Cockburn}}
-        \begin{tikzpicture}[scale=0.5]
-          \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
-          \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-          
-          \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,3)
-          \tkzKiviatLine[thick,color = Red!70](4,4,1,4,1)
-          \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](2,4,1,4,4)
-        \end{tikzpicture}
-      \end{block}
-    \end{column}
-  \end{columns}
-  \footnoteCite{Belytschko,Leveque,Cockburn}
+\begin{frame}{Suitability of some explicit methods}
+  \begin{block}{The Finite Element Method \cite{Belytschko}}
+    \vskip 4pt
+    \begin{overprint}
+      \onslide<1>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.5\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Weak form of balance equation
+            \end{itemize}
+          \end{column}
+          \begin{column}{0.5\textwidth} 
+            \begin{itemize}
+            \item[] Polynomial approximation
+            \item[] Gauss points constitutive update
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \onslide<2>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.5\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Weak form of balance equation
+            \end{itemize}
+          \end{column}
+          \begin{column}{0.5\textwidth} 
+            \begin{itemize}
+            \item[] Polynomial approximation
+            \item[] Gauss points constitutive update
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \vskip -10pt
+      \begin{columns}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Lagrangian formulation}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Eulerian formulation}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,2,4,1,3)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+      \end{columns}
+    \end{overprint}
+  \end{block}
+\footnoteCite{Belytschko}
 \end{frame}
+
+\begin{frame}{Suitability of some explicit methods}
+  \begin{block}{The Finite Volume Method \cite{Leveque}}
+    \vskip 4pt
+    \begin{overprint}
+      \onslide<1>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.4\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Conservation laws
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}
+            \item[] Cell-wise approximation and constitutive update
+            \item[] Intercell fluxes -- characteristic structure \cite{Godunov_method}
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \onslide<2>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.4\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Conservation laws
+            \end{itemize}
+          \end{column}
+          \begin{column}{0.6\textwidth}
+            \begin{itemize}
+            \item[] Cell-wise approximation and constitutive update
+            \item[] Intercell fluxes -- characteristic structure \cite{Godunov_method}
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \vskip -10pt
+      \begin{columns}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Lagrangian formulation \cite{}}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Eulerian formulation}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,2,4,4,1)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+      \end{columns}
+    \end{overprint}
+  \end{block}
+  \footnoteCite{Leveque,Godunov_method}
+\end{frame}
+
+
+\begin{frame}{Suitability of some explicit methods}
+  \begin{block}{The Discontinuous Galerkin Finite Element Method \cite{Cockburn}}
+    \vskip 4pt
+    \begin{overprint}
+      \onslide<1>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.4\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Cell-wise weak form \cite{NeutronDG}
+            \end{itemize}
+          \end{column}
+          \begin{column}{0.6\textwidth}
+            \begin{itemize}
+            \item[] Gauss points constitutive update
+            \item[] Intercell fluxes -- characteristic structure
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \onslide<2>
+      \begin{columns}
+        \begin{footnotesize}
+          \begin{column}{0.4\textwidth}
+            \begin{itemize}
+            \item[] Mesh-based space discretization
+            \item[] Cell-wise weak form \cite{NeutronDG}
+            \end{itemize}
+          \end{column}
+          \begin{column}{0.6\textwidth}
+            \begin{itemize}
+            \item[] Gauss points constitutive update
+            \item[] Intercell fluxes -- characteristic structure
+            \end{itemize}
+          \end{column}
+        \end{footnotesize}
+      \end{columns}
+      \vskip -10pt
+      \begin{columns}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Lagrangian formulation \cite{}}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,4,1,4,4)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Eulerian formulation (check diffusion)}
+            \centering
+            \begin{tikzpicture}[scale=0.4]
+              \tkzKiviatDiagram[lattice=4,
+              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+              
+              \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,2,4,4,4)
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+      \end{columns}
+    \end{overprint}
+  \end{block}
+\footnoteCite{Cockburn,NeutronDG}
+\end{frame}
+
+
+
+%% OLD VERSION == ONE SLIDE
+% \begin{frame}{Suitability of some Lagrangian explicit methods}
+%   \begin{columns}
+%     \begin{column}{0.3\textwidth}
+%       \begin{block}{\footnotesize Finite Element Method \cite{Belytschko}}
+%         \begin{tikzpicture}[scale=0.5]
+%           \tkzKiviatDiagram[lattice=4,
+%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+%           \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
+%         \end{tikzpicture}
+%       \end{block}
+%     \end{column}
+%     \begin{column}{0.3\textwidth}
+%       \begin{block}{\footnotesize Finite Volume Method \cite{Leveque}}
+%         \begin{tikzpicture}[scale=0.5]
+%           \tkzKiviatDiagram[lattice=4,
+%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+%           \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
+%         \end{tikzpicture}
+%       \end{block}
+%     \end{column}
+%     \begin{column}{0.33\textwidth}
+%       \begin{block}{\footnotesize Discontinuous Galerkin FEM \cite{Cockburn}}
+%         \begin{tikzpicture}[scale=0.5]
+%           \tkzKiviatDiagram[lattice=4,
+%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          
+%           \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,3)
+%           \tkzKiviatLine[thick,color = Red!70](4,4,1,4,1)
+%           \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](2,4,1,4,4)
+%         \end{tikzpicture}
+%       \end{block}
+%     \end{column}
+%   \end{columns}
+%   \footnoteCite{Belytschko,Leveque,Cockburn}
+% \end{frame}
 
 \begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method \cite{Sulsky94}}
   \nocite{Sulsky94}
@@ -194,24 +391,24 @@
   % \end{block}
   \begin{columns}
     \begin{column}{0.4\textwidth}
-      \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
-        \begin{tikzpicture}[scale=0.5]
+      \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
+       \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
-          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,3,4,1,3)
+          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,1,4,4,3)
         \end{tikzpicture}
       \end{block}
     \end{column}
     \begin{column}{0.4\textwidth}
-      \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
-       \begin{tikzpicture}[scale=0.5]
+      \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
+        \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
-          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,1,4,4,3)
+          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,3,4,1,3)
         \end{tikzpicture}
       \end{block}
     \end{column}
@@ -230,11 +427,11 @@
       \begin{column}{0.6\textwidth}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Entanglement,Non-oscillating,High-order}
+          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
           \tkzKiviatLine[thick,color = Yellow!70](3,1,4,4,3)
-          \tkzKiviatLine[thick,color = Purple!70](2,4,1,4,4)
+          \tkzKiviatLine[thick,color = Purple!70](1,4,1,4,4)
           \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,3,4,4,3)
         \end{tikzpicture}
       \end{column}
@@ -248,8 +445,6 @@
       \end{column}
     \end{columns}
   \end{block}
-        
-      
 \end{frame}
 
 \begin{frame}{The simulation is bounded by the model}

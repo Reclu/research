@@ -71,21 +71,89 @@
   \footnoteCite{Wang}
 \end{frame}
 
+
+\begin{frame}{One-dimensional elastic-plastic media: Characteristic wave structures \cite{Wang}}
+  \vskip -15pt
+  \begin{overprint}
+    \onslide<1>
+    % \metroset{block=fill}
+    \begin{columns}
+      \begin{column}{0.48\textwidth}
+        \begin{block}{\footnotesize Purely elastic}
+          \centering
+          \begin{tikzpicture}[scale=0.6]
+            \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
+            \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
+            \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
+            \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
+          \end{tikzpicture}
+        \end{block}
+      \end{column}
+      \begin{column}{0.49\textwidth}
+        \begin{block}{\footnotesize Plastic flow in the region $x>0$}
+          \centering
+          \begin{tikzpicture}[scale=0.6]
+            \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
+            \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
+            \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
+            \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
+            \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
+            \foreach \x in {0.,0.1,...,1.}
+            \draw[Orange] (0,0.) -- (2.3,2.+\x);
+          \end{tikzpicture}
+        \end{block}
+      \end{column}
+    \end{columns}
+    \footnotesize $c,c_p$: celerities of elastic and plastic waves
+
+    \footnoteCite{Wang}
+    
+    \onslide<2>
+      % \metroset{block=fill}
+      \begin{columns}
+        \begin{column}{0.48\textwidth}
+          \begin{block}{\footnotesize Purely elastic}
+            \centering
+            \begin{tikzpicture}[scale=0.6]
+              \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
+              \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
+              \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
+              \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+          \begin{block}{\footnotesize Plastic flow in the region $x>0$}
+            \centering
+            \begin{tikzpicture}[scale=0.6]
+              \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
+              \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
+              \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
+              \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
+              \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
+              \foreach \x in {0.,0.1,...,1.}
+              \draw[Orange] (0,0.) -- (2.3,2.+\x);
+            \end{tikzpicture}
+          \end{block}
+        \end{column}
+      \end{columns}
+      \begin{footnotesize}
+        $c,c_p$: celerities of elastic and plastic waves
+      \end{footnotesize}
+      \metroset{block=fill}
+      \begin{block}{\footnotesize Elastic-plastic Riemann solver \cite{Fogarty}}
+        \footnotesize Account for \alert{plastic waves} by means of a prediction-correction approach
+        \\ \alert{$\rightarrow$ use limiters for both elastic and plastic waves}
+      \end{block}
+      \footnoteCite{Wang,Fogarty}
+  \end{overprint}
+  
+\end{frame}
+
+
 \begin{frame}{}
-  % \vskip 5pt
-  % \begin{columns}
-  %   \begin{column}{0.49\textwidth}
-  %     Plane wave state: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ 
-  %   \end{column}
-  %   \begin{footnotesize}
-  %     \begin{column}{0.49\textwidth}
-  %       Isotropic linear hardening of modulus $C=10^9 \:Pa$ 
-  %       %% EP or Elastic Riemann solver coupled to a radial return algorithm \cite{Simo}
-  %     \end{column}
-  %   \end{footnotesize}
-  % \end{columns}
   \begin{block}{Impact of one-dimensional elastic-plastic media \cite{Thomas_EP} (isotropic linear hardening)}
-    Plane wave state: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ 
+    Plane wave state:\: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ \quad ; \quad $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1 + \sigma_T\(\vect{e}_2\otimes \vect{e}_2+\vect{e}_3\otimes \vect{e}_3\)$
   \end{block}
   \centering
   \input{section4/pgfFigures/ep_planeWave_stress}

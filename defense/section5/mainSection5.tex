@@ -1,5 +1,189 @@
 
+\subsection{Historical review}
+%% Problèmes traités -- approche expérimentale pour la confirmation
+%% Type de solutions
+%% Simple waves even for linear hardening in contrast to one-dimensional problems
+
+\begin{frame}{Thin-walled tube problem}%{Historical review}
+  %% References: Lin_et_Ballman,Li_planeStress_EP,Wu_experimental,Ting73,Clifton_exp2,Valanis,Clifton_exp,Ting69,Bleich,Clifton,CRISTESCU19591605,Rakhmatulin
+  \begin{overprint}
+    \onslide<1>
+    \begin{columns}
+      \begin{column}{0.4\textwidth}
+        \begin{block}{\footnotesize Semi-infinite medium}
+          % \centering
+          \begin{tikzpicture}
+            \begin{scope}[shift={(-1.75,0)}]
+              \draw[->] (0,0) -- (0.5,0) node[right] {\scriptsize $x_1$};
+              \draw[->] (0,0) -- (0,0.5) node[above] {\scriptsize $x_2$};
+            \end{scope}
+            \draw (0,0) -- (3,.0);
+            \draw[very thick] (0,0) -- (0,2.);
+            \fill [pattern=north east lines] (0,0) rectangle (3.,2.);
+            \draw[dash dot] (-0.5,0) -- (3.5,0);% node[right] {\footnotesize $x_1$};
+            % \draw[->,dash dot] (0,0) -- (0,2.5) node[above] {\footnotesize $x_2$};
+            \foreach \y in {0,0.25,...,1.75}
+            \draw[Red,->,>=stealth] (-0.1,\y) -- (-0.1,\y+0.15);
+            \foreach \y in {0,0.25,...,1.75}
+            \draw[Red,->,>=stealth] (-0.30,\y+0.20) -- (-0.15,\y+0.20);
+            \node[Red,left] at (-0.3,1.) {\scriptsize $\sigma,\tau$};
+          \end{tikzpicture}  
+        \end{block}
+      \end{column}
+      \begin{column}{0.62\textwidth}
+        \begin{footnotesize}
+          \begin{block}{\footnotesize Elastic solution}
+            \begin{columns}
+              \begin{column}{0.35\textwidth}
+                \begin{tikzpicture}[scale=0.5]
+                  \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\tiny $x$};
+                  \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\tiny $t$};
+                  \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
+                  \draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
+                  \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
+                  \draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
+                \end{tikzpicture}
+              \end{column}
+              \begin{column}{0.6\textwidth}
+                \begin{itemize}
+                \item[] pressure and shear waves: $c_1,c_2$
+                \item[] discontinuous waves
+                \end{itemize}
+              \end{column}
+            \end{columns}
+          \end{block}
+        \end{footnotesize}
+      \end{column}
+    \end{columns}
+    \onslide<2>
+    \begin{columns}
+      \begin{column}{0.4\textwidth}
+        \begin{block}{\footnotesize Semi-infinite medium}
+          % \centering
+          \begin{tikzpicture}
+            \begin{scope}[shift={(-1.75,0)}]
+              \draw[->] (0,0) -- (0.5,0) node[right] {\scriptsize $x_1$};
+              \draw[->] (0,0) -- (0,0.5) node[above] {\scriptsize $x_2$};
+            \end{scope}
+            \draw (0,0) -- (3,.0);
+            \draw[very thick] (0,0) -- (0,2.);
+            \fill [pattern=north east lines] (0,0) rectangle (3.,2.);
+            \draw[dash dot] (-0.5,0) -- (3.5,0);% node[right] {\footnotesize $x_1$};
+            % \draw[->,dash dot] (0,0) -- (0,2.5) node[above] {\footnotesize $x_2$};
+            \foreach \y in {0,0.25,...,1.75}
+            \draw[Red,->,>=stealth] (-0.1,\y) -- (-0.1,\y+0.15);
+            \foreach \y in {0,0.25,...,1.75}
+            \draw[Red,->,>=stealth] (-0.30,\y+0.20) -- (-0.15,\y+0.20);
+            \node[Red,left] at (-0.3,1.) {\scriptsize $\sigma,\tau$};
+          \end{tikzpicture}  
+        \end{block}
+      \end{column}
+      \begin{column}{0.62\textwidth}
+        \begin{footnotesize}
+          \begin{block}{\footnotesize Elastic-\alert{plastic} solution \cite{CRISTESCU19591605,Rakhmatulin}}
+            \begin{columns}
+              \begin{column}{0.35\textwidth}
+                \begin{tikzpicture}[scale=0.5]
+                  \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\tiny $x$};
+                  \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\tiny $t$};
+                  \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
+                  \draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
+                  \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
+                  \draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
+                  \foreach \x in {1.3,1.4,1.5,1.6,1.7}
+                  {\draw[Orange] (0,0)-- (2.3,\x);
+                    \draw[Orange] (0,0)-- (-2.3,\x);}
+                  \node[Orange,right] at (2.3,1.7) {\tiny $c_f$};
+                  \node[Orange,left] at (-2.3,1.7) {\tiny $-c_f$};
+                  \foreach \x in {2.5,2.6,2.7,2.8,2.9,3.}
+                  {\draw[Orange] (0,0)-- (2,\x);
+                    \draw[Orange] (0,0)-- (-2,\x);}
+                  \node[Orange,right] at (2,3) {\tiny $c_s$};
+                  \node[Orange,left] at (-2,3) {\tiny $-c_s$};
+                \end{tikzpicture}
+              \end{column}
+              \begin{column}{0.6\textwidth}
+                \begin{itemize}
+                \item[] fast and slow simple waves: $c_f,c_s$
+                \item[] combined-stress waves
+                \end{itemize}
+              \end{column}
+            \end{columns}
+          \end{block}
+        \end{footnotesize}
+      \end{column}
+    \end{columns}
+    \footnoteCite{CRISTESCU19591605,Rakhmatulin}
+  \end{overprint}
+\end{frame}
+
+
+\begin{frame}{Thin-walled tube problem}
+  %% Détailler travaux de clifton, comment il en arrive à des trajets élémentaires
+  %% Problème de Picard
+  \begin{block}{Characteristic analysis of the elastic-plastic hyperbolic system \cite{Clifton}}
+    \begin{footnotesize}
+      \begin{columns}
+        \begin{column}{0.6\textwidth}
+          \begin{itemize}
+            % \item ODEs governing the evolution of stress and velocity through both simple waves
+          \item[] ODEs through simple waves: $d\tau=\psi(\tens{\sigma})d\sigma$ 
+            \begin{itemize}
+            \item \footnotesize integration $\rightarrow$ loading paths
+            \item \footnotesize mathematical study $\rightarrow$ solution of Picard's problem
+            \end{itemize}
+            \centering
+            \begin{tikzpicture}
+              \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
+              \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
+              \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+              \draw (0,0) -- (2,0.5);
+              \foreach \y in {0.55,0.6,...,1.}
+              \draw (0,0) -- (2,\y);
+              \foreach \y in {1.5,1.55,...,2.}
+              \draw (0,0) -- (2,\y);
+              \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+              \begin{scope}[shift={(2.5,0)}]
+                \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
+                \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
+                \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+                \draw (0,0) -- (2,0.5);
+                \foreach \y in {0.55,0.6,...,1.}
+                \draw (0,0) -- (2,\y);
+                % \foreach \y in {1.5,1.55,...,2.}
+                % \draw (0,0) -- (2,\y);
+                \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+              \end{scope}
+              \begin{scope}[shift={(5,0)}]
+                \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
+                \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
+                \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+                \draw (0,0) -- (2,0.5);
+                \foreach \y in {1.5,1.55,...,2.}
+                \draw (0,0) -- (2,\y);
+                \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+              \end{scope}
+            \end{tikzpicture}
+          %\item confirmed by experimental data \cite{Clifton_exp}
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.43\textwidth}
+          \vskip 5pt
+          \centering
+          \input{section5/pgfFigures/thinwalledStress}
+        \end{column}
+      \end{columns}
+    \end{footnotesize}
+  \end{block}
+  % \cite{Clifton,Clifton_exp}
+  \footnoteCite{Clifton}
+  %% Other problems + difficulties involved + mathematical properties
+\end{frame}
+\subsection{General formulation}
+
+
+
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "../aRenaud"
+%%% TeX-master: "../presentation"
 %%% End:
