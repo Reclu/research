@@ -1,0 +1,17 @@
+\begin{tikzpicture}[scale=0.9]
+  \begin{axis}[ymajorgrids=true,xmajorgrids=true,ylabel=$\tau \: (Pa)$,xlabel=$\sigma \: (Pa)$,legend style={legend pos=south west}]
+    %%
+    \addplot[Blue,mark=x,only marks,mark repeat=10,very thick,mark size=3pt] table [x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_thinWalledTubeFastWave/fastStressPlane_Stress.pgf};
+    \addlegendentry{Present work}
+    \addplot[arrows along my path,Red,thick] table [x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_thinWalledTubeFastWave/TWfastStressPlane_Stress.pgf};
+    \addlegendentry{Clifton}
+    %% Yield surface
+    \addplot[black,dashed] table  [x=sigma_11,y=sigma_12] {chapter5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslow_yield0.pgf};
+    \addlegendentry{initial yield surface}
+  \end{axis}
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:
