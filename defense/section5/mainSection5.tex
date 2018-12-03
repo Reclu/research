@@ -113,32 +113,31 @@
         \end{footnotesize}
       \end{column}
     \end{columns}
+    % Governing equations based on elastic-plastic softenesses
     \footnoteCite{CRISTESCU19591605,Rakhmatulin}
   \end{overprint}
 \end{frame}
 
 
-\begin{frame}{Thin-walled tube problem}
+\begin{frame}{Thin-walled tube problem: characteristic analysis (33)}
   %% Détailler travaux de clifton, comment il en arrive à des trajets élémentaires
   %% Problème de Picard
-  \begin{block}{Characteristic analysis of the elastic-plastic hyperbolic system \cite{Clifton}}
-    \begin{footnotesize}
-      \begin{columns}
-        \begin{column}{0.6\textwidth}
+  \begin{footnotesize}
+    \begin{columns}
+      \begin{column}{0.6\textwidth}
+        \begin{itemize}
+          % \item ODEs governing the evolution of stress and velocity through both simple waves
+        \item[] ODEs through simple waves: $d\tau=\psi(\tens{\sigma})d\sigma \rightarrow$ loading paths 
           \begin{itemize}
-            % \item ODEs governing the evolution of stress and velocity through both simple waves
-          \item[] ODEs through simple waves: $d\tau=\psi(\tens{\sigma})d\sigma$ 
-            \begin{itemize}
-            \item \footnotesize integration $\rightarrow$ loading paths
-            \item \footnotesize mathematical study $\rightarrow$ solution of Picard's problem
-            \end{itemize}
-            \centering
+          \item \footnotesize characteristic structure not known a priori%integration: loading paths
+          \item \footnotesize mathematical study $\rightarrow$ solution of Picard's problem
+            % \centering
             \begin{tikzpicture}
               \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
               \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
               \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
-              \draw (0,0) -- (2,0.5);
-              \foreach \y in {0.55,0.6,...,1.}
+              \draw (0,0) -- (2,0.65);
+              \foreach \y in {0.65,0.7,...,1.}
               \draw (0,0) -- (2,\y);
               \foreach \y in {1.5,1.55,...,2.}
               \draw (0,0) -- (2,\y);
@@ -147,8 +146,8 @@
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
                 \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
-                \draw (0,0) -- (2,0.5);
-                \foreach \y in {0.55,0.6,...,1.}
+                \draw (0,0) -- (2,0.65);
+                \foreach \y in {0.65,0.7,...,1.}
                 \draw (0,0) -- (2,\y);
                 % \foreach \y in {1.5,1.55,...,2.}
                 % \draw (0,0) -- (2,\y);
@@ -158,28 +157,88 @@
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
                 \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
-                \draw (0,0) -- (2,0.5);
+                \draw (0,0) -- (2,0.65);
                 \foreach \y in {1.5,1.55,...,2.}
                 \draw (0,0) -- (2,\y);
                 \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
               \end{scope}
             \end{tikzpicture}
-          %\item confirmed by experimental data \cite{Clifton_exp}
+          \item \footnotesize iterative Riemann solver \cite{Lin_et_Ballman}
           \end{itemize}
-        \end{column}
-        \begin{column}{0.43\textwidth}
-          \vskip 5pt
-          \centering
-          \input{section5/pgfFigures/thinwalledStress}
-        \end{column}
-      \end{columns}
-    \end{footnotesize}
-  \end{block}
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.43\textwidth}
+        \vskip 5pt
+        \centering
+        \input{section5/pgfFigures/thinwalledStress}
+      \end{column}
+    \end{columns}
+  \end{footnotesize}
   % \cite{Clifton,Clifton_exp}
-  \footnoteCite{Clifton}
+  \footnoteCite{Clifton,Lin_et_Ballman}
   %% Other problems + difficulties involved + mathematical properties
 \end{frame}
+
+\begin{frame}
+  \begin{block}{Problems tackled overall}
+    \begin{itemize}
+    \item Particular plane strain and plane stress cases \cite{Bleich,Ting69,Ting73,Li_planeStress_EP}
+    \item Equations based on elastic-plastic softenesses (be clear on the difficulties)
+    
+    \end{itemize}
+  \end{block}
+  \begin{block}{The proposed approach}
+    \begin{itemize}
+    \item gathers the existing formulations in a unified framework
+    \item generalizes to plane strain and plane stress problems
+    \item development of approximate Riemann solver ?
+    \end{itemize}
+  \end{block}
+  \footnoteCite{Bleich,Ting69,Ting73,Li_planeStress_EP}
+\end{frame}
+
 \subsection{General formulation}
+\begin{frame}
+  \begin{block}{Governing equations}
+    \begin{footnotesize}
+      \begin{columns}
+        \begin{column}{0.4\textwidth}
+          \begin{flalign*}
+            & \text{plastic flow: } \dot{\tens{\eps}}^p = \dot{p}\drond{f}{\tens{\sigma}} \\
+            & \text{constitutive equations: } \dot{\tens{\sigma}}=\Cbb^{ep}:\dot{\tens{\eps}} \\
+            & \text{linear momentum: } \drond{\rho \vect{v}}{t} - \nabla_v \cdot\tens{\sigma} = \vect{0}\\
+            & \text{kinematic laws: } \dot{\tens{\eps}} = \nablat^s \vect{v}
+          \end{flalign*}
+        \end{column}
+        \begin{column}{0.55\textwidth}
+          \begin{flalign*}
+            \Rightarrow \: &\text{quasi-linear form: } \drond{\Ucb}{\Qcb}\drond{\Qcb}{t} + \drond{\Fcb\cdot\vect{e}_i}{\Qcb}\drond{\Qcb}{x_i}=\vect{0} \\
+            & \Ucb = \matrice{\rho \vect{v} \\ \tens{\eps}} \: ; \: \Qcb = \matrice{\vect{v} \\ \tens{\sigma}} \: ;\: \Fcb \cdot \vect{e}_i = -\matrice{\sigma_{ji}  \\ \frac{v_j \delta_{ik} + v_i \delta_{jk}}{2}}, (i,j,k) = \{1,2,3\}
+          \end{flalign*}
+        \end{column}
+      \end{columns}
+      %Difference with previous formulations ? Inverse $\drond{\Ucb}{\Qcb}$ rather than its matrix representation $\rightarrow$ stifnesses instead of softenesses
+      %% system kept generical so far
+    \end{footnotesize}
+    \vskip 10pt
+    \begin{overprint}
+      \onslide<2>
+      \begin{block}{Characteristic analysis}
+        Hyperbolic system in arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
+        with $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
+
+      \end{block}
+      \onslide <3>
+      \begin{block}{Characteristic analysis}
+        Hyperbolic system in arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
+        with $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$\\
+        Method of characteristics \cite{Courant}: $\Lcb^K \cdot d\Qcb = \vect{0}$ $\forall$ left eigenvectors $\Lcb$ of $\Jbsf$
+      \end{block}
+      \footnoteCite{Courant}
+    \end{overprint}    
+  \end{block}
+\end{frame}
+
 
 
 
