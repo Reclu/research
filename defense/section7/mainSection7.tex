@@ -1,27 +1,65 @@
-
-
-\subsection{Thin-walled tube problem}
-\begin{frame}{Comparison with Clifton}
-  \input{section7/pgfFigures/thinwalledDev_fast}
-  \input{section7/pgfFigures/thinwalledDev}
-  
+\subsection{Plane stress cases}
+\begin{frame}{Thin-walled tube problem}
+  \begin{footnotesize}
+    \begin{block}{Numerical integration of loading paths}
+      \begin{columns}
+        \begin{column}{0.5\textwidth}
+          \begin{itemize}
+          \item Driving parameter $\sigma_{12}$
+          \item Starting on the initial yield surface $f=0$
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{itemize}
+          \item von-Mises yield surface
+          \item Linear isotropic hardening
+          \end{itemize}
+        \end{column}
+      \end{columns}
+    \end{block}  
+  \end{footnotesize}
+  \vspace{-0.25cm}
+  \begin{block}{}
+    \centering
+    \input{section7/pgfFigures/thinwalledDev_fast}  
+  \end{block}
 \end{frame}
+
 
 \subsection{Plane strain problem}
-\begin{frame}{Plane strain}
-   \input{section7/pgfFigures/DPfastWaves_deviator0}
-   \input{section7/pgfFigures/DPslowWaves_deviator1}
-   \input{section7/pgfFigures/DPslowWaves_deviator2}
-   \input{section7/pgfFigures/DPslowWaves_deviator3}
+\begin{frame}%{Plane strain}
+  \begin{block}{Fast waves}
+    \vspace{-0.5cm}
+    \centering
+    \input{section7/pgfFigures/DPfastWaves_deviator0}
+  \end{block}
+  \begin{block}{Slow waves}
+    \vspace{-0.5cm}
+    \centering
+    \input{section7/pgfFigures/DPslowWaves_deviator}
+  \end{block}
+
+   % \input{section7/pgfFigures/DPslowWaves_deviator1}\hspace{-.25cm}
+   % \input{section7/pgfFigures/DPslowWaves_deviator2}\hspace{-.25cm}
+   % \input{section7/pgfFigures/DPslowWaves_deviator3}
    
 \end{frame}
 
-
-\begin{frame}{Decreased Hardening modulus}
-   \input{section7/pgfFigures/DPfastWaveH_deviator0}
-   \input{section7/pgfFigures/DPslowWaves_H}
-   
+\begin{frame}{Decreased Hardening modulus}%{Plane strain}
+  \vspace{-0.25cm}
+  \begin{block}{Fast waves}
+    \vspace{-0.75cm}
+    \centering
+    \input{section7/pgfFigures/DPfastWaveH_deviator0}
+  \end{block}
+  \vspace{-0.5cm}
+  \begin{block}{Slow waves}
+    \vspace{-0.5cm}
+    \centering
+    \input{section7/pgfFigures/DPslowWaves_H}
+  \end{block}
 \end{frame}
+
 
 %%% Local Variables:
 %%% mode: latex
