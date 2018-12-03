@@ -1,4 +1,57 @@
 
+\subsection{Wave structure for two-dimensional problems}
+
+\begin{frame}
+  \begin{block}{Characteristic analysis}
+    \begin{itemize}
+      \item acoustic tensor's spectrum $\rightarrow$ 2 positive eigenvalues $\omega_p$ and eigenvectors $\vect{l}^p$
+    \item 4 non-zero eigenvalues $c_K$ and left eigenvectors $\Lcb^K$ 
+      \begin{itemize}
+      \item[] left and right-going slow waves $\pm c_s$
+      \item[] left and right-going fast waves $\pm c_f$
+      \end{itemize}
+    \item non-linear waves: $c_K(\tens{\sigma})$ (expressions depending on $\Cbb^{ep}$)
+    \item \textbf{assumption: $c_1 \geq c_f \geq c_2 \geq c_s$ $\Rightarrow$ simple waves}
+    \item 1 contact wave $c=0$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\subsection{Loading paths through simple waves}
+\begin{frame}
+  \begin{block}{Method of characteristics \cite{Courant}}%: $\Lcb^K \cdot d\Qcb = \vect{0}$ $\forall \: K$}
+    $\Lcb^K \cdot d\Qcb = 0 \quad \forall \: K \rightarrow$ set of ODEs through the simple waves for $\vect{n}=\vect{e}_i$: loading paths  
+    \begin{flalign*}
+      & d\sigma_{11}=\psi^K_i \: d\sigma_{12}\\
+      & d\sigma_{22}=\phi^K_i \: d\sigma_{12},\quad K=\{s,f\} 
+    \end{flalign*}
+  \end{block}
+  \vspace{-0.4cm}
+  
+  \begin{block}{Properties of loading paths}
+    \vspace{-0.5cm}
+    \begin{center}
+      \begin{normalsize}
+        \begin{tabular}{c|c|c}
+          & $\vect{n}=\vect{e}_1$ & $\vect{n}=\vect{e}_2$ \\
+          \hline
+          \hline
+          $\forall \tens{\sigma} $& $\psi_1^f \psi_1^s=-1$ & $\phi_2^f \phi_2^s=-1$ \\
+          & orthogonality in $(\sigma_{11},\sigma_{12})$ plane & orthogonality in $(\sigma_{22},\sigma_{12})$ plane\\
+          \hline 
+          $\sigma_{12}=0$ &  $d\sigma_{12} = 0$ through fast wave & $d\sigma_{12} = 0$ through slow wave \\
+          \hline
+        \end{tabular}
+      \end{normalsize}      
+    \end{center}
+  \end{block}
+\footnoteCite{Courant}
+\end{frame}
+
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../presentation"

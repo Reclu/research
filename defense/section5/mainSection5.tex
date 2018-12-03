@@ -217,28 +217,21 @@
           \end{flalign*}
         \end{column}
       \end{columns}
-      %Difference with previous formulations ? Inverse $\drond{\Ucb}{\Qcb}$ rather than its matrix representation $\rightarrow$ stifnesses instead of softenesses
+      %Difference with previous formulations ? Inverse $\drond{\Ucb}{\Qcb}$ rather than its matrix representation $\rightarrow$ stiffnesses instead of softenesses
       %% system kept generical so far
     \end{footnotesize}
-    \vskip 10pt
-    \begin{overprint}
-      \onslide<2>
-      \begin{block}{Characteristic analysis}
-        Hyperbolic system in arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
-        with $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
-
-      \end{block}
-      \onslide <3>
-      \begin{block}{Characteristic analysis}
-        Hyperbolic system in arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
-        with $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$\\
-        Method of characteristics \cite{Courant}: $\Lcb^K \cdot d\Qcb = \vect{0}$ $\forall$ left eigenvectors $\Lcb$ of $\Jbsf$
-      \end{block}
-      \footnoteCite{Courant}
-    \end{overprint}    
+    \begin{block}{Hyperbolic system in the arbitrary direction $\vect{n}$}
+      %Hyperbolic system in arbitrary direction $\vect{n}$:
+      \begin{flalign*}
+        \drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}
+      \end{flalign*}
+      %$\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
+      with the Jacobian matrix $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
+      %\\ Method of characteristics \cite{Courant}: $\Lcb^K \cdot d\Qcb = \vect{0}$ $\forall$ left eigenvectors $\Lcb$ of $\Jbsf$
+    \end{block}
+    %\footnoteCite{Courant}
   \end{block}
 \end{frame}
-
 
 
 
