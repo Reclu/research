@@ -172,7 +172,7 @@
             \centering
             \begin{tikzpicture}[scale=0.4]
               \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustsness,Non-oscillating,High-order}
               \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
               \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
@@ -180,16 +180,16 @@
           \end{block}
         \end{column}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Eulerian formulation}
-            \centering
-            \begin{tikzpicture}[scale=0.4]
-              \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
-              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          % \begin{block}{\footnotesize Eulerian formulation}
+          %   \centering
+          %   \begin{tikzpicture}[scale=0.4]
+          %     \tkzKiviatDiagram[lattice=4,
+          %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+          %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
-              \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,2,4,1,3)
-            \end{tikzpicture}
-          \end{block}
+          %     \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,2,4,1,3)
+          %   \end{tikzpicture}
+          % \end{block}
         \end{column}
       \end{columns}
     \end{overprint}
@@ -197,11 +197,16 @@
 \footnoteCite{Belytschko}
 \end{frame}
 
+%% Pas forcément mettre en avant le tangling
+%% Approches Lagrangiennes FVM qui ont des di
+%% Citer Maire le papier de 2006 sur la définition de la vitesse nodale (similaire au DG puisque v est discontinue) -> pas tant mesh entanglement que mesh update issues (le second étant valable même en total lagrangian)
+%% Virer l'Eulérien; mettre mesh drawbacks; citer le cas échéant; et préciser à l'oral les mesh drawbacks: pour FVM, il s'agit de bouger le maillage avec un champ de vitesse discontinu
 \begin{frame}{Suitability of some explicit methods}
-  \begin{block}{The Finite Volume Method \cite{Leveque}}
-    \vskip 4pt
+  \begin{block}{The Finite Volume Method \cite{Leveque}}%\cite{Haider_FVM} for total Lagrangian
+    \vspace{-0.2cm}
     \begin{overprint}
       \onslide<1>
+      \vspace{-0.2cm}
       \begin{columns}
         \begin{footnotesize}
           \begin{column}{0.4\textwidth}
@@ -218,7 +223,10 @@
           \end{column}
         \end{footnotesize}
       \end{columns}
+      \vspace{3.65cm}
+      \footnoteCite{Leveque,Godunov_method}
       \onslide<2>
+      \vspace{-0.2cm}
       \begin{columns}
         \begin{footnotesize}
           \begin{column}{0.4\textwidth}
@@ -238,11 +246,11 @@
       \vskip -10pt
       \begin{columns}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Lagrangian formulation \cite{}}
+          \begin{block}{\footnotesize Lagrangian formulation \cite{Maire_FVM} [Haider]?}
             \centering
             \begin{tikzpicture}[scale=0.4]
               \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive, Mesh robustsness,Non-oscillating,High-order}
               \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
               \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
@@ -250,29 +258,34 @@
           \end{block}
         \end{column}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Eulerian formulation}
-            \centering
-            \begin{tikzpicture}[scale=0.4]
-              \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
-              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          % \begin{block}{\footnotesize Eulerian formulation}
+          %   \centering
+          %   \begin{tikzpicture}[scale=0.4]
+          %     \tkzKiviatDiagram[lattice=4,
+          %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+          %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
-              \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,2,4,4,1)
-            \end{tikzpicture}
-          \end{block}
+          %     \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,2,4,4,1)
+          %   \end{tikzpicture}
+          % \end{block}
         \end{column}
       \end{columns}
+      \vspace{-0.2cm}
+      \footnoteCite{Leveque,Godunov_method,Maire_FVM}
     \end{overprint}
   \end{block}
-  \footnoteCite{Leveque,Godunov_method}
+  %compatibility between the two configurations based on Eulerian and Lagrangian coordinates
+  
+  
 \end{frame}
 
 
 \begin{frame}{Suitability of some explicit methods}
   \begin{block}{The Discontinuous Galerkin Finite Element Method \cite{Cockburn}}
-    \vskip 4pt
+    \vspace{-0.2cm}
     \begin{overprint}
       \onslide<1>
+      \vspace{-0.2cm}
       \begin{columns}
         \begin{footnotesize}
           \begin{column}{0.4\textwidth}
@@ -289,7 +302,10 @@
           \end{column}
         \end{footnotesize}
       \end{columns}
+      \vspace{3.65cm}
+      \footnoteCite{Cockburn,NeutronDG}
       \onslide<2>
+      \vspace{-0.2cm}
       \begin{columns}
         \begin{footnotesize}
           \begin{column}{0.4\textwidth}
@@ -309,11 +325,11 @@
       \vskip -10pt
       \begin{columns}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Lagrangian formulation \cite{}}
+          \begin{block}{\footnotesize Lagrangian formulation \cite{LagrangianDG_thesis}}
             \centering
             \begin{tikzpicture}[scale=0.4]
               \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
               \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
               \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,4,1,4,4)
@@ -321,21 +337,22 @@
           \end{block}
         \end{column}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Eulerian formulation (check diffusion)}
-            \centering
-            \begin{tikzpicture}[scale=0.4]
-              \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
-              \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
+          % \begin{block}{\footnotesize Eulerian formulation (check diffusion)}
+          %   \centering
+          %   \begin{tikzpicture}[scale=0.4]
+          %     \tkzKiviatDiagram[lattice=4,
+          %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+          %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
-              \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,2,4,4,4)
-            \end{tikzpicture}
-          \end{block}
+          %     \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,2,4,4,4)
+          %   \end{tikzpicture}
+          % \end{block}
         \end{column}
       \end{columns}
+      \vspace{-0.2cm}
+      \footnoteCite{Cockburn,NeutronDG,LagrangianDG_thesis}
     \end{overprint}
   \end{block}
-\footnoteCite{Cockburn,NeutronDG}
 \end{frame}
 
 
@@ -347,7 +364,7 @@
 %       \begin{block}{\footnotesize Finite Element Method \cite{Belytschko}}
 %         \begin{tikzpicture}[scale=0.5]
 %           \tkzKiviatDiagram[lattice=4,
-%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
 %           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
 %           \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
@@ -358,7 +375,7 @@
 %       \begin{block}{\footnotesize Finite Volume Method \cite{Leveque}}
 %         \begin{tikzpicture}[scale=0.5]
 %           \tkzKiviatDiagram[lattice=4,
-%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
 %           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
 %           \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
@@ -369,7 +386,7 @@
 %       \begin{block}{\footnotesize Discontinuous Galerkin FEM \cite{Cockburn}}
 %         \begin{tikzpicture}[scale=0.5]
 %           \tkzKiviatDiagram[lattice=4,
-%           label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+%           label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
 %           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
 %           \tkzKiviatLine[thick,color = Blue!70](4,4,1,1,3)
@@ -394,7 +411,7 @@
       \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
        \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+          label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
           \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,1,4,4,3)
@@ -405,10 +422,10 @@
       \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+          label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
-          \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](3,3,4,1,3)
+          \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,3,4,1,3)
         \end{tikzpicture}
       \end{block}
     \end{column}
@@ -419,7 +436,9 @@
 \begin{frame}
   \metroset{block=fill}
   \begin{block}{Objective 1}
-    Merge the advantages of FEM, FVM and MPM by means of the DG approximation
+    Capture waves with a Lagrangian description while avoiding mesh-related difficulties \\
+    %% Solution proposed, though others exist
+    \alert{$\Rightarrow$ Merge the advantages of FEM, FVM and MPM by means of the DG approximation}
   \end{block}
   \metroset{block=transparent}
   \begin{block}{The Discontinuous Galerkin Material Point Method}
@@ -427,10 +446,11 @@
       \begin{column}{0.6\textwidth}
         \begin{tikzpicture}[scale=0.5]
           \tkzKiviatDiagram[lattice=4,
-          label style/.append style={font=\scriptsize},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
+          label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
           \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
           
           \tkzKiviatLine[thick,color = Yellow!70](3,1,4,4,3)
+          \tkzKiviatLine[thick,color = Orange!70](3,3,4,1,3)
           \tkzKiviatLine[thick,color = Purple!70](1,4,1,4,4)
           \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](3,2,4,4,3)
         \end{tikzpicture}
@@ -452,10 +472,10 @@
   \begin{block}{Inheritance from fluid dynamics}
     Numerical tools to embed information about the solution in numerical approaches
   \end{block}
-  \begin{block}{Point of view adopted}
+  \begin{block}{Point of view adopted: Such numerical tools + robust discretization techniques}
     \begin{itemize}
-    \item Such numerical tools + robust discretization techniques $\rightarrow$ accurate solutions
-    \item Make a numerical approach able to mimic the physical response
+    \item Provide accurate solutions
+    \item Enable a numerical approach to mimic the physical response
     \end{itemize}
   \end{block}
   \begin{block}{Limitations}
@@ -463,7 +483,7 @@
   \end{block}
   \metroset{block=fill}
   \begin{block}{Objective 2}
-    Investigate the response of two-dimensional elastic-plastic solids to dynamic loading
+    Identify the response of two-dimensional elastic-plastic solids to dynamic loading
   \end{block}
 \end{frame}
 

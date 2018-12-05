@@ -45,8 +45,10 @@
 \usetikzlibrary{spy,backgrounds}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{arrows.meta}
+\usetikzlibrary{external} % avoid the systematic compilation of figures
 \usepackage{pgfplots}
-%\usepackage{pgfplotsthemetol}
+% \usepackage{pgfplotsthemetol}
+\tikzexternalize[prefix=external/]
 \pgfplotsset{compat=newest,
   grid=both,
   every axis/.append style={font=\scriptsize},
@@ -250,16 +252,18 @@ block=transparent%fill
 \input{section4/mainSection4}
 
 \section*{Conclusion}
-\begin{frame}[standout]%{\text{Conclusion of part I}}
+\begin{frame}[standout]{\text{Conclusion of part I}}
   \setbeamercolor{alerted text}{fg=white}
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-  \vskip 5pt
+  %\vskip 5pt
+  \vspace{-.5cm}
   \begin{scriptsize}
       
   
     \begin{overprint}
       \onslide<1>
-      \begin{block}{\text{Developement of the DGMPM}}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
       \vskip -6pt
         \begin{itemize}
         \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
@@ -274,7 +278,8 @@ block=transparent%fill
       \end{block}
     
       \onslide<2>
-      \begin{block}{\text{Developement of the DGMPM}}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
       \vskip -6pt
         \begin{itemize}
         \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
@@ -287,7 +292,8 @@ block=transparent%fill
         \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations nor mesh entanglement
         \end{itemize}
       \end{block}
-      \begin{block}{\text{Numerical analysis}}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Numerical analysis}}
       \vskip -6pt
         \begin{itemize}
         \item Ability to compute the optimal Courant number (1D and 2D) \cite{DGMPM_stab}
@@ -296,7 +302,8 @@ block=transparent%fill
       \end{block}
       \footnoteCite{DGMPM_stab}
       \onslide<3>
-      \begin{block}{\text{Developement of the DGMPM}}
+      \vspace{-.3cm}
+      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
       \vskip -6pt
         \begin{itemize}
         \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
@@ -309,14 +316,16 @@ block=transparent%fill
         \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations nor mesh entanglement
         \end{itemize}
       \end{block}
-      \begin{block}{\text{Numerical analysis}}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Numerical analysis}}
       \vskip -6pt
         \begin{itemize}
         \item Ability to compute the optimal Courant number (1D and 2D) \cite{DGMPM_stab}
         \item First-order approach for first-order polynomials
         \end{itemize}
       \end{block}
-      \begin{block}{\text{Illustration of the method}}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Illustration of the method}}
       \vskip -6pt
         \begin{itemize}
         \item No oscillations -- reduced diffusion compared to original MPM-PIC
@@ -347,7 +356,7 @@ block=transparent%fill
   \pause
   \metroset{block=fill}
   \begin{block}{Objective 2}
-    Investigate the response of two-dimensional elastic-plastic solids to dynamic loading
+    Identify the response of two-dimensional elastic-plastic solids to dynamic loadings
     \begin{itemize}
     \item Better understanding of the features of solutions in the elastic-plastic regime
     \item Building of dedicated approximate Riemann solvers
@@ -368,16 +377,116 @@ block=transparent%fill
 \input{section7/mainSection7}
 
 
+
 \section*{Conclusion}
-\begin{frame}[standout]
+\begin{frame}[standout]{\text{Conclusion of part II}}
   \setbeamercolor{alerted text}{fg=white}
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-  \vskip 5pt
-  
+  %\vspace{-.5cm}
+  \begin{scriptsize}
+    \begin{overprint}
+      \onslide<1>
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
+        \vskip -6pt \begin{itemize}
+        \item General framework for problems in two space dimensions
+        \end{itemize}
+      \end{block}
+      \onslide<2>
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
+        \vskip -6pt \begin{itemize}
+        \item General framework for problems in two space dimensions
+        \end{itemize}
+      \end{block}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Characteristic analysis}}
+        \vskip -6pt \begin{itemize}
+        \item Problems involving \underline{slow} and \underline{fast} simple waves
+        \item Method of characteristics $\rightarrow$ loading paths
+        \item Mathematical properties of stress paths
+        \item Numerical results: Highlighting of particular responses
+        \end{itemize}
+      \end{block}
+      \onslide<3>
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
+        \vskip -6pt \begin{itemize}
+        \item General framework for problems in two space dimensions
+        \end{itemize}
+      \end{block}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Characteristic analysis}}
+        \vskip -6pt \begin{itemize}
+        \item Problems involving \underline{slow} and \underline{fast} simple waves
+        \item Method of characteristics $\rightarrow$ loading paths
+        \item Mathematical properties of stress paths
+        \item Numerical results: Highlighting of particular responses
+        \end{itemize}
+      \end{block}
+      \vspace{-0.3cm}
+      \begin{block}{\footnotesize \text{Toward an elastic-plastic approximate Riemann solver in 2D ?}}
+        \quad Adapt the approach in \cite{Lin_et_Ballman}:
+        \vskip -6pt \begin{itemize}
+        \item[1] Identify elementary loading paths between two states $\rightarrow$ characteristic structure
+        \item[2] Iterative Riemann solver based on successively guessed stationary states
+        \end{itemize}
+        
+      \end{block}
+      \footnoteCite{Lin_et_Ballman}
+    \end{overprint}
+  \end{scriptsize}
 \end{frame}
 
-% \bibliography{Biblio}
-% \bibliographystyle{ieetr}
+\section*{Conclusion and perspectives}
+\begin{frame}[standout]
+  conclusion
+\end{frame}
+
+\begin{frame}[standout]{\text{General conclusion}}
+  \setbeamercolor{alerted text}{fg=white}
+  \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
+  \begin{scriptsize}
+    \begin{block}{\text{Objective 1: \footnotesize Capture waves with a Lagrangian description while avoiding mesh-related difficulties}}
+      \begin{itemize}
+      \item[] The DGMPM allows a material description with particles discretizing a solid domain
+      \item[] The discrete system is solved on an \underline{arbitrary grid}
+      \item[] The projections nodes $\leftrightarrow$ particles yield \underline{non-oscillatory solutions}
+      \item[] The stability can be ensured owing to the stability analysis
+      \end{itemize}
+
+  \end{block}
+
+  \begin{block}{\text{Objective 2: \footnotesize Identify the response of two-dimensional elastic-plastic solids to dynamic loadings}}
+    \begin{itemize}
+    \item[] The prior works have been gathered in one general framework
+    \item[] Some typical responses for plane strain and plane stress problems have been highlighted
+    \end{itemize}
+  \end{block}
+
+  \end{scriptsize}
+\end{frame}
+
+\begin{frame}{Future works}
+
+  \begin{block}{High-order DGMPM}
+    
+  \end{block}
+
+
+  \begin{block}{Elastic-plastic approximate Riemann solver in 2D}
+    
+  \end{block}
+  %% High-order approximation
+  %% Mesh-adaption techniques
+
+  %% Further investigations required
+  %% Extension to other yield surfaces and/or hardening law
+  %% Study of plastic shocks
+
+\end{frame}
+
+
 \end{document}
 
 %%% Local Variables:
