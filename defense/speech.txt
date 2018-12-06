@@ -1,0 +1,68 @@
+INTRODUCTION
+
+--- General context ---
+Concerned with solid dynamics problems such as Impact or crash-proof design:
+    in the first case, one wants to ensure that a structure undegoing dynamic loadings remains usable while in the latter, it is expected to dissipate as much energy as possible so that the passengers are safe
+    
+On the other hand, high-speed forming techniques are important industrial applications in the field of solid dynamics.
+Here is depicted a video of electromagnetic forming process which is developed at ecole centrale
+The optimization of the process requires to properly assess the residual states in terms of strains and stresses in order to get the desired shape for metallic bodies.
+
+Such physical phenomena can be mathematically modeled by means of partial differential equations which, for solids, are written as hyperbolic equations.
+However, the exact solution of these equations is made difficult and even not possible by complex geometries, the waves involved and enventual large deformations.
+As a result, the numerical simulation is a way of providing approximate solutions.
+
+--- Numerical methods ---
+
+## FEM
+Among the big stars of existing numerical methods, the FEM uses a mesh to represent a solid domain
+The weak form of the linear momentum balance equation is written in order to build an poylonomial approximation of the solution of hyperbolic problems
+The weaknesses and strengths of Lagrangian formulations of FEM, when applied to solid dynamics can be roughly represented as follows:
+while the method enables high-order approximation and exhibits low diffusion, as it would not be the case for the Eulerian formulation due to advection terms, it suffers from oscillations near discontinuous solutions and from mesh difficulties for large deformations. 
+
+## FVM
+On the other hand, the FVM originally developed for fluid dynamics and applied to solids, is based on conservation laws written on control volumes.
+The main characteristics of this approach is that it relies on a cell-wise approximation and on numerical fluxes that allow to account for the mathemaatical structure of the solution within numerical schemes.
+Unlike FEM, numerical oscillations are avoided and high-order approximation is achievable but it is less convenient.
+However, Lagrangian formulations of FVM also lead to mesh difficulties when updating the geometry since the velocity can be discontinuous
+
+## DGFEM
+The discontinuous galerkin approximation allows to take advantage of finite volume technology in a finite element framework
+As a result, high-order approximation can be achieved without oscillations
+It is however worth noticing that the time step can be very restrictive with this approach
+It then appears that some difficulties related to the mesh are encourted with all the previous methods. 
+
+## MPM
+Mesh-free approaches allow to bypassed some of them.
+In particular, the material point method, which is also an extension of techniques developed for fluid dynamics to solids, uses a collection of material points to represent a domain.
+The particles can move in an arbitrary grid and can thus be seen as an extension of FEM with moving Gauss points in which mesh entanglement is avoided.
+Then, projections of fields between particles and the grid are required.
+
+
+The original Particle-In-Cell approach, is characterized by non-oscillating solutions but a significant diffusion.
+In order to circumvent this issue, an alternative projection which led to the Fluid Implicit Particle method has been proposed.
+This new version of the MPM indeed reduces the numerical diffusion, but at the cost of spurious oscillations.
+
+--- Objective n°1 ---
+Given the difficulties involved by hyperbolic problems, a numerical method able to handle large deformations while providing non-oscillating solutions with low diffusion would be valuable.
+
+Thus, the first purpose of this work is to develop such a numerical tool.
+The strategy will be to merge the advantages of FEM, FVM and MPM by means of the DG approximation in order to cover a bigger area in the schematic representation of pros and cons. 
+We think that using the coupling of PIC mapping and DG approximation will yields non-oscillating solutions with low dissipation.
+
+--- Objective n°2 ---
+As already mentioned, the use of interface fluxes inherited from the compulational fluid community enables to introduce some amount of exact solution within numerical schemes.
+
+We think that accurate solutions can be computed providing that the physical response is identified and hence, mimicked by a numerical method.
+
+However, such responses are still not known for some material models and require additional investigations so that the numerical solution can be improved.
+
+Thus, the second purpose of the thesis is the identification of the physical response of elastic-plastic solids to dynamic loadings in two space dimensions.
+
+--- Outline ---
+
+The remaining of the presentation will then be split as follows:
+
+First of all, the Discontinuous Galerkin Material Point Method will be derived within the finite deformation framework, analysed and illustrated on numerical simulations.
+
+Second of all, we will focus on the solution of hyperbolic problems in two-dimensional elastic-plastic solids.
