@@ -297,13 +297,13 @@ block=transparent%fill
       \vskip -6pt
         \begin{itemize}
         \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        \item System of conservation law $\rightarrow$ same approximation for fields and gradients
+        \item System of conservation laws $\rightarrow$ same approximation for fields and gradients
         \item Riemann problems at cells faces:
           \begin{itemize}
           \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
           \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
           \end{itemize}
-        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations nor mesh entanglement
+        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
         \end{itemize}
       \end{block}
       \vspace{-0.3cm}
@@ -314,6 +314,7 @@ block=transparent%fill
         \item First-order approach for first-order polynomials
         \end{itemize}
       \end{block}
+      \vspace{1.55cm}
       \footnoteCite{DGMPM_stab}
       \onslide<3>
       \vspace{-.3cm}
@@ -321,13 +322,13 @@ block=transparent%fill
       \vskip -6pt
         \begin{itemize}
         \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        \item System of conservation law $\rightarrow$ same approximation for fields and gradients
+        \item System of conservation laws $\rightarrow$ same approximation for fields and gradients
         \item Riemann problems at cells faces:
           \begin{itemize}
           \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
           \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
           \end{itemize}
-        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations nor mesh entanglement
+        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
         \end{itemize}
       \end{block}
       \vspace{-0.3cm}
@@ -343,10 +344,11 @@ block=transparent%fill
       \vskip -6pt
         \begin{itemize}
         \item No oscillations -- reduced diffusion compared to original MPM-PIC
-        \item Dissipation depending on the particles distribution
+        %\item Dissipation depending on the particles distribution
+        \item Classical constitutive integrators at material points
         \end{itemize}
       \end{block}
-      %\footnoteCite{DGMPM_stab}
+      \footnoteCite{DGMPM_stab}
     \end{overprint}
     
   \end{scriptsize}
@@ -508,7 +510,7 @@ block=transparent%fill
     \begin{block}{\text{Elastic-plastic approximate Riemann solver in 2D}}
       \begin{itemize}
       \item[] Further mathematical investigations
-      \item[] Extension to other yield surfaces and hardening law
+      \item[] Extension to other yield surfaces and hardening laws
       \item[] Developement of an iterative solver
       \end{itemize}
     \end{block}

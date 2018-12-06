@@ -181,3 +181,31 @@ Actually this simulation is here proposed for illustration purpose rather than f
 
 -- Conclusion of part I --
 As a partial conclusion, the DGMPM has been developed in the finite strain framework.
+
+
+PART II
+
+We will now go through the second part of the thesis.
+
+It has been emphasized in the introduction that the correct assessement of residual states is of major importance.
+It has also been seen that the numerical solution in elastic-plastic solids becomes more accurate if additional information about the characteristic structure of the problem is considered.
+Nevertheless, such tools only exist for one-dimensional problems since the response of elastoplastic solids to dynamic loading is in general misknown.
+
+Hence the second objective of the thesis: identify the response of two-dimensional elastic-plastic solids to dynamic loadings. 
+The gain would be double since it would allow to better understand the physics and to improve numerical simulations.	      
+
+First, a historical review will be made before I recall the governing equations.
+Then, the characteristic analysis of the hyperbolic problems will be carried out and finally supplemented by numerical results.
+
+-- Formulation of the problem --
+
+## Historical review
+The early works on multi-dimensional elastoplastic solids in the dynamic regime go back to the 50's and considered a combined shear and longitudinal stress state. 
+In the elastic regime, the solutions consists of 4 elastic discontinuities propagating in the medium.
+
+Rakhmatulin and Cristescu nevertheless highlighted mathematically the existence of four other nonlinear waves that can possibly arrise, two slow and two fast waves.
+More recently, in the 60's, Clifton carried out the characteristic analysis of this particular problem and wrote a system of Ordinary Differential Equations that are satisfied throug heach plastic waves.
+These ODEs govern stress paths as well as the evolution of the components of the velocity.
+The problem is however particular in that the characteristic structure of the problem can not be known a priori.
+Indeed, Clifton showed that the solution may involve one fast, one slow, or both simple waves.
+In that sense, the loading paths provided by Clifton are very important since they allow, for a given stationary state, to integrate backward the loading path to the initial condition, and hence to determine the waves involved.
