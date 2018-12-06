@@ -195,6 +195,14 @@ block=transparent%fill
 \def\part#1{\def\@currentlabelname{#1}\oldpart{#1}}
 \makeatother
 
+%% New command to remove headline
+\makeatletter
+\newenvironment{withoutheadline}{
+  \setbeamertemplate{headline}[default]
+  \def\beamer@entrycode{\vspace*{-\headheight}}
+}{}
+\makeatother
+
 
 \begin{document}
 \begin{frame}[plain]
@@ -203,8 +211,11 @@ block=transparent%fill
 
 
 \section{Motivations \& Objectives}
+\setcounter{section}{0}
+
 
 \input{section1/mainSection1}
+
 
 \begin{frame}[plain,noframenumbering]
   \begin{columns}
@@ -252,6 +263,7 @@ block=transparent%fill
 \input{section4/mainSection4}
 
 \section*{Conclusion}
+\begin{withoutheadline}
 \begin{frame}[standout]{\text{Conclusion of part I}}
   \setbeamercolor{alerted text}{fg=white}
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
@@ -338,9 +350,10 @@ block=transparent%fill
   \end{scriptsize}
   
 \end{frame}
-
+\end{withoutheadline}
 \part{2D Elastoplastic hyperbolic problems}
 \label{part:part2}
+\begin{withoutheadline}
 \begin{frame}{Multi-dimensional elastic-plastic solids -- Motivations}
   
   \begin{block}{Continuum point of view}
@@ -364,6 +377,7 @@ block=transparent%fill
   \end{block}
   % \end{block}
 \end{frame}
+\end{withoutheadline}
 
 \section{Formulation of the problem}
 %% Biblio section
@@ -378,6 +392,7 @@ block=transparent%fill
 
 
 \section*{Conclusion}
+\begin{withoutheadline}
 \begin{frame}[standout]{\text{Conclusion of part II}}
   \setbeamercolor{alerted text}{fg=white}
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
@@ -436,14 +451,19 @@ block=transparent%fill
     \end{overprint}
   \end{scriptsize}
 \end{frame}
+\end{withoutheadline}
 
 
+\section*{Conclusion \& Perspectives}
+% \setcounter{section}{0}
+\def\insertframenumber{43}
+\frame[plain,noframenumbering]{\sectionpage}
+% \begin{frame}[standout]
+%   \setbeamercolor{alerted text}{fg=CNBlue}
+%   \setbeamercolor{normal text}{ fg= CNBlue , bg= white }
+%   Conclusion and perspectives
+% \end{frame}
 \setcounter{section}{0}
-\begin{frame}[standout]
-  \setbeamercolor{alerted text}{fg=CNBlue}
-  \setbeamercolor{normal text}{ fg= CNBlue , bg= white }
-  Conclusion and perspectives
-\end{frame}
 
 \begin{frame}[standout]{\text{General conclusion}}
   \setbeamercolor{alerted text}{fg=white}
@@ -478,6 +498,7 @@ block=transparent%fill
       \item[] Adapt the grid to capture waves in the current configuration
       \item[] High-order shape functions (requires mesh-adaption)
       \item[] Use TVD limiters
+      \item[] Space-Time DGMPM
       \end{itemize}
     \end{block}
 
