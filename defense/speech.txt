@@ -66,3 +66,118 @@ The remaining of the presentation will then be split as follows:
 First of all, the Discontinuous Galerkin Material Point Method will be derived within the finite deformation framework, analysed and illustrated on numerical simulations.
 
 Second of all, we will focus on the solution of hyperbolic problems in two-dimensional elastic-plastic solids.
+
+PART I
+
+## Derivation of the method
+
+-- Continuum equations --
+
+-- Discrete equations --
+First-order polynomials only
+
+## Numerical analysis
+-- Convergence --
+We now focus on the convergence analysis of the method.
+We consider a one-dimensional bar undergoing an external loading that smoothly varie with time on its left end.
+The domain is discretized with regulary spaced material points in a grid so that two particles lie in each cell.
+The problem is solved with a finer and finer mesh in which the number of particles per cell is kept constant.
+The figures respectively show the evolution of the L2 error on stress and velocity at the end of the computation for several discretizations.
+From these figures, we see that the stress accuracy for MPM and DGMPM is one regardless of the time discretization used for the DGMPM
+As expected from the use of a conservation law system, it appears that the rate of convergence of velocity is similar to that of stress for the DGMPM.
+It seems that this loss of accuracy compared to what is expected from finite element formulation for instance, is due to the PIC mapping used.
+This can be seen in the right figure in which the evolution of the L2 error of the velocity fields provided by the MPM using Flip or Pic mapping are depicted.
+We can see that the Flip mapping leads to second-order accuracy while Pic one yields only first-order.
+
+These observations hold for other particles distributions:
+      the same order of accuracy is reached for velocity and stress in DGMPM
+      Furthermore, the second-order time discretization.
+      At last, Flip mapping leads to second-order accuracy in the MPM while pic one leads to only first-order.
+
+## Numerical Simulations
+
+We now move on to the illustration of the DGMPM on one and two-dimensional simulations
+
+-- one-dimensional problems --	   
+
+### Elastic bar
+We first consider a one-dimensional bar on which Riemann-type initial conditions are prescribed.
+Namely, a positive velocity is prescribed in the left half and a negative one in the right one.
+The exact solution of this problem consists in two elastic discontinuities propagating in the medium.
+
+The results provided by DGMPM and MPM are compared for several regular particles distributions in 50 grid cells. v0=c/2000
+
+
+First, since the DGMPM using 1ppc is stable for a Courant number set at one, the discontinuity can be captured by the method.
+However, for other particles distributions, the CFL must be decreased and the method is less diffusive but non-oscillating.
+
+Those results are confirmed by the energy plots.
+We can see that the DGMPM using more than one particle per cell is more diffusive than the original MPM.
+However, it is worth noticing that the diffusion is lower than that exhibited by the MPM based on Pic mapping, which was one of the objectives aimed by the introduction of the DG approximation in the MPM.
+
+### Elastic-plastic plane wave
+Next, we consider one-dimensional elastic-plastic solids.
+
+It is well known that plastic flow gives rise to plastic waves in addition to elastic ones.
+There exist, for one-dimensional solids, an elastic-plastic approximate Riemann solver that account for this enriched characteristic structure.
+The approach consists in first solving an elastic problem and project the stationnary state on the yield criterion in order to add plastic waves if plastic flow occurs.
+This kind of solver yields more accurate results and also the ability to limit both elastic and plastic waves.
+
+Considering a problem similar to the previous one, but under a plane wave state, numerical results are compared to the exact solutions.
+
+The MPM and DGMPM have been used with one particle per cell, with each material point overlaping FEM and FVM cells centroids.
+The Finite Volume scheme uses an elastic-plastic approximate Riemann solver and both elastic and plastic waves are limited.
+Conversely, the approximate Riemann solver used within the DGMPM is purely elastic and the plastic flow rules are integrated at material points by means of a radial return algorithm.
+
+The figures depicted here show longitudinal stress and plastic strain profiles after the reflection of elastic waves on the free boundaries of the domain.
+As we can see, the finite element stress oscillates on the plastic plateau while the other methods behave better.
+Second, the plastic discontinuity is more accurately captured by the FVM than it is by the DGMPM, due to the use of the elastic-plastic Riemann solver and the limiting of plastic waves.
+As a result, FVM plastic strain is closer to the exact solution that that provided by the other approaches.
+It thus highlights the numerical improvement enabled by the knowledge of the characteristic structure.
+
+### Hyperelastic plane wave
+We now consider a one-dimensional medium made of a hyperelastic SVK material, which undergoes a compression load on its left end.
+Even though the SVK model is not the most realistic one, the exact solution of this problem has been developed and published.
+
+The solution consists in a right-going simple wave.
+Once again, DGMPM solutions are compared to MPM one using one particle per cell.
+It is however worth noticing that in order to avoid the grid crossing instability encourted in the MPM, the method has been formulated in a total Lagrangian fashion.
+Even for non-linear problems DGMPM solutions do not oscillate but using more than one material point per cell leads to a less accurate solution due to the decrease in Courant number it requires.
+Nevertheless, the solutions computed with a Courant number set to unity are pretty close to the exact one.
+
+If a tensile load of the same amplitude is set, the exact solution consist of a right-going shock wave.
+Once again, DGMPM solutions are close to the exact one though slight oscillations appear.
+However, those oscillations reduce with time.
+Of course, if two particles per cell are used within the DGMPM, the solution using the Forward Euler algorithm is less accurate.
+
+-- Two-dimensional problems --
+
+
+## Hyperelastic 
+Let's now move on to two-dimensional problems by first considering a tensile impact on the left part of a square domain.
+The medium is made of the neoHoookean material and a plane strain case is assumed.
+
+MPM and DGMPM coupled to forward Euler solutions using one particle per cell are compared to the FEM solution provided by Abaqus.
+Quadrangular bilinear elements and no artificial viscosity is used within Abaqus.
+Moreover the DGMPM makes use of the transverse correction of intercell fluxes so that the Courant number can be set to unity.
+It is not the case for FEM and MPM.
+At last, for this comparison, the material points overlap the FEM nodes.
+
+The velocity field is depicted on the deformed configuration.
+We again see that FEM and MPM solutions oscillate whereas the DGMPM one behaves well. 
+Also, the deformed configurations provided by the three methods are quite similar in spite of some error made by the DGMPM in the loaded region.
+This is a point that must be improved in the method.
+
+## Hyperelastic-plastic material
+Still under plane strain, a square domain made of a hyperelastic-plastic material is considered.
+In that domain, a negative initial velocity is prescribed and both bottom and left boundary are normally fixed.
+
+The same discretization than before is considered and the comparison between FEM MPM and DGMPM is performed.
+The FEM solution is now provided by a in-house code and the plastic flow is integrated by means a variational solver in every numerical methods.
+
+The equivalent plastic strain is here depicted on the updated geometry.
+The deformed squares resulting from the three methods are again quite similar and no significant overshoots appear. 
+Actually this simulation is here proposed for illustration purpose rather than for quantitative comparisons.
+
+-- Conclusion of part I --
+As a partial conclusion, the DGMPM has been developed in the finite strain framework.

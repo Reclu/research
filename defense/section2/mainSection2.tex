@@ -35,7 +35,7 @@
   \begin{footnotesize}
     \begin{block}{Hyperelastic materials}
       %% Polyconvex, hyperbolicity ??
-      From the thermodynamics: $\tens{\Pi}=\rho_0\drond{\psi}{\tens{F}}$ \\
+      From the thermodynamics: $\tens{\Pi}=\rho_0\drond{\psi}{\tens{F}}\: ; \: \dot{\tens{\Pi}}=\Hbb : \dot{\tens{F}}$ \\
       $\rho_0\psi$: Stored energy function, polyconvex $\Rightarrow$ hyperbolicity ensured \cite{Kluth}
     \end{block}
     \begin{block}{Quasi-linear form}
@@ -161,6 +161,7 @@
       \end{column}
     \end{columns}
   \end{block}
+  \vspace{-0.4cm}
   \begin{footnotesize}
     \begin{block}{Approximate Riemann solver \cite{Toro}}
       \begin{columns}
@@ -175,11 +176,12 @@
         \end{column}
       \end{columns}
     \end{block}
-    Computation of $\Ucb^* \Rightarrow$ corresponding (Godunov) flux: $\vect{\Fc}_N(\Ucb^*)$\\
+    Computation of $\Ucb^* \Rightarrow$ corresponding flux: $\vect{\Fc}_N(\Ucb^*)$ \cite{Godunov_method}\\
     \alert{Integration of constitutive equations}
     
   \end{footnotesize}
-   \footnoteCite{Toro}
+  \vspace{-0.4cm}
+  \footnoteCite{Toro,Godunov_method}
  \end{frame}
 
 \begin{frame}%{\normalsize Boundary conditions}

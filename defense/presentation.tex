@@ -203,8 +203,10 @@ block=transparent%fill
 }{}
 \makeatother
 
+%\pgfkeys{/kiviat/label style/.style={align=center,anchor=180+360/\tkz@kiv@radial*\rang}}
 
 \begin{document}
+%\def\inserttotalframenumber{43}
 \begin{frame}[plain]
   \maketitle
 \end{frame}
@@ -217,7 +219,7 @@ block=transparent%fill
 \input{section1/mainSection1}
 
 
-\begin{frame}[plain,noframenumbering]
+\begin{frame}[plain,]
   \begin{columns}
     \begin{column}{0.45\textwidth}
       \begin{block}{Part I: \nameref{part:part1} \insertpart}
@@ -233,7 +235,7 @@ block=transparent%fill
 \end{frame}
 
 \AtBeginSection[]{%
-  \begin{frame}[plain,noframenumbering]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
+  \begin{frame}[plain,]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
 \part{Development of the DGMPM}
 
 \label{part:part1}
@@ -456,8 +458,8 @@ block=transparent%fill
 
 \section*{Conclusion \& Perspectives}
 % \setcounter{section}{0}
-\def\insertframenumber{43}
-\frame[plain,noframenumbering]{\sectionpage}
+
+\frame[plain,]{\sectionpage}
 % \begin{frame}[standout]
 %   \setbeamercolor{alerted text}{fg=CNBlue}
 %   \setbeamercolor{normal text}{ fg= CNBlue , bg= white }
