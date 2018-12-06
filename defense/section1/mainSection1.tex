@@ -1,4 +1,11 @@
 \begin{frame}{From physics to the mathematical model}
+  % Concerned with solid dynamics problems such as Impact or crash-proof design.
+  % in the first case, one wants to ensure that a structure undegoing dynamic loadings remains usable while in the latter, it is expected to dissipate as much energy as possible so that the passengers are safe
+  
+  % On the other hand, high-speed forming techniques such as electromagnetic forming also involve dynamic loadings
+
+  % At last, another challenging field of dynamics is the reliability of structures to earthquakes
+  % Here is depicted the mass damper of the Taipei 101 tower which design was possible thanks to a good understanding of the physics.
   \vspace{-0.6cm}
   \begin{overprint}
     \onslide<1>
@@ -44,18 +51,6 @@
     \scriptsize Electromagnetic forming \cite{Guillaume}
     \footnoteCite{Guillaume}
     
-    % \vfill
-    % {\tiny
-    %   \usebibitemtemplate{\color{structure}\insertbiblabel} 
-    %   \usebibliographyblocktemplate{\color{structure}}{\color{black}}{\color{structure!75}}{\color{structure!75}} 
-    %   \begin{thebibliography}{EMF}
-    %     \tiny \bibitem[1]{Formage}
-    %     Bon E.,Priem D.,Sow C., Heuzé T., Racineux G.
-    %     \newblock Electromagnetic bending of an aluminum sheet
-    %     \newblock {\em GeM, Ecole centrale de Nantes, 2015}.
-    %   \end{thebibliography}}
-    
-
     \onslide<3>
     \begin{columns}
       \begin{column}{0.45\textwidth}
@@ -89,6 +84,9 @@
         \end{block}
       \end{column}
       
+      %% The governing equations allowing to mathematically model those physical phenomena are composed of Conservation laws and constitutive equations, which can be written as a hyperbolic system
+      %% Even though models can be built, the complex geometries, waves propagating in solids and the possibly finite deformations make in general the exact solution not possible.
+      %% As a result, the numerical simulation based on space and time approximations becomes helpfull
       \begin{column}{0.55\textwidth}
         \begin{block}{Partial differential equations}
           \begin{equation*}
@@ -117,17 +115,8 @@
   
 \end{frame}
 
-% Problems considered -- dynamics + applications + solid mechanics (equations)
-% Soit (i) on inclue les équations du modèle dans les motivations soit (ii) on parle d'abord des difficultés qu'après on illustre ?
-
-% (i) - Problèmes de dynamique des solides: lois de conservations + lois constitutives => système hyperbolique
-% - EDP dont les solutions font intervenir des ondes
-% - Equations complexes (non-linéaires + multi-dimensionnelle) + solutions compliquées car ondes qui interagissent
-% - Intérêt de la simulation pour calculer des solutions approchées
-% - Mais cependant, on a des limitations (grandes defs ; suivi des ondes [oscillations + diffusion] ; difficultées à assurer la convergence vers une solution physique ??? [un truc pour introduire la prise en compte de la structure caractéristique])
-% - Exemples de limitations avec les méthodes existantes : FEM -- FV -- Meshfree 
-
 \begin{frame}{Suitability of some explicit methods}
+  %% Among the big stars of existing numerical methods, the FEM
   \begin{block}{The Finite Element Method \cite{Belytschko}}
     \vskip 4pt
     \begin{overprint}
@@ -172,7 +161,7 @@
             \centering
             \begin{tikzpicture}[scale=0.4]
               \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustsness,Non-oscillating,High-order}
+              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
               \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
               \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,4,1,1,3)
@@ -246,11 +235,11 @@
       \vskip -10pt
       \begin{columns}
         \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Lagrangian formulation \cite{Maire_FVM} [Haider]?}
+          \begin{block}{\footnotesize Lagrangian formulation \cite{Haider_FVM}} %[Haider]?}
             \centering
             \begin{tikzpicture}[scale=0.4]
               \tkzKiviatDiagram[lattice=4,
-              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive, Mesh robustsness,Non-oscillating,High-order}
+              label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive, Mesh robustness,Non-oscillating,High-order}
               \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
               
               \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,4,1,4,1)
@@ -271,7 +260,7 @@
         \end{column}
       \end{columns}
       \vspace{-0.2cm}
-      \footnoteCite{Leveque,Godunov_method,Maire_FVM}
+      \footnoteCite{Leveque,Godunov_method,Haider_FVM}
     \end{overprint}
   \end{block}
   %compatibility between the two configurations based on Eulerian and Lagrangian coordinates
@@ -399,13 +388,11 @@
 %   \footnoteCite{Belytschko,Leveque,Cockburn}
 % \end{frame}
 
+%% It then appears that some difficulties related to the mesh are encourted with all the previous methods. 
+%% Mesh-free approaches allow however, to circumvent some of them.
+%% In particular, the material point method
 \begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method \cite{Sulsky94}}
   \nocite{Sulsky94}
-  % \begin{block}{Collection of particles in an arbitrary grid}
-  %   \centering
-  %   \input{section1/continuum}
-  %   %Projection of fields Particles $\Leftrightarrow$ Nodes
-  % \end{block}
   \begin{columns}
     \begin{column}{0.4\textwidth}
       \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}

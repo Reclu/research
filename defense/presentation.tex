@@ -113,7 +113,7 @@ block=transparent%fill
 %%%%%%%%%%caracterisation du document %---------------------------------------------------------------------
 \hypersetup{
 	pdftitle    = {Formulation of the DGMPM},
-	pdfsubject  = {MS team meeting - March 2018},
+	pdfsubject  = {Ph.D thesis defense- December 2018},
 	linkcolor    = red,
 	pdfauthor   = {Adrien Renaud},
 	pdfkeywords = {numerical simulation, hyperbolic problems, discontinuous Galerkin}
@@ -130,8 +130,8 @@ block=transparent%fill
 {\Large\bf  {The Discontinuous Galerkin Material Point Method: \\application to hyperbolic problems in solid mechanics}}
 
 \date[]{
-	\footnotesize{PhD defense} --
-	December 14 2018 \\ \hspace*{7.cm}\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}%\logo{ \includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}
+	\footnotesize{Ph.D thesis defense} --
+	December 14th 2018 \\ \hspace*{7.cm}\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}%\logo{ \includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}
 \author{A. Renaud \\ Supervisors: T. Heuz\'e, L. Stainier} 
 
 
@@ -372,8 +372,7 @@ block=transparent%fill
 \section{Characteristic analysis}
 \input{section6/mainSection6}
 
-\section{Numerical results -- The plane stress case}
-%% Plane stress so that it is compared to the thin-walled tube solution
+\section{Numerical results}
 \input{section7/mainSection7}
 
 
@@ -438,15 +437,18 @@ block=transparent%fill
   \end{scriptsize}
 \end{frame}
 
-\section*{Conclusion and perspectives}
+
+\setcounter{section}{0}
 \begin{frame}[standout]
-  conclusion
+  \setbeamercolor{alerted text}{fg=CNBlue}
+  \setbeamercolor{normal text}{ fg= CNBlue , bg= white }
+  Conclusion and perspectives
 \end{frame}
 
 \begin{frame}[standout]{\text{General conclusion}}
   \setbeamercolor{alerted text}{fg=white}
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-  \begin{scriptsize}
+  \begin{footnotesize}
     \begin{block}{\text{Objective 1: \footnotesize Capture waves with a Lagrangian description while avoiding mesh-related difficulties}}
       \begin{itemize}
       \item[] The DGMPM allows a material description with particles discretizing a solid domain
@@ -464,29 +466,41 @@ block=transparent%fill
     \end{itemize}
   \end{block}
 
-  \end{scriptsize}
+  \end{footnotesize}
 \end{frame}
 
-\begin{frame}{Future works}
+\begin{frame}[standout]{\text{Future works}}
+  \setbeamercolor{alerted text}{fg=white}
+  \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
+  \begin{footnotesize}
+    \begin{block}{\text{Extension of the DGMPM}}
+      \begin{itemize}
+      \item[] Adapt the grid to capture waves in the current configuration
+      \item[] High-order shape functions (requires mesh-adaption)
+      \item[] Use TVD limiters
+      \end{itemize}
+    \end{block}
 
-  \begin{block}{High-order DGMPM}
     
-  \end{block}
-
-
-  \begin{block}{Elastic-plastic approximate Riemann solver in 2D}
-    
-  \end{block}
-  %% High-order approximation
-  %% Mesh-adaption techniques
-
+    \begin{block}{\text{Elastic-plastic approximate Riemann solver in 2D}}
+      \begin{itemize}
+      \item[] Further mathematical investigations
+      \item[] Extension to other yield surfaces and hardening law
+      \item[] Developement of an iterative solver
+      \end{itemize}
+    \end{block}
+  \end{footnotesize}
   %% Further investigations required
   %% Extension to other yield surfaces and/or hardening law
   %% Study of plastic shocks
-
 \end{frame}
 
-
+\begin{frame}[standout]{}
+  \setbeamercolor{alerted text}{fg=white}
+  \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
+  Thank you for your attention!
+\end{frame}
+  
 \end{document}
 
 %%% Local Variables:
