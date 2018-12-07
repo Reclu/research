@@ -141,7 +141,7 @@
               \draw (0,0) -- (2,\y);
               \foreach \y in {1.5,1.55,...,2.}
               \draw (0,0) -- (2,\y);
-              \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+              \node[left] at (1.25,1.5) {\tiny $(\color{Red}\tens{\sigma}^1\color{CNBlue},\vect{v}^*)$};
               \begin{scope}[shift={(2.5,0)}]
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
@@ -151,7 +151,8 @@
                 \draw (0,0) -- (2,\y);
                 % \foreach \y in {1.5,1.55,...,2.}
                 % \draw (0,0) -- (2,\y);
-                \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+                \draw (0,0) -- (2,1.5);
+                \node[left] at (1.25,1.5) {\tiny $(\color{Green}\tens{\sigma}^2\color{CNBlue},\vect{v}^*)$};
               \end{scope}
               \begin{scope}[shift={(5,0)}]
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
@@ -160,7 +161,7 @@
                 \draw (0,0) -- (2,0.65);
                 \foreach \y in {1.5,1.55,...,2.}
                 \draw (0,0) -- (2,\y);
-                \node[left] at (1.25,1.5) {\tiny $(\tens{\sigma}^*,\vect{v}^*)$};
+                \node[left] at (1.25,1.5) {\tiny $(\color{Orange}\tens{\sigma}^3\color{CNBlue},\vect{v}^*)$};
               \end{scope}
             \end{tikzpicture}
           \item \footnotesize iterative Riemann solver \cite{Lin_et_Ballman}
@@ -168,9 +169,25 @@
         \end{itemize}
       \end{column}
       \begin{column}{0.43\textwidth}
-        \vskip 5pt
-        \centering
-        \input{section5/pgfFigures/thinwalledStress}
+        \begin{overprint}
+          \onslide<1>
+          \vskip 5pt
+          \centering
+          \input{section5/pgfFigures/thinwalledStress}
+          \onslide<2>
+          \vskip 5pt
+          \centering
+          \input{section5/pgfFigures/thinwalledStress1}
+          \onslide<3>
+          \vskip 5pt
+          \centering
+          \input{section5/pgfFigures/thinwalledStress2}
+          \onslide<4>
+          \vskip 5pt
+          \centering
+          \input{section5/pgfFigures/thinwalledStress3}
+        \end{overprint}
+        
       \end{column}
     \end{columns}
   \end{footnotesize}

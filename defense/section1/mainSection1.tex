@@ -4,28 +4,7 @@
   \vspace{-0.6cm}
   \begin{overprint}
     \onslide<1>
-    \begin{columns}
-      \begin{column}{0.45\textwidth}
-        \begin{block}{Solid dynamics problems}
-          \begin{itemize}
-          \item[] \textbf{Impact; Crash-proof design}
-          \item[] High-speed forming
-          %\item[] Earthquake reliability of structures 
-          \end{itemize}
-        \end{block}
-      \end{column}
-      
-      \begin{column}{0.55\textwidth}
-      \end{column}
-    \end{columns}
     
-    \begin{figure}[ht]
-      \centering
-      \subcaptionbox{Bird strike on aircrafts}{\includegraphics[height=0.3\paperheight]{section1/pictures/birdstrike.jpg}}
-      \subcaptionbox{Glasgow Museum of Transport}{\includegraphics[height=0.3\paperheight]{section1/pictures/crash2.jpg}}
-    \end{figure}
-    
-    \onslide<2>
     \begin{columns}
       \begin{column}{0.45\textwidth}
         \begin{block}{Solid dynamics problems}
@@ -40,34 +19,34 @@
       \begin{column}{0.55\textwidth}
       \end{column}
     \end{columns}
-    \centering
-      \movie[height = 0.45\paperheight,width=0.33\linewidth,loop,poster,autostart]{}{%
+
+    
+    \begin{columns}
+      \begin{column}{0.45\textwidth}
+        \centering
+        \movie[height = 0.3275\paperheight,width=0.535\linewidth,loop,poster,autostart]{}{%
       section1/animation/output3.mp4}\\
     \scriptsize Electromagnetic forming \cite{Guillaume}
+      \end{column}
+      \begin{column}{0.45\textwidth}
+        \begin{block}{}
+          \begin{footnotesize}
+            \begin{itemize}
+            \item High-velocity ($\approx \: 200\:m/s$) $\rightarrow$ waves
+            \item Large deformations
+            \item Irreversible strains
+            \item[]
+            \item[]
+            \item[]
+            \end{itemize}
+          \end{footnotesize}
+        \end{block}  
+      \end{column}
+    \end{columns}
     \footnoteCite{Guillaume}
     
-    % \onslide<3>
-    % \begin{columns}
-    %   \begin{column}{0.45\textwidth}
-    %     \begin{block}{Solid dynamics problems}
-    %       \begin{itemize}
-    %       \item[] Impact; Crash-proof design
-    %       \item[] High-speed forming
-    %       \item[] \textbf{Earthquake reliability of structures}
-    %       \end{itemize}
-    %     \end{block}
-    %   \end{column}
-      
-    %   \begin{column}{0.55\textwidth}
-    %   \end{column}
-    % \end{columns}
-
-    % \centering
-    % \includegraphics[scale=0.15]{section1/pictures/TaipeiTower.png} \quad
-    % \includegraphics[scale=0.08]{section1/pictures/MassDamper.jpg}\\
-    % \scriptsize Taipei 101 mass damper
-
-    \onslide<3>
+    
+    \onslide<2>
     \begin{columns}
       \begin{column}{0.45\textwidth}
         \begin{block}{Solid dynamics problems}
@@ -86,15 +65,6 @@
           \item[] Partial differential equations
           \item[] Hyperbolic system
           \end{itemize}
-          % \begin{equation*}
-          %   \Rightarrow \left\lvert
-          %     \begin{aligned}
-          %       & \text{Conservation laws} \\
-          %       & \text{Constitutive equations} 
-          %     \end{aligned}
-          %   \right. = \textbf{Hyperbolic system}
-          %   % Préciser les équations dans le dévelopement de la DGMPM
-          % \end{equation*}
         \end{block}
       \end{column}
     \end{columns}
@@ -157,13 +127,13 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation}
               \centering
-              \begin{tikzpicture}[scale=0.4,rotate=45]
-                \tkzKiviatDiagram[lattice=4,
-                label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-                \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+              % \begin{tikzpicture}[scale=0.4,rotate=45]
+              %   \tkzKiviatDiagram[lattice=4,
+              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
                 
-                \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,1,1,3)
-              \end{tikzpicture}
+              %   \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,1,1,3)
+              % \end{tikzpicture}
             \end{block}
           \end{column}
           \begin{column}{0.48\textwidth}
@@ -234,13 +204,13 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation \cite{Haider_FVM}} %[Haider]?}
               \centering
-              \begin{tikzpicture}[scale=0.4,rotate=45]
-                \tkzKiviatDiagram[lattice=4,
-                label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive, Mesh robustness,Non-oscillating,High-order}
-                \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+              % \begin{tikzpicture}[scale=0.4,rotate=45]
+              %   \tkzKiviatDiagram[lattice=4,
+              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive, Mesh robustness,Non-oscillating,High-order}
+              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
 
-                \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,1,4,1)
-              \end{tikzpicture}
+              %   \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,1,4,1)
+              % \end{tikzpicture}
             \end{block}
           \end{column}
           \begin{column}{0.48\textwidth}
@@ -314,16 +284,16 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation \cite{LagrangianDG_thesis}}
               \centering
-              \begin{tikzpicture}[scale=0.4,rotate=45]
-                \tkzKiviatDiagram[lattice=4,
-                label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-                \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+              % \begin{tikzpicture}[scale=0.4,rotate=45]
+              %   \tkzKiviatDiagram[lattice=4,
+              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
                 
-                \tkzKiviatLine[thick,color = Blue!70](4,1,1,3)
-                \tkzKiviatLine[thick,color = Red!70](4,1,4,1)
+              %   \tkzKiviatLine[thick,color = Blue!70](4,1,1,3)
+              %   \tkzKiviatLine[thick,color = Red!70](4,1,4,1)
                 
-                \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](4,1,4,4)
-              \end{tikzpicture}
+              %   \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](4,1,4,4)
+              % \end{tikzpicture}
             \end{block}
           \end{column}
           \begin{column}{0.48\textwidth}
@@ -370,25 +340,25 @@
     \vspace{-0.2cm}
     \begin{columns}
       \begin{column}{0.48\textwidth}
-        \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
-          \begin{tikzpicture}[scale=0.5,rotate=45]
-            \tkzKiviatDiagram[lattice=4,
-            label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-            \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+        \begin{block}{\footnotesize Particle-In-Cell mapping \cite{PIC}}
+          % \begin{tikzpicture}[scale=0.5,rotate=45]
+          %   \tkzKiviatDiagram[lattice=4,
+          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
             
-            \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](1,4,4,2)
-          \end{tikzpicture}
+          %   \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](1,4,4,2)
+          % \end{tikzpicture}
         \end{block}
       \end{column}
       \begin{column}{0.48\textwidth}
         \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
-          \begin{tikzpicture}[scale=0.5,rotate=45]
-            \tkzKiviatDiagram[lattice=4,
-            label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-            \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+          % \begin{tikzpicture}[scale=0.5,rotate=45]
+          %   \tkzKiviatDiagram[lattice=4,
+          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
             
-            \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,4,1,2)
-          \end{tikzpicture}
+          %   \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,4,1,2)
+          % \end{tikzpicture}
         \end{block}
       \end{column}
     \end{columns}
@@ -409,16 +379,16 @@
     \begin{block}{The Discontinuous Galerkin Material Point Method}
       \begin{columns}
         \begin{column}{0.6\textwidth}
-          \begin{tikzpicture}[scale=0.5,rotate=45]
-            \tkzKiviatDiagram[lattice=4,
-            label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-            \tkzKiviatLine[thick,color = black!50](4,4,4,4)
+          % \begin{tikzpicture}[scale=0.5,rotate=45]
+          %   \tkzKiviatDiagram[lattice=4,
+          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
             
-            \tkzKiviatLine[thick,color = Yellow!70](1,4,4,2)
-            \tkzKiviatLine[thick,color = Orange!70](3,4,1,2)
-            \tkzKiviatLine[thick,color = Purple!70](4,1,4,4)
-            \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](2,4,4,3)
-          \end{tikzpicture}
+          %   \tkzKiviatLine[thick,color = Yellow!70](1,4,4,2)
+          %   \tkzKiviatLine[thick,color = Orange!70](3,4,1,2)
+          %   \tkzKiviatLine[thick,color = Purple!70](4,1,4,4)
+          %   \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](2,4,4,3)
+          % \end{tikzpicture}
         \end{column}
         \begin{column}{0.4\textwidth}
           \textbf{Ingredients:}

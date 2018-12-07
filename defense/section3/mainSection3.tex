@@ -3,7 +3,7 @@
   \begin{block}{Scheme equation (finite difference sense)}
     \begin{footnotesize}
       \begin{equation*}
-        \bar{q}^{p,n+1}=\sum_{k=1}^{N_p}H_{pk}(\vect{X}^p,\vect{X}^k,CFL)\bar{q}^{k,n}
+        \bar{q}^{p,n+1}=\sum_{k=1}^{N_p}H_{pk}(\vect{X}^p,\vect{X}^k,\text{CFL})\bar{q}^{k,n}
       \end{equation*}
     \end{footnotesize}
   \end{block}
@@ -13,7 +13,7 @@
       \begin{equation*}
         \sum_{k=1}^{N_p}\abs{H_{pk}} \leq 1 \quad \forall p
       \end{equation*}
-      \alert{$\Rightarrow$ find the maximal $CFL$ number ensuring the stability}
+      \alert{$\Rightarrow$ find the maximal CFL number ensuring the stability}
     \end{footnotesize}
   \end{block}\pause
   \metroset{block=fill}

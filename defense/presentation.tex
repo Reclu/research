@@ -130,7 +130,7 @@ block=transparent%fill
 {\Large\bf  {The Discontinuous Galerkin Material Point Method: \\application to hyperbolic problems in solid mechanics}}
 
 \date[]{
-	\footnotesize{Ph.D thesis defense} --
+	\footnotesize{PhD thesis defense} --
 	December 14th 2018 \\ \hspace*{7.cm}\includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}%\logo{ \includegraphics[trim = 0cm 4cm 0cm 0cm, clip,scale=0.1]{Logo_GEM.pdf} \hspace*{2.cm}\includegraphics[scale=0.25]{Logo_ECN.pdf}}
 \author{A. Renaud \\ Supervisors: T. Heuz\'e, L. Stainier} 
 
@@ -212,8 +212,8 @@ block=transparent%fill
 \end{frame}
 
 
-\section{Motivations \& Objectives}
-\setcounter{section}{0}
+% \section{Motivations \& Objectives}
+% \setcounter{section}{0}
 
 
 \input{section1/mainSection1}
@@ -235,7 +235,7 @@ block=transparent%fill
 \end{frame}
 
 \AtBeginSection[]{%
-  \begin{frame}[plain,]\frametitle{Outline}\tableofcontents[currentsection,hideothersubsections]\end{frame}}
+  \begin{frame}[plain,]\frametitle{Outline}\tableofcontents[currentsection,hideallsubsections]\end{frame}}
 \part{Development of the DGMPM}
 
 \label{part:part1}
@@ -247,7 +247,7 @@ block=transparent%fill
 % insertpartromannumber
 %% OR with baptiste's clock
 \defbeamertemplate*{footline}{mytheme2}{%
-  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertpartnumber:  \insertpart  \hfill \insertframenumber{} \myBeamerClock{1ex}{-0.75ex}
+  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill \insertframenumber{} \myBeamerClock{1ex}{-0.75ex}
  \end{beamercolorbox}
 }
 
@@ -525,7 +525,10 @@ block=transparent%fill
   \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
   Thank you for your attention!
 \end{frame}
-  
+
+\appendix
+
+\input{appendix/appendix}
 \end{document}
 
 %%% Local Variables:
