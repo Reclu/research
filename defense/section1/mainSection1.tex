@@ -157,9 +157,9 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation}
               \centering
-              \begin{tikzpicture}[scale=0.4]
+              \begin{tikzpicture}[scale=0.4,rotate=45]
                 \tkzKiviatDiagram[lattice=4,
-                label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0},label space=1.5]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
+                label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
                 \tkzKiviatLine[thick,color = black!50](4,4,4,4)
                 
                 \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,1,1,3)
@@ -234,7 +234,7 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation \cite{Haider_FVM}} %[Haider]?}
               \centering
-              \begin{tikzpicture}[scale=0.4]
+              \begin{tikzpicture}[scale=0.4,rotate=45]
                 \tkzKiviatDiagram[lattice=4,
                 label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive, Mesh robustness,Non-oscillating,High-order}
                 \tkzKiviatLine[thick,color = black!50](4,4,4,4)
@@ -314,7 +314,7 @@
           \begin{column}{0.48\textwidth}
             \begin{block}{\footnotesize Lagrangian formulation \cite{LagrangianDG_thesis}}
               \centering
-              \begin{tikzpicture}[scale=0.4]
+              \begin{tikzpicture}[scale=0.4,rotate=45]
                 \tkzKiviatDiagram[lattice=4,
                 label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
                 \tkzKiviatLine[thick,color = black!50](4,4,4,4)
@@ -371,7 +371,7 @@
     \begin{columns}
       \begin{column}{0.48\textwidth}
         \begin{block}{\footnotesize Particle-in-cell mapping \cite{PIC}}
-          \begin{tikzpicture}[scale=0.5]
+          \begin{tikzpicture}[scale=0.5,rotate=45]
             \tkzKiviatDiagram[lattice=4,
             label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
             \tkzKiviatLine[thick,color = black!50](4,4,4,4)
@@ -382,7 +382,7 @@
       \end{column}
       \begin{column}{0.48\textwidth}
         \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
-          \begin{tikzpicture}[scale=0.5]
+          \begin{tikzpicture}[scale=0.5,rotate=45]
             \tkzKiviatDiagram[lattice=4,
             label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
             \tkzKiviatLine[thick,color = black!50](4,4,4,4)
@@ -409,7 +409,7 @@
     \begin{block}{The Discontinuous Galerkin Material Point Method}
       \begin{columns}
         \begin{column}{0.6\textwidth}
-          \begin{tikzpicture}[scale=0.5]
+          \begin{tikzpicture}[scale=0.5,rotate=45]
             \tkzKiviatDiagram[lattice=4,
             label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
             \tkzKiviatLine[thick,color = black!50](4,4,4,4)
@@ -417,7 +417,7 @@
             \tkzKiviatLine[thick,color = Yellow!70](1,4,4,2)
             \tkzKiviatLine[thick,color = Orange!70](3,4,1,2)
             \tkzKiviatLine[thick,color = Purple!70](4,1,4,4)
-            \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](2,4,4,2)
+            \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](2,4,4,3)
           \end{tikzpicture}
         \end{column}
         \begin{column}{0.4\textwidth}
