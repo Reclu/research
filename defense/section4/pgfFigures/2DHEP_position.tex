@@ -1,0 +1,12 @@
+\begin{tikzpicture}[scale=.675]
+\begin{axis}[xlabel=\footnotesize $\text{time} \: (s)$,ylabel=\footnotesize $\frac{e}{e_{max}}$,ymajorgrids=true,xmajorgrids=true,legend pos=outer north east,title={Energy plots}]
+\addplot[Red,very thick,mark=none,dashed,mark size=2pt] table[x=Time,y=q1(Y)] {section4/csvFiles/topNode_dgmpm0.0.csv};
+\addplot[Orange,very thick,mark=none,mark size=2pt] table[x=Time,y=q1(Y)] {section4/csvFiles/topNode0.0.csv};
+%\addplot[Orange,very thick,mark=none,densely dotted,mark size=3pt] ;
+%\legend{mpm-flip 1ppc -- CFL=0.5,mpm-flip 2ppc -- CFL=0.5,mpm-pic 2ppc }
+\end{axis}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../presentation"
+%%% End:
