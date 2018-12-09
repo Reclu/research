@@ -1,6 +1,5 @@
 \begin{withoutheadline}
   \begin{frame}{From physics to the mathematical model}
-    
   \vspace{-0.6cm}
   \begin{overprint}
     \onslide<1>
@@ -11,7 +10,6 @@
           \begin{itemize}
           \item[] Impact; Crash-proof design
           \item[] \textbf{High-speed forming}
-          %\item[] Earthquake reliability of structures 
           \end{itemize}
         \end{block}
       \end{column}
@@ -35,7 +33,7 @@
             \item High-velocity ($\approx \: 200\:m/s$) $\rightarrow$ waves
             \item Large deformations
             \item Irreversible strains
-            \item[]
+            \item Complex geometries
             \item[]
             \item[]
             \end{itemize}
@@ -45,7 +43,6 @@
     \end{columns}
     \footnoteCite{Guillaume}
     
-    
     \onslide<2>
     \begin{columns}
       \begin{column}{0.45\textwidth}
@@ -53,7 +50,6 @@
           \begin{itemize}
           \item[] Impact; Crash-proof design
           \item[] High-speed forming
-          %\item[] Earthquake reliability of structures 
           \end{itemize}
         \end{block}
       \end{column}
@@ -68,360 +64,208 @@
         \end{block}
       \end{column}
     \end{columns}
-    
-    \begin{block}{Difficulties for the solution of hyperbolic equations:}
-      \begin{itemize}
-      \item complex geometries
-      \item waves propagating/interacting in solids \cite{Wang}
-      \item finite deformations
-      \end{itemize}
+
+    \vspace{0.2cm}
+    \begin{block}{Challenging task}
+      \alert{Accurately track waves propagating/interacting in irreversibly finite deforming solids \cite{Wang}}
     \end{block}
-    $\newline$
-    \textbf{$\Rightarrow$ Resort to numerical simulation} %space and time discretization techniques
+    %% Il faut dire que suivre ces ondes est très important pour comprendre la physique et évaluer correctement les états résiduels
+
+    \vspace{0.2cm}
+    \begin{block}{Complex equations}
+      \textbf{$\Rightarrow$ Resort to numerical simulation}
+    \end{block}
     \footnoteCite{Wang}
   \end{overprint}
 \end{frame}\end{withoutheadline}
 
 
 \begin{withoutheadline}
-  \begin{frame}{Suitability of some explicit methods}
-    \begin{block}{The Finite Element Method \cite{Belytschko}}
-      \vskip 4pt
-      \begin{overprint}
-        \onslide<1>
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.5\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Weak form of balance equation
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.5\textwidth} 
-              \begin{itemize}
-              \item[] Polynomial approximation
-              \item[] %Gauss points constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \onslide<2>
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.5\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Weak form of balance equation
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.5\textwidth} 
-              \begin{itemize}
-              \item[] Polynomial approximation
-              \item[] %Gauss points constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \vskip -10pt
-        \begin{columns}
-          \begin{column}{0.48\textwidth}
-            \begin{block}{\footnotesize Lagrangian formulation}
-              \centering
-              % \begin{tikzpicture}[scale=0.4,rotate=45]
-              %   \tkzKiviatDiagram[lattice=4,
-              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-                
-              %   \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,1,1,3)
-              % \end{tikzpicture}
-            \end{block}
-          \end{column}
-          \begin{column}{0.48\textwidth}
-            % \begin{block}{\footnotesize Eulerian formulation}
-            %   \centering
-            %   \begin{tikzpicture}[scale=0.4]
-            %     \tkzKiviatDiagram[lattice=4,
-            %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
-            %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-            
-            %     \tkzKiviatLine[thick,color = Blue,fill= Blue,opacity=.7](4,2,4,1,3)
-            %   \end{tikzpicture}
-            % \end{block}
-          \end{column}
-        \end{columns}
-      \end{overprint}
-    \end{block}
-    \footnoteCite{Belytschko}
+  \begin{frame}{Some explicit numerical methods}
+    \vspace{-0.5cm}
+    \begin{overprint}
+      \onslide<1>
+      \begin{columns}
+        \begin{column}{0.49\textwidth}
+          \begin{block}{The Finite Element Method \cite{Belytschko}}
+            \begin{footnotesize}
+              \begin{block}{\footnotesize Pros}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Constitutive equations
+                \item[] High-order approximation
+                \end{itemize}
+              \end{block}
+              \vspace{-0.2cm}
+              \begin{block}{\footnotesize Cons}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Oscillations 
+                \item[] Lagrangian: mesh entanglement
+                \item[] Eulerian: diffusion
+                \end{itemize}
+              \end{block}
+            \end{footnotesize}
+          \end{block}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+        \end{column}
+      \end{columns}
+      \vspace{-0.25cm}
+      \footnoteCite{Belytschko}
+      \onslide<2>
+      \begin{columns}
+        \begin{column}{0.49\textwidth}
+          \vspace{-0.1cm}
+          \begin{block}{The Finite Element Method \cite{Belytschko}}
+            \begin{footnotesize}
+              \begin{block}{\footnotesize Pros}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Constitutive equations
+                \item[] High-order approximation 
+                \end{itemize}
+              \end{block}
+              \vspace{-0.2cm}
+              \begin{block}{\footnotesize Cons}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Oscillations
+                \item[] Lagrangian: mesh entanglement 
+                \item[] Eulerian: diffusion
+                \end{itemize}
+              \end{block}
+            \end{footnotesize}
+          \end{block}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+          \begin{block}{The Finite Volume Method \cite{Leveque}}
+            \begin{footnotesize}
+              \begin{block}{\footnotesize Pros}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Conservation laws % donc même approx de v et F
+                \item[] Use of numerical fluxes \cite{Godunov_method}
+                \end{itemize}
+              \end{block}
+              \vspace{-0.2cm}
+              \begin{block}{\footnotesize Cons}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Essentially low-order methods
+                \item[] Lagrangian \cite{Haider_FVM}: update geometries  
+                \item[] Eulerian \cite{Gavrilyuk}: constitutive equations ?
+                \end{itemize}
+              \end{block}
+            \end{footnotesize}
+          \end{block}
+        \end{column}
+      \end{columns}
+      \vspace{-0.3cm} 
+     \footnoteCite{Belytschko,Leveque,Godunov_method,Haider_FVM,Gavrilyuk}
+    \end{overprint}
   \end{frame}
 \end{withoutheadline}
 
 \begin{withoutheadline}
-  \begin{frame}{Suitability of some explicit methods}
-   
-    \begin{block}{The Finite Volume Method \cite{Leveque}}
-      \vspace{-0.2cm}
-      \begin{overprint}
-        \onslide<1>
-        \vspace{-0.2cm}
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.4\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Conservation laws
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.6\textwidth}
-              \begin{itemize}
-              \item[] Intercell fluxes -- characteristic structure \cite{Godunov_method}
-              \item[] %Cell-wise approximation %and constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \vspace{3.65cm}
-        \footnoteCite{Leveque,Godunov_method}
-        \onslide<2>
-        \vspace{-0.2cm}
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.4\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Conservation laws
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.6\textwidth}
-              \begin{itemize}
-              \item[] Intercell fluxes -- characteristic structure \cite{Godunov_method}
-              \item[] %Cell-wise approximation %and constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \vskip -10pt
-        \begin{columns}
-          \begin{column}{0.48\textwidth}
-            \begin{block}{\footnotesize Lagrangian formulation \cite{Haider_FVM}} %[Haider]?}
-              \centering
-              % \begin{tikzpicture}[scale=0.4,rotate=45]
-              %   \tkzKiviatDiagram[lattice=4,
-              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive, Mesh robustness,Non-oscillating,High-order}
-              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-
-              %   \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,1,4,1)
-              % \end{tikzpicture}
-            \end{block}
-          \end{column}
-          \begin{column}{0.48\textwidth}
-            % \begin{block}{\footnotesize Eulerian formulation}
-            %   \centering
-            %   \begin{tikzpicture}[scale=0.4]
-            %     \tkzKiviatDiagram[lattice=4,
-            %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Distortion-free,Non-oscillating,High-order}
-            %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-            
-            %     \tkzKiviatLine[thick,color = Red,fill= Red,opacity=.7](4,2,4,4,1)
-            %   \end{tikzpicture}
-            % \end{block}
-          \end{column}
-        \end{columns}
-        \vspace{-0.2cm}
-        \footnoteCite{Leveque,Godunov_method,Haider_FVM}
-      \end{overprint}
-    \end{block}
-    % compatibility between the two configurations based on Eulerian and Lagrangian coordinates
-  \end{frame}
-\end{withoutheadline}
-
-
-\begin{withoutheadline}
-  \begin{frame}{Suitability of some explicit methods}
-    
+  \begin{frame}{Some explicit numerical methods}
     \begin{block}{The space-Discontinuous Galerkin Finite Element Method \cite{Cockburn}}
-      \vspace{-0.2cm}
-      \begin{overprint}
-        \onslide<1>
-        \vspace{-0.2cm}
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.4\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Element-wise weak form \cite{NeutronDG}
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.6\textwidth}
-              \begin{itemize}
-              \item[] Intercell fluxes -- characteristic structure
-              \item[] %Gauss points constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \vspace{3.65cm}
-        \footnoteCite{Cockburn,NeutronDG}
-        \onslide<2>
-        \vspace{-0.2cm}
-        \begin{columns}
-          \begin{footnotesize}
-            \begin{column}{0.4\textwidth}
-              \begin{itemize}
-              \item[] Mesh-based space discretization
-              \item[] Cell-wise weak form \cite{NeutronDG}
-              \end{itemize}
-            \end{column}
-            \begin{column}{0.6\textwidth}
-              \begin{itemize}
-              \item[] Intercell fluxes -- characteristic structure
-              \item[] %Gauss points constitutive update
-              \end{itemize}
-            \end{column}
-          \end{footnotesize}
-        \end{columns}
-        \vskip -10pt
-        \begin{columns}
-          \begin{column}{0.48\textwidth}
-            \begin{block}{\footnotesize Lagrangian formulation \cite{LagrangianDG_thesis}}
-              \centering
-              % \begin{tikzpicture}[scale=0.4,rotate=45]
-              %   \tkzKiviatDiagram[lattice=4,
-              %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-              %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-                
-              %   \tkzKiviatLine[thick,color = Blue!70](4,1,1,3)
-              %   \tkzKiviatLine[thick,color = Red!70](4,1,4,1)
-                
-              %   \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](4,1,4,4)
-              % \end{tikzpicture}
-            \end{block}
-          \end{column}
-          \begin{column}{0.48\textwidth}
-            % \begin{block}{\footnotesize Eulerian formulation (check diffusion)}
-            %   \centering
-            %   \begin{tikzpicture}[scale=0.4]
-            %     \tkzKiviatDiagram[lattice=4,
-            %     label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{CFL,Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-            %     \tkzKiviatLine[thick,color = black!50](4,4,4,4,4)
-            
-            %     \tkzKiviatLine[thick,color = Purple,fill= Purple,opacity=.7](1,2,4,4,4)
-            %   \end{tikzpicture}
-            % \end{block}
-          \end{column}
-        \end{columns}
-        \vspace{-0.2cm}
-        \footnoteCite{Cockburn,NeutronDG,LagrangianDG_thesis}
-      \end{overprint}
+      \begin{footnotesize}
+        \begin{block}{\footnotesize Merge FVM and FEM}
+          \vspace{-.2cm}
+          \begin{itemize}
+          \item[] Local high-order approximation \cite{NeutronDG}
+          \item[] Same approximation of field and gradient
+          \item[] Numerical fluxes: no oscillations
+          \end{itemize}
+        \end{block}
+        \vspace{-.2cm}
+        \begin{block}{\footnotesize Limitations}
+          \vspace{-.2cm}
+          \begin{itemize}
+          \item[] Restrictive time step
+          \item[] \alert{Lagrangian: update of the geometry \cite{LagrangianDG_thesis}}
+          \item[] Eulerian: diffusive advection terms -- constitutive equaions 
+          \end{itemize}
+        \end{block}
+      \end{footnotesize}
     \end{block}
+    \footnoteCite{Cockburn,NeutronDG,LagrangianDG_thesis}
   \end{frame}
 \end{withoutheadline}
 
 
-
 \begin{withoutheadline}
-  \begin{frame}{Mesh-free Lagrangian approaches: The Material Point Method \cite{Sulsky94}}
-    \nocite{Sulsky94}
-    \begin{columns}
+  \begin{frame}{Mesh-free Lagrangian approaches}
+    
+    \begin{block}{The Material Point Method \cite{Sulsky94}}
       \begin{footnotesize}
-        \begin{column}{0.4\textwidth}
-          \begin{itemize}
-          \item[] Particle-based space discretization
-          \item[] Weak form of balance equation
-          \end{itemize}
-        \end{column}
-        \begin{column}{0.6\textwidth}
-          \begin{itemize}
-          \item[] Polynomial approximation
-          \item[] %Material points constitutive update
-          \end{itemize}
-        \end{column}
+        \begin{itemize}
+        \item Particle-based space discretization
+        \item Arbitrary computational grid
+        \end{itemize}
       \end{footnotesize}
-    \end{columns}
-    \vspace{-0.2cm}
+      
+      \centering
+      \textbf{Projections of fields Particles $\leftrightarrow$ Nodes}
+    \end{block}
+
     \begin{columns}
       \begin{column}{0.48\textwidth}
         \begin{block}{\footnotesize Particle-In-Cell mapping \cite{PIC}}
-          % \begin{tikzpicture}[scale=0.5,rotate=45]
-          %   \tkzKiviatDiagram[lattice=4,
-          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-            
-          %   \tkzKiviatLine[thick,color = Yellow,fill= Yellow,opacity=.7](1,4,4,2)
-          % \end{tikzpicture}
+          \begin{footnotesize}
+            \begin{itemize}
+            \item[] No oscillations 
+            \item[] Diffusion
+            \end{itemize}
+          \end{footnotesize}
         \end{block}
       \end{column}
       \begin{column}{0.48\textwidth}
         \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
-          % \begin{tikzpicture}[scale=0.5,rotate=45]
-          %   \tkzKiviatDiagram[lattice=4,
-          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-            
-          %   \tkzKiviatLine[thick,color = Orange,fill= Orange,opacity=.7](3,4,1,2)
-          % \end{tikzpicture}
+          \begin{footnotesize}
+            \begin{itemize}
+            \item[] Reduced diffusion 
+            \item[] Oscillations
+            \end{itemize}
+          \end{footnotesize}
         \end{block}
       \end{column}
     \end{columns}
     \vspace{-0.3cm}
-    \footnoteCite{Sulsky94,PIC_Nishiguchi,PIC}
+    \footnoteCite{Sulsky94,PIC,PIC_Nishiguchi}
   \end{frame}
 \end{withoutheadline}
 
 \begin{withoutheadline}
   \begin{frame}{\text{  }}
+    \begin{block}{Challenging task for numerical methods}
+      \alert{Accurately track waves in irreversibly finite deforming solids}
+      \begin{itemize}
+      \item[1-] Handle large deformations -- No oscillation -- Low diffusion
+      \item[2-] Embed sufficient amount of information about the solution (intercell fluxes)
+      \end{itemize}
+    \end{block}\pause 
+    
     \metroset{block=fill}
     \begin{block}{Objective 1}
-      Capture waves with a Lagrangian description while avoiding mesh-related difficulties \\
-      %% Solution proposed, though others exist
-      \alert{$\Rightarrow$ Merge the advantages of FEM, FVM and MPM by means of the DG approximation}
-    \end{block}
-    \metroset{block=transparent}
-    \begin{block}{The Discontinuous Galerkin Material Point Method}
-      \begin{columns}
-        \begin{column}{0.6\textwidth}
-          % \begin{tikzpicture}[scale=0.5,rotate=45]
-          %   \tkzKiviatDiagram[lattice=4,
-          %   label style/.append style={font=\tiny},radial  style/.style ={->},lattice style/.style ={white,opacity=0}]{Non-diffusive,Mesh robustness,Non-oscillating,High-order}
-          %   \tkzKiviatLine[thick,color = black!50](4,4,4,4)
-            
-          %   \tkzKiviatLine[thick,color = Yellow!70](1,4,4,2)
-          %   \tkzKiviatLine[thick,color = Orange!70](3,4,1,2)
-          %   \tkzKiviatLine[thick,color = Purple!70](4,1,4,4)
-          %   \tkzKiviatLine[thick,color = Green,fill= Green,opacity=.7](2,4,4,3)
-          % \end{tikzpicture}
-        \end{column}
-        \begin{column}{0.4\textwidth}
-          \textbf{Ingredients:}
-          \begin{itemize}
-          \item MPM space discretization
-          \item PIC projection of fields
-          \item DG approximation
-          \end{itemize}
-        \end{column}
-      \end{columns}
-    \end{block}
-  \end{frame}
-\end{withoutheadline}
-
-\begin{withoutheadline}
-  \begin{frame}{The simulation is bounded by the model}
-    %% 
-    \begin{block}{Inheritance from fluid dynamics}
-      Numerical tools to embed information about the solution in numerical approaches
+      Develop a numerical method that accurately capture waves in finite deforming solids \\
+      \textbf{Merge FEM--FVM--MPM: DG approximation}
     \end{block}\pause
-    \begin{block}{Point of view adopted}%: Such numerical tools + robust discretization techniques}
-      Provide accurate solutions by mimicking the physical response
-    \end{block}\pause
-    \begin{block}{Limitations}
-      Gaps about some constitutive models (damage, plasticity, thermo-mechanical coupling etc.)
-    \end{block}\pause
-    \metroset{block=fill}
     \begin{block}{Objective 2}
-      Identify the response of two-dimensional elastic-plastic solids to dynamic loading
+      Identify the response of two-dimensional elastic-plastic solids to dynamic loading \\
+      \textbf{Analysis of governing equations} % under small strains% Not only numerical
     \end{block}
   \end{frame}
 \end{withoutheadline}
 
+
+%%% Afin de calculer précisément les états résiduels et aussi de mieux comprendre les phénomènes physiques, on voudrait, à travers la simulation, suivre précisément (sans oscilation et diffusion) les ondes dans des solides subissant de grandes déformations.
+%% Clairement afficher un objectif principal lié aux difficultés mentionées:
+%% Difficultés:
+%%% (Proposer)/(Améliorer la précision) des solutions approximées de problèmes de dynamique dans les solides élastoplastiques subissant de grandes transformations
+%%% Objectif 1: rassembler les avantage des FEM, FVM et MPM grâce au DG
+%%% Objectif 2: approfondir la connaissance que l'on a de la réponse physique etc. puisque ça permet d'améliorer la simuation
 
 
 %%% Local Variables:

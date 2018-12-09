@@ -104,8 +104,6 @@ block=transparent%fill
 
 
 
-
-
 \setbeamerfont{bibliography entry author}{size=\scriptsize,series=\normalfont}
 \setbeamerfont{bibliography entry title}{size=\scriptsize,series=\bfseries}
 \setbeamerfont{bibliography entry location}{size=\scriptsize, series=\normalfont}
@@ -266,94 +264,32 @@ block=transparent%fill
 
 \section*{Conclusion}
 \begin{withoutheadline}
-\begin{frame}[standout]{\text{Conclusion of part I}}
-  \setbeamercolor{alerted text}{fg=white}
-  \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-  %\vskip 5pt
-  \vspace{-.5cm}
-  \begin{scriptsize}
-      
-  
-    \begin{overprint}
-      \onslide<1>
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
-      \vskip -6pt
-        \begin{itemize}
-        \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        \item System of conservation laws $\rightarrow$ same approximation for fields and gradients
-        \item Riemann problems at cells faces:
-          \begin{itemize}
-          \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
-          \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
-          \end{itemize}
-        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
-        \end{itemize}
-      \end{block}
-    
-      \onslide<2>
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
-      \vskip -6pt
-        \begin{itemize}
-        \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        \item System of conservation laws $\rightarrow$ same approximation for fields and gradients
-        \item Riemann problems at cells faces:
-          \begin{itemize}
-          \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
-          \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
-          \end{itemize}
-        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Numerical analysis}}
-      \vskip -6pt
-        \begin{itemize}
-        \item Ability to compute the optimal Courant number (1D and 2D) \cite{DGMPM_stab}
-        \item First-order approach for first-order polynomials
-        \end{itemize}
-      \end{block}
-      \vspace{1.55cm}
-      \footnoteCite{DGMPM_stab}
-      \onslide<3>
+  \begin{frame}[standout]{\text{Conclusion of part I}}
+    \setbeamercolor{alerted text}{fg=white}
+    \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
+    % \vskip 5pt
+    \vspace{-.5cm}
+    \begin{scriptsize}
       \vspace{-.3cm}
-      \begin{block}{\footnotesize \text{Developement of the DGMPM}}
-      \vskip -6pt
+      \begin{block}{\footnotesize \text{Development of the DGMPM in total Lagrangian}}
+        \vskip -6pt
         \begin{itemize}
-        \item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        \item System of conservation laws $\rightarrow$ same approximation for fields and gradients
+        %\item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
+        %\item System of conservation laws $\rightarrow$ same approximation for fields and gradients
+        \item Classical constitutive integrators at material points
         \item Riemann problems at cells faces:
           \begin{itemize}
           \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
           \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
           \end{itemize}
-        \item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Numerical analysis}}
-      \vskip -6pt
-        \begin{itemize}
+        %\item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
         \item Ability to compute the optimal Courant number (1D and 2D) \cite{DGMPM_stab}
-        \item First-order approach for first-order polynomials
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Illustration of the method}}
-      \vskip -6pt
-        \begin{itemize}
         \item No oscillations -- reduced diffusion compared to original MPM-PIC
-        %\item Dissipation depending on the particles distribution
-        \item Classical constitutive integrators at material points
         \end{itemize}
       \end{block}
       \footnoteCite{DGMPM_stab}
-    \end{overprint}
-    
-  \end{scriptsize}
-  
-\end{frame}
+    \end{scriptsize}
+  \end{frame}
 \end{withoutheadline}
 \part{2D Elastoplastic hyperbolic problems}
 \label{part:part2}
@@ -515,9 +451,7 @@ block=transparent%fill
       \end{itemize}
     \end{block}
   \end{footnotesize}
-  %% Further investigations required
-  %% Extension to other yield surfaces and/or hardening law
-  %% Study of plastic shocks
+Simulation of EMF (video here ?)
 \end{frame}
 
 \begin{frame}[standout]{}
