@@ -1,10 +1,10 @@
 \begin{tikzpicture}[scale=0.7]
   \begin{axis}[ymajorgrids=true,xmajorgrids=true,ylabel=$\tau \: (Pa)$,xlabel=$\sigma \: (Pa)$,xmin=-0.1e8,xmax=1.5e8,ymin=0.,ymax=7.5e7, legend pos=north east]
     %% Yield surface
-    \addplot[black,dashed,thick] table  [x=sigma_11,y=sigma_12] {section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslow_yield0.pgf};
+    \addplot[black,densely dotted] table  [x=sigma_11,y=sigma_12] {section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslow_yield0.pgf};
     \addlegendentry{yield surface}
     %%
-    \addplot[black,densely dotted] table  [x=sigma_11,y=sigma_12] {section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslow_yield0.pgf};
+    \addplot[black,loosely dashed,thick] table  [x=sigma_11,y=sigma_12] {section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslow_yield0.pgf};
     \addlegendentry{fast wave}
     %%
     \addplot[very thick] table [x=sigma_11,y=sigma_12] {section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslowStressPlane_Stress0.pgf};
