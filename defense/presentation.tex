@@ -139,11 +139,14 @@ block=transparent%fill
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 
 %% Baptist's beamer clock
+
 \newcommand{\myBeamerClock}[2]{
   % #1 is the radius of the clock
   % #2 is the vertical shift for inline placement
+  % #3 is the number of current frame
+  % #4 is the total number of frames
   \tikz[baseline=#2]{
-    \filldraw (0,0) -- (0,#1) arc (90:(90-\insertframenumber/(\inserttotalframenumber)*360):#1);
+    \filldraw (0,0) -- (0,#1) arc (90:(90-(\insertframenumber/\inserttotalframenumber)*360):#1);
     \draw (0,0) circle (#1);
   }
 }
@@ -163,7 +166,7 @@ block=transparent%fill
 % }
 %% OR with baptiste's clock
 \defbeamertemplate*{footline}{mytheme}{%
-  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{} \myBeamerClock{1ex}{-1ex} 
+  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill  \insertframenumber{} \tikzexternaldisable \myBeamerClock{1ex}{-1ex} \tikzexternalenable
  \end{beamercolorbox}
 }
 
@@ -325,76 +328,42 @@ block=transparent%fill
 
 \section*{Conclusion}
 \begin{withoutheadline}
-\begin{frame}[standout]{\text{Conclusion of part II}}
-  \setbeamercolor{alerted text}{fg=white}
-  \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-  %\vspace{-.5cm}
-  \begin{scriptsize}
-    \begin{overprint}
-      \onslide<1>
-      \vspace{-0.3cm}
+  \begin{frame}[standout]{\text{Conclusion of part II}}
+    \setbeamercolor{alerted text}{fg=white}
+    \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
+    \begin{footnotesize}
       \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
-        \vskip -6pt \begin{itemize}
-        \item General framework for problems in two space dimensions
+        \begin{itemize}
+        \item[$\rightarrow$] General framework for problems in two space dimensions
         \end{itemize}
       \end{block}
-      \onslide<2>
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
-        \vskip -6pt \begin{itemize}
-        \item General framework for problems in two space dimensions
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
       \begin{block}{\footnotesize \text{Characteristic analysis}}
-        \vskip -6pt \begin{itemize}
-        \item Problems involving \underline{slow} and \underline{fast} simple waves
-        \item Method of characteristics $\rightarrow$ loading paths
-        \item Mathematical properties of stress paths
-        \item Numerical results: Highlighting of particular responses
+        \begin{itemize}
+          % \item Problems involving \underline{slow} and \underline{fast} simple waves
+        \item[$\rightarrow$] Equations of loading paths
+        % \item Mathematical properties of stress paths
+        % \item Numerical results: Highlighting of particular responses
         \end{itemize}
       \end{block}
-      \onslide<3>
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Reformulation of two-dimensional problems under small strain}}
-        \vskip -6pt \begin{itemize}
-        \item General framework for problems in two space dimensions
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Characteristic analysis}}
-        \vskip -6pt \begin{itemize}
-        \item Problems involving \underline{slow} and \underline{fast} simple waves
-        \item Method of characteristics $\rightarrow$ loading paths
-        \item Mathematical properties of stress paths
-        \item Numerical results: Highlighting of particular responses
-        \end{itemize}
-      \end{block}
-      \vspace{-0.3cm}
-      \begin{block}{\footnotesize \text{Toward an elastic-plastic approximate Riemann solver in 2D ?}}
-        \quad Adapt the approach in \cite{Lin_et_Ballman}:
-        \vskip -6pt \begin{itemize}
-        \item[1] Identify elementary loading paths between two states $\rightarrow$ characteristic structure
-        \item[2] Iterative Riemann solver based on successively guessed stationary states
-        \end{itemize}
-        
-      \end{block}
-      \footnoteCite{Lin_et_Ballman}
-    \end{overprint}
-  \end{scriptsize}
-\end{frame}
+    \end{footnotesize}
+    
+    
+    % \begin{block}{\footnotesize \text{Toward an elastic-plastic approximate Riemann solver in 2D ?}}
+    %   \quad Adapt the approach in \cite{Lin_et_Ballman}:
+    %   \vskip -6pt \begin{itemize}
+    %   \item[1] Identify elementary loading paths between two states $\rightarrow$ characteristic structure
+    %   \item[2] Iterative Riemann solver based on successively guessed stationary states
+    %   \end{itemize}
+    
+    % \end{block}
+    % \footnoteCite{Lin_et_Ballman}
+  \end{frame}
 \end{withoutheadline}
 
 
 \section*{Conclusion \& Perspectives}
-% \setcounter{section}{0}
 
 \frame[plain,]{\sectionpage}
-% \begin{frame}[standout]
-%   \setbeamercolor{alerted text}{fg=CNBlue}
-%   \setbeamercolor{normal text}{ fg= CNBlue , bg= white }
-%   Conclusion and perspectives
-% \end{frame}
 \setcounter{section}{0}
 
 \begin{frame}[standout]{\text{General conclusion}}
@@ -403,18 +372,18 @@ block=transparent%fill
   \begin{footnotesize}
     \begin{block}{\text{Objective 1: \footnotesize Capture waves with a Lagrangian description while avoiding mesh-related difficulties}}
       \begin{itemize}
-      \item[] The DGMPM allows a material description with particles discretizing a solid domain
-      \item[] The discrete system is solved on an \underline{arbitrary grid}
+      \item[] The DGMPM allows a material description with particles in an \underline{arbitrary grid} 
+      %\item[] The discrete system is solved on an \underline{arbitrary grid}
       \item[] The projections nodes $\leftrightarrow$ particles yield \underline{non-oscillatory solutions}
-      \item[] The stability can be ensured owing to the stability analysis
+      %\item[] The stability can be ensured owing to the stability analysis
       \end{itemize}
 
   \end{block}
 
   \begin{block}{\text{Objective 2: \footnotesize Identify the response of two-dimensional elastic-plastic solids to dynamic loadings}}
     \begin{itemize}
-    \item[] The prior works have been gathered in one general framework
-    \item[] Some typical responses for plane strain and plane stress problems have been highlighted
+    \item[] The prior works have been \underline{gathered} in one general framework
+    \item[] Some \underline{typical responses} for plane strain and plane stress problems can be highlighted
     \end{itemize}
   \end{block}
 
@@ -429,21 +398,22 @@ block=transparent%fill
       \begin{itemize}
       \item[] Adapt the grid to capture waves in the current configuration
       \item[] High-order shape functions (requires mesh-adaption)
-      \item[] Use TVD limiters
-      \item[] Space-Time DGMPM
+      \item[] Use TVD limiters; Space-Time DGMPM \textit{etc.}
+      \item[] Application to Electromagnetic forming
+      %\item[] Space-Time DGMPM
       \end{itemize}
     \end{block}
 
     
     \begin{block}{\text{Elastic-plastic approximate Riemann solver in 2D}}
       \begin{itemize}
-      \item[] Further mathematical investigations
+      %\item[] Further mathematical investigations
       \item[] Extension to other yield surfaces and hardening laws
       \item[] Developement of an iterative solver
       \end{itemize}
     \end{block}
   \end{footnotesize}
-Simulation of EMF (video here ?)
+
 \end{frame}
 
 \begin{frame}[standout]{}
