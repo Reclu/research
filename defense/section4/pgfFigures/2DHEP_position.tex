@@ -2,8 +2,7 @@
 \begin{axis}[xlabel=\footnotesize $\text{time} \: (\text{s})$,ylabel=\footnotesize Position (m),ymajorgrids=true,xmajorgrids=true,legend pos=north west,title={Evolution of the vertical position of top left node}]
 \addplot[Blue,very thick,mark=x,mark size=2pt] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm0.0.csv};
 \addplot[Orange,very thick,mark=none,mark size=2pt] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode0.csv};
-%\addplot[Orange,very thick,mark=none,densely dotted,mark size=3pt] ;
-\addplot[Red,very thick,mark=none,dashed,mark size=2pt] file {section4/csvFiles/topNode.pgf};
+%\addplot[Red,very thick,mark=none,dashed,mark size=2pt] file {section4/csvFiles/topNode.pgf};
 \legend{dgmpm--CFL=0.9,fem--CFL=0.7,mpm--CFL=0.5}
 \end{axis}
 \end{tikzpicture}

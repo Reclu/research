@@ -37,10 +37,10 @@
           \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
           \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
           \draw[very thick,Orange] (0,0) -- (-2.3,2.) node[left] {\footnotesize $-c_p$};
-          \foreach \x in {0.,0.1,...,1.}
-          \draw[Orange] (0,0.) -- (2.3,2.+\x);
-          \foreach \x in {0.,0.1,...,1.}
-          \draw[Orange] (0,0.) -- (-2.3,2.+\x);
+          % \foreach \x in {0.,0.1,...,1.}
+          % \draw[Orange] (0,0.) -- (2.3,2.+\x);
+          % \foreach \x in {0.,0.1,...,1.}
+          % \draw[Orange] (0,0.) -- (-2.3,2.+\x);
           
         \end{tikzpicture}\\
         \footnotesize $c,c_p$: celerities of elastic and plastic waves
@@ -80,7 +80,7 @@
     \onslide<1>
     \centering
     \input{section4/pgfFigures/ep_planeWave_stress_mpm_fem}
-
+    FEM values extracted at Gauss points
     \onslide<2>
     \centering
     \input{section4/pgfFigures/ep_planeWave_stress_dgmpm}

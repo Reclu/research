@@ -2,7 +2,6 @@
 \begin{axis}[xlabel=\footnotesize $x \: (m)$,ylabel=\footnotesize $\Pi_{11}$ (Pa),ymajorgrids=true,xmajorgrids=true,legend pos=north west,title={Stress along the bottom boundary}]% $t=6\times 10^{-4}$s
 \addplot[Blue,very thick,mark=x,mark size=2pt,only marks] table[x=Points:0,y=Piola_11] {section4/csvFiles/line_dgmpm.csv};
 \addplot[Orange,very thick,mark=none,mark size=2pt] table[x=Points:0,y=Piola_Stress:0] {section4/csvFiles/line_fem.csv};
-%\addplot[Orange,very thick,mark=none,densely dotted,mark size=3pt] ;
 \addplot[Red,very thick,mark=square,mark size=2pt,only marks] table[x=Points:0,y=mpm_S11] {section4/csvFiles/line_mpm.csv};
 \legend{dgmpm--CFL=0.9,fem--CFL=0.7,mpm--CFL=0.5}
 \end{axis}
