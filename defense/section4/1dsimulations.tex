@@ -2,94 +2,79 @@
 %% La seconde montre la solution en vidéo
 %% après on fait un overprint avec la comparaison MPM FEM FVM
 
-\begin{frame}{One-dimensional elastic-plastic media: Characteristic wave structures \cite{Wang}}
-  \centering
-  \movie[height = 0.8\paperheight,width=.6\linewidth, showcontrols,poster,loop,autostart]{%\input{section4/pgfFigures/PS_taylorbar}
-      }{section4/animation/EP_planewave.mp4}
-\end{frame}
-
-\begin{frame}{One-dimensional elastic-plastic media: Characteristic wave structures \cite{Wang}}
-  \vskip -15pt
-  \begin{overprint}
-    \onslide<1>
-    % \metroset{block=fill}
+\begin{frame}{One-dimensional elastic-plastic media}
+  \begin{block}{\footnotesize Problem settings}
+    \vspace{-0.2cm}
     \begin{columns}
-      \begin{column}{0.48\textwidth}
-        \begin{block}{\footnotesize Purely elastic}
-          \centering
-          \begin{tikzpicture}[scale=0.6]
-            \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
-            \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
-            \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
-            \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
-          \end{tikzpicture}
-        \end{block}
+      \begin{column}{0.49\textwidth}
+        \centering
+        \input{section4/pgfFigures/2dbar}
       \end{column}
       \begin{column}{0.49\textwidth}
-        \begin{block}{\footnotesize Plastic flow in the region $x>0$}
-          \centering
-          \begin{tikzpicture}[scale=0.6]
-            \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
-            \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
-            \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
-            \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
-            \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
-            \foreach \x in {0.,0.1,...,1.}
-            \draw[Orange] (0,0.) -- (2.3,2.+\x);
-          \end{tikzpicture}
+        \begin{footnotesize}
+          \begin{itemize}
+          \item Linear hardening material; von-Mises yield surface
+          \item Riemann-type initial data:
+            \begin{equation*}
+              v_1(x_1,t=0) \left\lbrace
+                \begin{aligned}
+                  &>0 \: \text{if } x_1<l/2\\
+                  &<0 \: \text{if } x_2>l/2
+                \end{aligned}\right.
+            \end{equation*}
+          \end{itemize}
+        \end{footnotesize}
+      \end{column}
+    \end{columns}
+  \end{block}
+  \begin{block}{\footnotesize Characteristic structure \cite{Wang}}
+    \begin{columns}
+      \begin{column}{0.49\textwidth}
+        \begin{tikzpicture}[scale=0.6]
+          \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
+          \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
+          \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
+          \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
+          \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
+          \draw[very thick,Orange] (0,0) -- (-2.3,2.) node[left] {\footnotesize $-c_p$};
+          \foreach \x in {0.,0.1,...,1.}
+          \draw[Orange] (0,0.) -- (2.3,2.+\x);
+          \foreach \x in {0.,0.1,...,1.}
+          \draw[Orange] (0,0.) -- (-2.3,2.+\x);
+          
+        \end{tikzpicture}\\
+        \footnotesize $c,c_p$: celerities of elastic and plastic waves
+      \end{column}
+      \begin{column}{0.49\textwidth}
+        \begin{block}{}
+          \vspace{-0.95cm}
+          \footnotesize Elastic-plastic Riemann solver \cite{Fogarty}:
+          \begin{footnotesize}
+            \begin{itemize}
+            \item Account for \alert{plastic waves} 
+            %\item prediction-correction approach
+            \item[$\rightarrow$] limiters for both waves
+            \end{itemize}
+          \end{footnotesize}
         \end{block}
       \end{column}
     \end{columns}
-    \footnotesize $c,c_p$: celerities of elastic and plastic waves
+  \end{block}
+  \vspace{-0.2cm}
+  \footnoteCite{Wang,Fogarty}
+\end{frame}
 
-    \footnoteCite{Wang}
-    
-    \onslide<2>
-      % \metroset{block=fill}
-      \begin{columns}
-        \begin{column}{0.48\textwidth}
-          \begin{block}{\footnotesize Purely elastic}
-            \centering
-            \begin{tikzpicture}[scale=0.6]
-              \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
-              \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
-              \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
-              \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
-            \end{tikzpicture}
-          \end{block}
-        \end{column}
-        \begin{column}{0.49\textwidth}
-          \begin{block}{\footnotesize Plastic flow in the region $x>0$}
-            \centering
-            \begin{tikzpicture}[scale=0.6]
-              \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\footnotesize $x$};
-              \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\footnotesize $t$};
-              \draw[very thick] (0,0) -- (2.3,1.5) node[right] {\footnotesize $c$};
-              \draw[very thick] (0,0) -- (-2.3,1.5) node[left] {\footnotesize $-c$};
-              \draw[very thick,Orange] (0,0) -- (2.3,2.) node[right] {\footnotesize $c_p$};
-              \foreach \x in {0.,0.1,...,1.}
-              \draw[Orange] (0,0.) -- (2.3,2.+\x);
-            \end{tikzpicture}
-          \end{block}
-        \end{column}
-      \end{columns}
-      \begin{footnotesize}
-        $c,c_p$: celerities of elastic and plastic waves
-      \end{footnotesize}
-      \metroset{block=fill}
-      \begin{block}{\footnotesize Elastic-plastic Riemann solver \cite{Fogarty}}
-        \footnotesize Account for \alert{plastic waves} by means of a prediction-correction approach
-        \\ \alert{$\rightarrow$ use limiters for both elastic and plastic waves}
-      \end{block}
-      \footnoteCite{Wang,Fogarty}
-  \end{overprint}
-  
+\begin{frame}{One-dimensional elastic-plastic media \cite{Thomas_EP}}
+  \centering
+  \movie[height = 0.8\paperheight,width=.675\linewidth, showcontrols,poster,loop,autostart]{%\input{section4/pgfFigures/PS_taylorbar}
+  }{section4/animation/EP_planewave.mp4}
+  \footnoteCite{Thomas_EP}
 \end{frame}
 
 
 \begin{frame}{}
-  \begin{block}{Impact of one-dimensional elastic-plastic media \cite{Thomas_EP} (isotropic linear hardening)}
-    Plane wave state:\: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ \quad ; \quad $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1 + \sigma_T\(\vect{e}_2\otimes \vect{e}_2+\vect{e}_3\otimes \vect{e}_3\)$
+  \begin{block}{One-dimensional elastic-plastic media \cite{Thomas_EP}}
+    %Plane wave state:\: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ \quad ; \quad $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1 + \sigma_T\(\vect{e}_2\otimes \vect{e}_2+\vect{e}_3\otimes \vect{e}_3\)$
   \end{block}
   \begin{overprint}
     \onslide<1>

@@ -5,7 +5,6 @@
 %% Simple waves even for linear hardening in contrast to one-dimensional problems
 
 \begin{frame}{Thin-walled tube problem}%{Historical review}
-  %% References: Lin_et_Ballman,Li_planeStress_EP,Wu_experimental,Ting73,Clifton_exp2,Valanis,Clifton_exp,Ting69,Bleich,Clifton,CRISTESCU19591605,Rakhmatulin
   \begin{overprint}
     \onslide<1>
     \begin{columns}
@@ -193,62 +192,59 @@
   \end{footnotesize}
   % \cite{Clifton,Clifton_exp}
   \footnoteCite{Clifton,Lin_et_Ballman}
-  %% Other problems + difficulties involved + mathematical properties
 \end{frame}
 
+\subsection{General formulation}
 \begin{frame}
   \begin{block}{Problems tackled overall}
     \begin{itemize}
     \item Particular plane strain and plane stress cases \cite{Bleich,Ting69,Ting73,Li_planeStress_EP}
-    \item Equations based on elastic-plastic softenesses (be clear on the difficulties)
+    \item Equations based on elastic-plastic softenesses
     
     \end{itemize}
   \end{block}
   \begin{block}{The proposed approach}
+    Hyperbolic system in the arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
+    $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
     \begin{itemize}
-    \item gathers the existing formulations in a unified framework
-    \item generalizes to plane strain and plane stress problems
-    \item development of approximate Riemann solver ?
+    \item General plane strain and plan stress problems \textbf{under small strains}
+    \item Unified framework
+    % \item generalizes to plane strain and plane stress problems
     \end{itemize}
   \end{block}
   \footnoteCite{Bleich,Ting69,Ting73,Li_planeStress_EP}
 \end{frame}
 
-\subsection{General formulation}
-\begin{frame}
-  \begin{block}{Governing equations}
-    \begin{footnotesize}
-      \begin{columns}
-        \begin{column}{0.4\textwidth}
-          \begin{flalign*}
-            & \text{plastic flow: } \dot{\tens{\eps}}^p = \dot{p}\drond{f}{\tens{\sigma}} \\
-            & \text{constitutive equations: } \dot{\tens{\sigma}}=\Cbb^{ep}:\dot{\tens{\eps}} \\
-            & \text{linear momentum: } \drond{\rho \vect{v}}{t} - \nabla_v \cdot\tens{\sigma} = \vect{0}\\
-            & \text{kinematic laws: } \dot{\tens{\eps}} = \nablat^s \vect{v}
-          \end{flalign*}
-        \end{column}
-        \begin{column}{0.55\textwidth}
-          \begin{flalign*}
-            \Rightarrow \: &\text{quasi-linear form: } \drond{\Ucb}{\Qcb}\drond{\Qcb}{t} + \drond{\Fcb\cdot\vect{e}_i}{\Qcb}\drond{\Qcb}{x_i}=\vect{0} \\
-            & \Ucb = \matrice{\rho \vect{v} \\ \tens{\eps}} \: ; \: \Qcb = \matrice{\vect{v} \\ \tens{\sigma}} \: ;\: \Fcb \cdot \vect{e}_i = -\matrice{\sigma_{ji}  \\ \frac{v_j \delta_{ik} + v_i \delta_{jk}}{2}}, (i,j,k) = \{1,2,3\}
-          \end{flalign*}
-        \end{column}
-      \end{columns}
-      %Difference with previous formulations ? Inverse $\drond{\Ucb}{\Qcb}$ rather than its matrix representation $\rightarrow$ stiffnesses instead of softenesses
-      %% system kept generical so far
-    \end{footnotesize}
-    \begin{block}{Hyperbolic system in the arbitrary direction $\vect{n}$}
-      %Hyperbolic system in arbitrary direction $\vect{n}$:
-      \begin{flalign*}
-        \drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}
-      \end{flalign*}
-      %$\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
-      with the Jacobian matrix $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
-      %\\ Method of characteristics \cite{Courant}: $\Lcb^K \cdot d\Qcb = \vect{0}$ $\forall$ left eigenvectors $\Lcb$ of $\Jbsf$
-    \end{block}
-    %\footnoteCite{Courant}
-  \end{block}
-\end{frame}
+% \begin{frame}
+  % \begin{block}{Governing equations}
+  %   \begin{footnotesize}
+  %     \begin{columns}
+  %       \begin{column}{0.4\textwidth}
+  %         \begin{flalign*}
+  %           & \text{plastic flow: } \dot{\tens{\eps}}^p = \dot{p}\drond{f}{\tens{\sigma}} \\
+  %           & \text{constitutive equations: } \dot{\tens{\sigma}}=\Cbb^{ep}:\dot{\tens{\eps}} \\
+  %           & \text{linear momentum: } \drond{\rho \vect{v}}{t} - \nabla_v \cdot\tens{\sigma} = \vect{0}\\
+  %           & \text{kinematic laws: } \dot{\tens{\eps}} = \nablat^s \vect{v}
+  %         \end{flalign*}
+  %       \end{column}
+  %       \begin{column}{0.55\textwidth}
+  %         \begin{flalign*}
+  %           \Rightarrow \: &\text{quasi-linear form: } \drond{\Ucb}{\Qcb}\drond{\Qcb}{t} + \drond{\Fcb\cdot\vect{e}_i}{\Qcb}\drond{\Qcb}{x_i}=\vect{0} \\
+  %           & \Ucb = \matrice{\rho \vect{v} \\ \tens{\eps}} \: ; \: \Qcb = \matrice{\vect{v} \\ \tens{\sigma}} \: ;\: \Fcb \cdot \vect{e}_i = -\matrice{\sigma_{ji}  \\ \frac{v_j \delta_{ik} + v_i \delta_{jk}}{2}}, (i,j,k) = \{1,2,3\}
+  %         \end{flalign*}
+  %       \end{column}
+  %     \end{columns}
+  %     %Difference with previous formulations ? Inverse $\drond{\Ucb}{\Qcb}$ rather than its matrix representation $\rightarrow$ stiffnesses instead of softenesses
+  %     %% system kept generical so far
+  %   \end{footnotesize}
+  %   \begin{block}{Hyperbolic system in the arbitrary direction $\vect{n}$}
+  %     \begin{flalign*}
+  %       \drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}
+  %     \end{flalign*}
+  %     with the Jacobian matrix $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
+  %   \end{block}
+  % \end{block}
+% \end{frame}
 
 
 

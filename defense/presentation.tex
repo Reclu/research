@@ -1,4 +1,4 @@
-\documentclass[11pt,aspectratio=169]{beamer}
+\documentclass[11pt,aspectratio=1610]{beamer}
 \usetheme{default}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -9,6 +9,7 @@
 % \usepackage{subfig}
 \usepackage[font=scriptsize]{caption}
 \usepackage[font=scriptsize]{subcaption}
+\usepackage{appendixnumberbeamer}
 
 \usepackage[
     backend=biber,
@@ -178,6 +179,13 @@ block=transparent%fill
    }}}}
 %% ----------------------------------
 
+\pgfplotsset{select coords between index/.style 2 args={
+    x filter/.code={
+        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+    }
+  }}
+
 
 \makeatletter
 \AtBeginPart{%
@@ -204,14 +212,12 @@ block=transparent%fill
 %\pgfkeys{/kiviat/label style/.style={align=center,anchor=180+360/\tkz@kiv@radial*\rang}}
 
 \begin{document}
-%\def\inserttotalframenumber{43}
+
 \begin{frame}[plain]
   \maketitle
 \end{frame}
 
 
-% \section{Motivations \& Objectives}
-% \setcounter{section}{0}
 
 
 \input{section1/mainSection1}
@@ -238,16 +244,7 @@ block=transparent%fill
 
 \label{part:part1}
 
-% \defbeamertemplate*{footline}{mytheme2}{%
-%   \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} Part \insertromanpartnumber:  \insertpart  \hfill \insertframenumber/\inserttotalframenumber
-%  \end{beamercolorbox}
-% }
-% insertpartromannumber
-%% OR with baptiste's clock
-\defbeamertemplate*{footline}{mytheme2}{%
-  \usebeamerfont{page number in head/foot}\begin{beamercolorbox}[sep=1.em]{} \hfill \insertframenumber{} \myBeamerClock{1ex}{-0.75ex}
- \end{beamercolorbox}
-}
+
 
 
 \section{Derivation of the DGMPM}
@@ -267,44 +264,39 @@ block=transparent%fill
   \begin{frame}[standout]{\text{Conclusion of part I}}
     \setbeamercolor{alerted text}{fg=white}
     \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-    % \vskip 5pt
-    \vspace{-.5cm}
     \begin{scriptsize}
-      \vspace{-.3cm}
       \begin{block}{\footnotesize \text{Development of the DGMPM in total Lagrangian}}
-        \vskip -6pt
         \begin{itemize}
         %\item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
         %\item System of conservation laws $\rightarrow$ same approximation for fields and gradients
-        \item Classical constitutive integrators at material points
-        \item Riemann problems at cells faces:
-          \begin{itemize}
-          \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
-          \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
-          \end{itemize}
+        \item Riemann problems at cells faces $\rightarrow$ take into account the characteristic structure
+          % \begin{itemize}
+          % \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
+          % \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
+          % \end{itemize}
         %\item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
-        \item Ability to compute the optimal Courant number (1D and 2D) \cite{DGMPM_stab}
-        \item No oscillations -- reduced diffusion compared to original MPM-PIC
+        \item Ability to compute the optimal Courant number (1D and 2D)
+        \item Non-oscillating solutions %-- reduced diffusion compared to original MPM-PIC
+        \item Classical constitutive integrators at material points
         \end{itemize}
       \end{block}
-      \footnoteCite{DGMPM_stab}
+      %\footnoteCite{DGMPM_stab}
     \end{scriptsize}
   \end{frame}
 \end{withoutheadline}
 \part{2D Elastoplastic hyperbolic problems}
 \label{part:part2}
 \begin{withoutheadline}
-\begin{frame}{Multi-dimensional elastic-plastic solids -- Motivations}
+\begin{frame}{Multi-dimensional elastic-plastic solids}
   
   \begin{block}{Continuum point of view}
     Important for solid mechanics applications (residual states)\\
-    Response to dynamic loadings misknown %in more than one space dimension
+    \centering
+    \movie[height = 0.25\paperheight,width=0.2\linewidth,loop,poster]{}{section1/animation/output3.mp4}
   \end{block}
   
   \begin{block}{Numerical methods}
-    Improvement enabled by the characteristic structure considered \\
-    Sufficient amount of information \alert{$\rightarrow$ Elastic-plastic approximate Riemann solver}
-    %% Dire qu'on ne veut pas forcément déveloper des closed form solution mais acquérir the sufficient amount of information for the developement of an EP approximate Riemann solver
+    Improvement enabled by the characteristic structure considered 
   \end{block}
   \pause
   \metroset{block=fill}

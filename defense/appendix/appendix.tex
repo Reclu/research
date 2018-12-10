@@ -45,6 +45,39 @@
 
 
 
+\begin{frame}{Convergence analysis}
+  \begin{block}{\footnotesize Elastic one-dimensional bar -- small strains}
+    \begin{columns}
+      \begin{column}{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \draw[thick] (0,0) -- (2,0);
+          \draw[pattern=north west lines] (2,-0.25) rectangle (2.25,0.25);
+          \draw[->,Red,thick] (-.5,0) node[left] {$\sigma(x=0,t)$} -- (0,0);
+          \path (1.,0) edge[bend right] (1.5,-0.5) ;
+          \node[right] at (1.5,-0.5) {$E,\rho,l$};
+        \end{tikzpicture}
+      \end{column}
+      \begin{column}{0.45\textwidth}
+        $\sigma(x=0,t) = \sigma^d \sin\(\frac{0.4\pi}{l} \sqrt{\frac{E}{\rho}}\:t\)$
+      \end{column}
+    \end{columns}
+  \end{block}
+  \begin{overprint}
+    \onslide<1>
+    \begin{block}{\footnotesize $L^2$ relative error -- two particles per cell}
+      \begin{columns}
+        \begin{column}{0.49\textwidth}
+          \input{section3/pgfFigures/convS_2ppc}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+          \input{section3/pgfFigures/convV_2ppc}
+        \end{column}
+      \end{columns}
+    \end{block}
+  \end{overprint}
+\end{frame}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../presentation"

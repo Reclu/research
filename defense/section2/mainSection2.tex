@@ -1,7 +1,5 @@
 \subsection{Continuum equations}
 
-%% Dévelopement de la méthode pour les grandes def seulement
-%% Au moment des cas test, on spécialize à d'autres modèle de comportement en citant des papiers ou livres
 \begin{frame}{Large deformations framework -- Balance equations}
   \begin{footnotesize}
     \begin{block}{Kinematics}
@@ -32,25 +30,25 @@
   \footnoteCite{Plohr}
 \end{frame}
 
-\begin{frame}{Large deformations framework -- Constitutive equations}
-  \begin{footnotesize}
-    \begin{block}{Hyperelastic materials}
-      %% Polyconvex, hyperbolicity ??
-      From the thermodynamics: $\tens{\Pi}=\rho_0\drond{\psi}{\tens{F}}\: ; \: \dot{\tens{\Pi}}=\Hbb : \dot{\tens{F}}$ \\
-      $\rho_0\psi$: Stored energy function, polyconvex $\Rightarrow$ hyperbolicity ensured \cite{Kluth}
-    \end{block}
-    \begin{block}{Quasi-linear form}
-      Auxiliary vector $\Qcb$ \cite{Trangenstein91}: %$\Qcb=\matrice{\vect{v}\\\tens{\Pi}}$ 
-      \begin{gather*}
-        % \dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}} \Rightarrow \text{Quasi-linear form: } \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
-        \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \Leftrightarrow \quad \drond{\Ucb}{\alert{\Qcb}}\drond{\alert{\Qcb}}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{\alert{\Qcb}}\drond{\alert{\Qcb}}{X_\alpha}=\vect{0} \\
-        \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
-      \end{gather*}
-      where $\Qcb=\matrice{\vect{v}\\\tens{\Pi}} \: ; \: \Absf^\alpha = -\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{E}_\alpha \\ \Hbb\cdot\vect{E}_\alpha & \tens{0}^4}$
-    \end{block}
-  \end{footnotesize}
-  \footnoteCite{Kluth,Trangenstein91}
-\end{frame}
+% \begin{frame}{Large deformations framework -- Constitutive equations}
+%   \begin{footnotesize}
+%     \begin{block}{Hyperelastic materials}
+%       %% Polyconvex, hyperbolicity ??
+%       From the thermodynamics: $\tens{\Pi}=\rho_0\drond{\psi}{\tens{F}}\: ; \: \dot{\tens{\Pi}}=\Hbb : \dot{\tens{F}}$ \\
+%       $\rho_0\psi$: Stored energy function, polyconvex $\Rightarrow$ hyperbolicity ensured \cite{Kluth}
+%     \end{block}
+%     \begin{block}{Quasi-linear form}
+%       Auxiliary vector $\Qcb$ \cite{Trangenstein91}: %$\Qcb=\matrice{\vect{v}\\\tens{\Pi}}$ 
+%       \begin{gather*}
+%         % \dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}} \Rightarrow \text{Quasi-linear form: } \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+%         \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \Leftrightarrow \quad \drond{\Ucb}{\alert{\Qcb}}\drond{\alert{\Qcb}}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{\alert{\Qcb}}\drond{\alert{\Qcb}}{X_\alpha}=\vect{0} \\
+%         \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+%       \end{gather*}
+%       where $\Qcb=\matrice{\vect{v}\\\tens{\Pi}} \: ; \: \Absf^\alpha = -\matrice{\tens{0}^2 & \frac{1}{\rho_0}\tens{I}\otimes\vect{E}_\alpha \\ \Hbb\cdot\vect{E}_\alpha & \tens{0}^4}$
+%     \end{block}
+%   \end{footnotesize}
+%   \footnoteCite{Kluth,Trangenstein91}
+% \end{frame}
 
 
 
@@ -201,20 +199,23 @@
       \end{column}	
     \end{columns}
   \end{block}
-  \begin{scriptsize}
-  $\Rightarrow $ Quasi-linear form with suitable $\Qcb$ (\textit{i.e. containing stress})\\
-  \alert{Also avoid the integration of constitutive equations at element interfaces !}
-  \end{scriptsize}
+  \begin{footnotesize}
+    %Auxiliary vector $\Qcb^T=\[\vect{v}\:,\: \tens{\Pi}\]$ 
+    $\Rightarrow $ Quasi-linear form with $\Qcb^T=\[\vect{v} \:,\: \tens{\Pi}\]$ \cite{Trangenstein91}:
+    \begin{gather*}
+      % \dot{\tens{\Pi}} = \Hbb(\tens{F}) : \dot{\tens{F}} \Rightarrow \text{Quasi-linear form: } \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+      \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \Leftrightarrow \quad \drond{\Ucb}{\alert{\Qcb}}\drond{\alert{\Qcb}}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{\alert{\Qcb}}\drond{\alert{\Qcb}}{X_\alpha}=\vect{0}
+      %\\      \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
+    \end{gather*}
+    \alert{Also avoid the integration of constitutive equations at element interfaces !}
+  \end{footnotesize}
   \begin{block}{\footnotesize Transverse corrections: Adaptation of the Corner Transport Upwind method \cite{Colella_CTU}}
     \centering
     \input{section2/pgfFigures/transverse}
   \end{block}
-  \footnoteCite{Colella_CTU}
+  \footnoteCite{Colella_CTU,Trangenstein91}
 \end{frame}
 
-\subsection{Solution scheme}
-%\input{section2/procedure}
-\input{section2/procedure2}
 
 %%% Local Variables:
 %%% mode: latex
