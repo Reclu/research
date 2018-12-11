@@ -30,10 +30,10 @@
         \begin{block}{}
           \begin{footnotesize}
             \begin{itemize}
-            \item High-velocity ($\approx \: 50\:\text{m/s}$) $\rightarrow$ waves
-            \item Large deformations
-            \item Irreversible strains
             \item Complex geometries
+            \item Irreversible strains
+            \item High-velocity ($\approx \: 50\:\text{m/s}$) $\rightarrow$ waves
+            \item[]
             \item[]
             \item[]
             \end{itemize}
@@ -67,13 +67,28 @@
 
     \vspace{1.cm}
     \begin{block}{Challenging task}
-      \alert{Accurately track waves propagating/interacting in irreversibly finite deforming solids }
+      \alert{Accurately track waves propagating/interacting in finite deforming elastic-plastic solids }
     \end{block}
     %% Il faut dire que suivre ces ondes est très important pour comprendre la physique et évaluer correctement les états résiduels
 
     \vspace{0.5cm}
-    \begin{block}{Complex equations $\Rightarrow$ Resort to numerical simulation}
-      
+    \begin{block}{Complex equations }
+      \begin{columns}
+        \begin{column}{0.5\textwidth}
+          \begin{itemize}
+          \item Large deformations
+          \item Complex geometries
+          \item Waves
+          \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+          \begin{itemize}
+          \item[] 
+          \item[$\Rightarrow$]  Resort to numerical simulation
+          \item[]
+          \end{itemize}
+        \end{column}
+      \end{columns}
     \end{block}
     % \footnoteCite{Wang}
   \end{overprint}
@@ -136,7 +151,7 @@
               \begin{block}{\footnotesize Cons}
                 \vspace{-0.2cm}
                 \begin{itemize}
-                \item[] Oscillations
+                \item[] Oscillations near discontinuities
                 % \item[] Lagrangian: mesh entanglement 
                 % \item[] Eulerian: diffusion
                 \end{itemize}
@@ -156,7 +171,7 @@
                 \vspace{-0.2cm}
                 \begin{itemize}
                 \item[] Conservation laws % donc même approx de v et F + bien pour estimer la vitesse des chocs
-                \item[] \textbf{Use of numerical fluxes} \cite{Godunov_method,Thomas_EP}
+                \item[] Use of numerical fluxes \cite{Godunov_method}
                 \end{itemize}
               \end{block}
               \vspace{-0.2cm}
@@ -207,7 +222,7 @@
                 \vspace{-0.2cm}
                 \begin{itemize}
                 \item[] Conservation laws % donc même approx de v et F
-                \item[] Use of numerical fluxes \cite{Godunov_method,Thomas_EP}
+                \item[] Use of numerical fluxes \cite{Godunov_method}
                 \end{itemize}
               \end{block}
               \vspace{-0.2cm}
@@ -225,7 +240,7 @@
       \end{columns}
       
       \vspace{-0.3cm} 
-      \footnoteCite{Belytschko,Leveque,Godunov_method,Thomas_EP,Haider_FVM,Gavrilyuk}
+      \footnoteCite{Belytschko,Leveque,Godunov_method,Haider_FVM,Gavrilyuk}
     \end{overprint}
   \end{frame}
 \end{withoutheadline}
@@ -248,7 +263,7 @@
           \begin{itemize}
           \item[] Restrictive time step
           \item[] Lagrangian: update of the geometry \cite{LagrangianDG_thesis}
-          \item[] Eulerian: diffusive advection terms -- constitutive equaions
+          \item[] Eulerian: numerical diffusion -- interface tracking%diffusive advection terms -- constitutive equaions
           \end{itemize}
         \end{block}
       \end{footnotesize}
@@ -279,7 +294,7 @@
           \begin{footnotesize}
             \begin{itemize}
             \item[] No oscillations 
-            \item[] Diffusion
+            \item[] Numerical diffusion
             \end{itemize}
           \end{footnotesize}
         \end{block}
@@ -302,37 +317,69 @@
 
 \begin{withoutheadline}
   \begin{frame}{\text{  }}
-    \begin{block}{Challenging task for numerical methods}
-      \alert{Accurately track waves in irreversibly finite deforming solids}
-      \begin{itemize}
-      \item[1-] Handle large deformations -- No oscillation -- Low diffusion
-      \item[2-] Embed sufficient amount of information about the solution (intercell fluxes)
-      \end{itemize}
-    \end{block}\pause
+    \vspace{-0.4cm}
     \begin{overprint}
       \onslide<1>
+      \begin{block}{Challenging task for numerical methods}
+        \alert{Accurately track waves in finite deforming elastic-plastic solids}
+        \begin{itemize}
+          \item[]
+          % \item[1-] Handle large deformations -- No oscillation -- Low diffusion
+        \item[]
+          % \item[2-] Embed sufficient amount of information about the solution (intercell fluxes)
+        \end{itemize}
+      \end{block}
+      \onslide<2>
+      \begin{block}{Challenging task for numerical methods}
+        \alert{Accurately track waves in finite deforming elastic-plastic solids}
+        \begin{itemize}
+        \item[1-] \textbf{Handle large deformations -- No oscillation -- Low diffusion}
+          \item[]
+        %\item[2-] Embed sufficient amount of information about the solution (intercell fluxes)
+        \end{itemize}
+      \end{block}
       \metroset{block=fill}
       \begin{block}{Objective 1}
         Develop a numerical method that accurately capture waves in finite deforming solids \\
-        \textbf{Merge FEM--FVM--MPM(PIC): DG approximation}
+        \textbf{Merge FEM--FVM--MPM: DG approximation}
       \end{block}
-      \onslide<2>
+      \onslide<3>
+      \begin{block}{Challenging task for numerical methods}
+        \alert{Accurately track waves in finite deforming elastic-plastic solids}
+        \begin{itemize}
+        \item[1-] Handle large deformations -- No oscillation -- Low diffusion
+        \item[2-] \textbf{Embed sufficient amount of information about the solution (intercell fluxes \cite{Thomas_EP})}
+        \end{itemize}
+      \end{block}
+      \vspace{-0.9cm}
       \begin{block}{}
         \centering
         \input{section1/pgfFigures/ep_dgmpm_mpm}
       \end{block}
-      \onslide<3>
+      \vspace{-0.5cm}
+      \footnoteCite{Thomas_EP}
+      \onslide<4>
+      \begin{block}{Challenging task for numerical methods}
+        \alert{Accurately track waves in finite deforming elastic-plastic solids}
+        \begin{itemize}
+        \item[1-] Handle large deformations -- No oscillation -- Low diffusion
+        \item[2-] Embed sufficient amount of information about the solution (intercell fluxes \cite{Thomas_EP})
+        \end{itemize}
+      \end{block}
+
       \metroset{block=fill}
       \begin{block}{Objective 1}
         Develop a numerical method that accurately capture waves in finite deforming solids \\
-        \textbf{Merge FEM--FVM--MPM(PIC): DG approximation}
+        \textbf{Merge FEM--FVM--MPM: DG approximation}
       \end{block}
       \begin{block}{Objective 2}
       Identify the response of two-dimensional elastic-plastic solids to dynamic loading \\
       \textbf{Analysis of governing equations} % under small strains% Not only numerical
     \end{block}
-    \end{overprint}
-  \end{frame}
+    \footnoteCite{Thomas_EP}
+    
+  \end{overprint}
+\end{frame}
 \end{withoutheadline}
 
 
