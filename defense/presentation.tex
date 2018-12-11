@@ -254,7 +254,7 @@ block=transparent%fill
 \input{section2/mainSection2}
 
 
-\section{Numerical analysis}
+\section{The numerical scheme -- Analysis}
 \input{section3/mainSection3}
 
 
@@ -267,24 +267,32 @@ block=transparent%fill
   \begin{frame}[standout]{\text{Conclusion of part I}}
     \setbeamercolor{alerted text}{fg=white}
     \setbeamercolor{normal text}{ fg= white , bg= CNBlue }
-    \begin{scriptsize}
-      \begin{block}{\footnotesize \text{Development of the DGMPM in total Lagrangian}}
-        \begin{itemize}
-        %\item MPM space discretization + DG approximation $\rightarrow$ element-wise weak form
-        %\item System of conservation laws $\rightarrow$ same approximation for fields and gradients
-        \item Riemann problems at cells faces $\rightarrow$ take into account the characteristic structure
-          % \begin{itemize}
-          % \item[$\rightarrow$] \scriptsize take into account the characteristic structure 
-          % \item[$\rightarrow$] \scriptsize adopt \textit{finite volumes} tools (CTU, limiters) 
-          % \end{itemize}
-        %\item PIC mapping used to store fields at particles $\rightarrow$ no oscillations %nor mesh entanglement
-        \item Ability to compute the optimal Courant number (1D and 2D)
-        \item Non-oscillating solutions %-- reduced diffusion compared to original MPM-PIC
-        \item Classical constitutive integrators at material points
-        \end{itemize}
+    \begin{footnotesize}
+      \begin{block}{\text{Development of the DGMPM in total Lagrangian}}
+        \begin{columns}
+          \begin{column}{0.4\textwidth}
+            \begin{block}{Ingredients}
+              \begin{itemize}
+              \item Riemann solver
+              \item Arbitrary grid
+              \item DG approximation
+              \item Classical constitutive integrators
+              \end{itemize}
+            \end{block}
+          \end{column}
+          \begin{column}{0.5\textwidth}
+            \begin{block}{Possibilities}
+              \begin{itemize}
+              \item Take into acount the characteristic structure
+              \item Adapt the grid without additional projection
+              \item Locally high-order approximation
+              \item Control of time-stepping
+              \end{itemize}
+            \end{block}
+          \end{column}
+        \end{columns}
       \end{block}
-      %\footnoteCite{DGMPM_stab}
-    \end{scriptsize}
+    \end{footnotesize}
   \end{frame}
 \end{withoutheadline}
 \part{2D Elastoplastic hyperbolic problems}
@@ -374,7 +382,7 @@ block=transparent%fill
       \begin{itemize}
       \item[] The DGMPM allows a material description with particles in an \underline{arbitrary grid} 
       %\item[] The discrete system is solved on an \underline{arbitrary grid}
-      \item[] The projections nodes $\leftrightarrow$ particles yield \underline{non-oscillatory solutions}
+      \item[] The projections nodes $\leftrightarrow$ particles yield \underline{non-oscillating solutions}
       %\item[] The stability can be ensured owing to the stability analysis
       \end{itemize}
 
@@ -383,7 +391,7 @@ block=transparent%fill
   \begin{block}{\text{Objective 2: \footnotesize Identify the response of two-dimensional elastic-plastic solids to dynamic loadings}}
     \begin{itemize}
     \item[] The prior works have been \underline{gathered} in one general framework
-    \item[] Some \underline{typical responses} for plane strain and plane stress problems can be highlighted
+    \item[] Some \underline{typical responses} for plane strain and plane stress problems have been highlighted
     \end{itemize}
   \end{block}\pause
   \begin{block}{Publications}
@@ -416,7 +424,8 @@ block=transparent%fill
       \begin{itemize}
       %\item[] Further mathematical investigations
       \item[] Extension to other yield surfaces and hardening laws
-      \item[] Developement of an iterative solver
+      \item[] Development of an iterative solver
+      \item[] Approximate Riemann solver? \underline{know the loading path a priori}
       \end{itemize}
     \end{block}
   \end{footnotesize}

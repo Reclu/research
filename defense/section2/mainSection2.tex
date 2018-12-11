@@ -65,9 +65,9 @@
     \begin{column}{0.55\textwidth}
       \begin{block}{DG approximation \cite{DiPietro}}
         \vskip 14pt
-        Broken polynomial space $\Vscr^k_h = \{\Vcb \in \Pscr^k(\Omega^e)\}$\\
-        Approximate solution $\Ucb(\vect{X},t) \in \Vscr^k_h$ \\
-        $\Vcb(\vect{X},t) = \sum_{i=1}^{N_{nodes}} S_i(\vect{X}) \Vcb^i(t)$
+        %Broken polynomial space $\Vscr^k_h = \{\Vcb \in \Pscr^k(\Omega^e)\}$\\
+        %Approximate solution $\Ucb(\vect{X},t) \in \Vscr^k_h$ \\
+        $\Ucb(\vect{X},t) = \sum_{i=1}^{N_{nodes}} S_i(\vect{X}) \Ucb^i(t)$
         \vskip 13pt
       \end{block}
     \end{column}
@@ -75,8 +75,8 @@
   \begin{block}{Element-wise weak form}
     \begin{equation*}
       \begin{aligned}
-        & \text{Find $\Ucb\in \Vscr^1_h$ such that $\forall \:\Vcb,e,t \in \Vscr^1_h\times [1, E]\times \tau$:}\\
-        & \int_{\Omega^e} \[\drond{\Ucb}{t} \Vcb - \Fcb_\alpha \drond{\Vcb}{X_\alpha}\]d\Omega + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = 0%\int_{\Omega^e} \Scb\Vcb d\Omega
+        & \text{Find $\Ucb$ such that $\forall \:e,t \in  [1, E]\times \tau$:}\\
+        & \int_{\Omega^e} \[\drond{\Ucb}{t} \Vcb - \Fcb_\alpha \drond{\Vcb}{X_\alpha}\]d\Omega + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = 0 \quad \forall \Vcb%\int_{\Omega^e} \Scb\Vcb d\Omega
       \end{aligned}
     \end{equation*}
   \end{block}
@@ -92,8 +92,8 @@
   \begin{block}{Discrete weak form}
     \begin{equation*}
       \begin{aligned}
-        & \text{Find $\Ucb\in \Vscr^1_h$ such that $\forall \:\Vcb,e,t \in \Vscr^1_h\times [1, E]\times \tau$:}\\
-        & \sum_{p=1}^{N_p} m_p\[\ddroit{\bar{\Ucb}}{t} \Vcb - \bar{\Fcb}_\alpha \drond{\Vcb}{X_\alpha}\]_{\lvert_{\vect{X}=\vect{X}^p}} + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = \vect{0}
+        & \text{Find $\Ucb$ such that $\forall \:e,t \in  [1, E]\times \tau$:}\\
+        & \sum_{p=1}^{N_p} m_p\[\ddroit{\bar{\Ucb}}{t} \Vcb - \bar{\Fcb}_\alpha \drond{\Vcb}{X_\alpha}\]_{\lvert_{\vect{X}=\vect{X}^p}} + \int_{\partial \Omega^e} (\Fcb\cdot \vect{N}) d\Gamma = \vect{0} \quad \forall \Vcb
       \end{aligned}
     \end{equation*}
   \end{block}
@@ -162,9 +162,9 @@
   \end{block}
   \vspace{-0.4cm}
   \begin{footnotesize}
-    \begin{block}{Approximate Riemann solver \cite{Toro}}
+    \begin{block}{Approximate-state Riemann solver \cite{Toro}}
       \begin{columns}
-        \begin{column}{0.4\textwidth}
+        \begin{column}{0.3\textwidth}
           \begin{itemize}
           \item Characteristic speeds $\lambda^i(\tens{F})$
           \item Simple waves
@@ -207,13 +207,13 @@
       \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \Leftrightarrow \quad \drond{\Ucb}{\alert{\Qcb}}\drond{\alert{\Qcb}}{t} + \drond{\Fcb\cdot\vect{E}_\alpha}{\alert{\Qcb}}\drond{\alert{\Qcb}}{X_\alpha}=\vect{0}
       %\\      \drond{\Qcb}{t} + \Absf^\alpha \drond{\Qcb}{X_\alpha} = \vect{0}
     \end{gather*}
-    \alert{Also avoid the integration of constitutive equations at element interfaces !}
+    \alert{Also avoids the integration of constitutive equations at element interfaces !}
   \end{footnotesize}
   \begin{block}{\footnotesize Transverse corrections: Adaptation of the Corner Transport Upwind method \cite{Colella_CTU}}
     \centering
     \input{section2/pgfFigures/transverse}
   \end{block}
-  \footnoteCite{Colella_CTU,Trangenstein91}
+  \footnoteCite{Trangenstein91,Colella_CTU}
 \end{frame}
 
 

@@ -119,31 +119,35 @@
       \vspace{-0.25cm}
       \footnoteCite{Belytschko}
       \onslide<2>
+      %\vspace{-0.58cm}
       \begin{columns}
         \begin{column}{0.49\textwidth}
           \vspace{-0.1cm}
-          % \begin{block}{The Finite Element Method \cite{Belytschko}}
-          %   \begin{footnotesize}
-          %     \begin{block}{\footnotesize Pros}
-          %       \vspace{-0.2cm}
-          %       \begin{itemize}
-          %       \item[] Constitutive equations
-          %       \item[] High-order approximation 
-          %       \end{itemize}
-          %     \end{block}
-          %     \vspace{-0.2cm}
-          %     \begin{block}{\footnotesize Cons}
-          %       \vspace{-0.2cm}
-          %       \begin{itemize}
-          %       \item[] Oscillations
-          %       % \item[] Lagrangian: mesh entanglement 
-          %       % \item[] Eulerian: diffusion
-          %       \end{itemize}
-          %     \end{block}
-          %   \end{footnotesize}
+          \begin{block}{The Finite Element Method \cite{Belytschko}}
+            \begin{footnotesize}
+              \begin{block}{\footnotesize Pros}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Constitutive equations
+                \item[] High-order approximation 
+                \end{itemize}
+              \end{block}
+              \vspace{-0.2cm}
+              \begin{block}{\footnotesize Cons}
+                \vspace{-0.2cm}
+                \begin{itemize}
+                \item[] Oscillations
+                % \item[] Lagrangian: mesh entanglement 
+                % \item[] Eulerian: diffusion
+                \end{itemize}
+              \end{block}
+            \end{footnotesize}
+          \end{block}
+          % \begin{block}{}
+          %   \centering
+          % \input{section1/pgfFigures/ep_dgmpm_mpm}
           % \end{block}
-          \centering
-          \input{section1/pgfFigures/ep_dgmpm_mpm}
+          
         \end{column}
         \begin{column}{0.49\textwidth}
           \begin{block}{The Finite Volume Method \cite{Leveque}}
@@ -151,7 +155,7 @@
               \begin{block}{\footnotesize Pros}
                 \vspace{-0.2cm}
                 \begin{itemize}
-                \item[] Conservation laws % donc même approx de v et F
+                \item[] Conservation laws % donc même approx de v et F + bien pour estimer la vitesse des chocs
                 \item[] \textbf{Use of numerical fluxes} \cite{Godunov_method,Thomas_EP}
                 \end{itemize}
               \end{block}
@@ -190,7 +194,7 @@
                 \begin{itemize}
                 \item[] Oscillations
                 \item[] Lagrangian: mesh-difficulties% entanglement 
-                \item[] Eulerian: numerical diffusion%--tracking of interfaces
+                \item[] Eulerian: numerical diffusion %--tracking of interfaces
                 \end{itemize}
               \end{block}
             \end{footnotesize}
@@ -243,8 +247,8 @@
           \vspace{-.2cm}
           \begin{itemize}
           \item[] Restrictive time step
-          \item[] \alert{Lagrangian: update of the geometry \cite{LagrangianDG_thesis}}
-          \item[] Eulerian: diffusive advection terms -- constitutive equaions 
+          \item[] Lagrangian: update of the geometry \cite{LagrangianDG_thesis}
+          \item[] Eulerian: diffusive advection terms -- constitutive equaions
           \end{itemize}
         \end{block}
       \end{footnotesize}
@@ -304,17 +308,30 @@
       \item[1-] Handle large deformations -- No oscillation -- Low diffusion
       \item[2-] Embed sufficient amount of information about the solution (intercell fluxes)
       \end{itemize}
-    \end{block}\pause 
-    
-    \metroset{block=fill}
-    \begin{block}{Objective 1}
-      Develop a numerical method that accurately capture waves in finite deforming solids \\
-      \textbf{Merge FEM--FVM--MPM(PIC): DG approximation}
     \end{block}\pause
-    \begin{block}{Objective 2}
+    \begin{overprint}
+      \onslide<1>
+      \metroset{block=fill}
+      \begin{block}{Objective 1}
+        Develop a numerical method that accurately capture waves in finite deforming solids \\
+        \textbf{Merge FEM--FVM--MPM(PIC): DG approximation}
+      \end{block}
+      \onslide<2>
+      \begin{block}{}
+        \centering
+        \input{section1/pgfFigures/ep_dgmpm_mpm}
+      \end{block}
+      \onslide<3>
+      \metroset{block=fill}
+      \begin{block}{Objective 1}
+        Develop a numerical method that accurately capture waves in finite deforming solids \\
+        \textbf{Merge FEM--FVM--MPM(PIC): DG approximation}
+      \end{block}
+      \begin{block}{Objective 2}
       Identify the response of two-dimensional elastic-plastic solids to dynamic loading \\
       \textbf{Analysis of governing equations} % under small strains% Not only numerical
     \end{block}
+    \end{overprint}
   \end{frame}
 \end{withoutheadline}
 

@@ -126,7 +126,7 @@
 
 \begin{frame}{Procedure between $t^n$ and $t^n + \Delta t^n=t^{n+1}$}
   \begin{footnotesize}
-    %% Time integration + Interpolation
+    %% Time integration 
     \begin{equation*}
       \text{Discrete system: }M^L_{i} \frac{\alert{\bar{\Ucb}^{i,n+1}} - \bar{\Ucb}^{i,n}}{\Delta t^n}  - K_{ij}^\alpha \bar{\Fcb}^{j,n}_{\alpha}  + \hat{\Fcb}^{i,n}=  \vect{0}
     \end{equation*}
@@ -136,12 +136,55 @@
         \item[(1)] Computation of matrices $M_i^L$ and $K_{ij}^\alpha$
         \item[(2)] Projection particles $\rightarrow$ nodes
         \item[(3)] Computation of fluxes
-        \item[(4)] Explicit time integration; Interpolation
+        \item[(4)] Explicit time integration
         \end{itemize}
       \end{column}
       \vrule{}
       \begin{column}{0.6\textwidth}
-        \begin{block}{Explicit time integration; Interpolation}
+        \begin{block}{Explicit time integration}
+          
+          % \begin{columns}
+          %   \begin{column}{0.4\textwidth}
+              % \begin{tikzpicture}
+              %   \draw (0,0) rectangle (2,2);
+              %   \fill[white] (0,0) circle (0.1); \fill[white] (0,2) circle (0.1); \fill[white] (2,0) circle (0.1); \fill[white] (2,2) circle (0.1);
+              %   \draw (0,0) circle (0.1); \draw (0,2) circle (0.1); \draw (2,0) circle (0.1); \draw (2,2) circle (0.1);
+              %   \draw[->,thick] (0,0) -- (0.15,0.15);
+              %   \draw[->,thick] (2,0) -- (1.85,0.15);
+              %   \draw[->,thick] (2,2) -- (1.85,1.85);
+              %   \draw[->,thick] (0,2) -- (.15,1.85);
+                
+              %   \fill[Orange] (0.5,0.75) circle (0.1); \fill[Orange] (1.25,1.75) circle (0.1); \fill[Orange] (1.75,0.25) circle (0.1); \fill[Orange] (1,1) circle (0.1);
+              % \end{tikzpicture}
+            % \end{column}
+          %   \begin{column}{0.55\textwidth}
+          %     \begin{equation*}
+          %       \alert{\bar{\Ucb}^{p,n+1}}=\sum_{i=1}^{N_{nodes}} S_{i}(\vect{X}^{p}) \bar{\Ucb}^{i,n+1}
+          %     \end{equation*}
+          %   \end{column}
+          % \end{columns}
+        \end{block}
+      \end{column}
+    \end{columns}
+  \end{footnotesize}
+\end{frame}
+
+\begin{frame}{Procedure between $t^n$ and $t^n + \Delta t^n=t^{n+1}$}
+  \begin{footnotesize}
+    %% Interpolation
+    \begin{columns}
+      \begin{column}{0.4\textwidth}
+        \begin{itemize}
+        \item[(1)] Computation of matrices $M_i^L$ and $K_{ij}^\alpha$
+        \item[(2)] Projection particles $\rightarrow$ nodes
+        \item[(3)] Computation of fluxes
+        \item[(4)] Explicit time integration
+        \item[(5)] Projection nodes $\rightarrow$ particles 
+        \end{itemize}
+      \end{column}
+      \vrule{}
+      \begin{column}{0.6\textwidth}
+        \begin{block}{Projection nodes $\rightarrow$ particles}
           
           \begin{columns}
             \begin{column}{0.4\textwidth}
@@ -178,8 +221,9 @@
         \item[(1)] Computation of matrices $M_i^L$ and $K_{ij}^\alpha$
         \item[(2)] Projection particles $\rightarrow$ nodes
         \item[(3)] Computation of fluxes
-        \item[(4)] Explicit time integration; Interpolation
-        \item[(5)] Kinematics and constitutive updates
+        \item[(4)] Explicit time integration
+        \item[(5)] Projection nodes $\rightarrow$ particles 
+        \item[(6)] Kinematics and constitutive updates
         \end{itemize}
       \end{column}
       \vrule{}
@@ -223,9 +267,10 @@
         \item[(1)] Computation of matrices $M_i^L$ and $K_{ij}^\alpha$
         \item[(2)] Projection particles $\rightarrow$ nodes
         \item[(3)] Computation of fluxes
-        \item[(4)] Explicit time integration; Interpolation
-        \item[(5)] Kinematics and constitutive updates
-        \item[(6)] Reconstruction of the grid (if needed) 
+        \item[(4)] Explicit time integration
+        \item[(5)] Projection nodes $\rightarrow$ particles 
+        \item[(6)] Kinematics and constitutive updates
+        \item[(7)] Reconstruction of the grid (if needed) 
         \end{itemize}
       \end{column}
       \vrule{}

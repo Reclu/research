@@ -29,21 +29,21 @@
           \end{tikzpicture}  
         \end{block}
       \end{column}
-      \begin{column}{0.62\textwidth}
+      \begin{column}{0.52\textwidth}
         \begin{footnotesize}
           \begin{block}{\footnotesize Elastic solution}
             \begin{columns}
-              \begin{column}{0.35\textwidth}
+              \begin{column}{0.25\textwidth}
                 \begin{tikzpicture}[scale=0.5]
-                  \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\tiny $x$};
-                  \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\tiny $t$};
+                  \draw[thick,->] (-0.,0) -- (2.5,0) node[right] {\tiny $x$};
+                  \draw[thick,->] (-0.,-0.) -- (0,3) node[above] {\tiny $t$};
                   \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
-                  \draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
+                  %\draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
                   \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
-                  \draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
+                  %\draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
                 \end{tikzpicture}
               \end{column}
-              \begin{column}{0.6\textwidth}
+              \begin{column}{0.7\textwidth}
                 \begin{itemize}
                 \item[] pressure and shear waves: $c_1,c_2$
                 \item[] discontinuous waves
@@ -77,31 +77,33 @@
           \end{tikzpicture}  
         \end{block}
       \end{column}
-      \begin{column}{0.62\textwidth}
+      \begin{column}{0.52\textwidth}
         \begin{footnotesize}
           \begin{block}{\footnotesize Elastic-\alert{plastic} solution \cite{CRISTESCU19591605,Rakhmatulin}}
             \begin{columns}
-              \begin{column}{0.35\textwidth}
+              \begin{column}{0.25\textwidth}
                 \begin{tikzpicture}[scale=0.5]
-                  \draw[thick,->] (-2.5,0) -- (2.5,0) node[right] {\tiny $x$};
-                  \draw[thick,->] (-0.,-0.3) -- (0,3) node[above] {\tiny $t$};
+                  \draw[thick,->] (-0.,0) -- (2.5,0) node[right] {\tiny $x$};
+                  \draw[thick,->] (-0.,-0.) -- (0,3) node[above] {\tiny $t$};
                   \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
-                  \draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
+                  %\draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
                   \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
-                  \draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
+                  %\draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
                   \foreach \x in {1.3,1.4,1.5,1.6,1.7}
                   {\draw[Orange] (0,0)-- (2.3,\x);
-                    \draw[Orange] (0,0)-- (-2.3,\x);}
+                    %\draw[Orange] (0,0)-- (-2.3,\x);
+                  }
                   \node[Orange,right] at (2.3,1.7) {\tiny $c_f$};
-                  \node[Orange,left] at (-2.3,1.7) {\tiny $-c_f$};
+                  %\node[Orange,left] at (-2.3,1.7) {\tiny $-c_f$};
                   \foreach \x in {2.5,2.6,2.7,2.8,2.9,3.}
                   {\draw[Orange] (0,0)-- (2,\x);
-                    \draw[Orange] (0,0)-- (-2,\x);}
+                    %\draw[Orange] (0,0)-- (-2,\x);
+                  }
                   \node[Orange,right] at (2,3) {\tiny $c_s$};
-                  \node[Orange,left] at (-2,3) {\tiny $-c_s$};
+                  %\node[Orange,left] at (-2,3) {\tiny $-c_s$};
                 \end{tikzpicture}
               \end{column}
-              \begin{column}{0.6\textwidth}
+              \begin{column}{0.7\textwidth}
                 \begin{itemize}
                 \item[] fast and slow simple waves: $c_f,c_s$
                 \item[] combined-stress waves
@@ -199,7 +201,7 @@
   \begin{block}{Problems tackled overall}
     \begin{itemize}
     \item Particular plane strain and plane stress cases \cite{Bleich,Ting69,Ting73,Li_planeStress_EP}
-    \item Equations based on elastic-plastic softenesses
+    \item Equations based on elastic-plastic compliances
     
     \end{itemize}
   \end{block}
@@ -207,7 +209,7 @@
     Hyperbolic system in the arbitrary direction $\vect{n}$: $\drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} =\vect{0}$ \\
     $\Jbsf=-\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{n} \\ \alert{\Cbb^{ep}\cdot \vect{n}} & \tens{0}^4}$
     \begin{itemize}
-    \item General plane strain and plan stress problems \textbf{under small strains}
+    \item General plane strain and plane stress problems \textbf{under small strains}
     \item Unified framework
     % \item generalizes to plane strain and plane stress problems
     \end{itemize}

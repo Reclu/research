@@ -26,7 +26,8 @@
 
     
     \addplot[very thick,Orange,restrict y to domain=4.e7:6.75e7] table [x=sigma_11,y=sigma_12]{section5/pgfFigures/pgf_thinWalledTubeSlowWave/TWslowStressPlane_Stress1.pgf};
-
+    \addplot[very thick,Orange,arrows along my path] coordinates{(0.25e8,5.6e7) (0.25e8,0.) (0,0)};
+    
     \node[right] at (axis cs:0.25e8,6.75e7) {$\color{Orange}\tens{\sigma}^3$};
   \end{axis}
 \end{tikzpicture}
