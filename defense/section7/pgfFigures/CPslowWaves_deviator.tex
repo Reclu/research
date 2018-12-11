@@ -1,0 +1,69 @@
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},cross/.default={2.5pt}}
+\begin{tikzpicture}[scale=0.7]
+\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$s_1 $,ylabel=$s_2 $,zlabel=$s_3$,xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.2,.68)}}]
+\node[below] at (axis cs:1.1e8,0.,0.) {$\sigma^y$};
+\node[above] at (axis cs:-1.1e8,0.,0.) {$-\sigma^y$};
+\draw (axis cs:1.e8,0.,0.) node[cross,rotate=10] {};
+\draw (axis cs:-1.e8,0.,0.) node[cross,rotate=10] {};
+\node[white]  at (axis cs:0,0.,1.1e8) {};
+\addplot3[arrows along my path,Red,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame0_Stress1.pgf};%\addlegendentry{loading path 1}
+\addplot3[arrows along my path,Blue,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame1_Stress1.pgf};%\addlegendentry{loading path 2}
+\addplot3[arrows along my path,Orange,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame2_Stress1.pgf};%\addlegendentry{loading path 3}
+\addplot3[arrows along my path,Purple,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame3_Stress1.pgf};%\addlegendentry{loading path 4}
+\addplot3[arrows along my path,Green,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame4_Stress1.pgf};%\addlegendentry{loading path 5}
+\addplot3+[gray,dashed,thin,no markers] file {section7/pgfFigures/pgf_slowWavesPlaneStrain/CylindreDevPlane.pgf};%\addlegendentry{initial yield surface}
+\newcommand\radius{1.*0.82e8}
+\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+\end{axis}
+\begin{scope}[shift={(6.5,0)}]
+  \begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$s_1 $,ylabel=$s_2 $,zlabel=$s_3$,xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.2,.68)}}]
+\node[below] at (axis cs:1.1e8,0.,0.) {$\sigma^y$};
+\node[above] at (axis cs:-1.1e8,0.,0.) {$-\sigma^y$};
+\draw (axis cs:1.e8,0.,0.) node[cross,rotate=10] {};
+\draw (axis cs:-1.e8,0.,0.) node[cross,rotate=10] {};
+\node[white]  at (axis cs:0,0.,1.1e8) {};
+\addplot3[arrows along my path,Red,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame0_Stress2.pgf};%\addlegendentry{loading path 1}
+\addplot3[arrows along my path,Blue,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame1_Stress2.pgf};%\addlegendentry{loading path 2}
+\addplot3[arrows along my path,Orange,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame2_Stress2.pgf};%\addlegendentry{loading path 3}
+\addplot3[arrows along my path,Purple,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame3_Stress2.pgf};%\addlegendentry{loading path 4}
+\addplot3[arrows along my path,Green,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame4_Stress2.pgf};%\addlegendentry{loading path 5}
+\addplot3+[gray,dashed,thin,no markers] file {section7/pgfFigures/pgf_slowWavesPlaneStrain/CylindreDevPlane.pgf};%\addlegendentry{initial yield surface}
+\newcommand\radius{1.*0.82e8}
+\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+\end{axis}
+
+\end{scope}
+
+\begin{scope}[shift={(13.,0)}]
+  \begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$s_1 $,ylabel=$s_2 $,zlabel=$s_3$,xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north},legend style={at={(.2,.68)}}]
+\node[below] at (axis cs:1.1e8,0.,0.) {$\sigma^y$};
+\node[above] at (axis cs:-1.1e8,0.,0.) {$-\sigma^y$};
+\draw (axis cs:1.e8,0.,0.) node[cross,rotate=10] {};
+\draw (axis cs:-1.e8,0.,0.) node[cross,rotate=10] {};
+\node[white]  at (axis cs:0,0.,1.1e8) {};
+\addplot3[arrows along my path,Red,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame0_Stress3.pgf};%\addlegendentry{loading path 1}
+\addplot3[arrows along my path,Blue,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame1_Stress3.pgf};%\addlegendentry{loading path 2}
+\addplot3[arrows along my path,Orange,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame2_Stress3.pgf};%\addlegendentry{loading path 3}
+\addplot3[arrows along my path,Purple,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame3_Stress3.pgf};%\addlegendentry{loading path 4}
+\addplot3[arrows along my path,Green,very thick] file {section7/pgfFigures/pgf_slowWavesPlaneStress/CPslowDevPlane_frame4_Stress3.pgf};%\addlegendentry{loading path 5}
+\addplot3+[gray,dashed,thin,no markers] file {section7/pgfFigures/pgf_slowWavesPlaneStrain/CylindreDevPlane.pgf};%\addlegendentry{initial yield surface}
+\newcommand\radius{1.*0.82e8}
+\addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+\addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+\addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+\end{axis}
+
+\end{scope}
+\node at (5.,6.75) {\footnotesize $\sigma_{22}^0 <0$};
+\node at (11.5,6.75) {\footnotesize $\sigma_{22}^0 =0$};
+\node at (18.,6.75) {\footnotesize $\sigma_{22}^0 >0$};
+
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../presentation"
+%%% End:
