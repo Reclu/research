@@ -2,7 +2,7 @@
 %% La seconde montre la solution en vidéo
 %% après on fait un overprint avec la comparaison MPM FEM FVM
 
-\begin{frame}{One-dimensional elastic-plastic media}
+\begin{frame}{One-dimensional elastic-plastic medium}
   \begin{block}{\footnotesize Problem settings}
     \vspace{-0.2cm}
     \begin{columns}
@@ -64,7 +64,7 @@
   \footnoteCite{Wang,Fogarty,Thomas_EP}
 \end{frame}
 
-\begin{frame}{One-dimensional elastic-plastic media \cite{Thomas_EP}}
+\begin{frame}{One-dimensional elastic-plastic medium \cite{Thomas_EP}}
   \centering
   \movie[height = 0.8\paperheight,width=.675\linewidth, showcontrols,poster,loop,autostart]{%\input{section4/pgfFigures/PS_taylorbar}
   }{section4/animation/EP_planewave.mp4}
@@ -73,14 +73,14 @@
 
 
 \begin{frame}{}
-  \begin{block}{One-dimensional elastic-plastic media \cite{Thomas_EP}}
+  \begin{block}{One-dimensional elastic-plastic medium \cite{Thomas_EP}}
     %Plane wave state:\: $\tens{\eps}=\eps \vect{e}_1 \otimes \vect{e}_1$ \quad ; \quad $\tens{\sigma}=\sigma \vect{e}_1\otimes \vect{e}_1 + \sigma_T\(\vect{e}_2\otimes \vect{e}_2+\vect{e}_3\otimes \vect{e}_3\)$
   \end{block}
   \begin{overprint}
     \onslide<1>
     \centering
     \input{section4/pgfFigures/ep_planeWave_stress_mpm_fem}
-    FEM values extracted at Gauss points
+    %FEM values extracted at Gauss points
     \onslide<2>
     \centering
     \input{section4/pgfFigures/ep_planeWave_stress_dgmpm}

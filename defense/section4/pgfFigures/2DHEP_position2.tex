@@ -1,12 +1,12 @@
 \begin{tikzpicture}[scale=.75]
-\begin{axis}[xlabel=\footnotesize $\text{time} \: (\text{s})$,ylabel=\footnotesize Position (m),ymajorgrids=true,xmajorgrids=true,legend pos=north west,title={Evolution of the vertical position of top left node},ymax=3.17]
-\addplot[Blue,very thick,mark=x,mark size=2pt,restrict x to domain=0.:3e-4] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm0.0.csv};
-\addplot[Orange,very thick,mark=none,mark size=2pt,restrict x to domain=0.:3e-4] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode0.csv};
-\addplot[Red,very thick,mark=+,mark size=3pt,mark repeat =10,restrict x to domain=0.:3e-4] file {section4/csvFiles/topNode.pgf};
-\addplot[Blue,very thick,mark=x,only marks,mark size=2pt,restrict x to domain=0.:3e-4] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm_refined0.csv};
-%\addplot[Green,very thick,mark=x,only marks,mark size=2pt,restrict x to domain=0.:3e-4] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_ppc0.csv};
-\addplot[Orange,very thick,mark=none,mark size=2pt,dashed,restrict x to domain=0.:3e-4] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_refined_FEM0.csv};
-\addplot[Red,very thick,mark=+,only marks,mark size=3pt,mark repeat=10,restrict x to domain=0.:3e-4] file {section4/csvFiles/topNode_refined.pgf};
+\begin{axis}[xlabel=\footnotesize $\text{time} \: (\text{s})$,ylabel=\footnotesize Position (m),ymajorgrids=true,xmajorgrids=true,legend pos=north west,title={Evolution of the vertical position of top left node}]
+\addplot[Blue,very thick,mark=x,mark size=2pt] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm0.0.csv};
+\addplot[Orange,very thick,mark=none,mark size=2pt] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode0.csv};
+\addplot[Red,very thick,mark=+,mark size=3pt,mark repeat =10] file {section4/csvFiles/topNode.pgf};
+\addplot[Blue,very thick,mark=x,only marks,mark size=2pt,mark repeat=5] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm_refined0.csv};
+\addplot[Orange,very thick,mark=none,mark size=2pt,dashed] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_refined_FEM0.csv};
+\addplot[Red,very thick,mark=+,only marks,mark size=3pt,mark repeat=10] file {section4/csvFiles/topNode_refined.pgf};
+
 \legend{dgmpm--CFL=0.9,fem--CFL=0.7,mpm--CFL=0.5,dgmpm--refined,fem--refined,mpm--refined}
 \end{axis}%topNode_ppc0.csv
 \end{tikzpicture}
