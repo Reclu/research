@@ -188,7 +188,7 @@
         \end{column}
       \end{columns}
       \vspace{-0.3cm} 
-      \footnoteCite{Leveque,Godunov_method,Thomas_EP}
+      \footnoteCite{Leveque,Godunov_method}
       
       \onslide<3>
       \begin{columns}
@@ -231,7 +231,7 @@
                 \begin{itemize}
                 \item[] Essentially low-order methods
                 \item[] Lagrangian \cite{Haider_FVM}: mesh-difficulties %update geometries  
-                \item[] Eulerian \cite{Gavrilyuk}: numerical diffusion%--tracking of interfaces
+                \item[] Eulerian \cite{Nicolas}: numerical diffusion%--tracking of interfaces
                 \end{itemize}
               \end{block}
             \end{footnotesize}
@@ -240,7 +240,7 @@
       \end{columns}
       
       \vspace{-0.3cm} 
-      \footnoteCite{Belytschko,Leveque,Godunov_method,Haider_FVM,Gavrilyuk}
+      \footnoteCite{Belytschko,Leveque,Godunov_method,Haider_FVM,Nicolas}
     \end{overprint}
   \end{frame}
 \end{withoutheadline}
@@ -274,7 +274,7 @@
 
 
 \begin{withoutheadline}
-  \begin{frame}{Mesh-free Lagrangian approaches}
+  \begin{frame}{Particle-based Lagrangian approaches}
     
     \begin{block}{The Material Point Method \cite{Sulsky94}}
       \begin{footnotesize}
@@ -290,7 +290,7 @@
 
     \begin{columns}
       \begin{column}{0.48\textwidth}
-        \begin{block}{\footnotesize Particle-In-Cell mapping \cite{PIC}}
+        \begin{block}{\footnotesize Particle-In-Cell \cite{PIC}}
           \begin{footnotesize}
             \begin{itemize}
             \item[] No oscillations 
@@ -300,7 +300,7 @@
         \end{block}
       \end{column}
       \begin{column}{0.48\textwidth}
-        \begin{block}{\footnotesize FLuid Implicit Particle mapping \cite{PIC_Nishiguchi}}
+        \begin{block}{\footnotesize FLuid Implicit Particle \cite{PIC_Nishiguchi}}
           \begin{footnotesize}
             \begin{itemize}
             \item[] Reduced diffusion 
@@ -340,7 +340,7 @@
       \end{block}
       \metroset{block=fill}
       \begin{block}{Objective 1}
-        Develop a numerical method that accurately capture waves in finite deforming solids \\
+        Develop a numerical method that accurately captures waves in finite deforming solids \\
         \textbf{Merge FEM--FVM--MPM: DG approximation}
       \end{block}
       \onslide<3>
@@ -368,16 +368,34 @@
       \end{block}
 
       \metroset{block=fill}
+      %%%%%%%%%%%%%%%%%%% PREVIOUS VERSION
+      % \begin{block}{Objective 1}
+      %   Develop a numerical method that accurately captures waves in finite deforming solids \\
+      %   \textbf{Merge FEM--FVM--MPM: DG approximation}
+      % \end{block}
+      % \begin{block}{Objective 2}
+      %   Identify the response of two-dimensional elastic-plastic solids to dynamic loading \\
+      %   \textbf{Analysis of governing equations} % under small strains% Not only numerical
+      % \end{block}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \begin{block}{Objective 1}
-        Develop a numerical method that accurately capture waves in finite deforming solids \\
+        Develop a numerical method that accurately captures waves in finite deforming solids \\
         \textbf{Merge FEM--FVM--MPM: DG approximation}
       \end{block}
       \begin{block}{Objective 2}
-      Identify the response of two-dimensional elastic-plastic solids to dynamic loading \\
-      \textbf{Analysis of governing equations} % under small strains% Not only numerical
-    \end{block}
+        Develop an approximate Riemann solver for elastic-plastic problems in two space dimensions:\\
+        \begin{footnotesize}
+          \vspace{-0.85cm}
+          \begin{center}
+            \textbf{Identify the response of elastic-plastic solids to dynamic loadings under small strains}\\
+            Approximate the complex characteristic structure with linear waves\\
+            Generalize the approach to finite deformations 
+          \end{center}          
+        \end{footnotesize}
+      \end{block}
+      \vspace{-0.3cm}
     \footnoteCite{Thomas_EP}
-    
+
   \end{overprint}
 \end{frame}
 \end{withoutheadline}
