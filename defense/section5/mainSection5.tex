@@ -5,118 +5,67 @@
 %% Simple waves even for linear hardening in contrast to one-dimensional problems
 
 \begin{frame}{Thin-walled tube problem}%{Historical review}
-  \begin{overprint}
-    \onslide<1>
-    \begin{columns}
-      \begin{column}{0.4\textwidth}
-        \begin{block}{\footnotesize Semi-infinite medium}
-          % \centering
-          \begin{tikzpicture}
-            \begin{scope}[shift={(-1.75,0)}]
-              \draw[->] (0,0) -- (0.5,0) node[right] {\scriptsize $x_1$};
-              \draw[->] (0,0) -- (0,0.5) node[above] {\scriptsize $x_2$};
-            \end{scope}
-            \draw (0,0) -- (3,.0);
-            \draw[very thick] (0,0) -- (0,2.);
-            \fill [pattern=north east lines] (0,0) rectangle (3.,2.);
-            \draw[dash dot] (-0.5,0) -- (3.5,0);% node[right] {\footnotesize $x_1$};
-            % \draw[->,dash dot] (0,0) -- (0,2.5) node[above] {\footnotesize $x_2$};
-            \foreach \y in {0,0.25,...,1.75}
-            \draw[Red,->,>=stealth] (-0.1,\y) -- (-0.1,\y+0.15);
-            \foreach \y in {0,0.25,...,1.75}
-            \draw[Red,->,>=stealth] (-0.30,\y+0.20) -- (-0.15,\y+0.20);
-            \node[Red,left] at (-0.3,1.) {\scriptsize $\sigma,\tau$};
-          \end{tikzpicture}  
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{block}{\footnotesize Semi-infinite medium}
+        % \centering
+        \begin{tikzpicture}
+          \begin{scope}[shift={(-1.75,0)}]
+            \draw[->] (0,0) -- (0.5,0) node[right] {\scriptsize $x_1$};
+            \draw[->] (0,0) -- (0,0.5) node[above] {\scriptsize $x_2$};
+          \end{scope}
+          \draw (0,0) -- (3,.0);
+          \draw[very thick] (0,0) -- (0,2.);
+          \fill [pattern=north east lines] (0,0) rectangle (3.,2.);
+          \draw[dash dot] (-0.5,0) -- (3.5,0);% node[right] {\footnotesize $x_1$};
+          % \draw[->,dash dot] (0,0) -- (0,2.5) node[above] {\footnotesize $x_2$};
+          \foreach \y in {0,0.25,...,1.75}
+          \draw[Red,->,>=stealth] (-0.1,\y) -- (-0.1,\y+0.15);
+          \foreach \y in {0,0.25,...,1.75}
+          \draw[Red,->,>=stealth] (-0.30,\y+0.20) -- (-0.15,\y+0.20);
+          \node[Red,left] at (-0.3,1.) {\scriptsize $\sigma,\tau$};
+        \end{tikzpicture}  
+      \end{block}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \begin{footnotesize}
+        \begin{block}{\footnotesize Elastic-\alert{plastic} solution \cite{CRISTESCU19591605,Rakhmatulin}}
+          \begin{columns}
+            \begin{column}{0.25\textwidth}
+              \begin{tikzpicture}[scale=0.5]
+                \draw[thick,->] (-0.,0) -- (2.5,0) node[right] {\tiny $x$};
+                \draw[thick,->] (-0.,-0.) -- (0,3) node[above] {\tiny $t$};
+                \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
+                % \draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
+                \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
+                % \draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
+                \foreach \x in {1.3,1.4,1.5,1.6,1.7}
+                {\draw[Orange] (0,0)-- (2.3,\x);
+                  % \draw[Orange] (0,0)-- (-2.3,\x);
+                }
+                \node[Orange,right] at (2.3,1.7) {\tiny $c_f$};
+                % \node[Orange,left] at (-2.3,1.7) {\tiny $-c_f$};
+                \foreach \x in {2.5,2.6,2.7,2.8,2.9,3.}
+                {\draw[Orange] (0,0)-- (2,\x);
+                  % \draw[Orange] (0,0)-- (-2,\x);
+                }
+                \node[Orange,right] at (2,3) {\tiny $c_s$};
+                % \node[Orange,left] at (-2,3) {\tiny $-c_s$};
+              \end{tikzpicture}
+            \end{column}
+            \begin{column}{0.7\textwidth}
+              \begin{itemize}
+              \item[] fast and slow simple waves: $c_f,c_s$
+              \item[] combined-stress waves
+              \end{itemize}
+            \end{column}
+          \end{columns}
         \end{block}
-      \end{column}
-      \begin{column}{0.52\textwidth}
-        \begin{footnotesize}
-          \begin{block}{\footnotesize Elastic solution}
-            \begin{columns}
-              \begin{column}{0.25\textwidth}
-                \begin{tikzpicture}[scale=0.5]
-                  \draw[thick,->] (-0.,0) -- (2.5,0) node[right] {\tiny $x$};
-                  \draw[thick,->] (-0.,-0.) -- (0,3) node[above] {\tiny $t$};
-                  \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
-                  %\draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
-                  \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
-                  %\draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
-                \end{tikzpicture}
-              \end{column}
-              \begin{column}{0.7\textwidth}
-                \begin{itemize}
-                \item[] pressure and shear waves: $c_1,c_2$
-                \item[] discontinuous waves
-                \end{itemize}
-              \end{column}
-            \end{columns}
-          \end{block}
-        \end{footnotesize}
-      \end{column}
-    \end{columns}
-    \onslide<2>
-    \begin{columns}
-      \begin{column}{0.4\textwidth}
-        \begin{block}{\footnotesize Semi-infinite medium}
-          % \centering
-          \begin{tikzpicture}
-            \begin{scope}[shift={(-1.75,0)}]
-              \draw[->] (0,0) -- (0.5,0) node[right] {\scriptsize $x_1$};
-              \draw[->] (0,0) -- (0,0.5) node[above] {\scriptsize $x_2$};
-            \end{scope}
-            \draw (0,0) -- (3,.0);
-            \draw[very thick] (0,0) -- (0,2.);
-            \fill [pattern=north east lines] (0,0) rectangle (3.,2.);
-            \draw[dash dot] (-0.5,0) -- (3.5,0);% node[right] {\footnotesize $x_1$};
-            % \draw[->,dash dot] (0,0) -- (0,2.5) node[above] {\footnotesize $x_2$};
-            \foreach \y in {0,0.25,...,1.75}
-            \draw[Red,->,>=stealth] (-0.1,\y) -- (-0.1,\y+0.15);
-            \foreach \y in {0,0.25,...,1.75}
-            \draw[Red,->,>=stealth] (-0.30,\y+0.20) -- (-0.15,\y+0.20);
-            \node[Red,left] at (-0.3,1.) {\scriptsize $\sigma,\tau$};
-          \end{tikzpicture}  
-        \end{block}
-      \end{column}
-      \begin{column}{0.52\textwidth}
-        \begin{footnotesize}
-          \begin{block}{\footnotesize Elastic-\alert{plastic} solution \cite{CRISTESCU19591605,Rakhmatulin}}
-            \begin{columns}
-              \begin{column}{0.25\textwidth}
-                \begin{tikzpicture}[scale=0.5]
-                  \draw[thick,->] (-0.,0) -- (2.5,0) node[right] {\tiny $x$};
-                  \draw[thick,->] (-0.,-0.) -- (0,3) node[above] {\tiny $t$};
-                  \draw[very thick] (0,0) -- (2.3,1.) node[right] {\tiny $c_1$};
-                  %\draw[very thick] (0,0) -- (-2.3,1.) node[left] {\tiny $-c_1$};
-                  \draw[very thick] (0,0) -- (2.,2.25) node[right] {\tiny $c_2$};
-                  %\draw[very thick] (0,0) -- (-2.,2.25) node[left] {\tiny $-c_2$};
-                  \foreach \x in {1.3,1.4,1.5,1.6,1.7}
-                  {\draw[Orange] (0,0)-- (2.3,\x);
-                    %\draw[Orange] (0,0)-- (-2.3,\x);
-                  }
-                  \node[Orange,right] at (2.3,1.7) {\tiny $c_f$};
-                  %\node[Orange,left] at (-2.3,1.7) {\tiny $-c_f$};
-                  \foreach \x in {2.5,2.6,2.7,2.8,2.9,3.}
-                  {\draw[Orange] (0,0)-- (2,\x);
-                    %\draw[Orange] (0,0)-- (-2,\x);
-                  }
-                  \node[Orange,right] at (2,3) {\tiny $c_s$};
-                  %\node[Orange,left] at (-2,3) {\tiny $-c_s$};
-                \end{tikzpicture}
-              \end{column}
-              \begin{column}{0.7\textwidth}
-                \begin{itemize}
-                \item[] fast and slow simple waves: $c_f,c_s$
-                \item[] combined-stress waves
-                \end{itemize}
-              \end{column}
-            \end{columns}
-          \end{block}
-        \end{footnotesize}
-      \end{column}
-    \end{columns}
-    % Governing equations based on elastic-plastic softenesses
-    \footnoteCite{CRISTESCU19591605,Rakhmatulin}
-  \end{overprint}
+      \end{footnotesize}
+    \end{column}
+  \end{columns}
+  % Governing equations based on elastic-plastic softenesses
+  \footnoteCite{CRISTESCU19591605,Rakhmatulin}
 \end{frame}
 
 

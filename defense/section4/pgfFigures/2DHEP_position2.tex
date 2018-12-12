@@ -6,8 +6,9 @@
 \addplot[Blue,very thick,mark=x,only marks,mark size=2pt,mark repeat=5] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_dgmpm_refined0.csv};
 \addplot[Orange,very thick,mark=none,mark size=2pt,dashed] table[x=Time,y=PointCoordinates:1] {section4/csvFiles/topNode_refined_FEM0.csv};
 \addplot[Red,very thick,mark=+,only marks,mark size=3pt,mark repeat=10] file {section4/csvFiles/topNode_refined.pgf};
+
 \legend{dgmpm--CFL=0.9,fem--CFL=0.7,mpm--CFL=0.5,dgmpm--refined,fem--refined,mpm--refined}
-\end{axis}
+\end{axis}%topNode_ppc0.csv
 \end{tikzpicture}
 %%% Local Variables:
 %%% mode: latex
