@@ -1,0 +1,12 @@
+\begin{tikzpicture}[scale=.85]
+\begin{axis}[xlabel=\footnotesize $x \: (m)$,ylabel=\footnotesize $p$,ymajorgrids=true,xmajorgrids=true,legend pos=south west,title={Equivalent plastic strain}]% $t=6\times 10^{-4}$s
+\addplot[Blue,very thick,mark=x,mark size=2pt,only marks] table[x=Points:1,y=epeq] {section4/csvFiles/left_dgmpm.csv};
+\addplot[Orange,very thick,mark=none,mark size=2pt] table[x=Points:1,y=Equivalent_Plastic_Strain] {section4/csvFiles/left_fem.csv};
+\addplot[Red,very thick,mark=square,mark size=2pt,only marks] table[x=Points:1,y=epeq] {section4/csvFiles/left_mpm.csv};
+%\legend{dgmpm--CFL=1,fem--CFL=0.9,mpm--CFL=0.7}
+\end{axis}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../presentation"
+%%% End:
