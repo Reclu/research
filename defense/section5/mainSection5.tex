@@ -84,33 +84,33 @@
             \begin{tikzpicture}
               \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
               \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
-              \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+              \node[right] at (1,0.2) {\tiny $\tens{\sigma}^0$};
               \draw (0,0) -- (2,0.65);
               \foreach \y in {0.65,0.7,...,1.}
               \draw (0,0) -- (2,\y);
               \foreach \y in {1.5,1.55,...,2.}
               \draw (0,0) -- (2,\y);
-              \node[left] at (1.25,1.5) {\tiny $(\color{Red}\tens{\sigma}^1\color{CNBlue},\vect{v}^*)$};
+              \node[left] at (1.25,1.5) {\tiny $\color{Red}\tens{\sigma}^1\color{CNBlue}$};
               \begin{scope}[shift={(2.5,0)}]
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
-                \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+                \node[right] at (1,0.2) {\tiny $\tens{\sigma}^0$};
                 \draw (0,0) -- (2,0.65);
                 \foreach \y in {1.5,1.55,...,2.}
                 \draw (0,0) -- (2,\y);
-                \node[left] at (1.25,1.5) {\tiny $(\color{Orange}\tens{\sigma}^2\color{CNBlue},\vect{v}^*)$};
+                \node[left] at (1.25,1.5) {\tiny $\color{Orange}\tens{\sigma}^2\color{CNBlue}$};
               \end{scope}
               \begin{scope}[shift={(5,0)}]
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
-                \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
+                \node[right] at (1,0.2) {\tiny $\tens{\sigma}^0$};
                 \draw (0,0) -- (2,0.65);
                 \foreach \y in {0.65,0.7,...,1.}
                 \draw (0,0) -- (2,\y);
                 % \foreach \y in {1.5,1.55,...,2.}
                 % \draw (0,0) -- (2,\y);
                 \draw (0,0) -- (2,1.5);
-                \node[left] at (1.25,1.5) {\tiny $(\color{Green}\tens{\sigma}^3\color{CNBlue},\vect{v}^*)$};
+                \node[left] at (1.25,1.5) {\tiny $\color{Green}\tens{\sigma}^3\color{CNBlue}$};
               \end{scope}
             \end{tikzpicture}
           \item \footnotesize iterative Riemann solver \cite{Lin_et_Ballman}
