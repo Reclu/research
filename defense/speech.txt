@@ -1,13 +1,20 @@
 INTRODUCTION
 
 --- General context ---
-Concerned with solid dynamics problems such as Impact or crash-proof design:
-    in the first case, one wants to ensure that a structure undegoing dynamic loadings remains usable while in the latter, it is expected to dissipate as much energy as possible so that the passengers are safe
-    
-On the other hand, high-speed forming techniques are important industrial applications in the field of solid dynamics.
-Here is depicted a video of electromagnetic forming process which is developed at ecole centrale
-The optimization of the process requires to properly assess the residual states in terms of strains and stresses in order to get the desired shape for metallic bodies.
+More specifically, high-speed forming techniques represent importnt industrial applications in the field of solid dynamics.
+Here are depicted expermiental data about the electromagnetic forming collected here at Ecole centrale.
 
+During that that process, an aluminum worpiece quickly deformes due to volumes forces induced by an electromagnetic inductor in the bottom in the video.
+
+In order to optimize the process, and for instance limit the rebound of the workpiece on the steel matrix, or make the volume forces homogeneous in the solid, one wants to manage all the physical phenomena involved.
+In that case, this includes the electromagnetism, thermal aspects, the plastic hinging that forms in the bottom region as well as waves that arise from the dynamic loading.
+These waves propagate vertically and horizontally, interact with each other, and reflect on the boundaries of the domain.
+It then turns out that the physics of such a process is very complex even for simple geometries as it is obviously the case for the example depicted here.
+
+On the other hand, residual states in terms of stresses and strains must be properly assessed so that they can be used as input data for subsequent steps of the design procedure.
+
+
+**********
 Such physical phenomena can be mathematically modeled by means of partial differential equations which, for solids, are written as hyperbolic equations.
 However, the exact solution of these equations is made difficult and even not possible by complex geometries, the waves involved and enventual large deformations.
 As a result, the numerical simulation is a way of providing approximate solutions.
@@ -204,8 +211,45 @@ The early works on multi-dimensional elastoplastic solids in the dynamic regime 
 In the elastic regime, the solutions consists of 4 elastic discontinuities propagating in the medium.
 
 Rakhmatulin and Cristescu nevertheless highlighted mathematically the existence of four other nonlinear waves that can possibly arrise, two slow and two fast waves.
-More recently, in the 60's, Clifton carried out the characteristic analysis of this particular problem and wrote a system of Ordinary Differential Equations that are satisfied throug heach plastic waves.
+
+**More recently, in the 60's, Clifton carried out the characteristic analysis of this particular problem and wrote a system of Ordinary Differential Equations that are satisfied throug heach plastic waves.
 These ODEs govern stress paths as well as the evolution of the components of the velocity.
 The problem is however particular in that the characteristic structure of the problem can not be known a priori.
-Indeed, Clifton showed that the solution may involve one fast, one slow, or both simple waves.
+Indeed, Clifton showed that the solution may involve one slow wave or both fast and slow waves, the case involving only one fast wave corresponding to a degeneracy of the system.
 In that sense, the loading paths provided by Clifton are very important since they allow, for a given stationary state, to integrate backward the loading path to the initial condition, and hence to determine the waves involved.
+
+By mathematically studying the equations, Clifton came out in the 's with a set of ODEs that govern the evolution of the system within the simple waves. In particular, stress paths followed inside the plastic waves can be depicted in the stress plane.
+It has been shown that the loading paths corresponding to fast waves follow the initial yield surface while these of the slow waves go out of it.
+Thus, by considering Picard's problem, that is initial data and a stationary stress state given, Clifton highlighted that the characteristic structure of the solution may involve one fast, one slow, or both simple waves.
+For instance, for a given stress state, one can numerically integrate backward the ODEs holding in a slow wave, since it is the first that can be met, up to the initial yield surface. At that point, if the elastic hugoniot curve does not enable to reach the initial stress state, a fast wave must be added.
+
+Following similar considerations, a different stress state can lead to the presence of one slow wave linking the stationary state to the initial yield surface where the elastic Hugoniot curve is crossed.
+
+Finally, the solution may involve only one fast wave in addition to elastic discontinuities between the initial data and the stationary stress state.
+
+-- Characteristic analysis
+
+##Numerical results
+* Thin-walled
+We propose to first compare the proposed formulation to this of Clifton by numerically integrating the loading paths with sigma_12 as a driving parameter.
+To do so, several initial conditions are considered on the initial yield surface given by the von-Mises function and a linear hardening is assumed.
+Even though the problem involves only two components of stress, it will not be the case for more general problems. A convenient plane to look at the stress path is hence that of the principal deviatoric stresses. In that plane, the von-Mises yield surface is a circle.
+In the figures, the two approaches are compared with the arrows giving the direction of the loading paths.
+Once again, it can be seen that the loading path corresponding to a fast wave turn around the criterion while those of slow waves go out of it.
+It then appears that the solution we proposed is validated.
+
+* Plane stress
+We now move on to a more general plane stress problem by considering an additional stress component. For several initial values of that stress, initial values of the other components can be chosen along slices of the initial yield surface.
+
+First, fast waves yield once again paths that are restricted to the initial yield surface. However, the integration goes well up to a direction of pure shear in the deviatoric stress plane where numerical issues occur due to singularities of the loading functions.
+
+On the other hand, the results corresponding to slow waves show for every initial values of the additional stress component, that the loading paths are much more complicated.
+They do not follow the initial yield surface and the slopes may roughly change during the integration. This break of the loading path slopes cannot be explained so far and it is quite difficult to conclude on those paths.
+
+* Plane strain
+At last, a plane strain problem is looked at.
+
+Here again, the loading paths corresponding to fast waves follow the initial yield surface. By increasing the hardening modulus, it can be highlighted that the curves aim at reaching a direction of tensile/compression in the deviatoric stress plane and once some point is reached on the initial criterion, the path go bac kto that direction.
+
+At last, the integration of the ODEs related to slow waves leads to curves that are also restricted to the initial yield surface, up to a direction of pure shear.
+Once that direction is reached, the paths go radially out of the criterion.

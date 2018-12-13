@@ -70,8 +70,7 @@
 
 
 \begin{frame}{Thin-walled tube problem: characteristic analysis \cite{Clifton}}
-  %% Détailler travaux de clifton, comment il en arrive à des trajets élémentaires
-  %% Problème de Picard
+  \nocite{Clifton}
   \begin{footnotesize}
     \begin{columns}
       \begin{column}{0.6\textwidth}
@@ -97,21 +96,21 @@
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
                 \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
                 \draw (0,0) -- (2,0.65);
-                \foreach \y in {0.65,0.7,...,1.}
+                \foreach \y in {1.5,1.55,...,2.}
                 \draw (0,0) -- (2,\y);
-                % \foreach \y in {1.5,1.55,...,2.}
-                % \draw (0,0) -- (2,\y);
-                \draw (0,0) -- (2,1.5);
-                \node[left] at (1.25,1.5) {\tiny $(\color{Green}\tens{\sigma}^2\color{CNBlue},\vect{v}^*)$};
+                \node[left] at (1.25,1.5) {\tiny $(\color{Orange}\tens{\sigma}^2\color{CNBlue},\vect{v}^*)$};
               \end{scope}
               \begin{scope}[shift={(5,0)}]
                 \draw[->] (0,0) -- (2,0) node[right] {\tiny $x$};
                 \draw[->] (0,0) -- (0,2) node[above] {\tiny $t$};
                 \node[right] at (1,0.2) {\tiny $(\tens{\sigma}^0,\vect{v}^0)$};
                 \draw (0,0) -- (2,0.65);
-                \foreach \y in {1.5,1.55,...,2.}
+                \foreach \y in {0.65,0.7,...,1.}
                 \draw (0,0) -- (2,\y);
-                \node[left] at (1.25,1.5) {\tiny $(\color{Orange}\tens{\sigma}^3\color{CNBlue},\vect{v}^*)$};
+                % \foreach \y in {1.5,1.55,...,2.}
+                % \draw (0,0) -- (2,\y);
+                \draw (0,0) -- (2,1.5);
+                \node[left] at (1.25,1.5) {\tiny $(\color{Green}\tens{\sigma}^3\color{CNBlue},\vect{v}^*)$};
               \end{scope}
             \end{tikzpicture}
           \item \footnotesize iterative Riemann solver \cite{Lin_et_Ballman}
@@ -131,11 +130,12 @@
           \onslide<3>
           \vskip 5pt
           \centering
-          \input{section5/pgfFigures/thinwalledStress2}
+          \input{section5/pgfFigures/thinwalledStress3}
           \onslide<4>
           \vskip 5pt
           \centering
-          \input{section5/pgfFigures/thinwalledStress3}
+          \input{section5/pgfFigures/thinwalledStress2}
+          
         \end{overprint}
         
       \end{column}
