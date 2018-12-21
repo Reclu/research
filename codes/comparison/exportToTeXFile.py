@@ -9,6 +9,9 @@ This files gathers data export methods that can be used within a LaTeX file prov
 \usepackage{pgfplots} 
 pgfplot is a very powerfull LaTeX package for scientific plotting (see http://sourceforge.net/projects/pgfplots)
 
+Examples are provided in examples.py
+
+Warning: LaTeX compilation is restricted to a given number of sample points when using pdflatex. Thus, for a huge set of data, one must use LuaLatex compiler rather than pdflatex.
 """
 
 def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yFields,*kwargs):
@@ -32,6 +35,11 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yFields,*kwargs):
     n_fields = np.shape(yFields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
+    color=['Purple','Orange','Blue','Red','Duck','Green','Yellow']
+    col=['120,28,129','231,133,50','63,96,174','217,33,32','83,158,182','109,179,136','202,184,67']
+    for i in range(len(col)):
+        TeXFile.write(r'\definecolor{'+color[i]+'}{RGB}{'+col[i]+'}')
+        TeXFile.write('\n')
     marker=['none','none','*','none','|','x','pentagone*','none','triangle*']
     style=['dashed','densely dotted','solid','solid','solid','only marks','solid','solid']
     thickness=['very thick','very thick','thick','very thick','very thick','thick','thin','thin','thick']
@@ -52,7 +60,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yFields,*kwargs):
     if subtitle[:3]=='(c)':
         TeXFile.write(r'\legend{'+str(legend)+'}')
     else:
-        TeXFile.write(r'%\legend{'+str(legend)+'}')
+        TeXFile.write(r'\legend{'+str(legend)+'}')
     TeXFile.write('\n')    
     TeXFile.write(r'\end{axis}')
     TeXFile.write('\n')
@@ -60,7 +68,7 @@ def export2DTeXFile(fileName,xFields,xlabel,ylabel,subtitle,yFields,*kwargs):
     TeXFile.close()
 
 
-def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xlabels,legend):
+def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xlabel,legend):
     """
     Writing of .tex file using the environment groupplot embedded in a tikzpicture environment.
     \usetikzlibrary{pgfplots.groupplots} is thus required in the main LaTeX file
@@ -94,11 +102,16 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xla
 
     The legend is also a list of label holding for each curve.
     """
+    TeXFile=open(fileName,"w")
+    # Define Paul Tol's colors (purple to red)
+    color=['Purple','Orange','Blue','Red','Duck','Green','Yellow']
+    col=['120,28,129','231,133,50','63,96,174','217,33,32','83,158,182','109,179,136','202,184,67']
+    for i in range(len(col)):
+        TeXFile.write(r'\definecolor{'+color[i]+'}{RGB}{'+col[i]+'}')
+        TeXFile.write('\n')
     row=len(rowFields)
     col=len(colFields)
     fields_in_plots=len(containers)
-    TeXFile=open(fileName,"w")
-    # Define Paul Tol's colors (purple to red)
     marker=['none','none','*','none','|','x','pentagone*','none','triangle*']
     style=['dashed','densely dotted','solid','solid','solid','only marks','solid','solid']
     thickness=['very thick','very thick','thick','very thick','very thick','thick','thin','thin','thick']
@@ -118,7 +131,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xla
                 minim.append(min(containers[k][field][:,colFields[j][k]]))
         maximum[i]=1.1*max(maxim)
         minimum[i]=1.1*min(minim)
-    TeXFile.write(r'\begin{tikzpicture}[scale=.9]');TeXFile.write('\n')
+    TeXFile.write(r'\begin{tikzpicture}[scale=1.]');TeXFile.write('\n')
     TeXFile.write(r'\begin{groupplot}[group style={group size='+str(col)+' by '+str(row)+',')
     TeXFile.write('\n')
     TeXFile.write('ylabels at=edge left, yticklabels at=edge left,horizontal sep=4.ex,')
@@ -126,10 +139,10 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xla
     TeXFile.write('vertical sep=2ex,xticklabels at=edge bottom,xlabels at=edge bottom},')
     TeXFile.write('\n')
     if row==1:
-        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,ylabel='+str(Ylabels[0])+',xlabel='+str(Xlabel)+',')
+        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,ylabel='+str(Ylabels[0])+',xlabel='+Xlabel+',')
         TeXFile.write('\n')
     else:
-        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.,xmax=6.,xlabel='+str(Xlabel)+',')
+        TeXFile.write(r'ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xlabel='+Xlabel+',')
         TeXFile.write('\n')
     TeXFile.write('axis on top,scale only axis,width=0.45\linewidth')
     TeXFile.write('\n')
@@ -146,7 +159,7 @@ def export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,Xla
                 TeXFile.write(r'\addplot['+str(couleur[k])+','+str(style[k])+',mark='+str(marker[k])+','+thickness[k]+',mark size=3pt,mark repeat=2] coordinates{')
                 #pdb.set_trace()
                 FIELD=containers[k][field][:,colFields[j][k]]
-                xFields=containers[k]["pos"][:,colFields[j][k]]
+                xFields=containers[k]["x"][:,colFields[j][k]]
                 for l in range(len(FIELD)):
                     TeXFile.write('('+str(xFields[l])+','+str(FIELD[l])+') ')
                 TeXFile.write('};\n')
