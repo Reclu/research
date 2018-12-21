@@ -552,6 +552,7 @@ for k in range(len(sig22)-1)[1:]:
     for s,i in enumerate(frames):
         # if s22==0:
         #     continue
+        
         sig0=sig[-1-i,k]
         tau0=tau[-1-i,k]
         tauM=1.5*np.max(tau[:,k])
@@ -722,12 +723,13 @@ ax2.plot([-sigy,sigy],[0.,0.],[0.,0.],color="k",linestyle="--",lw=1.)
 ax2.plot([0.,0.],[-sigy,sigy],[0.,0.],color="k",linestyle="--",lw=1.)
 ax2.plot([-radius,radius],[radius,-radius],[0.,0.],color="k",linestyle="--",lw=1.)
 
+sig22=2
 #line1, = ax1.plot([], [],col[0] )
 # line2, = ax1.plot([], [],col[1])
 # line3, = ax1.plot([], [],col[2])
 # line=[line1,line2,line3]
 ax1.set_xlim(0,Niter)
-ax1.set_ylim(0.,np.max(TAU[:,0,3]))
+ax1.set_ylim(0.,np.max(TAU[:,0,sig22]))
 ax1.grid()
 
 line3D=[]
@@ -746,15 +748,19 @@ def init():
 def animate(i):
     
     for k,s in enumerate(frames):
-        line[k].set_data(np.arange(0,i,1),TAU[:i,k,3])
-        line3D[k].set_data(eigsigS[0:i,k,3,0],eigsigS[0:i,k,3,1])
-        line3D[k].set_3d_properties(eigsigS[0:i,k,3,2])
+        line[k].set_data(np.arange(0,i,1),TAU[:i,k,sig22])
+        line3D[k].set_data(eigsigS[0:i,k,sig22,0],eigsigS[0:i,k,sig22,1])
+        line3D[k].set_3d_properties(eigsigS[0:i,k,sig22,2])
     return line,line3D
 
+video_length=10#seconds
+frames_per_second = int(Niter/video_length)
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=Niter, interval=100, blit=False)
 Writer = animation.writers['ffmpeg']
-writers = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writers = Writer(fps=frames_per_second, metadata=dict(artist='Me'), bitrate=-1)
+# plt.rcParams['animation.ffmpeg_path']='C:/ffmpeg/bin/ffmpeg.exe'
+# writers=animation.FFMpegWriter(bitrate=500)
 anim.save('loadingpath_slow.mp4', writer=writers)
 #anim.save('loadingpath_slow.mp4', extra_args=['-vcodec', 'libx264'])
 
-#plt.show()
+plt.show()

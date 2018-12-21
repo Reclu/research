@@ -191,45 +191,47 @@ def gridSearch(function,tol=1.e-7):
         else:
            return i
 
-
+cx=20.;cy=20.
+print "Speeds: cx/cy=",cx/cy
 ############### 1PPC
-# print "**************************************************************"
-# print "******************  1PPC discretization **********************"
-# print "**************************************************************"
-# # Local coordinates of material points in current element
-# Xp=np.array([0.])
-# Yp=np.array([0.])
+print "**************************************************************"
+print "******************  1PPC discretization **********************"
+print "**************************************************************"
+# Local coordinates of material points in current element
+Xp=np.array([0.])
+Yp=np.array([0.])
 
-# solution=optimize.fsolve(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
-# CFL=max(cx,cy)*solution/2.
-# print "Solution DCU is: ",CFL,cx*solution/2. + cy*solution/2.
+solution=optimize.fsolve(symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp)),1.)
+CFL=max(cx,cy)*solution/2.
+print "Solution DCU is: ",CFL,cx*solution/2. + cy*solution/2.
 
-# Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# CFL=np.linspace(0.,1.,100.)
-# res=np.zeros(len(CFL))
-# for i in range(len(CFL)):
-#     res[i]=Residual(2.*CFL[i]/max(cx,cy))
-# plt.plot(CFL,res)
-# plt.grid()
-# plt.show()
+Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+CFL=np.linspace(0.,1.,100.)
+res=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    res[i]=Residual(2.*CFL[i]/max(cx,cy))
+plt.plot(CFL,res)
+plt.grid()
+plt.show()
 
 
 
-# Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# # solution=optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12})
-# # print solution
-# solution=optimize.fsolve(Residual,1.)
-# CFL=max(cx,cy)*solution/2.
+Residual=symbolResidual(0,cx,cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# solution=optimize.root(Residual,1.,method='hybr',options={'xtol':1.e-12}).x
+# print solution
+solution=optimize.fsolve(Residual,1.)
+CFL=max(cx,cy)*solution/2.
 
-# print "Solution CTU is: ",CFL
-# CFL=np.linspace(0.,1.,100.)
-# res=np.zeros(len(CFL))
-# for i in range(len(CFL)):
-#     res[i]=Residual(2.*CFL[i]/max(cx,cy))
-# plt.plot(CFL,res)
-# plt.grid()
-# plt.show()
+print "Solution CTU is: ",CFL
+CFL=np.linspace(0.,1.,100.)
+res=np.zeros(len(CFL))
+for i in range(len(CFL)):
+    res[i]=Residual(2.*CFL[i]/max(cx,cy))
+plt.plot(CFL,res)
+plt.grid()
+plt.show()
 
+pdb.set_trace()
 cx=20.;cy=20.
 print "Speeds: cx/cy=",cx/cy
 

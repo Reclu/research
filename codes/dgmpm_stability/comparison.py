@@ -108,6 +108,9 @@ print "**************************************************************"
 print "   "
 shift=0.25
 shapes=shape_functions(np.array([0.25,0.75]))
+## Gauss-Legendre integration
+shapes=shape_functions(0.5*np.array([1.-1./np.sqrt(3.),1.+1./np.sqrt(3.)]))
+
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
@@ -115,7 +118,7 @@ for i in range(np.shape(shapes)[0]):
     rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
 print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
-
+pdb.set_trace()
 print "   "
 print "Shifted"
 shapes=shape_functions(np.array([0.25+shift,0.75+shift]))
