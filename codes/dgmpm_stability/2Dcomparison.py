@@ -11,20 +11,22 @@ def export2DTeXFile(fileName,xField,fields,*kwargs):
     n_fields = np.shape(fields)[0]
     n_labels = np.shape(kwargs)[0]
     # Define Paul Tol's colors (purple to red)
-    color=['Blue','Red','Blue','Red','black','black','black']
-    marker=['*','x','square','+','none','none','none']
+    color=['Blue','Red','Green','Red','black','black','black']
+    marker=['+','x','star','+','none','none','none']
     size=['very thick','very thick','very thick','very thick','thin','thin',]
     line=['solid','solid','dashed','dashed']
     TeXFile.write(r'\begin{tikzpicture}[scale=0.5]')
     TeXFile.write('\n')
-    TeXFile.write(r'\begin{axis}[xlabel=$a/b$,ymajorgrids=true,xmajorgrids=true,xmin=1,xmax=41,xtick={1,10,20,30,40}]')
+    TeXFile.write(r'\begin{axis}[xlabel=$s_1/s_2$,ymajorgrids=true,xmajorgrids=true,xmin=1,xmax=41,xtick={1,10,20,30,40}]')
     TeXFile.write('\n')
     TeXFile.write('%%%%%%%%%%% NATURAL CONFIGURATION')
     TeXFile.write('\n')
+    #pdb.set_trace()
     for i in range(np.shape(fields)[0]):
-        TeXFile.write(r'\addplot['+str(color[i])+',mark='+str(marker[i])+',very thick] coordinates {')
+        TeXFile.write(r'\addplot['+str(color[i])+',mark='+str(marker[i])+',very thick,mark size=5pt] coordinates {')
         for j in range(len(fields[i,:])):
             TeXFile.write('('+str(xField[j])+','+str(fields[i,j])+') ')
+        
         TeXFile.write('};\n')
         if i==0:
             TeXFile.write('%%%%%%%%%%% MODIFIED CONFIGURATION')
@@ -179,22 +181,22 @@ print "**************************************************************"
 print "******************  1PPC discretization **********************"
 print "**************************************************************"
 print "=== Symmetric horizontal ==="
-Xp=np.array([-0.])
-Yp=np.array([0.])
-DCU=np.zeros(samples)
-CTU=np.zeros(samples)
-for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=optimize.newton(residual,1.)
-    #solution=gridSearch(residual)
-    CTU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-plt.plot(cx/cy,DCU,'b')
-plt.plot(cx/cy,CTU,'r')
-plt.grid()
-plt.show()
+# Xp=np.array([-0.])
+# Yp=np.array([0.])
+# DCU=np.zeros(samples)
+# CTU=np.zeros(samples)
+# for i in range(samples):
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     DCU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=optimize.newton(residual,1.)
+#     #solution=gridSearch(residual)
+#     CTU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+# plt.plot(cx/cy,DCU,'b')
+# plt.plot(cx/cy,CTU,'r')
+# plt.grid()
+# plt.show()
 
 ############### 2PPC
 print "**************************************************************"
@@ -275,7 +277,7 @@ print "=== Symmetric horizontal ==="
 # export2DTeXFile('2dCFL_2ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
 
 
-# ############### 4PPC
+############### 4PPC
 # print "**************************************************************"
 # print "******************  4PPC discretization **********************"
 # print "**************************************************************"
@@ -286,15 +288,22 @@ print "=== Symmetric horizontal ==="
 # Xp2=np.array([-0.25,0.25,0.25,-0.25])
 # Yp2=np.array([-0.25,-0.25,0.25,0.25])
 
-# DCU_natural=np.zeros((4,samples))
-# CTU_natural=np.zeros((4,samples))
-# DCU_shifted=np.zeros((4,samples))
-# CTU_shifted=np.zeros((4,samples))
+# Xp3=np.array([-1.,1.,1.,-1.])
+# Yp3=np.array([-1.,-1.,1.,1.])
+
+# DCU_natural=np.zeros((1,samples))
+# CTU_natural=np.zeros((1,samples))
+# DCU_shifted=np.zeros((1,samples))
+# CTU_shifted=np.zeros((1,samples))
+# DCU_shifted2=np.zeros((1,samples))
+# CTU_shifted2=np.zeros((1,samples))
+
 # fig = plt.figure()
 # ax1=plt.subplot2grid((1,2),(0,0))
 # ax2=plt.subplot2grid((1,2),(0,1))
 # col=['b','r','g','k','m','y','c']
-# for p in range(4):
+
+# for p in range(1):
 #     for i in range(samples):
 #         residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
 #         solution=gridSearch(residual)
@@ -310,6 +319,7 @@ print "=== Symmetric horizontal ==="
 #         residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
 #         solution=gridSearch(residual)
 #         CTU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+
 #     ax1.plot(cx/cy,DCU_natural[p,:],col[p],label='nat'+str(p))
 #     ax1.plot(cx/cy,DCU_shifted[p,:],col[p],label='shift'+str(p))
 #     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
@@ -458,25 +468,182 @@ for p in range(1):
 #     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
 #     ax2.plot(cx/cy,CTU_shifted[p,:],col[p],linestyle='--',label='shift'+str(p))
 
+#         # Shift symmetrically on nodes
+#         residual=symbolResidual(p,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+#         solution=optimize.newton(residual,1.)
+#         DCU_shifted2[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+#         residual=symbolResidual(p,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+#         solution=optimize.newton(residual,1.)
+#         CTU_shifted2[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
+#     ax1.plot(cx/cy,DCU_natural[p,:],col[p],label='nat'+str(p))
+#     ax1.plot(cx/cy,DCU_shifted[p,:],col[p],label='shift'+str(p))
+#     ax1.plot(cx/cy,DCU_shifted2[p,:],col[p],label='shift2'+str(p))
+#     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
+#     ax2.plot(cx/cy,CTU_shifted[p,:],col[p],linestyle='--',label='shift'+str(p))
+#     ax2.plot(cx/cy,CTU_shifted2[p,:],col[p],linestyle='-.',label='shift2'+str(p))
+
 # ax1.grid();ax2.grid()
 # ax1.legend();ax2.legend()
 # plt.show()
 
+# # plt.plot(cx/cy,DCU_natural[0,:],'b')
+# # plt.plot(cx/cy,DCU_natural[1,:],'b--')
+# # plt.plot(cx/cy,CTU_natural[0,:],'r')
+# # plt.plot(cx/cy,CTU_natural[1,:],'r--')
+# # plt.grid()
+# # plt.show()
 
-# Shift symmetrically
+# # plt.plot(cx/cy,DCU_shifted[0,:],'b')
+# # plt.plot(cx/cy,DCU_shifted[1,:],'b--')
+# # plt.plot(cx/cy,CTU_shifted[0,:],'r')
+# # plt.plot(cx/cy,CTU_shifted[1,:],'r--')
+# # plt.grid()
+# # plt.show()    
+
+# # DCU_natural=[]
+# # CTU_natural=[]
+# # DCU_shifted=[]
+# # CTU_shifted=[]
+# # for i in range(samples):
+# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# #     solution=gridSearch(residual)
+# #     DCU_natural.append(cx[i]*solution/2.)
+# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# #     solution=gridSearch(residual)
+# #     CTU_natural.append(cx[i]*solution/2.)
+
+# # Shift symmetrically
+# # for i in range(samples):
+# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# #     solution=gridSearch(residual)
+# #     DCU_shifted.append(cx[i]*solution/2.)
+# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+# #     solution=gridSearch(residual)
+# #     CTU_shifted.append(cx[i]*solution/2.)
+
+# export2DTeXFile('2dCFL_4ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted,DCU_shifted2]))
+# export2DTeXFile('2dCFL_4ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted,CTU_shifted2]))
+
+# pdb.set_trace()
+# Xp=np.array([-0.5,0.5,0.5,-0.5])
+# Yp=np.array([-0.5,-0.5,0.5,0.5])+0.25
+
+# DCU_natural=[]
+# CTU_natural=[]
+# DCU_shifted=[]
+# CTU_shifted=[]
+# DCU_shifted2=[]
+# CTU_shifted2=[]
+# for i in range(samples):
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     DCU_natural.append(cx[i]*solution/2.)
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     CTU_natural.append(cx[i]*solution/2.)
+>>>>>>> a0e57f43a82da56787da6efc10455118e060ad5a
+
+# Xp=np.array([-0.5,0.5,0.5,-0.5])
+# Yp=np.array([-0.5,-0.5,0.5,0.5])-0.25
+# # Shift symmetrically
+# for i in range(samples):
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     DCU_shifted.append(cx[i]*solution/2.)
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     CTU_shifted.append(cx[i]*solution/2.)
+
+# export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
+# export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+
+
+# Yp=np.array([-0.5,0.5,0.5,-0.5])
+# Xp=np.array([-0.5,-0.5,0.5,0.5])+0.25
+
+# DCU_natural=[]
+# CTU_natural=[]
+# DCU_shifted=[]
+# CTU_shifted=[]
+# for i in range(samples):
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     DCU_natural.append(cx[i]*solution/2.)
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     CTU_natural.append(cx[i]*solution/2.)
+
+# Yp=np.array([-0.5,0.5,0.5,-0.5])
+# Xp=np.array([-0.5,-0.5,0.5,0.5])-0.25
+# # Shift symmetrically
+# for i in range(samples):
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     DCU_shifted.append(cx[i]*solution/2.)
+#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual)
+#     CTU_shifted.append(cx[i]*solution/2.)
+
+
+
+# export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
+# export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+
+############### 9PPC
+print "**************************************************************"
+print "******************  9PPC discretization **********************"
+print "**************************************************************"
+print "=== Symmetric ==="
+Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
+Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
+
+Xp2=np.array([-1./3.,1./3.,1./3.,-1./3.,-1./3.,0.,1./3.,0.,0.])
+Yp2=np.array([-1./3.,-1./3.,1./3.,1./3.,0.,0.,0.,-1./3.,1./3.])
+
+
+Xp3=np.array([-1.,1.,1.,-1.,-1.,0.,1.,0.,0.])
+Yp3=np.array([-1.,-1.,1.,1.,0.,0.,0.,-1.,1.])
+
+DCU_natural=[]
+CTU_natural=[]
+DCU_shifted=[]
+CTU_shifted=[]
+DCU_shifted2=[]
+CTU_shifted2=[]
+
 for i in range(samples):
     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
     solution=gridSearch(residual)
-    DCU_shifted.append(cx[i]*solution/2.)
+    DCU_natural.append(cx[i]*solution/2.)
     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=gridSearch(residual)
+    CTU_natural.append(cx[i]*solution/2.)
+    
+    # Shift symmetrically
+    residual=symbolResidual(0,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+    solution=gridSearch(residual)
+    DCU_shifted.append(cx[i]*solution/2.)
+    residual=symbolResidual(0,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
     solution=gridSearch(residual)
     CTU_shifted.append(cx[i]*solution/2.)
 
 export2DTeXFile('2dCFL_9ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
 export2DTeXFile('2dCFL_9ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
 
-Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])
-Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])+0.25
+# Shift symmetrically 2
+for i in range(samples):
+    residual=symbolResidual(0,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+    solution=gridSearch(residual)
+    DCU_shifted2.append(cx[i]*solution/2.)
+    residual=symbolResidual(0,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+    solution=gridSearch(residual)
+    CTU_shifted2.append(cx[i]*solution/2.)
+
+export2DTeXFile('2dCFL_9ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted,DCU_shifted2]))
+export2DTeXFile('2dCFL_9ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted,CTU_shifted2]))
+
+Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
+Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])+0.1
 
 
 DCU_natural=[]
@@ -491,8 +658,12 @@ for i in range(samples):
     solution=gridSearch(residual)
     CTU_natural.append(cx[i]*solution/2.)
 
-Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])
-Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])-0.25
+# Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])
+# Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])-0.25
+
+Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
+Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])-0.1
+
 # Shift symmetrically
 for i in range(samples):
     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
@@ -502,12 +673,12 @@ for i in range(samples):
     solution=gridSearch(residual)
     CTU_shifted.append(cx[i]*solution/2.)
 
-export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+export2DTeXFile('2dCFL_9ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
+export2DTeXFile('2dCFL_9ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
 
 
-Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])+0.25
-Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])
+Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])+0.1
+Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
 
 DCU_natural=[]
 CTU_natural=[]
@@ -521,8 +692,9 @@ for i in range(samples):
     solution=gridSearch(residual)
     CTU_natural.append(cx[i]*solution/2.)
 
-Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])-0.25
-Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])
+Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])-0.1
+Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
+
 # Shift symmetrically
 for i in range(samples):
     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
@@ -532,5 +704,5 @@ for i in range(samples):
     solution=gridSearch(residual)
     CTU_shifted.append(cx[i]*solution/2.)
 
-export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+export2DTeXFile('2dCFL_9ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
+export2DTeXFile('2dCFL_9ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))

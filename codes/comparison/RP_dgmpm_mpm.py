@@ -259,6 +259,13 @@ plt.plot(PIC["time"][:-1],PIC["NRG"][:-1]/max(PIC["NRG"][:-1]),'b-x',lw=2.,label
 plt.plot(MPM2["time"][:-1],MPM2["NRG"][:-1]/max(MPM2["NRG"][:-1]),'r-x',lw=2.,label='mpm 2ppc')
 plt.plot(DGMPM["time"][:-1],DGMPM["NRG"][:-1]/max(DGMPM["NRG"][:-1]),'bo',lw=2.,label='dgmpm 1ppc')
 plt.plot(DGMPM2["time"][:-1],DGMPM2["NRG"][:-1]/max(DGMPM2["NRG"][:-1]),'ro',lw=2.,label='dgmpm 2ppc')
+
+# plt.plot(MPM["time"][:-1],MPM["NRG"][:-1],'b-x',lw=2.,label='mpm 1ppc')
+# plt.plot(PIC["time"][:-1],PIC["NRG"][:-1],'b-x',lw=2.,label='pic 1ppc')
+# plt.plot(MPM2["time"][:-1],MPM2["NRG"][:-1],'r-x',lw=2.,label='mpm 2ppc')
+# plt.plot(DGMPM["time"][:-1],DGMPM["NRG"][:-1],'bo',lw=2.,label='dgmpm 1ppc')
+# plt.plot(DGMPM2["time"][:-1],DGMPM2["NRG"][:-1],'ro',lw=2.,label='dgmpm 2ppc')
+
 plt.grid()
 plt.legend(numpoints=1)
 plt.show()

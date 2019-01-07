@@ -269,7 +269,7 @@ colFields=np.array([[20,20,20,0],[30,30,30,1],[45,45,45,2]])
 legend=['dgmpm','fem','fvm (SB)','exact']
 Ylabels=[r'$\sigma (Pa)$',r'$\eps^p $']
 
-export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
+#export2DGroupplot(fileName,containers,rowFields,colFields,titles,Ylabels,legend)
 
 
 """
