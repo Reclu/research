@@ -1,14 +1,14 @@
 \subsection{Point of view of this thesis}
 
 This work is based on the idea that the accurate numerical solution of hyperbolic problems relies on robust and efficient discretization techniques and the ability to embed information about some particular solution of the model into the numerical scheme.
-The underlying concepts arise from Godunov method \cite{Godunov_method} that first proposed to account for the characteristic structure of the solution of hyperbolic problems within numerical schemes.
+The underlying concepts arise from the Godunov method \cite{Godunov_method} that first proposed to account for the characteristic structure of the solution of hyperbolic problems within numerical schemes.
 This approach, as we shall see later, enables significant improvements over some other methods.
-Although the amount of information provided is limited by the computational cost, new model reduction tools can now allow to "compress" the amount of information and thus allow to reconsider the use of more complex Riemann solvers, in order to improve the accuracy of the numerical solution.
+Although the amount of information provided is limited by the computational cost, new model reduction tools can now allow to "compress" the amount of information and, in turn, to reconsider the use of more complex Riemann solvers in order to improve the accuracy of numerical solutions.
 
 Two scientific objectives have therefore been pursued in the present work:
 \begin{itemize}
-\item \textbf{the development of a promising discretization for solid mechanics problems}
-\item \textbf{the identification of the response of two-dimensional elastic-plastic solids to dynamic step loading under small strains}
+\item \textbf{the development of a promising discretization for solid mechanics problems involving finite deformations}
+\item \textbf{the identification of the response of two-dimensional elastic-plastic solids to dynamic step loading}
 \end{itemize}
 
 \subsection{The strategy adopted}
@@ -16,7 +16,7 @@ Two scientific objectives have therefore been pursued in the present work:
 %% Lagrangian
 First, the numerical scheme developed here provides a material description of the motion so as to handle history-dependent constitutive models while avoiding the shortcomings of ALE and Eulerian methods.
 %% Meshfree
-In addition, in order not to suffer from mesh tangling instabilities, it seems better to turn to a mesh-free method.
+In addition, in order not to suffer from mesh entanglement, it seems better to turn to a mesh-free method.
 %% DG approximation
 This method is wanted to mimic the physics of hyperbolic problems by accounting for their intrinsic structure.
 
@@ -24,12 +24,13 @@ This method is wanted to mimic the physics of hyperbolic problems by accounting 
 It is therefore proposed here to mix the above features by extending the material point method to the Discontinuous Galerkin approximation.
 %% Pourquoi pas SDG ou TDG
 The Discontinuous Galerkin approximation provides an appealing framework for describing moving discontinuities such as waves propagating in solids, and the potential ability of increasing approximation order.
-Moreover, the numerical fluxes naturally arising from the use of DG approximation enables to introduce the characteristic structure on the one hand, and to take advantage of the works done in the context of finite volumes on the other hand.
+Moreover, the numerical fluxes naturally arising from the use of DG approximation introduces the characteristic structure on the one hand, and takes advantage of the work done in the context of finite volumes on the other hand.
 %% Pourquoi MPM
-Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the convenience it allows in computing the numerical fluxes at finite elements interfaces by means of an approximate Riemann solver \cite{Toro}.
+%Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the convenience it allows in computing the numerical fluxes at finite elements interfaces by means of an approximate Riemann solver \cite{Toro}.
+Furthermore, the use of an arbitrary grid motivates the choice of the MPM due to the convenience it allows in computing the numerical fluxes at the interfaces between finite elements by means of an approximate Riemann solver \cite{Toro}.
 %% Réduire la diffusion de la pic grace à DG
 A balance between diffusion and oscillations exists in PIC methods in such a way that there is some freedom in regard to the MPM setting used.
-It is however thought that the use of DG approximation leads to a reduction of the influence domain of the particles and hence, to a reduction of the numerical diffusion. 
+It is however thought here that the use of DG approximation leads to a reduction of the influence domain of the particles and hence, to a reduction of the numerical diffusion. 
 Therefore, it is preferred here to avoid oscillations at the risk of introducing diffusion, which should be limited by the DG approximation.
 As a first development step of \textbf{the Discontinuous Galerkin Material Point Method}, we restrict our attention to space-DG.
 At last, particular attention is paid here to discontinuous solutions, the extension of the method to higher-order approximation for regular ones will be the purpose of future works.
@@ -39,8 +40,9 @@ The approach described previously should be able to account for the characterist
 Indeed, the point of view adopted here is that a numerical scheme can properly mimic the solution providing that a sufficient amount of information about the model is available.
 Nonetheless, it is not the case for all the constitutive models considered in this work.
 More specifically, while the response of one-dimensional elastoplastic solids is well-known, there are some lacks in describing the behavior of such materials in more dimensions. 
-As a consequence, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids is also investigated in the present work.
-
+As a consequence, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids under small strains is also investigated in the present work.
+This preliminary work is expected to pave the way for the solution of similar problems within the large deformations framework.
+% Under small strains
 
 
 

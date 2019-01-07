@@ -9,11 +9,11 @@ A historical review of PIC methods is made and both Eulerian and Lagrangian form
 After illustrating some shortcomings of the latter scheme on a simple test case, the extension of the MPM to the discontinuous Galerkin approximation is developed.
 %First, an overview of existing DG schemes is provided.
 The DGMPM is then derived with a total Lagrangian formulation.
-As we shall see, this new approach enables the use of fractional-steps methods for non-homogeneous systems as well as Riemann solvers for the computation of intercell fluxes.
-The remaining of the chapter concerns the numerical analysis of the DGMPM in terms of stability and accuracy.
+As we shall see, this new approach enables the use of fractional-step methods for non-homogeneous systems as well as Riemann solvers for the computation of intercell fluxes.
+The remainder of the chapter concerns the numerical analysis of the DGMPM in terms of stability and accuracy.
 
 
-Chapter \ref{chap:chap4} is devoted to the comparison of the performances of the method with other existing schemes and exact solutions.
+Chapter \ref{chap:chap4} is devoted to the comparison of the performance of the method with other existing schemes and exact solutions.
 To begin with, problems falling in the linearized geometrical framework will be considered in one and two space dimensions.
 More specifically, the constitutive models assumed include elasticity, elasto-viscoplasticity and elastoplasticity.
 Then, hyperbolic problems in one-dimensional and two-dimensional hyperelastic media are looked at.
@@ -21,7 +21,7 @@ Then, hyperbolic problems in one-dimensional and two-dimensional hyperelastic me
 The simulations performed on elastic-plastic solids in chapter \ref{chap:chap4} emphasize that the numerical solutions can be improved by using approximate elastic-plastic Riemann solvers, thus introducing the understanding one has of the physics into the scheme.
 The purpose of chapter \ref{chap:chap5} is therefore to give a contribution to the solutions of hyperbolic problems in two-dimensional elastic-plastic solids undergoing dynamic step-loadings.
 In particular, the understanding of the structure of such problems, along with the study of loading paths in simple waves, are addressed. %study of the structure of those problems as well as this of 
-Indeed, though a lot of numerical results of this class of problems may be found in the literature, the structure of the solutions is rather unknown, as shown by the survey proposed in the chapter. 
+Indeed, though a lot of numerical results of this class of problems may be found in the literature, the structure of the solutions is rather unknown, as shown by the survey in the chapter. 
 Thus, the proposed characteristic analysis of plane strain and plane stress problems highlights the combined-stress wave nature of the solutions.
 Then, the mathematical study of loading paths followed across plastic waves, supplemented by numerical results, emphasizes typical responses of solids to given loading conditions.
 Finally, the idea of benefit from the identified stress paths in numerical schemes by means of a dedicated Riemann solver is discussed.
