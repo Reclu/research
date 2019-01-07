@@ -2,13 +2,14 @@ The quasi-linear forms written above enable the particularization of the theory 
 
 %The theory of first order quasi-linear system is now applied to solid dynamics through the characteristic analysis of systems \eqref{eq:HE_quasilinear}, \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} is performed in this section. Second, a particular type of IVP that will be considered in the rest of the manuscript is introduced. 
 %\subsection{Characteristic structure of solutions}
-For the sake of simplicity, studies of finite deformations and linearized geometrical frameworks will be condensed in this part by using the generic notation of stress $\tens{S}$ and vectors written in the reference configuration. Furthermore, instead of considering multi-dimensional conservation laws systems, we will focus without loss of generality on quasi-linear form \eqref{eq:HE_quasilinear} projected on an arbitrary direction $\vect{N}=\[\vect{E}_1,\vect{E}_2,\vect{E}_3\]$ \cite[p.425-426]{Leveque}. In this direction, one has:
+For the sake of simplicity, studies of finite deformations and linearized geometrical frameworks will be condensed in this part by using the generic notation of stress $\tens{S}$ and vectors written in the reference configuration.
+Furthermore, instead of considering multi-dimensional systems of conservation laws, we will focus without loss of generality on the quasi-linear form \eqref{eq:HE_quasilinear} projected on an arbitrary direction $\vect{N}=\[\vect{E}_1,\vect{E}_2,\vect{E}_3\]$ \cite[p.425-426]{Leveque}. In this direction, one has:
 \begin{equation}
   \label{eq:normal_quasi}
   \Qcb_t + \Jbsf \drond{\Qcb}{X_N} = \Scb
 \end{equation}
-where $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ of dimension $m$ arise.
-In three dimensions, the non-symmetrical PK1 tensor in quasi-linear form \eqref{eq:HE_quasilinear} yields a Jacobian matrix of dimension $m=3+9$ while systems \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} involving Cauchy tensor, lead to $m=3+6$.
+in which $X_N=\vect{X}\cdot\vect{N}$ and the \textit{Jacobian matrix} $\Jbsf = \Absf^\alpha N_\alpha$ of dimension $m$ arise.
+In three dimensions, the non-symmetrical PK1 tensor in quasi-linear form \eqref{eq:HE_quasilinear} yields a Jacobian matrix of dimension $m=3+9$ while systems \eqref{eq:HPP_quasi-linear} and \eqref{eq:EP_quasilinear} involving the Cauchy tensor, lead to $m=3+6$.
 The characteristic analysis of system \eqref{eq:normal_quasi} is therefore equivalent to that of linear combinations of matrices $\Absf^\alpha$. With the previous developments, the Jacobian matrix reads:
 \begin{equation}
   \label{eq:jacobian_generic}
@@ -48,12 +49,14 @@ The condition for system \eqref{eq:normal_quasi} to be hyperbolic (real eigenval
   \label{eq:strong_ellipticity}
   (\vect{n}\otimes \vect{N}): \tilde{\Hbb}: (\vect{n}\otimes \vect{N}) > 0 \quad \forall \vect{N},\vect{n} \in \Rbb^3 \: ; \: \vect{N},\vect{n} \ne \vect{0}
 \end{equation}
-If the condition holds, the acoustic tensor admits $3$ couples of eigenvalues--eigenvectors $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}. The couples $\{c_K,\Lcb^K\}$ are referred to as \textit{left characteristic fields}. The left eigenvectors associated to non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:normal_quasi} can be defined:
+If the condition holds, the acoustic tensor admits $3$ couples of eigenvalue--eigenvector $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}.
+The couples $\{c_K,\Lcb^K\}$ are referred to as \textit{left characteristic fields}.
+The left eigenvectors associated with non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:normal_quasi} can be defined:
 \begin{equation}
   \label{eq:left_eigenfields}
     \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{N} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-At last, one has to find six independent left eigenvectors associated to the null eigenvalue of multiplicity $6$ by solving equation \eqref{eq:eigen_left_stress} for the null eigenvalue:
+At last, one has to find six independent left eigenvectors associated with the null eigenvalue of multiplicity $6$ by solving equation \eqref{eq:eigen_left_stress} for the null eigenvalue:
 \begin{equation}
   \label{eq:left_null_eigenvectors}
   \tens{S}^K:\(\tilde{\Hbb}\cdot  \vect{N}\) =\vect{0},\quad K=1,...,6
@@ -67,12 +70,12 @@ Following the same procedure for right eigenvectors $\Rcb^K=\matrice{\vect{v}^K 
     & -\tilde{\Hbb}:\(\vect{v}^K\otimes\vect{N}\) - c_K \tens{S}^K = \tens{0}
   \end{alignat}
 \end{subequations}
-which leads to the \textit{right characteristic fields} associated to the non-null eigenvalues:
+which leads to the \textit{right characteristic fields} associated with the non-null eigenvalues:
 \begin{equation}
   \label{eq:right_eigenfields}
   \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \quad \[\: \pm \sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\tilde{\Hbb}:\( \vect{l}^p\otimes \vect{N}\) \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denotes the eigenfields of the acoustic tensor. Moreover, the $6$ independent right eigenvectors associated to the zero eigenvalue required to complete the set of right characteristic fields must satisfy:
+In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denotes the eigenfields of the acoustic tensor. Moreover, the $6$ independent right eigenvectors associated with the zero eigenvalue required to complete the set of right characteristic fields must satisfy:
 \begin{equation}
   \label{eq:right_null_eigenvectors}
   \tens{S}^K \cdot  \vect{N} =\vect{0},\quad K=1,...,6
@@ -84,7 +87,7 @@ In equation \eqref{eq:right_eigenfields}, $\{\omega_p,\vect{l}^p\}$ still denote
 
 \begin{remark}
   \label{rq:similarity_solution}
-  In the case of a vanishing right-hand side, the specialization of characteristic equations \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
+  In the case of a vanishing source term $\Scb$, the specialization of characteristic equations \eqref{eq:PDEs_ODEs} to system \eqref{eq:normal_quasi} leads to:
 \begin{equation}
   \label{eq:characteristic_equations_homogeneous}
   \Lcb^K \cdot d\Qcb = \vect{0},\quad K=1,...,6

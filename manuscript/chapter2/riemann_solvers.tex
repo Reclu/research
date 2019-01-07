@@ -1,5 +1,12 @@
-It has been seen in the previous section that the complete solution of a Riemann problem in solid dynamics is possible for simple problems. However, such a solution may become complicated for multi-dimensional problems or for other non-linear problems. 
-Numerical methods such as upwind or Godunov-based methods \cite{Leveque} require the solution of many Riemann problems within a discretized medium. When dealing with non-linear problems, the exact solution of those problems may increase drastically the computational cost, making the numerical scheme prohibitive. Moreover, numerical procedures often require only little information about the solution of Riemann problems and do not need the complete resolution. In that context, alternative procedures have been developed in order to take into account the characteristic structure of a hyperbolic system by computing an approximate solution of Riemann problems. Approximate Riemann solvers developed for Computational Fluid Dynamics allow to extract information for either flux functions (\textit{HLL, HLLC, Roe} and \textit{Osher} approximate Riemann solvers \cite{Trangenstein}, \cite{Toro}) or for vectors of conserved quantities (\textit{approximate--state Riemann solver} \cite[Ch.9]{Toro}, \cite[Ch.22]{Leveque}). Some of those have been applied to specific problems in solid mechanics problems such as the Osher approximate solver (see \cite{Lee_FVM} and \cite{Haider_FVM}) or the HLLC approximate solver (see \cite{Ortega_HLLD}) for hyperelasticity . We recall here the formulation of the approximate-state Riemann solver for solid mechanics. The approach is then applied to the non-linear problem of section \ref{sec:SVK_solution}.
+It has been seen in the previous section that the complete solution of a Riemann problem in solid dynamics is possible for simple problems.
+However, such a solution may become complicated for multi-dimensional problems or for other non-linear problems. 
+Numerical methods such as upwind or Godunov-based methods \cite{Leveque} require the solution of many Riemann problems within a discretized medium.
+When dealing with non-linear problems, the exact solution of those problems may increase drastically the computational cost, making the numerical scheme unappealing.
+Moreover, numerical procedures often require only little information about the solution of Riemann problems and do not need the complete solution. In that context, alternative procedures have been developed in order to take into account the characteristic structure of a hyperbolic system by computing an approximate solution of Riemann problems.
+Approximate Riemann solvers developed for Computational Fluid Dynamics allow to extract information for either flux functions (\textit{HLL, HLLC, Roe} and \textit{Osher} approximate Riemann solvers \cite{Trangenstein}, \cite{Toro}) or for vectors of conserved quantities (\textit{approximate--state Riemann solver} \cite[Ch.9]{Toro}, \cite[Ch.22]{Leveque}).
+Some of these have been applied to specific problems in solid mechanics problems such as the Osher approximate solver (see \cite{Lee_FVM} and \cite{Haider_FVM}) or the HLLC approximate solver (see \cite{Ortega_HLLD}) for hyperelasticity .
+We recall here the formulation of the approximate-state Riemann solver for solid mechanics.
+The approach is then applied to the non-linear problem of section \ref{sec:SVK_solution}.
 
 \subsection{General ideas}
 As in the previous section, we consider the Riemann problem in the space direction $\vect{N}$:
@@ -28,7 +35,7 @@ Such a matrix can be defined by using the definition of right eigenvectors and c
 \end{align*}
 where $c_I(\Qcb)$ and $m$ are the highest negative eigenvalue and the dimension of the Jacobian matrix. 
 
-At last, the linearized Riemann problem thus written enables the determination of every state vectors $\Qcb(x,t)$ by following the procedure described in section \ref{subsec:charac_Linear_problems} for linear problems, recalled here for convenience for a system of dimension $m$:
+At last, the linearized Riemann problem thus written enables the determination of every state vector $\Qcb(x,t)$ by following the procedure described in section \ref{subsec:charac_Linear_problems} for linear problems, recalled here for convenience for a system of dimension $m$:
 \begin{equation}
   \label{eq:approx_RS}
   \begin{aligned}
@@ -37,7 +44,7 @@ At last, the linearized Riemann problem thus written enables the determination o
     &  \Qcb(x,t) =\Qcb^L+ \sum_{i=1}^{I} \Rcb^i\delta^i
   \end{aligned}
 \end{equation}
-where the point ($x,t$) lies in the region bounded by the $I$th and $I+1$th characteristics.
+where the point ($x,t$) lies in the region bounded by the characteristics $I$ and $I+1$.
 
 \begin{remark}
   Note that since one can define a complete set of independent eigenvectors of the Jacobian matrix, the matrix $\Rbsf$ is non-singular so that $\bar{\Jbsf}$ can be uniquely determined.
@@ -45,7 +52,7 @@ where the point ($x,t$) lies in the region bounded by the $I$th and $I+1$th char
 \end{remark}
 
 \subsection{Application: Hyperelastic plane wave}
-We finish this section with an illustration of the approximate Riemann solver by considering the plane wave problem in a Saint-Venant-Kirchhoff of section \ref{sec:SVK_solution}.
+We finish this section with an illustration of the approximate Riemann solver by considering the plane wave problem in the Saint-Venant-Kirchhoff medium treated in section \ref{sec:SVK_solution}.
 Recall that the eigenvalues and right eigenvectors matrices read for that problem:
 \begin{equation}
   \label{eq:SVK_matrices}
@@ -65,7 +72,7 @@ leading to the solution $\Qcb $ between the two discontinuous waves:
   \label{eq:SVK_approx_solution}
   \Qcb  = \Qcb^L + \delta^1 \Rcb^1 = \matrice{v_L \\F_L} +\delta^1 \matrice{c_L \\1} \quad \text{or} \quad \Qcb  = \Qcb^R - \delta^2 \Rcb^2 = \matrice{v_R \\F_R} -\delta^2 \matrice{-c_R \\1}
 \end{equation}
-Substitutions of $\delta^{1,2}$ from second equations in first ones provide straight lines equations in the phase plane ($F,v$):
+Substitution of $\delta^{1,2}$ from the second equations into the first provides straight line equations in the phase plane ($F,v$):
 \begin{equation}
   \label{eq:approx_straight}
   v  = v_L + c_L(F -F_L) \quad ; \quad v  = v_R + c_R(F_R-F )
@@ -77,7 +84,7 @@ Substitutions of $\delta^{1,2}$ from second equations in first ones provide stra
   \caption{Comparison of approximate (dashed lines) and exact (solid lines) solution for a one-dimensional strain problem in a Saint-Venant-Kirchhoff hyperelastic material}
   \label{fig:comparison_exact_approx}
 \end{figure}
-The intersection of those straight lines in the phase plane corresponds to the approximate solution. Figure \ref{fig:comparison_exact_approx} shows comparisons of approximate and exact solutions for various initial data, all leading to a $1$-shock--$2$-rarefaction exact solution. As expected, approximate and exact solutions are different and get closer for small initial discontinuities, falling in the linearization assumption $\Qcb^L\approx \Qcb^R$. As a consequence, a big initial discontinuity is considered in figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx1} so that the approximation error is larger than that of figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx4} for which initial data are based on a weak jump.
+The intersection of those straight lines in the phase plane corresponds to the approximate solution. Figure \ref{fig:comparison_exact_approx} shows comparisons of approximate and exact solutions for various initial data, all leading to a $1$-shock--$2$-rarefaction exact solution. As expected, approximate and exact solutions are different and get closer for small initial discontinuities, satisfying the linearization assumption $\Qcb^L\approx \Qcb^R$. As a consequence, a big initial discontinuity is considered in figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx1} so that the approximation error is larger than that of figure \ref{fig:comparison_exact_approx}\subref{subfig:SVK_Approx4} for which initial data are based on a weak jump.
 
 
 %%% Local Variables:

@@ -1,5 +1,6 @@
-The characteristic analysis carried out above is now applied to specific problems of solid mechanics. Both linear and non-linear problems which solutions involve several types are waves are considered.
-As we shall see, the different characteristic structures involved by linear elastic, elastoplastic and hyperelastic solids require the use of different technics in order to develop exact solutions. First a particular type of IVP, of particular interest in this manuscript, is introduced.
+The characteristic analysis carried out above is now applied to specific solid mechanics problems.
+Both linear and non-linear problems, whose solutions involve several types of waves, are considered.
+As we shall see, the different characteristic structures involved within linear elastic, elastoplastic and hyperelastic solids require the use of different techniques in order to develop exact solutions. First a particular type of IVP, of particular interest in this manuscript, is introduced.
 %% Then by specializing the results to problems involving a linear elastic bar and a hyperelastic Saint-Venant-Kirchhoff medium, we shall see that different types of waves may propagate within solids.
 \subsection{The Riemann problem}
 A Riemann problem is a Cauchy problem with piecewise constant initial data. In particular, the Riemann problem based on the conservative form \eqref{eq:general_conservative_HE} for hyperelastic solids, in the arbitrary direction $\vect{N}=N_\alpha \vect{E}_\alpha$, takes the form:
@@ -61,15 +62,15 @@ By introducing a set of \textit{characteristic variables} $\Pcb=\Rbsf^{-1}\Qcb$ 
     \right.
   \end{aligned}
 \end{equation}
+with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_K = \Rc^K_i\Csf_{Kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations, namely, the initial profile $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}.  
 \begin{figure}[h!]
   \centering
   \subcaptionbox*{}[0.45\linewidth]{\input{chapter2/pgfFigures/advection_solution}}
   \subcaptionbox*{}[0.45\linewidth]{\input{chapter2/pgfFigures/advection_P}}
-  \caption{Solution to linear advection equation on the quantity $\Pc_i$ with characteristic speed $c_i$.}
+  \caption{Solution to linear advection equation of the quantity $\Pc_i$ with characteristic speed $c_i$.}
   \label{fig:advection}
 \end{figure}
-with $\Csf_{ij}=c_i\delta_{ij}$, the matrix of eigenvalues so that $\Jsf_{ij} \Rc^j_K = \Rc^K_i\Csf_{Kj}$. The solution of this problem is straightforward since it corresponds to a superposition of scalar linear advection equations namely, the initial profile $\Pc_i(x,t=0)$ simply propagates with speed $c_i$ as depicted in figure \ref{fig:advection}. Thus, the solution  $\Pc_i(x,t)$ at a given point is given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$  \cite[p.52]{Toro}. 
-The vector $\Qcb$ is then determined by inverting the relation:
+Thus, the solution  $\Pc_i(x,t)$ at a given point is given by tracing backward the characteristic of slope $c_i$ passing through this point to the $x$-axis, that is: $\Pc_i(x,t)=\Pc_i(x-c_it,0)$  \cite[p.52]{Toro}. The vector $\Qcb$ is then determined by inverting the relation:
 \begin{equation}
   \label{eq:Q_expansion}
   \Qcb(x,t) = \sum_{i=1}^m \Rcb^i \Pc_i(x-c_it,0) \quad \Rightarrow
@@ -80,7 +81,8 @@ The vector $\Qcb$ is then determined by inverting the relation:
     \end{aligned}
     \right.
 \end{equation}
-Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is a linear superposition of $m$ waves, each having the shape $\Rcb^i \Pc_i(x,0)$. Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{I+1} t <0$ for all $i>I$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
+Equation \eqref{eq:Q_expansion} is an eigenvector expansion with coefficients $\Pc_i^{R,L}$ from which we see that $\Qcb$ is a linear superposition of $m$ waves, each having the shape $\Rcb^i \Pc_i(x,0)$.
+Noticing that for given values of $x$ and $t$, there exists one characteristic $I$ such that $x-c_i t >0$ for all $i\leq I$, and $x-c_{i} t <0$ for all $i \geq I+1$, equation \eqref{eq:Q_expansion} can be rewritten \cite[p.56]{Toro}:
 \begin{equation}
   \label{eq:Q_expansion_sides}
   \Qcb = \sum_{i=1}^I \Rcb^i \Pc_i^R + \sum_{i=I+1}^m \Rcb^i \Pc_i^L
@@ -90,27 +92,30 @@ or, by introducing the expansions of initial data \eqref{eq:Q_expansion_sides}:
   &\Qcb = \sum_{i=1}^m \Rcb^i \Pc_i^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^R - \sum_{i=I+1}^m \Rcb^i \(\Pc_i^R - \Pc_i^L\) \\
   &\Qcb= \sum_{i=1}^{m}\Rcb^i \Pc_i^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\)= \Qcb^L + \sum_{i=1}^I \Rcb^i \(\Pc_i^R - \Pc_i^L\) 
 \end{align}
-Those equations are equivalent to jump conditions across multiple discontinuous waves:
+These equations are equivalent to jump conditions across multiple discontinuous waves:
 \begin{align}
   \label{eq:jump_star_R}
   &  \Qcb-\Qcb^R = -\sum_{i=I+1}^{m} \Rcb^i\delta^i \\
   \label{eq:jump_star_L}
   &  \Qcb-\Qcb^L = \sum_{i=1}^{I} \Rcb^i\delta^i 
 \end{align}
-where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the $I$th and $(I+1)$th characteristics, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave. The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are weighting coefficients involved in \textit{wave strengths} $\Wcb^i=\Rcb^i \delta^i$, that can be computed from the expansions of initial conditions by solving:
+where $\Qcb(x,t)$ is the state lying in the region of the ($x,t$) plane delimited by the characteristics $I$ and $I+1$, and $\Rcb^i\delta^i$ the jump carried by the $i$th wave.
+The coefficients $\delta^i=\Pc_i^R - \Pc_i^L$ are weighting coefficients involved in \textit{wave strengths} $\Wcb^i=\Rcb^i \delta^i$, that can be computed from the expansions of initial conditions by solving:
 \begin{equation}
   \label{eq:delta_system}
   \Qcb^R-\Qcb^L=\sum_{i=1}^{m}\Rcb^i \delta^i=\Rbsf \vect{\delta}
 \end{equation}
 
-We see that the solutions of Riemann problem  \eqref{eq:Riemann_problem_HPP} consist in discontinuous waves emanating from the origin of the $(x,t)$ plane. Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
+We see that the solutions of Riemann problem  \eqref{eq:Riemann_problem_HPP} consist of discontinuous waves emanating from the origin of the $(x,t)$ plane.
+Across such discontinuous waves, the following condition is satisfied \cite{Toro}:
 \begin{definition}
-  The \textbf{Rankine-Hugoniot condition} is satisfied across a discontinuous wave of speed $s_i$ associated to the $i$th characteristic field, which is solution of the hyperbolic system $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$:
+  The \textbf{Rankine-Hugoniot condition} is satisfied across a discontinuous wave of speed $s_i$ associated with the $i$th characteristic field, which is a solution of the hyperbolic system $\Qcb_t + \Fcb(\Qcb)_x=\vect{0}$:
 \begin{equation}
   \label{eq:rankine-hugoniot}
   \saut{ \Fcb} = s_i \saut{ \Qcb}
 \end{equation}
-where $\saut{\bullet}$ denotes the jump operator across the discontinuity. More specifically, shock waves that will be met for non-linear problems in section \ref{sec:SVK_solution} also satisfy the Rankine-Hugoniot condition.
+where $\saut{\bullet}$ denotes the jump operator across the discontinuity.
+More specifically, shock waves that will be met for non-linear problems in section \ref{sec:SVK_solution} also satisfy the Rankine-Hugoniot condition.
 \end{definition}
 
 \subsubsection*{Solution of the elastic bar problem}
@@ -118,7 +123,7 @@ The above discussion is now specified to a one-dimensional elastic medium, $x\in
 \begin{equation*}
   \Qcb = \matrice{v \\ \sigma} \quad ; \quad \Fcb = \matrice{-\frac{1}{\rho}\sigma \\ -Ev}
 \end{equation*}
-along with Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) as initial conditions. In addition, the solid is assumed to be initially in a free-stress state. The eigenvalues, left and right eigenvectors of the corresponding Jacobian matrix are:
+along with Riemann-type data on the horizontal velocity (\textit{i.e. }$v(x<0,0)=v_L\:;\:v(x>0,0)=v_R$) as initial conditions. In addition, the solid is assumed to be initially unstressed. The eigenvalues, left and right eigenvectors of the corresponding Jacobian matrix are:
 \begin{equation*}
   c=\pm\sqrt{\frac{E}{\rho} }  \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
@@ -162,12 +167,26 @@ The discontinuity of $H$ across the plastic threshold prevents here the direct d
 \begin{equation*}
   c=\pm\sqrt{\frac{H}{\rho} } \quad ; \quad \Lcb^p=\[\rho c_p \:,\: -1\] \quad ; \quad \Rcb^p=\matrice{1\\- \rho c_p } 
 \end{equation*}
-so that waves are referred to as elastic or plastic waves. Whether a plastic wave appears or not hence depends on the tangent modulus and subsequently, on the yield function. A prediction-correction procedure must thus be followed by first solving an elastic Riemann problem which resulting (trial) solution $\Qcb$ is tested against the yield criterion on both sides $x<0$ or $x>0$. In general, possibly different yield stresses, plastic strains and hardening parameters in left and right regions lead to a yield criterion that may be violated or not, and hence to one, two or no plastic wave that must be added as a correction to the original problem. If neither $f_L$ nor $f_R$ leads to a violation of the criterion, the problem is elastic and the trial state is the solution. Otherwise, the plastic correction is performed by computing the stress in regions of the ($x,t$) plane bounded by elastic and plastic waves ($\tilde{\Qcb}^{L,R}$ in figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves}) so that the yield function satisfies $f_{L,R}=0$. Then, the velocity and elastic wave strengths in yielding regions are given by solving:
+so that waves are referred to as elastic or plastic waves. Whether a plastic wave appears or not hence depends on the tangent modulus and subsequently, on the yield function.
+A predictor-corrector procedure must thus be followed by first solving an elastic Riemann problem whose resulting (trial) solution $\Qcb$ is tested against the yield criterion on both sides $x<0$ or $x>0$.
+In general, possibly different yield stresses, plastic strains and hardening parameters in left and right regions lead to a yield criterion that may be violated or not, and hence to one, two or no plastic waves that must be added as a correction to the original problem.
+If neither $f_L$ nor $f_R$ leads to a violation of the criterion, the problem is elastic and the trial state is the solution.
+Otherwise, the plastic correction is performed by computing the stress in regions of the ($x,t$) plane bounded by elastic and plastic waves ($\tilde{\Qcb}^{L,R}$ in figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves}) so that the yield function satisfies $f_{L,R}=0$.
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Characteristic structure\label{subfig:ep_bar_charac_4waves}}{\input{chapter2/pgfFigures/elastoplastic_bar}}
+  \subcaptionbox{Stress profile in the bar\label{subfig:ep_bar_stress_4waves}}{\input{chapter2/pgfFigures/elastoplastic_stress}}
+  % \\\subcaptionbox{3-waves solution ($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_charac_3waves}}{\input{chapter2/pgfFigures/elastoplastic_bar_1plast}}
+  % \subcaptionbox{Stress for 3-waves($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_stress_3waves}}{\input{chapter2/pgfFigures/elastoplastic_stress_1plast}}
+  \caption{Example of a solution of a Riemann problem in a homogeneous elastoplastic bar with linear hardening and initial plastic strain $\eps^p(x,0)= 0$.}
+  \label{fig:EP_bar_solution}
+\end{figure}
+Then, the velocity and elastic wave strengths in yielding regions are given by solving:
 \begin{align}
   & \tilde{\Qcb}^R = \Qcb^R - \delta^1_E \Rcb^1_E\\
   & \tilde{\Qcb}^L = \Qcb^L + \delta^2_E \Rcb^2_E
 \end{align}
-At last a plastic Riemann solver leading to the solution of the problem $\Qcb^*$ by solving successively system \eqref{eq:delta_system} for plastic wave strengths and either system \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L}, that is:
+At last a plastic Riemann solver is used in order to compute the solution of the problem $\Qcb^*$ by solving successively the system \eqref{eq:delta_system} for plastic wave strengths, and either system \eqref{eq:jump_star_R} or \eqref{eq:jump_star_L}, that is:
 \begin{equation}
   \label{eq:plastic_approx_RS}
   \vect{\delta}_P = \Rbsf^{-1}\(\tilde{\Qcb}^R- \tilde{\Qcb}^L\) \quad \Rightarrow \quad
@@ -181,15 +200,6 @@ At last a plastic Riemann solver leading to the solution of the problem $\Qcb^*$
 
  Figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_charac_4waves} shows the characteristic structure of the solution of the Riemann problem in a homogeneous medium considered here, involving two plastic waves, and figure \ref{fig:EP_bar_solution}\subref{subfig:ep_bar_stress_4waves} the corresponding stress field in the bar.
 
-\begin{figure}[h!]
-  \centering
-  \subcaptionbox{Characteristic structure\label{subfig:ep_bar_charac_4waves}}{\input{chapter2/pgfFigures/elastoplastic_bar}}
-  \subcaptionbox{Stress profile in the bar\label{subfig:ep_bar_stress_4waves}}{\input{chapter2/pgfFigures/elastoplastic_stress}}
-  % \\\subcaptionbox{3-waves solution ($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_charac_3waves}}{\input{chapter2/pgfFigures/elastoplastic_bar_1plast}}
-  % \subcaptionbox{Stress for 3-waves($\sigma_L^y>\sigma_R^y$)\label{subfig:ep_bar_stress_3waves}}{\input{chapter2/pgfFigures/elastoplastic_stress_1plast}}
-  \caption{Examples of solution of Riemann problem in a homogeneous elastoplastic bar with linear hardening and initial plastic strain $\eps^p(x,0)= 0$.}
-  \label{fig:EP_bar_solution}
-\end{figure}
 \begin{remark}
   Note that the above solver also applies to plane wave problems characterized by one-dimensional strain and multi-dimensional stress states by considering different wave speeds.
 \end{remark}
@@ -197,7 +207,7 @@ At last a plastic Riemann solver leading to the solution of the problem $\Qcb^*$
 
 \subsection{Hyperelastic media: A Saint-Venant-Kirchhoff solution}
 \label{sec:SVK_solution}
-The approaches followed above are no longer possible for problems involving a non-linear Jacobian matrix. Indeed, the writing of Riemann problem \eqref{eq:RP_characteristic_variables} in terms of characteristic variables is valid for right eigen-vectors that are constant. 
+The approaches followed above are no longer possible for problems involving a non-linear Jacobian matrix. Indeed, the writing of the Riemann problem \eqref{eq:RP_characteristic_variables} in terms of characteristic variables is valid for right eigen-vectors that are constant. 
 %since right eigenvectors cannot be taken out of the derivatives.
 Moreover, as we shall see with an example, the characteristic structure of such problems can be more complex and depend on the initial data. 
 %%% Picard problem
@@ -232,7 +242,7 @@ The quasi-linear form is written by using the chain rule: $\Qcb_t + \drond{\Fcb}
   \label{eq:quasi_SVK}
   \Jbsf=\drond{\Fcb}{\Qcb}=-\matrice{0 & \frac{H_{1111}}{\rho_0} \\ 1 & 0}
 \end{equation}
-The tangent modulus of SVK model \eqref{eq:SVK_tangent} yields the following characteristic fields:
+The tangent modulus of the SVK model \eqref{eq:SVK_tangent} yields the following characteristic fields:
 \begin{equation}
   \label{eq:SVK_charac_fields}
   \left\lbrace
@@ -245,10 +255,10 @@ The tangent modulus of SVK model \eqref{eq:SVK_tangent} yields the following cha
 
 \begin{remark}
   \label{rq:hyperbolicity_limit_SVK}
-  The non-linear flux function of SVK model yields characteristic fields depending on the strain state and possibly complex celerities leading to a loss of hyperbolicity of the problem for $F<\sqrt{\frac{1}{3}}$.
+  The non-linear flux function of the SVK model yields characteristic fields depending on the strain state and possibly complex celerities leading to a loss of hyperbolicity of the problem for $F<\sqrt{\frac{1}{3}}$.
 \end{remark}
 
-Suppose now that initial data are given so that $\bar{F} > F_R$. The resulting characteristic speeds then satisfy $c_2(\bar{F})>c_2(F_R)$ and the two families of characteristics collide in the right region of the ($x,t$) plane (figure \ref{fig:Picard_problem}\subref{subfig:2S}). On the other hand, $\bar{F} < F_R$ yields characteristics moving away from each other in the right region according to $c_2(\bar{F})<c_2(F_R)$ (figure \ref{fig:Picard_problem}\subref{subfig:2R}). Those two situations respectively correspond to a shock and a simple wave. Note that this characteristic structure is similar to that resulting from the \textit{dam-break problem} with \textit{shallow water} equations, the following developments are hence very close to those of \cite[Ch.13]{Leveque}.
+Suppose now that initial data are given so that $\bar{F} > F_R$. The resulting characteristic speeds then satisfy $c_2(\bar{F})>c_2(F_R)$ and the two families of characteristics collide in the right region of the ($x,t$) plane (figure \ref{fig:Picard_problem}\subref{subfig:2S}). On the other hand, $\bar{F} < F_R$ yields characteristics moving away from each other in the right region according to $c_2(\bar{F})<c_2(F_R)$ (figure \ref{fig:Picard_problem}\subref{subfig:2R}). These two situations respectively correspond to a shock and a simple wave. Note that this characteristic structure is similar to that resulting from the \textit{dam-break problem} with \textit{shallow water} equations, the following developments are hence very close to those of \cite[Ch.13]{Leveque}.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Right-going shock wave\label{subfig:2S}}{\input{chapter2/pgfFigures/picard_2_shock}}
@@ -259,7 +269,7 @@ Suppose now that initial data are given so that $\bar{F} > F_R$. The resulting c
 
 \subsubsection*{Shock waves}
 % Applying the method of characteristics between the $x$-axis and an intersection point of two characteristic straight lines, one shows that a shock wave carry a jump discontinuity.
-A shock wave is a discontinuous wave hence satisfying the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot}:
+A shock wave is a discontinuous wave satisfying the Rankine-Hugoniot condition \eqref{eq:rankine-hugoniot}:
 \begin{align}
   \label{eq:RH_velocity}
   & -\frac{1}{\rho_0}\(\bar{\Pi} - \Pi_i \) = s \( \bar{v} - v_i \)\\
@@ -275,12 +285,12 @@ Substitution of $s$ from equation \eqref{eq:RH_F} and introduction in equation \
   \label{eq:v_jump}
   & \bar{v}-v_i= \pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\bar{F}-F_i)\[ \bar{F}^3-\bar{F} - (F_i^3-F_i)\]}
 \end{align}
-In addition to the Rankine-Hugoniot condition, the \textit{Lax entropy condition} stating that characteristic curves collide in a shock wave must be satisfied \cite[p.268]{Leveque}:
+In addition to the Rankine-Hugoniot condition, one has to consider the \textit{Lax entropy conditions}, stating that characteristic curves collide in a shock wave \cite[p.268]{Leveque}:
 \begin{equation}
   \label{eq:Lax_entropy}
   c(\bar{F})<s<c(F_i)
 \end{equation}
-Lax entropy condition implies that the square root in equation \eqref{eq:v_jump} is real, leading to two families of curves in the phase plane ($F,v$). When considering an infinitesimal jump (\textit{i.e. $\bar{F}=F_i\pm\epsilon$ with $\epsilon \rightarrow 0$}), each of these curve is expected to identify with one of the jump conditions derived for the linear case \eqref{eq:jump_star_R} of \eqref{eq:jump_star_L}.
+The Lax entropy condition implies that the square root in equation \eqref{eq:v_jump} is real, leading to two families of curves in the phase plane ($F,v$). When considering an infinitesimal jump (\textit{i.e. $\bar{F}=F_i\pm\epsilon$ with $\epsilon \rightarrow 0$}), each of these curves is expected to identify with one of the jump conditions derived for the linear case \eqref{eq:jump_star_R} of \eqref{eq:jump_star_L}.
 % One of those curve is expected to identify with the jump conditions derived for the linear case \eqref{eq:jump_star_R} when considering an infinitesimal jump (\textit{i.e. $\bar{F}=F_R+\epsilon$ with $\epsilon \rightarrow 0$}).
 Thus, equation \eqref{eq:v_jump} reads:
 \begin{equation}
@@ -295,7 +305,9 @@ so that:
 \begin{equation*}
   \matrice{\bar{v} \\ \bar{F}}=\matrice{v_i \\ F_i} + \epsilon \matrice{\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\[ 3F_i^2-1\]}\\1}
 \end{equation*}
-The minus sign allows to recover equation \eqref{eq:jump_star_R} associated to the right-going wave and therefore corresponds to a right-going shock wave. On the other hand, the plus sign stands for equation \eqref{eq:jump_star_L} and left-going shocks. Finally, the Rankine-Hugoniot condition across a left-going shock and a right-going shock respectively lead to:
+The minus sign yields equation \eqref{eq:jump_star_R} associated with the right-going wave and therefore corresponds to a right-going shock wave.
+On the other hand, the plus sign stands for equation \eqref{eq:jump_star_L} and left-going shocks.
+Finally, the Rankine-Hugoniot condition across a left-going shock and a right-going shock respectively lead to:
 \begin{align}
   \label{eq:left-going_shock}
   &\bar{v}-v_L= \sqrt{\frac{\lambda+2\mu}{2\rho_0}(\bar{F}-F_L)\[ \bar{F}^3-\bar{F} - (F_L^3-F_L)\]} \\
@@ -309,9 +321,9 @@ In order to study the evolution of fields within the region bounded by character
   \label{eq:SVK_rarefaction}
   dv -c_1(F)  dF = 0 
 \end{equation}
-The complete set of states $\Qcb$ connected to $\Qcb^R$ through a simple wave is obtained by integration of equation \eqref{eq:SVK_rarefaction}. Note that this integration results in a smooth evolution of fields inside a simple wave even for discontinuous initial conditions, unlike shocks. Moreover, the vanishing right-hand side of the conservative form of Picard problem \eqref{eq:Picard_problem} yields a similarity solution. The particular case of simple wave constant along each ray $\xi=x/t$ corresponds to a \textit{rarefaction wave} \cite{Leveque}. 
+The complete set of states $\Qcb$ connected to $\Qcb^R$ through a simple wave is obtained by integration of equation \eqref{eq:SVK_rarefaction}. Note that this integration results in a smooth evolution of fields inside a simple wave even for discontinuous initial conditions, unlike shocks. Moreover, the vanishing right-hand side of the conservative form of the Picard problem \eqref{eq:Picard_problem} yields a similarity solution. The particular case of a simple wave constant along each ray $\xi=x/t$ corresponds to a \textit{rarefaction wave} \cite{Leveque}. 
 
-Integration of equation \eqref{eq:SVK_rarefaction} is performed by using the change of variable: $F \mapsto ch(x)/\sqrt{3}$ so that one gets:
+Integration of equation \eqref{eq:SVK_rarefaction} is performed by using the change of variables: $F \mapsto ch(x)/\sqrt{3}$ so that one gets:
 %The following change of variable is then introduced: $F \mapsto ch(x)/\sqrt{3}$, so that  becomes:
 \begin{equation}
   \label{eq:charac_equation_sh}
@@ -321,7 +333,7 @@ where, the hyperbolic cosine $ch(x)$ and sine $sh(x)$ satisfy: $ch(x)^2-sh(x)^2=
 \begin{equation*}
   v-v_R=-\frac{1}{4}\sqrt{\frac{\lambda + 2\mu}{6\rho_0}}\[sh(2x)-2x -(sh(2x_R)-2x_R)\]
 \end{equation*}
-At last, the inverse change of variable leads to the relation:
+At last, the inverse change of variables leads to the relation:
 \begin{equation}
   \label{eq:integral_curve_right}
   v-v_R=-\sqrt{\frac{\lambda + 2\mu}{24\rho_0}}\[\sqrt{3}\(F\sqrt{3F^2-1} -F_R\sqrt{3F_R^2-1}\)-\ln\(\frac{\sqrt{3}F + \sqrt{3F^2-1}}{\sqrt{3}F_R + \sqrt{3F_R^2-1}}\) \]
@@ -386,7 +398,7 @@ Analogously, the 1-rarefaction--2-shock solution is given by the solution of equ
   \caption{Set of connected states $\Qcb$ to initial data through shock and rarefaction waves with $v_L=v_R=0$ in both cases: (a) 1-shock, 2-rarefaction solution ; (b) 1-rarefaction, 2-shock.}
   \label{fig:solutions_RP}
 \end{figure} 
-Once one of this system is solved, the solution $\Qcb$ is known everywhere except inside the rarefaction fan. Nevertheless, in this region $\Qcb$ only varies with the ray $\xi=c_i(F)$ and hence, the solution inside an $i$-rarefaction wave satisfies:
+Once one of these systems is solved, the solution $\Qcb$ is known everywhere except inside the rarefaction fan. Nevertheless, in this region $\Qcb$ only varies with the ray $\xi=c_i(F)$ and hence, the solution inside an $i$-rarefaction wave satisfies:
 \begin{equation}
   \label{eq:rarefaction_fan}
   \xi = \pm \sqrt{\frac{\lambda + 2\mu}{2\rho_0}\(3F^2-1 \)} \quad \Rightarrow \quad F(\xi)= \sqrt{\frac{2\rho_0}{3(\lambda + 2\mu)}\xi^2-1}
@@ -405,7 +417,7 @@ The curves corresponding to equations \eqref{eq:1S2R_solution} and \eqref{eq:1R2
     \caption{Comparison of neo-Hookean and Saint-Venant-Kirchhoff hyperelastic models.}
     \label{fig:SVK-NH}
   \end{figure}
-  At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} shows the non-physical behavior of Saint-Venant-Kirchhoff model for high compression loads that lead to a stress tensor tending to zero.
+  At last, figure \ref{fig:SVK-NH}\subref{subfig:SVK_NH_Pi} shows the non-physical behavior of Saint-Venant-Kirchhoff model for high-compression loads that lead to a stress tensor tending to zero.
 \end{remark}
 
 
