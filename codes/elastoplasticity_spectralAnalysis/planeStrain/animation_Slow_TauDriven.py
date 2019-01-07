@@ -479,7 +479,7 @@ sig=np.zeros((Samples,Samples/10))
 tau=np.zeros((Samples,Samples/10))
 
 frames=[0,5,20,30,40]
-frames=[5]
+#frames=[5]
 col=["r","g","b","y","c","m","k","p"]
 # purple to red
 col=['#781C81','#3F60AE','#539EB6','#6DB388','#CAB843','#E78532','#D92120']
@@ -753,7 +753,7 @@ def animate(i):
 
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=Niter, interval=100, blit=False)
 Writer = animation.writers['ffmpeg']
-writers = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writers = Writer(fps=24, metadata=dict(artist='Me'), bitrate=1800)
 anim.save('loadingpath_slow.mp4', writer=writers)
 #anim.save('loadingpath_slow.mp4', extra_args=['-vcodec', 'libx264'])
 
