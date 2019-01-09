@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.8]
   \begin{groupplot}[group style={group size=2 by 1,
       ylabels at=edge left, yticklabels at=edge left,
       horizontal sep=5.ex,
@@ -54,7 +54,7 @@
     % \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_epsp338.png};
     
     %% THIRD ROW (equivalent plastic strain)
-    \nextgroupplot[title={(a) time $t=3.5e-4 \:s$},
+    \nextgroupplot[title={(a) time $t=3.5\times 10^{-4} \:s$},
     colorbar horizontal ,colorbar style={
       title style={yshift=-1.5cm},
       title= {$p \: (\%)$},
@@ -64,7 +64,7 @@
     \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(0.,0) (0.97,0.)};% Fake extreme values to fix scale
     \addplot graphics[xmin=-0.,xmax=1., ymin=-0.,ymax=1.] {chapter4/pngFigures/ep_mpm_p115.png};
     
-    \nextgroupplot[title={(b) time $t=1.0e-3 \:s$},
+    \nextgroupplot[title={(b) time $t=1.0\times 10^{-3} \:s$},
     colorbar horizontal,colorbar style={
       title style={yshift=-1.5cm},
       title= {$p \: (\%)$},

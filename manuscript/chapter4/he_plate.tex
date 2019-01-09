@@ -15,7 +15,7 @@ The finite element computation is performed with the software \textit{Abaqus} \c
 These numerical results are compared to those obtained from MPM and DGMPM using CTU computations.
 The Courant number is set to unity in DGMPM and to $0.5$ in MPM leading to \textit{average} time steps $\Delta t_{CTU}=1.41 \times 10^{-5}s$ and $\Delta t_{MPM}=6.13 \times 10^{-6}s$, whereas the \textit{constant} time step used in the FEM simulation is $\Delta t_{FEM}=1.27 \times 10^{-5} s$.
 Figure \ref{fig:2dhe_stress} shows numerical results in terms of the Cauchy stress tensor isovalues exported from Abaqus to the software Paraview \cite{Paraview} with the code developed in \cite{Export_Abaqus}, particularized to the present two-dimensional plane strain case.
-Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison on the deformed shape of the body.
+Cauchy stress is plotted on the current configuration in such a way that figure \ref{fig:2dhe_stress} also enables the comparison of the deformed shape of the body.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/2Dhestress}
@@ -29,15 +29,14 @@ Cauchy stress is plotted on the current configuration in such a way that figure 
   \caption{Evolution of longitudinal Cauchy stress $\sigma_{11}$ along the bottom boundary of the domain.}
   \label{fig:he_lineplots_stress}
 \end{figure}
-At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations are visible in FEM and MPM solutions.
+At the beginning of the computation (first row in figure \ref{fig:2dhe_stress}), stress profiles are quite similar despite slight oscillations visible in FEM and MPM solutions.
 This can also be seen in figure \ref{fig:he_lineplots_stress}, in which stress is plotted along the bottom boundary of the domain.
-However, MPM solution moreover exhibits, as for small strains problems, a concentration of stress in the high gradients region on the left boundary.
-It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
+However, the MPM solution exhibits, as for small strain problems, a concentration of stress in the high gradients region on the left boundary.
+%It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the attenuation introduced by MPM stress values which are much higher.
+It is worth noticing that the DGMPM shows the same behavior that cannot be seen here due to the MPM stress values which are much higher.
 The deformed shapes of the plate resulting from the three numerical approaches hence remain close, except at the junction of the loaded and free zones of the left edge.
-
-When the pressure wave reflects on the fixed boundary at time $t=5.0\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the stress profiles are still similar though, FEM and MPM solutions oscillate even more.
-
-These spurious oscillations are more significant in the velocity fields depicted in figures \ref{fig:2dhe_velo} as well as in figure \ref{fig:he_lineplots_stress} and \ref{fig:he_lineplots_velo} which depicts the velocity along the bottom boundary.
+When the pressure wave reflects on the fixed boundary at time $t=5.0\times 10^{-4}\:s$ (second row in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}), the stress profiles are still similar, though FEM and MPM solutions oscillate even more.
+These spurious oscillations are more significant in the velocity fields depicted in figure \ref{fig:2dhe_velo} as well as in figures \ref{fig:he_lineplots_stress} and \ref{fig:he_lineplots_velo} which depict the velocity along the bottom boundary.
 Furthermore, one can see in figure \ref{fig:he_lineplots_velo}\subref{subfig:he_velo2} that the homogeneous Dirichlet boundary condition is not exactly enforced in DGMPM when the incident wave hits the right end.
 \begin{figure}[h!]
   \centering
@@ -54,16 +53,16 @@ Furthermore, one can see in figure \ref{fig:he_lineplots_velo}\subref{subfig:he_
   \caption{Evolution of horizontal velocity $v_1$ along the bottom boundary of the domain.}
   \label{fig:he_lineplots_velo}
 \end{figure}
-This can be explained by considering a boundary cell of the arbitrary grid (\textit{i.e. containing one material point that belong to the right end of the domain}) that is about to be reached by the wave through the upwind interface.
+This can be explained by considering a boundary cell of the arbitrary grid (\textit{i.e. containing one material point that belongs to the right end of the domain}) that is about to be reached by the wave through the upwind interface.
 The intercell flux on the upwind interface resulting from the discontinuity, and subsequently the conserved quantities vector resulting from the solution of the discrete system on the grid, are non-zero.
 In particular, the horizontal velocity at upwind nodes of the boundary cell does not vanish while that of the downwind edge satisfies the homogeneous Dirichlet condition. 
 Hence, the interpolation of the velocity from nodes to the particle yields a non-zero field at the material point level.
-Note that it holds for the MPM as well in which the enforcement of boundary conditions is still a challenging question \cite{BC_MPM}.
+Note that this holds for the MPM as well in which the enforcement of boundary conditions is still a challenging question \cite{BC_MPM}.
 
 Nevertheless, no significant displacements of particles can be seen on the right end in MPM and DGMPM solutions in figures \ref{fig:2dhe_stress} and \ref{fig:2dhe_velo}.
 At last, oscillations remain in FEM and MPM solutions until the end of the simulation. 
 Since the velocity field depicted in figures \ref{fig:2dhe_velo} and \ref{fig:he_lineplots_velo} is used to update the shape of the solid in FEM, the numerical noise yields final configurations that are slightly different.
-On the other hand, updating particles position with the grid velocity within the MPM allows to get better results than if the oscillating material points velocity was used.
+On the other hand, updating particle positions with the grid velocity within the MPM allows better results than if the oscillating material point velocity is used.
 
 
 %%% Local Variables:

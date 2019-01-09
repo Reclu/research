@@ -4,31 +4,31 @@ A plane wave state is considered in a semi-infinite medium of length $l=6m$ in d
   & \tens{\Pi} = \Pi \vect{e}_1 \otimes \vect{e}_1 + \Pi_r \(\vect{e}_2 \otimes \vect{e}_2 + \vect{e}_3 \otimes \vect{e}_3\)
 \end{align*}
 where $\Pi = \frac{2\mu + \lambda}{2} F(F^2 - 1)$, $\Pi_r = \frac{\lambda}{2}(F^2 - 1)$ and $(\mu,\lambda)$ are the Lam\'e's coefficients. A traction force is enforced on the left boundary of the solid initially at rest: $\tens{\Pi}\cdot\(-\vect{e}_1\)=\Pi^d\vect{e}_1$. The exact solutions of the Picard problem thus formulated have been developed in section \ref{sec:SVK_solution}.
-With characteristic speeds depending on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave traveling in the medium.
+With characteristic speeds depending on the deformation gradient, a compressive (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave traveling in the medium.
 Recall that this non-intuitive behavior is due to the concave nature of the SVK fluxes (see remark \ref{rq:charach_neoHook} in section \ref{sec:SVK_solution}).
 Both cases are considered hereinafter before reflection on the right end.
-%Recall that since the characteristic speeds of this non-linear problem depends on the deformation gradient, a compression (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
+%Recall that since the characteristic speeds of this non-linear problem depends on the deformation gradient, a compressive (\textit{resp. tensile}) load leads to a rarefaction (\textit{resp. shock}) wave travelling in the medium, both cases being considered hereinafter before reflection on the right end.
 Moreover, it has been established that the problem is no longer hyperbolic if the deformation gradient is such that $F<\sqrt{\frac{1}{3}}$ (see remark \ref{rq:hyperbolicity_limit_SVK} in section \ref{sec:SVK_solution}).
 Hence, we consider here loading conditions that do not yield a loss of hyperbolicity. 
 
 The one-dimensional medium is discretized by using either $100$ or $200$ material points lying in $100$ regular grid cells.
 The 1ppc and 2ppc discretizations used here are the same as before as well as material parameters of table \ref{tab:material}.
 
-\subsubsection{Compression impact on a SVK medium}
-To begin with, the body is submitted to a compression load on its left end so that a rarefaction wave propagates rightward.
-The total and updated Lagrangian formulations of the MPM are here used along with DGMPM schemes.
-First of all, the compression load is set to $\Pi^d= 4\times 10^{8} \: Pa$ and numerical solutions are compared in figure \ref{fig:he_rarefaction_UL} at two different times.
-Though the low load amplitude applied results in a solution which looks like a discontinuity, it allows to avoid grid crossing.
+\subsubsection{Compressive impact on a SVK medium}
+To begin with, the body is submitted to a compressive load on its left end so that a rarefaction wave propagates rightward.
+The total and updated Lagrangian formulations of the MPM are used along with DGMPM schemes.
+First of all, the compressive load is set to $\Pi^d= 4\times 10^{8} \: Pa$ and numerical solutions are compared in figure \ref{fig:he_rarefaction_UL} at two different times.
+Though the low load amplitude applied results in a solution which looks like a discontinuity, it avoids grid crossing.
 
 \begin{figure}[h!]
   \centering
   {\input{chapter4/pgfFigures/he_stress_low_UL}}
-  \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem $\Pi^d= 4\times 10^{8} \: Pa$. Comparison between updated and total Lagrangian MPMs ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
+  \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times: solution of the compressive impact problem $\Pi^d= 4\times 10^{8} \: Pa$. Comparison between updated and total Lagrangian MPMs (CFL=$0.5$), DGMPM-Euler with 1ppc (CFL=$1$) or 2ppc (CFL=$0.5$), DGMPM-RK2 with 2ppc (CFL=$1$), and the exact solution.}
   \label{fig:he_rarefaction_UL}
 \end{figure}
 First, both solutions of updated and total Lagrangian MPM formulations oscillate.
-It is noteworthy that these two stress profiles are superimposed except at the left end of the domain where an instability occurs in updated Lagrangian solution due to the displacement of particles.
-Second, DGMPM solutions still behave well and show a good agreement with the exact solution. However, the enforcement of a higher load amplitude is more relevant in order to see the error made by the DGMPM.
+It is noteworthy that these two stress profiles are superimposed except at the left end of the domain where an instability occurs in the updated Lagrangian solution due to the displacement of particles.
+Second, DGMPM solutions still behave well and show good agreement with the exact solution. However, the enforcement of a higher load amplitude is more relevant in order to see the error made by the DGMPM.
 The applied load is therefore raised to $\Pi^d= 2\times 10^{10} \: Pa$.
 
 Significant differences between numerical methods and the exact solution are then visible in figure \ref{fig:he_rarefaction}.
@@ -37,7 +37,7 @@ Significant differences between numerical methods and the exact solution are the
   {\phantomsubcaption{\label{subfig:he_rarefaction1}}}
   {\phantomsubcaption{\label{subfig:he_rarefaction2}}}
   {\input{chapter4/pgfFigures/he_stress_high_UL}}
-  \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times solution of the compression impact problem $\Pi^d= 2\times 10^{10} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
+  \caption{First Piola–Kirchhoff stress along a horizontal line of the one-dimensional hyperelastic medium at different times: solution of the compressive impact problem $\Pi^d= 2\times 10^{10} \: Pa$. Comparison between MPM (CFL=$0.5$), DGMPM-Euler with 1ppc (CFL=$1$) or 2ppc (CFL=$0.5$), DGMPM-RK2 with 2ppc (CFL=$1$), and the exact solution.}
   \label{fig:he_rarefaction}
 \end{figure}
 First, grid crossing now occurs so that the MPM results based on the updated Lagrangian formulation are no longer correct. Hence, this formulation is omitted from now on.
@@ -47,10 +47,10 @@ Next, as expected from the use of an approximate-state Riemann solver for non-li
 Furthermore, the use of DGMPM-Euler with 2ppc leads to a smoother solution.
 
 
-One can imagine to employ an exact Riemann solver based on the exact solution in order to reduce the error made in the DGMPM.
+One can imagine the employment of an exact Riemann solver based on the exact solution in order to reduce the error made in the DGMPM.
 % In order to reduce the error made in the DGMPM, one can imagine to use an exact Riemann solver based on the exact solution.
-However, such an implementation requires to solve a non-linear problem at each cell interface and is very costly.
-Moreover, an exact solution is available for a SVK material but it is not the case for other constitutive models, which prevents the generic use of an exact solver.
+However, such an implementation requires the solution of a non-linear problem at each cell interface and is very costly.
+Moreover, an exact solution is available for a SVK material but this is not the case for other constitutive models, which prevents the generic use of an exact solver.
 
 % \begin{remark}
 %   This problem can be solved in a two-dimensional setting by considering an infinite medium in direction $\vect{e}_3$, of dimension $l\times h$ in directions $\vect{e}_1$ and $\vect{e}_2$, which bottom and top boundaries are assumed vertically fixed.
@@ -60,7 +60,7 @@ Moreover, an exact solution is available for a SVK material but it is not the ca
 
 
 \subsubsection{Tensile impact on a SVK medium}
-A tensile load of magnitude $\Pi^d= -2\times 10^{10} \: Pa$ that gives rise to a shock wave in the medium is now studied. Recall that for this problem, the characteristic speeds read: $c=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }$ (see equation \eqref{eq:SVK_charac_fields} in section \ref{sec:SVK_solution}).
+A tensile load of magnitude $\Pi^d= -2\times 10^{10} \: Pa$ that gives rise to a shock wave in the medium is now studied. Recall that for this problem, the characteristic speeds are: $c=\pm \sqrt{\frac{\lambda+2\mu}{2\rho_0}\(3F^2-1\) }$ (see equation \eqref{eq:SVK_charac_fields} in section \ref{sec:SVK_solution}).
 It then follows that the higher the deformation gradient, the faster waves propagate. Hence, the celerity of the fastest wave is given by the deformation gradient on the upwind side and must be used to adapt the time step and hence, satisfy the CFL condition for fixed Courant number.
 This situation did not arise in the above case of a rarefaction wave since the highest deformation gradient value was (constant) on the downwind side. 
 
@@ -69,7 +69,7 @@ This situation did not arise in the above case of a rarefaction wave since the h
   {\phantomsubcaption \label{subfig:he_shock1}}
   {\phantomsubcaption \label{subfig:he_shock2}}
   {\input{chapter4/pgfFigures/he_stress_50shock}}
-  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{10} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
+  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{10} \: Pa$. Comparison between MPM (CFL=$0.5$), DGMPM-Euler with 1ppc (CFL=$1$) or 2ppc (CFL=$0.5$), DGMPM-RK2 with 2ppc (CFL=$1$), and the exact solution.}
   \label{fig:he_shock}
 \end{figure}
 Total Lagrangian MPM and DGMPM are used to solve this problem, and compared to the exact solution in figure \ref{fig:he_shock}.
@@ -88,7 +88,7 @@ Nevertheless, the loading conditions are deliberately extreme for the purpose of
   {\phantomsubcaption \label{subfig:he_low_shock1}}
   {\phantomsubcaption \label{subfig:he_low_shock2}}
   {\input{chapter4/pgfFigures/he_stress_5shock}}
-  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{9} \: Pa$. Comparison between MPM ($CFL=0.5$), DGMPM-Euler with 1ppc ($CFL=1$) or 2ppc ($CFL=0.5$), DGMPM-RK2 with 2ppc ($CFL=1$), and exact solution.}
+  \caption{First Piola–Kirchhoff stress solution of the tensile impact problem at different times: $\Pi^d=-2\times 10^{9} \: Pa$. Comparison between MPM (CFL=$0.5$), DGMPM-Euler with 1ppc (CFL=$1$) or 2ppc (CFL=$0.5$), DGMPM-RK2 with 2ppc (CFL=$1$), and the exact solution.}
   \label{fig:he_low_shock}
 \end{figure}
 

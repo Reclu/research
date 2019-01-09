@@ -1,4 +1,4 @@
-We now consider an elastic solid with square section of dimension $l=3m$ in the ($\vect{e}_1,\vect{e}_2$) plane, infinite in direction $\vect{e}_3$ so that the plane strain assumption holds (\textit{i.e. $\eps_{33}=\eps_{13}=\eps_{23}=0$}). The solid suddenly undergoes a tensile load on a part of its left boundary (see figure \ref{fig:2D_planeStrain}\subref{subfig:2D_problem}) leading to shear and pressure waves propagating in the medium until reflection on the right end.
+We now consider an elastic solid with square section of dimension $l=3m$ in the ($\vect{e}_1,\vect{e}_2$) plane, infinite in the direction $\vect{e}_3$ so that the plane strain assumption holds (\textit{i.e. $\eps_{33}=\eps_{13}=\eps_{23}=0$}). The solid suddenly undergoes a tensile load on a part of its left boundary (see figure \ref{fig:2D_planeStrain}\subref{subfig:2D_problem}) leading to shear and pressure waves propagating in the medium until they reflect at the right end.
 \begin{figure}[h!]
   \centering
   \subcaptionbox{Geometry and boundary conditions\label{subfig:2D_problem}}{\input{chapter4/pgfFigures/2d_square}} \qquad
@@ -10,18 +10,20 @@ The MPM and the DGMPM are compared to a $Q1$-finite element (bilinear approximat
 Since an upper bound of the CFL number cannot be determined for the DGMPM scheme using RK2 time discretization for two-dimensional problems, we consider the DGMPM-Euler scheme in the remainder of the manuscript.
 More specifically, the following simulations have been carried out by means of the CTU method.
 
-The domain is discretized such that material points are equivalent to finite element nodes: $l\times l \equiv 28 \times 28$ particles and nodes. Moreover, two arbitrary grids are used for the DGMPM so that either one or four material points lie in every cells according to the situations depicted in figure \ref{fig:2D_planeStrain}\subref{subfig:2d_meshes}.
-Figure \ref{fig:2delast_comparison} shows the isovalues of the longitudinal stress $\sigma_{11}$ in the two-dimensional medium at two different times with the traction force set to $\sigma^d=200\: Mpa$.
-The two instants at which the solutions are depicted correspond to incident and reflected waves. In addition, the stress profiles along the bottom boundary of the domain are plotted in figures \ref{fig:elastlines}\subref{subfig:line_elast1} and \ref{fig:elastlines}\subref{subfig:line_elast2} for the same times.
-
-Analogously to one-dimensional problems, the figures show that DGMPM solutions do not suffer from spurious oscillations while FEM and MPM ones exhibit numerical noise.
+The domain is discretized such that material points are equivalent to finite element nodes: $l\times l \equiv 28 \times 28$ particles and nodes.
+Moreover, two arbitrary grids are used for the DGMPM so that either one or four material points lie in every cell according to the situations depicted in figure \ref{fig:2D_planeStrain}\subref{subfig:2d_meshes}.
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/2Delasticity}
   \caption{Isovalues of longitudinal stress $\sigma_{11}$ solution of the tensile impact problem in a two-dimensional elastic medium. Comparison between FEM (CFL=0.9), DGMPM-CTU using 1ppc (CFL=1) or 4ppc (CFL=0.23), and MPM using 1ppc (CFL=0.7).}
   \label{fig:2delast_comparison}
 \end{figure}
-The decrease in the CFL number involved by 4ppc yields a less accurate resolution of the jump discontinuity carried by the longitudinal pressure wave than for 1ppc, which captures the incident right-going discontinuity (see figure \ref{fig:elastlines}\subref{subfig:line_elast1}).
+Figure \ref{fig:2delast_comparison} shows the isovalues of the longitudinal stress $\sigma_{11}$ in the two-dimensional medium at two different times with the traction force set to $\sigma^d=200\: Mpa$.
+The two instants at which the solutions are depicted correspond to incident and reflected waves. In addition, the stress profiles along the bottom boundary of the domain are plotted in figures \ref{fig:elastlines}\subref{subfig:line_elast1} and \ref{fig:elastlines}\subref{subfig:line_elast2} for the same times.
+
+Analogously to one-dimensional problems, the figures show that DGMPM solutions do not suffer from spurious oscillations while FEM and MPM ones exhibit numerical noise.
+The 4ppc discretization leads to a decrease in the CFL number which, in turn, yields a less accurate resolution of the jump discontinuity carried by the longitudinal pressure wave than for 1ppc (see figure \ref{fig:elastlines}\subref{subfig:line_elast1}).
+%The decrease in the CFL number involved by 4ppc yields a less accurate resolution of the jump discontinuity carried by the longitudinal pressure wave than for 1ppc, which captures the incident right-going discontinuity (see figure \ref{fig:elastlines}\subref{subfig:line_elast1}).
 Next, the interaction of shear and pressure waves traveling in the medium leads to a curved stress profile upstream of the discontinuity that is captured differently by all methods.  
 \begin{figure}[h!]
   {\phantomsubcaption \label{subfig:line_elast1}}
@@ -30,9 +32,12 @@ Next, the interaction of shear and pressure waves traveling in the medium leads 
   \caption{Evolution of longitudinal stress $\sigma_{11}$ along the bottom boundary of the elastic square plate. Comparison between FEM (CFL=0.9), DGMPM-CTU using 1ppc (CFL=1) or 4ppc (CFL=0.23), and MPM using 1ppc (CFL=0.7).}
   \label{fig:elastlines}
 \end{figure}
-On the other hand, the cylindrical profile of the longitudinal stress is quite well described by FEM and DGMPM with 1ppc, even after reflection on the fixed boundary as can be seen in figure \ref{fig:2delast_comparison}. The smoothness of DGMPM solutions using 4ppc and the oscillations in MPM results however prevent to distinguish this structure.
+On the other hand, the cylindrical profile of the longitudinal stress is quite well described by FEM and DGMPM with 1ppc, even after reflection at the fixed boundary, as can be seen in figure \ref{fig:2delast_comparison}.
+%The smoothness of DGMPM solutions using 4ppc and the oscillations in MPM results however prevent to distinguish this structure.
+The smoothness of DGMPM solutions using 4ppc and the oscillations in MPM results however prevent from distinguishing this structure.
 
-Figure \ref{fig:elastlines}\subref{subfig:line_elast2} also shows that the stress level on the right boundary of the domain differs from one method to another. Furthermore, MPM and FEM solutions after the passage of the reflected waves oscillate a lot compared to these of DGMPM schemes. In particular, the stress levels greatly differ after the reflection of the pressure wave.
+Figure \ref{fig:elastlines}\subref{subfig:line_elast2} also shows that the stress level on the right boundary of the domain differs from one method to another. Furthermore, MPM and FEM solutions after the passage of the reflected waves oscillate a lot compared to those of DGMPM schemes.
+In particular, the stress levels greatly differ after the reflection of the pressure wave.
 
 
 %%% Local Variables:

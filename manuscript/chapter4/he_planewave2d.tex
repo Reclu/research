@@ -7,8 +7,8 @@
 
 \subsubsection*{Plane wave in a two-dimensional hyperelastic medium}
 We move to multi-dimensional simulations by considering an infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$, and of width $l$ in direction $\vect{e}_1$ (see figure \ref{fig:2dHEbar}), with Riemann-type data on the initial velocity ($v_1(x)=v_0$ for $x <l/2$ and $v_1(x)=-v_0$ for $x >l/2$ with $v_0=100 \: m/s$). Both ends of the domain are traction-free.
-The solid is now made of the compressible hyperelastic neo-Hookean material which, unlike the SVK model, is based on a polyconvex stored energy function so that hyperbolicity is ensured whatever $\tens{F}$ (see section \ref{sec:constitutive-equations}).
-While it has been seen that a compression load on a SVK material led to a rarefaction wave, it is not the case for the neo-Hookean model for which a compression load as that studied here involves a shock wave (see remark \ref{rq:charach_neoHook}).
+The solid is now made of a compressible hyperelastic neo-Hookean material which, unlike the SVK model, is based on a polyconvex stored energy function so that hyperbolicity is ensured whatever $\tens{F}$ (see section \ref{sec:constitutive-equations}).
+While it has been seen that a compressive load on a SVK material leads to a rarefaction wave, this is not the case for the neo-Hookean model for which a compressive load involves a shock wave (see remark \ref{rq:charach_neoHook}).
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/2dbar}
@@ -22,7 +22,7 @@ The solid is discretized with $80\times 4$ material points in a regular grid mad
 \begin{figure}[h!]
   \centering
   \input{chapter4/pgfFigures/2DplaneWave}
-  \caption{Isovalues of the longitudinal PK1 stress $\Pi_{11}$ solution of the plane wave problem in a two-dimensional compressible neo-Hookean material with Riemann-type data on the initial velocity. Comparison between DGMPM-DCU with 1ppc ($CFL=0.57$) or 4ppc ($CFL=0.23$) and MPM solutions also using 1ppc and 4ppc ($CFL=0.7$).}
+  \caption{Isovalues of the longitudinal PK1 stress $\Pi_{11}$ solution of the plane wave problem in a two-dimensional compressible neo-Hookean material with Riemann-type data on the initial velocity. Comparison between DGMPM-DCU with 1ppc (CFL=$0.57$) or 4ppc (CFL=$0.23$) and MPM solutions also using 1ppc and 4ppc (CFL=$0.7$).}
   \label{fig:2dplane_Wave}
 \end{figure}
 %The first space discretization in which the particles are located at elements centers is referred to as $1ppc$ while the second, consisting in material points that are symemtrically placed with respect to cells centers, is referred to as $4ppc$.  
@@ -40,7 +40,7 @@ Nevertheless, the one-dimensional dependency of the solution is not disturbed wi
 \end{figure}
 
 The evolutions of total energy during DGMPM and MPM computations are compared in figure \ref{fig:pw_energy}.
-As for the elastic case, it can be seen that the DGMPM is more diffusive than the MPM. It is however worth noticing that both methods diffuse more energy than in the linear elastic case. 
+As for the elastic case, it can be seen that the DGMPM is more dissipative than the MPM. It is however worth noticing that both methods dissipate more energy than in the linear elastic case. 
 
 %%% Local Variables:
 %%% mode: latex
