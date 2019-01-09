@@ -1,15 +1,15 @@
 The numerical simulation of initial boundary value problems (IBVP), to which hyperbolic ones belong, has been and is still widely performed in solid mechanics with the Finite Element Method (FEM) \cite{Belytschko}.
 This approach is based on the discretization of a computational domain into a set of elements with simple geometries used to solve the equations.
-An approximate solution is thus built by means of a combination of polynomial functions which degree defines the approximation order.
-FEM has become attractive due to its ability to handle low or high-order approximations, and to easily deal with complex geometries and nonlinear constitutive models as these mentioned above.  %% At integration points
+An approximate solution is thus built by means of a combination of polynomial functions whose degree defines the approximation order.
+FEM became attractive due to its ability to handle low or high-order approximations, and to easily deal with complex geometries and nonlinear constitutive models as those mentioned above.  %% At integration points
 %% Lagrangian (appuyer un peu les avantages et les inconvénients)
 Nevertheless, difficulties may be encountered if large deformations occur when the finite elements deform with the domain, according to a material description of the motion (Lagrangian approach).
 Indeed, the method is less efficient and accurate when the elements are highly distorted or entangled so that re-meshing techniques and projection steps must be employed.
 %% Eulerian (appuyer un peu les avantages et les inconvénients)
-Those issues can be avoided by using a spatial description of the motion consisting in viewing the elements vertices as fixed points of the space (Eulerian approach).
+These issues can be avoided by using a spatial description of the motion consisting in viewing the elements vertices as fixed points of the space (Eulerian approach).
 However interface tracking techniques and diffusing convection steps are required in order to follow the boundaries and transport internal variables which is less convenient for solid mechanics.
 %% ALE (appuyer un peu les avantages et les inconvénients)
-Alternatively, arbitrary Lagrangian Eulerian (ALE) methods aim at meeting advantages of both approaches by freeing itself of their respective limits by distinguishing the motion of mesh to this of material points.
+Alternatively, arbitrary Lagrangian Eulerian (ALE) methods aim at meeting advantages of both approaches by freeing itself of their respective limits by distinguishing the motion of the mesh to these of material points.
 This type of strategy nonetheless also requires re-meshing or re-zoning procedures that can be costly for fine meshes. %that can dramatically increase the computational time for fine meshes.
 They also require diffusive projection steps of internal variables for solid media.
 %% Time integration
@@ -24,25 +24,25 @@ This class of methods can embed tools based on the Total Variation Diminishing (
 The formulation moreover lies on a conservative form leading to the same order of accuracy for all components of the unknown vector $\Ucb$.
 In particular, one shows that both velocity and gradients arise in $\Ucb$ in solid mechanics.
 This point makes a big difference with respect to methods that do not use a formulation written as a differential system of order one, namely FEM, for which the convergence rate of gradients is one order less than that of displacement.
-To some extent, the writing of solid mechanics equations in the form of conservation laws amounts to a mixed approach, well-known in FEM procedure.
-FVM formulations moreover rely on numerical fluxes allowing to account for the characteristic structure of hyperbolic equations.
+To some extent, the writing of solid mechanics equations in the form of conservation laws amounts to a mixed approach, well-known in FEM.
+FVM formulations moreover rely on numerical fluxes that enable to account for the characteristic structure of hyperbolic equations.
 Hence, finite volumes enable an accurate tracking of the path of waves although the most widely used approximations are second-order. %the approximation is limited to order two.
 Recent studies furthermore extended these approaches to solid mechanics for problems involving history-dependent models \cite{Gavrilyuk,Thomas_EP}, or finite deformations with a Lagrangian formulation \cite{Lee_FVM,Haider_FVM}.
 The latter methods are nevertheless grid-based techniques for which the numerical difficulties linked to mesh occur.
 %FVM are nevertheless grid-based methods for which the numerical difficulties linked to mesh occur.
 
 %% DG approximation profiter des avantages des FEM et FVM Comportement non linear
-The discontinuous Galerkin (DG) approximation \cite{NeutronDG} allows to build numerical schemes that benefit from both FEM and FVM.
+The discontinuous Galerkin (DG) approximation \cite{NeutronDG} makes possible to build numerical schemes that benefit from both FEM and FVM.
 In DG-methods, the approximate solution is sought as a combination of piece-wise polynomial functions whose supports are dictated by the discretization used.
 Therefore, the combination of the DG approximation with the finite element formulation (DGFEM) yields a local high approximation order, the same order being achievable for both velocity and gradients if a conservative form is used.
-Furthermore, numerical fluxes at the interface between elements, allowing to take into account the characteristic structure of hyperbolic systems, arise from the introduction of DG approximation.
+Furthermore, numerical fluxes at the interface between elements, which enable to take into account the characteristic structure of hyperbolic systems, arise from the introduction of DG approximation.
 %% Discontinuity
 %In addition, the numerical noise arising in FEM solutions can be removed following 
 Several development steps, aiming at removing the numerical noise appearing in DGFEM solution, followed the works on FVM in order to reach Total Variation Diminishing in the Means (TVDM) and Total Variation Bounded (TVB) high order schemes that ensure convergence to entropy-satisfying solutions \cite{Cockburn}.
-However, in spite of the piece-wise continuous approximation, the methods fail in accurately capture discontinuities owing to the time discretization.
+However, in spite of the piece-wise continuous approximation, the methods fail to accurately capture discontinuities owing to the time discretization.
 %% TDG - SDG
 Adopting a similar approach, the Time-Discontinuous Galerkin (TDG) \cite{Hughes_TDG} and later, the Space-Time Discontinuous Galerkin method (SDG) \cite{ST_DGFEM1}, relaxed the continuity of fields in the time domain. 
-By discretizing the entire space-time domain as a possibly unstructured mesh, SDG allows to avoid the difficulties related to the time integrators and hence, enables the following of waves.
+By discretizing the entire space-time domain as a possibly unstructured mesh, SDG avoids the difficulties related to the time integrators and hence, enables the following of waves.
 Nevertheless, although those approaches can easily handle mesh-adaption strategies due to the relaxation of fields continuity, it does not eliminate the mesh tangling problems for Lagrangian formulations \cite{FVilar_DG}.
 
 %% Meshless methods

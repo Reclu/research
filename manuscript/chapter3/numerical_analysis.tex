@@ -1,4 +1,7 @@
-Following \cite{Hirsch}, the DGMPM discretizations of scalar linear advection problems are now written in a finite difference sense. The scheme equations thus obtained are the starting points for von Neumann linear stability analyses. First, the one-dimensional problem is considered and scheme equations of the DGMPM space discretization combined to both forward Euler and RK2 explicit time integrations are derived. Second, the two-dimensional scheme equation is written by using the DGMPM space discretization along with the explicit forward Euler time integration only.
+Following \cite{Hirsch}, the DGMPM discretization of scalar linear advection problems are now written in a finite difference sense.
+The equations thus obtained are the starting point for von Neumann linear stability analyses.
+First, the one-dimensional problem is considered and the equations of the DGMPM space discretization combined with both forward Euler and RK2 explicit time integrations are derived.
+Second, the two-dimensional equations are written using the DGMPM space discretization along with the explicit forward Euler time integration only.
 
 \subsection{One-dimensional stability analysis}
 \label{subsec:scheme_equations}
@@ -11,24 +14,26 @@ with specific flux function $\bar{f} = a\bar{q}$, leading to the quasi-linear fo
 \begin{equation}
 \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} = 0 \label{eq:scalar_advection}
 \end{equation}
-Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, the medium is divided with $N_p$ material points arbitrarily distributed in $E$ two-nodes elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid mesh is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
+Equation \eqref{eq:scalar_advection} is discretized with the discontinuous Galerkin material point method. Thus, the medium is divided with $N_p$ material points arbitrarily distributed in $E$ two-node elements of constant length $\Delta X$ (figure~\ref{fig:1Dmesh}). The grid is such that at least one particle lies in every cell during the computation in order to ensure that there is no hole in the bar. Moreover, periodic boundary conditions are considered to simplify the analysis.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/1D_domain}
   \caption{One-dimensional mesh made of $E$ elements of constant length $\Delta X = \frac{l}{E}$.}\label{fig:1Dmesh}
 \end{figure}
 
-Since fields are carried by particles, we seek the scheme equation that gives the solution at a material point for a given time step, with respect to the solutions of other particles at the prior time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points.
+Since fields are carried by particles, we seek the scheme equation that gives the solution at a material point for a given time step, with respect to the solutions at other particles at the prior time step. In this section, Latin and Greek symbols are respectively devoted to nodes and material points.
 Since we consider here scalar quantities, the information on nodes and particles can be written as subscripts without ambiguity with vector components.
-In addition, to make the distinction between fields easier, upper and lower case Latin symbols are used for particles and nodal fields respectively.
-Hence, the solution at material point $\alpha$ and time step $n$ reads $\bar{Q}^{n}_\alpha$ whereas that of node $i$ is $\bar{q}^n_i$. Then, the cell containing the particle $\alpha$ will be denoted by $c(\alpha)$ so that the nodes interacting with this particle are $2c(\alpha)-1$ and $2c(\alpha)$. At last, the linear shape functions defined in element $c(\alpha)$ are:
+In addition, to make the distinction between fields easier, upper and lower case Latin symbols are used for particle and nodal fields respectively.
+Hence, the solution at material point $\alpha$ and time step $n$ reads $\bar{Q}^{n}_\alpha$ whereas that of node $i$ is $\bar{q}^n_i$.
+Then, the cell containing the particle $\alpha$ will be denoted by $c(\alpha)$ so that the nodes interacting with this particle are $2c(\alpha)-1$ and $2c(\alpha)$.
+At last, the linear shape functions defined in element $c(\alpha)$ are:
 \begin{equation}
 S_{2c(\alpha)-1}(X)= \frac{X^{2c(\alpha)} - X}{\Delta X} \qquad S_{2c(\alpha)}(X)= \frac{X -X^{2c(\alpha)-1}}{\Delta X} \qquad X \in \[X^{2c(\alpha)-1},X^{2c(\alpha)}\]
 \end{equation}
 and $S_{i\alpha}$ or $S_{i,\alpha}$ correspond to the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
 
 \subsubsection*{Scheme equation: Euler time discretization}
-The method followed to write the scheme equation is to trace backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $\alpha$:
+The method followed in order to write the scheme equation consists of tracing backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $\alpha$:
 \begin{equation}
 \bar{Q}^{n+1}_\alpha = H\(\bar{Q}^{n}_\beta\) \qquad  \beta=1,..,N_p
 \end{equation} 
@@ -52,7 +57,7 @@ where in a one-dimensional grid, the outward unit vectors are $N_{2c(\alpha)-1}=
   \label{eq:grid_density}
   \rho(X) = \frac{M^L_{2c-1}+M^L_{2c}}{\Delta X} = \frac{\sum_{\mu=1}^{N_p^c} m_\mu}{\Delta X}, \qquad X \in [X^{2c-1},X^{2c}]
 \end{equation}
-where $N_p^{c}$ is the number of particles in cell $c$ and $m_\mu$, the mass carried by the $\mu$th material point. For homogeneous medium, we further assume that the mass is uniformly distributed between particles so that the previous definition reduces to $\rho = N_p^{c} m^c/\Delta X$, with $m^c$ the mass carried by particles lying in $c$. Second, provided linear shape functions, the lumped mass and the pseudo-stiffness matrices are:
+where $N_p^{c}$ is the number of particles in cell $c$ and $m_\mu$, the mass carried by the $\mu$th material point. For homogeneous medium, we further assume that the mass is uniformly distributed between particles so that the previous definition reduces to $\rho = N_p^{c} m^c/\Delta X$, with $m^c$ the mass carried by particles lying in $c$. Second, linear shape functions lead to the following the lumped mass matrix and pseudo-stiffness matrices:
 \begin{align}
   & M^L_i = \sum_{\mu=1}^{N_p} S_{i\mu} m_\mu = m^{c(i)} \sum_{\mu=1}^{N_p} S_{i\mu}\\
   & K_{2c(\alpha)-1,j} = \sum_{\mu=1}^{N_p} \drond{S_{2c(\alpha)-1,\mu}}{X} m_\mu S_{j\mu} = -m^{c(i)} \sum_{\mu=1}^{N_p} \frac{ S_{j\mu}}{\Delta X} \\
@@ -63,7 +68,7 @@ The discontinuous approximation basis moreover yields a bloc diagonal pseudo-sti
   \label{eq:block_diag_K}
   K_{ij} \bar{q}_{j}^{n}= K_{i,2c(i)-1} \bar{q}_{2c(i)-1}^{n}+K_{i,2c(i)} \bar{q}_{2c(i)}^{n}
 \end{equation}
-Third, a right-going wave (\textit{i.e. $a>0$}) leads to a stationary solution of Riemann problems equals to the state of the upwind node of an interface, that is:
+Third, a right-going wave (\textit{i.e. $a>0$}) leads to a stationary solution of the Riemann problem equal to the state of the upwind node of an interface, that is:
 \begin{align}
   & q_{2c(\alpha)-1}^* = \rho \bar{q}^n_{2c(\alpha)-2}=  N_p^{c(\alpha)}\frac{ m^{c(\alpha)}}{\Delta X}\bar{q}^n_{2c(\alpha)-2} \\
   & q_{2c(\alpha)}^* = \rho \bar{q}^n_{2c(\alpha)} =  N_p^{c(\alpha)}\frac{ m^{c(\alpha)}}{\Delta X} \bar{q}^n_{2c(\alpha)} 
@@ -76,7 +81,7 @@ Therefore, gathering all the previous considerations, equations \eqref{eq:nodal_
     &\bar{q}_{2c(\alpha)}^{n+1}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{\Delta X}\( \frac{\sum_{\mu=1}^{N_p^{c(\alpha)}} \[S_{2c(\alpha)-1,\mu}\bar{q}_{2c(\alpha)-1}^{n}+ S_{2c(\alpha),\mu}\bar{q}_{2c(\alpha)}^{n}\]- N_p^{c( \alpha)} \bar{q}^n_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}} S_{2c(\alpha),\mu}} \)
   \end{aligned}
 \end{equation}
-where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar{q}_{2c-1}^{n}+ S_{2c,\mu}\bar{q}_{2c}^{n}\]$ are written for simplicity $f_{c}^{n}$, and Courant number $a\Delta t/\Delta X$ arises. Introduction of those equations in the updated material point solution \eqref{eq:updated_MP} leads after some simplifications to:
+where the volume flux contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar{q}_{2c-1}^{n}+ S_{2c,\mu}\bar{q}_{2c}^{n}\]$ are written for simplicity $f_{c}^{n}$, and Courant number $a\Delta t/\Delta X$ arises. Introduction of these equations in the updated material point solution \eqref{eq:updated_MP} leads after some simplifications to:
 \begin{equation}
   \label{eq:euler_before_mapping}
   \begin{split}
@@ -85,12 +90,12 @@ where the volume fluxes contributions $\sum_{\mu=1}^{N_p^{c}} \[S_{2c-1,\mu}\bar
   \end{split}
 \end{equation}
 
-Then, the solutions at nodes and time step $n$ in equation \eqref{eq:euler_before_mapping} result from the projection between particles and the grid \eqref{eq:DGMPM_points2nodes}:
+Then, the solution at nodes and time step $n$ in equation \eqref{eq:euler_before_mapping} result from the projection between particles and the grid \eqref{eq:DGMPM_points2nodes}:
 %In equation \eqref{eq:euler_before_mapping} the solutions at nodes result from the convection step \eqref{eq:DGMPM_points2nodes}:
 \begin{equation}
 \bar{q}^{n}_{i} = \frac{\sum_\beta S_{i\beta}m_\beta \bar{Q}^n_{\beta}}{\sum_\gamma S_{i\gamma}m_\gamma} = \frac{\sum_\beta S_{i\beta} \bar{q}^n_{\beta}}{\sum_\beta S_{i\beta}} \label{eq:stab_mapping}
 \end{equation}
-In particular, volume fluxes contributions can be written:
+In particular, volume flux contributions can be written:
 \begin{equation}
   f_{c}^{n}=\sum_{\mu=1}^{N_p^{c}}\[S_{2c-1,\mu}\frac{\sum_\beta S_{2c-1,\beta}\bar{q}^n_{\beta}}{\sum_\gamma S_{2c-1,\gamma}}+ S_{2c,\mu}\frac{\sum_\beta S_{2c,\beta} \bar{q}^n_{\beta}}{\sum_\gamma S_{2c,\gamma}} \]=\sum^{N_p}_{\beta=1}\(S_{2c-1,\beta} +S_{2c,\beta} \)\bar{q}^n_{\beta} \label{eq:volume_fluxes_mapped}
 \end{equation}
@@ -111,12 +116,14 @@ Note that the last term of formula \eqref{eq:scheme_euler1} is non-zero if parti
     & + \left.   \frac{a\Delta t}{\Delta X} \[\frac{S_{2c(\beta),\alpha}}{\sum_{\mu}  S_{2c(\beta),\mu}}-\frac{S_{2c(\beta)-1,\alpha}}{\sum_\mu S_{2c(\beta)-1,\mu}}\] \vphantom{\sum_{i=1}^{2E}}\right\rbrace
   \end{split}
 \end{equation}
-The first (\textit{resp. second}) brackets in equation \eqref{eq:Euler_scheme} involve shape functions that are non zero if material point $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}). Hence, the numerical domain of dependence of the DGMPM for the scalar linear advection equation covers two cells regardless of the number of material points. It is worth noticing that in the particular case of one material point lying in every cells, convective phase \eqref{eq:stab_mapping} simplifies to: $\bar{q}^n_i = \bar{Q}^n_\alpha$ for $c(i)=c(\alpha)$. The mapping therefore amounts to a piece-wise constant reconstruction of the field on the background grid that makes the DGMPM equivalent to the \textit{First Order Upwind (FOU)} method.
+The first (\textit{resp. second}) bracket in equation \eqref{eq:Euler_scheme} involves shape functions that are non zero if material points $\beta$ and $\alpha$ lie in adjacent cells (\textit{resp. the same cell}).
+Hence, the numerical domain of dependence of the DGMPM for the scalar linear advection equation covers two cells regardless of the number of material points.
+It is worth noticing that in the particular case of one material point lying in every cell, the convective phase \eqref{eq:stab_mapping} simplifies to: $\bar{q}^n_i = \bar{Q}^n_\alpha$ for $c(i)=c(\alpha)$. The mapping therefore amounts to a piece-wise constant reconstruction of the field on the background grid that makes the DGMPM equivalent to the \textit{First Order Upwind (FOU)} method.
 However, this no longer holds for other distributions of material points within the computational grid. 
 
 \subsubsection*{Scheme equation: RK2 time discretization}
 
-The discrete system on the grid resulting from the second-order Runge-Kutta time integration consists in the two-stage procedure \eqref{eq:DGMPM_discrete_RK2} which, for the one-dimensional scalar linear advection equation, particularizes at node $i$  as:
+The discrete system on the grid resulting from the second-order Runge-Kutta time integration consists of the two-stage procedure \eqref{eq:DGMPM_discrete_RK2} which, for the one-dimensional scalar linear advection equation, particularizes at node $i$  as:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:RK2_stage1}& \bar{q}^{n+1/2}_{i}  =\bar{q}^{n}_{i} + \frac{1}{2}\frac{\Delta t}{M^L_{i}} a \( \sum_{j=1}^{2E} K_{i,j} \bar{q}^n_{j} - q^{*,n}_{i}N_i \) \quad \text{(no sum on $i$)} \\
@@ -131,7 +138,7 @@ This procedure can be seen as a recursive use of the Euler scheme \eqref{eq:noda
     &\bar{q}_{2c(\alpha)}^{n+1/2}= \bar{q}_{2c(\alpha)}^{n} + \frac{a\Delta t}{2\Delta X}\( \frac{f_{c(\alpha)}^{n}- N_p^{c( \alpha)}  \bar{q}^n_{2c(\alpha)}}{\sum_{\mu=1}^{N_p^{c(\alpha)}}  S_{2c(\alpha),\mu}} \)
   \end{aligned}
 \end{equation}
-and the second \eqref{eq:RK2_stage2} leads to the expression of nodal quantities at the end of the time step:
+and the second stage \eqref{eq:RK2_stage2} leads to the expression of nodal quantities at the end of the time step:
 \begin{equation}
   \label{eq:discrete_RK2_step2}
   \begin{aligned}
@@ -208,52 +215,59 @@ The amplification factor between two time steps at a given point is defined as:
 \begin{equation}
 \frac{A_j^{n+1}}{A_j^n} = \sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta} \quad \forall j=-E,...,E \label{eq:fourier_expansion}
 \end{equation}
-A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than or equal to one in modulus: $\abs{A^{n+1}/A^n} \leq 1$. This upper bound allows to prevent an increasing in error during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
+A necessary condition to ensure the stability of a numerical scheme is that the amplification factor must be lower than or equal to one in modulus: $\abs{A^{n+1}/A^n} \leq 1$. This upper bound prevents an increasing error during the computation. For expression \eqref{eq:fourier_expansion}, this leads to:
 \begin{equation}
  \abs{\sum_{\beta=1}^{N_p} e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} \leq \sum_{\beta=1}^{N_p} \abs{e^{i (\beta -\alpha)k_j \Delta X} D_{\alpha\beta}} = \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \quad \forall j=-E,...,E
 \end{equation}
 where the triangle inequality, and the unit modulus of the complex number $e^{i (\beta -\alpha)k_j \Delta X}$ have been used.
-Hence, the DGMPM scheme is stable for a given discretization if the Courant number is set so that the following condition is satisfied for all material points:
+Hence, the Courant number must be set so that the following condition is satisfied for all material points:
 \begin{equation}
   \label{eq:stability} \sum_{\beta=1}^{N_p} \abs{D_{\alpha\beta}} \leq 1 \quad \forall \: \alpha = 1,...,N_p
 \end{equation}
-The stability of the scheme is thus ensured by using the lowest CFL number satisfying \eqref{eq:stability}. Note however that the use of the triangle inequality leads to a more severe constraint than that really admissible. As a consequence, the Courant number can be set in practice to higher values than that resulting from the solution of \eqref{eq:stability}. 
+% The stability of the scheme is thus ensured by using the lowest CFL number satisfying \eqref{eq:stability}.
+Note however that the use of the triangle inequality leads to a more severe constraint than the one really holding.
+As a consequence, the Courant number can be set in practice to higher values than that resulting from the solution of \eqref{eq:stability}. 
 
 %According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
 According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, the stability condition \eqref{eq:stability} can be very hard to find analytically for general discretizations. 
 \begin{table}[h]
   \centering
   \input{chapter3/tabular/CFL_comparison}
-  \caption{DGMPM critical Courant numbers values for Euler or RK2 time integration with respect of the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
+  \caption{DGMPM critical Courant number values for Euler or RK2 time integration with respect to the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
   \label{tab:CFL_comparison}
 \end{table}
-Nevertheless, though the infinity of possible material points distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particles distribution in every elements of a one-dimensional regular mesh. 
+Nevertheless, though the infinity of possible material point distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particle distribution in every element of a one-dimensional regular mesh. 
 % so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. 
-First, the DGMPM scheme is stable for all CFL number lower than or equal to one when cells contain one particle only regardless of their positions. This property characterizes the FOU method that is retrieved with this discretization. 
+First, the DGMPM scheme is stable for all CFL numbers lower than or equal to one when cells contain one particle only regardless of their positions.
+This property characterizes the FOU method that is retrieved with this discretization. 
 Then, when many material points share the same element, several configurations are considered:
 \begin{itemize}
-\item[(i)] particles are positioned symmetrically with respect to cells centers and regularly spaced in the mesh. This space discretization is referred to as the natural configuration in the following.
-\item[(ii)] particles in the natural configuration are all shifted of $u=\Delta X/10$.
-\item[(iii)] the same than (ii) with $u$ so that one material point overlaps every left nodes of cells.
-\item[(iv)] the same than (iii) for right nodes.
-\item[(v)] particles are placed symmetrically with respect to cells centers but not regularly spaced in the mesh. Material points in the left half of cells are shifted of $u_1=-\Delta X/10$ while those in the right half are shifted of $u_2=\Delta X/10$.
-\item[(vi)] the same than (v) with the first and last particles overlapping left and right nodes of cells respectively.
+\item[(i)] particles are positioned symmetrically with respect to cell centers and regularly spaced in the mesh.
+  This space discretization is referred to as the natural configuration in the following.
+\item[(ii)] particles in the natural configuration are all shifted by $u=\Delta X/10$.
+\item[(iii)] the same as (ii) with $u$ so that one material point overlaps every left node of the cells.
+\item[(iv)] the same as (iii) for right nodes.
+\item[(v)] particles are placed symmetrically with respect to cell centers but not regularly spaced in the mesh. Material points in the left half of cells are shifted by $u_1=-\Delta X/10$ while those in the right half are shifted by $u_2=\Delta X/10$.
+\item[(vi)] the same as (v) with the first and last particles overlapping left and right nodes of cells respectively.
 \end{itemize}
 %RK2 results bad when the upwind material point move to the right
 %One can see in table \ref{tab:CFL_comparison} that the RK2 time discretization generally provides better results in terms of CFL number for the particles distributions considered. However, a uniform translation of material points in the mesh leads to a decrease in the Courant number for both time integrations.
-First, table \ref{tab:CFL_comparison} shows that the natural configuration leads to the optimal stability bound for the RK2 integrator while the CFL number allowed by using Euler time discretization decreases with increasing number of particles per cell.
-Second, moving every points rightward in the mesh (\textit{i.e. cases (ii) and (iv)}) causes a drop in the critical Courant number for both RK2 and Euler algorithms. In particular, stability conditions for more than two particles per cell provided by the RK2 are, in those cases, more restrictive than that of the Euler.
-Third, the leftward shifting (\textit{i.e. case (iii)}) leads on the other hand to an improvement of the stability condition for Euler time integration compared to that enabled in the natural configuration. The CFL number provided by RK2 integration also decreases due to the shifting while remaining higher than Euler one.
-At last, particles distributions conserving the symmetry with respect to cells centers (\textit{i.e. cases (v) and (vi)}), yield the optimal stability condition for the RK2 integrator while the Euler CFL depends on the spacing between material points. More specifically, Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation.
+First, table \ref{tab:CFL_comparison} shows that the natural configuration leads to a better stability bound for the RK2 integrator while the CFL number allowed by using Euler time discretization decreases with increasing numbers of particles per cell.
+Second, moving every point rightward in the mesh (\textit{i.e. cases (ii) and (iv)}) causes a drop in the critical Courant number for both RK2 and Euler algorithms. In particular, stability conditions for more than two particles per cell provided by the RK2 are, in those cases, more restrictive than that of the Euler.
+Third, the leftward shift (\textit{i.e. case (iii)}) leads to an improvement of the stability condition for Euler time integration compared to that in the natural configuration.
+The CFL number provided by RK2 integration also decreases due to the shift while remaining higher than the Euler.
+At last, particles distributions conserving the symmetry with respect to cell centers (\textit{i.e. cases (v) and (vi)}), yield the optimal stability condition for the RK2 integrator while the Euler CFL depends on the spacing between material points.
+More specifically, the Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation.
 
 % In table \ref{tab:CFL_comparison}, we see that in the natural configuration, RK2 integrator leads to the optimal Courant number whereas the one allowed by using Euler discretization depends on the number of material points in cells. Next, those stability conditions become more restrictive when particles are uniformly translated leftward or rightward in the mesh, whit a more significant decrease in CFL number for a translation in the stream direction (\textit{i.e. cases (ii) and (iv)}). In particular, the RK2 algorithm may yields a lower stability bound than that of Euler approach in situation (iv) with more than two particles per cell.
 % % Furthermore the impact of such a translation is more significant in the stream direction (\textit{i.e. cases (ii) and (iv)}) in such a way that the decline in CFL number is bigger than for an inverse stream direction (\textit{i.e. cases (iii)}).
 % In the latter situation, the Euler algorithm provides even better results than in the natural configuration. One the other hand, particles distributions that conserve the symmetry with respect to cells centers lead to the optimal stability condition when using the RK2 time integration while the Euler CFL depends on the spacing between material points. More specifically, Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation.
-The distribution of material points, and therefore the resulting quadrature, has an influence on the stability of the scheme. The optimal Courant number can be reached even with the Euler discretization, whereas the classical DGFEM scheme developed in \cite{Chavent_Salzano} is restricted to condition $\Delta t / \Delta X = \Oc(\sqrt{\Delta X})$. This limitation has been addressed by introducing slope limiters in order to remove non-physical oscillations in the vicinity of sharp solutions while providing high-order accuracy in smooth regions \cite{Chavent_Cockburn}. However, the stability of the method was still bounded by $CFL\leq 1/2$ and the scheme was first-order accurate. The use of a second-order Runge-Kutta \cite{DGFEM_CFL} allowed to achieve second-order accuracy of the scheme, but the stability condition then reduced to $CFL\leq1/3$. It is worth noting that space–time DGFEM formulations \cite{ST_DGFEM1,ST_DGFEM2} provided more recently the ability to relax constraints of pure space DGFEM and obtain a critical CFL at 1.
+The distribution of material points, and therefore the resulting quadrature, has an influence on the stability of the scheme. The optimal Courant number can be reached even with the Euler discretization, whereas the classical DGFEM scheme developed in \cite{Chavent_Salzano} is restricted to condition $\Delta t / \Delta X = \Oc(\sqrt{\Delta X})$. This limitation has been addressed by introducing slope limiters in order to remove non-physical oscillations in the vicinity of sharp solutions while providing high-order accuracy in smooth regions \cite{Chavent_Cockburn}. However, the stability of the method is still bounded by $CFL\leq 1/2$ and the scheme is first-order accurate. The use of a second-order Runge-Kutta \cite{DGFEM_CFL} allows second-order accuracy of the scheme, but the stability condition then reduced to $CFL\leq1/3$. It is worth noting that space–time DGFEM formulations \cite{ST_DGFEM1,ST_DGFEM2} provided more recently the ability to relax constraints of pure space DGFEM and obtain a critical CFL of 1.
 
 \subsection{Space convergence analysis of the one-dimensional scheme}
 \label{sec:convergence}
-We now propose to focus numerically on convergence properties of DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption under small strains holds. The following system of one-dimensional linear scalar advection equations is then considered:  
+We now propose to focus numerically on convergence properties of DGMPM schemes for linear elasticity problems in homogeneous solids undergoing one-dimensional stress and strain states so that the bar assumption under small strains holds.
+The following system of one-dimensional linear scalar advection equations is then considered:  
 \begin{equation}
   \label{eq:conv_hyperbolic}
   \drond{}{t} \matrice{v \\ \sigma} -\drond{}{X}\matrice{\frac{1}{\rho}\sigma \\ Ev} = \matrice{0 \\0}
@@ -267,7 +281,7 @@ The bar is assumed to be initially motionless in a free-stress state, that is: $
     &\sigma(X=l,t) =0,  \qquad \forall t \in [0,T]
   \end{aligned}
 \end{equation}
-where $T=l/c$ is the time taken by waves to travel from one end of the bar to the other at the sound speed $c=\sqrt{\frac{E}{\rho}}$. The combination of hyperbolic system \eqref{eq:conv_hyperbolic} and boundary conditions \eqref{eq:conv_Bcs} yields a Picard problem which exact solution is \cite[Ch.2]{Wang}:
+where $T=l/c$ is the time taken by waves to travel from one end of the bar to the other at the sound speed $c=\sqrt{\frac{E}{\rho}}$. The combination of the hyperbolic system \eqref{eq:conv_hyperbolic} and boundary conditions \eqref{eq:conv_Bcs} yields a Picard problem whose exact solution is \cite[Ch.2]{Wang}:
 \begin{equation}
     \label{eq:exact_solution_convergence}
   \begin{aligned}
@@ -275,7 +289,10 @@ where $T=l/c$ is the time taken by waves to travel from one end of the bar to th
     & v(X,t)=-\frac{\tilde{\sigma}}{\rho c}\sin\(\frac{0.4\pi (t-X/c)}{T}\), \quad \forall \:X, t \in \[0,l\]\times\[0,T\]
   \end{aligned}
 \end{equation}
-The continuum system \eqref{eq:conv_hyperbolic} is discretized with both MPM (USF) and DGMPM by using $2^i$ cells ($i=2,3,...,7$) each containing $N_p=2,3,4,8$ regularly spaced material points so that the regular grid size is $\Delta X= l/2^i$. The refinement of the mesh operates on both nodes and particles in such a way that the number and position of material points per cell initially selected is held constant. Configurations involving different numbers of particle per element are studied separately and the CFL number can therefore be set once and for all (optimal for DGMPM, and $0.5$ for the MPM). Numerical solutions are then compared to the exact one \eqref{eq:exact_solution_convergence} according to the relative $L^2$ norm of the error, also referred to as the $L^2$ error $\epsilon$:
+The continuum system \eqref{eq:conv_hyperbolic} is discretized with both MPM (the USF formulation is selected to limit the numerical dissipation) and DGMPM by using $2^i$ cells ($i=2,3,...,7$) each containing $N_p=2,3,4,8$ regularly spaced material points so that the regular grid size is $\Delta X= l/2^i$.
+The refinement of the mesh operates on both nodes and particles in such a way that the number and position of material points per cell initially selected is held constant.
+Configurations involving different numbers of particles per element are studied separately and the CFL number can therefore be set once and for all (optimal for DGMPM, and $0.5$ for the MPM).
+Numerical solutions are then compared to the exact one \eqref{eq:exact_solution_convergence} according to the relative $L^2$ norm of the error, also referred to as the $L^2$ error $\epsilon$:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:L2_error_S}
@@ -284,14 +301,15 @@ The continuum system \eqref{eq:conv_hyperbolic} is discretized with both MPM (US
     & \epsilon_v(t) = \(\Delta X \sum_{\alpha=1}^{N_p}\frac{(v_\alpha - v_{\text{exact}}(X_\alpha,t))^2}{v_{\text{exact}}(X_\alpha,t)^2}\)^{\frac{1}{2}}
   \end{alignat}
 \end{subequations}
-The errors are computed at time $t=0.5 T$ so that no reflection of waves on the right boundary occurs and the stress amplitude is set at $\tilde{\sigma}=4\times 10^4\:Pa$. Figure \ref{fig:convergence_stress} shows the evolution of the $L^2$ errors $\epsilon_\sigma$ with regard to the grid size for the MPM and the DGMPM using Euler and RK2 time discretizations for several number of particles per element. We see that despite the rates of convergence of stress (obtained by means of non-linear least squares fitting and reported in table \ref{tab:accuracy}) are close to one, the DGMPM--Euler and DGMPM--RK2 exhibit lower ones compared to that of the MPM. 
+The errors are computed at time $t=0.5 T$ so that no reflection of waves on the right boundary occur and the stress amplitude is set at $\tilde{\sigma}=4\times 10^4\:Pa$. Figure \ref{fig:convergence_stress} shows the evolution of the $L^2$ errors $\epsilon_\sigma$ with regard to the grid size for the MPM and the DGMPM using Euler and RK2 time discretizations for several numbers of particles per element.
+We see that, despite the rates of convergence of stress are close to one (obtained by means of non-linear least squares fitting and reported in table \ref{tab:accuracy}), the DGMPM--Euler and DGMPM--RK2 exhibit lower rates compared to those of the MPM. 
 \begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/convS_2ppc.tex}\phantomsubcaption\label{subfig:convS_2ppc}}
   {\input{chapter3/pgfFigures/convS_6ppc.tex}\phantomsubcaption\label{subfig:convS_6ppc}}
   {\input{chapter3/pgfFigures/convS_10ppc.tex}\phantomsubcaption\label{subfig:convS_10ppc}}
   {\input{chapter3/pgfFigures/convS_20ppc.tex}\phantomsubcaption\label{subfig:convS_20ppc}}
-  \caption{Evolution of the $L^2$ error on stress with regard to the number of particles lying in every cells.}
+  \caption{Evolution of the $L^2$ errors in stress with regard to the number of particles lying in every cell.}
   \label{fig:convergence_stress}
 \end{figure}
 \begin{table}[h!]
@@ -300,17 +318,25 @@ The errors are computed at time $t=0.5 T$ so that no reflection of waves on the 
   \caption{Order of accuracy of MPM and DGMPM with regard to the number of particles per cell}
   \label{tab:accuracy}
 \end{table}
-Second, an increase in the number of particles per cell provides slightly higher convergence rates, according to table \ref{tab:accuracy}, and shifts DGMPM curves upward as can be seen in figures \ref{fig:convergence_stress}\subref{subfig:convS_2ppc} to \ref{fig:convergence_stress}\subref{subfig:convS_20ppc}. On the other hand, the MPM error curves do not exhibit this behavior as observed in \cite{MPM_BSpline1}. At last, for coarse grids (\textit{i.e. $\Delta X= l/2^i$ for $i \leq 3$}) the DGMPM--Euler leads to the lowest error but its smaller rate of convergence makes it quickly less accurate than the two other methods. Similar behaviors can be seen for the velocity, which convergence curves are depicted in figure \ref{fig:convergence_velocity} for the same discretizations. Again, the DGMPM shows lower rates of convergence than the MPM, and increasing the number of particles per cell leads to more error in DGMPM solutions. The same order of accuracy for velocity and stress resulting from the DGMPM (see table \ref{tab:accuracy}) was expected since the writing of the weak form of system \eqref{eq:conv_hyperbolic} leads to the same approximation for both fields. The MPM is on the other hand, as FEM, characterized by a higher order of convergence for velocity than stress owing to the use of shape functions derivatives for the computation of gradients. Hence, the MPM rate of convergence in terms of velocity is getting closer to two. 
+Second, an increase in the number of particles per cell provides slightly higher convergence rates, according to table \ref{tab:accuracy}, and shifts DGMPM curves upward as can be seen in figures \ref{fig:convergence_stress}\subref{subfig:convS_2ppc} to \ref{fig:convergence_stress}\subref{subfig:convS_20ppc}.
+On the other hand, the MPM error curves do not exhibit this behavior as observed in \cite{MPM_BSpline1}.
+At last, for coarse grids (\textit{i.e.} $\Delta X= l/2^i$ for $i \leq 3$) the DGMPM--Euler leads to the lowest error but its smaller rate of convergence makes it quickly less accurate than the two other methods.
+Similar behavior can be seen for the velocity, whose convergence curves are depicted in figure \ref{fig:convergence_velocity} for the same discretizations.
+Again, the DGMPM shows lower rates of convergence than the MPM, and increasing the number of particles per cell leads to more error in DGMPM solutions.
+The same order of accuracy for velocity and stress resulting from the DGMPM (see table \ref{tab:accuracy}) was expected since the weak form of system \eqref{eq:conv_hyperbolic} leads to the same approximation for both fields.
+The MPM is on the other hand, as FEM, characterized by a higher order of convergence for velocity than stress owing to the use of shape function derivatives for the computation of gradients.
+Hence, the MPM rate of convergence in terms of velocity is getting closer to two. 
 
-The loss of accuracy in velocity in DGMPM can be explained by the mapping procedure it uses from nodes to particles since FLIP mapping has been introduced in order to reach second-order accuracy \cite{PIC_Nishiguchi}.
-Convergence properties of the MPM using PIC projection shown in table \ref{tab:accuracy} and figure \ref{fig:convergence_velocity} confirm the previous remark. Indeed, modifying the way fields are projected from nodes to particles does not affect dramatically the rate of convergence of stress but leads to a significant decrease in velocity accuracy.
+The loss of accuracy for velocity in DGMPM can be explained by the mapping procedure it uses from nodes to particles since the FLIP mapping has been introduced in order to reach second-order accuracy \cite{PIC_Nishiguchi}.
+Convergence properties of the MPM using the PIC projection shown in table \ref{tab:accuracy} and figure \ref{fig:convergence_velocity} confirm the previous remark.
+Indeed, modifying the way fields are projected from nodes to particles does not affect dramatically the rate of convergence of stress but leads to a significant decrease in velocity accuracy.
 \begin{figure}[h!]
   \centering
   {\input{chapter3/pgfFigures/convV_2ppc.tex}\phantomsubcaption\label{subfig:convV_2ppc}}
   {\input{chapter3/pgfFigures/convV_6ppc.tex}\phantomsubcaption\label{subfig:convV_6ppc}}
   {\input{chapter3/pgfFigures/convV_10ppc.tex}\phantomsubcaption\label{subfig:convV_10ppc}}
   {\input{chapter3/pgfFigures/convV_20ppc.tex}\phantomsubcaption\label{subfig:convV_20ppc}}
-  \caption{Evolution of the $L^2$ error on velocity with regard to the number of particles lying in every cells.}
+  \caption{Evolution of the $L^2$ error in velocity with regard to the number of particles lying in every cells.}
   \label{fig:convergence_velocity}
 \end{figure}
 
@@ -319,7 +345,7 @@ We now propose to set the Courant number to $0.1$ for the MPM and the DGMPM-Eule
   \centering
   {\label{subfig:lowCFL_stress}\input{chapter3/pgfFigures/convS_2ppclowCFL.tex}}
   {\label{subfig:lowCFL_velo}\input{chapter3/pgfFigures/convV_2ppclowCFL.tex}}
-  \caption{Evolution of the $L^2$ errors on stress and velocity for two particles per cell. CFL set to 0.1.}
+  \caption{Evolution of the $L^2$ errors in stress and velocity for two particles per cell. CFL set to 0.1.}
   \label{fig:convergence_lowCFL}
 \end{figure}
 % \begin{table}[h!]
@@ -330,17 +356,22 @@ We now propose to set the Courant number to $0.1$ for the MPM and the DGMPM-Eule
 % \end{table}
 A comparison between the convergence curves obtained for a CFL set to $0.1$ and the previous results (\textit{i.e. figures \ref{fig:convergence_stress} and \ref{fig:convergence_velocity}}) is made in figure \ref{fig:convergence_lowCFL}.
 The results first show that the order of accuracy of the DGMPM-Euler is also lower than that of the MPM when the same CFL is used in the methods.
-Second, as can be seen in figure \ref{fig:convergence_lowCFL}, the reduction of the time step yields additional error that can be explained by the numerical diffusion introduced in the solutions.
+Second, as can be seen in figure \ref{fig:convergence_lowCFL}, the reduction of the time step yields additional error which can be explained by the numerical diffusion introduced in the solutions.
 As a consequence, the curves resulting from computations performed with a Courant number set to $0.1$ are above those obtained previously.
-However, a lower CFL enables an improvement of the accuracy of the methods. Indeed, the rates of convergence for both velocity and stress are in that case $0.66$ for the DGMPM-Euler, and $1.00$ for the MPM.
+However, a lower CFL enables an improvement of the rates of convergence of the methods. Indeed, the rates of convergence for both velocity and stress are in that case $0.66$ for the DGMPM-Euler, and $1.00$ for the MPM.
 
 Since the DGMPM aims at capturing non-regular solutions (discontinuities), its first-order of convergence is sufficient. Indeed, the achievable accuracy for such solutions is at most one \cite[p.149]{Leveque}. 
-Nevertheless, one might be interested in solving problems that involve smooth solutions so that the need of higher-order accuracy arises. Although linear shape functions has been employed so far, the method may handle higher-order approximation by using Legendre polynomials or B-Spline functions for instance (higher-order Lagrange polynomials being to be avoided for moving particles \cite{MPM_BSpline1}). Furthermore, DG features enable to locally increase the approximation order in regions where the solution is smooth. Note however that the particle-based quadrature rule limits the shape functions order one can select since few material points may lead to reduced integration. 
-This issue can however be avoided by means of function reconstruction techniques allowing to build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particles locations and which can be evaluated everywhere in a cell. In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1,MPM_BSpline2} within the MPM, enables to evaluate a reconstructed function at Gauss points locations in order to improve the quadrature rule.
-Nonetheless, the introduction of such reconstruction techniques in the DGMPM might lead to a restrictive stability condition as it would make the method closer to DGFEM.
+Nevertheless, one might be interested in solving problems that involve smooth solutions so that the need for higher-order accuracy arises.
+Although linear shape functions have been employed so far, the method may handle higher-order approximation by using Legendre polynomials or B-Spline functions for instance (higher-order Lagrange polynomials being to be avoided for moving particles \cite{MPM_BSpline1}).
+Furthermore, DG features enable the local increase in the approximation order in regions where the solution is smooth.
+Note however that the particle-based quadrature rule limits the shape function order one can select since few material points may lead to reduced integration. 
+This issue can however be avoided by means of function reconstruction techniques which build a (\textit{linear, quadratic etc.}) function on the grid that is based on the values a field takes at particle locations and which can be evaluated everywhere in a cell.
+In particular, the use of \textit{moving least squares} \cite{IMPM} or \textit{spline interpolation} \cite{MPM_BSpline1,MPM_BSpline2} within the MPM, enables evaluation of a reconstructed function at Gauss point locations in order to improve the quadrature rule.
+However, the introduction of such reconstruction techniques in the DGMPM might lead to a restrictive stability condition as it would make the method closer to DGFEM.
 
 
-Finally, it is worth noticing that only regularly-spaced material points have been considered in the above convergence analysis. An additional means of achieving high-order accuracy can be derived from the following theorem applying to the one-dimensional scalar linear advection equation with $a>0$:
+Finally, it is worth noticing that only regularly-spaced material points have been considered in the above convergence analysis.
+An additional means of achieving high-order accuracy can be derived from the following theorem applying to the one-dimensional scalar linear advection equation with $a>0$:
 \begin{theorem}[Roe \cite{Toro}]
   \label{th:Roe}
   A numerical scheme of the form:
@@ -354,24 +385,28 @@ Finally, it is worth noticing that only regularly-spaced material points have be
     \sum_\beta \beta^k D_{\beta} = \(-a\frac{\Delta t}{\Delta X}\)^k \quad 0 \leq k \leq p
   \end{equation}
 \end{theorem}
-The complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} developed previously, and the lack of such equations for MPM formulations prevent the straightforward calculation of convergence rates. However, one can imagine to build adaption strategies of the set of particles based on theorem \ref{th:Roe}, so that a given order of accuracy is reached. If such a distribution of material point exists, the corresponding Courant number can also be computed, thus ensuring both stability and accuracy of the numerical scheme.
+The complexity of scheme equations \eqref{eq:Euler_scheme} and \eqref{eq:RK2_scheme} developed previously, and the lack of such equations for MPM formulations prevent the straightforward calculation of convergence rates.
+% However, one can imagine to build adaption strategies of the set of particles based on theorem \ref{th:Roe}, so that a given order of accuracy is reached.
+However, one can imagine the building of adaptive strategies of the set of particles based on theorem \ref{th:Roe}, so that a given order of accuracy is reached.
+If such a distribution of material point exists, the corresponding Courant number can also be computed, thus ensuring both stability and accuracy of the numerical scheme.
 
 
 \subsection{Two-dimensional stability analysis}
 \subsubsection*{Model equation -- Space discretization}
-We now move on to the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at constant speeds $a,b \in \Rbb^{+*}$ in $X$ and $Y$ directions respectively in a homogeneous two-dimensional medium:
+We now move on to the scalar linear advection equation for an arbitrary quantity $q=\rho \bar{q}$ moving at constant speeds $a,b \in \Rbb^{+*}$ in the $X$ and $Y$ directions respectively in a homogeneous two-dimensional medium:
 \begin{equation}
   \label{eq:2D_model_equation}
   \drond{\bar{q}}{t} + a\drond{\bar{q}}{X} + b\drond{\bar{q}}{Y}= 0
 \end{equation}
-Note that the flux functions are in that case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$. The physical domain $[0,l]\times[0,h]$ is discretized with $N_p$ material points arbitrarily distributed in a Cartesian grid made of $E$ four-node bilinear elements with constant size $\Delta X \times \Delta Y$.
+Note that the flux functions are in this case $\bar{f}^X = a\bar{q}$ and $\bar{f}^Y = b\bar{q}$.
+The physical domain $[0,l]\times[0,h]$ is discretized with $N_p$ material points arbitrarily distributed in a Cartesian grid made of $E$ four-node bilinear elements with constant size $\Delta X \times \Delta Y$.
 \begin{figure}[h!]
   \centering
   \input{chapter3/pgfFigures/2Dparent}
   \caption{Parent and current configurations of a rectangular four-node bilinear element}
   \label{fig:2Dparent}
 \end{figure}
-With positions of nodes of cell $C$ denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y_i^C}$ as depicted in figure \ref{fig:2Dparent}, the current location $\vect{X}$ of an arbitrary point in cell $C$ maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
+With the nodal positions in cell $C$ denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y_i^C}$, as depicted in figure \ref{fig:2Dparent}, the current location $\vect{X}$ of an arbitrary point in cell $C$ maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
 \begin{equation}
   \label{eq:parentCoordinates}
   \begin{aligned}
@@ -379,10 +414,11 @@ With positions of nodes of cell $C$ denoted by $\vect{X}_i^C=\matrice{X^C_i \\ Y
       &\eta = 2\frac{Y-Y^C_1}{\Delta Y} -1 \quad ; \quad d\eta = 2\frac{dY}{\Delta Y} 
   \end{aligned}
 \end{equation}
-Horizontal and vertical edges lengths are distinguished here in spite of the Cartesian nature of the grid in order to easily extend the following study to rectilinear grids. Again, there is no empty cell inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
+Horizontal and vertical edges lengths are distinguished here in spite of the Cartesian nature of the grid in order to easily extend the following study to rectilinear grids. Again, there are no empty cells inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
 
 \subsubsection*{Two-dimensional scheme equation}
-One can imagine to combine the DGMPM discretization with a multi-stage time integration as proposed for one-dimensional problems. The analysis of the DGMPM scheme for two-dimensional problems carried out here however only considers the Euler time discretization.
+One can imagine the combination of the DGMPM discretization with a multi-stage time integration, as proposed for one-dimensional problems.
+The analysis of the DGMPM scheme for two-dimensional problems carried out here however only considers the Euler time discretization.
 %As we shall see, the use of the CTU method (see section \ref{subsec:interface_fluxes}) introduces second-order corrections in time within the original DCU approach.
 Therefore, the updated solution at material point $\alpha$ is obtained by interpolation of nodal solutions satisfying equation \eqref{eq:2D_model_equation}, discretized as:
 \begin{equation}
@@ -400,7 +436,7 @@ The lumped mass matrix in equation \eqref{eq:discrete2D} has the same expression
     &K_{ij}^Y = \sum_\beta\drond{S_{i\beta}}{Y}m_\beta S_{j\beta}=\frac{2}{\Delta Y}\sum_\beta\drond{S_{i\beta}}{\eta}m_\beta S_{j\beta} \\
   \end{aligned}
 \end{equation}
-As for one-dimensional cases, the homogeneous medium yields the same mass for every particles so that, by writing $\drond{(\bullet)}{\xi}=\partial_\xi(\bullet)$, one gets:
+As for the one-dimensional case, the homogeneous medium yields the same mass for every particle so that, by writing $\drond{(\bullet)}{\xi}=\partial_\xi(\bullet)$, one gets:
 \begin{equation}
   \label{eq:2Dpseudo_stiffness}
   \begin{aligned}
@@ -416,13 +452,13 @@ The nodal solutions at time $n$ being given by the projection $\bar{q}^{C,n}_i=\
     & b\frac{K_{ij}^Y}{M_i^L}\bar{q}^n_j = \sum_\beta \bar{Q}^n_\beta\frac{2}{\Delta Y}  \frac{b \sum_\lambda\partial_\eta S_{i\lambda}  \sum_j S_{j\lambda} S_{j\beta}}{\sum_\gamma  S_{i\gamma}\sum_\mu S_{j\mu}}
   \end{aligned}
 \end{equation}
-Then, the nodal interface flux $\hat{f}_i^{*}$ results from the integration of Godunov's fluxes along edges the node belongs to, according to the weak form \eqref{eq:DGMPM_semi_discrete}.
-Referring to a quantity defined at an interface by means of parenthesis superscripts, the Godunov's flux corresponding to equation \eqref{eq:2D_model_equation} at interface $(i)$ is:
+Then, the nodal interface flux $\hat{f}_i^{*}$ results from the integration of Godunov fluxes along edges connected to the node, according to the weak form \eqref{eq:DGMPM_semi_discrete}.
+Referring to a quantity defined at an interface by means of superscripts in parentheses, the Godunov flux corresponding to equation \eqref{eq:2D_model_equation} at interface $(i)$ is:
 \begin{equation}
   \label{eq:2d_Godunov_fluxes}
   f^{(i)}= c_n q^{(i)}_U = \underbrace{c_nq^{(i)}_D}_{f_N(q^{(i)}_D)} - \underbrace{c_n (q^{(i)}_D -q^{(i)}_U)}_{A^{+}_{U/D}} 
 \end{equation}
-where $c_n$ is the speed in the normal direction to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
+where $c_n$ is the speed in the normal direction to the interface (\textit{i.e. b for horizontal and a for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{(i)}_U$ and $q^{(i)}_D$ obtained by averaging nodal values connected to interface $(i)$ on upwind and downwind sides respectively, and the right-going fluctuation $A_{U/D}^+$.
 The CTU is adopted by subtracting from fluxes \eqref{eq:2d_Godunov_fluxes} transverse corrections based on those fluctuations according to equation \eqref{eq:transverse_fluctuations}:
 \begin{equation}
   \label{eq:2D_transverse_corrections}
@@ -458,7 +494,7 @@ written for simplicity:
   \label{eq:interface_flux_mapped}
   f^{(i)}=\sum^{N_p}_\beta \bar{Q}_\beta^n \frac{c_n N^C_p m^C}{2\Delta X \Delta Y}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
 \end{equation}
-In the latter expressions, $\phi^{(i)}$ is devoted to normal contributions while $\phi^{(i),T}$ stands for transverse corrections at interface $(i)$. Numerical fluxes considered above are based on normal vectors oriented in the direction of the stream (see figure \ref{fig:2Dmesh}). Nodal interface fluxes on the other hand, as defined in the semi-discrete system:
+In the last expression, $\phi^{(i)}$ is devoted to normal contributions while $\phi^{(i),T}$ stands for transverse corrections at interface $(i)$. Numerical fluxes considered above are based on normal vectors oriented in the direction of the stream (see figure \ref{fig:2Dmesh}). Nodal interface fluxes on the other hand, as defined in the semi-discrete system:
 %Fluxes contribute to nodes through the boundary integrals of the discrete form:
 \begin{equation}
   \hat{f}_i^{*} = \int_{\Gamma} S_i(\vect{X}) f^*_N  \: d\Gamma
@@ -467,7 +503,7 @@ are based on the outgoing flux to an element so that $f^{(1)}$ and $f^{(4)}$ mus
 \begin{equation}
   \hat{f}_i^{*} =  -\int_{X^C_1}^{X_2^C} S_i(X,Y^C_{1}) f^{(1)}  dX + \int_{Y^C_2}^{Y_3^C} S_i(X^C_{2},Y) f^{(2)}  dY +\int_{X^C_2}^{X_3^C} S_i(X,Y^C_{3}) f^{(3)}  dX -\int_{Y^C_1}^{Y_4^C} S_i(X^C_{1},Y) f^{(4)}  dY 
 \end{equation}
-which can be computed analytically by using parent coordinates \eqref{eq:parentCoordinates}:
+which can be computed analytically using parent coordinates \eqref{eq:parentCoordinates}:
 \begin{subequations}
   \begin{alignat}{4}
     &\hat{f}_1^{*} = -&\frac{1}{2}\[\Delta X f^{(1)} + \Delta Y f^{(4)}\] \quad;\quad &\hat{f}_2^{*} = -&\frac{1}{2}\[\Delta X f^{(1)} - \Delta Y f^{(2)}\]\\
@@ -484,11 +520,11 @@ A condensed way of writing those fluxes is adopted by means of the middle point 
   \end{aligned}
   \right.
 \end{equation*}
-In addition, components of the outward normal vector to edges $N^{(i)}_X$ and $N^{(i)}_Y$ allow to take into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
+In addition, components of the outward normal vector to edges $N^{(i)}_X$ and $N^{(i)}_Y$ allow taking into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
 \begin{equation}
   \hat{f}_i^{*}= \frac{1}{2}\sum_j^{\text{edges}} 2S_{i}(\vect{X}^{(j)}_{1/2})\(\Delta Y N^{(j)}_X + \Delta X N^{(j)}_Y\) f^{(j)}
 \end{equation}
-which, combined to equation \eqref{eq:interface_flux_mapped} leads to:
+which, combined with equation \eqref{eq:interface_flux_mapped} leads to:
 \begin{equation}
   \hat{f}_i^{*}= \sum^{N_p}_\beta \bar{Q}_\beta^n \sum_j^{\text{edges}} S_{i}(\vect{X}^{(j)}_{1/2})\(a\Delta Y N^{(j)}_X + b\Delta X N^{(j)}_Y\)  \frac{ N^C_p m^C}{2\Delta X\Delta Y}\[ \phi_\beta^{(i)} + \phi_\beta^{(i),T} \]
 \end{equation}
@@ -498,7 +534,7 @@ These terms are divided by the lumped mass matrix in the discrete form:
   \frac{\hat{f}_i^{*}}{M_i^L}=\sum_\beta \frac{\bar{Q}_\beta^n}{\sum_\mu S_{i\mu}}   \sum_{j=1}^{\text{edges}}\frac{1}{2} S_{i}(\vect{X}^{(j)}_{1/2}) N^C_p m^C \(\frac{aN^{(j)}_X}{\Delta X}  + \frac{bN^{(j)}_Y}{\Delta Y} \) \[\phi_\beta^{(j)} + \phi_\beta^{(j),T}\] 
 \end{equation}
 
-At last, gathering the mapping of updated nodal quantities to the particle \eqref{eq:2D_updatedMP}, expressions of volume fluxes \eqref{eq:2Dvolume_fluxes} and intercell ones \eqref{eq:nodal_fluxes}, the updated value at material point $\alpha$ contained in cell $C$ reads:
+At last, gathering the mapping of updated nodal quantities to the particles \eqref{eq:2D_updatedMP}, expressions of volume fluxes \eqref{eq:2Dvolume_fluxes} and intercell fluxes \eqref{eq:nodal_fluxes}, the updated value at material point $\alpha$ contained in cell $C$ reads:
 \begin{equation}
   \label{eq:2Dscheme_equation}
   \begin{split}
@@ -540,31 +576,46 @@ Again, the single particle-per-cell discretization leads to a piece-wise constan
   \end{alignat}
 \end{subequations}
 
-Configurations involving more particles in the computational grid cells are then studied numerically by assuming the same material points distribution in every elements. Furthermore, we consider only regular cells $\Delta Y = \Delta X$ and wave speeds satisfying $a\geq b >0$, so that Courant number reads $a\Delta t/\Delta X$. Coefficients $D_{\alpha \mu}$ depending on both horizontal and vertical wave speeds, the scheme equation \eqref{eq:2Dscheme_D_alphabeta} can be written as a function of the CFL number by means of the speed ratio  $a/b$. Hence, the maximal Courant number satisfying the stability condition \eqref{eq:2D_stability} also depends on the speed ratio.
-Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc} and \ref{tab:2DCFL_comparison_4ppc} for the DGMPM scheme using DCU and CTU methods. The first column of these tables shows the positions of material points inside cells for discretizations based on $2$ or $4$ particles per element. 
+Configurations involving more particles in the computational grid cells are then studied numerically by assuming the same material points distribution in every element.
+Furthermore, we consider only regular cells $\Delta Y = \Delta X$ and wave speeds satisfying $a\geq b >0$, so that Courant the number is $a\Delta t/\Delta X$.
+%Coefficients $D_{\alpha \mu}$ depending on both horizontal and vertical wave speeds, the scheme equation \eqref{eq:2Dscheme_D_alphabeta} can be written as a function of the CFL number by means of the speed ratio  $a/b$.
+The scheme equation \eqref{eq:2Dscheme_D_alphabeta} can then be written as a function of the CFL number by means of the speed ratio  $a/b$.
+Hence, the maximal Courant number satisfying the stability condition \eqref{eq:2D_stability} also depends on the speed ratio.
+Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc} and \ref{tab:2DCFL_comparison_4ppc} for the DGMPM scheme using DCU and CTU methods.
+The first column of these tables shows the positions of material points inside cells for discretizations based on $2$ or $4$ particles per element. 
 
 %% 2ppc
-The space discretization leading to $2$ particles lying in every cell of the mesh is such that within an element, the two material points are both either on the horizontal axis or on the vertical axis of the cell, corresponding respectively to the results reported in first and second rows of table \ref{tab:2DCFL_comparison_2ppc}. Two situations are then to be distinguished:
+The space discretization leading to $2$ particles lying in every cell of the mesh is such that within an element, the two material points are both either on the horizontal axis or on the vertical axis of the cell, corresponding respectively to the results reported in the first and second rows of table \ref{tab:2DCFL_comparison_2ppc}.
+Two situations are then to be distinguished:
 \begin{itemize}
-\item Material points are regularly-spaced within the grid and placed symmetrically two-by-two with respect to cells centers. Those distributions are drawn in the first column of table \ref{tab:2DCFL_comparison_2ppc} by using blue circles to represent particles.
+\item Material points are regularly-spaced within the grid and placed symmetrically two-by-two with respect to cell centers.
+  These distributions are drawn in the first column of table \ref{tab:2DCFL_comparison_2ppc} by using blue circles to represent particles.
 \item Material points still satisfy symmetry in cells, but are no longer regularly-spaced in the mesh. In that case, particles are drawn with red crosses.
 \end{itemize}
 \begin{table}[h]
   \centering
   \input{chapter3/tabular/2DCFL_comparison_2ppc}
-  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the locations of the $2$ material points lying in every cells as a function of the speeds ratio $a/b$.}
+  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the locations of the $2$ material points lying in every cell as a function of the speed ratio $a/b$.}
   \label{tab:2DCFL_comparison_2ppc}
 \end{table}
-First, the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on speed ratio $a/b$ that asymptotically approach some value which depends on the particles distribution. Second, we see that a reduction of spacing between particles ensuring symmetry between them with respect to cells centers, as for one-dimensional case, yields an increase in the critical Courant number for both DCU and CTU approaches. 
-Third, whether particles lie on the horizontal axis or the vertical axis of cells has a great influence on the critical Courant number one can expect. Hence, the configurations of the second row of table \ref{tab:2DCFL_comparison_2ppc} yield higher CFL numbers for given speed ratios. It then appears that in order to improve the stability of the scheme, one must use a lower number of material points in the direction of the dominating wave speed than in the perpendicular one. For a Cartesian distribution of particles $N_p^X \times N_p^Y$ this corresponds to $N_p^Y > N_p^X$ if $a>b$, and $N_p^X > N_p^Y$ if $b>a$.
+First, the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on the speed ratio $a/b$ that asymptotically approaches some value which depends on the particle distribution.
+Second, we see that a reduction of spacing between particles conserving the symmetry between them with respect to cell centers, as for the one-dimensional case, yields an increase in the critical Courant number for both the DCU and CTU approaches. 
+Third, whether particles lie on the horizontal axis or the vertical axis of cells has a great influence on the critical Courant number one can expect.
+Hence, the configurations of the second row of table \ref{tab:2DCFL_comparison_2ppc} yield higher CFL numbers for given speed ratios.
+It then appears that in order to improve the stability of the scheme, one must use a lower number of material points in the direction of the dominating wave speed than in the perpendicular one. For a Cartesian distribution of particles $N_p^X \times N_p^Y$ this corresponds to $N_p^Y > N_p^X$ if $a>b$, and $N_p^X > N_p^Y$ if $b>a$.
 At last, it is worth noticing that the improvement brought by the CTU is much less significant than in the case of one single particle-per-cell discretization for which the Courant number can be set to one according to equations \eqref{eq:2DCFL_DCU} and \eqref{eq:2DCFL_CTU}.
 
 %% 4ppc
-We now move on to cases for which grid cells each contains $4$ material points, by considering a square shaped distribution of particles in every elements which centers coincide with cells centroids. This pattern can be contracted or simply translated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}. Two configurations are gathered in each row of the table and are distinguished by using either blue circles or red crosses for material points. Again, we observe that the increase in CFL number enabled by the use of the CTU approach is less important that in the case of one particle-per-cell. Next, as for one-dimensional cases and configurations studied in table \ref{tab:2DCFL_comparison_2ppc}, we see that the closer particles are from cell centers, the higher the CFL number is. Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particle inside elements does not have great influence on the evolution of Courant's number with respect to the speed ratio. 
+We now move on to cases for which grid cells each contain $4$ material points, by considering a square shaped distribution of particles in every element whose centers coincide with cell centroids.
+This pattern can be contracted or simply translated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}.
+Two configurations are gathered in each row of the table and are distinguished by using either blue circles or red crosses for material points.
+Again, we observe that the increase in CFL number enabled by the use of the CTU approach is less important than in the case of one particle-per-cell.
+Next, as for the one-dimensional cases and configurations studied in table \ref{tab:2DCFL_comparison_2ppc}, we see that the closer particles are from cell centers, the higher the CFL number.
+Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particles inside elements does not have great influence on the evolution of the Courant number with respect to the speed ratio. 
 \begin{table}[h!]
   \centering
   \input{chapter3/tabular/2DCFL_comparison_4ppc}
-  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the material points distribution as a function of the speeds ratio $a/b$.}
+  \caption{Values of critical Courant number $a\frac{\Delta t}{\Delta X}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the material points distribution as a function of the speed ratio $a/b$.}
   \label{tab:2DCFL_comparison_4ppc}
 \end{table}
 
