@@ -14,7 +14,7 @@ Indeed, considering the left eigenvectors of the acoustic tensor given in equati
   \psi^s_1\psi^f_1 = \frac{l^1_2}{l^1_1}\: \frac{l_2^2}{l^2_1}  
 \end{equation*}
 Since the eigenvectors of symmetric second-order tensors all satisfy $\vect{l}^1 \cdot \vect{l}^2=0$, it comes out that the above product is equal to $-1$.
-Whereas this orthogonality has already been noticed for particular plane strain and plane stress cases \cite{Clifton,Ting68}, \textbf{the generic formulation proposed here allows to show that it is valid for all problems in two space dimensions}. 
+Whereas this orthogonality has already been noticed for particular plane strain and plane stress cases \cite{Clifton,Ting68}, \textbf{the generic formulation proposed here shows that this is valid for all problems in two space dimensions}. 
 % but now obviously appears as true for all problems in two space dimensions.
 %However, the eigenvectors of symmetric second-order tensors all satisfy this property in such a way that it is valid for all problems in two space dimensions.
 As a result, the study can be restricted to one function in each direction, say $\psi_1^s$ and $\psi_2^s$.
@@ -33,7 +33,7 @@ As a result, the study can be restricted to one function in each direction, say 
 % However, the eigenvectors of symmetric second-order tensors all satisfy this property in such a way that it is valid for all problems in two space dimensions.
 % As a result, the study can be restricted to one function in each direction, say $\psi_1^s$ and $\psi_2^s$.
 
-Second, if the function $\psi_1^s$ vanishes at some point of the stress space, the projection in the $(\sigma_{11},\sigma_{12})$ plane of the loading path followed inside a slow wave is vertical according to the ODE \eqref{eq:sigSlow_n=e1} (\textit{i.e} $d\sigma_{11}=0$).
+Second, if the function $\psi_1^s$ vanishes at some point of stress space, the projection in the $(\sigma_{11},\sigma_{12})$ plane of the loading path followed within a slow wave is vertical according to the ODE \eqref{eq:sigSlow_n=e1} (\textit{i.e} $d\sigma_{11}=0$).
 Conversely, if $\psi_1^s\rightarrow \infty$, the loading path is horizontal in the $(\sigma_{11},\sigma_{12})$ plane (\textit{i.e} $d\sigma_{12}=0$).
 %Looking for vanishing $\psi^f_1$ or $1/\psi^f_1$ amounts to finding roots of the components of $\vect{l}^2$:
 These situations respectively correspond to:
@@ -66,10 +66,10 @@ Analogously, the function $\psi_2^s$ is such that:
 \end{subequations}
 Therefore, if both conditions \eqref{eq:first_root_psi2cp} and \eqref{eq:second_root_psi2cp} are satisfied on $A_{12}$ and $A_{22} -\omega_1$, the system is no longer hyperbolic with characteristic speeds of fast and slow waves that are identical.
 
-According to the ODEs of table \ref{tab:simpleWavesEquations}, the particular values of the loading functions $\psi_i^{s,f}$ through the simple waves propagating in direction $\vect{e}_i$ for $i=\{1,2\}$, provide information about the loading paths in stress space.
+According to the ODE of table \ref{tab:simpleWavesEquations}, the particular values of the loading functions $\psi_i^{s,f}$ through the simple waves propagating in direction $\vect{e}_i$ for $i=\{1,2\}$, provide information about the loading paths in stress space.
 First, $\psi^{s,f}_i =0$ leads to $d\sigma_{ii}=0$ (no sum on $i$) so that the longitudinal stress is constant within the simple wave.
 Conversely, with loading functions tending to infinity, the stress $\sigma_{12}$ does not vary.
-Notice that the coefficients $\alpha_{ij}$ of the left eigenvector of the Jacobian matrix associated to the zero eigenvalue \eqref{eq:ch5_null_left_eigen} also have to be regarded.
+Notice that the coefficients $\alpha_{ij}$ of the left eigenvector of the Jacobian matrix associated with the zero eigenvalue \eqref{eq:ch5_null_left_eigen} also have to be regarded.
 Nevertheless, those terms resulting from products of the components of the elastoplastic tangent modulus have complex expressions and are assumed to have non-zero values in the remainder of the manuscript.
 
 The above discussions are now specified to plane strain and plane stress, for which loading conditions leading to $A_{12} =0$ and $A _{11}-A _{22}=0$ are identified.
@@ -125,7 +125,7 @@ Two cases are to be considered:
     & \rho c_s^2 = \mu \\
     & \rho c_f^2 = \lambda +2\mu -\beta s_{11}^2 
   \end{align*}
-  The characteristic speed of slow waves therefore identifies with this of elastic shear waves for plane strain $c_s=c_2=\sqrt{\mu/\rho}$. 
+  The characteristic speed of slow waves is therefore equivalent to that of elastic shear waves for plane strain $c_s=c_2=\sqrt{\mu/\rho}$. 
 \item[(ii)] if $ \lambda + \mu - \beta s_{11}^2 <0$, the characteristic speeds read: 
   \begin{align*}
     & \rho c_s^2 = \lambda +2\mu -\beta s_{11}^2  \\
@@ -164,7 +164,7 @@ However, the stress state \eqref{eq:plane_strain_s11=0} yields the following cha
   & \rho c_s^2 = \mu -\beta s_{12}^2 \\
   & \rho c_f^2 = \lambda +2\mu 
 \end{align*}
-so that the celerity of fast waves identifies with that of elastic pressure waves under plane strains $c_f=\sqrt{(\lambda + 2\mu)/\rho}=c_1$.
+so that the celerity of fast waves is equivalent to that of elastic pressure waves under plane strain $c_f=\sqrt{(\lambda + 2\mu)/\rho}=c_1$.
 
 %%%% n=e2
 $\newline$
@@ -189,18 +189,18 @@ The characteristic speeds are then:
     & \rho c_f^2 = \frac{1}{2}\( \lambda +3\mu -\beta (s_{22}^2+ s_{12}^2) + \sqrt{(\lambda + \mu -\beta (s_{22}^2-s_{12}^2) )^2 +4(\beta s_{22}s_{12})^2}  \)
   \end{alignat}
 \end{subequations}
-With these expressions, the same remarks than for $\vect{n}=\vect{e}_1$ can obviously be made by replacing $s_{11}$ with $s_{22}$.
+With these expressions, the same remarks as for $\vect{n}=\vect{e}_1$ can obviously be made by replacing $s_{11}$ with $s_{22}$.
 
 Among the above results, the most significant arises from the condition $s_{12}=0$.
 Indeed, it has been seen that $A_{12}^{ep}=0$ leads to $\psi_1^s=0$ and $\psi^s_2\rightarrow \infty$ in such a way that the corresponding loading paths in the $(\sigma_{11},\sigma_{12})$ plane are respectively vertical and horizontal.
-In virtue of the orthogonality property of the loading functions, the stress path followed in a fast wave propagating in the direction $\vect{e}_1$ is horizontal in the same plane.
+Under the orthogonality property of the loading functions, the stress path followed in a fast wave propagating in the direction $\vect{e}_1$ is horizontal in the same plane.
 Hence, if the path through a fast wave intersects the plane $\sigma_{12}=0$, the shear stress component remains constant afterwards.
 The same result holds for the slow wave propagating in the direction $\vect{e}_2$.
 The above conclusion are summarized in table \ref{tab:stress_paths_properties}.
 \begin{table}[h!]
   \centering
   \input{chapter5/tabular/stress_paths}
-  \caption{Loading paths in projection into ($\sigma_{11},\sigma_{12}$) plane followed across slow and fast simple waves, under the condition $\sigma_{12}=0$ assuming that $A_{11}^{ep}-A_{22}^{ep}\neq 0$.}
+  \caption{Loading paths projected on the ($\sigma_{11},\sigma_{12}$) plane followed across slow and fast simple waves, under the condition $\sigma_{12}=0$ assuming that $A_{11}^{ep}-A_{22}^{ep}\neq 0$.}
   \label{tab:stress_paths_properties}
 \end{table}
 \subsection{The plane stress case}

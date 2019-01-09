@@ -1,6 +1,6 @@
 %% Comment the possibility of widening the approach to kinematic hardening ?
 \subsection{Governing equations}
-We are concerned with linear isotropic hardening materials which elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
+We are concerned with linear isotropic hardening materials whose elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
 The balance equation of linear momentum with neglected body forces, and the geometrical balance equations are:  
 \begin{equation}
   \label{eq:ch5_balance_equations}
@@ -29,7 +29,7 @@ In addition, the elastic-plastic constitutive equations derived from thermodynam
     & A_{ij}^{ep}=  A_{ij}^{elast} -  \beta (n_k s_{ki})(s_{jl}n_l)
   \end{empheq}
 \end{subequations}
-In the expression of von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
+In the expression of the von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
 Moreover, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:ch5_plastic_flow}.
 %At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
 By inverting the (isotropic) elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written in the isotropic case:
@@ -37,9 +37,9 @@ By inverting the (isotropic) elasticity tensor $\Cbb$ involved in equation \eqre
   \label{eq:ch5_elastic_inverse}
   \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
 \end{equation}
-with Young's modulus $E$ and Poisson's ration $\nu$.
+with Young's modulus $E$ and Poisson's ratio $\nu$.
 
-The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a Cartesian coordinates system and an arbitrary direction $\vect{n}$ is:
+The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a Cartesian coordinate system and an arbitrary direction $\vect{n}$ is:
 \begin{equation}
   \label{eq:ch5_quasilinear_normal}
   \Qcb_t + \Jbsf \drond{\Qcb}{x_n} = \vect{0} 
@@ -50,7 +50,7 @@ It has been shown in section \ref{sec:characteristic_analysis} that the $3$ eige
   \label{eq:ch5_left_eigenfields}
   \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho}} ; \quad \[\: \pm \rho\sqrt{\frac{\omega_p}{\rho}} \vect{l}^p , -\vect{l}^p\otimes \vect{n} \:\]  \right\rbrace ,\quad p=1,2,3
 \end{equation}
-In addition, three independent left eigenvectors associated to the zero eigenvalue of system \eqref{eq:ch5_quasilinear_normal}, which is of multiplicity $3$, are found by solving:
+In addition, three independent left eigenvectors associated with the zero eigenvalue of system \eqref{eq:ch5_quasilinear_normal}, which is of multiplicity $3$, are found by solving:
 \begin{equation}
   \label{eq:ch5_null_eigen}
   \tens{\sigma}^K:\(\Cbb^{ep}\cdot  \vect{n}\) =\vect{0},\quad K=1,2,3
@@ -60,10 +60,10 @@ The present formulation differs from those of \textsc{Bleich} \cite{Bleich}, \te
 As a consequence, it will be seen in what follows that the equations can be easily specialized to plane strain and plane stress cases.
 %In what follows, the above equations are specified to plane strain and plane stress cases.
 \subsection{Problems in two space dimensions}
-We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinates system, where $e$ and $h$ are arbitrary lengths.
+We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinate system, where $e$ and $h$ are arbitrary lengths.
 %The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
 It is assumed that all quantities depend solely on $x_1$ and $x_2$ except the velocity component $v_3$ that may depend on $x_3$.
-In particular, it is the case for $e \ll h$.
+In particular, this is the case for $e \ll h$.
 
 The solid is under plane strain conditions, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $\vect{v}$ does not depend on $x_3$ and if $v_3$ vanishes.
 Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
@@ -90,9 +90,9 @@ Hence, the constitutive equations are rewritten by means of a two-dimensional ta
   \label{eq:CP_constitutive}
   \dot{\sigma}_{ij}=C^{ep}_{ijkl} \dot{\eps}_{kl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\dot{\eps}_{kl}= \widetilde{C}^{ep}_{ijkl} \dot{\eps}_{kl}\qquad i,j,k,l=\{1,2\} 
 \end{equation}
-The characteristic structure of the problem is then given by this of the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
+The characteristic structure of the problem is then given by the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
 
-The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strains and plane stresses allows to solve the problem in a two-dimensional setting.
+The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strains and plane stresses allows solving the problem in a two-dimensional setting.
 Then, generically denoting the acoustic tensor by $\tens{A}$, the characteristic structures are given by the eigenvalues:
 \begin{subequations}
   \begin{alignat}{1}
@@ -108,13 +108,13 @@ and the associated eigenvectors:
    \vect{l}^1=[ A_{22}-  \omega_1 \:,\: -A_{12}] \qquad ;\qquad  \vect{l}^2=[ -A_{12} \:,\:A_{11}- \omega_2 ]
 \end{equation}
 From equation \eqref{eq:ch5_left_eigenfields}, we see that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ may travel in the domain.
-Those waves are respectively referred to as fast and slow waves.
+These waves are respectively referred to as fast and slow waves.
 Note that subtracting equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc2} leads to:
 \begin{equation}
   \label{eq:diff_celerities}
   \rho c_f^2 - \rho c_s^2 = \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2} \geq 0
 \end{equation}
-Hence, the characteristic speed associated to fast waves is always greater than of equal to that of slow waves.
+Hence, the characteristic speed associated with fast waves is always greater than or equal to that of slow waves.
 
 The four left eigenfields of the Jacobian matrix thus read:
 \begin{subequations}
@@ -125,9 +125,9 @@ The four left eigenfields of the Jacobian matrix thus read:
     &\left\lbrace \pm c_s ; \quad \Lcb^{c_s^\pm}=\[\: \pm \rho c_s \vect{l}^2 , -\vect{l}^2\otimes \vect{n} \:\]  \right\rbrace
   \end{alignat}
 \end{subequations}
-where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated to the right-going and left-going fast waves respectively.
+where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated with the right-going and left-going fast waves respectively.
 The same goes for $\Lcb^{c_s^+}$ and $\Lcb^{c_s^-}$.
-Furthermore, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and which left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
+Furthermore, one stationary wave associated to the zero eigenvalue of the Jacobian matrix, and whose left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
 \begin{equation}
   \label{eq:ch5_null_left_eigen}
   {\Lcb^0}^T = \matrice{v_1^0 \\[5.pt] v_2^0 \\[5.pt] \sigma_{11}^0 \\[5.pt] \sigma^0_{22} \\[5.pt] \sigma^0_{12} }= \matrice{0 \\[5.pt] 0 \\[5.pt] \(C_{121i}C_{222j}-C_{221i}C_{122j}\)n_in_j \\[5.pt] \(C_{111i}C_{122j}-C_{112i}C_{121j}\)n_in_j \\[5.pt] \(C_{112i}C_{221j}-C_{111i}C_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
@@ -154,7 +154,7 @@ The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
     &\alpha_{11}d\sigma_{11} + \alpha_{12}d\sigma_{12} + \alpha_{22}d\sigma_{22}=0 \qquad && \text{along }\: dx/dt =0 
   \end{alignat}
 \end{subequations}
-Integration of equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact} leads to integral curves through simple waves in which several stress components vary, hence the name of combined-stress simple waves \cite{CRISTESCU19591605}.
+Integration of equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact} leads to integral curves through simple waves in which several stress components vary, hence the name combined-stress simple waves \cite{CRISTESCU19591605}.
 Following \cite{Clifton}, the method of characteristics is applied by combining equations \eqref{eq:charac_fr} to \eqref{eq:charac_contact}.
 \begin{figure}[h!]
   \centering
@@ -163,7 +163,8 @@ Following \cite{Clifton}, the method of characteristics is applied by combining 
   \caption{The method of characteristics through slow and fast simple waves in the $(x_n,t)$ plane.}
   \label{fig:ch5_charac_method}
 \end{figure}
-The approach consists in tracing every characteristics from some downstream point of a wave where the state vector $\Qcb$ is known, to an upstream point where the solution is seeked. Figures \ref{fig:ch5_charac_method}\subref{subfig:slowWave} and \ref{fig:ch5_charac_method}\subref{subfig:fastWave} schematically illustrate the method for slow and fast simple waves in which the state is known along the head wave and is looked for at point $P$ lying on the tail wave. 
+The approach consists in tracing every characteristic from some downstream point of a wave where the state vector $\Qcb$ is known, to an upstream point where the solution is sought.
+Figures \ref{fig:ch5_charac_method}\subref{subfig:slowWave} and \ref{fig:ch5_charac_method}\subref{subfig:fastWave} schematically illustrate the method for slow and fast simple waves in which the state is known along the head wave and is looked for at point $P$ lying on the tail wave. 
 The integral curves through slow and fast simple waves are derived in the next section.
 
 \subsection{Integral curves through simple waves}
@@ -212,7 +213,7 @@ which, once combined with equations \eqref{eq:sigSlow_n=e1}-\eqref{eq:sigSlow_n=
 
 \begin{remark}
   The integral curves through a left-going slow wave result from the combination of equations \eqref{eq:sigSlow_n=e1}-\eqref{eq:sigSlow_n=e2} introduced in \eqref{eq:charac_sr} rather than \eqref{eq:charac_sl}.
-  Therefore, the only difference lies in the signs in equations \eqref{eq:vSlow_n=e1} and \eqref{eq:vSlow_n=e2}
+  Therefore, the only difference lies in the signs in equations \eqref{eq:vSlow_n=e1} and \eqref{eq:vSlow_n=e2}.
 \end{remark}
 
 Similar results are obtained for right-going fast simple waves by using $\vect{l}^2$ instead of $\vect{l}^1$ and $c_f$ rather than $c_s$.
@@ -226,7 +227,7 @@ The equations satisfied across right-going slow and fast simple waves are summar
 \begin{table}[h!]
   \centering
   \input{chapter5/tabular/simpleWavesEquations}
-  \caption{Summary of the ODEs satisfied inside right-going slow and fast simple waves.}
+  \caption{Summary of the ODE satisfied inside right-going slow and fast simple waves.}
   \label{tab:simpleWavesEquations}
 \end{table}
 
