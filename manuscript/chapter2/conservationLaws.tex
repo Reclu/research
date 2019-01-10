@@ -72,7 +72,7 @@ where $\nablat^s(\bullet)$ denotes the symmetric gradient operator. By rewriting
   & \nablat_0 \vect{v} = \nablav_0 \cdot \(\vect{v}\otimes\tens{I}\) \\
   & \nablat^s \vect{v} = \frac{1}{2}\nablav \cdot \(\vect{v}\otimes\tens{I}+\tens{I}\otimes \vect{v}\)
 \end{align}
-with $\nablav_0 \cdot \(\bullet\)$ and $\nablav \cdot\(\bullet\)$, the right divergence operators in reference and current configurations respectively. With these forms of gradient operators, geometrical relations \eqref{eq:geometrical_conservation} can be written as kinematic or geometrical balance laws \cite{Plohr,Haider_FVM}:
+with $\nablav_0 \cdot \(\bullet\)$ and $\nablav \cdot\(\bullet\)$, the right divergence operators in reference and current configurations respectively. With these forms of gradient operators, geometrical relations \eqref{eq:geometrical_conservation} can be written as kinematic or geometrical balance laws \cite{Plohr,Haider_FVM,Gil_HE,Gil_SPH_HE}:
 \begin{align}
   & \tens{\dot{F}} - \nablav_0 \cdot \(\vect{v}\otimes\tens{I}\) = \tens{0} \label{eq:HE_kinematic} \\
   & \tens{\dot{\eps}} - \frac{1}{2}\nablav \cdot \(\vect{v}\otimes\tens{I}+\tens{I}\otimes \vect{v}\) = \tens{0} \label{eq:HPP_kinematic}
@@ -261,8 +261,8 @@ For isothermal reversible deformations in hyperelastic solids, the time derivati
 where $\Hbb$ is the fourth-order \textit{tangent modulus} tensor (major symmetric).
 %\subsubsection*{Examples of hyperelastic constitutive laws}
 The above discussion is now specified to constitutive models that will be used in the remainder of the manuscript.
-\begin{example}[Neo-Hookean]
-The neo-Hookean hyperelastic model is well-suited to describe rubber-like materials and is based on the polyconvex stored energy function (\textit{i.e. convex with respect to all its arguments}):
+\begin{example}[Nearly incompressible Neo-Hookean]
+The nearly incompressible neo-Hookean hyperelastic model is well-suited to describe rubber-like materials and is based on the polyconvex stored energy function (\textit{i.e. convex with respect to all its arguments}):
 \begin{equation}
   \label{eq:neo-hook_energy}
   \rho_0 \psi(J,\tens{F})= \frac{\kappa}{2}(J-1)^2 + \frac{\mu}{2}\[J^{-2/3} (\tens{F}:\tens{F})-3 \]

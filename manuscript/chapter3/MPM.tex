@@ -312,7 +312,8 @@ Moreover, even though the $1ppc$ and $2ppc$ discretizations provide different re
 Figure \ref{fig:US_diffusion}\subref{subfig:US_energies} shows, on the other hand, the evolution of numerical total energies resulting from an MPM approximation of kinetic and strain energies:
 \begin{align}
   & e^{kin}=\frac{1}{2}\int_\Omega \rho \vect{v}\cdot\vect{v} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \vect{v}^p\cdot\vect{v}^p\\
-& e^{strain}= \frac{1}{2}\int_\Omega \rho \tens{\bar{\sigma}}: \nablav \vect{v} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \tens{\bar{\sigma}}^p: \nablav \vect{v}^p
+  % & e^{strain}= \frac{1}{2}\int_\Omega \rho \tens{\bar{\sigma}}: \nablav \vect{v} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \tens{\bar{\sigma}}^p: \nablav \vect{v}^p
+    & e^{strain}= \frac{1}{2}\int_\Omega \rho \tens{\bar{\sigma}}: \nablav \vect{u} \:d\Omega \approx \frac{1}{2}\sum_{p=1}^{N_p} m_p \tens{\bar{\sigma}}^p: \nablav \vect{u}^p
 \end{align}
 One can see that the USL formulation dissipates more energy than the USF for this problem.
 These results differ from observations made in \cite{Bardenhagen_USF_USL} in which no significant differences for problems involving smooth solutions are noticed.

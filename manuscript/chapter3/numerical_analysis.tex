@@ -230,12 +230,6 @@ As a consequence, the Courant number can be set in practice to higher values tha
 
 %According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, such a stability condition can be very hard to find analytically for general discretizations. 
 According to scheme equations \eqref{eq:Euler_scheme} or \eqref{eq:RK2_scheme}, the stability condition \eqref{eq:stability} can be very hard to find analytically for general discretizations. 
-\begin{table}[h]
-  \centering
-  \input{chapter3/tabular/CFL_comparison}
-  \caption{DGMPM critical Courant number values for Euler or RK2 time integration with respect to the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
-  \label{tab:CFL_comparison}
-\end{table}
 Nevertheless, though the infinity of possible material point distributions prevents the explicit derivation of a general stability condition, the optimal CFL number satisfying the equality in \eqref{eq:stability} can be found numerically. Some configurations are studied in table \ref{tab:CFL_comparison} where the critical Courant number resulting from the two time discretizations studied above are compared. Those results have been obtained by using the same particle distribution in every element of a one-dimensional regular mesh. 
 % so that a material point $\alpha$ must lie between the nodes of the cell it belongs to, that is, $X^I \in \[X^{2c-1},X^{2c}\]$. 
 First, the DGMPM scheme is stable for all CFL numbers lower than or equal to one when cells contain one particle only regardless of their positions.
@@ -250,6 +244,12 @@ Then, when many material points share the same element, several configurations a
 \item[(v)] particles are placed symmetrically with respect to cell centers but not regularly spaced in the mesh. Material points in the left half of cells are shifted by $u_1=-\Delta X/10$ while those in the right half are shifted by $u_2=\Delta X/10$.
 \item[(vi)] the same as (v) with the first and last particles overlapping left and right nodes of cells respectively.
 \end{itemize}
+\begin{table}[h]
+  \centering
+  \input{chapter3/tabular/CFL_comparison}
+  \caption{DGMPM critical Courant number values for Euler or RK2 time integration with respect to the number and positions of material points in a one-dimensional grid. Black circles denote material points while white ones represent grid nodes.}
+  \label{tab:CFL_comparison}
+\end{table}
 %RK2 results bad when the upwind material point move to the right
 %One can see in table \ref{tab:CFL_comparison} that the RK2 time discretization generally provides better results in terms of CFL number for the particles distributions considered. However, a uniform translation of material points in the mesh leads to a decrease in the Courant number for both time integrations.
 First, table \ref{tab:CFL_comparison} shows that the natural configuration leads to a better stability bound for the RK2 integrator while the CFL number allowed by using Euler time discretization decreases with increasing numbers of particles per cell.

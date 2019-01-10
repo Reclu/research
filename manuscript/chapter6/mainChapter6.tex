@@ -126,9 +126,14 @@ Slope or wave limiters have not been considered so far within the DGMPM due to t
 Nevertheless, the extension of the method to higher-order approximation may require the introduction of such numerical tools that are well-known in DG-methods \cite{Cockburn}.
 
 % RK2 en 2D
-At last, the second-order Runge-Kutta time integrator has not been considered for two-dimensional problems, due to the lack of a formula to determine the critical \text{CFL} number for a given space discretization.
+% At last, the second-order Runge-Kutta time integrator has not been considered for two-dimensional problems, due to the lack of a formula to determine the critical \text{CFL} number for a given space discretization.
+% Such a two-stages time discretization could be embedded in the method in order to reduce the numerical diffusion when more than one particle lies in a cell, providing that a von-Neumann analysis of two-dimensional DGMPM schemes is performed.
+The second-order Runge-Kutta time integrator has not been considered for two-dimensional problems, due to the lack of a formula to determine the critical \text{CFL} number for a given space discretization.
 Such a two-stages time discretization could be embedded in the method in order to reduce the numerical diffusion when more than one particle lies in a cell, providing that a von-Neumann analysis of two-dimensional DGMPM schemes is performed.
-%Therefore, providing that a von-Neumann analysis of DGMPM two-dimensional schemes is performed, the two-stages time discretization could be embedded in the method in order to reduce the numerical diffusion when more than one particle lie in a cell.
+
+% Antonio Gil
+At last, some properties of the method which have not be considered so far must be investigated, that is, the conservation of angular momentum and the performances for bending dominated problems in the nearly-incompressible limit.
+The DGMPM formulation might then require the use of an alternative projection of the nodal solution that conserves the angular momentum, and the introduction of the Jacobian $J$ as a conserved variable to solve bending dominated nearly-incompressible deformations \cite{Gil_HE}.
 
 
 \subsubsection*{(ii) On the solution of hyperbolic systems in elastoplastic solids}
