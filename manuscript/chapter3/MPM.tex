@@ -110,7 +110,7 @@ that must be solved for every $\vect{v}^i$. Once the nodal accelerations are cal
   \label{eq:mp_velocity_update}
   \vect{v}^{p,n+1}= \vect{v}^{p,n}+ \Delta t^n \sum_{i=1}^{N_n} S_{ip}\vect{\dot{v}}^{i}
 \end{equation}
-On the other hand, updated nodal velocities resulting from the solution of \eqref{eq:mpm_discrete} are used to update the particles positions:
+On the other hand, updated nodal velocities resulting from the solution of \eqref{eq:mpm_discrete} are used to update the particle positions:
 \begin{equation}
   \label{eq:position_update}
   \vect{x}^{p,n+1}=\vect{x}^{p,n} + \Delta t^n\sum_{i=1}^{N_n} S_{ip}\vect{v}^{i,n+1} 
@@ -244,7 +244,7 @@ Moreover, the gradient of the shape functions provides the deformation gradient 
   \frac{\tens{F}^{p,n+1}-\tens{F}^{p,n}}{\Delta t}= \nablat_0 \vect{v}^{p,n+1} 
 \end{equation}
 The above equations yield directly the updated deformation gradient for the total Lagrangian formulation.
-On the other hand, the use of the velocity gradient tensor is made in the updated Lagangian formulation, which is approximated as:
+On the other hand, the use of the velocity gradient tensor is made in the updated Lagrangian formulation, which is approximated as:
 \begin{equation}
   \nablat_n \vect{v} \approx \sum_{p=1}^{N_p}\nablav S_{ip}(\vect{x}^{p,n}) \otimes \vect{v}^{i,n}
 \end{equation}
@@ -272,7 +272,7 @@ In the cpGIMP algorithm, diagonal entries of the deformation gradient are used t
 %The \textbf{Convected Particle Domain Interpolation} (CPDI) \cite{CPDI}, on the other hand, accounts for shear deformations and rotations of particles domains, thus providing an improvement of GIMP.
 %However, these methods involve other difficulties related to the tracking of the deforming domains of material points in the Eulerian grid, and may also suffer from mesh entanglement \cite{DDMPM0}.
 However, these methods involve other difficulties related to the tracking of the deforming domains of material points in the Eulerian grid, and may also suffer from mesh entanglement \cite{DDMPM0}.
-The \textbf{Convected Particle Domain Interpolation} (CPDI) \cite{CPDI}, accounts for shear deformations and rotations of particles domains and also considers alternative grid basis functions, thus providing an improvement of GIMP.
+The \textbf{Convected Particle Domain Interpolation} (CPDI) \cite{CPDI}, accounts for shear deformations and rotations of particle domains and also considers alternative grid basis functions, thus providing an improvement of GIMP.
 Other approaches consisting in the direct modification of the approximation basis have then been followed to tackle the grid-crossing error.
 % \cite{Steffen_quadError} montre qu'utiliser des Bspline permet de réduire l'erreur de quadrature des forces internes et donc de limiter le grid crossing. Ensuite on a eu la BSMPM
 % First, the \textbf{B-Spline Material Point Method} (BSMPM) \cite{Steffen_quadError} uses quadratic or cubic B-Spline functions with continuous gradients as nodal shape functions allowing to circumvent the instability \cite{MPM_BSpline1}. 
@@ -383,5 +383,6 @@ These two features are expected to respectively avoid spurious oscillations and 
 
 %%% Local Variables: 
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:

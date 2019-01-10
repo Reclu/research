@@ -33,7 +33,7 @@ S_{2c(\alpha)-1}(X)= \frac{X^{2c(\alpha)} - X}{\Delta X} \qquad S_{2c(\alpha)}(X
 and $S_{i\alpha}$ or $S_{i,\alpha}$ correspond to the shape function of node $i$ evaluated at the position of the $\alpha$th material point.
 
 \subsubsection*{Scheme equation: Euler time discretization}
-The method followed in order to write the scheme equation consists of tracing backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $\alpha$:
+The method followed in order to write the scheme equation consists in tracing backward the numerical procedure described in section \ref{sec:DGMPM} in order to get an expression of the form \eqref{eq:general_scheme} for the material point $\alpha$:
 \begin{equation}
 \bar{Q}^{n+1}_\alpha = H\(\bar{Q}^{n}_\beta\) \qquad  \beta=1,..,N_p
 \end{equation} 
@@ -256,7 +256,7 @@ First, table \ref{tab:CFL_comparison} shows that the natural configuration leads
 Second, moving every point rightward in the mesh (\textit{i.e. cases (ii) and (iv)}) causes a drop in the critical Courant number for both RK2 and Euler algorithms. In particular, stability conditions for more than two particles per cell provided by the RK2 are, in those cases, more restrictive than that of the Euler.
 Third, the leftward shift (\textit{i.e. case (iii)}) leads to an improvement of the stability condition for Euler time integration compared to that in the natural configuration.
 The CFL number provided by RK2 integration also decreases due to the shift while remaining higher than the Euler.
-At last, particles distributions conserving the symmetry with respect to cell centers (\textit{i.e. cases (v) and (vi)}), yield the optimal stability condition for the RK2 integrator while the Euler CFL depends on the spacing between material points.
+At last, particle distributions conserving the symmetry with respect to cell centers (\textit{i.e. cases (v) and (vi)}), yield the optimal stability condition for the RK2 integrator while the Euler CFL depends on the spacing between material points.
 More specifically, the Euler algorithm leads to a vanishing CFL for the case (vi), thus preventing any simulation.
 
 % In table \ref{tab:CFL_comparison}, we see that in the natural configuration, RK2 integrator leads to the optimal Courant number whereas the one allowed by using Euler discretization depends on the number of material points in cells. Next, those stability conditions become more restrictive when particles are uniformly translated leftward or rightward in the mesh, whit a more significant decrease in CFL number for a translation in the stream direction (\textit{i.e. cases (ii) and (iv)}). In particular, the RK2 algorithm may yields a lower stability bound than that of Euler approach in situation (iv) with more than two particles per cell.
@@ -336,7 +336,7 @@ Indeed, modifying the way fields are projected from nodes to particles does not 
   {\input{chapter3/pgfFigures/convV_6ppc.tex}\phantomsubcaption\label{subfig:convV_6ppc}}
   {\input{chapter3/pgfFigures/convV_10ppc.tex}\phantomsubcaption\label{subfig:convV_10ppc}}
   {\input{chapter3/pgfFigures/convV_20ppc.tex}\phantomsubcaption\label{subfig:convV_20ppc}}
-  \caption{Evolution of the $L^2$ error in velocity with regard to the number of particles lying in every cells.}
+  \caption{Evolution of the $L^2$ error in velocity with regard to the number of particles lying in every cell.}
   \label{fig:convergence_velocity}
 \end{figure}
 
@@ -548,7 +548,7 @@ Recall that transverse contributions $\phi_\beta^{(j),T}$ depend on $\Delta t$, 
 \end{equation}
 
 \subsubsection*{The von Neumann linear stability analysis}
-Analogously to the one-dimensional case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured distribution of particles made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material points indices. For one arbitrary Fourier mode, one has \cite[Ch.20]{Leveque}:
+Analogously to the one-dimensional case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured distribution of particles made of $N_p=N_p^X\times N_p^Y$ material points so that one can denote the solution at particles by $\bar{Q}_{\alpha\beta}$, where $\alpha$ and $\beta$ are the row and column of material point indices. For one arbitrary Fourier mode, one has \cite[Ch.20]{Leveque}:
 \begin{equation}
 \bar{Q}^{n}_{\alpha \beta} = A_{jq}^n e^{i (\alpha k_j + \beta k_q)\Delta X}
 \end{equation}
@@ -627,5 +627,6 @@ Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_compariso
 
 %%% Local Variables: 
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:

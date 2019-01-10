@@ -140,9 +140,9 @@ Solid mechanics equations may lead to source terms in the conservative form even
 This is also the case for relaxation systems as that identified in section \ref{sec:general-formulation} for elasto-viscoplasticity. In the latter case, a small relaxation time $\tau$ compared to the time scale governed by the convective part (\textit{i.e. the characteristic speeds of the problem}) leads to a \textit{stiff system} \cite{Stiff_problems}. 
 
 The solution of this class of problems on underresolved grids, that is $\tau \ll \Delta t$, requires the use of asymptotically convergent, accurate and stable numerical methods in order to avoid nonphysical results \cite{Leveque_stiff}.
-Thus, the numerical scheme must enable the use of underresolved grids whose time step is dictated by the Courant-Friedrichs-Lewy (CFL) satibility condition. The method also has to be \textit{asymptotic preserving} in the limit $\tau \rightarrow 0$ for fixed $\Delta t$ and $\Delta X$ \cite{Stiff_problems}, that is the limiting scheme is a good discretization of the equilibrium system even if the source term is underresolved. At last, the order of accuracy in the stiff limit and stability at the discrete level must be preserved \cite{Pareschi_stiff}, and the numerical scheme must be able to preserve the steady state numerically \cite{Toro_stiff}.
+Thus, the numerical scheme must enable the use of underresolved grids whose time step is dictated by the Courant-Friedrichs-Lewy (CFL) stability condition. The method also has to be \textit{asymptotic preserving} in the limit $\tau \rightarrow 0$ for fixed $\Delta t$ and $\Delta X$ \cite{Stiff_problems}, that is the limiting scheme is a good discretization of the equilibrium system even if the source term is underresolved. At last, the order of accuracy in the stiff limit and stability at the discrete level must be preserved \cite{Pareschi_stiff}, and the numerical scheme must be able to preserve the steady state numerically \cite{Toro_stiff}.
 
-A commonly used approach to solve non-homogeneous systems consists of solving alternatively a homogeneous PDE system and a system of ODE, namely:
+A commonly used approach to solve non-homogeneous systems consists in solving alternatively a homogeneous PDE system and a system of ODEs, namely:
 \begin{subequations}
   \begin{alignat}{1}
     \label{eq:Splitting_advec} 
@@ -255,7 +255,7 @@ avoids the computation of constitutive equations. Indeed, the auxiliary vectors 
 
 The method derived above for the computation of normal fluxes can be viewed as the \textit{Donor-Cell Upwind (DCU)} method \cite{Leveque} in which only contributions from upwind cells sharing an edge (in two dimensions) with the current one are considered.
 For multidimensional problems waves can travel in several directions such that contributions coming from corner cells must be taken into account in order to improve accuracy and stability of the numerical scheme.
-The \textit{Corner Transport Upwind (CTU)} method \cite{Colella_CTU} consists of considering contributions propagating in bias and coming from upwind cells sharing only a node (in two dimensions) with another.
+The \textit{Corner Transport Upwind (CTU)} method \cite{Colella_CTU} consists in considering contributions propagating in bias and coming from upwind cells sharing only a node (in two dimensions) with another.
 This approach allows improving the Courant condition especially for solid mechanics problems for which strain components are coupled through Poisson's effect.
 At each cell interface, one defines left-going and right-going fluctuations as:
 \begin{equation}
@@ -334,7 +334,7 @@ The procedure then reads:
 \begin{itemize}
   % \item[] $\bar{\Ucb}, \:\Qcb$ known at material points
 \item[(a)] The lumped mass and \textit{pseudo-stiffness} matrices $M^L_{ij}$ and $K^\alpha_{ij}$ of the semi-discrete form \eqref{eq:DGMPM_semi_discrete} are computed.
-\item[(b)] The discrete equation \eqref{eq:DGMPM_discrete} and Riemann problems at cells interfaces \eqref{eq:RP_quasilinear} require a projection of fields onto the grid:
+\item[(b)] The discrete equation \eqref{eq:DGMPM_discrete} and Riemann problems at cell interfaces \eqref{eq:RP_quasilinear} require a projection of fields onto the grid:
   \begin{equation}
     \label{eq:DGMPM_points2nodes}
     M^L_i \bar{\Ucb}^i = \sum_{p=1}^{N_p} S_{ip} m_p \bar{\Ucb}^p \qquad \text{and} \qquad M^L_i \vect{\Qc}^i = \sum_{p=1}^{N_p} S_{ip} m_p \vect{\Qc}^p 
@@ -377,5 +377,6 @@ The numerical scheme derived above is analyzed in terms of stability and converg
 
 %%% Local Variables: 
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:

@@ -18,7 +18,7 @@ This chapter is organized as follows.
 A brief historical review of the solution of dynamic problems in two-dimensional elastic-plastic solids is made in section \ref{sec:review}.
 %A brief historical review of the solution of plastic waves in two-dimension space is made in section \ref{sec:review}.
 Then, the equations of plasticity are recalled in section \ref{sec:charac_plast} so that the characteristic analysis, followed by the application of the method of characteristics, can be carried out.
-In section \ref{sec:stress_paths}, attention is paid to the evolution of stress components inside simple waves that might propagate by means of a mathematical study of the ODE satisfied within these waves.
+In section \ref{sec:stress_paths}, attention is paid to the evolution of stress components inside simple waves that might propagate by means of a mathematical study of the ODEs satisfied within these waves.
 Since the developments rapidly become cumbersome, the analysis is supplemented with numerical results in section \ref{sec:stress_paths_num}.
 %Attention is next paid in section \ref{sec:stress_paths} to the evolution of stress components through simple waves possibly arising in the solution. 
 At last, some identified trends are discussed at the end of the chapter in order to use them for building a dedicated Riemann solver. 
@@ -34,9 +34,9 @@ At last, some identified trends are discussed at the end of the chapter in order
 %In what follows, attention is paid to the simple wave solutions arising in the characteristic structure of hyperbolic problems in two-dimensional elastic-plastic solids.
 
 \section{Elastic-plastic wave structure in two space dimensions}
-\paragraph*{Key points of the chapter:} The simple wave structure in two-dimensional solids is studied by writting the governing equations of plane strain and plane stress problems in \textbf{a unique generic framework}.
+\paragraph*{Key points of the chapter:} The simple wave structure in two-dimensional solids is studied by writing the governing equations of plane strain and plane stress problems in \textbf{a unique generic framework}.
 %For that purposes, the governing equations of dynamics in elastoplastic media are written in such a way that plane strain and plane stress problems are included in a unique generic framework.
-Thus, the works carried out on simple waves mentioned above, formulated in terms of elastoplastic softenesses, appear \textbf{as particular cases of the present investigation}.
+Thus, the works carried out on simple waves mentioned above, formulated in terms of elastoplastic softnesses, appear \textbf{as particular cases of the present investigation}.
 As a result, we shall refer to those existing solutions in order to confirm our development as much as possible.
 
 \label{sec:charac_plast}
@@ -83,23 +83,23 @@ For that purpose, the characteristic analysis of two-dimensional problems in ela
 Fast and slow waves are also involved in the solution so that applying the method of characteristic through the simple waves provides a system of ODEs.
 Integration of this system leads to integral curves in terms of velocity and stress components that are followed inside the combined-stress waves.
 %Integration of this system leads to combined stress paths that are followed between initial and final stress states on the one hand, and to the integral curves in terms of velocity components involving integral along those loading paths on the other hand.
-Specializing the ODE to one direction of a Cartesian grid, it has been shown in section \ref{sec:stress_paths} that the loading paths satisfied through slow and fast waves are perpendicular in the stress space for both plane strain and plane stress.
+Specializing the ODEs to one direction of a Cartesian grid, it has been shown in section \ref{sec:stress_paths} that the loading paths satisfied through slow and fast waves are perpendicular in the stress space for both plane strain and plane stress.
 Moreover, it has been established that the stress paths exhibit particular behavior in the space $(\sigma_{11},\sigma_{22},\sigma_{12})$, that is $d\sigma_{11}=0$, $d\sigma_{12}=0$ or $d\sigma_{22}=0$, for special values of the components of the acoustic tensor.
 These situations are achieved for different stress states depending on whether the problem involves plane stresses of plane strains as shown in section \ref{sec:stress_paths}.
 
 $\newline$
-The complexity of the ODE derived in section \ref{sec:charac_plast} prevents identifying all the singularities which may occur along the loading paths.
+The complexity of the ODEs derived in section \ref{sec:charac_plast} prevents identifying all the singularities which may occur along the loading paths.
 Hence, the mathematical analysis has been supplemented with numerical results consisting of the integration of stress paths from arbitrary initial stress values lying on the initial yield surface, for the particular direction $\vect{e}_1$.
 
 %% Thin-walled tube
-First, in section \ref{sec:num_thin-walled} the loading paths resulting from the integration of the ODE derived in section \ref{sec:charac_plast} have been compared to those of Clifton \cite{Clifton}.
+First, in section \ref{sec:num_thin-walled} the loading paths resulting from the integration of the ODEs derived in section \ref{sec:charac_plast} have been compared to those of Clifton \cite{Clifton}.
 The two different formulations, respectively based on elastoplastic stiffnesses and softnesses, show  good agreement.
 
 %% Cont. planes
 Second, the evolution of stress components across fast and slow waves under plane stress has been looked at in section \ref{sec:num_plane_stress}.
 It appears that though the loading paths are rather complex in stress space through a fast wave, the stress evolution in the deviatoric plane is restricted to the initial yield surface until one direction of pure shear is reached.
 A singularity then occurs so that the numerical integration cannot be pursued.
-On the other hand, the loading paths resulting from the integration of ODE satisfied inside a slow wave exhibit complex shapes along which $\sigma_{11}$ varies much less than the other stress components.
+On the other hand, the loading paths resulting from the integration of ODEs satisfied inside a slow wave exhibit complex shapes along which $\sigma_{11}$ varies much less than the other stress components.
 
 %% Def. planes
 Third, the plane strain case has been considered in section \ref{sec:num_plane_strain}.
@@ -145,5 +145,6 @@ At last, the generalization of the approach followed in this chapter to more com
 
 %%% Local Variables:
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:

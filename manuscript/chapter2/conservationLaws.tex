@@ -1,4 +1,4 @@
-The mathematical laws describing the deformation of a solid body are summarized in this section. First, the kinematic laws governing the motion of each material point belonging to a solid are considered. Then \textit{strain} measures are associated to internal forces through the thermodynamic framework so that \textit{constitutive equations} are derived. For a more exhaustive review of governing equations, see for instance \cite{Belytschko,Foundation_of_elasticity,Truesdell,Simo}.
+The mathematical laws describing the deformation of a solid body are summarized in this section. First, the kinematic laws governing the motion of each material point belonging to a solid are considered. Then \textit{strain} measures are associated with internal forces through the thermodynamic framework so that \textit{constitutive equations} are derived. For a more exhaustive review of governing equations, see for instance \cite{Belytschko,Foundation_of_elasticity,Truesdell,Simo}.
 
 \subsection{Kinematic laws -- Strain measures}
 Consider a three-dimensional solid with volume denoted by $\Omega \subset \Rbb^3$ bounded by the surface $\partial \Omega$. This body undergoes external forces that can either be localized on a part of the external surface of the body (\textit{i.e. surface forces}) or act in the whole solid domain (\textit{i.e. volume forces}). Due to the presence of such loads, the domain may change within the time interval $\tau = \[0,T\]$ and is hence written as a function of time $\Omega(t)$ ($t\in \tau$). The state of the solid at time $t=0$, corresponding to a non-deformed state with volume $\Omega(t=0)=\Omega_0$, is referred to as the \textit{initial configuration}. Some problems require the use of a \textit{reference configuration} that can be deformed and to which equations are referred. In what follows, the reference and initial configurations are identical. At a given time $t>0$, the volume is $\Omega(t)=\Omega_t$ and the state of the solid corresponds to the \textit{current configuration}. These configurations are depicted in figure \ref{fig:deformationFunction}.
@@ -199,7 +199,7 @@ First, the \textit{Clausius-Duhem} inequality resulting from combination of firs
   \underbrace{\phantom{\frac{1}{\theta}} \tens{\Pi}:\tens{\dot{F}} + \rho_0 \(\theta \dot{\eta} -\dot{e}\)}_{\Dscr^{int}} \:  \underbrace{-\:\frac{1}{\theta} \vect{q} \cdot \nablav_0 \theta}_{\Dscr^{th}} \geq 0  \qquad \forall \: \: \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
 where $\theta$ and $\eta$ denote the temperature and the entropy, and $\Dscr^{int}$ and $\Dscr^{th}$ are respectively the mechanical and thermal dissipations. The relation \eqref{eq:Clausius-Duhem} becomes an equality for \textit{reversible} processes and a strict inequality for \textit{irreversible} ones. Furthermore, a widely used assumption consists in considering that mechanical and thermal dissipations simultaneously satisfy non-negativeness.
-Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positivity of the thermal dissipation:
+Note that the \textit{Fourier's law} of conduction is based on the non-negativeness of the thermal dissipation and leads to the following definition of the heat flux vector in order to ensure the positiveness of the thermal dissipation:
 \begin{equation*}
   \label{eq:Fourier_law}
   \vect{q}=-\tens{k}\cdot\nablav_0 \theta
@@ -228,7 +228,7 @@ holding regardless of the deformation, and hence:
 \end{equation}
 A material is said \textit{hyperelastic} if there exists a \textit{stored energy density function} $\rho_0\psi$ from which can be derived the first Piola-Kirchhoff stress tensor \cite[p.8]{Foundation_of_elasticity}. 
 
-Similar considerations lead to the state laws for entropy and are assumed for additional thermodynamic forces associated to internal variables $\Vcb$:
+Similar considerations lead to the state laws for entropy and are assumed for additional thermodynamic forces associated with internal variables $\Vcb$:
 \begin{equation}
   \label{eq:thermodynamic_forces}
   \drond{\psi}{\theta} = - \eta \quad ; \quad \rho_0\drond{\psi}{\Vcb}=-\Acb
@@ -555,5 +555,6 @@ Analogously to hyperelasticity, a quasi-linear form involving the elastoplastic 
 
 %%% Local Variables:
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:

@@ -78,12 +78,13 @@ It should be noted, however, that the adaptation of the method to high-order spa
 Moreover, numerical tools used for one-dimensional problems can be generalized for two-dimensional ones. 
 This is the case of splitting procedures that should enable the DGMPM to accurately follow waves traveling in elastic-viscoplastic solids in 2D. 
 As discussed in section \ref{subsec:hpp_planewave}, elastoplastic problems can be solved as the stiff limit of elastoviscoplastic ones, provided that suitable ODE integrators are employed. %at the cost of additional computational effort.
-On the other hand, the use of approximate elastic-plastic Riemann solvers avoids the difficulties related to the integration of stiff ODE, and improves the resolution of plastic waves by means of limiters on both elastic and plastic waves \cite{Thomas_EP}.
+On the other hand, the use of approximate elastic-plastic Riemann solvers avoids the difficulties related to the integration of stiff ODEs, and improves the resolution of plastic waves by means of limiters on both elastic and plastic waves \cite{Thomas_EP}.
 %Note that this is not possible for elasto-viscoplasticity since the characteristic structure only involves elastic waves.  
 However, this kind of solver does not exist for general two-dimensional problems owing to the lack of knowledge of the characteristic structure of the solutions for multi-dimensional elastic-plastic problems. 
 Such solvers for the computation of intercell fluxes, which would improve the computation of plastic flows and hence a better assessment of residual stresses and strains, are discussed in the next chapter. 
 
 %%% Local Variables:
 %%% mode: latex
+%%% ispell-local-dictionary: "american"
 %%% TeX-master: "../mainManuscript"
 %%% End:
