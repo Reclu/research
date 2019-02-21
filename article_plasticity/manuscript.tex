@@ -6,13 +6,17 @@
 \usepackage{tikz} % geometrical figures
 \usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,decorations.pathreplacing,decorations.pathmorphing,shapes,
     matrix,shapes.symbols,shapes.multipart,patterns,shapes,snakes,pgfplots.groupplots,spy,backgrounds}
-%\usetikzlibrary{external}
-%\tikzexternalize[prefix=external/]
+\usetikzlibrary{external}
+\tikzexternalize[prefix=external/]
 \usetikzlibrary{spy,backgrounds}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{arrows.meta}
 
 \usepackage{pgfplots} % pdf picture declaration
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
 
 
 %% The amssymb package provides various useful mathematical symbols

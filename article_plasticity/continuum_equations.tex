@@ -1,5 +1,5 @@
 \subsection{Conservation laws}
-Consider a solid domain in the initial or reference configuration $\Omega_0 \subset \Rbb^3$, bounded by the surface $\partial \Omega$, in which material particles are located with Lagrange coordinates $\vect{X}=X_\alpha\vect{E}_\alpha \in \Omega_0$.
+Consider a solid domain in the initial or reference configuration $\Omega_0 \subset \Rbb^3$, bounded by the surface $\partial \Omega$, in which material particles are located with Lagrange coordinates $\vect{X}=X_\alpha\vect{e}_\alpha \in \Omega_0$.
 The motion of the particles within the time interval $t\in\tau= [0,T^{end}]$ is described by the deformation function $\vect{\varphi}(\vect{X},t)$ that also defines the current configuration as: $\Omega(t)=\{\vect{x} \in \Rbb^3 \: \lvert \: \vect{x}=\varphi(\vect{X},t), \:\vect{X},t \in \Omega_0\times\tau\}$.
 %We consider within the time interval $\tau= [0,T^{end}]$ the isothermal deformation of a solid domain $\Omega \subset \Rbb^3$, bounded by the surface $\partial \Omega$, between the reference configuration $\Omega_0=\Omega(t=0)$ and subsequent ones $\Omega(t) \: (t\in\tau)$.
 %The motion of material particles initially located with Lagrange coordinates $\vect{X} \in \Omega_0$ is described by the deformation function $\vect{\varphi}(\vect{X},t)$ that also defines the current configuration as: $\Omega(t)=\{\vect{x} \in \Rbb^3 \: : \: \vect{x}=\varphi(\vect{X},t), \:\vect{X},t \in \Omega_0\times\tau\}$.
@@ -38,16 +38,16 @@ where $\Fcb=\[\tens{\Pi} \: ,\:\vect{v}\otimes \tens{I}\]$ is the flux vector.
 In Cartesian coordinates, system \eqref{eq:conservative_form} reads:
 \begin{equation}
   \label{eq:conservative_cartesian}
-  \drond{\Ucb}{t} - \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+  \drond{\Ucb}{t} - \drond{\Fcb\cdot\vect{e}_\alpha}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-with $\Fcb\cdot\vect{E}_\alpha=\[\tens{\Pi}\cdot\vect{E}_\alpha \: ,\:\vect{v}\otimes \vect{E}_\alpha\]$.
+with $\Fcb\cdot\vect{e}_\alpha=\[\tens{\Pi}\cdot\vect{e}_\alpha \: ,\:\vect{v}\otimes \vect{e}_\alpha\]$.
 Alternatively, the use of an auxiliary vector $\Qcb=\[\vect{v}\:,\:\tens{\Pi}\]$ along with the chain rule leads to the following quasi-linear form \cite{Trangenstein91}:
 \begin{align}
   \label{eq:quasi-linear}
   &\drond{\Qcb}{t} + \Jbsf_\Qc^i \drond{\Qcb}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau \\
-  & \text{with } \Jbsf_\Qc^i= -\(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{E}_\alpha}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho_0} \tens{I}\otimes \vect{E}_\alpha \\ \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{E}_\alpha & \tens{0}^4}
+  & \text{with } \Jbsf_\Qc^i= -\(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho_0} \tens{I}\otimes \vect{e}_\alpha \\ \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{e}_\alpha & \tens{0}^4}
 \end{align}
-in which $\tens{0}^p$ denotes a $p$th-order zero tensor.
+in which $\tens{0}^k$ denotes a $k$th-order zero tensor.
 The constitutive model of the material is then explicitly involved in the quasi-linear form through the fourth-order tangent modulus tensor $\Hbb=\drond{\tens{\Pi}}{\tens{F}}$.
 
 \subsection{Constitutive models: Hyperelastic-plastic materials}
@@ -62,7 +62,7 @@ It is assumed that the evolution of internal variables only depends on the local
 as well as a general plastic flow rule:
 \begin{equation}
   \label{eq:flow_rule}
-  \tens{\dot{F}}^p{\tens{F}^p}^{-1}=\dot{\Vcb}\tens{M}
+  \dot{\tens{F}^p}{\tens{F}^p}^{-1}=\dot{\Vcb}\tens{M}
 \end{equation}
 In equation \eqref{eq:flow_rule}, kinematic conditions for the plastic flow are prescribed through the second-order tensor $\tens{M}$.
 More specifically, the von Mises flow rule results from the restriction $\tens{M} \in \{\tens{A} \in \Rbb^3\times \Rbb^3\: \lvert\: \tens{A}: \tens{A}=\frac{2}{3},\: \tens{A}:\tens{I}=0\}$. 
