@@ -1,0 +1,97 @@
+The DGMPM is now illustrated on numerical examples considering materials whose constitutive models are governed by the Hencky hyperelastic potential \cite{Laurent2009}:
+\begin{equation}
+    \psi = ?
+\end{equation}
+combined with isotropic hardening. 
+
+The material parameters used are gathered in table \ref{tab:material}.
+\begin{table}[h!]
+  \centering
+  \input{tabular/material}
+  \caption{Material parameters.}
+  \label{tab:material}
+\end{table}
+
+\subsection{Plane wave problem}
+\label{sec:plane-wave-problem}
+Let's first look at the response of a infinite medium in directions $\vect{e}_2$ and $\vect{e}_3$, and length $l=1\:m$ in direction $\vect{e}_1$ to Riemann-type initial conditions on the velocity: $v_1=v_d>0$ for $x\in[0,L/2[$ and $v_1=-v_d$ for $x \in ]L/2,L]$.
+The solid is initially in a free stress state and the initial velocity is set so that plastic flow occurs:
+\begin{equation*}
+  v_d=1.2\frac{Y_H}{\rho c_L}
+\end{equation*}
+where $Y_H=(\lambda+2\mu)\sigma^y/2\mu$ denotes the Hugoniot elastic limit, $c_L=\sqrt{(\lambda+2\mu)/\rho}$ is the elastic pressure wave speed, and $(\lambda,\mu)$ are Lam\'e's constants. Both ends of the medium are traction free.
+%so that rightward and leftward compressive elastic waves reflect as unloading waves that interact with the incident plastic ones \cite{Thomas_EVP}.
+
+The initial setting is assumed to give rise to a plane wave, namely:
+\begin{align*}
+  & \tens{F}= F \vect{e}_1 \otimes\vect{e}_1 + \vect{e}_2 \otimes\vect{e}_2 + \vect{e}_3 \otimes\vect{e}_3\\
+  & \tens{\Pi}=\Pi_L \vect{e}_1 \otimes \vect{e}_1 + \Pi_T \(\vect{e}_2 \otimes \vect{e}_2+\vect{e}_3 \otimes \vect{e}_3\) 
+\end{align*}
+%In that configuration, a relation exists between longitudinal and transverse stress components $\Pi_L$ and $\Pi_T$ in such a way that a one-dimensional hyperbolic system is solved for $\Pi_L=\Pi$, and the transverse component $\Pi_T$ is computed subsequently. 
+In the linearized geometrical limit $\norm{\tens{F}} \ll 1$, the computed hyperelastic-plastic solution should tend to the elastoplastic one derived in \cite{Thomas_EP}.
+The latter consists of two elastic compression waves propagating left and right-ward, each followed by one plastic discontinuity.
+The incident elastic disturbances then reflect as unloading waves on both free boundaries of the domain, the interaction of which at the center of the medium leads to tensile plastic reloading.
+
+
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/hep_planeWave}
+  \label{fig:hep_planeWave}
+  \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.7), DGMPM using one particle per cell (CFL=1) of four particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/hep_planeWave_high}
+  \label{fig:hep_planeWave_high}
+  \caption{Check times of computation}
+\end{figure}
+Constant speed for the exact solution while it's not the case.
+
+\subsection{Plane strain problem}
+\label{sec:plane-strain-problem}
+%% Comparison at t=0.00102126
+
+\begin{figure}[ht]
+  \centering
+  \subcaptionbox{Geometry and boundary conditions\label{subfig:2D_domain}}{\input{pgfFigures/2d_domain}}
+  \subcaptionbox{Material points set and grids \label{subfig:2d_meshes}}{\input{pgfFigures/2d_mesh}}
+  \caption{domain}
+  \label{fig:PS_domain}
+\end{figure}
+
+
+Il faut faire une breve analyse de convergence ?
+
+\begin{figure}[ht]
+  \centering
+  \subcaptionbox{Stress}{\input{pgfFigures/stress_comparison}}
+  \subcaptionbox{Cumulated plastic strain}{\input{pgfFigures/epls_comparison}}
+  \caption{Isovalues of the PK1 stress tensor component $\Pi_{11}$ and cumulated plastic strain in a two-dimensional hyperelastic-plastic solids impacting a rigid wall under plane strain. Comparison of FEM (CFL=0.9), MPM (CFL=0.7) and DGMPM solutions using either one particle per cell (CFL=1) or four particles per cell (CFL=0.4).}
+  \label{fig:test}
+\end{figure}
+
+
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/bottom_line}
+  \caption{Comparison of the longitudinal stress component and cumulated plastic strain along the bottom boundary of the domain at two different times}
+  \label{fig:bottom_line}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/left_line}
+  \caption{Comparison of the longitudinal stress component and cumulated plastic strain along the left boundary of the domain at two different times}
+  \label{fig:left_line}
+\end{figure}
+
+\subsection{Non-linear hardening material}
+\label{sec:non-linear-hardening}
+Reprendre le cas test hyperelastique de la these?
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

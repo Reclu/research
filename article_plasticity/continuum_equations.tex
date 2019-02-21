@@ -1,0 +1,110 @@
+\subsection{Conservation laws}
+Consider a solid domain in the initial or reference configuration $\Omega_0 \subset \Rbb^3$, bounded by the surface $\partial \Omega$, in which material particles are located with Lagrange coordinates $\vect{X}=X_\alpha\vect{E}_\alpha \in \Omega_0$.
+The motion of the particles within the time interval $t\in\tau= [0,T^{end}]$ is described by the deformation function $\vect{\varphi}(\vect{X},t)$ that also defines the current configuration as: $\Omega(t)=\{\vect{x} \in \Rbb^3 \: \lvert \: \vect{x}=\varphi(\vect{X},t), \:\vect{X},t \in \Omega_0\times\tau\}$.
+%We consider within the time interval $\tau= [0,T^{end}]$ the isothermal deformation of a solid domain $\Omega \subset \Rbb^3$, bounded by the surface $\partial \Omega$, between the reference configuration $\Omega_0=\Omega(t=0)$ and subsequent ones $\Omega(t) \: (t\in\tau)$.
+%The motion of material particles initially located with Lagrange coordinates $\vect{X} \in \Omega_0$ is described by the deformation function $\vect{\varphi}(\vect{X},t)$ that also defines the current configuration as: $\Omega(t)=\{\vect{x} \in \Rbb^3 \: : \: \vect{x}=\varphi(\vect{X},t), \:\vect{X},t \in \Omega_0\times\tau\}$.
+The second-order deformation gradient tensor $\tens{F}$ and the velocity vector $\vect{v}$ are then defined as:
+\begin{align}
+  \label{eq:deformation_gradient}
+  &\tens{F}(\vect{X},t) = \drond{\vect{\varphi}(\vect{X},t)}{\vect{X}} = \nablat_0 \vect{\varphi}(\vect{X},t) \\
+  \label{eq:velocity}
+  & \vect{v}(\vect{X},t)= \drond{\vect{\varphi}(\vect{X},t)}{t} = \vect{\dot{\varphi}}(\vect{X},t)
+\end{align}
+where $\nablat_{0}(\bullet)$ denotes the gradient operator in the reference configuration and the superposed dot refers to the material time derivative.
+
+Geometrical balance laws \cite{Plohr,Gil_HE,Haider_FVM} are written by differentiating equation \eqref{eq:deformation_gradient} with respect to time and combining it with equation \eqref{eq:velocity}:
+% The time derivative of equation \eqref{eq:deformation_gradient} combined with equation \eqref{eq:velocity} and the use of the divergence operator in the reference configuration $\nablav_0\cdot(\bullet)$, yields geometrical balance laws \cite{Plohr,Gil_HE,Haider_FVM}:
+\begin{equation}
+  \label{eq:kinematic_laws}
+  \dot{\tens{F}} - \nablav_0 \cdot \( \vect{v} \otimes \tens{I} \) = \tens{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+in which $\nablav_0\cdot(\bullet)$ is the divergence operator in the reference configuration, and $\tens{I}$ is the second-order identity tensor.
+Moreover, the balance equation of the Lagrangian linear momentum must be satisfied:
+\begin{equation}
+  \label{eq:linear_momentum}
+  %\rho_0(\vect{X}) \: \dot{\vect{v}} - \nablav_0 \cdot \tens{\Pi}(\vect{X},t) = \rho_0(\vect{X}) \vect{b}(\vect{X},t)  \quad \forall \vect{X},t \in \Omega_0 \times \tau
+  \rho_0 \: \dot{\vect{v}} - \nablav_0 \cdot \tens{\Pi}= \rho_0\vect{b} \quad \forall \vect{X},t \in \Omega_0 \times \tau
+\end{equation}
+where $\rho_0(\vect{X})$ is the reference mass density, $\vect{b}(\vect{X},t)$ is the body forces vector, and $\tens{\Pi}(\vect{X},t)$ is the first Piola-Kirchhoff stress tensor.
+In what follows, the body forces are neglected.
+
+From now on, calligraphic symbols stand for column array.
+Thus, introduction of the vector of conserved quantities $\Ucb=\[\rho_0 \vect{v} \: ,\:\tens{F}\]$ allows writting the system of conservation laws composed of equations \eqref{eq:kinematic_laws} and \eqref{eq:linear_momentum} in conservative form as:
+\begin{equation}
+  \label{eq:conservative_form}
+  \drond{\Ucb}{t} - \nablav_0 \cdot \Fcb = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+where $\Fcb=\[\tens{\Pi} \: ,\:\vect{v}\otimes \tens{I}\]$ is the flux vector.
+In Cartesian coordinates, system \eqref{eq:conservative_form} reads:
+\begin{equation}
+  \label{eq:conservative_cartesian}
+  \drond{\Ucb}{t} - \drond{\Fcb\cdot\vect{E}_\alpha}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+\end{equation}
+with $\Fcb\cdot\vect{E}_\alpha=\[\tens{\Pi}\cdot\vect{E}_\alpha \: ,\:\vect{v}\otimes \vect{E}_\alpha\]$.
+Alternatively, the use of an auxiliary vector $\Qcb=\[\vect{v}\:,\:\tens{\Pi}\]$ along with the chain rule leads to the following quasi-linear form \cite{Trangenstein91}:
+\begin{align}
+  \label{eq:quasi-linear}
+  &\drond{\Qcb}{t} + \Jbsf_\Qc^i \drond{\Qcb}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau \\
+  & \text{with } \Jbsf_\Qc^i= -\(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{E}_\alpha}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho_0} \tens{I}\otimes \vect{E}_\alpha \\ \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{E}_\alpha & \tens{0}^4}
+\end{align}
+in which $\tens{0}^p$ denotes a $p$th-order zero tensor.
+The constitutive model of the material is then explicitly involved in the quasi-linear form through the fourth-order tangent modulus tensor $\Hbb=\drond{\tens{\Pi}}{\tens{F}}$.
+
+\subsection{Constitutive models: Hyperelastic-plastic materials}
+\label{subsec:cont_constitutive}
+Following the multiplicative decomposition of the deformation gradient \cite{Lee_FeFp}: $\tens{F}=\tens{F}^e\tens{F}^p$, irreversible processes that account for the evolution of the micro-structure of the material are described by means of internal variables \cite{Lubliner}.
+Denoting by $\Vcb$ the column array consisting of hardening variables, the complete set of internal variables is: $\{\tens{F}^p,\Vcb \}$.
+It is assumed that the evolution of internal variables only depends on the local state, so that kinetic equations can be written:
+\begin{equation}
+  \label{eq:plastic_kinetic_laws}
+  \dot{\Vcb}=f(\tens{F},\tens{F}^p,\Vcb)
+\end{equation}
+as well as a general plastic flow rule:
+\begin{equation}
+  \label{eq:flow_rule}
+  \tens{\dot{F}}^p{\tens{F}^p}^{-1}=\dot{\Vcb}\tens{M}
+\end{equation}
+In equation \eqref{eq:flow_rule}, kinematic conditions for the plastic flow are prescribed through the second-order tensor $\tens{M}$.
+More specifically, the von Mises flow rule results from the restriction $\tens{M} \in \{\tens{A} \in \Rbb^3\times \Rbb^3\: \lvert\: \tens{A}: \tens{A}=\frac{2}{3},\: \tens{A}:\tens{I}=0\}$. 
+
+
+For materials in which internal processes do not influence the elastic response (\textit{e.g.  metals}), the thermodynamic state is described by the Helmholtz free energy density that is assumed to decompose additively as:
+\begin{equation}
+  \label{eq:helmholtz_decomposition}
+  \psi(\tens{F},\tens{F}^p,\Vcb,\theta)= \psi_e(\tens{F}{\tens{F}^p}^{-1},\theta) +  \psi_p(\tens{F}^p,\Vcb,\theta)
+\end{equation}
+where $\psi_e$ and $\psi_p$ respectively govern elastic and plastic evolutions, and $\theta$ denotes the absolute temperature.
+The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $\Vcb$ follow from the free energy density as \cite{Truesdell}:
+\begin{equation}
+  \label{eq:thermodynamic_forces}
+  \tens{\Pi}=\drond{\psi}{\tens{F}} \quad ;\quad \tens{T}=-\drond{\psi}{\tens{F}^p} \quad ; \quad \Acb = -\drond{\psi}{\Vcb}
+\end{equation}
+By considering the additive decomposition \eqref{eq:helmholtz_decomposition} combined with the flow rule \eqref{eq:flow_rule}, the last relation reads:
+\begin{equation}
+  \label{eq:hardening_forces}
+  \Acb = -\drond{\psi}{\tens{F}^p}\drond{\tens{F}^p}{\Vcb} - \drond{\psi_p}{\Vcb} = \tens{T}\(\tens{M}\tens{F}^p\) - \drond{\psi_p}{\Vcb}
+\end{equation}
+
+We then postulate the existence of a pseudo-dissipation potential $\phi$ from which the rate of internal variables can be derived:
+\begin{equation}
+  \label{eq:pseudo-dissipation_potential}
+  \dot{\Vcb}= \drond{\phi(\Acb)}{\Acb}
+\end{equation}
+Alternatively, the dual pseudo-dissipation potential $\phi^*(\dot{\Vcb})$, that results from the Legendre transform of $\phi$, allows writing:
+% \begin{equation}
+%   \label{eq:dual_pseudo-dissipation_potential}
+%   \phi^*(\dot{\Vcb}) = \Acb \cdot \dot{\Vcb} - \phi(\Acb)
+% \end{equation}
+% in such a way that one has
+\begin{equation}
+  \label{eq:dual_form_kinetic}
+  \Acb = \drond{\phi^*(\dot{\Vcb})}{\dot{\Vcb}}
+\end{equation}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

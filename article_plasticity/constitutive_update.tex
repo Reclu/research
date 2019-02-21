@@ -1,0 +1,53 @@
+% The variational reformulation of the constitutive equations derived in section \ref{subsec:cont_constitutive} is carried out by introducing the following power density function \cite{Laurent2010}:
+%The variational formulation of the constitutive relations derived in section \ref{subsec:cont_constitutive} follows from the minimization of the power density function \cite{Laurent99,Laurent2010}:
+% Let's introduce the following power density function \cite{Laurent2010}:
+The constitutive equations derived in section  \ref{subsec:cont_constitutive}, which account for the dependence of the material on the loading history, are usually integrated within an incremental procedure by means of radial return algorithms \cite{Simo}. 
+Alternatively, the set of equations can be formulated as an optimization problem by introducing a power density function \cite{Laurent99,Laurent2010}:
+\begin{equation}
+  \label{eq:rate_potential}
+  \Pscr(\tens{\dot{F}},\dot{\Vcb}) = \drond{\psi}{\tens{F}}:\tens{\dot{F}} - \Acb\cdot \dot{\Vcb} + \phi^*(\dot{\Vcb})
+\end{equation}
+whose minimization with respect to $\dot{\Vcb}$ and $\tens{M}$ respectively lead to:
+\begin{equation}
+  \label{eq:optimization}
+  -\Acb + \drond{\phi^*}{\dot{\Vcb}} = 0  \quad ;\quad \underset{\tens{M}}{\max} \left\lbrace \tens{T}\(\tens{M}\tens{F}_p\) \cdot \dot{\Vcb}\right\rbrace
+\end{equation}
+The first equation is the dual form of the kinetic equations \eqref{eq:dual_form_kinetic} while the second one yields the determination of the plastic flow direction by satisfying the principle of maximum plastic dissipation.
+Moreover, it can  be shown that the effective power density $\Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{\Vcb},\tens{M}}{\min} \: \Pscr$
+% \begin{equation}
+%   \label{eq:effective_power_density}
+%   \Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{\Vcb},\tens{M}}{\min} \: \Pscr
+% \end{equation}
+acts as a rate potential for $\tens{\Pi}$, that is:
+\begin{equation}
+  \label{eq:PK1_rate_potential}
+  \tens{\Pi}=\drond{\Pscr^{eff}}{\tens{\dot{F}}}
+\end{equation}
+
+Variational constitutive updates can be constructed upon incremental approximations of $\Pscr^{eff}$ by introducing the incremental energy function:
+\begin{equation}
+  \label{eq:incremental_energy}
+  W(\tens{F}^{n+1};\tens{F}^n,\Vcb^n) = \underset{\Vcb^{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}^{n+1},\tens{F}_p^{n+1},\Vcb^{n+1}\) -\psi\(\tens{F}^{n},\tens{F}_p^{n},\Vcb^{n}\) + \Delta t \phi^*\(\dot{\Vcb}^{n}\)\right\rbrace
+\end{equation}
+In equation \eqref{eq:incremental_energy}, it is understood that the superscripts refer to time increments and that the thermodynamic state $(\tens{F}_n,\tens{F}_p^n,\Vcb^n)$, as well as the updated deformation gradient $\tens{F}^{n+1}$, are known.
+Thus, the plastic part of the deformation gradient results from the incremental plastic flow rule: 
+\begin{equation}
+  \label{eq:flow_rule_inc}
+  \tens{F}_p^{n+1}=\exp \(\Delta \Vcb \tens{M} \)\tens{F}_p^n
+\end{equation}
+in which $\Delta \Vcb = \Vcb^{n+1}-\Vcb^n$, and $\tens{M}$ and $\Vcb^{n+1}$ are the argument of the optimization \eqref{eq:incremental_energy}.
+At last, the updated first Piola-Kirchhoff stress tensor is:
+\begin{equation}
+  \label{eq:PK1_inc}
+  \tens{\Pi}^{n+1} = \left.\drond{\psi}{\tens{F}}\right|_{t^{n+1}}=\drond{W(\tens{F}^{n+1})}{\tens{F}^{n+1}}
+\end{equation}
+so that $W$ appears as a potential for $\tens{\Pi}^{n+1}$.
+
+The variational framework presented above provides efficient tools for error estimation provided that suitable something are known...
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:
