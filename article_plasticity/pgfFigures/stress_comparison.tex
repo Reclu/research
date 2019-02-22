@@ -5,7 +5,8 @@
       vertical sep=2ex,},
     enlargelimits=0,
     xmin=0.,xmax=1., ymin=-0.,ymax=1.
-    ,axis on top,scale only axis,xtick=\empty,ytick=\empty,width=0.18\linewidth,
+    ,axis on top,scale only axis,width=0.18\linewidth
+    ,xtick=\empty,ytick=\empty,
     colorbar style={
       title style={
         font=\normalsize,
@@ -20,14 +21,14 @@
     \nextgroupplot[title={$t=5.10\times 10^{-4} \:s$},ylabel={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/fem_stress1-crop.png};
     \nextgroupplot[title={$t=1.02\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/fem_stress2-crop.png};
 
-    \nextgroupplot[ylabel={MPM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm_stress1-crop.png};
+    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm_stress1-crop.png};
     \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm_stress2-crop.png};
 
-    \nextgroupplot[ylabel={DGMPM--1ppc}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm1ppc_stress1-crop.png};
+    \nextgroupplot[ylabel={DGMPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm1ppc_stress1-crop.png};
     \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm1ppc_stress2-crop.png};
     
 
-    \nextgroupplot[ylabel={DGMPM--4ppc},colorbar horizontal,colorbar  style={
+    \nextgroupplot[ylabel={DGMPM(4ppc)},colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
       xtick={-8.6,0.57},
