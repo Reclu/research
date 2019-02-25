@@ -1,10 +1,22 @@
-Appuyer sur le fait que la dgmpm est cool pour 1ppc mais que pour plus de points par cellule on a une diffusion qui nécessite encore un peu de travail.
-On a vu sur un cas 1D que les ondes peuvent être correctement suivies et les états résiduels estimés de manière satisfaisente.
+The total Lagrangian formulation of the Discontinuous Galerkin Material Point Method has been recalled in this paper.
+The particle-based space discretization, combined with an arbitrary grid that is used as a support for the DG approximation, leads to the writing of an element-wise weak form of a hyperbolic conservation laws system.
+Integrations by part then give rise to boundary terms involving numerical fluxes computed at the interfaces between the cells of the arbitrary computational grid.
+These intercell fluxes can be computed by several way including through an approximate-state Riemann solver, which construction has been presented.
+As for the Material Point Method, the solution of the discrete system on the background grid is used to update the fields that are stored at the particles and especially internal variables for history-dependent materials.
+The DGMPM has been here coupled to a variational constitutive integrator for the integration of the plastic flow.
 
+% Simulations
+The method has first been illustrated on a one-dimensional problem in a hyperelastic-plastic material involving the propagation of a plane wave.
+For low loading conditions, the DGMPM show good agreement in terms of stress and plastic strain with the exact solution developed within the linearized geometrical framework.
+However, the solution can be more or less accurate depending on the space discretization since the stability properties of the scheme are known to be influenced by the number of particles lying in the elements of the background grid.
+The DGMPM has also been shown to behave well for more severe loadings as well as for two-dimensional problems, though the lack of reference solution must be highlighted in the latter case.
+Thus, the scheme appears to enable an accurate tracking of waves in finite-deforming elastic-plastic media owing to the combination of the Riemann solver to compute the fluxes and the particles to represent the geometry.
 
-On peut envisager des stratégies d'adaptation de maillage et également d'autres projections des champs entre la grille et les particules plutot que celles utilisées dans les méthodes PIC.
+% Perspectives
+%% Mesh-adaption
+Given the arbitrary nature of the computational grid and the error estimation provided by variational approaches, the DGMPM enables considering the use of mesh adaption strategies. 
+It would then be for instance possible to adapt the grid in order to capture the waves in the current configuration while solving the discrete system in the reference one.
 
-Par ailleurs, lagrangien actualisé ou adaptation de grille pour des problèmes avec très grandes transformations.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "manuscript"
