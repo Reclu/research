@@ -21,7 +21,7 @@ with $\Ucb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X
 Note that particle and nodal quantities are respectively denoted with $p$ and $(i,j)$ subscripts or superscripts.
 
 An approximate solution is sought by means of a weak form that results from multiplication of equation \eqref{eq:conservative_form} by a test function $\Wcb$ and integration over the grid.
-According to the Discontinuous Galerkin approximation \cite{NeutronDG,Cockburn}, the test function belongs to a broken polynomial space \cite{DiPietro} in such a way that the weak form is written element-wise.
+According to the Discontinuous Galerkin approximation \cite{NeutronDG,Cockburn}, both test and trial functions belong to a broken polynomial space \cite{DiPietro} in such a way that the weak form is written element-wise.
 Thus, after integration by parts, one writes:
 \begin{equation}
   \label{eq:DGMPM_weak_form}
@@ -35,7 +35,7 @@ As for the original MPM \cite{Sulsky94,Sulsky95}, a particle-based quadrature ca
   \label{eq:specific_quantities}
   \Ucb = \rho_0 \bar{\Ucb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha
 \end{equation}
-Indeed, introduction of these fields and the definition of mass density \eqref{eq:mass_density_DGMPM} lead to the following total Lagrangian weak formulation:
+Indeed, introduction of these fields, combined with the definition of mass density \eqref{eq:mass_density_DGMPM}, leads to the following total Lagrangian weak formulation:
 \begin{equation} 
   \label{eq:DGMPM_discrete_weak}
   \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Ucb}}{t}  \Wcb - \bar{\Fcb}_{\alpha} \drond{\Wcb}{X_\alpha} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \Fcb_N  \Wcb \: dS = 0 \quad \forall \: \Wcb,e
@@ -84,10 +84,10 @@ The back-mapping follows that proposed in the Particle-In-Cell method (PIC) \cit
   \label{eq:back_mapping}
   \bar{\Ucb}^{p,n+1}=\sum_{i=1}^{N_n} S_{ip}\bar{\Ucb}^{i,n+1}
 \end{equation}
-Notice that the MPM is based on a different projection from nodes to particles that was introduced in the FLuid Implicit Particle method (FLIP) \cite{Mass_Flip}.
+Notice that the MPM uses a different projection from nodes to particles that was introduced in the FLuid Implicit Particle method (FLIP) \cite{Mass_Flip}.
 The FLIP mapping reduces the numerical diffusion resulting from the interpolation used in PIC at the cost of spurious oscillations.
-The employment of the PIC projection rather than the FLIP one within the DGMPM is motivated by the willingness to avoid oscillations that can, for plastic materials, lead to a premature plastic flow due to overshoots in the stress values.
-On the other hand, the diffusion inherent in PIC mapping is expected to be less significant with discontinuous shape functions due to the reduction of the domain of influence of nodes.
+The employment of the PIC projection rather than the FLIP one within the DGMPM is motivated by the willingness to avoid oscillations that can, for plastic materials, lead to a premature plastic flow due to overshoots.
+On the other hand, the diffusion inherent in PIC mapping is expected to be less significant with discontinuous shape functions owing to the reduction of the domain of influence of nodes during the projection steps.
 
 
 

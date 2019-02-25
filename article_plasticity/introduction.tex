@@ -2,20 +2,20 @@
 %In this paper, hyperbolic systems of conservation laws that govern the propagation of mechanical waves are considered in dissipative solids.
 Hyperbolic systems of conservation laws that govern the propagation of mechanical waves are considered here in dissipative solids.
 This class of solid behaviors, depending on the loading history undergone, is implicated in high-speed forming techniques or crash-proof design for instance.
-In these solids the waves propagate while carrying the information about the loading, interacting with each other and reflecting on the boundary so that complex structures arise.
+In these solids the waves propagate while carrying the information about the loading, interacting with each other and reflecting on the boundaries so that complex responses arise.
 The accurate assessment of irreversible deformations in dissipative solids therefore requires the correct description of those waves as well as the ability to account for their interactions.
 Hyperbolic problems may be further complicated by possibly large displacements, rotations or strains, undergone by the solid.
 
 % Requirements for the numerical methods
 For the reasons mentioned above, the simulation of such problems is not a straightforward undertaking.
-Indeed, the precise tracking of waves requires the use of a numerical method whose solutions are devoided of oscillations and too much numerical diffusion, and that is able to manage large deformations.
+Indeed, the precise tracking of waves involves the use of a numerical method whose solutions are devoided of oscillations and too much numerical diffusion on the one hand, and that is able to manage large deformations on the other hand.
 % FEM
 The numerical simulation of hyperbolic initital boundary value problems in solids has been so far mostly addressed by using the Finite Element Method (FEM) \cite{Belytschko}.
-FEM became attractive due to its ability to handle low or high-order approximations, and to easily deal with complex geometries and nonlinear constitutive models as those mentioned above.
+FEM became attractive due to its ability to handle low or high-order approximations, and to easily deal with complex geometries and nonlinear constitutive models as those already mentioned.
 Nevertheless, some difficulties related to the deformation of the mesh may be encountered when the formulation is built upon a material description of the motion (Lagrangian approach). 
-Indeed, the method is less efficient and accurate when the elements are highly distorted or entangled so that re-meshing techniques and projection steps must be employed.
+In fact, the method is less efficient and accurate when the elements are highly distorted or entangled so that re-meshing techniques and projection steps must be employed.
 These issues can be avoided by using a spatial description of the motion (Eulerian approach).
-However interface tracking techniques and diffusing convection steps are required in order to follow the boundaries and transport internal variables which is less convenient for solid mechanics.
+However interface tracking techniques and diffusing convection steps are required in order to follow the boundaries and transport internal variables, which is less convenient for solid mechanics.
 Alternatively, Arbitrary Lagrangian Eulerian (ALE) methods aim at meeting advantages of both approaches by freeing itself of their respective limits by distinguishing the motion of the mesh to these of material points.
 This type of strategy nonetheless also requires re-meshing or re-zoning procedures that can be costly for fine meshes, as well as diffusive projection steps of internal variables for solid media.
 In addition to problems caused by finite deformations, classical explicit time integrators used in solid dynamics with FEM introduce high frequency noise in the vicinity of discontinuities.
@@ -41,7 +41,7 @@ The underlying grid is used in order to compute an approximate solution that is 
 Hence, the background mesh can be discarded at each time step and re-constructed for computational convenience.
 The application of PIC to solid mechanics led to the Material Point Method (MPM) \cite{Sulsky94} in which the constitutive equations are managed at particles.
 As a result, the MPM can be seen as a mesh-free extension of FEM with quadrature points moving in elements.
-Overcoming the storage of the approximate solutions based on elements or cells enables to remove mesh entanglement instabilities.
+Overcoming the storage of the approximate solutions based on elements, or cells, enables the removal of mesh entanglement instabilities.
 Nevertheless, the projection required from the grid to the particles gives rise to some issues.
 As originally proposed in PIC, a classical interpolation leads to significant numerical diffusion due to a spreading of the information over several cells.
 An alternative procedure has then been introduced by the FLuid Implicit Particle method (FLIP) \cite{FLIP0} in order to reduce the diffusion at the cost of spurious oscillations \cite{XPIC}.
@@ -57,10 +57,10 @@ The purpose of the present paper is to illustrate the method on problems involvi
 It is organized as follows.
 The continuum equations of isothermal solid dynamics including balance laws and constitutive equations are recalled in section \ref{sec:continuum_problem}.
 Next, section \ref{sec:discretization} is devoted to the derivation of the DGMPM discrete system that must be solved on the background grid at each time step. 
-The discrete system is based on the calculation of intercell fluxes by means of a hyperelastic approximate-state Riemann solver which is presented in the section.
-The constitutive relations are restated in section \ref{sec:constitutive-update} in order to provide a variational constitutive update \cite{Laurent99} for the integration of plastic flow at mateial points.
+The discrete system is based on the calculation of intercell fluxes by means of a hyperelastic approximate-state Riemann solver which is presented in section \ref{sec:riemann_solver}.
+The constitutive relations are restated in section \ref{sec:constitutive-update} in order to provide a variational constitutive update \cite{Laurent99} for the integration of plastic flow at material points.
 The use of such variational constitutive integrators constitutes an original aspect of the DGMPM owing to the error estimation it allows, which pave the way for mesh adaption.
-At last, the method is illustrated on two-dimensional simulations in section \ref{sec:test_cases} for which comparisons with FEM and MPM solutions are made.
+At last, the method is illustrated on one and two-dimensional simulations in section \ref{sec:test_cases} for which comparisons with FEM and MPM solutions are made.
 
 
 %%% Local Variables:

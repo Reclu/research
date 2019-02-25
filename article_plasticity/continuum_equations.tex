@@ -26,21 +26,22 @@ Moreover, the balance equation of the Lagrangian linear momentum must be satisfi
   \rho_0 \: \dot{\vect{v}} - \nablav_0 \cdot \tens{\Pi}= \rho_0\vect{b} \quad \forall \vect{X},t \in \Omega_0 \times \tau
 \end{equation}
 where $\rho_0(\vect{X})$ is the reference mass density, $\vect{b}(\vect{X},t)$ is the body forces vector, and $\tens{\Pi}(\vect{X},t)$ is the first Piola-Kirchhoff stress tensor.
-In what follows, the body forces are neglected.
+%In what follows, the body forces are neglected.
+From now on, calligraphic symbols stand for column array and the body forces are neglected.
 
-From now on, calligraphic symbols stand for column array.
-Thus, introduction of the vector of conserved quantities $\Ucb=\[\rho_0 \vect{v} \: ,\:\tens{F}\]$ allows writting the system of conservation laws composed of equations \eqref{eq:kinematic_laws} and \eqref{eq:linear_momentum} in conservative form as:
+%From now on, calligraphic symbols stand for column array.
+Introduction of the vector of conserved quantities $\Ucb=\[\rho_0 \vect{v} \: ,\:\tens{F}\]$ allows writting the system of conservation laws composed of equations \eqref{eq:kinematic_laws} and \eqref{eq:linear_momentum} in conservative form as:
 \begin{equation}
   \label{eq:conservative_form}
-  \drond{\Ucb}{t} - \nablav_0 \cdot \Fcb = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+  \drond{\Ucb}{t} + \nablav_0 \cdot \Fcb = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-where $\Fcb=\[\tens{\Pi} \: ,\:\vect{v}\otimes \tens{I}\]$ is the flux vector.
+where $\Fcb=-\[\tens{\Pi} \: ,\:\vect{v}\otimes \tens{I}\]$ is the flux vector.
 In Cartesian coordinates, system \eqref{eq:conservative_form} reads:
 \begin{equation}
   \label{eq:conservative_cartesian}
-  \drond{\Ucb}{t} - \drond{\Fcb\cdot\vect{e}_\alpha}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
+  \drond{\Ucb}{t} + \drond{\Fcb\cdot\vect{e}_\alpha}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
 \end{equation}
-with $\Fcb\cdot\vect{e}_\alpha=\[\tens{\Pi}\cdot\vect{e}_\alpha \: ,\:\vect{v}\otimes \vect{e}_\alpha\]$.
+with $\Fcb\cdot\vect{e}_\alpha=-\[\tens{\Pi}\cdot\vect{e}_\alpha \: ,\:\vect{v}\otimes \vect{e}_\alpha\]$.
 Alternatively, the use of an auxiliary vector $\Qcb=\[\vect{v}\:,\:\tens{\Pi}\]$ along with the chain rule leads to the following quasi-linear form \cite{Trangenstein91}:
 \begin{align}
   \label{eq:quasi-linear}
@@ -50,7 +51,7 @@ Alternatively, the use of an auxiliary vector $\Qcb=\[\vect{v}\:,\:\tens{\Pi}\]$
 in which $\tens{0}^k$ denotes a $k$th-order zero tensor.
 The constitutive model of the material is then explicitly involved in the quasi-linear form through the fourth-order tangent modulus tensor $\Hbb=\drond{\tens{\Pi}}{\tens{F}}$.
 
-\subsection{Constitutive models: Hyperelastic-plastic materials}
+\subsection{Constitutive model: Hyperelastic-plastic materials}
 \label{subsec:cont_constitutive}
 Following the multiplicative decomposition of the deformation gradient \cite{Lee_FeFp}: $\tens{F}=\tens{F}^e\tens{F}^p$, irreversible processes that account for the evolution of the micro-structure of the material are described by means of internal variables \cite{Lubliner}.
 Denoting by $\Vcb$ the column array consisting of hardening variables, the complete set of internal variables is: $\{\tens{F}^p,\Vcb \}$.
@@ -71,9 +72,9 @@ More specifically, the von Mises flow rule results from the restriction $\tens{M
 For materials in which internal processes do not influence the elastic response (\textit{e.g.  metals}), the thermodynamic state is described by the Helmholtz free energy density that is assumed to decompose additively as:
 \begin{equation}
   \label{eq:helmholtz_decomposition}
-  \psi(\tens{F},\tens{F}^p,\Vcb,\theta)= \psi_e(\tens{F}{\tens{F}^p}^{-1},\theta) +  \psi_p(\tens{F}^p,\Vcb,\theta)
+  \psi(\tens{F},\tens{F}^p,\Vcb,\theta)= \psi^e(\tens{F}{\tens{F}^p}^{-1},\theta) +  \psi^p(\tens{F}^p,\Vcb,\theta)
 \end{equation}
-where $\psi_e$ and $\psi_p$ respectively govern elastic and plastic evolutions, and $\theta$ denotes the absolute temperature.
+where $\psi^e$ and $\psi^p$ respectively govern elastic and plastic evolutions, and $\theta$ denotes the absolute temperature.
 The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $\Vcb$ follow from the free energy density as \cite{Truesdell}:
 \begin{equation}
   \label{eq:thermodynamic_forces}
@@ -82,7 +83,7 @@ The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conj
 By considering the additive decomposition \eqref{eq:helmholtz_decomposition} combined with the flow rule \eqref{eq:flow_rule}, the last relation reads:
 \begin{equation}
   \label{eq:hardening_forces}
-  \Acb = -\drond{\psi}{\tens{F}^p}\drond{\tens{F}^p}{\Vcb} - \drond{\psi_p}{\Vcb} = \tens{T}\(\tens{M}\tens{F}^p\) - \drond{\psi_p}{\Vcb}
+  \Acb = -\drond{\psi}{\tens{F}^p}\drond{\tens{F}^p}{\Vcb} - \drond{\psi^p}{\Vcb} = \tens{T}\(\tens{M}\tens{F}^p\) - \drond{\psi^p}{\Vcb}
 \end{equation}
 
 We then postulate the existence of a pseudo-dissipation potential $\phi$ from which the rate of internal variables can be derived:
