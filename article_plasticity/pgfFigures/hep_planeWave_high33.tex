@@ -1,0 +1,75 @@
+\begin{tikzpicture}[spy using outlines={rectangle, magnification=3, size=1.cm, connect spies},scale=.8]
+  \begin{groupplot}[group style={group size=3 by 2,ylabels at=edge left, yticklabels at=edge left,horizontal sep=4.ex,vertical sep=4ex,xticklabels at=edge bottom,xlabels at=edge bottom},ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.5,xmax=1.,xlabel=$x (m)$,axis on top,scale only axis,width=0.33\linewidth,height=0.17\linewidth]
+
+    % ============================== Stress Line
+    % t1 % t= 6.84e-5
+    \nextgroupplot[title={(g) $t = 1.95\times 10^{-5} $ s.},ylabel=$\Pi_L \: (Pa)$
+    ,ymin=-3.e8,ymax=2.25e9
+    ]
+    \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_6.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_6.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_6.pgf};
+    %\addplot[Orange,mark=*,thick,mark repeat=4,mark size=1pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_6.pgf};
+    \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_6.pgf};
+    
+    % t2 % t= 1.37e-4
+    \nextgroupplot[title={(h) $t=2.06\times 10^{-4}$ s.}
+    ,ymin=-3.e8,ymax=2.25e9
+    ]
+    \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_7.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_7.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_7.pgf};
+    %\addplot[Orange,mark=*,thick,mark repeat=4,mark size=1pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_7.pgf};
+    \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_7.pgf};
+    
+    % t3 % t= 2.05e-4
+    \nextgroupplot[title={(i) $t=2.54\times 10^{-4}$ s.}
+    ,ymin=-3.e8,ymax=2.25e9
+    ]
+    \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_8.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_8.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_8.pgf};
+    %\addplot[Orange,mark=*,thick,mark repeat=4,mark size=1pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_8.pgf};
+    \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_8.pgf};
+    
+    % ============================== Plastic strain Line
+    % t1
+    \nextgroupplot[ylabel=$E^p_{11}$,ymin=-0.9e-2,ymax=0.5e-2]
+    \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_6.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_6.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_6.pgf};
+    \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_6.pgf};
+    %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_6.pgf};
+    
+    % t2
+    \nextgroupplot[legend style={at={($(0.9,-0.45)+(2.25cm,0.25cm)$)},legend columns=5},ymin=-0.9e-2,ymax=0.5e-2]
+    \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_7.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_7.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_7.pgf};
+    
+    \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_7.pgf};
+    %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_7.pgf};
+    
+    \addlegendentry{mpm}
+    \addlegendentry{dgmpm (1ppc)}
+    \addlegendentry{dgmpm (2ppc)}
+    \addlegendentry{fem}
+    %\addlegendentry{exact}
+    % t3
+    \nextgroupplot[,ymin=-0.9e-2,ymax=.5e-2] % 3.e-3 if exact solution is depicted
+    \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_8.pgf};
+    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_8.pgf};
+    \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_8.pgf};
+    
+    \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_8.pgf};
+    %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_8.pgf};
+
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:
