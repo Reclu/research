@@ -23,27 +23,29 @@ The initial setting is assumed to give rise to a plane wave, namely:
   & \tens{\Pi}=\Pi_L \vect{e}_1 \otimes \vect{e}_1 + \Pi_T \(\vect{e}_2 \otimes \vect{e}_2+\vect{e}_3 \otimes \vect{e}_3\) 
 \end{align*}
 In the linearized geometrical limit $\norm{\tens{F}} \ll 1$ and considering linear isotropic hardening, the computed hyperelastic-plastic solution should tend to the elastoplastic one derived in \cite{Thomas_EP}.
-The latter consists of two elastic compression waves propagating left and right-ward, each followed by one plastic discontinuity.
+The latter consists of two elastic compression waves propagating left-ward and right-ward, each followed by one plastic discontinuity.
 The incident elastic disturbances then reflect as unloading waves on both free boundaries and then interact at the center of the medium, which leads to tensile plastic reloading.
-In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM, the MPM and the FEM are compared to the exact solution of the small strain problem in terms of longitudinal components of the PK1 stress and the Green-Lagrange plastic strain $\tens{E}^p=\frac{1}{2}\({\tens{F}^p}^T\tens{F}^p - \tens{I}\)$.
-Linear elements and a lumped mass matrix are used within FEM with no artificial viscosity added, and the regular mesh is built so that Gauss' points are consistent with the particles.
-Moreover, while the MPM is only based on a one-particle-per-cell (1ppc) space discretization, DGMPM computations have also been done with two-particles-per-cell (2ppc).
-In the latter case, the material points sharing an element are placed symmetrically with respect to elements centers and are regularly spaced in the domain.
-At last, all numerical methods are based on a total Lagrangian formulation and make use of the same variational constitutive update.
-
+%In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM, the MPM and the FEM are compared to the exact solution of the small strain problem in terms of longitudinal components of the PK1 stress and the Green-Lagrange plastic strain $\tens{E}^p=\frac{1}{2}\({\tens{F}^p}^T\tens{F}^p - \tens{I}\)$.
+%Given the symmetry of the problem, only the right half of the domain is depicted in the figure.
+In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM, the MPM and the FEM are compared to the exact solution of the small strain problem in the right half of the domain given the symmetry of the problem.
 \begin{figure}[ht]
   \centering
   {\phantomsubcaption{\label{subfig:he_planeWave1}}}
   {\phantomsubcaption{\label{subfig:he_planeWave2}}}
   {\phantomsubcaption{\label{subfig:he_planeWave3}}}
   \input{pgfFigures/hep_planeWave}
-  \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.7), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
+  \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
   \label{fig:hep_planeWave}
 \end{figure}
+The comparison is made on the longitudinal components of the PK1 stress and the Green-Lagrange plastic strain $\tens{E}^p=\frac{1}{2}\({\tens{F}^p}^T\tens{F}^p - \tens{I}\)$.
+Linear elements and a lumped mass matrix are used within FEM with no artificial viscosity added, and the regular mesh is built so that Gauss' points are consistent with the particles, the solid being discretized with $100$ finite elements and particles.
+Moreover, while the MPM is only based on a one-particle-per-cell (1ppc) space discretization, DGMPM computations have also been done with two-particles-per-cell (2ppc).
+In the latter case, the material points sharing an element are placed symmetrically with respect to elements centers and are regularly spaced in the domain.
+At last, all numerical methods are based on a total Lagrangian formulation and make use of the same variational constitutive update.
 First, the incident elastic compression waves are well described by the FEM and the DGMPM using 1ppc due to the Courant number that can be set to unity, which is not the case for the MPM and the DGMPM based on 2ppc as seen in figure \ref{subfig:he_planeWave1}.
 The resolution of the plastic flow leads on the other hand to less sharp solutions for all numerical schemes, the finite element solution being the steepest one.
 Moreover, the figure shows that the decrease in CFL number involved by the use of 2ppc yields a much smoother stress profile with the DGMPM, though the correct level is reached on the plastic plateau.
-This has a impact on the plastic strain, which lags behind the other solutions.
+This has an impact on the plastic strain, which lags behind the other solutions.
 In addition, MPM and FEM plastic strains exhibit significant overshoots that are due to the FLIP projection \cite{Thesis} and to the stress oscillations on the plastic plateau respectively.
 Note that the overestimation of the plastic strain in the FEM solution cannot be reduced by refining the mesh since such a refinement would not avoid stress oscillations.
 
@@ -59,33 +61,71 @@ This is due to the overshoot in the MPM solution on the incident plastic plateau
 
 $\newline$
 The initial velocity is now raised to $v_d=4Y_H/\rho c_L$ so that the small strain assumption no longer holds.
+Therefore, a finite element solution computed on a fine mesh made of $300$ cells will be used as a reference one for comparison with MPM and DGMPM solutions based on $100$ material points.
+%\review{Then, a finite element (or DGMPM) solution computed on a finer mesh made of $300$ cells is used as a reference one. The solution is much more complicated and involves much more interaction of plastic and elastic waves. Maybe it could be a good idea to restrict the time interval.}
+% \begin{figure}[ht]
+%   \centering
+%   {\phantomsubcaption{\label{subfig:he_planeWave_high_1}}}
+%   {\phantomsubcaption{\label{subfig:he_planeWave_high_2}}}
+%   {\phantomsubcaption{\label{subfig:he_planeWave_high_3}}}
+%   \input{pgfFigures/hep_planeWave_high}
+%   \caption{Stress and plastic strain profiles along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Initial velocity set to $v_d=4Y_H/\rho c_L$.
+%     Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).}
+%   \label{fig:hep_planeWave_high}
+% \end{figure}
+Again, the numerical results in terms of longitudinal stress and plastic strain are depicted in figure \ref{fig:hep_planeWave_high}.
+First, figure \ref{subfig:he_planeWave_high_a} shows the incident plastic wave as well as the elastic precursor involved.
+The latter is reflected as an elastic unloading wave at the free boundary that can be seen in figure \ref{subfig:he_planeWave_high_b}.
+As before, the elastic wave is accurately captured with the FEM and the DGMPM(1ppc), while the two other solutions are smoother.
+Note, however, that the finite element stress oscillates on the plastic plateau even with a fine mesh, which leads to overshooots in the plastic strain.
+The plastic front is furthermore described differently by all the methods so that the numerical solutions are more or less sharp. 
+Figure \ref{subfig:he_planeWave_high_c} next shows a difference compared to the previous loading case, which results from the interaction of the reflected elastic unloading wave with the incident plastic wave near the free end.
+Indeed, the meeting of those two waves gives rise to a right-going elastic precursor followed by a plastic wave which can only be distinguished in the FEM solution (see the zoom area in figure \ref{subfig:he_planeWave_high_c}), as well as a left-going elastic unloading wave.
+Additional reflections occur at the free end so that the solution depicted in figure \ref{subfig:he_planeWave_high_d} involves two elastic waves propagating left-ward, followed by a plastic wave whose effects is that the longitudinal plastic strain starts increasing in the right part of the domain.
+%Recall that the middle wave results from the interaction of plastic and elastic unloading waves.
+Since the DGMPM stress profiles are smoother than the others after the passage of the incident plastic wave, the colliding of the latter with the reflected elastic unloading occurs earlier in DGMPM solutions.
+It then turns out that the middle elastic waves in figure \ref{subfig:he_planeWave_high_d} are not synchronous, DGMPM solutions being slightly ahead of the two others.
+Nevertheless, the plastic strain profiles are rather close to each other.
+Then, a right-going elastic unloading wave coming from the middle of the solid, which can be seen in figure \ref{subfig:he_planeWave_high_e}, interacts with the left-going elastic wave (see figure \ref{subfig:he_planeWave_high_f}) so that plastic reloading occurs.
 \begin{figure}[ht]
   \centering
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_1}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_2}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_3}}}
-  \input{pgfFigures/hep_planeWave_high}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_a}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_b}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_c}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_d}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_e}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_f}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_g}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_h}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_i}}}
+  \input{pgfFigures/hep_planeWave_high13}
+  \input{pgfFigures/hep_planeWave_high23}
+  \input{pgfFigures/hep_planeWave_high33}
   \caption{Stress and plastic strain profiles along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Initial velocity set to $v_d=4Y_H/\rho c_L$.
-    Comparison between FEM (CFL=1), MPM (CFL=0.7), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).}
+  Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).
+  }
   \label{fig:hep_planeWave_high}
 \end{figure}
-Again, the numerical results in terms of longitudinal stress and plastic strain are depicted in figure \ref{fig:hep_planeWave_high}.
-It can first be seen in figure \ref{subfig:he_planeWave_high_1} that the behavior of the numerical approaches employed are similar to the previous loading case, though oscillations appear in the finite element stress on the plastic plateau.
-Thus, the overestimation of plastic strain within the FEM get closer to that of the MPM.
-These spurious oscillations remain in the FEM solution after the reflection of waves at the free ends (see figure \ref{subfig:he_planeWave2}).
-In addition, the DGMPM behaves well whereas the 2ppc space discretization yields once again smoother results than the other approaches.
-Nevertheless, the delay that was observed in the DGMPM(2ppc) plastic strain is now less significant.
+The FEM, MPM and DGMPM(1ppc) plastic strain profiles are quite similar and that resulting from the DGMPM(2ppc) computation does not enable the vizualization of the plastic reloading.
+Next, figures \ref{subfig:he_planeWave_high_g} and \ref{subfig:he_planeWave_high_h} show that the multiple interactions of waves yield plastic tensile loadings in the central part of the medium.
+As a result, the computations end with three right-going plastic waves for which the numerical solutions show good agreement, although the DGMPM ones are smoother.
+\review{Comment in conclusion about the use of RK2 which works well for elastic problems but raises the question of the integration of constitutive equations for elastic-plastic ones.}
 
-At last, figure \ref{subfig:he_planeWave_high_3} shows important differences involved by the increase in the value of the initial velocity.
-Indeed, it can be seen that the plastic strain starts decreasing as it would be the case for a tensile plastic reloading, while the stress profile is still compressive.
-This response is most likely due to the integration of the plastic flow in the finite deformation framework which couples the components of the plastic part of the deformation gradient.
-However, the FEM and DGMPM(1ppc) stress solutions in figure \ref{subfig:he_planeWave_high_3} are rather close to each other, though slightly shifted.
-At the middle of the solid, both stress solutions exhibit a peak that is not in the MPM solution, the latter showing nonetheless good agreement.
-The DGMPM(2ppc), one the other hand, seems to overestimate the stress in the central region.
-This can be explained by the unloading waves in figure \ref{subfig:he_planeWave_high_2} for which the DGMPM(2ppc) stress is ahead of the other methods.
-Hence, a similar behavior is observed for the plastic strain.
-It is worth noticing that the stability properties of the DGMPM using 2ppc can be improved by using a second-order Runge-Kutta time integration instead of the forward Euler algorithm \cite{DGMPM}.
-Then, a second-order time integration would lead to the computation of sharper and hence more accurate solutions with the DGMPM(2ppc).
+% It can first be seen in figure \ref{subfig:he_planeWave_high_1} that the behavior of the numerical approaches employed are similar to the previous loading case, though oscillations appear in the finite element stress on the plastic plateau.
+% Thus, the overestimation of plastic strain within the FEM get closer to that of the MPM.
+% These spurious oscillations remain in the FEM solution after the reflection of waves at the free ends (see figure \ref{subfig:he_planeWave2}).
+% In addition, the DGMPM behaves well whereas the 2ppc space discretization yields once again smoother results than the other approaches.
+% Nevertheless, the delay that was observed in the DGMPM(2ppc) plastic strain is now less significant
+.
+
+% At last, figure \ref{subfig:he_planeWave_high_3} shows important differences involved by the increase in the value of the initial velocity.
+% Indeed, it can be seen that the plastic strain starts decreasing as it would be the case for a tensile plastic reloading, while the stress profile is still compressive.
+% This response is most likely due to the integration of the plastic flow in the finite deformation framework which couples the components of the plastic part of the deformation gradient.
+% However, the FEM and DGMPM(1ppc) stress solutions in figure \ref{subfig:he_planeWave_high_3} are rather close to each other, though slightly shifted.
+% At the middle of the solid, both stress solutions exhibit a peak that is not in the MPM solution, the latter showing nonetheless good agreement.
+% The DGMPM(2ppc), one the other hand, seems to overestimate the stress in the central region.
+% This can be explained by the unloading waves in figure \ref{subfig:he_planeWave_high_2} for which the DGMPM(2ppc) stress is ahead of the other methods.
+% Hence, a similar behavior is observed for the plastic strain.
 
 \subsection{Plane strain problem}
 \label{sec:plane-strain-problem}
