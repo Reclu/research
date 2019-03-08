@@ -28,7 +28,7 @@ acts as a rate potential for $\tens{\Pi}$, that is:
 Variational constitutive updates can be constructed upon approximations of $\Pscr^{eff}$ by introducing the incremental energy function:
 \begin{equation}
   \label{eq:incremental_energy}
-  W(\tens{F}_{n+1};\tens{F}_n,\Vcb_n) = \underset{\Vcb_{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}_{n+1},\tens{F}^p_{n+1},\Vcb_{n+1}\) -\psi\(\tens{F}_{n},\tens{F}^p_{n},\Vcb_{n}\) + \Delta t \phi^*\(\dot{\Vcb}_{n}\)\right\rbrace
+  W(\tens{F}_{n+1};\tens{F}_n,\Vcb_n) = \underset{\Vcb_{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}_{n+1},\tens{F}^p_{n+1},\Vcb_{n+1}\) -\psi\(\tens{F}_{n},\tens{F}^p_{n},\Vcb_{n}\) + \Delta t \left\langle \phi^*\(\dot{\Vcb}_{n}\)\right\rangle\right\rbrace
 \end{equation}
 In equation \eqref{eq:incremental_energy}, it is understood that the subscripts refer to time increments and that the thermodynamic state $(\tens{F}_n,\tens{F}^p_n,\Vcb_n)$, as well as the updated deformation gradient $\tens{F}_{n+1}$, are known.
 Thus, the plastic part of the deformation gradient results from the incremental plastic flow rule: 

@@ -17,10 +17,10 @@ In a similar manner to FEM \cite{Belytschko} and MPM \cite{Sulsky94}, the vector
   \label{eq:DGMPM_node2points}
   \Ucb(\vect{X},t) = \sum^{N_n}_{i=1} S_{i}(\vect{X})\Ucb^i(t) 
 \end{equation}
-with $\Ucb^i$ the vector of conserved quantities at node $i$, and $S_{i}(\vect{X})$ the (linear) shape function attached to it.
+with $\Ucb^i$ the vector of conserved quantities evaluated at node $i$, and $S_{i}(\vect{X})$ the (linear) shape function attached to it.
 Note that particle and nodal quantities are respectively denoted with $p$ and $(i,j)$ subscripts or superscripts.
 
-An approximate solution is sought by means of a weak form that results from multiplication of equation \eqref{eq:conservative_form} by a test function $\Wcb$ and integration over the grid.
+An approximate solution is sought by means of a weak form that results from the multiplication of equation \eqref{eq:conservative_form} by a test function $\Wcb$ and integration over the grid.
 According to the Discontinuous Galerkin approximation \cite{NeutronDG,Cockburn}, both test and trial functions belong to a broken polynomial space \cite{DiPietro} in such a way that the weak form is written element-wise.
 Thus, after integration by parts, one writes:
 \begin{equation}
@@ -30,12 +30,12 @@ Thus, after integration by parts, one writes:
 where $\partial \Omega^e$ is the boundary of the $e$th element with outward normal vector $\vect{N}$.
 Boundary integrals then involve interface fluxes $\Fcb_N=\Fcb\cdot \vect{N}$ enabling the propagation of information across cells, the computation of which is presented in section \ref{sec:riemann_solver}.
 
-As for the original MPM \cite{Sulsky94,Sulsky95}, a particle-based quadrature can be used for volume integrals by considering specific fields:
+As for the original MPM \cite{Sulsky94,Sulsky95}, a particle-based quadrature can be used to compute volume integrals by considering specific fields:
 \begin{equation}
   \label{eq:specific_quantities}
   \Ucb = \rho_0 \bar{\Ucb} \quad ; \quad \Fcb_\alpha = \rho_0 \bar{\Fcb}_\alpha
 \end{equation}
-Indeed, introduction of these fields, combined with the definition of mass density \eqref{eq:mass_density_DGMPM}, leads to the following total Lagrangian weak formulation:
+Indeed, the introduction of these fields, combined with the definition of the mass density \eqref{eq:mass_density_DGMPM}, leads to the following total Lagrangian weak formulation:
 \begin{equation} 
   \label{eq:DGMPM_discrete_weak}
   \sum_{p=1}^{N_p} m_p\[\drond{\bar{\Ucb}}{t}  \Wcb - \bar{\Fcb}_{\alpha} \drond{\Wcb}{X_\alpha} \]_{|\vect{X}=\vect{X}^p} + \int_{\partial \Omega^e} \Fcb_N  \Wcb \: dS = 0 \quad \forall \: \Wcb,e

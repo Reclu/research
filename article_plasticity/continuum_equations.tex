@@ -11,7 +11,6 @@ The second-order deformation gradient tensor $\tens{F}$ and the velocity vector 
   & \vect{v}(\vect{X},t)= \drond{\vect{\varphi}(\vect{X},t)}{t} = \vect{\dot{\varphi}}(\vect{X},t)
 \end{align}
 where $\nablat_{0}(\bullet)$ denotes the gradient operator in the reference configuration and the superposed dot refers to the material time derivative.
-
 Geometrical balance laws \cite{Plohr,Gil_HE,Haider_FVM} are written by differentiating equation \eqref{eq:deformation_gradient} with respect to time and combining it with equation \eqref{eq:velocity}:
 % The time derivative of equation \eqref{eq:deformation_gradient} combined with equation \eqref{eq:velocity} and the use of the divergence operator in the reference configuration $\nablav_0\cdot(\bullet)$, yields geometrical balance laws \cite{Plohr,Gil_HE,Haider_FVM}:
 \begin{equation}
@@ -30,7 +29,7 @@ where $\rho_0(\vect{X})$ is the reference mass density, $\vect{b}(\vect{X},t)$ i
 From now on, calligraphic symbols stand for column array and the body forces are neglected.
 
 %From now on, calligraphic symbols stand for column array.
-Introduction of the vector of conserved quantities $\Ucb=\[\rho_0 \vect{v} \: ,\:\tens{F}\]$ allows writting the system of conservation laws composed of equations \eqref{eq:kinematic_laws} and \eqref{eq:linear_momentum} in conservative form as:
+Introduction of the vector of conserved quantities $\Ucb=\[\rho_0 \vect{v} \: ,\:\tens{F}\]$ allows the writing of a system of conservation laws consisting of equations \eqref{eq:kinematic_laws} and \eqref{eq:linear_momentum}:
 \begin{equation}
   \label{eq:conservative_form}
   \drond{\Ucb}{t} + \nablav_0 \cdot \Fcb = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau 
@@ -45,8 +44,8 @@ with $\Fcb\cdot\vect{e}_\alpha=-\[\tens{\Pi}\cdot\vect{e}_\alpha \: ,\:\vect{v}\
 Alternatively, the use of an auxiliary vector $\Qcb=\[\vect{v}\:,\:\tens{\Pi}\]$ along with the chain rule leads to the following quasi-linear form \cite{Trangenstein91}:
 \begin{align}
   \label{eq:quasi-linear}
-  &\drond{\Qcb}{t} + \Jbsf_\Qc^i \drond{\Qcb}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau \\
-  & \text{with } \Jbsf_\Qc^i= -\(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho_0} \tens{I}\otimes \vect{e}_\alpha \\ \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{e}_\alpha & \tens{0}^4}
+  &\drond{\Qcb}{t} + \Jbsf_\Qc^\alpha \drond{\Qcb}{X_\alpha} = \vect{0} \quad \forall \vect{X},t \in \Omega_0 \times \tau \\
+  & \text{with } \Jbsf_\Qc^\alpha= -\(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb\cdot\vect{e}_\alpha}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho_0} \tens{I}\otimes \vect{e}_\alpha \\ \drond{\tens{\Pi}}{\tens{F}}\cdot\vect{e}_\alpha & \tens{0}^4}
 \end{align}
 in which $\tens{0}^k$ denotes a $k$th-order zero tensor.
 The constitutive model of the material is then explicitly involved in the quasi-linear form through the fourth-order tangent modulus tensor $\Hbb=\drond{\tens{\Pi}}{\tens{F}}$.
@@ -72,9 +71,9 @@ More specifically, the von Mises flow rule results from the restriction $\tens{M
 For materials in which internal processes do not influence the elastic response (\textit{e.g.  metals}), the thermodynamic state is described by the Helmholtz free energy density that is assumed to decompose additively as:
 \begin{equation}
   \label{eq:helmholtz_decomposition}
-  \psi(\tens{F},\tens{F}^p,\Vcb,\theta)= \psi^e(\tens{F}{\tens{F}^p}^{-1},\theta) +  \psi^p(\tens{F}^p,\Vcb,\theta)
+  \psi(\tens{F},\tens{F}^p,\Vcb)= \psi^e(\tens{F}{\tens{F}^p}^{-1}) +  \psi^p(\tens{F}^p,\Vcb)
 \end{equation}
-where $\psi^e$ and $\psi^p$ respectively govern elastic and plastic evolutions, and $\theta$ denotes the absolute temperature.
+where $\psi^e$ and $\psi^p$ respectively govern elastic and plastic evolutions.
 The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $\Vcb$ follow from the free energy density as \cite{Truesdell}:
 \begin{equation}
   \label{eq:thermodynamic_forces}
