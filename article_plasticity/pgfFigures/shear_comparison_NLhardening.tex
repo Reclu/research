@@ -1,0 +1,81 @@
+\begin{tikzpicture}[scale=1]
+  \begin{groupplot}[group style={group size=4 by 4,% columns by rows
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=2.ex,
+      vertical sep=3ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,width=0.19\linewidth
+    ,xtick=\empty,ytick=\empty,
+    colorbar style={
+      title style={
+        font=\normalsize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\normalsize}
+      ,at={(current axis.south east)},anchor=south west
+    },colormap name=tol
+    ]
+    %% FIRST ROW (time 1 = 5.10e-4s)
+    %%% RANGE -8.6e9 -- 0.57e9
+    \nextgroupplot[title={$t=1.9\times 10^{-4} \:s$},ylabel={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_shear1-crop.png};
+    \nextgroupplot[title={$t=3.7\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_shear2-crop.png};
+    \nextgroupplot[title={$t=6.8\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_shear3-crop.png};
+    \nextgroupplot[title={$t=8.0\times 10^{-3} \:s$},colorbar,colorbar  style={
+      title style={xshift=0.15cm},
+      title= {$\Pi_{12}\: (GPa)$},
+      ytick={-1.6,.4,1.},
+      yticklabels={-16,4,10},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.6) (0,0.4) (0.,1.)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_shear4-crop.png};
+
+    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_shear1-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_shear2-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_shear3-crop.png};
+    \nextgroupplot[colorbar,colorbar  style={
+      %title style={yshift=-1.5cm},
+      title= {$\Pi_{12}\: (GPa)$},
+      ytick={-1.1,2.1},
+      yticklabels={-1.1,2.1},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-1.1) (0.,2.1)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_shear4-crop.png};
+
+    \nextgroupplot[ylabel={DGMPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_shear1-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_shear2-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_shear3-crop.png};
+    \nextgroupplot[colorbar,colorbar  style={
+      %title style={yshift=-1.5cm},
+      title= {$\Pi_{12}\: (GPa)$},
+      ytick={-0.25,1.8},
+      yticklabels={-0.25,1.8},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-0.25) (0.,1.8)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_shear4-crop.png};
+    
+
+    \nextgroupplot[ylabel={DGMPM(4ppc)}]
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_shear1-crop.png};
+    \nextgroupplot[]
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_shear2-crop.png};
+    \nextgroupplot[]
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_shear3-crop.png};
+    \nextgroupplot[colorbar,colorbar  style={
+      %title style={yshift=-1.5cm},
+      title= {$\Pi_{12}\: (GPa)$},
+      ytick={-.84,17},
+      yticklabels={-8.4$\times 10^{-2}$,1.7},
+    }]
+    \addplot[scatter,scatter src=y,mark size=0.pt] coordinates {(0.,-.84) (0.,17)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_shear4-crop.png};
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

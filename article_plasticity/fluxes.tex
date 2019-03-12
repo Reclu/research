@@ -1,0 +1,111 @@
+%\subsection{Intercell fluxes}
+%% Elastoplastic approximate Riemann solver for one-dimensional problems
+%% Elastic Riemann solver + variational solver for multi-dimensional
+DG methods for hyperbolic problems are based on the requirement of ensuring monotonicity of the scheme for piecewise constant approximations \cite{Cockburn}. 
+Such approaches are monotone for flux functions $\Fcb_N$ that are Lipschitz continuous, consistent and monotone, namely, they must be E-fluxes \cite{Osher}.
+One possibility, which is widely used and adopted here, is the Godunov flux function. 
+
+Let's consider the following Riemann problem defined at the interface between two DGMPM cells having normal vector $\vect{N}$:
+\begin{equation}
+  \label{eq:RP_mesh}
+  \begin{aligned}
+    &\drond{\Ucb}{t} + \drond{\Fcb_N}{X_N} = \vect{0}, \quad X_N=\vect{X}\cdot\vect{N}  \\
+    & \Ucb(X_N,0)= \left\lbrace 
+      \begin{aligned}
+        & \Ucb_{X_N^-} \text{ if } X_N < 0 \\
+        & \Ucb_{X_N^{+}} \text{ if } X_N > 0
+      \end{aligned}
+        \right.
+  \end{aligned}
+\end{equation}
+The initial conditions $\Ucb_{X_N^-}$ and $\Ucb_{X_N^{+}}$ result from the average of nodal fields on each side of the interface, so that one Riemann problem is solved at each edge (see a two-dimensional example in figure \ref{fig:2D_edge}).
+
+ 
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/2DEdge}
+  \caption{Duplication of nodes at an interface and building of initial conditions of the Riemann problem (2D).}
+  \label{fig:2D_edge}
+\end{figure}
+The characteristic structure of the solution of problem \eqref{eq:RP_mesh} consists of waves emanating from the origin of the $(X_N,t)$ plane \cite{Courant}.
+The wave pattern can be determined by the spectral analysis of the Jacobian matrix: $\Jbsf_\Uc = \drond{\Fcb_N}{\Ucb}$.
+The eigenvalues $c_k$ and associated right eigenvectors $\Rcb^k$ ($k=1, ..., D$), $D$ being the dimension of the Jacobian, are respectively stored as diagonal entries and columns of matrices $\Cbsf$ and $\Rbsf$ which are defined as:
+\begin{equation}
+  \label{eq:eigen_matrices}
+  \Jbsf_\Uc \Rbsf = \Rbsf \Cbsf
+\end{equation}
+% For flux vectors that are non-linear functions of $\Ucb$, as those involved for hyperelastic constitutive models, simple and shock waves may occur \cite{Wang} so that solving the problem drastically increases the computational cost.
+For flux vectors that are non-linear functions of $\Ucb$, as those involved for hyperelastic constitutive models, solving problem \eqref{eq:RP_mesh} drastically increases the computational cost since this requires iterative procedures.
+Nonetheless, linearized Riemann solvers \cite{Toro} can be constructed by approximating $\Jbsf_\Uc$ in the vicinity of $\Ucb_{X_N^-}$ and $\Ucb_{X_N^+}$ by a constant matrix $\underline{\Jbsf}(\Ucb_{X_N^-},\Ucb_{X_N^+})$.
+The matrix $\underline{\Jbsf}$ must however ensure the hyperbolicity, namely $\underline{\Jbsf}$ has real eigenvalues and a complete set of independent eigenvectors \cite{Courant}, and satisfy the consistency condition \cite{Leveque}:
+\begin{equation}
+  \label{eq:consistency_Jacobian}
+  \underline{\Jbsf}(\Ucb,\Ucb) = \Jbsf_\Ucb(\Ucb) 
+\end{equation}
+Both conditions can be satisfied by assuming that the negative (\textit{resp. positive}) eigenvalues and the associated right eigenvectors of $\Jbsf_\Ucb$, which correspond to left-going (\textit{resp. right-going}) waves, depend only on  $\Ucb_{X_N^-}$ (\textit{resp. on $\Ucb_{X_N^+}$}).
+Then, defining the matrices:
+\begin{align*}
+  &\underline{\Cbsf}=\matrice{c_1(\Ucb_{X_N^-}) & & & & & \\ & \cdots & & && \\ & &c_I(\Ucb_{X_N^-}) & & &\\ & & &c_{I+1}(\Ucb_{X_N^+})& & \\ & & & &\cdots &\\ &&&&&c_D(\Ucb_{X_N^+})} \\
+  &\underline{\Rbsf} = \matrice{\Rcb^1(\Ucb_{X_N^-}),\:  ...\:  ,\: \Rcb^I(\Ucb_{X_N^-}),\: \Rcb^{I+1}(\Ucb_{X_N^+}),\:...\: ,\: \Rcb^D(\Ucb_{X_N^+})} 
+\end{align*}
+in which $c_1<\cdots <c_I<c_{I+1}<\cdots < c_D$, the following approximation fulfills the requirements provided that $\Jcb_\Uc$ ensures the hyperbolicity:
+\begin{equation}
+  \label{eq:3}
+  \underline{\Jbsf} = \underline{\Rbsf} \: \underline{\Cbsf} \: \underline{\Rbsf}^{-1}
+\end{equation}
+
+Though approximate-flux Riemann solvers, which extract information for flux functions, have been applied to hyperelastic solids (see Osher's solver in \cite{Haider_FVM,Lee_FVM} or the HLLC solver in \cite{Ortega_HLLD}), the approximate-state Riemann solver is considered here.
+The procedure then consists in computing the stationary solution of the linearized Riemann problem as \cite{Toro}:
+\begin{equation}
+  \label{eq:stationary_solution}
+  \Ucb^* = \Ucb_{X_N^-} + \sum_{\underset{c_k < 0}{k=1}}^D \delta_k\Rcb^k = \Ucb_{X_N^+} - \sum_{\underset{c_k > 0}{k=1}}^D \delta_k\Rcb^k
+\end{equation}
+where the $\delta_k$ are wave strength coefficients related to the $k$th wave of the characteristic structure.
+These coefficients can be computed by rearranging equation \eqref{eq:stationary_solution} as:
+\begin{equation}
+  \label{eq:delta_U}
+  \Ucb_{X_N^+} - \Ucb_{X_N^-} = \sum_{k=1}^D \delta_k\Rcb^k
+\end{equation}
+so as to compute the stationary solution.
+Once $\Ucb^*$ is known, the intercell flux is computed as $\Fcb_N\(\Ucb^*\)$ according to Godunov's method \cite{Godunov_method}.
+Since the vector of conserved quantities $\Ucb$ contains the deformation gradient and the linear momentum while the flux consists of stress and velocity, the integration of constitutive equations is needed, which may be costly.
+This can however be avoided by basing the Riemann problem on the quasi-linear form \eqref{eq:quasi-linear}, which involves velocity and stress.
+Thus, an approximate-state Riemann solver can be built upon the linearized Jacobian matrix related to the quasi-linear form:
+\begin{equation}
+  \label{eq:jacobian_quasi}
+  \underline{\Jbsf}_\Qcb = \underline{\Rbsf}_\Qcb \: \underline{\Cbsf} \: \underline{\Rbsf}_\Qcb^{-1}
+\end{equation}
+where $\underline{\Rbsf}_\Qcb$ is the approximate matrix of the right eigenvectors of the Jacobian matrix associated with the quasi-linear form.
+Then, the stationary solutions Riemann problems reads:
+\begin{equation}
+  \label{eq:stationary_solution_Q}
+  \Qcb^* = \Qcb_{X_N^-} + \sum_{\underset{c_k < 0}{k=1}}^D \delta_k\Rcb_\Qcb^k = \Qcb_{X_N^+} - \sum_{\underset{c_k > 0}{k=1}}^D \delta_k\Rcb_\Qcb^k
+\end{equation}
+in which the wave strength coefficients can be computed as:
+\begin{equation}
+  \label{eq:delta_U}
+  \Qcb_{X_N^+} - \Qcb_{X_N^-} = \sum_{k=1}^D \delta_k\Rcb_\Qcb^k
+\end{equation}
+Therefore, intercell fluxes can be directly computated through the auxiliary stationary state $\Qcb^*$.
+Notice however that this approach requires the stress as well as velocity and strain are projected from the material points to the nodes by means of the reconstruction \eqref{eq:reconstruction}.
+
+
+\begin{remark}
+  The approximate-state Riemann solver described above allows to account for the transverse propagation of waves by adding correction terms on the intercell fluxes similarly to the Corner Transport Upwind method (CTU) \cite{Colella_CTU}.
+  The use of the CTU within the DGMPM is presented in \cite{DGMPM} and enables the improvement of the stability properties of the scheme for problems involving Poisson's effect \cite{Thesis}.
+\end{remark}
+
+
+As seen in section \ref{sec:continuum_problem}, the fourth-order tangent modulus tensor arises in the Jacobian matrix of the system.
+This tensor is responsible for a more complex characteristic structure when plastic flow occurs since one has to take into account both elastic and plastic waves.
+For small strain problems, the corresponding characteristic structure is known in particular cases so that dedicated Riemann solvers have been developed for one-dimensional media \cite{Thomas_EP} or for combined longitudinal and torsional stress loadings \cite{Lin_et_Ballman}.
+Given the mathematical complexity introduced by large strains, such solvers cannot be considered for finite deforming solids so far.
+As a result, a purely reversible evolution is commonly considered for the computation of intercell fluxes, followed by the integration of the plastic flow by using a return mapping algorithm in finite volume simulations (see \cite{FRRSE,Maire_elastoplast} for hypoelastic-plastic materials and \cite{Lee_FVM} for hyperelastic-plastic ones).
+A similar approach is adopted here in such a way that the DGMPM scheme consists in a predictor-corrector procedure, the integration of plastic flow being carried out through variational constitutive updates.
+This is the object of the next section.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:
