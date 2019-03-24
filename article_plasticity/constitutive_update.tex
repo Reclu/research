@@ -31,6 +31,7 @@ Variational constitutive updates can be constructed upon approximations of $\Psc
   W(\tens{F}_{n+1};\tens{F}_n,\Vcb_n) = \underset{\Vcb_{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}_{n+1},\tens{F}^p_{n+1},\Vcb_{n+1}\) -\psi\(\tens{F}_{n},\tens{F}^p_{n},\Vcb_{n}\) + \Delta t \left\langle \phi^*\(\dot{\Vcb}_{n}\)\right\rangle\right\rbrace
 \end{equation}
 In equation \eqref{eq:incremental_energy}, it is understood that the subscripts refer to time increments and that the thermodynamic state $(\tens{F}_n,\tens{F}^p_n,\Vcb_n)$, as well as the updated deformation gradient $\tens{F}_{n+1}$, are known.
+Moreover, $\left\langle \bullet \right\rangle$ stands for a suitable incremental approximation of the rate of internal variables $\dot{\Vcb}$.
 Thus, the plastic part of the deformation gradient results from the incremental plastic flow rule: 
 \begin{equation}
   \label{eq:flow_rule_inc}

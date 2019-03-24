@@ -55,6 +55,7 @@ The constitutive model of the material is then explicitly involved in the quasi-
 Following the multiplicative decomposition of the deformation gradient \cite{Lee_FeFp}: $\tens{F}=\tens{F}^e\tens{F}^p$, irreversible processes that account for the evolution of the micro-structure of the material are described by means of internal variables \cite{Lubliner}.
 Denoting by $\Vcb$ the column array consisting of hardening variables, the complete set of internal variables is: $\{\tens{F}^p,\Vcb \}$.
 It is assumed that the evolution of internal variables only depends on the local state, so that kinetic equations can be written:
+\review{Restrict hardening to isotropic so that $\Vcb$ is a scalar. In that case the flow rule reads}
 \begin{equation}
   \label{eq:plastic_kinetic_laws}
   \dot{\Vcb}=f(\tens{F},\tens{F}^p,\Vcb)
