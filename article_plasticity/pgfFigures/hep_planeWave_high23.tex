@@ -1,4 +1,4 @@
-\begin{tikzpicture}[spy using outlines={rectangle, magnification=3, size=1.cm, connect spies},scale=.8]
+\begin{tikzpicture}[spy using outlines={rectangle, magnification=4, size=.5cm, connect spies},scale=.8]
   \begin{groupplot}[group style={group size=3 by 2,ylabels at=edge left, yticklabels at=edge left,horizontal sep=4.ex,vertical sep=4ex,xticklabels at=edge bottom,xlabels at=edge bottom},ymajorgrids=true,xmajorgrids=true,enlargelimits=0,xmin=0.5,xmax=1.,xlabel=$x (m)$,axis on top,scale only axis,width=0.33\linewidth,height=0.17\linewidth]
 
     % ============================== Stress Line
@@ -7,7 +7,8 @@
     ,ymin=-3.e9,ymax=0.
     ]
     \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_3.pgf};
-    \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_3.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_2ppc_high_3.pgf};
+\addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_3.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_3.pgf};
     \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_3.pgf};
 
@@ -17,6 +18,7 @@
     ,ymin=-3e9,ymax=0.
     ]
     \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_4.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_2ppc_high_4.pgf};
     \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_4.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_4.pgf};
     \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_4.pgf};
@@ -27,6 +29,7 @@
     ,ymin=-3e9,ymax=0.
     ]
     \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_high_5.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm_2ppc_high_5.pgf};
     \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_high_5.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_5.pgf};
     \addplot[black,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem_high_5.pgf};
@@ -36,6 +39,7 @@
     % t1
     \nextgroupplot[ylabel=$E^p_{11}$,ymin=-0.9e-2,ymax=0.]
     \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_3.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_2ppc_high_3.pgf};
     \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_3.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_3.pgf};
     \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_3.pgf};
@@ -44,6 +48,7 @@
     % t2
     \nextgroupplot[legend style={at={($(0.9,-0.45)+(2.25cm,0.25cm)$)},legend columns=5},ymin=-0.9e-2,ymax=0.]
     \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_4.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_2ppc_high_4.pgf};
     \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_4.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_4.pgf};
     
@@ -58,11 +63,15 @@
     % t3
     \nextgroupplot[,ymin=-0.9e-2,ymax=0.] % 3.e-3 if exact solution is depicted
     \addplot[Red,densely dashed,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_high_5.pgf};
+    \addplot[Green,densely dotted,very thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/mpm_2ppc_high_5.pgf};
     \addplot[Blue,mark=asterisk,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_high_5.pgf};
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_5.pgf};
     
     \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_5.pgf};
     %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_5.pgf};
+    \begin{scope}
+      \spy[black,size=1.cm] on (13.92,-.625) in node [fill=none] at (15.2,-2.7);
+    \end{scope}
 
   \end{groupplot}
 
