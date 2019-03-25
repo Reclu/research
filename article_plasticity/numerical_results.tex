@@ -35,7 +35,7 @@ Then, considering linear isotropic hardening, the computed hyperelastic-plastic 
 The latter consists of two elastic compression waves propagating left-ward and right-ward, each followed by one plastic discontinuity.
 The incident elastic disturbances then reflect as unloading waves on both free boundaries and then interact at the center of the medium, which leads to tensile plastic reloading.
 In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM, the MPM and the FEM are compared to the exact solution of the small strain problem in the right half of the domain, given the symmetry of the problem.
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   {\phantomsubcaption{\label{subfig:he_planeWave1}}}
   {\phantomsubcaption{\label{subfig:he_planeWave2}}}
@@ -43,6 +43,25 @@ In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM
   \input{pgfFigures/hep_planeWave}
   \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) or two particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
   \label{fig:hep_planeWave}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_a}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_b}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_c}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_d}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_e}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_f}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_g}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_h}}}
+  {\phantomsubcaption{\label{subfig:he_planeWave_high_i}}}
+  \input{pgfFigures/hep_planeWave_high13}
+  \input{pgfFigures/hep_planeWave_high23}
+  \input{pgfFigures/hep_planeWave_high33}
+  \caption{Stress and plastic strain profiles along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Initial velocity set to $v_d=4Y_H/\rho c_L$.
+  %Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).
+  }
+  \label{fig:hep_planeWave_high}
 \end{figure}
 First, the incident elastic compression waves are well described by the FEM and the DGMPM using 1ppc due to the Courant number that can be set to unity, which is not the case for the DGMPM based on 2ppc and the MPM as seen in figure \ref{subfig:he_planeWave1}. 
 The resolution of the plastic flow leads on the other hand to less sharp solutions for all numerical schemes, the finite element solution being the steepest one.
@@ -64,25 +83,6 @@ As a result, the corresponding plastic strains significantly differ from the exa
 %This is due to the overshoot in the MPM solution on the incident plastic plateau, and to the delay exhibited by the DGMPM(2ppc) plastic strain.
 
 The loading parameter is now raised to $\beta=4$ so that the small strain assumption no longer holds.
-\begin{figure}[h!]
-  \centering
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_a}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_b}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_c}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_d}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_e}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_f}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_g}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_h}}}
-  {\phantomsubcaption{\label{subfig:he_planeWave_high_i}}}
-  \input{pgfFigures/hep_planeWave_high13}
-  \input{pgfFigures/hep_planeWave_high23}
-  \input{pgfFigures/hep_planeWave_high33}
-  \caption{Stress and plastic strain profiles along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Initial velocity set to $v_d=4Y_H/\rho c_L$.
-  %Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).
-  }
-  \label{fig:hep_planeWave_high}
-\end{figure}
 Therefore, finer meshes made of $300$ finite elements and $300$ material points will be used so that the response of the medium can be satisfactorily identified and the numerical solutions can be compared.
 \review{Do it again with MPM(2ppc) } 
 The numerical results in terms of longitudinal stress and plastic strain are depicted in figure \ref{fig:hep_planeWave_high}.
@@ -104,28 +104,12 @@ The FEM, MPM and DGMPM(1ppc) plastic strain profiles are quite similar and that 
 Next, figures \ref{subfig:he_planeWave_high_g} and \ref{subfig:he_planeWave_high_h} show that the multiple interactions of waves yield plastic tensile loadings in the central part of the medium.
 As a result, the computations end with three right-going plastic waves for which the numerical solutions show good agreement, although the DGMPM ones are smoother.
 
-% It can first be seen in figure \ref{subfig:he_planeWave_high_1} that the behavior of the numerical approaches employed are similar to the previous loading case, though oscillations appear in the finite element stress on the plastic plateau.
-% Thus, the overestimation of plastic strain within the FEM get closer to that of the MPM.
-% These spurious oscillations remain in the FEM solution after the reflection of waves at the free ends (see figure \ref{subfig:he_planeWave2}).
-% In addition, the DGMPM behaves well whereas the 2ppc space discretization yields once again smoother results than the other approaches.
-% Nevertheless, the delay that was observed in the DGMPM(2ppc) plastic strain is now less significant
 
-
-% At last, figure \ref{subfig:he_planeWave_high_3} shows important differences involved by the increase in the value of the initial velocity.
-% Indeed, it can be seen that the plastic strain starts decreasing as it would be the case for a tensile plastic reloading, while the stress profile is still compressive.
-% This response is most likely due to the integration of the plastic flow in the finite deformation framework which couples the components of the plastic part of the deformation gradient.
-% However, the FEM and DGMPM(1ppc) stress solutions in figure \ref{subfig:he_planeWave_high_3} are rather close to each other, though slightly shifted.
-% At the middle of the solid, both stress solutions exhibit a peak that is not in the MPM solution, the latter showing nonetheless good agreement.
-% The DGMPM(2ppc), one the other hand, seems to overestimate the stress in the central region.
-% This can be explained by the unloading waves in figure \ref{subfig:he_planeWave_high_2} for which the DGMPM(2ppc) stress is ahead of the other methods.
-% Hence, a similar behavior is observed for the plastic strain.
-
-\subsection{Plane strain problem}
+\subsection{Plane strain problems}
 \label{sec:plane-strain-problem}
-%% Comparison at t=0.00102126
-We now consider an infinite domain in the direction $\vect{e}_3$ with square section of length $l=3m$, made of the same material as above.
+We now consider an infinite domain in the direction $\vect{e}_3$ with square section of length $l=3m$.
 The left and bottom boundaries of the solid are normally fixed and a negative initial velocity is prescribed so that the problem can be seen as a plane strain version of the Taylor bar impact (see figure \ref{subfig:2D_domain}).
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   \subcaptionbox{Geometry and boundary conditions\label{subfig:2D_domain}}{\input{pgfFigures/2d_domain}} \qquad
   \subcaptionbox{Material points set and grids \label{subfig:2d_meshes}}{\input{pgfFigures/2d_mesh}}
@@ -133,17 +117,16 @@ The left and bottom boundaries of the solid are normally fixed and a negative in
   \label{fig:PS_domain}
 \end{figure}
 
-
 The MPM and the DGMPM are compared to a $Q1$-finite element (bilinear approximation) solution coupled with a central difference explicit time integrator.
 The domain is discretized such that material points are equivalent to finite element nodes: $l\times l \equiv 28 \times 28$ particles and nodes.
 Moreover, two arbitrary grids are used for the particle-based methods so that either one or four material points lie in every cell according to the situations depicted in figure \ref{subfig:2d_meshes}.
 This simulation enables comparisons between the numerical methods in spite of the lack of exact solution for that problem.
-%Unfortunately, this cannot be circumvented by taking a FEM solution on a very fine mesh as the reference one since, as mentioned in section \ref{sec:plane-wave-problem}, a refinement does not prevent from spurious oscillations and hence, from an overestimation of the plastic strain.
 
+\subsubsection{Linear isotropic hardening material}
+\label{sec:line-isotr-hard}
 
-%Comparisons of the isovalues of the longitudinal PK1 stress $\Pi_{11}$ and the cumulated plastic strain $p$ are depicted in figures \ref{subfig:stress_comparison} and \ref{subfig:epls_comparison} respectively for two time steps that correspond to the incident and reflected pressure waves.
-Comparisons of the isovalues of the hydrostatic pressure $\bar{\sigma}=\frac{1}{3}\tens{\sigma}:\tens{I}$, where $\tens{\sigma}$ is the Cauchy stress tensor, and the cumulated plastic strain $p$ are depicted in figures \ref{subfig:press_comparison} and \ref{subfig:epls_comparison} respectively for two time steps that correspond to the incident and reflected pressure waves.
-\begin{figure}[ht]
+The medium is first assumed to be made of the same material as before and comparisons in terms of the hydrostatic pressure $\bar{\sigma}=\frac{1}{3}\tens{\sigma}:\tens{I}$, where $\tens{\sigma}$ is the Cauchy stress tensor, and the cumulated plastic strain $p$ are shown in figure \ref{fig:PS_taylor}.
+\begin{figure}[h!]
   \centering
   %\subcaptionbox{Stress \label{subfig:stress_comparison}}{\input{pgfFigures/stress_comparison}}\qquad
   \subcaptionbox{Hydrostatic pressure \label{subfig:press_comparison}}{\input{pgfFigures/press_comparison}}\qquad
@@ -151,22 +134,21 @@ Comparisons of the isovalues of the hydrostatic pressure $\bar{\sigma}=\frac{1}{
   \caption{Isovalues of the hydrostatic pressure $\bar{\sigma}$ and cumulated plastic strain in a two-dimensional hyperelastic-plastic solids impacting a rigid wall under plane strain. Comparison of FEM (CFL=0.9), MPM (CFL=0.7) and DGMPM solutions using either one particle per cell (CFL=1) or four particles per cell (CFL=0.4).}
   \label{fig:PS_taylor}
 \end{figure}
-The fields are plotted on the current configuration so as to show the deformed shape resulting from each simulation.
-Notice that a mesh is reconstructed based on the material points for MPM and DGMPM results for vizualisation purpose.
+Notice that a mesh is reconstructed for MPM and DGMPM results for visualization purpose, and that the comparisons are made in the deformed configuration for two time steps that correspond to the incident and reflected pressure waves.
 
 Before the reflection of the pressure wave, the occurence of spurious oscillations in MPM and FEM solutions, though much slighter in the latter, and of numerical diffusion in the DGMPM(4ppc) one, lead to different assessment of fields.
-In addition to the stress peaks occuring in the MPM stress solution in the bottom part of the domain, a checkerboard structure can be seen upstream.
+In addition to the pressure peaks occuring in the MPM solution in the bottom part of the domain, a checkerboard structure can be seen upstream.
 Then, figure \ref{subfig:epls_comparison} shows that the numerical cumulated plastic strains have globally the same shape but different extreme values.
 %
 Next, the incident wave reflects on the right end of the solid as a tensile wave so that the bottom part of that boundary starts moving rightward.
-After that reflection, similar observations can be made on the MPM and the DGMPM(4ppc) stress solutions, that is, significant oscillations and numerical diffusion respectively.
-Moreover, although the FEM and DGMPM(1ppc) stresses are quite similar before the reflection, it is no longer the case after the passage of the tensile wave so that the FEM solution exhibits a maximum value that is higher than the DGMPM one.
+After that reflection, similar observations can be made on the MPM and the DGMPM(4ppc) pressure solutions, that is, significant oscillations and numerical diffusion respectively.
+Moreover, although the FEM and DGMPM(1ppc) pressures are quite similar before the reflection, it is no longer the case after the passage of the tensile wave so that the FEM solution exhibits a maximum value that is higher than the DGMPM one.
 On the other hand, the plasticity continues propagating within the domain and no significant difference appears in the numerical cumulated plastic strains.
 At that time, it can also be seen that the shapes of the solid domain are quite similar, even though DGMPM solutions leads to a slightly lower vertical displacement of the top left corner of the square.
 
 We now propose to look at the above results in more details.
 Figures \ref{fig:bottom_line} and \ref{fig:left_line} show the evolution of longitudinal stress and cumulated plastic strain along the bottom and left ends of the domain respectively for the same time steps as before.
-First, it can be seen in figure \ref{subfig:bottom1} that the incident wave is described with different levels of sharpness by the numerical shemes.
+First, it can be seen in figure \ref{subfig:bottom1} that the incident wave is described with different levels of sharpness by the numerical schemes.
 % Note however that no elastic predictor is seen in the stress profiles in contrast to the one-dimensional problem studied above.
 Then, the figure also shows the oscillations in the MPM stress solution already mentioned.
 Moreover, the superimposition of the stresses resulting from MPM computations using 1ppc or 4ppc shows that refining the particles discretization does not allow removing the numerical noise.
@@ -177,7 +159,7 @@ On the other hand, the two space discretizations lead to DGMPM results that are 
 After the reflection (figure \ref{subfig:bottom2}), the stress profiles are much more different.
 The MPM still yields oscillating solutions regardless of the space discretization used, and DGMPM results are smoother than the other.
 Once Again, the FEM leads to a rather sharp solution.
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   {\phantomsubcaption{\label{subfig:bottom1}}}
   {\phantomsubcaption{\label{subfig:bottom2}}}
@@ -194,7 +176,7 @@ Thus, the MPM yields the highest values of cumulated plastic strain at the top l
 The results depicted at the subsequent time show tremendous oscillations in the MPM(1ppc) solution for which the longitudinal stress varies roughly from $-7 \: GPa$ to $1 \: GPa$ in the bottom part of the left boundary.
 These oscillations are reduced, though not completely removed, in the MPM(4ppc) results. 
 On the other hand, DGMPM and FEM solutions no longer fit.
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   {\phantomsubcaption{\label{subfig:left1}}}
   {\phantomsubcaption{\label{subfig:left2}}}
@@ -207,20 +189,11 @@ At last, the cumulated plastic strain curves show similar behaviors to those of 
 In that region, the plastic flow developed differently depending on the numerical solution considered.
 Both DGMPM curves are below that computed with the FEM while the profiles resulting from MPM computations are less regular than the others.
 
-\subsection{Non-linear hardening material}
+\subsubsection{Non-linear isotropic hardening material}
 \label{sec:non-linear-hardening}
-The last numerical example still concerns a square solid domain under plane strain, but now made of a non-linear isotropic hardening following a power law.
-Furthermore, the solid is submitted to a tensile load on the bottom part of its left end as depicted in figure \ref{fig:geom_partial_traction}.
-\begin{figure}[ht]
-  \centering
-  \input{pgfFigures/traction_impact}
-  \caption{Geometry and boundary conditions for a tensile impact problem in a two-dimensional medium. The value of the enforced velocity is set to $v_d=-400 \: m/s$.}
-  \label{fig:geom_partial_traction}
-\end{figure}
-The loading conditions lead to a more significant deformation of the body as well as shear effects which, as we shall see, are differently solved by the numerical methods considered so far.
-The numerical solutions computed with the FEM, MPM and DGMPM using the same space discretizations as before are compared in this section in terms of the longitudinal and shear components of the PK1 tensor $\Pi_{11}$ and $\Pi_{12}$, as well the cumulated plastic strain. 
+The previous problem is now considered in a material whose isotropic hardening follows a power law, for which the same comparisons as before are made. 
 
-\begin{figure}[ht]
+\begin{figure}[h!]
   \centering
   %\subcaptionbox{Stress \label{subfig:stress_comparison}}{\input{pgfFigures/stress_comparison}}\qquad
   \subcaptionbox{Pressure \label{subfig:press_comparison_NL}}{\input{pgfFigures/press_comparison_NL}}\qquad
@@ -229,29 +202,8 @@ The numerical solutions computed with the FEM, MPM and DGMPM using the same spac
   \label{fig:PS_taylor_NL}
 \end{figure}
 
-% \begin{figure}[ht]
-%   \centering
-%   \input{pgfFigures/stress_comparison_NLhardening}
-%   \caption{Isovalues of the PK1 stress tensor component $\Pi_{11}$ in a two-dimensional hyperelastic-plastic solids undergoing a tensile impact under plane strain. Comparison of FEM (CFL=0.9), MPM (CFL=0.5) and DGMPM solutions using either one particle per cell (CFL=1) or four particles per cell (CFL=0.4).}
-%   \label{fig:PS_taylor}
-% \end{figure}
 
-% \begin{figure}[ht]
-%   \centering
-%   \input{pgfFigures/shear_comparison_NLhardening}
-%   \caption{Isovalues of the PK1 stress tensor component $\Pi_{12}$ in the non-linear hardening solid.}
-%   \label{fig:PS_taylor}
-% \end{figure}
-
-
-% \begin{figure}[ht]
-%   \centering
-%   \input{pgfFigures/epls_comparison_NLhardening}
-%   \caption{Isovalues of the cumulated plastic strain in the non-linear hardening solid.}
-%   \label{fig:PS_taylor}
-% \end{figure}
-
-% \begin{figure}[ht]
+% \begin{figure}[h!]
 %   \centering
 %   {\phantomsubcaption{\label{subfig:bottom1}}}
 %   {\phantomsubcaption{\label{subfig:bottom2}}}
@@ -260,7 +212,7 @@ The numerical solutions computed with the FEM, MPM and DGMPM using the same spac
 %   \label{fig:bottom_line}
 % \end{figure}
 
-% \begin{figure}[ht]
+% \begin{figure}[h!]
 %   \centering
 %   \input{pgfFigures/bottom_line_NLhardening2}
 %   \caption{Comparison of the longitudinal stress component and cumulated plastic strain along the bottom boundary of the domain at two times.}
