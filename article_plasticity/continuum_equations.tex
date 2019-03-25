@@ -55,15 +55,15 @@ The constitutive model of the material is then explicitly involved in the quasi-
 Following the multiplicative decomposition of the deformation gradient \cite{Lee_FeFp}: $\tens{F}=\tens{F}^e\tens{F}^p$, irreversible processes that account for the evolution of the micro-structure of the material are described by means of internal variables \cite{Lubliner}.
 Denoting by $\Vcb$ the column array consisting of hardening variables, the complete set of internal variables is: $\{\tens{F}^p,\Vcb \}$.
 It is assumed that the evolution of internal variables only depends on the local state, so that kinetic equations can be written:
-\review{Restrict hardening to isotropic so that $\Vcb$ is a scalar. In that case the flow rule reads}
 \begin{equation}
   \label{eq:plastic_kinetic_laws}
   \dot{\Vcb}=f(\tens{F},\tens{F}^p,\Vcb)
 \end{equation}
-as well as a general plastic flow rule:
+Isotropic hardening, for which the array $\Vcb$ consists of the cumulated plastic strain $p$, is considered here.
+Hence, a general plastic flow rule reads:
 \begin{equation}
   \label{eq:flow_rule}
-  \dot{\tens{F}^p}{\tens{F}^p}^{-1}=\dot{\Vcb}\tens{M}
+  \dot{\tens{F}^p}{\tens{F}^p}^{-1}=\dot{p}\tens{M}
 \end{equation}
 In equation \eqref{eq:flow_rule}, kinematic conditions for the plastic flow are prescribed through the second-order tensor $\tens{M}$.
 More specifically, the von Mises flow rule results from the restriction $\tens{M} \in \{\tens{A} \in \Rbb^3\times \Rbb^3\: \lvert\: \tens{A}: \tens{A}=\frac{2}{3},\: \tens{A}:\tens{I}=0\}$. 
@@ -72,34 +72,34 @@ More specifically, the von Mises flow rule results from the restriction $\tens{M
 For materials in which internal processes do not influence the elastic response (\textit{e.g.  metals}), the thermodynamic state is described by the Helmholtz free energy density that is assumed to decompose additively as:
 \begin{equation}
   \label{eq:helmholtz_decomposition}
-  \psi(\tens{F},\tens{F}^p,\Vcb)= \psi^e(\tens{F}{\tens{F}^p}^{-1}) +  \psi^p(\tens{F}^p,\Vcb)
+  \psi(\tens{F},\tens{F}^p,p)= \psi^e(\tens{F}{\tens{F}^p}^{-1}) +  \psi^p(\tens{F}^p,p)
 \end{equation}
 where $\psi^e$ and $\psi^p$ respectively govern elastic and plastic evolutions.
-The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $\Vcb$ follow from the free energy density as \cite{Truesdell}:
+The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $p$ follow from the free energy density as \cite{Truesdell}:
 \begin{equation}
   \label{eq:thermodynamic_forces}
-  \tens{\Pi}=\drond{\psi}{\tens{F}} \quad ;\quad \tens{T}=-\drond{\psi}{\tens{F}^p} \quad ; \quad \Acb = -\drond{\psi}{\Vcb}
+  \tens{\Pi}=\drond{\psi}{\tens{F}} \quad ;\quad \tens{T}=-\drond{\psi}{\tens{F}^p} \quad ; \quad Y = -\drond{\psi}{p}
 \end{equation}
 By considering the additive decomposition \eqref{eq:helmholtz_decomposition} combined with the flow rule \eqref{eq:flow_rule}, the last relation reads:
 \begin{equation}
   \label{eq:hardening_forces}
-  \Acb = -\drond{\psi}{\tens{F}^p}\drond{\tens{F}^p}{\Vcb} - \drond{\psi^p}{\Vcb} = \tens{T}\(\tens{M}\tens{F}^p\) - \drond{\psi^p}{\Vcb}
+  Y = -\drond{\psi}{\tens{F}^p}\drond{\tens{F}^p}{p} - \drond{\psi^p}{p} = \tens{T}\(\tens{M}\tens{F}^p\) - \drond{\psi^p}{p}
 \end{equation}
 
 We then postulate the existence of a pseudo-dissipation potential $\phi$ from which the rate of internal variables can be derived:
 \begin{equation}
   \label{eq:pseudo-dissipation_potential}
-  \dot{\Vcb}= \drond{\phi(\Acb)}{\Acb}
+  \dot{p}= \drond{\phi(Y)}{Y}
 \end{equation}
-Alternatively, the dual pseudo-dissipation potential $\phi^*(\dot{\Vcb})$, that results from the Legendre transform of $\phi$, allows writing:
+Alternatively, the dual pseudo-dissipation potential $\phi^*(\dot{p})$, that results from the Legendre transform of $\phi$, allows writing:
 % \begin{equation}
 %   \label{eq:dual_pseudo-dissipation_potential}
-%   \phi^*(\dot{\Vcb}) = \Acb \cdot \dot{\Vcb} - \phi(\Acb)
+%   \phi^*(\dot{p}) = Y \cdot \dot{p} - \phi(Y)
 % \end{equation}
 % in such a way that one has
 \begin{equation}
   \label{eq:dual_form_kinetic}
-  \Acb = \drond{\phi^*(\dot{\Vcb})}{\dot{\Vcb}}
+  Y = \drond{\phi^*(\dot{p})}{\dot{p}}
 \end{equation}
 
 

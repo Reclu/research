@@ -52,10 +52,12 @@ Indeed, the element-wise weak form written on the background grid involves inter
 The numerical solution of hyperbolic problems with the DGMPM in hyperelastic solids shows good agreements with exact solutions as well as significant improvements with respect to the original MPM \cite{DGMPM}.
 
 The purpose of the present paper is to illustrate the method on problems involving rate-independent plastic solids undergoing finite deformations.
-In particular, we focus here on hyperelastic-plastic solids owing to the thermodynamically consistent framework on which they are based, in contrast with hypoelastic-plastic models. 
+In particular, the focus is on hyperelastic-plastic solids owing to the thermodynamically consistent framework on which they are based, in contrast with hypoelastic-plastic models. 
 Moreover, the thermodynamic framework enables the variational formulation of the equations of hyperelasto-plasticity that can be solved with dedicated numerical integrators based on incremental potentials \cite{Laurent99}.
-The use of such variational constitutive integrators should facilitate the extension of the DGMPM to strongly thermo-mechanically coupled problems.
-Furthermore, the error estimation allowed by the introduction of variational solvers might pave the way for the developement of mesh adaption strategies based on criteria given by the wave structure.
+The use of such variational constitutive integrators should facilitate the extension of the DGMPM to strongly thermo-mechanically coupled problems and provides a generic framework for the integration of rate-independent and rate-dependent plasticity.
+% Furthermore, the error estimation allowed by the introduction of variational solvers might pave the way for the developement of mesh adaption strategies based on criteria given by the wave structure.
+   
+
 In what follows, the continuum equations of isothermal solid dynamics including balance laws and constitutive equations are recalled in section \ref{sec:continuum_problem}.
 Next, section \ref{sec:discretization} is devoted to the derivation of the DGMPM discrete system that must be solved on the background grid at each time step. 
 The discrete system is based on the calculation of intercell fluxes by means of a hyperelastic approximate-state Riemann solver which is presented in section \ref{sec:riemann_solver}.
