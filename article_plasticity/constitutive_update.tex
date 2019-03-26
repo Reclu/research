@@ -1,4 +1,3 @@
-
 %The variational reformulation of the constitutive equations derived in section \ref{subsec:cont_constitutive} is carried out by introducing the following power density function \cite{Laurent2010}:
 %The variational formulation of the constitutive relations derived in section \ref{subsec:cont_constitutive} follows from the minimization of the power density function \cite{Laurent99,Laurent2010}:
 % Let's introduce the following power density function \cite{Laurent2010}:
@@ -42,7 +41,7 @@ At last, the updated first Piola-Kirchhoff stress tensor is:
 \begin{equation}
   \label{eq:PK1_inc}
   % \tens{\Pi}_{n+1} = \left.\drond{\psi}{\tens{F}}\right|_{t_{n+1}}=\drond{W(\tens{F}_{n+1})}{\tens{F}_{n+1}}
-  \tens{\Pi}_{n+1} = \left.\drond{\psi}{\tens{F}}\right|_{t_{n+1}}=\drond{W}{\tens{F}_{n+1}}
+  \tens{\Pi}_{n+1} =\drond{W}{\tens{F}_{n+1}}
 \end{equation}
 so that $W$ appears as a potential for $\tens{\Pi}_{n+1}$.
 In addition, incremental tangent moduli corresponding to the variational update follow from the linearization of the above equation:
@@ -51,12 +50,15 @@ In addition, incremental tangent moduli corresponding to the variational update 
   \Hbb_{n+1}=\drond{\tens{\Pi}_{n+1}}{\tens{F}_{n+1}}= \left.\ddrond{W}{\tens{F}}{\tens{F}}\right|_{t_{n+1}} + \left.\ddrond{W}{\tens{F}}{p}\drond{p}{\tens{F}} \right|_{t_{n+1}}
 \end{equation}
 Recall that a purely hyperelastic approximate Riemann solver is used, in such a way that only the first term of the right hand side in equation \eqref{eq:tangent_modulus} is taken into account for the computation of intercell fluxes.
-\review{Talk about
-  \begin{itemize}
-  \item particularization to Hencky potential, give expressions of potentials. In that case it is equivalent to a return mapping
-  \item interesting for thermomecanical problems. Even in the case on isothermal elastoplasticity, it allows for genericity (can be extended to viscoplasticity without requiring the solution of a RHS), similar to hyperelasticity. 
-  \end{itemize}
-}
+
+Assuming the existence of a viscous potential $\psi^v(\dot{\tens{F}})$, from which the viscous part of the PK1 stress $\tens{\Pi}^v$ derives, the above approach is easily extended to rate-dependent plasticity.
+In that case, the stress update \eqref{eq:PK1_inc} still holds provided the use of the following incremental potential \cite{Laurent99}:
+\begin{equation}
+  W(\tens{F}_{n+1};\tens{F}_n,p_n) =  \underset{p_{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}_{n+1},\tens{F}^p_{n+1},p_{n+1}\) -\psi\(\tens{F}_{n},\tens{F}^p_{n},p_{n}\) + \Delta t \left\langle \phi^*\(\dot{p}_{n}\)\right\rangle\right\rbrace + \Delta t \left\langle \psi^v\(\tens{\dot{F}}_{n}\)\right\rangle
+\end{equation}
+Therefore, the variational constitutive update provides a generic framework in which the equations of hyperelastic-(visco)plastic materials are dealt with as those of hyperelasticity.
+Moreover, the thermodynamically-consistent formulation, though applied here to isothermal problems, enables the consideration of strongly thermo-mechanically coupled cases.
+% interesting for thermomecanical problems. Even in the case on isothermal elastoplasticity, it allows for genericity (can be extended to viscoplasticity without requiring the solution of a RHS), similar to hyperelasticity. 
 
 
 

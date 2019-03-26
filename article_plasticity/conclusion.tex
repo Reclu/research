@@ -11,9 +11,13 @@ For low loading conditions, the DGMPM show good agreement in terms of stress and
 However, the solution can be more or less accurate depending on the space discretization since the stability properties of the scheme are known to be influenced by the number of particles lying in the elements of the background grid.
 The DGMPM has also been shown to behave well for more severe loadings as well as for two-dimensional problems, though the lack of reference solution must be highlighted in the latter case.
 Thus, the scheme appears to enable an accurate tracking of waves in finite-deforming elastic-plastic media owing to the combination of the Riemann solver to compute the fluxes and the particles to represent the geometry.
-\review{Comment in conclusion about the use of RK2 which works well for elastic problems but raises the question of the integration of constitutive equations for elastic-plastic ones.}
 
 % Perspectives
+%% RK2
+% \review{Comment in conclusion about the use of RK2 which works well for elastic problems but raises the question of the integration of constitutive equations for elastic-plastic ones.}
+The DGMPM results presented here still exhibit numerical diffusion if many particles lie in the elements, in such a way that the resolution of waves is less sharp than the FEM one.
+Nevertheless, it has been highlighted that a second-order Runge-Kutta time integration (RK2), combined with the DGMPM space discretization, yields an improvement of the stability of the scheme and hence, a more accurate capturing of waves for elastic solids \cite{DGMPM}.
+The employment of the RK2 integration for mutli-dimensional problems in hyperelastic-plastic media requires, due to the use of the quasi-linear form \eqref{eq:quasi-linear}, the integration of plastic flow on the mesh and will be the object of future works.  
 %% Mesh-adaption
 Given the arbitrary nature of the computational grid and the error estimation provided by variational approaches, the DGMPM enables considering the use of mesh adaption strategies. 
 It would then be for instance possible to adapt the grid in order to capture the waves in the current configuration while solving the discrete system in the reference one.
