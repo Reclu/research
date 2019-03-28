@@ -3,85 +3,153 @@
 Thus, the works carried out on simple waves mentioned above, formulated in terms of elastoplastic softnesses, appear \textbf{as particular cases of the present investigation}.
 As a result, we shall refer to those existing solutions in order to confirm our development as much as possible.
 
-
+\review{dimensional splitting as it is done in numerical methods}
 \subsection{Governing equations}
-We are concerned with linear isotropic hardening materials whose elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
-The balance equation of linear momentum with neglected body forces, and the geometrical balance equations are:  
+We consider the isothermal deformation of a solid body of mass density $\rho$ in the linearized geometrical framework.
+The balance equation of linear momentum with neglected body forces, and the geometrical balance equations \cite{Plohr,Gil_HE} are:  
 \begin{equation}
-  \label{eq:ch5_balance_equations}
+  \label{eq:balance_equations}
   \left\lbrace \begin{aligned}
-    %\label{eq:ch5_linear_momentum}
     & \rho \dot{\vect{v}} - \nablav \cdot \tens{\sigma} = \vect{0} \\
-    %\label{eq:ch5_linear_momentum}
     &  \dot{\tens{\eps}} - \nablav \cdot \(\frac{\vect{v}\otimes \tens{I} + \tens{I} \otimes \vect{v}}{2}\) = \vect{0} 
   \end{aligned} \right.
 \end{equation}
-In addition, the elastic-plastic constitutive equations derived from thermodynamics in section \ref{sec:constitutive-equations} are recalled here:
+where $\vect{v}$, $\tens{I}$ , $\tens{\sigma}$ and $\tens{\eps}$ denote respectively the velocity vector, the second-order identity tensor, the Cauchy stress tensor and the strain tensor.
+The latter additively decomposes into an elastic strain $\tens{\eps}^e$ and a plastic strain $\tens{\eps}^p$.
+Assuming a Cartesian coordinate system, equations \eqref{eq:balance_equations} can also be written as:
+\begin{equation}
+  \label{eq:conservative_form}
+  \drond{\Ucb}{t} + \drond{\Fcb\cdot \vect{e}_i}{x_i}=\tens{0}
+\end{equation}
+in which the vector of conserved quantities $\Ucb$ and the flux vectors $\Fcb_i=\Fcb\cdot \vect{e}_i$ are:
+\begin{equation}
+  \label{eq:vectors}
+  \Ucb =\matrice{\rho\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} }
+\end{equation}
+Alternatively, introduction of an auxiliary vector of conserved quantities $\Qcb$ allows rewriting equation \eqref{eq:conservative_form} as a quasi-linear form by means of the chain rule:
+\begin{equation}
+  \label{eq:quasi-linear_form}
+  \drond{\Qcb}{t} + \Absf^i \drond{\Qcb}{x_i}=\tens{0}
+\end{equation}
+In particular, setting $\Qcb=\matrice{\vect{v} \\ \tens{\sigma}}$, one write:
+\begin{equation}
+  \label{eq:matrix-quasi}
+  \Absf^i = \(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb_i}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho}\tens{I}\otimes\vect{e}_i\\ \Hbb\cdot \vect{e}_i & \tens{0}^4}
+\end{equation}
+$\tens{0}^p$ being a $p$th-order zero tensor.
+It then appears that the characteristic structure of the hyperbolic problem, which is driven by the matrices $\Absf^i$, depends on the nature of the deformation (\textit{i.e. elastic or plastic}) through the fourth-order tangent modulus $\Hbb=\drond{\tens{\sigma}}{\tens{\eps}}$.
+
+Reversible evolutions are governed the elastic law involving the elastic stiffness tensor $\Cbb$ and defined as: 
 \begin{subequations}
-  \label{eq:ch5_plasticity_equations}
   \begin{alignat}{1}
-    \label{eq:ch5_von-Mises_yield}
-    & f\(\tens{\sigma},\Acb \)= \sqrt{\frac{3}{2}}\norm{\tens{s}} - \(R(p)+\sigma^y\) \equiv 0 \\
-    % \label{eq:ch5_kin_hard}
-    % & \tens{Y}=\frac{2}{3}C\tens{\eps}^p \\
-    \label{eq:ch5_iso_hard}
-    & R(p)=C \: p \\
-    \label{eq:elastoplastic_tangent}
-    & \tens{\dot{\sigma}}=\(\Cbb^{elast} - \beta\:\tens{s}\otimes\tens{s} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}} \\
-    \label{eq:ch5_plastic_flow}
-    & \beta = \frac{6\mu^2}{3\mu +C}\times\frac{1}{\tens{s}:\tens{s}}\\
-    \label{eq:ch5_EP_acoustic}
-    & A_{ij}^{ep}=  A_{ij}^{elast} -  \beta (n_k s_{ki})(s_{jl}n_l)
+    \label{eq:elastic_law}
+    & \tens{\sigma} = \Cbb: \tens{\eps}^e = 2\mu \tens{\eps}^e + \lambda \tr \tens{\eps}^e \: \tens{I} \\ 
+    \label{eq:elastic_inverse}
+    & \tens{\eps}^e = \Cbb^{-1}:\tens{\sigma} = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma}  \: \tens{I}
   \end{alignat}
 \end{subequations}
-$\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma} \tens{I}$
-In the expression of the von-Mises yield function \eqref{eq:ch5_von-Mises_yield}, the (positive) linear isotropic hardening law \eqref{eq:ch5_iso_hard} is considered.
-Moreover, the elastoplastic acoustic tensor \eqref{eq:ch5_EP_acoustic} is decomposed as an elastic part $A_{ij}^{elast}$ and a plastic part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:ch5_plastic_flow}.
-%At last, the (isotropic)elasticity tensor $\Cbb$ in equation \eqref{eq:elastoplastic_tangent} can be inverted to yield the following elastic law:
-By inverting the (isotropic) elasticity tensor $\Cbb$ involved in equation \eqref{eq:elastoplastic_tangent}, the following elastic law is written in the isotropic case:
-\begin{equation}
-  \label{eq:ch5_elastic_inverse}
-  \tens{\eps}^e = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma} \tens{I}
-\end{equation}
-with Young's modulus $E$ and Poisson's ratio $\nu$.
+in which $(\lambda,\mu)$ are Lam{\'e}'s parameters, and $(E,\nu)$ are Young's modulus and Poisson's ratio respectively.
+% We are concerned with linear isotropic hardening materials whose elastic domain is given by the von-Mises yield surface, under isothermal deformations in the linearized geometrical framework.
+On the other hand, following the Generalized Standard Material framework \cite{GSM}, irreversible processes are described by a Helmholtz free-energy density potential and the von-Mises yield function.
+Restricting ourselves to linear isotropic hardening, the elastic-plastic constitutive equations are: 
+%Furthermore, materials falling within the Generalized Standard Material framework \cite{GSM} are considered so that, by postulating the existence of a Helmholtz free-energy density potential%that depends on a suitable set on internal variables
+\begin{subequations}
+  \label{eq:plasticity_equations}
+  \begin{alignat}{1}
+    \label{eq:von-Mises_yield}
+    & f\(\tens{\sigma},R \)= \sqrt{\frac{3}{2}}\norm{\tens{s}} - \(R(p)+\sigma^y\) \leq 0 \\
+    \label{eq:iso_hard}
+    & R(p)=C \: p \\
+    \label{eq:elastoplastic_tangent}
+    & \tens{\dot{\sigma}}=\(\Cbb - \beta\:\tens{s}\otimes\tens{s} \):\tens{\dot{\eps}} = \Cbb^{ep}:\tens{\dot{\eps}} \\
+    \label{eq:plastic_flow}
+    & \beta = \frac{6\mu^2}{3\mu +C}\times\frac{1}{\tens{s}:\tens{s}}
+    % \label{eq:EP_acoustic}
+    % & A_{ij}^{ep}=n_k C^{ep}_{ikjl}n_l=  A_{ij}^{elast} -  \beta (n_k s_{ki})(s_{jl}n_l)
+  \end{alignat}
+\end{subequations}
+Equation \eqref{eq:von-Mises_yield} describes the von-Mises yield surface in which $\tens{s}=\tens{\sigma}-\frac{1}{3}\tr \tens{\sigma} \tens{I}$ denotes the deviatoric part of the Cauchy stress, $\sigma^y$ denotes the yield stress in tension, and $R(p)$ is the thermodynamical force $R$ conjugated to the cumulated plastic strain $p$.
+Linear isotropic hardening is then considered through equation \eqref{eq:iso_hard} by means of the hardening modulus $C$.
+At last, it is seen in equation \eqref{eq:elastoplastic_tangent} that the elastoplastic tangent modulus $\Cbb^{ep}$ can be decomposed into the elasticity tensor and another part depending on the direction of the plastic flow through the coefficient $\beta$ \eqref{eq:plastic_flow}.
 
-The quasi-linear form of the sets of equations \eqref{eq:ch5_balance_equations} and \eqref{eq:ch5_plasticity_equations} in a Cartesian coordinate system and an arbitrary direction $\vect{n}$ is:
+Considering an arbitrary direction of space $\vect{n}$, the quasi-linear form \eqref{eq:quasi-linear_form} reads: 
+% The quasi-linear form of the sets of equations \eqref{eq:balance_equations} and \eqref{eq:plasticity_equations} in a Cartesian coordinate system and an arbitrary direction $\vect{n}$ is:
 \begin{equation}
-  \label{eq:ch5_quasilinear_normal}
+  \label{eq:quasilinear_normal}
   \Qcb_t + \Jbsf \drond{\Qcb}{x_n} = \vect{0} 
 \end{equation}
-where $x_n=\vect{x}\cdot\vect{n}$, $\Qcb=\matrice{\vect{v}\\ \tens{\sigma}}$, and $\Jbsf$ is the Jacobian matrix.
-It has been shown in section \ref{sec:characteristic_analysis} that the $3$ eigenvalues $\omega^p$ and eigenvectors $\vect{l}^p$ of the acoustic tensor lead to $6$ left characteristic fields of the Jacobian matrix $\{c_K;\Lcb^K\}$ according to:
+where $x_n=\vect{x}\cdot\vect{n}$ and $\Jbsf=n_i\Absf^i$ is the Jacobian matrix.
+The characteristic structure of the problem is given by the $m$ eigenvalues $c_K$ and associated left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{\sigma}^K \]$ of the Jacobian matrix satisfying:
 \begin{equation}
-  \label{eq:ch5_left_eigenfields}
-  \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho}} ; \quad \[\: \pm \rho\sqrt{\frac{\omega_p}{\rho}} \vect{l}^p , -\vect{l}^p\otimes \vect{n} \:\]  \right\rbrace ,\quad p=1,2,3
+  \label{eq:eigen_system}
+  \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0}
 \end{equation}
-In addition, three independent left eigenvectors associated with the zero eigenvalue of system \eqref{eq:ch5_quasilinear_normal}, which is of multiplicity $3$, are found by solving:
+with $\Ibsf$, the $m\times m$ identity matrix.
+Thus, for non-zero eigenvalues one gets:
+\begin{subequations}
+  \begin{alignat}{1}
+    \label{eq:eigen_left_stress}
+    & -\tens{\sigma}^K:\(\Hbb\cdot  \vect{n}\) - c_K  \vect{v}^K =\vect{0} \\
+    \label{eq:eigen_left_velo}
+    & -\frac{1}{\rho}\vect{v}^K\otimes\vect{n} - c_K \tens{\sigma}^K = \tens{0}
+  \end{alignat}
+\end{subequations}
+Substitution of $\tens{\sigma}^K$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq:eigen_left_stress} leads to:
 \begin{equation}
-  \label{eq:ch5_null_eigen}
-  \tens{\sigma}^K:\(\Cbb^{ep}\cdot  \vect{n}\) =\vect{0},\quad K=1,2,3
+  \label{eq:acoustic_eigen}
+ (\vect{v}^K\otimes\vect{n}):\(\Hbb\cdot  \vect{n}\) - \rho c_K^2 \vect{v}^K = \tens{0}
+\end{equation}
+which is the left eigensystem of the acoustic tensor $A_{ij}=n_k H_{ik j l}  n_l$.
+Due to the symmetry of $\tens{A}$, system \eqref{eq:acoustic_eigen} is equivalent to the right eigensystem:
+\begin{equation}
+  \label{eq:acoustic_eigen_system_lambda}
+  \(  n_k H_{ik j l}  n_l - \rho c_K^2 \delta_{ij} \) v_j^K =0
+\end{equation}
+or alternatively, with the eigenvalues $\omega_p$ and associated eigenvectors of the acoustic tensor $\vect{l}^p\: \: (p=1,2,3)$:
+\begin{equation}
+  \label{eq:acoustic_eigen_system}
+   \( \tens{A} - \omega_p \tens{I} \) \cdot \vect{l}^p  = \vect{0}
+\end{equation}
+The condition for system \eqref{eq:quasilinear_normal} to be hyperbolic (real eigenvalues and independent eigenvectors) is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
+\begin{equation}
+  \label{eq:strong_ellipticity}
+  (\vect{m}\otimes \vect{n}): \Hbb: (\vect{n}\otimes \vect{N}) > 0 \quad \forall \vect{n},\vect{m} \in \Rbb^3 \: ; \: \vect{n},\vect{m} \ne \vect{0}
+\end{equation}
+If the condition holds, the acoustic tensor admits $3$ couples of eigenvalue--eigenvector $\{\omega_p,\vect{l}^p\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $6$ other eigenvalues being null \cite{Kluth}.
+The couples $\{c_K,\Lcb^K\}$ are referred to as \textit{left characteristic fields}.
+Notice that since both the elastic stiffness tensor $\Cbb$ and the elastoplastic tangent modulus $\Cbb^{ep}$ may be involved in equation \eqref{eq:quasi-linear_form}, six left characteristic fields are obviously associated with elastic and plastic evolutions respectively.
+The left eigenvectors associated with non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:quasilinear_normal} can be defined:
+\begin{equation}
+  \label{eq:left_eigenfields}
+    \left\lbrace \pm \sqrt{\frac{\omega_p}{\rho_0}} ; \: \[ \pm \rho_0\sqrt{\frac{\omega_p}{\rho_0}} \vect{l}^p , -\vect{l}^p\otimes \vect{n} \]  \right\rbrace ,\quad p=1,2,3
+\end{equation}
+At last, six independent left eigenvectors associated with the null eigenvalue of multiplicity $6$ can be found by solving equation \eqref{eq:eigen_left_stress} for the null eigenvalue:
+\begin{equation}
+  \label{eq:left_null_eigenvectors}
+  \tens{\sigma}^K:\(\Hbb\cdot  \vect{n}\) =\vect{0},\quad K=1,...,6
 \end{equation}
 
-The present formulation differs from those of \textsc{Bleich} \cite{Bleich}, \textsc{Clifton} \cite{Clifton}, and hence these of \textsc{Ting} and \textsc{Nan} \cite{Ting68} and \textsc{Ting} \cite{Ting69}, in that equation  \eqref{eq:ch5_quasilinear_normal} is based on the elastoplastic stiffnesses rather than softnesses.
-As a consequence, it will be seen in what follows that the equations can be easily specialized to plane strain and plane stress cases.
 %In what follows, the above equations are specified to plane strain and plane stress cases.
 \subsection{Problems in two space dimensions}
+The formulation developed in the previous section differs from those of \textsc{Bleich} \cite{Bleich}, \textsc{Clifton} \cite{Clifton}, and hence these of \textsc{Ting} and \textsc{Nan} \cite{Ting68} and \textsc{Ting} \cite{Ting69}, in that equation  \eqref{eq:quasilinear_normal} is based on the elastoplastic stiffnesses rather than softnesses.
+As a consequence, it will be seen in what follows that the equations can be easily specialized to plane strain and plane stress cases.
+
 We now focus on the solid domain $x_1 \times x_2 \times x_3 \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinate system, where $e$ and $h$ are arbitrary lengths.
 %The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
 It is assumed that all quantities depend solely on $x_1$ and $x_2$ except the velocity component $v_3$ that may depend on $x_3$.
 In particular, this is the case for $e \ll h$.
 
 The solid is under plane strain conditions, that is $\tens{\eps}\cdot\vect{e}_3=\vect{0}$, if the velocity $\vect{v}$ does not depend on $x_3$ and if $v_3$ vanishes.
-Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:ch5_elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
+Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets:
 \begin{equation}
   \label{eq:plane_strain_stress33}
   \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
 \end{equation}
-Hence, the quasi-linear form \eqref{eq:ch5_quasilinear_normal} reduces for plane strain problems to a system of dimension $5$ with unknowns $v_1,v_2, \sigma_{11},\sigma_{12}$, and $\sigma_{22}$.
+Hence, the quasi-linear form \eqref{eq:quasilinear_normal} reduces for plane strain problems to a system of dimension $5$ with unknowns $v_1,v_2, \sigma_{11},\sigma_{12}$, and $\sigma_{22}$.
 
 
 Alternatively, a plane stress state ($\tens{\sigma}\cdot\vect{e}_3=\vect{0}$) is assumed if the planes $x_3=\pm h$ are traction free and $e\ll h$.
-As a result, the stress component $\sigma_{33}$ can be removed from the system \eqref{eq:ch5_quasilinear_normal}.
+As a result, the stress component $\sigma_{33}$ can be removed from the system \eqref{eq:quasilinear_normal}.
 Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress component.
 Specialization of equation \eqref{eq:elastoplastic_tangent} to $\sigma_{33}$ yields:
 \begin{equation*}
@@ -98,24 +166,24 @@ Hence, the constitutive equations are rewritten by means of a two-dimensional ta
 \end{equation}
 The characteristic structure of the problem is then given by the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
 
-The removal of $\sigma_{33}$ from system \eqref{eq:ch5_quasilinear_normal} for both plane strains and plane stresses allows solving the problem in a two-dimensional setting.
+The removal of $\sigma_{33}$ from system \eqref{eq:quasilinear_normal} for both plane strains and plane stresses allows solving the problem in a two-dimensional setting.
 Then, generically denoting the acoustic tensor by $\tens{A}$, the characteristic structures are given by the eigenvalues:
 \begin{subequations}
   \begin{alignat}{1}
-    \label{eq:ch5_eigenAcc1}
+    \label{eq:eigenAcc1}
     &\omega_1 = \frac{1}{2}\(A_{11}+A_{22} + \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2}\) \\
-    \label{eq:ch5_eigenAcc2}
+    \label{eq:eigenAcc2}
     &\omega_2 = \frac{1}{2}\(A_{11}+A_{22} - \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2}\)     
   \end{alignat}
 \end{subequations}
 and the associated eigenvectors:
 \begin{equation}
-  \label{eq:ch5_eigenvectAcc}
+  \label{eq:eigenvectAcc}
    \vect{l}^1=[ A_{22}-  \omega_1 \:,\: -A_{12}] \qquad ;\qquad  \vect{l}^2=[ -A_{12} \:,\:A_{11}- \omega_2 ]
 \end{equation}
-From equation \eqref{eq:ch5_left_eigenfields}, we see that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ may travel in the domain.
+From equation \eqref{eq:left_eigenfields}, we see that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ may travel in the domain.
 These waves are respectively referred to as fast and slow waves.
-Note that subtracting equations \eqref{eq:ch5_eigenAcc1} and \eqref{eq:ch5_eigenAcc2} leads to:
+Note that subtracting equations \eqref{eq:eigenAcc1} and \eqref{eq:eigenAcc2} leads to:
 \begin{equation}
   \label{eq:diff_celerities}
   \rho c_f^2 - \rho c_s^2 = \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2} \geq 0
@@ -125,17 +193,17 @@ Hence, the characteristic speed associated with fast waves is always greater tha
 The four left eigenfields of the Jacobian matrix thus read:
 \begin{subequations}
   \begin{alignat}{1}
-    \label{eq:ch5_Jac_eigenfield_fast}
+    \label{eq:Jac_eigenfield_fast}
     &\left\lbrace \pm c_f ; \quad \Lcb^{c_f^\pm}=\[\: \pm \rho c_f \vect{l}^1 , -\vect{l}^1\otimes \vect{n} \:\]  \right\rbrace \\
-  \label{eq:ch5_Jac_eigenfield_slow}
+  \label{eq:Jac_eigenfield_slow}
     &\left\lbrace \pm c_s ; \quad \Lcb^{c_s^\pm}=\[\: \pm \rho c_s \vect{l}^2 , -\vect{l}^2\otimes \vect{n} \:\]  \right\rbrace
   \end{alignat}
 \end{subequations}
 where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated with the right-going and left-going fast waves respectively.
 The same goes for $\Lcb^{c_s^+}$ and $\Lcb^{c_s^-}$.
-Furthermore, one stationary wave associated with the zero eigenvalue of the Jacobian matrix, and whose left eigenvector satisfies equation \eqref{eq:ch5_null_eigen}, has to be added:
+Furthermore, one stationary wave associated with the zero eigenvalue of the Jacobian matrix, and whose left eigenvector satisfies equation \eqref{eq:null_eigen}, has to be added:
 \begin{equation}
-  \label{eq:ch5_null_left_eigen}
+  \label{eq:null_left_eigen}
   {\Lcb^0}^T = \matrice{v_1^0 \\[5.pt] v_2^0 \\[5.pt] \sigma_{11}^0 \\[5.pt] \sigma^0_{22} \\[5.pt] \sigma^0_{12} }= \matrice{0 \\[5.pt] 0 \\[5.pt] \(C_{121i}C_{222j}-C_{221i}C_{122j}\)n_in_j \\[5.pt] \(C_{111i}C_{122j}-C_{112i}C_{121j}\)n_in_j \\[5.pt] \(C_{112i}C_{221j}-C_{111i}C_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
 \end{equation}
 with $\Cbb=\Cbb^{ep}$ for plain strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plane stress.
@@ -146,7 +214,7 @@ Nevertheless, we restrict here to simple waves by assuming that: (i) the charact
 
 The characteristic equations $\Lcb^K \cdot d\Qcb = 0$ are then written:
 \begin{subequations}
-  %\label{eq:ch5_ODEs}
+  %\label{eq:ODEs}
   \begin{alignat}{3}
     \label{eq:charac_fr}
     & \rho c_f \vect{l}^1 \cdot d\vect{v} - l^1_i n_j d\sigma_{ij} =0 \quad &&  \xi = c_f\\
@@ -167,10 +235,10 @@ Following \cite{Clifton}, the method of characteristics is applied by combining 
   \subcaptionbox{Slow simple wave \label{subfig:slowWave}}{\input{pgfFigures/slowWave}} \qquad
   \subcaptionbox{Fast simple wave \label{subfig:fastWave}}{\input{pgfFigures/fastWave}}
   \caption{The method of characteristics through slow and fast simple waves in the $(x_n,t)$ plane.}
-  \label{fig:ch5_charac_method}
+  \label{fig:charac_method}
 \end{figure}
 The approach consists in tracing every characteristic from some downstream point of a wave where the state vector $\Qcb$ is known, to an upstream point where the solution is sought.
-Figures \ref{fig:ch5_charac_method}\subref{subfig:slowWave} and \ref{fig:ch5_charac_method}\subref{subfig:fastWave} schematically illustrate the method for slow and fast simple waves in which the state is known along the head wave and is looked for at point $P$ lying on the tail wave. 
+Figures \ref{fig:charac_method}\subref{subfig:slowWave} and \ref{fig:charac_method}\subref{subfig:fastWave} schematically illustrate the method for slow and fast simple waves in which the state is known along the head wave and is looked for at point $P$ lying on the tail wave. 
 The integral curves through slow and fast simple waves are derived in the next section.
 
 \subsection{Integral curves through simple waves}
