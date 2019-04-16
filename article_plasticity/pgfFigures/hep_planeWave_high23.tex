@@ -53,12 +53,9 @@
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_4.pgf};
     
     \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_4.pgf};
-    %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_4.pgf};
-    
-    % \addlegendentry{mpm}
-    % \addlegendentry{dgmpm (1ppc)}
-    % \addlegendentry{dgmpm (2ppc)}
-    % \addlegendentry{fem}
+    \begin{scope}
+      \spy[black,size=1.cm] on (4.22,-.625) in node [fill=none] at (4.2,-2.7);
+    \end{scope}
     
     % t3
     \nextgroupplot[,ymin=-0.9e-2,ymax=0.] % 3.e-3 if exact solution is depicted
@@ -68,10 +65,9 @@
     \addplot[Purple,mark=x,thick,mark repeat=4,mark size=2pt] table[x=x,y=epls] {pgfFigures/HEP_planeWave/dgmpm_2ppc_high_5.pgf};
     
     \addplot[black,thick] table[x=x,y=epls] {pgfFigures/HEP_planeWave/fem_high_5.pgf};
-    %\addplot[black] table[x=x,y=epls] {pgfFigures/HEP_planeWave/exact_high_5.pgf};
-    \begin{scope}
-      \spy[black,size=1.cm] on (13.92,-.625) in node [fill=none] at (15.2,-2.7);
-    \end{scope}
+    % \begin{scope}
+    %   \spy[black,size=1.cm] on (13.92,-.625) in node [fill=none] at (15.2,-2.7);
+    % \end{scope}
 
   \end{groupplot}
 

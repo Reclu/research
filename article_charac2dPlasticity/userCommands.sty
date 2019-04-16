@@ -1,0 +1,503 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{userCommands}
+
+\typeout{
+----------------------- } \typeout{  Utilisation de userCommands.sty  }
+\typeout{
+----------------------- }
+\RequirePackage{ifthen}
+\RequirePackage{amssymb,eucal,subeqnarray,stmaryrd,mathrsfs}
+\RequirePackage[fleqn]{amsmath}
+\newboolean{mctu}
+\setboolean{mctu}{false}
+\newboolean{mctb}
+\setboolean{mctb}{false}
+\DeclareOption{tensorialunderline}{\setboolean{mctu}{true}}
+\DeclareOption{tensorialbold}{\setboolean{mctb}{true}}
+\ProcessOptions
+
+% MATH -----------------------------------------------------------
+%\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\saut}[1]{\llbracket #1 \rrbracket }
+\newcommand{\oE}{\[ \kern -1.pt \vert}
+\newcommand{\cE}{\] \kern -6.8pt \vert}
+%\newcommand{\saut}[1]{\oE #1 \kern 2pt \cE}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\Real}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\trinorm}[1]{\vert\vert\vert #1 \vert\vert\vert}
+
+\newcommand{\lexp}{{}^} %exposant a gauche
+
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+
+% SPACE DOMAIN ET INTEGRATION
+\newcommand{\duo}{\partial_1\Omega}
+\newcommand{\dfo}{\partial_2\Omega}
+\newcommand{\om}{\Omega}
+\newcommand{\dom}{\partial \Omega}
+\newcommand{\dx}{\, dx}
+\newcommand{\dX}{\, dX}
+\newcommand{\ds}{\, ds}
+\newcommand{\dy}{\, dy}
+\newcommand{\dt}{\, dt}
+\newcommand{\dP}{\, dP}
+
+
+
+
+
+% LETTRE EN GRAS
+\newcommand{\f}{\mathbf{f}}
+\newcommand{\p}{\mathbf{p}}
+\newcommand{\h}{\mathbf{h}}
+\newcommand{\s}{\mathbf{s}}
+\newcommand{\n}{\mathbf{n}}
+\renewcommand{\l}{\mathbf{l}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\G}{\mathbf{G}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\T}{\mathbf{T}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\D}{\mathbf{D}}
+\newcommand{\q}{\mathbf{q}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\V}{\mathbf{V}}
+\renewcommand{\H}{\mathbf{H}}
+\renewcommand{\a}{\mathbf{a}}
+\renewcommand{\v}{\mathbf{v}}
+\renewcommand{\u}{\mathbf{u}}
+\renewcommand{\d}{\mathbf{d}}
+%\renewcommand{\c}{\mathbf{c}}
+\renewcommand{\k}{\mathbf{k}}
+%\renewcommand{\c}{\mathbf{c}}
+%\renewcommand{\k}{\mathbf{k}}
+\newcommand{\K}{\mathbf{K}}
+\newcommand{\B}{\mathbf{B}}
+\renewcommand{\L}{\mathbf{L}}
+\newcommand{\C}{\mathbf{C}}
+\renewcommand{\b}{\mathbf{b}}
+\newcommand{\cb}{\mathbf{c}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\J}{\mathbf{J}}
+\newcommand{\g}{\mathbf{g}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\rb}{\mathbf{r}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\Z}{\mathbf{Z}}
+\renewcommand{\S}{\mathbf{S}}
+
+\newcommand{\du}{\delta\mathbf{u}}
+\newcommand{\da}{\delta\mathbf{a}}
+
+
+% LETTRES SANS SERIFS
+\newcommand{\usf}{\mathsf{u}}
+\newcommand{\vsf}{\mathsf{v}}
+\newcommand{\asf}{\mathsf{a}}
+\newcommand{\xsf}{\mathsf{x}}
+\newcommand{\Csf}{\mathsf{C}}
+\newcommand{\Xsf}{\mathsf{X}}
+\newcommand{\Hsf}{\mathsf{H}}
+\newcommand{\Nsf}{\mathsf{N}}
+\newcommand{\Usf}{\mathsf{U}}
+\newcommand{\Ksf}{\mathsf{K}}
+\newcommand{\fsf}{\mathsf{f}}
+\newcommand{\Asf}{\mathsf{A}}
+\newcommand{\Isf}{\mathsf{I}}
+\newcommand{\Jsf}{\mathsf{J}}
+\newcommand{\Lsf}{\mathsf{L}}
+\newcommand{\bsf}{\mathsf{b}}
+\newcommand{\Msf}{\mathsf{M}}
+\newcommand{\Rsf}{\mathsf{R}}
+\newcommand{\Vsf}{\mathsf{V}}
+
+% LETTRES SANS SERIFS GRAS
+\newcommand{\rbsf}{\boldsymbol{\mathsf{r}}}
+\newcommand{\ubsf}{\boldsymbol{\mathsf{u}}}
+\newcommand{\vbsf}{\boldsymbol{\mathsf{v}}}
+\newcommand{\wbsf}{\boldsymbol{\mathsf{w}}}
+\newcommand{\absf}{\boldsymbol{\mathsf{a}}}
+\newcommand{\Cbsf}{\boldsymbol{\mathsf{C}}}
+\newcommand{\Hbsf}{\boldsymbol{\mathsf{H}}}
+\newcommand{\Nbsf}{\boldsymbol{\mathsf{N}}}
+\newcommand{\Ubsf}{\boldsymbol{\mathsf{U}}}
+\newcommand{\Kbsf}{\boldsymbol{\mathsf{K}}}
+\newcommand{\fbsf}{\boldsymbol{\mathsf{f}}}
+\newcommand{\Absf}{\boldsymbol{\mathsf{A}}}
+\newcommand{\Ibsf}{\boldsymbol{\mathsf{I}}}
+\newcommand{\Jbsf}{\boldsymbol{\mathsf{J}}}
+\newcommand{\Lbsf}{\boldsymbol{\mathsf{L}}}
+\newcommand{\bbsf}{\boldsymbol{\mathsf{b}}}
+\newcommand{\Mbsf}{\boldsymbol{\mathsf{M}}}
+\newcommand{\Pbsf}{\boldsymbol{\mathsf{P}}}
+\newcommand{\Rbsf}{\boldsymbol{\mathsf{R}}}
+
+% LETTRES GRECQUES EN GRAS
+\newcommand{\lam}{{\boldsymbol{\lambda}}}
+\newcommand{\lambdab}{{\boldsymbol{\lambda}}}
+\newcommand{\Lambdab}{{\boldsymbol{\Lambda}}}
+\newcommand{\mub}{{\boldsymbol{\mu}}}
+\newcommand{\etab}{{\boldsymbol{\eta}}}
+\newcommand{\nub}{{\boldsymbol{\nu}}}
+\newcommand{\xib}{{\boldsymbol{\xi}}}
+\newcommand{\Xib}{{\boldsymbol{\Xi}}}
+\newcommand{\phib}{{\boldsymbol{\phi}}}
+\newcommand{\Phib}{{\boldsymbol{\Phi}}}
+\newcommand{\varphib}{{\boldsymbol{\varphi}}}
+\newcommand{\betab}{{\boldsymbol{\beta}}}
+\newcommand{\Deltab}{{\boldsymbol{\Delta}}}
+\newcommand{\Sigmab}{{\boldsymbol{\Sigma}}}
+\newcommand{\alphab}{{\boldsymbol{\alpha}}}
+\newcommand{\xsib}{{\boldsymbol{\xsi}}}
+\newcommand{\thetab}{{\boldsymbol{\theta}}}
+\newcommand{\omegab}{{\boldsymbol{\omega}}}
+\newcommand{\Thetab}{{\boldsymbol{\Theta}}}
+\newcommand{\gammab}{{\boldsymbol{\gamma}}}
+\newcommand{\nablab}{{\boldsymbol{\nabla}}}
+\newcommand{\deltab}{{\boldsymbol{\delta}}}
+
+% LETTRES EN CALI
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Ic}{\mathcal{I}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Wc}{\mathcal{W}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Zc}{\mathcal{Z}}
+
+\newcommand{\bu}{\mathcal{U}}
+
+
+% LETTRES EN CALI GRAS
+\newcommand{\Acb}{{\boldsymbol{\mathcal{A}}}}
+\newcommand{\Bcb}{{\boldsymbol{\mathcal{B}}}}
+\newcommand{\Ccb}{{\boldsymbol{\mathcal{C}}}}
+\newcommand{\Dcb}{{\boldsymbol{\mathcal{D}}}}
+\newcommand{\Ecb}{{\boldsymbol{\mathcal{E}}}}
+\newcommand{\Fcb}{{\boldsymbol{\mathcal{F}}}}
+\newcommand{\Gcb}{{\boldsymbol{\mathcal{G}}}}
+\newcommand{\Hcb}{{\boldsymbol{\mathcal{H}}}}
+\newcommand{\Icb}{{\boldsymbol{\mathcal{I}}}}
+\newcommand{\Jcb}{{\boldsymbol{\mathcal{J}}}}
+\newcommand{\Kcb}{{\boldsymbol{\mathcal{K}}}}
+\newcommand{\Lcb}{{\boldsymbol{\mathcal{L}}}}
+\newcommand{\Pcb}{{\boldsymbol{\mathcal{P}}}}
+\newcommand{\Qcb}{{\boldsymbol{\mathcal{Q}}}}
+\newcommand{\Rcb}{{\boldsymbol{\mathcal{R}}}}
+\newcommand{\Ucb}{{\boldsymbol{\mathcal{U}}}}
+\newcommand{\Vcb}{{\boldsymbol{\mathcal{V}}}}
+\newcommand{\Wcb}{{\boldsymbol{\mathcal{W}}}}
+\newcommand{\Scb}{{\boldsymbol{\mathcal{S}}}}
+\newcommand{\Tcb}{{\boldsymbol{\mathcal{T}}}}
+\newcommand{\Ycb}{{\boldsymbol{\mathcal{Y}}}}
+
+% Ralph Smith’s Formal Script Font
+\newcommand{\Ascr}{\mathscr{A}}
+\newcommand{\Bscr}{\mathscr{B}}
+\newcommand{\Cscr}{\mathscr{C}}
+\newcommand{\Dscr}{\mathscr{D}}
+\newcommand{\Escr}{\mathscr{E}}
+\newcommand{\Fscr}{\mathscr{F}}
+\newcommand{\Gscr}{\mathscr{G}}
+\newcommand{\Hscr}{\mathscr{H}}
+\newcommand{\Iscr}{\mathscr{I}}
+\newcommand{\Jscr}{\mathscr{J}}
+\newcommand{\Kscr}{\mathscr{K}}
+\newcommand{\Lscr}{\mathscr{L}}
+\newcommand{\Mscr}{\mathscr{M}}
+\newcommand{\Nscr}{\mathscr{N}}
+\newcommand{\Oscr}{\mathscr{O}}
+\newcommand{\Pscr}{\mathscr{P}}
+\newcommand{\Qscr}{\mathscr{Q}}
+\newcommand{\Rscr}{\mathscr{R}}
+\newcommand{\Sscr}{\mathscr{S}}
+\newcommand{\Tscr}{\mathscr{T}}
+\newcommand{\Uscr}{\mathscr{U}}
+\newcommand{\Vscr}{\mathscr{V}}
+\newcommand{\Wscr}{\mathscr{W}}
+\newcommand{\Xscr}{\mathscr{X}}
+\newcommand{\Yscr}{\mathscr{Y}}
+\newcommand{\Zscr}{\mathscr{Z}}
+
+
+%% espaces de matrice
+\newcommand{\GL}{{\Gbb\Lbb}}
+\newcommand{\ST}{{\Sbb}}
+\newcommand{\STsto}{\ST^*}
+\newcommand{\Grass}{{Gr}}
+\newcommand{\Grasssto}{{Gr^*}}
+\newcommand{\St}{{\Sbb}}
+
+
+% LETTRES DOUBLEES
+\newcommand{\Abb}{\mathbb{A}}
+\renewcommand{\Bbb}{\mathbb{B}}
+\newcommand{\Cbb}{\mathbb{C}}
+\newcommand{\Dbb}{\mathbb{D}}
+\newcommand{\Ebb}{\mathbb{E}}
+\newcommand{\Fbb}{\mathbb{F}}
+\newcommand{\Gbb}{\mathbb{G}}
+\newcommand{\Hbb}{\mathbb{H}}
+\newcommand{\Ibb}{\mathbb{I}}
+\newcommand{\Jbb}{\mathbb{J}}
+\newcommand{\Lbb}{\mathbb{L}}
+\newcommand{\Mbb}{\mathbb{M}}
+\newcommand{\Nbb}{\mathbb{N}}
+\newcommand{\Obb}{\mathbb{O}}
+\newcommand{\Pbb}{\mathbb{P}}
+\newcommand{\Qbb}{\mathbb{Q}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Vbb}{\mathbb{V}}
+\newcommand{\Sbb}{\mathbb{S}}
+\newcommand{\Tbb}{\mathbb{T}}
+\newcommand{\Zbb}{\mathbb{Z}}
+
+
+% PROBABILITES
+\renewcommand{\Pr}{{P}}
+%\newcommand{\pr}{{p}}
+\newcommand{\Er}{\mathrm{E}}
+\newcommand{\Esp}{{E}}
+
+
+
+
+
+% LETTRES SOULIGNEES
+\newcommand{\ns}{\underline{n}}
+\newcommand{\us}{\underline{u}}
+\newcommand{\vs}{\underline{v}}
+\newcommand{\xs}{\underline{x}}
+\newcommand{\ys}{\underline{y}}
+
+
+% LETTRES SURLIGNEES
+\newcommand{\Kbar}{\overline{\K}}
+\newcommand{\fbar}{\overline{\f}}
+
+% VECTEURS
+\ifthenelse{\boolean{mctb}} {
+\newcommand{\vect}[1]{{\mathbf{\boldsymbol{#1}}}}
+\newcommand{\tens}[1]{{\mathbf{\boldsymbol{#1}}}}
+\newcommand{\tenss}[1]{{\mathbb{#1}}}
+\newcommand{\tensss}[1]{{\mathbf{\boldsymbol{#1}}}}
+
+} {\ifthenelse{\boolean{mctu}}
+    {\newcommand{\vect}[1]{{\underline{#1}}}}
+    {\newcommand{\vect}[1]{{\overrightarrow{#1}}}}
+    \newcommand{\tens}[1]{{\underline{\underline{#1}}}}
+\newcommand{\tenss}[1]{{\underline{\underline{\underline{#1}}}}}
+\newcommand{\tensss}[1]{{\underline{\underline{\underline{\underline{#1}}}}}}
+}
+
+\newcommand{\av}{\vect{a}}
+\newcommand{\bv}{\vect{b}}
+\newcommand{\dv}{\vect{d}}
+\newcommand{\fv}{\vect{f}}
+\newcommand{\gv}{\vect{g}}
+\newcommand{\nv}{\vect{n}}
+\newcommand{\qv}{\vect{q}}
+\newcommand{\pv}{\vect{p}}
+\newcommand{\tv}{\vect{t}}
+\newcommand{\uv}{\vect{u}}
+\newcommand{\vv}{\vect{v}}
+\newcommand{\wv}{\vect{w}}
+\newcommand{\xv}{\vect{x}}
+\newcommand{\yv}{\vect{y}}
+
+\newcommand{\Fv}{\vect{F}}
+\newcommand{\Mv}{\vect{M}}
+\newcommand{\Hv}{\vect{H}}
+\newcommand{\Tv}{\vect{T}}
+\newcommand{\Xv}{\vect{X}}
+
+\newcommand{\omegav}{\vect{\omega}}
+\newcommand{\omegat}{\tens{\omega}}
+\newcommand{\Omegav}{\vect{\Omega}}
+\newcommand{\Omegat}{\tens{\Omega}}
+\newcommand{\thetav}{\vect{\theta}}
+\newcommand{\thetat}{\tens{\theta}}
+\newcommand{\dMv}{\vect{dM}}
+\newcommand{\dvv}{\vect{dv}}
+\newcommand{\dev}[1]{\vect{de_{#1}}}
+\newcommand{\ev}[1]{\vect{e_{#1}}}
+\newcommand{\es}[1]{\underline{e}_{#1}}
+\newcommand{\ex}{\vect{e_x}}
+\newcommand{\ey}{\vect{e_y}}
+\newcommand{\ez}{\vect{e_z}}
+\newcommand{\er}{\vect{e_r}}
+\newcommand{\etheta}{\vect{e_{\theta}}}
+\newcommand{\ephi}{\vect{e_{\varphi}}}
+
+% OPERATEURS DIFF
+\newcommand{\Div}{div \,}
+\DeclareMathOperator{\tr}{trace \,}
+\DeclareMathOperator{\sign}{sign}
+% \DeclareMathOperator{\Div}{div \,}
+% \DeclareMathOperator{\Det}{det \,}
+% \DeclareMathOperator{\Divv}{\vect{div} \,}
+% \DeclareMathOperator{\Lap}{\Delta \,}
+% \DeclareMathOperator{\Lapv}{\vect{\Delta} \,}
+% \DeclareMathOperator{\Ker}{Ker \,}
+% \DeclareMathOperator{\Supp}{Supp \,}
+% \DeclareMathOperator{\rg}{rg \,}
+% \DeclareMathOperator{\dim}{dim \,}
+\newcommand{\ttimes}{\tens{\times}}
+\newcommand{\Deltav}{\vect{\Delta}}
+\newcommand{\nablat}{\tens{\nabla}}
+\newcommand{\nablav}{\vect{\nabla}}
+\newcommand{\gradv}{\vect{\nabla}\,}
+\newcommand{\rotv}{\vect{\nabla} \times\,}
+\newcommand{\gradt}{\tens{grad}\,}
+\newcommand{\rott}{\tens{rot}\,}
+\newcommand{\divv}{\nablav \cdot \,}
+\newcommand{\gradd}{\gradt \gradv,}
+\newcommand{\gradb}{\textbf{grad}\,}
+\newcommand{\rotb}{\textbf{rot}\,}
+\newcommand{\Gradb}{\textbf{Grad}\,}
+\newcommand{\Tr}{\mathrm{Tr}\,}
+\newcommand{\drond}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\sgn}[1]{\sign\( #1\)}
+\newcommand{\ddrond}[3]{
+  \ifthenelse{\equal{#2}{#3}}{\frac{\partial^2 #1}{\partial #2 ^2}}{\frac{\partial^2 #1}{\partial #2\partial #3}}
+  }
+\newcommand{\ddroit}[2]{\frac{d #1}{d #2}}
+\newcommand{\dddroit}[3]{
+  \ifthenelse{\equal{#2}{#3}}{\frac{d^2 #1}{d^2 #2}}{\frac{d^2 #1}{d #2 d #3}}
+}
+\newcommand{\overdot}[1]{\dot{\overline{#1}}}
+
+% PROBLEME MECANIQUE
+\newcommand{\fd}{\vect {f_d}}
+\newcommand{\Fd}{\vect {F_d}}
+\newcommand{\ud}{\vect{u_d}}
+\newcommand{\dS}{\, dS}
+\newcommand{\si}{\tens{\sigma}}
+\newcommand{\sib}{\boldsymbol{\sigma}}
+\newcommand{\epb}{\boldsymbol{\varepsilon}}
+\newcommand{\ep}{\tens{\varepsilon}}
+\newcommand{\ta}{\tens{\tau}}
+\newcommand{\SI}{\tens{\Sigma}}
+\newcommand{\EP}{\tens{E}}
+\newcommand{\PK}{\tens{S}}
+
+
+\DeclareMathOperator*{\assemble}{\text{\sf\Large A}}
+
+\newcommand{\redominus}{\red{$\ominus$}}
+\newcommand{\blueoplus}{\blue{$\oplus$}}
+
+
+%% DELIMITEURS
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\renewcommand{\[}{\left[}
+\renewcommand{\]}{\right]}
+
+%% ENCADRER
+\newcommand{\boxe}[1]{%
+\begin{center}
+\fbox{\begin{minipage}[t]{0.985\linewidth}%
+#1\end{minipage}}
+\end{center}}
+
+%% TENSEURS // VECTEURS : REPRESENTATION TABULEE
+
+% Définition des crochets // accolades // barres
+\newcommand{\brackets}[1]{\left[#1\right]}
+\newcommand{\braces}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\bra}[1]{\left[#1\right]}
+\newcommand{\acc}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barvec}[1]{\left| #1 \right.}
+\newcommand{\transp}[1]{\left\langle #1 \right\rangle}
+
+% Définition du vecteur colonne de base
+\newcommand{\VECTOR}[1]{\begin{array}{cc}#1\end{array}} 
+% Vecteur avec accolades
+\newcommand{\avecteur}[1]{\acc{\VECTOR{#1}}}
+% Vecteur avec barre
+\newcommand{\bvecteur}[1]{\barvec{\VECTOR{#1}}}
+
+% Définition de la matrice de base
+\newcommand{\mat}[1]{\begin{matrix}#1\end{matrix}} 
+% Matrice avec crochets
+\newcommand{\matrice}[1]{\bra{\mat{#1}}}
+\newcommand{\vecteuracc}[1]{\left\lbrace \mat{#1} \right.}
+\newcommand{\vecteurbar}[1]{\left| \mat{#1} \right.}
+
+% Environnement pour les remarques
+\newcommand{\remarque}[1]{
+$\newline$
+\textsc{Remarque : }\textit{#1} \\}
+
+\newcommand{\remarques}[1]{
+\\
+\textsc{Remarques : }\textit{#1}\\ \\}
+
+% Environnement dessin
+\newcommand{\schema}[2][1]{\begin{tikzpicture}[scale=#1] #2 \end{tikzpicture} }
+
+\newcommand{\EFTri}[3]{
+\draw #1 -- #2 -- #3 -- cycle;
+\draw #1 circle (0.05); 
+\draw #2 circle (0.05);
+\draw #3 circle (0.05);
+\fill[white] #1 circle (0.05); 
+\fill[white] #2 circle (0.05);
+\fill[white] #3 circle (0.05);
+}
+
+\newcommand{\EFQuad}[4]{
+\draw[fill=white] #1 -- #2 -- #3 -- #4 --#1;
+\draw[fill=white] #1 circle (0.05); 
+\draw[fill=white] #2 circle (0.05);
+\draw[fill=white] #3 circle (0.05);
+\draw[fill=white] #4 circle (0.05);
+\node at #1 [below,left] {1};
+\node at #2 [below,right] {2};
+\node at #3 [above,right] {3};
+\node at #4 [above,left] {4};
+}
+
+\newcommand{\Circle}[2]{
+\draw #1 circle #2;
+}
+
+\newcommand{\cross}[3][black]{
+\draw[#1,thick] (#2,#3) -- (#2 ,#3 + 0.2);
+\draw[#1,thick] (#2,#3) -- (#2, #3 -0.2);
+\draw[#1,thick] (#2,#3) -- (#2 -0.2,#3);
+\draw[#1,thick] (#2,#3) -- (#2 +0.2,#3);
+}

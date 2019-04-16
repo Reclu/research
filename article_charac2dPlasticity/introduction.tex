@@ -1,0 +1,84 @@
+%% Hyperbolic problems in history-dependent solids
+A wide variety of engineering problems including among others acoustics, aerodynamics or impacts, are modeled with this hyperbolic systems of conservation laws.
+More specifically, applications such as high-speed metal forming techniques or crash-proof design involve irreversible phenomena and require the accurate assessment of residual stresses and strains. 
+%% Difficulties: interaction of waves, complex geometries, large deformation.
+% However, given the continuous or discontinuous waves arising in the solutions of hyperbolic systems of conservation laws, the complex geometries that may be involved, and the possibly large deformations occurring, the resolution of these problems is in general not possible analytically.
+In order to properly estimate these residual states in elastic-plastic materials, the waves arising in the solutions of hyperbolic systems, along with their interaction with each other, must be precisely followed.
+This is however not possible in general since the characteristic structure of those solutions is only known in particular cases.
+%% Resort to numerical simulations. Can be improved by earning some knowledge about the exact solution
+% The numerical simulation then provides a framework for computing approximate solutions by means of robust and efficient discretization techniques.
+% In particular, the pioneer works of \textsc{Godunov} \cite{Godunov_method} brought up the idea of accounting for the characteristic structure of the solution of hyperbolic problems within a finite difference method.
+% When dealing with elastic-plastic solids, which are the object of this paper, the characteristic structure of the problem is however much more complicated than for elastic ones so that such numerical strategies is limited to specific cases.
+%
+Until the 50s, research on dynamic problems in elastic-plastic solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for materials characterization purposes.
+Then, \textsc{Rakhmatulin} \cite{Rakhmatulin} and \textsc{Cristescu} \cite{CRISTESCU19591605} investigated the response of linearly hardening solids to combined shear and pressure dynamic loads.
+%The first references that brought some understanding about the response of linearly hardening solids to combined shear and pressure loads are those of \textsc{Rakhmatulin} \cite{Rakhmatulin} and \textsc{Cristescu} \cite{CRISTESCU19591605}.
+These early works on plane stress impacts in the plastic regime led to the conclusion that elastic waves, as well as plastic combined-stress simple waves, can propagate in two-dimensional solids. 
+While the former were well-known, the latter were shown to fall into two families: the \textit{fast waves} and the \textit{slow waves}.
+%
+Later, \textsc{Bleich} and \textsc{Nelson} \cite{Bleich} considered superimposed plane and shear waves in an ideally elastic-plastic material submitted to step loads.
+It has then been highlighted that different loading cases yield different characteristic structures of problems in a semi-infinite medium with prescribed traction forces and initial conditions (the so-called Picard problem).
+The results of \textsc{Bleich} and \textsc{Nelson} thus revealed the complexity of plastic flows in multi-dimensional solids undergoing dynamic loadings.
+The same conclusions have been drawn by \textsc{Clifton} \cite{Clifton} for hardening materials under tension-torsion, who furthermore studied the influence of plastic pre-loading on the solution.
+This contribution highlighted the combined-stress wave nature lying in Ordinary Differential Equations (ODEs) that arise from the characteristic analysis of the hyperbolic system and govern the evolution of stress components within the simple waves.
+%% This contribution established the existence of loading paths through the simple waves arising from the characteristic analysis of the hyperbolic system.
+%% Indeed, the combined-stress wave nature lies in ODEs which govern the evolution of stress components within the simple waves.
+% The integration of these equations of the form $d\sigma_{11}=\psi d\sigma_{12}$ allows the building of curves that connect the applied stress state of the Picard problem $(\sigma^d_{11},\sigma^d_{12})$ to the initial state of the medium.
+The integration of these equations allows the building of curves that connect the applied stress state of the Picard problem to the initial state of the medium.
+% It has been for instance shown that if a solid is acted upon by a traction force such that $\sigma^d_{11}=0$ and $\sigma^d_{12}$ lies outside the elastic domain, only an elastic shear discontinuity, followed by a slow simple wave, propagates.
+It has been for instance shown that if a solid is acted upon by a pure shear traction beyond the elastic domain, only an elastic shear discontinuity, followed by a slow simple wave, propagates.
+Conversely, other loading conditions may lead to the combination of an elastic pressure discontinuity and a fast wave, possibly followed by a slow wave.
+Another notable conclusion is that the loading paths followed inside plastic simple waves are not necessarily radial even if a von-Mises flow rule is considered.
+
+%% Experimental works
+Experimental data collected on a thin-walled tube submitted to a dynamic tensile load \cite{Clifton_exp,Clifton_exp2} confirmed the existence of two distinct families of  simple waves, both involving combined stress paths.
+These works nevertheless exhibited some discrepancies with the theory which have been attributed to the assumption made on the von-Mises yield surface.
+As a matter of fact, a constant strain region lying between the fast and slow waves that is predicted by the theory \cite{Clifton} could not be seen in experimental results.
+However, by following the endochronic theory of plasticity \cite{Valanis} which does not require the introduction of a yield surface, \textsc{Wu} and \textsc{Lin} \cite{Wu_experimental} obtained numerical results that better fit the experimental data provided by \textsc{Lipkin} and \textsc{Clifton} \cite{Clifton_exp2}.
+The good agreement showed between numerical and experimental results \cite{Wu_experimental} thus confirmed the theory.
+
+\textsc{Ting} and \textsc{Nan} \cite{Ting68} then generalized the work of \textsc{Bleich} and \textsc{Nelson} to hardening materials and \textsc{Ting} \cite{Ting69} widened that of \textsc{Clifton} to more complex loadings, that is, a superimposition of one plane wave and two shear waves.
+Once again, the mathematical study of the ODE system governing the stress evolution inside fast and slow simple waves led to the construction of loading paths in stress space that depend on the external loads. A review of governing equations for all the cases depending on one space dimension considered above can be found in \cite{Nowacki}.
+
+
+%% Existence of plastic shocks
+On the other hand, the existence of plastic shocks in solids under plane wave assumptions has been investigated by several authors. 
+First, \textsc{Mandel} \cite{Mandel1} showed the existence of stable plastic shocks in three-dimensional elastoplastic media.
+In this work, Hugoniot curves are built by assuming that the internal variables followed a radial loading path through a plastic shock.
+\textsc{Lee} and \textsc{Germain} \cite{Germain_shock} considered that Hugoniot curves in elastic-plastic solids cannot be constructed without studying the internal structure of the shock.
+Thus, an elastic-viscoplastic continuum problem is solved by magnifying the narrow region in the vicinity of the shock in which the fields vary sharply.
+The shock solution was then taken as the limit when viscosity tends to zero.
+A study of the internal structure of the shock has also been made by \textsc{Stolz} \cite{Claude}.
+In the latter approach, the Hugoniot conditions across a shock moving at constant speed are derived by doing an asymptotic analysis. 
+The author thus provided existence and uniqueness conditions for a shock in compression provided that elastic stiffening dominates the (concave) hardening saturation.
+Nevertheless, according to \textsc{Mandel} \cite{Mandel2}, such an analysis of the internal structure of the shock is not required to build Hugoniot curves, provided one chooses $\eps^p_1$ as internal variable and not the specific work $w$.
+However, the propagation of plastic shocks is still an open scientific issue and subject to debate.
+
+In this paper, a unified framework for the study of simple waves propagation in multi-dimensional elastic-plastic solids under small strains is first proposed.
+The formulation is based upon a generic quasi-linear form of the governing hyperbolic system which is second particularize to plane strain and plane stress cases.
+Thus, the characteristic analysis can be carried out so that typical responses of two-dimensional elastoplasticity problems can be identified.
+The work presented here is motivated by the pioneer works of \textsc{Godunov} \cite{Godunov_method} who allowed to take into account the characteristic structure of the solution of hyperbolic problems within a numerical method so as to accurately capture waves.
+The long-term goal of the present research is in fact the extension to general two-dimensional problems of the approach proposed by \textsc{Lin} and \textsc{Ballman} \cite{Lin_et_Ballman}.
+The latter consists in taking into account the results of \textsc{Clifton} within a finite volume scheme by iteratively integrating the loading paths numerically for the thin-walled tube problem.
+% No plastic shock
+It is worth noticing that natural initial conditions as well as a concave hardening law with no stiffening are considered so that only simple waves and no plastic shocks arise.
+
+In what follows, the governing equations of dynamics in elastic-plastic solids are recalled and the characteristic analysis is carried out in section \ref{sec:charac_plast}.
+Then, the equations are particularized to two-dimensional problems so that the method of characteristics is applied in section \ref{sec:integral_curves} in order to derive the equations of integral curves.
+Those curves, once projected into the stress space, correspond to the loading paths that have already been identified for other problems.
+Section \ref{sec:stress_paths} is devoted to the mathematical properties of the aforementioned loading paths which, given the complexity of the equations, is supplemented with numerical results presented in section \ref{sec:stress_paths_num}.
+
+% This chapter is organized as follows.
+% A brief historical review of the solution of dynamic problems in two-dimensional elastic-plastic solids is made in section \ref{sec:review}.
+% Then, the equations of plasticity are recalled in section \ref{sec:charac_plast} so that the characteristic analysis, followed by the application of the method of characteristics, can be carried out.
+% In section \ref{sec:stress_paths}, attention is paid to the evolution of stress components inside simple waves that might propagate by means of a mathematical study of the ODEs satisfied within these waves.
+% Since the developments rapidly become cumbersome, the analysis is supplemented with numerical results in section \ref{sec:stress_paths_num}.
+% At last, some identified trends are discussed at the end of the chapter in order to use them for building a dedicated Riemann solver. 
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% ispell-local-dictionary: "american"
+%%% TeX-master: "manuscript"
+%%% End:
