@@ -67,6 +67,7 @@ ppc=[2]
 # MP = [10,20,40,60,80,100]
 # ppc=[2]
 MP = [4,8,16,32,64,128]
+MP = [4,8,16,32,64]
 ppc=[2,3,4,8]
 #ppc=[2,6,10,20]
 ppc=[2]
@@ -91,7 +92,7 @@ Error_order1=2
 Error_order2=2
 period=0.4
 DX=[]
-compute_CFL=False
+compute_CFL=True
 for p in range(len(ppc)):
     print "==============================",ppc[p],"PPC =============================="
     for i,Ne in enumerate(MP):
@@ -130,17 +131,17 @@ for p in range(len(ppc)):
         #########################  Comparison  ######################################
         
         ##Stress
-        # l1,l2,l3,l4=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Velocity"][:,n1],'r+', \
-        #                         DGMPM["Pos"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),'k', \
-        #                         DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Velocity"][:,n1RK2],'bo', \
-        #                         USL["Pos"][:,n2],USL["Velocity"][:,n2],'g^')
-        # # if p==0 :
-        # #     plt.plot(FEM["y"],FEM["sigma"][:,n3],'b-o',label='fem')
-        # #     plt.plot(FEM["y"],FEM["anal"][:,n3],'k--')
-        # plt.grid()
-        # plt.xlabel('x (m)')
-        # plt.ylabel(r'$\sigma$')
-        # plt.show()
+        l1,l2,l3,l4=plt.plot(DGMPM["Pos"][:,n1],DGMPM["Velocity"][:,n1],'r+', \
+                                DGMPM["Pos"][:,n1],-DGMPM["Sth"][:,n1]/(rho*c),'k', \
+                                DGMPMRK2["Pos"][:,n1RK2],DGMPMRK2["Velocity"][:,n1RK2],'bo', \
+                                USL["Pos"][:,n2],USL["Velocity"][:,n2],'g^')
+        # if p==0 :
+        #     plt.plot(FEM["y"],FEM["sigma"][:,n3],'b-o',label='fem')
+        #     plt.plot(FEM["y"],FEM["anal"][:,n3],'k--')
+        plt.grid()
+        plt.xlabel('x (m)')
+        plt.ylabel(r'$\sigma$')
+        plt.show()
         #############################################################################
 
     ## Fit curves
