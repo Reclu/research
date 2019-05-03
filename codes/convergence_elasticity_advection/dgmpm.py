@@ -224,7 +224,8 @@ if ppc !=1:
     alpha=1.
 else:
     alpha=1.
-    """
+alpha=CFL
+"""
 limiter =-1 : none
           0 : minmod
           1 : superbee
