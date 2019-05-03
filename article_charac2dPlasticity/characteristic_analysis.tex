@@ -1,9 +1,11 @@
-\paragraph*{Key points of the chapter:} The simple wave structure in two-dimensional solids is studied by writing the governing equations of plane strain and plane stress problems in \textbf{a unique generic framework}.
-%For that purposes, the governing equations of dynamics in elastoplastic media are written in such a way that plane strain and plane stress problems are included in a unique generic framework.
-Thus, the works carried out on simple waves mentioned above, formulated in terms of elastoplastic softnesses, appear \textbf{as particular cases of the present investigation}.
-As a result, we shall refer to those existing solutions in order to confirm our development as much as possible.
+In this section, the governing equations of general dynamic problems in elasto-plastic solids are first written in a unique and generic framework based on the fourth-order stiffnesses tensor.
+Thus, the works mentioned in the introduction, which are formulated in terms of elastoplastic softnesses, appear as particular cases of the present investigation.
 
-\review{dimensional splitting as it is done in numerical methods}
+Second, the spectral analysis of the resulting hyperbolic system is performed by considering one arbitrary propagation direction of waves.
+This approach is motivated by the resolution of Riemann problems in one space dimension in numerical schemes such as the Finite Volume Method (FVM) \cite{Leveque,Toro}.
+It furthermore avoids the cumbersome search for bi-characteristics as \textsc{Clifton} proposed in order to build elastoplastic finite difference schemes \cite{Clifton_thesis}.
+It must be emphasized that the present work aims at highlighting a sufficient amount of information so as to enable numerical schemes to mimic the analytical behavior, and does not requires the complete bi-characteristic structure.
+
 \subsection{Governing equations}
 We consider the isothermal deformation of a solid body of mass density $\rho$ in the linearized geometrical framework.
 The balance equation of linear momentum with neglected body forces, and the geometrical balance equations \cite{Plohr,Gil_HE} are:  
