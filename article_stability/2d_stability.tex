@@ -1,0 +1,294 @@
+\subsection{The scheme equation}
+We now move on to the scalar linear advection equation with positive coefficients $s_1,s_2>0$.
+Moreover, the space coordinates $x_1,x_2$ in the ($\vect{e}_1,\vect{e}_2$) plane are written $x$ and $y$.
+Then, the physical domain under consideration, that is $x,y \in [0,l]\times[0,h]$, is discretized with $N_p$ material points arbitrarily distributed in a Cartesian grid made of $E$ four-node bilinear elements with constant size $\Delta x \times \Delta y$.
+\begin{figure}[h!]
+  \centering
+  \input{pgfFigures/2Dparent}
+  \caption{Parent and current configuration of a rectangular four-node bilinear element}
+  \label{fig:2Dparent}
+\end{figure}
+With positions of nodes of cell $C$ denoted by $\vect{x}_i^C=\matrice{x^C_i \\ y_i^C}$, as depicted in figure \ref{fig:2Dparent}, the location $\vect{x}$ of an arbitrary point in cell $C$ maps to the parent coordinates $(\xi,\eta)$ in the domain $\[-1,1\]\times\[-1,1\]$ according to:
+\begin{equation}
+  \label{eq:parentCoordinates}
+  \begin{aligned}
+      &\xi = 2\frac{x-x^C_1}{\Delta x} -1 \quad ; \quad d\xi = 2\frac{dx}{\Delta x} \\
+      &\eta = 2\frac{y-y^C_1}{\Delta y} -1 \quad ; \quad d\eta = 2\frac{dy}{\Delta y} 
+  \end{aligned}
+\end{equation}
+Horizontal and vertical edges lengths are distinguished here in spite of the Cartesian nature of the grid in order to easily extend the following study to rectilinear grids. Again, there is no empty cell inside the physical domain so that no hole is generated, and periodic boundary conditions are considered to simplify the analysis.
+Though, one can imagine to combine the DGMPM discretization with a multi-stage time integration as proposed for one-dimensional problems, the equations one has to deal with become complicated.
+Hence, the analysis of the DGMPM scheme for two-dimensional problems carried out here only considers the Euler time discretization.
+
+The updated solution at material point $I$ is obtained by interpolation of updated nodal quantities:
+\begin{equation}
+  \label{eq:2D_updatedMP}
+  \bar{Q}^{k+1}_I = \sum_{i=1}^{4E}S_{iI} \bar{q}_i^{k+1}
+\end{equation}
+where the $\bar{q}_i^{k+1}$ result from the discrete system:
+\begin{equation}
+  \bar{q}_i^{k+1} = \bar{q}_i^k + \frac{\Delta t}{M^L_i} \(K_{ij}^x s_1\bar{q}_j^k + K_{ij}^y s_2\bar{q}_j^k - \hat{F}^k_i\) \label{eq:discrete2D}
+\end{equation}
+
+The lumped mass matrix in the above equation has the same expression as in the one-dimensional case that depends on the shape functions of the four-node bilinear element: $M_i^L=\sum_K m_K S_{iK}$.
+Making use of parent coordinates \eqref{eq:parentCoordinates}, the pseudo-stiffness matrices read:
+\begin{equation}
+  \begin{aligned}
+    & K_{ij}^x = \sum_J \drond{S_{iJ}}{x}m_J S_{jJ}=\frac{2}{\Delta x}\sum_J\drond{S_{iJ}}{\xi}m_J S_{jJ} \\
+    &K_{ij}^y = \sum_J\drond{S_{iJ}}{y}m_J S_{jJ}=\frac{2}{\Delta y}\sum_J\drond{S_{iJ}}{\eta}m_J S_{jJ} \\
+  \end{aligned}
+\end{equation}
+As for one-dimensional cases, the homogeneous medium yields the same mass for every particles so that, by writing $\drond{(\bullet)}{\xi}=\partial_\xi(\bullet)$, one gets:
+\begin{equation}
+  \label{eq:2Dpseudo_stiffness}
+  \begin{aligned}
+    & \frac{K_{ij}^x}{M_i^L}  =  \frac{2}{\Delta x} \frac{\sum_J\partial_\xi S_{iJ}  S_{jJ}}{\sum_K  S_{iK}} \\
+    & \frac{K_{ij}^y}{M_i^L} = \frac{2}{\Delta y} \frac{\sum_J\partial_\eta S_{iJ} S_{jJ}}{\sum_K S_{iK}}
+  \end{aligned}
+\end{equation}
+The nodal solutions in cell $C$ at time $k$ being given by the projection $\bar{q}^{C,k}_i=\frac{\sum_L S_{iL}\bar{Q}^k_L}{\sum_K S_{iK}}$, volume fluxes of the discrete form can be rewritten as:
+\begin{equation}
+  \label{eq:2Dvolume_fluxes}
+  \begin{aligned}
+    & s_1\frac{K_{ij}^x}{M_i^L}\bar{q}^k_j  = \sum_L\bar{Q}^k_L\frac{2}{\Delta x} \frac{s_1\sum_J\partial_\xi S_{iJ}  \sum_j S_{jJ} S_{jL}}{\sum_K S_{iK}\sum_K S_{jK}}\\
+    & s_2\frac{K_{ij}^y}{M_i^L}\bar{q}^k_j = \sum_L \bar{Q}^k_L\frac{2}{\Delta y}  \frac{s_2 \sum_J\partial_\eta S_{iJ}  \sum_j S_{jJ} S_{jL}}{\sum_K  S_{iK}\sum_K S_{jK}}
+  \end{aligned}
+\end{equation}
+Then, the nodal interface flux $\hat{F}^k_i$ results from the integration of Godunov's fluxes along edges the node belongs to, according to the weak form \eqref{eq:DGMPM_semi_discrete}.
+Referring to a quantity defined at an interface by means of parenthesis superscripts, the Godunov's flux at interface $(i)$ is:
+\begin{equation}
+  \label{eq:2d_Godunov_fluxes}
+  F_n^{(i)}= s_n q^{-,(i)} = \underbrace{s_nq^{+,(i)}}_{F_n(q^{+,(i)})} - \underbrace{s_n (q^{+,(i)}-q^{-,(i)} )}_{\Ac^{+}_{U/D}} 
+\end{equation}
+where $s_n$ is the speed in the normal direction to the interface (\textit{i.e. $s_2$ for horizontal edges and $s_1$ for vertical edges}). Equation \eqref{eq:2d_Godunov_fluxes} further involves state vectors $q^{-,(i)}$ and $q^{+,(i)}$ obtained by averaging nodal values connected to interface $(i)$ on Upwind and Downwind sides respectively, and the right-going fluctuation $\Ac_{U/D}^+$.
+The CTU is adopted by adding transverse corrections to fluxes \eqref{eq:2d_Godunov_fluxes}, based on those fluctuations according to equation \eqref{eq:corrected_flux}:
+\begin{equation}
+  \label{eq:2D_transverse_corrections}
+  \Bc^+\Ac^+_{U/D}=s_t s_n (q^{+,(i)} -q^{-,(i)})
+\end{equation}
+with $s_t$ the speed in the tangent direction to the interface. The final expression of intercell fluxes is hence:
+\begin{equation}
+  \label{eq:CTU-fluxes}
+  F_n^{(i)}= s_n q^{-,(i)} - s_t s_n \frac{\Delta t}{2\Delta x}(q^{+,(i)} -q^{-,(i)})
+\end{equation}
+\begin{figure}[h!]
+  \centering
+  \input{pgfFigures/2D_domain}
+  \caption{Two-dimensional patch of cells of constant size $\Delta x \times \Delta x$.}\label{fig:2Dmesh}
+\end{figure}
+Figure \ref{fig:2Dmesh} shows transverse corrections in the cell $C$ based on fluctuations coming from Bottom ($B$), Left ($L$) and Bottom Left ($BL$) neighbor elements. The use of the numbering of interfaces and nodes adopted in figure \ref{fig:2Dmesh} allows the specialization of equation \eqref{eq:CTU-fluxes} to intercell fluxes of cell $C$:
+\begin{align}
+  & F_n^{(1)} = s_2 \frac{q_3^{B,k} + q_4^{B,k}}{2} - s_1 s_2 \frac{\Delta t}{2\Delta y}\(\frac{q_1^{B,k}+q_4^{B,k}}{2}-\frac{q_2^{BL,k}+q_3^{BL,k}}{2}\) \\
+  & F_n^{(2)} = s_1 \frac{q_2^{C,k} + q_3^{C,k}}{2} - s_1 s_2 \frac{\Delta t}{2\Delta x}\(\frac{q_1^{C,k}+q_2^{C,k}}{2}-\frac{q_3^{B,k}+q_4^{B,k}}{2}\) \\
+  & F_n^{(3)} = s_2 \frac{q_3^{C,k} + q_4^{C,k}}{2} - s_1 s_2 \frac{\Delta t}{2\Delta y}\(\frac{q_1^{C,k}+q_4^{C,k}}{2}-\frac{q_2^{L,k}+q_3^{L,k}}{2}\) \\
+  & F_n^{(4)} = s_1 \frac{q_3^{L,k} + q_4^{L,k}}{2} - s_1 s_2 \frac{\Delta t}{2\Delta x}\(\frac{q_1^{L,k}+q_2^{L,k}}{2}-\frac{q_3^{BL,k}+q_4^{BL,k}}{2}\)
+\end{align}
+% where $q^{C,k}_i= \rho \bar{q}^{C,k}_i$ is the value at time step $k$ and node $i$ of cell $C$.
+Denoting the number of particles in cell $C$ and the mass they carry by $N_p^C$ and $m^C$ respectively, the mass density reads $\rho = \frac{N_p^{C} m^C}{\Delta x \Delta y}$.
+Thus, introduction of the particle fields projection yields the following expressions for interface fluxes:
+\begin{align}
+  & F_n^{(1)} = \sum_{J=1}^{N_p}\bar{Q}_J^k\frac{s_2 N^C_p m^C }{2\Delta x \Delta y} \[  \(\frac{S_{3J}^{B} }{\sum_L S_{3L}^{B}} + \frac{S_{4J}^{B}}{\sum_L S_{4L}^{B}}\) - s_1  \frac{\Delta t}{2\Delta y}\(\frac{S_{1J}^{B}}{\sum_L S_{1L}^B} + \frac{S_{4J}^{B}}{\sum_L S_{4L}^{B} }-\frac{S_{2J}^{BL}}{\sum_L S_{2L}^{BL}} - \frac{S_{3J}^{BL}}{\sum_L S_{3L}^{BL}}\) \]\\
+  & F_n^{(2)} = \sum_{J=1}^{N_p} \bar{Q}_J^k\frac{s_1 N^C_p m^C }{2\Delta x \Delta y} \[  \(\frac{S_{2J}^{C}}{\sum_L S_{2L}^{C}} + \frac{S_{3J}^{C}}{\sum_L S_{3L}^{C}} \)- s_2 \frac{\Delta t}{2\Delta x}\(\frac{S_{1J}^{C}}{\sum_L S_{1L}^{C}} + \frac{S_{2J}^{C}}{\sum_L S_{2L}^{C}}-\frac{S_{3J}^{B}}{\sum_L S_{3L}^{B}} -\frac{S_{4J}^{B}}{\sum_L S_{4L}^{B}}\) \]\\
+  & F_n^{(3)} =\sum_{J=1}^{N_p}\bar{Q}_J^k\frac{s_2 N^C_p m^C}{2\Delta x \Delta y} \[  \(\frac{S_{3J}^{C}}{\sum_L S_{3L}^{C}} + \frac{ S_{4J}^{C}}{\sum_L S_{4L}^{C}}\) - s_1  \frac{\Delta t}{2\Delta y}\( \frac{S_{1J}^{C}}{\sum_L S_{1L}^{C}} + \frac{S_{4J}^{C}}{\sum_L S_{4L}^{C}}-\frac{S_{2J}^{L}}{\sum_L S_{2L}^{L}} - \frac{S_{3J}^{L}}{\sum_L S_{3L}^{L}}\) \]\\
+  & F_n^{(4)} = \sum_{J=1}^{N_p}\bar{Q}_J^k\frac{s_1 N^C_p m^C }{2\Delta x \Delta y}  \[  \(\frac{S_{3J}^{L}}{\sum_L S_{3L}^{L}} + \frac{ S_{4J}^{L}}{\sum_L S_{4L}^{L}}\) - s_2 \frac{\Delta t}{2\Delta x}\( \frac{S_{1J}^{L}}{\sum_L S_{1L}^{L}} + \frac{S_{2J}^{L}}{\sum_L S_{2L}^{L}}-\frac{S_{3J}^{BL}}{\sum_L S_{3L}^{BL}} - \frac{S_{4J}^{BL}}{\sum_L S_{4L}^{L}}\)\]
+\end{align}
+written for simplicity:
+\begin{equation}
+  \label{eq:interface_flux_mapped}
+  F_n^{(i)}=\sum^{N_p}_J \bar{Q}_J^k \frac{s_n N^C_p m^C}{2\Delta x \Delta y}\[ \phi_J^{(i)} + \phi_J^{(i),T} \]
+\end{equation}
+In the latter expressions, $\phi^{(i)}$ is devoted to normal contributions while $\phi^{(i),T}$ stands for transverse corrections at interface $(i)$. Numerical fluxes considered above are based on normal vectors oriented in the direction of the stream (see figure \ref{fig:2Dmesh}). Nodal interface fluxes on the other hand, as defined in the semi-discrete system:
+%Fluxes contribute to nodes through the boundary integrals of the discrete form:
+\begin{equation}
+  \hat{F}_i = \int_{l} S_i(\vect{x}) F_n  \: dl
+\end{equation}
+are based on the outgoing flux to an element so that $F_n^{(1)}$ and $F_n^{(4)}$ must be counted negatively. The integral for cell $C$ is then:
+\begin{equation}
+  \hat{F}_i =  -\int_{x^C_1}^{x_2^C} S_i(x,y^C_{1}) F_n^{(1)}  dx + \int_{y^C_2}^{y_3^C} S_i(x^C_{2},y) F_n^{(2)}  dy +\int_{x^C_2}^{x_3^C} S_i(x,y^C_{3}) F_n^{(3)}  dx -\int_{y^C_1}^{y_4^C} S_i(x^C_{1},y) F_n^{(4)}  dy 
+\end{equation}
+which can be computed analytically by using parent coordinates \eqref{eq:parentCoordinates}:
+\begin{subequations}
+  \begin{alignat}{4}
+    &\hat{F}_1 = -&\frac{1}{2}\[\Delta x F_n^{(1)} + \Delta y F_n^{(4)}\] \quad;\quad &\hat{F}_2 = -&\frac{1}{2}\[\Delta x F_n^{(1)} - \Delta y F_n^{(2)}\]\\
+    &\hat{F}_3 =  &\frac{1}{2}\[\Delta x F_n^{(3)} + \Delta y F_n^{(2)}\] \quad;\quad &\hat{F}_4 = &\frac{1}{2}\[\Delta x F_n^{(3)} - \Delta y F_n^{(4)}\]
+  \end{alignat}
+\end{subequations}
+A condensed way of writing those fluxes is adopted by means of the middle point of edge $(j)$ with coordinates $\vect{x}^{(j)}_{1/2}$, at which the shape functions are:
+\begin{equation*}
+  S_i(\vect{x}^{(j)}_{1/2}) =
+  \left\lbrace
+  \begin{aligned}
+    & \frac{1}{2} \quad \text{if node i belongs to edge (j)} \\
+    & 0 \quad \text{otherwise.}
+  \end{aligned}
+  \right.
+\end{equation*}
+In addition, components of the outward normal vector to edges $n^{(i)}_x$ and $n^{(i)}_y$ allow to take into account different signs of intercell fluxes in the Cartesian grid. One thus writes:
+\begin{equation}
+  \hat{F}_i= \frac{1}{2}\sum_{j=1}^{\text{Nedges}} 2S_{i}(\vect{x}^{(j)}_{1/2})\(\Delta y n^{(j)}_x + \Delta x n^{(j)}_y\) F_n^{(j)}
+\end{equation}
+which, combined to equation \eqref{eq:interface_flux_mapped} leads to:
+\begin{equation}
+  \hat{F}^k_i= \sum^{N_p}_J \bar{Q}_J^k \sum_{j=1}^{\text{Nedges}} S_{i}(\vect{x}^{(j)}_{1/2})\(s_1\Delta y n^{(j)}_x + s_2\Delta x n^{(j)}_y\)  \frac{ N^C_p m^C}{2\Delta x\Delta y}\[ \phi_J^{(i)} + \phi_J^{(i),T} \]
+\end{equation}
+These terms are divided by the lumped mass matrix in the discrete form:
+\begin{equation}
+  \label{eq:nodal_fluxes}
+  \frac{\hat{F}^k_i}{M_i^L}=\sum_J \frac{\bar{Q}_J^k}{\sum_K S_{iK}}   \sum_{j=1}^{\text{Nedges}}\frac{1}{2} S_{i}(\vect{x}^{(j)}_{1/2}) N^C_p m^C \(s_1\frac{n^{(j)}_x}{\Delta x}  + s_2\frac{n^{(j)}_y}{\Delta y} \) \[\phi_J^{(j)} + \phi_J^{(j),T}\] 
+\end{equation}
+
+At last, gathering the mapping of updated nodal quantities to the particle \eqref{eq:2D_updatedMP}, expressions of volume fluxes \eqref{eq:2Dvolume_fluxes} and intercell ones \eqref{eq:nodal_fluxes}, the updated value at material point $I$ contained in cell $C$ reads:
+\begin{equation}
+  \label{eq:2Dscheme_equation}
+  \begin{split}
+    \bar{Q}_I^{k+1}=  \sum_{L=1}^{N_p}\bar{Q}_L^k\sum_{i=1}^{4E}\frac{S_{iI}}{\sum_K S_{iK}}  \left\lbrace \vphantom{\sum_{j=1}^{\text{edges}} } \right.& S_{iL} +  2  \sum_{j=1}^{4E} \frac{ S_{jL}}{\sum_K S_{jK}}\sum_{J=1}^{N_p}S_{jJ}\[ s_1\frac{\Delta t}{\Delta x}\partial_\xi S_{iJ}  + s_2\frac{\Delta t}{\Delta y} \partial_\eta S_{iJ} \] \\ - & \frac{1}{2}\left.\sum_{p=1}^{\text{edges}} S_{i}(\vect{x}^{(p)}_{1/2}) N_p^C \(s_1\frac{\Delta t}{\Delta x}n^{(j)}_x  + s_2\frac{\Delta t}{\Delta y}n^{(j)}_y \)\[\phi_L^{(p)} + \phi_L^{(p),T}\] \right\rbrace
+  \end{split}
+\end{equation}
+Recall that transverse contributions $\phi_L^{(p),T}$ depend on $\Delta t$, thus providing second-order corrections in the two-dimensional scheme equation \eqref{eq:2Dscheme_equation}, that can also be rewritten as:
+\begin{equation}
+  \label{eq:2Dscheme_D_alphabeta}
+  \bar{Q}_I^{k+1}= \sum_{L=1}^{N_p}\bar{Q}_L^k H_{IL}
+\end{equation}
+
+\subsection{The von Neumann linear stability analysis}
+Analogously to the one-dimensional case, the solution at a material point can be expanded into a discrete Fourier basis over the domain $\[-l,l\]\times\[-h,h\]$. We consider here a structured distribution of particles made of $N_p=N_p^x\times N_p^y$ material points so that one can denote the solution at particles by $\bar{Q}_{IL}$, where $I$ and $L$ are the row and column of material points indices. For one arbitrary Fourier mode, one has \cite{Leveque}:
+\begin{equation}
+\bar{Q}^{k}_{I L} = A_{jq}^k e^{i (I \lambda_j\Delta y + L \lambda_q\Delta x)}
+\end{equation}
+where $i=\sqrt{-1}$, and $\lambda_j$ and $\lambda_q$ are wave numbers in directions $x$ and $y$ respectively.
+Then, the amplification factor reads:
+\begin{equation}
+\frac{A_{jq}^{k+1}}{A_{jq}^k} =  \sum_{K=1}^{N_p^y}\sum_{J=1}^{N_p^x} e^{i ([I-K]\lambda_j\Delta y + [L-J]\lambda_q\Delta x)}H_{IL,KJ}
+\end{equation}
+The requirement that the absolute value of the amplification factor is lower than or equal to one leads to the following stability condition:
+\begin{equation}
+\abs{\frac{A_{jq}^{k+1}}{A_{jq}^k}} = \abs{\sum_{K=1}^{N_p^y}\sum_{J=1}^{N_p^x} e^{i ([I-K]\lambda_j\Delta y + [L-J]\lambda_q\Delta x)}H_{IL,KJ}} \leq 1 \Leftrightarrow  \sum_{K=1}^{N_p^y}\sum_{J=1}^{N_p^x} \abs{H_{IL,KJ}} \leq 1
+\end{equation}
+or more simply:
+\begin{equation}
+\label{eq:2D_stability}
+\sum_{L=1}^{N_p} \abs{H_{IL}} \leq 1 \quad \forall I=1,...,N_p
+\end{equation}
+
+
+\subsection{Evaluation of the CFL number for particular space discretizations}
+Again the study of stability conditions for general discretizations is complicated given the scheme equation \eqref{eq:2Dscheme_equation}.
+Nevertheless, it can first be noticed that the single particle-per-cell discretization leads to a piece-wise constant reconstruction of the field on the computational grid after the projection from material points to nodes whatever their locations in cells.
+Therefore, the first-order upwind method is once again retrieved.
+This method is known to be characterized by \cite{Leveque}:
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:2DCFL_DCU}
+    & \abs{s_1}\frac{\Delta t}{\Delta x} + \abs{s_2} \frac{\Delta t}{\Delta y} \leq 1 \qquad &\text{for DCU} \\
+    \label{eq:2DCFL_CTU}
+    & \max \( \abs{s_1} \frac{\Delta t}{\Delta x}  , \abs{s_2} \frac{\Delta t}{\Delta y}\) \leq 1 \qquad &\text{for CTU}
+  \end{alignat}
+\end{subequations}
+
+
+From now on, it is assumed that $s_1\geq s_2 >0$ and regular cells $\Delta x = \Delta y$ are considered.
+In that case, the critical time steps resulting from conditions \eqref{eq:2DCFL_DCU} and \eqref{eq:2DCFL_CTU} read:
+\begin{equation}
+  \Delta t \leq \frac{\Delta x}{s_1+s_2} \quad \text{for DCU} \quad;\quad \Delta t \leq \frac{\Delta x}{s_1} \quad \text{for CTU}
+\end{equation}
+In terms of Courant number, the previous conditions are:
+\begin{subequations}
+  \begin{alignat}{2}
+    \label{eq:2D_CFL_DCU}
+    & s_1\frac{\Delta t}{\Delta x} \leq \frac{s_1}{s_1+s_2} \qquad &\text{for DCU} \\
+    \label{eq:2D_CFL_CTU}
+    & s_1\frac{\Delta t}{\Delta x} \leq 1 \qquad &\text{for CTU}
+  \end{alignat}
+\end{subequations}
+Hence, the CFL number can be set at one by using the CTU regardless of the speeds values.
+Conversely, the maximal Courant number governing the DCU tends to one if and only if $s_1 \gg s_2$.
+
+
+Configurations involving more particles in the computational grid cells are now studied numerically by assuming the same material points distribution in every elements.
+%Furthermore, we consider only regular cells $\Delta y = \Delta x$ and wave speeds satisfying $a\geq b >0$, so that Courant number reads $a\Delta t/\Delta x$.
+Since the coefficients $H_{I J}$ depend on both horizontal and vertical wave speeds, the scheme equation \eqref{eq:2Dscheme_D_alphabeta} can be written as a function of the CFL number by means of the speed ratio  $s_1/s_2$.
+Hence, the maximal Courant number satisfying the stability condition \eqref{eq:2D_stability} also depends on the speed ratio.
+Evolutions of the CFL numbers corresponding to several distributions of particles in a two-dimensional grid are gathered in tables \ref{tab:2DCFL_comparison_2ppc}, \ref{tab:2DCFL_comparison_4ppc} and \ref{tab:2DCFL_comparison_9ppc} for the DGMPM scheme using DCU and CTU methods.
+The first column of these tables shows the positions of material points inside cells for discretizations based on two, four or nine particles per element respectively. 
+
+%% 2ppc
+The space discretization leading to two particles lying in every cells of the mesh is such that within an element, the two material points are both either on the horizontal axis or on the vertical axis of the cell.
+The aforementioned cases respectively correspond to the results reported in first and second rows of table \ref{tab:2DCFL_comparison_2ppc}.
+Two situations are then to be distinguished:
+\begin{itemize}
+\item Material points are regularly-spaced within the grid and placed symmetrically two-by-two with respect to cells centers.
+  Those distributions are drawn in the first column of table \ref{tab:2DCFL_comparison_2ppc} by using blue plus signs to represent particles.
+\item Material points still satisfy symmetry in cells, but are no longer regularly-spaced in the mesh.
+  In that case, particles are drawn with red crosses.
+\end{itemize}
+\begin{table}[h!]
+  \centering
+  \input{tabular/2DCFL_comparison_2ppc}
+  \caption{Values of critical Courant number $s_1\frac{\Delta t}{\Delta x}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the locations of the two material points lying in every cells, as a function of the speeds ratio $s_1/s_2$.}
+  \label{tab:2DCFL_comparison_2ppc}
+\end{table}
+First, the results of table \ref{tab:2DCFL_comparison_2ppc} show that the CFL number exhibits a non-linear dependence on the speed ratio $s_1/s_2$, which asymptotically approach some value depending on the particles distribution.
+The configuration in which the particles are regularly spaced in the grid is of particular interest.
+Indeed, this discretization is equivalent to the vertical repetition of the natural configuration for two particles per cell studied in section \ref{sec:1d_stab}.
+As a result, the one-dimensional result for Euler discretization $CFL \approx 0.43$ should be recovered for $s_1 \gg s_2$.
+This value is depicted with black dashed lines in the plots of first row in table \ref{tab:2DCFL_comparison_2ppc}.
+It is thus seen that the one-dimensional value of the Courant number corresponds to the asymptotic limit for two-dimensional problems as $s_1/s_2 \rightarrow \infty$.
+% In particular, the configuration drawn in blue plus signs in the first row is equivalent, for $s_1 \gg s_2$, to the one-dimensional natural configuration for two particles per cell studied in section \ref{sec:1d_stab}.
+% As a result, the CFL number tends to the value $0.43$ determined in one space dimension as $s_1/s_2 \rightarrow \infty$, which is depicted with the black dashed lines in the CFL curves.
+
+Next, the spacing between particles is reduced while keeping the symmetry with respect to cells centers.
+It is then seen that, as for one-dimensional case, the critical Courant number increases for both DCU and CTU approaches.
+%Second, we see that a reduction of spacing between particles ensuring symmetry between them with respect to cells centers, as for one-dimensional case, yields an increase in the critical Courant number for both DCU and CTU approaches. 
+Third, whether particles lie on the horizontal axis or the vertical axis of cells has a great influence on the critical Courant number one can expect.
+Hence, the configurations of the second row of table \ref{tab:2DCFL_comparison_2ppc} yield higher CFL numbers for given speed ratios.
+It then appears that in order to improve the stability of the scheme, one must use a lower number of material points in the direction of the dominating wave speed than in the perpendicular one.
+For a Cartesian distribution of particles $N_p^x \times N_p^y$ this corresponds to $N_p^y > N_p^x$ if $s_1>s_2$, and $N_p^x > N_p^y$ if $s_2>s_1$.
+At last, it is worth noticing that the improvement brought by the CTU is much less significant than in the case of one single particle-per-cell discretization for which the Courant number can be set to one according to equations \eqref{eq:2D_CFL_DCU} and \eqref{eq:2D_CFL_CTU}.
+
+%% 4ppc
+\begin{table}[h!]
+  \centering
+  \input{tabular/2DCFL_comparison_4ppc}
+  \caption{Values of critical Courant number $s_1\frac{\Delta t}{\Delta x}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the material points distribution, as a function of the speeds ratio $s_1/s_2$.}
+  \label{tab:2DCFL_comparison_4ppc}
+\end{table}
+We now move on to cases for which grid cells each contains four material points, by considering a square shaped distribution of particles in every elements. %which centers coincide with cells centroids.
+This square distribution is such that the particles are initially regularly spaced in horizontal and vertical directions, and is deformed so that the following situations occur:
+\begin{itemize}
+\item the particles are displaced while keeping the center of the square of material points on the cells centroids.
+  Three configurations are then depicted in the first row of table \ref{tab:2DCFL_comparison_4ppc}.
+\item the square of particles is translated horizontally without distortion as depicted in the second row of the table.
+\item the square of particles is translated vertically without distortion (third row of the table).
+\end{itemize}
+
+%In the first row of table \ref{tab:2DCFL_comparison_4ppc}, the particles are displaced while keeping the center of the square of material points on the cells centroids.
+%On the other hand, the second and third rows of the table investigate of a simple translation of the square pattern in the elements without distortion.  
+% This pattern can be contracted or simply translated without change of shape as depicted in the first column of table \ref{tab:2DCFL_comparison_4ppc}.
+%Several configurations are gathered in each row of the table and are distinguished by using different colors and markers.
+
+First, we see in the first row of table \ref{tab:2DCFL_comparison_4ppc} that the contraction of the square shaped distribution of particles yields an improvement of the critical CFL number.
+These observations are similar to those made for one-dimensional problems, especially for the configuration in which the particles coincide with nodes that leads to a vanishing Courant number (see green curves with star marks).
+On the other hand, the increase in CFL number enabled by the use of the CTU approach is again less important that in the case of one particle per cell.
+
+Second, the last two rows of table \ref{tab:2DCFL_comparison_4ppc} show that the translation of the square of particle inside elements does not have great influence on the evolution of Courant's number with respect to the speed ratio.
+Nonetheless, it can be seen that a slight increase in CFL number results from an upwind displacement of particles, as observed for the one-dimensional scheme.
+At last, the curves corresponding to DCU and CTU do not exhibit significant differences, meaning that the CTU seems to be mainly efficient for the one particle per cell discretization.
+%Finally, it can be seen from the two last rows of table \ref{tab:2DCFL_comparison_4ppc} that the translation of the square of particle inside elements does not have great influence on the evolution of Courant's number with respect to the speed ratio. 
+
+
+%% 9ppc
+Similar distributions of nine particles with square shapes are now looked at.
+Analogously to the four particles per cell discretization, the square pattern is either distorted or translated inside the cells and the resulting CFL numbers are gathered in table \ref{tab:2DCFL_comparison_9ppc}.
+\begin{table}[h!]
+  \centering
+  \input{tabular/2DCFL_comparison_9ppc}
+  \caption{Values of critical Courant number $s_1\frac{\Delta t}{\Delta x}$ for two-dimensional DGMPM scheme using either DCU or CTU with respect to the material points distribution, as a function of the speeds ratio $s_1/s_2$.}
+  \label{tab:2DCFL_comparison_9ppc}
+\end{table}
+The observations are similar to the four particle cases, namely, we see for the contraction of the square that the closer particles are from cell centers, the higher the CFL number is.
+Moreover, upwind translations of particles yield once again a slight increase in CFL number for a given speed ratio.
+Finally, in every cases, the Courant number is more restrictive than that allowed for the cases involving four particles depicted in table \ref{tab:2DCFL_comparison_4ppc}.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

@@ -1,0 +1,155 @@
+
+\documentclass[AMA,STIX1COL]{WileyNJD-v2}
+\usepackage{moreverb}
+%\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs}
+\usetikzlibrary{patterns} 
+\usetikzlibrary{shapes}
+\usetikzlibrary{snakes}
+\usetikzlibrary{pgfplots.groupplots}
+\usetikzlibrary{external} % avoid the systematic compilation of figures
+\usetikzlibrary{spy,backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+\RequirePackage{amsmath,eucal,stmaryrd,mathrsfs}
+
+\usepackage{pgfplotstable}
+
+%%%%
+% Define user commands 
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+\newcommand{\vect}[1]{{\mathbf{\boldsymbol{#1}}}}
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Vscr}{\mathscr{V}}
+\newcommand{\Pscr}{\mathscr{P}}
+\newcommand{\Rbb}{\mathbb{R}}
+
+\newcommand{\nablav}{\vect{\nabla}}
+\newcommand{\divv}{\nablav \cdot \,}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+
+\newcommand{\drond}[2]{\frac{\partial #1}{\partial #2}}
+
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\renewcommand{\[}{\left[}
+\renewcommand{\]}{\right]}
+
+\newcommand{\bra}[1]{\left[#1\right]}
+\newcommand{\mat}[1]{\begin{matrix}#1\end{matrix}} 
+% Matrice avec crochets
+\newcommand{\matrice}[1]{\bra{\mat{#1}}}
+
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Red}{RGB}{217,33,32}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+%%%% 
+
+\newcommand{\review}[1]{\color{Blue}#1\color{black}}
+\newcommand{\note}[1]{\color{Red}#1\color{black}}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\articletype{Article Type}%
+
+\received{}
+\revised{}
+\accepted{}
+        
+\raggedbottom
+
+\begin{document}
+
+\title{Stability properties of the Discontinuous Galerkin Material Point Method for hyperbolic problems in one and two space dimensions}
+
+\author[1]{Adrien Renaud*}
+\author[1]{Thomas Heuz{\'e}}
+\author[1]{Laurent Stainier}
+
+\authormark{\textsc{Renaud et al}}
+
+
+\address[1]{\orgdiv{Research Institute in Civil and Mechanical Engineering}, \orgname{Ecole Centrale de Nantes}, \orgaddress{\country{France}}}
+% \address[2]{\orgdiv{Org Division}, \orgname{Org Name}, \orgaddress{\state{State name}, \country{Country name}}}
+% \address[3]{\orgdiv{Org Division}, \orgname{Org Name}, \orgaddress{\state{State name}, \country{Country name}}}
+
+\corres{Adrien Renaud \email{adrien.renaud@ec-nantes.fr}}
+
+\presentaddress{Research Institute in Civil and Mechanical Engineering (GeM, UMR 6183 CNRS)\\
+	Ecole Centrale de Nantes \\
+	1 rue de la No\"e, Nantes}
+
+      \abstract[Summary]{
+        In this paper, stability conditions are derived for the Discontinuous Galerkin Material Point Method \cite{DGMPM,Thesis} on the scalar linear advection equation for the sake of simplicity and without loss of generality.
+        %The corresponding discrete system that is derived is based on either the forward Euler or the second-order Runge-Kutta (RK2) time discretizations, and on the computation of numerical fluxes at cell faces by means of the Donor-Cell Upwind (DCU) \cite{Leveque} or the Corner Transport Upwind (CTU) \cite{Colella_CTU} methods for multi-dimensional problems.
+        The corresponding discrete system is based on the computation of numerical fluxes at cell faces by means of the Donor-Cell Upwind (DCU) \cite{Leveque} or the Corner Transport Upwind (CTU) \cite{Colella_CTU} methods for multi-dimensional problems.
+        \review{The scheme equation of the DGMPM applied to the scalar linear advection equation is derived, combined with RK2 for one-dimensional cases, and with the forward Euler algorithm for two-dimensional problems.
+        These equations are based on the assumption that all cells of a Cartesian background grid contain at least one particle and can be easily extended to regular grids, that is, rectangle rather than square elements. }
+        The von Neumann linear stability analysis then enables the writing of mathematical expressions depending on the Courant number and the distribution of particles in the DGMPM arbitrary grid which, in turn, allow to compute the critical Courant number for a given space discretization.
+        \review{As already highlighted \cite{DGMPM}, the DGMPM is equivalent to the first-order finite volume method if one particle lies in each element of the computational grid.
+          Hence, the Courant number can be set to unity in that case.
+          However, increasing the number of material points in the cells may lead to a decrease in the critical Courant number depending on the time discretization considered and the position of the particles.
+          The study of particular configurations including symmetrical or asymmetrical distributions of material points with respect to the element centers is then proposed. 
+        }
+      }
+
+\keywords{Discontinuous Galerkin Material Point Method, Stability analysis, Critical CFL number, Hyperbolic problems, Corner Transport Upwind method}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+\input{introduction}
+
+\section{Discrete system for the scalar linear advection equation}
+\label{sec:dgmpm}
+\input{dgmpm}
+
+\section{Stability properties of the one-dimensional schemes}
+\label{sec:1d_stab}
+\input{1d_stability}
+
+\section{Stability properties of the two-dimensional schemes}
+\label{sec:2d_stab}
+\input{2d_stability}
+
+\section{Concluding remarks}
+The formulation of the Discontinuous Galerkin Material Point Method has been recalled in this paper for the scalar linear advection equation.
+Numerical fluxes arising in the weak form allow to take into account the transverse propagation of waves for multi-dimensional problems, by means of the reformulation of the well-known CTU method.
+%Two discrete systems resulting from the combination of the DGMPM and both forward Euler and second-order Runge-Kutta time discretizations, have then been derived.
+The semi-discrete system resulting from the combination of material point discretization and DG approximation has been discretized by means of both forward Euler and second-order Runge-Kutta time discretizations.
+%% scheme equations + von Neumann
+Starting from those discrete systems, the scheme equations have next been derived in a finite difference sense for one and two-dimensional problems.
+At last, the von Neumann linear stability analysis of those scheme equations have been carried out.
+As a result, conditions which enable to ensure the stability of DGMPM schemes for a given discretization have been written.
+Such stability conditions allow to fully exploit the arbitrariness of the grid in order to build it so as to accurately capture waves for complex geometries or finite deformations, as suggested in the founding paper of the DGMPM \cite{DGMPM}.
+
+% \review{Concerning the rate of convergence of the method, which has been omitted here, several perspectives have been emphassized.
+%   First, the accuracy of the DGMPM could be enhanced by combining the particle-based discretization with standard quadrature rules so that a consistent mass matrix can be used.
+%   Second, non-constant intercell fluxes can be considered by solving nodal Riemann problems at the element faces.
+%   At last, higher-order polynomials might be employed, and especially orthonormal ones in such a way that a high-order modal DGMPM, based on a diagonal mass matrix, can be derived.
+% }
+
+\review{
+  Although the derivation of the DGMPM has been done with first-order accuracy for the moment, its extension to higher-order approximation is possible by means of high-order polynomials.
+  This would however require to combine the particle-based discretization with standard quadrature rules so that a consistent mass matrix can be used, and to consider non-constant intercell fluxes by solving nodal Riemann problems at the element faces.
+}
+\bibliography{Biblio}%
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
