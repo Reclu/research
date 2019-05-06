@@ -9,15 +9,15 @@ On the other hand, the plastic flow is governed by the yield stress in tension $
 \end{table}
 
 Moreover, the simulations carried out with the particle-based methods and presented in the section are based on the effective mass matrix defined in section \ref{sec:discretization}, which requires the setting of the parameter $\xi$.
-Most of MPM computations that can be found in the literature are performed based on a lumped mass matrix \cite{Book_MPM,MPM_PIC_FLIP,MPM_cutting,BC_MPM}, in such a way that no value of the parameter $\xi$ is recommended.
-In addition, since so stability analysis of the scheme exists, the same goes for the critical Courant number which is usually set to CFL$=0.5$ or CFL=$0.7$ though it is not proofed mathematically.
+Most of MPM computations that can be found in the literature are performed based on a lumped mass matrix \cite{Sulsky94,Sulsky95,Silo_Wieckowski,Wieckowski,Sloshing_impact}, in such a way that no value of the parameter $\xi$ is recommended.
+In addition, since so stability analysis of the scheme exists, the same goes for the critical Courant number which is usually set to $\text{CFL}=0.5$ or $\text{CFL}=0.7$ though it is not proofed mathematically.
 Contrariwise, the stability analysis of the DGMPM based on a lumped mass matrix enables the computation of the optimal CFL number for a given distribution of material points for one-dimensional problems \cite{DGMPM} and two-dimensional ones \cite{DGMPM_stab}.
 It furthermore appears that the value of the critical Courant number also corresponds to a good choice for the parameter $\xi$ in order to balance the numerical diffusion and the stability.
 As a result, the CFL values given in the following also go for $\xi$ in DGMPM computations.
-On the other hand, the Courant number used in MPM simulations is set to CFL$=0.5$ while the parameter $\xi$ is identical to this used in the DGMPM for comparison purposes. 
+On the other hand, the Courant number used in MPM simulations is set to $\text{CFL}=0.5$ while the parameter $\xi$ is identical to this used in the DGMPM for comparison purposes. 
 
 \begin{remark}
-  The use of the effective mass matrix within the DGMPM must have an influence on the consistency of the method.
+  The use of the effective mass matrix within the DGMPM likely has an influence on the consistency of the method.
   Nevertheless, since the DGMPM using a lumped mass matrix is first-order accurate \cite{Thesis}, the implementation used here can only exhibit a higher or equivalent convergence rate.
 \end{remark}
 
@@ -47,7 +47,7 @@ It is in addition noteworthy that all numerical methods are based on a total Lag
   {\phantomsubcaption{\label{subfig:he_planeWave2}}}
   {\phantomsubcaption{\label{subfig:he_planeWave3}}}
   \input{pgfFigures/hep_planeWave}
-  \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) or two particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
+  \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM ($\text{CFL}=0.5$, $\xi=1/ppc$), DGMPM using one particle per cell ($\text{CFL}=\xi=1$) or two particles per cell ($\text{CFL}=\xi=0.5$), and the exact solution of the small strain problem.}
   \label{fig:hep_planeWave}
 \end{figure}
 The parameter $\beta$ is first set to $1.2$ so that the problem falls within the linearized geometrical limit $\norm{\tens{F}} \ll 1$.
@@ -70,7 +70,6 @@ In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM
   \input{pgfFigures/hep_planeWave_high23}
   \input{pgfFigures/hep_planeWave_high33}
   \caption{Stress and plastic strain profiles along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Initial velocity set to $v_d=4Y_H/\rho c_L$.
-  %Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) of two particles per cell (CFL=0.5).
   }
   \label{fig:hep_planeWave_high}
 \end{figure}
