@@ -52,7 +52,10 @@ or, in matrix form:
   M_{ij} \drond{\bar{\Ucb}^j}{t} - K^\alpha_{ij} \bar{\Fcb}^j_{\alpha} + \vect{\hat{\Fc}}^i = \vect{0}  
 \end{equation}
 Note however that the particle-based quadrature may lead to a singular consistent mass matrix due to enventual reduced integrations \cite{Love}.
-This issue can be circumvented by using the diagonally lumped mass matrix $M^L_i=\sum_j M_{ij}$.
+This issue can be circumvented by using the diagonally lumped mass matrix $M^L_{ij}=\sum_k M_{ik}\delta_{ij}$.
+Alternatively an effective mass matrix which was introduced in \cite{Love} as the convex combination of the consistent and the lumped matrices $M^{eff}_{ij} = \xi M^L_{ij} + (1-\xi) M_{ij}$, with $\xi \in [0, 1]$.
+In the same reference, no values of the parameter $\xi$ are prescribed 
+
 
 The discrete system is derived by discretizing the time interval $\tau$ into $N_t$ subintervals and using the explicit forward Euler method:
 \begin{equation}
