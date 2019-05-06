@@ -1,12 +1,25 @@
 The DGMPM is now illustrated on numerical examples considering materials based on the Hencky hyperelastic-plastic potential presented in \cite{Laurent2009} and isotropic hardening. 
 The values of the material parameters used are gathered in table \ref{tab:material}, the elastic behavior being given by Young's modulus $E$ and Poisson's ratio $\nu$. 
-On the other hand, the plastic flow governed by the yield stress in tension $\sigma^y$ and the hardening coefficient $H$ for a linear hardening, supplemented with the power law exponent $1/n$ for a non linear hardening.
+On the other hand, the plastic flow is governed by the yield stress in tension $\sigma^y$ and the hardening coefficient $H$ for a linear hardening, supplemented with the power law exponent $1/n$ for a non linear hardening.
 \begin{table}[h!]
   \centering
   \input{tabular/material}
   \caption{Material parameters.}
   \label{tab:material}
 \end{table}
+
+Moreover, the simulations carried out with the particle-based methods and presented in the section are based on the effective mass matrix defined in section \ref{sec:discretization}, which requires the setting of the parameter $\xi$.
+Most of MPM computations that can be found in the literature are performed based on a lumped mass matrix \cite{Book_MPM,MPM_PIC_FLIP,MPM_cutting,BC_MPM}, in such a way that no value of the parameter $\xi$ is recommended.
+In addition, since so stability analysis of the scheme exists, the same goes for the critical Courant number which is usually set to CFL$=0.5$ or CFL=$0.7$ though it is not proofed mathematically.
+Contrariwise, the stability analysis of the DGMPM based on a lumped mass matrix enables the computation of the optimal CFL number for a given distribution of material points for one-dimensional problems \cite{DGMPM} and two-dimensional ones \cite{DGMPM_stab}.
+It furthermore appears that the value of the critical Courant number also corresponds to a good choice for the parameter $\xi$ in order to balance the numerical diffusion and the stability.
+As a result, the CFL values given in the following also go for $\xi$ in DGMPM computations.
+On the other hand, the Courant number used in MPM simulations is set to CFL$=0.5$ while the parameter $\xi$ is identical to this used in the DGMPM for comparison purposes. 
+
+\begin{remark}
+  The use of the effective mass matrix within the DGMPM must have an influence on the consistency of the method.
+  Nevertheless, since the DGMPM using a lumped mass matrix is first-order accurate \cite{Thesis}, the implementation used here can only exhibit a higher or equivalent convergence rate.
+\end{remark}
 
 \subsection{Plane wave problem}
 \label{sec:plane-wave-problem}
@@ -26,10 +39,8 @@ Comparisons between FEM, MPM and DGMPM solutions are proposed on the longitudina
 Linear elements and a lumped mass matrix are used within FEM with no artificial viscosity added, and the regular mesh is built so that Gauss' points are consistent with the particles, the solid being discretized with $100$ finite elements and particles.
 The space discretization used within the MPM and the DGMPM can be based on either one single particle centered in every cell, or two particles in each element that are placed symmetrically with respect to the center.
 The aforementioned discretizations are respectively referred to as 1ppc and 2ppc, ppc standing for point per cell.
-%Moreover, MPM and DGMPM computations have also been done using two particles per cell (2ppc) that are placed symmetrically with respect to elements centers, and regularly spaced in the domain.
 It is in addition noteworthy that all numerical methods are based on a total Lagrangian formulation and make use of the same variational constitutive update.
 
-The parameter $\beta$ is first set to $1.2$ so that the problem falls within the linearized geometrical limit $\norm{\tens{F}} \ll 1$.
 \begin{figure}[h!]
   \centering
   {\phantomsubcaption{\label{subfig:he_planeWave1}}}
@@ -39,8 +50,8 @@ The parameter $\beta$ is first set to $1.2$ so that the problem falls within the
   \caption{Longitudinal components of PK1 stress and plastic Green-Lagrange strain tensors along a one-dimensional hyperelastic-plastic domain subject to Riemann-type initial conditions on the velocity at different times. Comparison between FEM (CFL=1), MPM (CFL=0.5), DGMPM using one particle per cell (CFL=1) or two particles per cell (CFL=0.5), and the exact solution of the small strain problem.}
   \label{fig:hep_planeWave}
 \end{figure}
+The parameter $\beta$ is first set to $1.2$ so that the problem falls within the linearized geometrical limit $\norm{\tens{F}} \ll 1$.
 Then, considering linear isotropic hardening, the computed hyperelastic-plastic solution should tend to the elastoplastic one derived in \cite{Thomas_EP}.
-%In the linearized geometrical limit $\norm{\tens{F}} \ll 1$ and considering linear isotropic hardening, the computed hyperelastic-plastic solution should tend to the elastoplastic one derived in \cite{Thomas_EP}.
 The latter consists of two elastic compression waves propagating left-ward and right-ward, each followed by one plastic discontinuity.
 The incident elastic disturbances then reflect as unloading waves on both free boundaries and then interact at the center of the medium, which leads to tensile plastic reloading.
 In figure \ref{fig:hep_planeWave}, the numerical solutions provided by the DGMPM, the MPM and the FEM are compared to the exact solution of the small strain problem in the right half of the domain, given the symmetry of the problem.

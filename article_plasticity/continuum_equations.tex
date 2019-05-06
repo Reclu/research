@@ -54,13 +54,13 @@ The constitutive model of the material is then explicitly involved in the quasi-
 \label{subsec:cont_constitutive}
 Following the multiplicative decomposition of the deformation gradient \cite{Lee_FeFp}: $\tens{F}=\tens{F}^e\tens{F}^p$, irreversible processes that account for the evolution of the micro-structure of the material are described by means of internal variables \cite{Lubliner}.
 Denoting by $\Vcb$ the column array consisting of hardening variables, the complete set of internal variables is: $\{\tens{F}^p,\Vcb \}$.
-It is assumed that the evolution of internal variables only depends on the local state, so that kinetic equations can be written:
+It is assumed that the evolution of internal variables only depends on the local state, so that the kinetic equations can be written:
 \begin{equation}
   \label{eq:plastic_kinetic_laws}
   \dot{\Vcb}=f(\tens{F},\tens{F}^p,\Vcb)
 \end{equation}
-Isotropic hardening, for which the array $\Vcb$ consists of the cumulated plastic strain $p$, is considered here.
-Hence, a general plastic flow rule reads:
+For the sake of simplicity, isotropic hardening is considered here. % but the approach can also include other hardening laws \cite{}.
+In that case, the array $\Vcb$ consists of the cumulated plastic strain $p$ and the plastic flow rule reads:
 \begin{equation}
   \label{eq:flow_rule}
   \dot{\tens{F}^p}{\tens{F}^p}^{-1}=\dot{p}\tens{M}
@@ -75,11 +75,13 @@ For materials in which internal processes do not influence the elastic response 
   \psi(\tens{F},\tens{F}^p,p)= \psi^e(\tens{F}{\tens{F}^p}^{-1}) +  \psi^p(\tens{F}^p,p)
 \end{equation}
 where $\psi^e$ and $\psi^p$ respectively govern elastic and plastic evolutions.
-The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $p$ follow from the free energy density as \cite{Truesdell}:
+The partial derivatives of the free energy density yield \cite{Truesdell}:
+%The first Piola-Kirchhoff stress tensor as well as the thermodynamic forces conjugate to $\tens{F}^p$ and $p$ follow from the free energy density as \cite{Truesdell}:
 \begin{equation}
   \label{eq:thermodynamic_forces}
   \tens{\Pi}=\drond{\psi}{\tens{F}} \quad ;\quad \tens{T}=-\drond{\psi}{\tens{F}^p} \quad ; \quad Y = -\drond{\psi}{p}
 \end{equation}
+Where $\tens{\Pi}$ is the first Piola-Kirchhoff stress tensor, $\tens{T}$ is the back stress tensor, and $Y$ is the force thermodynamically conjugate to the cumulated plastic strain.
 By considering the additive decomposition \eqref{eq:helmholtz_decomposition} combined with the flow rule \eqref{eq:flow_rule}, the last relation reads:
 \begin{equation}
   \label{eq:hardening_forces}
@@ -92,14 +94,30 @@ We then postulate the existence of a pseudo-dissipation potential $\phi$ from wh
   \dot{p}= \drond{\phi(Y)}{Y}
 \end{equation}
 Alternatively, the dual pseudo-dissipation potential $\phi^*(\dot{p})$, that results from the Legendre transform of $\phi$, allows writing:
-% \begin{equation}
-%   \label{eq:dual_pseudo-dissipation_potential}
-%   \phi^*(\dot{p}) = Y \cdot \dot{p} - \phi(Y)
-% \end{equation}
-% in such a way that one has
 \begin{equation}
   \label{eq:dual_form_kinetic}
   Y = \drond{\phi^*(\dot{p})}{\dot{p}}
+\end{equation}
+
+\subsection{Variational formulation of the constitutive model}
+\label{sec:vari-form-const}
+The above constitutive equations are usually integrated within an incremental procedure by means of radial return algorithms \cite{Simo}. 
+Alternatively, the set of equations can be formulated as an optimization problem by introducing some power density function \cite{Laurent99,Laurent2010}:
+\begin{equation}
+  \label{eq:rate_potential}
+  \Pscr(\tens{\dot{F}},\dot{p}) = \drond{\psi}{\tens{F}}:\tens{\dot{F}} - Y\dot{p} + \phi^*(\dot{p})
+\end{equation}
+whose minimizations with respect to $\dot{p}$ and $\tens{M}$ respectively lead to:
+\begin{equation}
+  \label{eq:optimization}
+  -Y + \drond{\phi^*}{\dot{p}} = 0  \quad ;\quad \underset{\tens{M}}{\max} \left\lbrace \tens{T}\(\tens{M}\tens{F}^p\) \cdot \dot{p}\right\rbrace
+\end{equation}
+The first equation is the dual form of the kinetic equations \eqref{eq:dual_form_kinetic} while the second one yields the determination of the plastic flow direction by satisfying the principle of maximum plastic dissipation.
+Moreover, it can  be shown that the effective power density $\Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{p},\tens{M}}{\min} \: \Pscr$
+acts as a rate potential for $\tens{\Pi}$, that is:
+\begin{equation}
+  \label{eq:PK1_rate_potential}
+  \tens{\Pi}=\drond{\Pscr^{eff}}{\tens{\dot{F}}}
 \end{equation}
 
 

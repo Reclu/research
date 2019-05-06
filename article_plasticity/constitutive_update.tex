@@ -1,30 +1,23 @@
-%The variational reformulation of the constitutive equations derived in section \ref{subsec:cont_constitutive} is carried out by introducing the following power density function \cite{Laurent2010}:
-%The variational formulation of the constitutive relations derived in section \ref{subsec:cont_constitutive} follows from the minimization of the power density function \cite{Laurent99,Laurent2010}:
-% Let's introduce the following power density function \cite{Laurent2010}:
-The constitutive equations derived in section  \ref{subsec:cont_constitutive}, which account for the dependence of the material on the loading history, are usually integrated within an incremental procedure by means of radial return algorithms \cite{Simo}. 
-Alternatively, the set of equations can be formulated as an optimization problem by introducing some power density function \cite{Laurent99,Laurent2010}:
-\begin{equation}
-  \label{eq:rate_potential}
-  \Pscr(\tens{\dot{F}},\dot{p}) = \drond{\psi}{\tens{F}}:\tens{\dot{F}} - Y\dot{p} + \phi^*(\dot{p})
-\end{equation}
-whose minimizations with respect to $\dot{p}$ and $\tens{M}$ respectively lead to:
-\begin{equation}
-  \label{eq:optimization}
-  -Y + \drond{\phi^*}{\dot{p}} = 0  \quad ;\quad \underset{\tens{M}}{\max} \left\lbrace \tens{T}\(\tens{M}\tens{F}^p\) \cdot \dot{p}\right\rbrace
-\end{equation}
-The first equation is the dual form of the kinetic equations \eqref{eq:dual_form_kinetic} while the second one yields the determination of the plastic flow direction by satisfying the principle of maximum plastic dissipation.
-Moreover, it can  be shown that the effective power density $\Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{p},\tens{M}}{\min} \: \Pscr$
+% The constitutive equations derived in section  \ref{subsec:cont_constitutive}, which account for the dependence of the material on the loading history, are usually integrated within an incremental procedure by means of radial return algorithms \cite{Simo}. 
+% Alternatively, the set of equations can be formulated as an optimization problem by introducing some power density function \cite{Laurent99,Laurent2010}:
 % \begin{equation}
-%   \label{eq:effective_power_density}
-%   \Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{p},\tens{M}}{\min} \: \Pscr
+%   \label{eq:rate_potential}
+%   \Pscr(\tens{\dot{F}},\dot{p}) = \drond{\psi}{\tens{F}}:\tens{\dot{F}} - Y\dot{p} + \phi^*(\dot{p})
 % \end{equation}
-acts as a rate potential for $\tens{\Pi}$, that is:
-\begin{equation}
-  \label{eq:PK1_rate_potential}
-  \tens{\Pi}=\drond{\Pscr^{eff}}{\tens{\dot{F}}}
-\end{equation}
+% whose minimizations with respect to $\dot{p}$ and $\tens{M}$ respectively lead to:
+% \begin{equation}
+%   \label{eq:optimization}
+%   -Y + \drond{\phi^*}{\dot{p}} = 0  \quad ;\quad \underset{\tens{M}}{\max} \left\lbrace \tens{T}\(\tens{M}\tens{F}^p\) \cdot \dot{p}\right\rbrace
+% \end{equation}
+% The first equation is the dual form of the kinetic equations \eqref{eq:dual_form_kinetic} while the second one yields the determination of the plastic flow direction by satisfying the principle of maximum plastic dissipation.
+% Moreover, it can  be shown that the effective power density $\Pscr^{eff}(\tens{\dot{F}})= \underset{\dot{p},\tens{M}}{\min} \: \Pscr$
+% acts as a rate potential for $\tens{\Pi}$, that is:
+% \begin{equation}
+%   \label{eq:PK1_rate_potential}
+%   \tens{\Pi}=\drond{\Pscr^{eff}}{\tens{\dot{F}}}
+% \end{equation}
 
-Variational constitutive updates can be constructed upon approximations of $\Pscr^{eff}$ by introducing the incremental energy function:
+Given a time increment $[t_n,t_{n+1}]$, variational constitutive updates can be constructed upon approximations of the effective power density $\Pscr^{eff}$ introduced in section \ref{sec:vari-form-const} by means of the incremental energy function:
 \begin{equation}
   \label{eq:incremental_energy}
   W(\tens{F}_{n+1};\tens{F}_n,p_n) = \underset{p_{n+1},\tens{M}}{\min} \:\left\lbrace \psi\(\tens{F}_{n+1},\tens{F}^p_{n+1},p_{n+1}\) -\psi\(\tens{F}_{n},\tens{F}^p_{n},p_{n}\) + \Delta t \left\langle \phi^*\(\dot{p}_{n}\)\right\rangle\right\rbrace

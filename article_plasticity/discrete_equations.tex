@@ -53,14 +53,13 @@ or, in matrix form:
 \end{equation}
 Note however that the particle-based quadrature may lead to a singular consistent mass matrix due to enventual reduced integrations \cite{Love}.
 This issue can be circumvented by using the diagonally lumped mass matrix $M^L_{ij}=\sum_k M_{ik}\delta_{ij}$.
-Alternatively an effective mass matrix which was introduced in \cite{Love} as the convex combination of the consistent and the lumped matrices $M^{eff}_{ij} = \xi M^L_{ij} + (1-\xi) M_{ij}$, with $\xi \in [0, 1]$.
-In the same reference, no values of the parameter $\xi$ are prescribed 
+Alternatively an effective mass matrix which was introduced in \cite{Love} as the convex combination of the consistent and the lumped matrices $\widetilde{M}_{ij} = \xi\: M^L_{ij} + (1-\xi) M_{ij}$, with $\xi \in [0, 1]$.
 
 
 The discrete system is derived by discretizing the time interval $\tau$ into $N_t$ subintervals and using the explicit forward Euler method:
 \begin{equation}
   \label{eq:DGMPM_discrete}
-  M^L_i \frac{\bar{\Ucb}^{i,n+1} - \bar{\Ucb}^{i,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} - \vect{\hat{\Fc}}^{i,n}  
+  \widetilde{M}_{ij} \frac{\bar{\Ucb}^{j,n+1} - \bar{\Ucb}^{j,n}}{\Delta t^{n} } = K^\alpha_{ij} \bar{\Fcb}_{\alpha}^{j,n} - \vect{\hat{\Fc}}^{i,n}  
 \end{equation}
 where the superscripts $(\bullet)^{k,l}$ denote a field evaluated at node $k$ and time step $l$.
 % \review{Alternatively, a \textit{second-order Runge-Kutta (RK2)} explicit time discretization may be employed, leading to the following two-stage discrete form:
@@ -76,11 +75,11 @@ where the superscripts $(\bullet)^{k,l}$ denote a field evaluated at node $k$ an
 % }}
 
 As for MPM, a discrete system is solved at nodes while the loading history is stored at material points.
-Hence, a reconstruction of fields on the grid based on particle values is required as well as a projection of the updated solution from the grid to the material points.
+Hence, a reconstruction of the fields from the particles to the grid is required as well as a projection of the updated solution from the grid to the material points.
 The reconstruction procedure is similar to that used within the MPM and consists in ensuring the conservation of volume quantities:
 \begin{equation}
   \label{eq:reconstruction}
-  \bar{\Ucb}^{i,n} =  \frac{\sum_{p=1}^{N_p}S_{ip}m_p\bar{\Ucb}^{p,n}}{M_{i}^L }  \quad \text{for } i=1,...,N_n
+  \bar{\Ucb}^{i,n} =  {\widetilde{M}_{ij}}^{-1} \sum_{p=1}^{N_p}S_{jp}m_p\bar{\Ucb}^{p,n}  \quad \text{for } i=1,...,N_n
 \end{equation}
 The back-mapping follows that proposed in the Particle-In-Cell method (PIC) \cite{PIC}, namely, a classical interpolation:
 \begin{equation}
