@@ -13,19 +13,19 @@
     % t1 
     \nextgroupplot[ylabel=$\Pi_{11} \:(Pa)$,title={(a) $t = 5.10 \times 10^{-4}\: s$},ymin=-1.e10,ymax=7.25e9]
     \addplot[Orange,thick,mark=*,mark repeat=2] table[x=Points:0,y=Piola_Stress:0] {csvFiles/fem_bottom1.csv};
-    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Piola:0] {csvFiles/mpm_bottom1.csv};
-    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Piola:0] {csvFiles/mpm4ppc_bottom1.csv};
-    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=PK1:0] {csvFiles/dgmpm1ppc_bottom1.csv};
-    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=PK1:0] {csvFiles/dgmpm4ppc_bottom1.csv};
+    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Piola_Stress:0] {csvFiles/mpm1ppc_bottom1.csv};
+    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Piola_Stress:0] {csvFiles/mpm4ppc_bottom1.csv};
+    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=Piola_Stress:0] {csvFiles/dgmpm1ppc_bottom1.csv};
+    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=Piola_Stress:0] {csvFiles/dgmpm4ppc_bottom1.csv};
     
     % t2 
     \nextgroupplot[title={(b) $t = 1.02 \times 10^{-3}\: s$},ymin=-1.e10,ymax=7.25e9%,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={},legend style={at={($(0.75,-0.4)+(0.9cm,0.6cm)$)},legend columns=3}
     ]
     \addplot[Orange,thick,mark=*,mark repeat=2] table[x=Points:0,y=Piola_Stress:0] {csvFiles/fem_bottom2.csv};
-    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Piola:0] {csvFiles/mpm_bottom2.csv};
-    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Piola:0] {csvFiles/mpm4ppc_bottom2.csv};
-    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=PK1:0] {csvFiles/dgmpm1ppc_bottom2.csv};
-    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=PK1:0] {csvFiles/dgmpm4ppc_bottom2.csv};
+    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Piola_Stress:0] {csvFiles/mpm1ppc_bottom2.csv};
+    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Piola_Stress:0] {csvFiles/mpm4ppc_bottom2.csv};
+    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=Piola_Stress:0] {csvFiles/dgmpm1ppc_bottom2.csv};
+    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=Piola_Stress:0] {csvFiles/dgmpm4ppc_bottom2.csv};
 
 
     % ============================== Cumulated plastic strain Line
@@ -33,19 +33,19 @@
     \nextgroupplot[ylabel=$p$,xlabel=$x_1 \: (m)$,ymin=0.,ymax=9.e-2%,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}
     ]
     \addplot[Orange,thick,mark=*,mark repeat=2] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/fem_bottom1.csv};
-    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=epeq] {csvFiles/mpm_bottom1.csv};
-    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=epeq] {csvFiles/mpm4ppc_bottom1.csv};
-    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=epeq] {csvFiles/dgmpm1ppc_bottom1.csv};
-    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=epeq] {csvFiles/dgmpm4ppc_bottom1.csv};
+    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/mpm1ppc_bottom1.csv};
+    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/mpm4ppc_bottom1.csv};
+    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/dgmpm1ppc_bottom1.csv};
+    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/dgmpm4ppc_bottom1.csv};
     
     % t2
     \nextgroupplot[legend style={at={($(0.75,-0.35)+(0.2cm,0.35cm)$)},legend columns=5},xlabel=$x_1 \: (m)$,ymin=0.,ymax=9.e-2%,ymin=-7.5e9,ymax=100.e9,ytick scale label code/.code={}
     ]
     \addplot[Orange,thick,mark=*,mark repeat=2] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/fem_bottom2.csv};
-    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=epeq] {csvFiles/mpm_bottom2.csv};
-    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=epeq] {csvFiles/mpm4ppc_bottom2.csv};
-    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=epeq] {csvFiles/dgmpm1ppc_bottom2.csv};
-    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=epeq] {csvFiles/dgmpm4ppc_bottom2.csv};
+    \addplot[Red,thick,mark=square,only marks] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/mpm1ppc_bottom2.csv};
+    \addplot[black!60,thick,mark=o,only marks] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/mpm4ppc_bottom2.csv};
+    \addplot[Blue,thick,mark=asterisk,only marks,mark size=3pt] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/dgmpm1ppc_bottom2.csv};
+    \addplot[Purple,thick,mark=x,only marks,mark size=3pt,mark repeat=2] table[x=Points:0,y=Equivalent_Plastic_Strain] {csvFiles/dgmpm4ppc_bottom2.csv};
 
     \addlegendentry{fem \:}
     \addlegendentry{mpm (1ppc) \:}

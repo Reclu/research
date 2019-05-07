@@ -21,8 +21,8 @@
     \nextgroupplot[title={$t=5.10\times 10^{-4} \:s$},ylabel={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/fem_stress1-crop.png};
     \nextgroupplot[title={$t=1.02\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/fem_stress2-crop.png};
 
-    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm_stress1-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm_stress2-crop.png};
+    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm1ppc_stress1-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/mpm1ppc_stress2-crop.png};
 
     \nextgroupplot[ylabel={DGMPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm1ppc_stress1-crop.png};
     \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm1ppc_stress2-crop.png};
@@ -31,18 +31,18 @@
     \nextgroupplot[ylabel={DGMPM(4ppc)},colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
-      xtick={-8.6,0.57},
-      xticklabels={-8.6,0.57},
+      xtick={-8.6,0.56},
+      xticklabels={-8.6,0.56},
     }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-8.6,0.) (0.57,0)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-8.6,0.) (0.56,0)};% Fake extreme values to fix scale
     \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm4ppc_stress1-crop.png};
     \nextgroupplot[colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
-      xtick={-2.3,5.6},
-      xticklabels={-2.3,5.6},
+      xtick={-3,7.6},
+      xticklabels={-3,7.6},
     }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-2.3,0.) (5.6,0)};% Fake extreme values to fix scale
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-3.,0.) (7.6,0)};% Fake extreme values to fix scale
     \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/dgmpm4ppc_stress2-crop.png};
     
   \end{groupplot}
