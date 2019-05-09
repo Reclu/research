@@ -85,7 +85,7 @@
   %% \fntext[label3]{}
   
   %\title{Solving hyperbolic problems in hyperelastic-plastic solids with the Discontinuous Galerkin Material Point Method}
-  \title{The Discontinuous Galerkin Material Point Method for variational hyperelastic-plastic solids.}
+  \title{The Discontinuous Galerkin Material Point Method for variational hyperelastic-plastic solids}
   
   %% use optional labels to link authors explicitly to addresses:
   %% \author[label1,label2]{}
@@ -100,22 +100,16 @@
     e-mail: \{adrien.renaud,thomas.heuze,laurent.stainier\}@ec-nantes.fr}
   
   \begin{abstract}
-    % In this paper, the formulation of the Discontinuous Galerkin Material Point Method is presented in the context of hyperbolic problems in the finite deformation framework.
-    % The method, which is based on the discretization of a solid domain by means of particles in a background mesh, takes advantage of the finite volume and finite element technologies in order to track waves in solids undergoing large deformations.
-    % On the one hand, the computational grid is used as a support for the discontinuous Galerkin approximation, which gives rise to fluxes computed through the solution of Riemann problems between the cells.
-    % On the other hand, the set of particles is used to represent the geometry and for storing the fields of the problem, thus giving the grid its arbitrary nature for it can then be discarded and reconstructed for convenience.
-    % Moreover, constitutive equations are dealt with at the particle level so that classical integrators can be employed.
-    % It is proposed here to couple the DGMPM with constitutive integrators based on a variational reformulation of the continuum equations for hyperelastic-plastic solids.
-    % The total Lagrangian formulation of the approach is then illustrated on numerical simulations for which comparisons with the finite element and material point methods, as well as exact solution in the linearized geometrical limit, are shown.
     The Discontinuous Galerkin Material Point Method (DGMPM), presented in \cite{DGMPM}, is based on the discretization of a solid domain by means of particles in a background mesh.
-    This method aims at taking advantage of the finite volume and finite element technologies in order to track waves in solids undergoing large deformations.
-    On the one hand, the computational grid is used as a support for the discontinuous Galerkin approximation, which gives rise to fluxes computed through the solution of Riemann problems between the cells.
-    On the other hand, the set of particles is used to represent the geometry and for storing the fields of the problem, thus giving the grid its arbitrary nature for it can be discarded and reconstructed for convenience.
-    Moreover, constitutive equations are dealt with at the particle level so that classical integrators can be employed.
+    Owing to the construction of the discontinuous Galerkin approximation on the grid, the weak form of a hyperbolic system is written element-wise based on the computation of fluxes at cell interfaces.
+    These fluxes are computed through the solution of Riemann problems between the elements, which allows to take into account the characteristic structure of the solution of hyperbolic partial differential equations.
+    Moreover, while the discrete equations are solved at the grid nodes, the set of particles is used to represent the geometry and for storing the fields of the problem.
+    Thus, the computational grid can be easily reconstructed providing that the fields are projected between nodes and particles.
+    By combining the description of the geometry by means of particles with the solution of Riemann problems, the total Lagrangian formulation of the method aims at tracking waves in finite-deforming solids while avoiding mesh entanglement. 
+    In addition, constitutive equations are dealt with at the particle level so that classical integrators can be employed.
     It is proposed in this paper to couple the DGMPM with variational integrators of hyperelastic-plastic constitutive models.
-    The genericity provided for dealing with rate-indepedant or rate-dependant plasticity, as well as the possibility to easily extend the DGMPM to thermomechanical problems, make this class of integrators appealing.
-    % This class of integrators provides a generic framework for dealing with hyperelastic-plastic or hyperelastic-viscoplastic solids, and should facilitate the extension of the method to strongly thermomechanically coupled problems.
-    The total Lagrangian formulation of the resulting approach is then illustrated on numerical examples for which comparisons are shown with the finite element and the material point methods, as well as exact solution in the linearized geometrical limit.
+    The genericity provided for dealing with rate-indepedent or rate-dependent plasticity, as well as the possibility to easily extend the DGMPM to thermomechanical problems, makes this class of integrators appealing.
+    The approach is here illustrated on numerical examples for which comparisons are shown with the finite element and the material point methods, as well as a one-dimensional exact solution in the linearized geometrical limit.
   \end{abstract}
   
   \begin{keyword}

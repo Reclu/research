@@ -9,7 +9,7 @@ Hyperbolic problems may be further complicated by possibly large displacements, 
 For the reasons mentioned above, the simulation of such problems is not a straightforward undertaking.
 Indeed, the precise tracking of waves involves the use of a numerical method whose solutions are devoided of oscillations and too much numerical diffusion on the one hand, and that is able to manage large deformations on the other hand.
 % FEM
-The numerical simulation of hyperbolic initial boundary value problems in solids has been so far mostly addressed in indusrtial codes by using the Finite Element Method (FEM) \cite{Belytschko}.
+The numerical simulation of hyperbolic initial boundary value problems in solids has been so far mostly addressed in industrial codes by using the Finite Element Method (FEM) \cite{Belytschko}.
 FEM became attractive due to its ability to handle low or high-order approximations, and to easily deal with complex geometries and nonlinear constitutive models. % as those already mentioned.
 Nevertheless, some difficulties related to the deformation of the mesh may be encountered when the formulation is built upon a material description of the motion (Lagrangian approach). 
 In fact, the method is less efficient and accurate when the elements are highly distorted or entangled so that re-meshing techniques and projection steps must be employed.
@@ -27,12 +27,12 @@ The extension to very high-order has since been proposed by increasing the stenc
 This class of methods can embed tools based on the Total Variation Diminishing (TVD) stability condition \cite{Harten}, thus ensuring that no numerical spurious oscillations arise in the solutions. 
 The formulation moreover lies on a conservative form leading to the same order of accuracy for all components of an unknown vector.
 In particular, one shows that both velocity and gradients arise in that vector for solid mechanics \cite{Lee_FVM}.
-This point makes a big difference with respect to methods that do not use a formulation written as a differential system of order one, namely FEM, for which the convergence rate of gradients is one order less than that of displacement.
+This makes a big difference with respect to methods that do not use a differential system of order one, namely the classical displacement-based FEM, for which the convergence rate of gradients is one order less than that of the displacement.
 %To some extent, the writing of solid mechanics equations in the form of conservation laws amounts to a mixed approach, well-known in FEM.
 FVM formulations moreover rely on numerical fluxes that enable to account for the characteristic structure of hyperbolic equations, thus allowing an accurate tracking of the path of waves.
 %Hence, finite volumes allow an accurate tracking of the path of waves although the most widely used approximations are second-order. 
 Recent studies furthermore extended these approaches to solid mechanics for problems involving history-dependent models \cite{Gavrilyuk,Thomas_EP}, or finite deformations with a Lagrangian formulation \cite{Lee_FVM,Haider_FVM}.
-Nevertheless, these methods are also grid-based techniques for which the numerical difficulties linked to large deformations occur.
+Nevertheless, those methods are also grid-based techniques for which the numerical difficulties linked to large deformations occur.
 
 % PIC-MPM
 Alternatively, Particle-In-Cell methods (PIC) \cite{PIC} are based on particles that move in a computational mesh while carrying the fields of a problem.
@@ -49,16 +49,21 @@ More recently, the extension of the MPM to the Discontinuous Galerkin approximat
 The DGMPM \cite{DGMPM} thus makes use of an interpolation of updated nodal quantities to the particles (\textit{i.e. PIC projection}), based on shape functions whose supports reduce to one cell so that the numerical diffusion is limited \cite{Thesis}.
 It then follows that the dual mesh consisting of an arbitrary grid and a set of particles allows to take advantage of both FEM and FVM.
 Indeed, the element-wise weak form written on the background grid involves intercell fluxes and well-known constitutive integrators \cite{Simo} can be used at material points, the mapping between the nodes and the particles being based on piece-wise linear Lagrange polynomials.
-The numerical solution of hyperbolic problems with the DGMPM in hyperelastic solids shows good agreements with exact solutions as well as significant improvements with respect to the original MPM \cite{DGMPM}.
-
+The numerical solution of hyperbolic problems with the DGMPM for hyperelastic solids shows good agreements with exact solutions as well as significant improvements with respect to the original MPM \cite{DGMPM}.
+ 
 The purpose of the present paper is to illustrate the method on problems involving rate-independent plastic solids undergoing finite deformations.
-In particular, the focus is on hyperelastic-plastic solids owing to the thermodynamically consistent framework on which they are based, in contrast with hypoelastic-plastic models. 
-Moreover, the thermodynamic framework enables the variational formulation of the equations of hyperelasto-plasticity that can be solved with dedicated numerical integrators based on incremental potentials \cite{Laurent99}.
-The use of such variational constitutive integrators should facilitate the extension of the DGMPM to strongly thermo-mechanically coupled problems and provides a generic framework for the integration of rate-independent and rate-dependent plasticity.
+More specifically, the class of hyperelastic-plastic solids is considered in this work since it falls in a thermodynamically consistent framework, in contrast with the class of hypoelastic-plastic constitutive models. 
+%Moreover, that thermodynamic framework enables the variational formulation of the equations of hyperelasto-plasticity that can be solved with dedicated numerical integrators based on incremental potentials \cite{Laurent99}.
+%The use of such variational constitutive integrators should facilitate the extension of the DGMPM to strongly thermo-mechanically coupled problems and provides a generic framework for the integration of rate-independent and rate-dependent plasticity.
+Moreover, that thermodynamic framework allows to recast the set of equations associated with hyperelastic-plastic constitutive models into a variational form \cite{Laurent99}.
+On the one hand, this variational framework brings a level of genericity to the approach since it can be shown that it encompasses a lot of class of dissipative constitutive models for solids (rate-dependent and rate-independent plasticity, viscoelasticity, damage, thermomechanical coupling) \cite{Laurent99,Laurent2009,Laurent2008,Laurent2006,Laurent2010}.
+This should facilitate the extension of the DGMPM to these constitutive models and to strongly thermo-mechanically coupled problems.
+On the other hand, dedicated variational integrators can be used to computed the updated solution, which are effective and make a direct use of standard minimization algorithms introduced at first in the optimization domain \cite{Bertsekas}.
 % Furthermore, the error estimation allowed by the introduction of variational solvers might pave the way for the developement of mesh adaption strategies based on criteria given by the wave structure.
    
 
-In what follows, the continuum equations of isothermal solid dynamics including balance laws and constitutive equations are recalled in section \ref{sec:continuum_problem}.
+The outline of the paper is as follows.
+The continuum equations of isothermal solid dynamics including balance laws and constitutive equations are first recalled in section \ref{sec:continuum_problem}.
 Next, section \ref{sec:discretization} is devoted to the derivation of the DGMPM discrete system that must be solved on the background grid at each time step. 
 The discrete system is based on the calculation of intercell fluxes by means of a hyperelastic approximate-state Riemann solver which is presented in section \ref{sec:riemann_solver}.
 The constitutive relations are restated in section \ref{sec:constitutive-update} in order to provide a variational constitutive update for the integration of plastic flow at material points.

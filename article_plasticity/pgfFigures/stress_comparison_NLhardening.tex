@@ -18,55 +18,68 @@
     ]
     %% FIRST ROW (time 1 = 5.10e-4s)
     %%% RANGE -8.6e9 -- 0.57e9
-    \nextgroupplot[title={$t=1.9\times 10^{-4} \:s$},ylabel={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_stress1-crop.png};
-    \nextgroupplot[title={$t=3.7\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_stress2-crop.png};
-\nextgroupplot[title={$t=6.8\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_stress3-crop.png};
-    \nextgroupplot[title={$t=8.0\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/fem_stress4-crop.png};
+    \nextgroupplot[title={$t=3.2\times 10^{-4} \:s$},ylabel={FEM}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/fem_stress1-crop.png};
+    \nextgroupplot[title={$t=5.55\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/fem_stress2-crop.png};
+\nextgroupplot[title={$t=8.69\times 10^{-4} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/fem_stress3-crop.png};
+    \nextgroupplot[title={$t=1.1\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/fem_stress4-crop.png};
+    %\nextgroupplot[title={$t=1.40\times 10^{-3} \:s$}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/fem_stress5-crop.png};
 
-    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_stress1-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_stress2-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_stress3-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/mpm_stress4-crop.png};
+    \nextgroupplot[ylabel={MPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/mpm_stress1-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/mpm_stress2-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/mpm_stress3-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/mpm_stress4-crop.png};
+    %\nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/mpm_stress5-crop.png};
 
-    \nextgroupplot[ylabel={DGMPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_stress1-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_stress2-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_stress3-crop.png};
-    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm1ppc_stress4-crop.png};
+    \nextgroupplot[ylabel={DGMPM(1ppc)}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm1ppc_stress1-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm1ppc_stress2-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm1ppc_stress3-crop.png};
+    \nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm1ppc_stress4-crop.png};
+    %\nextgroupplot[]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm1ppc_stress5-crop.png};
     
 
     \nextgroupplot[ylabel={DGMPM(4ppc)},colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
-      xtick={-0.89,1.7},
-      xticklabels={-8.9,17},
+      xtick={-2.3,0.26},
+      xticklabels={-23,2.6},
     }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-0.89,0.) (1.7,0)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_stress1-crop.png};
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-2.3,0.) (0.26,0)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm4ppc_stress1-crop.png};
     \nextgroupplot[colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
-      xtick={-1.3,2.0},
-      xticklabels={-13,20},
+      xtick={-11,2.7},
+      xticklabels={-11,2.7},
     }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-1.3,0.) (2.0,0)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_stress2-crop.png};
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-11,0.) (2.7,0)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm4ppc_stress2-crop.png};
     \nextgroupplot[colorbar horizontal,colorbar  style={
       title style={yshift=-1.5cm},
       title= {$\Pi_{11}\: (GPa)$},
-      xtick={-1.8,3.1},
-      xticklabels={-18,31},
+      xtick={-7.5,4.3},
+      xticklabels={-7.5,4.3},
     }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-1.8,0.) (3.1,0)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_stress3-crop.png};
-    \nextgroupplot[colorbar horizontal,colorbar  style={
-      title style={yshift=-1.5cm},
-      title= {$\Pi_{11}\: (GPa)$},
-      xtick={-1.8,3.6},
-      xticklabels={-18,36},
-    }]
-    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-1.8,0.) (3.6,0)};% Fake extreme values to fix scale
-    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/NLhardening/dgmpm4ppc_stress4-crop.png};
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-7.5,0.) (4.3,0)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm4ppc_stress3-crop.png};
     
+    \nextgroupplot[colorbar horizontal,colorbar  style={
+      title style={yshift=-1.5cm},
+      title= {$\Pi_{11}\: (GPa)$},
+      xtick={-7,5.5},
+      xticklabels={-7,5.5},
+    }]
+    \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-7,0.) (5.5,0)};% Fake extreme values to fix scale
+    \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm4ppc_stress4-crop.png};
+    
+    % \nextgroupplot[colorbar horizontal,colorbar  style={
+    %   title style={yshift=-1.5cm},
+    %   title= {$\Pi_{11}\: (GPa)$},
+    %   xtick={-6,4.3},
+    %   xticklabels={-6,4.3},
+    % }]
+    % \addplot[scatter,scatter src=x,mark size=0.pt] coordinates {(-6,0.) (4.3,0)};% Fake extreme values to fix scale
+    % \addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/tractionSimulation/dgmpm4ppc_stress5-crop.png};
+
   \end{groupplot}
 \end{tikzpicture}
 

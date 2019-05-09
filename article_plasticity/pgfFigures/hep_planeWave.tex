@@ -12,9 +12,9 @@
     \addplot[Orange,mark=*,thick,mark repeat=2,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem0.pgf};
     \addplot[black] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/exact0.pgf};
 
-    % \begin{scope}
-    %   \spy[black,size=2.cm] on (3.7,0.35) in node [fill=none] at (2.725,3.);
-    % \end{scope}
+    \begin{scope}
+      \spy[black,size=1.5cm] on (2.8,0.25) in node [fill=none] at (2.725,3.);
+    \end{scope}
 
     % t2 % t= 1.37e-4
     \nextgroupplot[title={(b) $t=1.37\times 10^{-4}$ s.},ymin=-8.5e8,ymax=8.e8]
@@ -26,6 +26,12 @@
     \addplot[Orange,mark=*,thick,mark repeat=2,mark size=2pt] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/fem1.pgf};
     \addplot[black] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/exact1.pgf};
 
+
+    % \begin{scope}
+    %   \spy[black,size=1.5cm] on (7.2,1.5) in node [fill=none] at (6.75,3.);
+    % \end{scope}
+
+    
     % t3 % t= 2.05e-4
     \nextgroupplot[title={(c) $t=2.05\times 10^{-4}$ s.},ymin=-8.5e8,ymax=8.e8]
     \addplot[Red,densely dashed,thick] table[x=x,y=Pi] {pgfFigures/HEP_planeWave/mpm2.pgf};
