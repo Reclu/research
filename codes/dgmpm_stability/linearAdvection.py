@@ -67,7 +67,9 @@ def buildDiscreteOperator(Map,parent,invParent,t_order):
         for k in sharing:
             H_matrix[p,k] = Map[n1,p]*Map[n1,k]/np.sum(Map[n1,:]) + Map[n2,p]*Map[n2,k]/np.sum(Map[n2,:]) + CFL*(Map[n2,p]/np.sum(Map[n2,:]) - Map[n1,p]/np.sum(Map[n1,:]) - len(sharing)*Map[n2,p]*Map[n2,k]/(np.sum(Map[n2,:])**2) )
             if t_order==2:
-                H_matrix[p,k] += 0.5*len(sharing)*(CFL**2)*((Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) + (len(sharing)/np.sum(Map[n2,:]))*(Map[n2,k]/np.sum(Map[n2,:])-1.))
+                wheight = 0.5*len(sharing)*(CFL**2)
+                H_matrix[p,k] += wheight*(Map[n2,k]/np.sum(Map[n2,:]))*( Map[n1,p]/np.sum(Map[n1,:]) - Map[n2,p]/np.sum(Map[n2,:]) ) 
+                H_matrix[p,k] += wheight*(Map[n2,p]/np.sum(Map[n2,:]))*( ( len(sharing)*Map[n2,k]/np.sum(Map[n2,:]) -1.)/np.sum(Map[n2,:]) )
                 
         # index of the left and right nodes in the previous element
         np1 = 2*(elem-1)+1 ; np2 = np1+1
@@ -83,7 +85,9 @@ def buildDiscreteOperator(Map,parent,invParent,t_order):
         for k in sharing:
             H_matrix[p,k] = Map[n1,p]*Map[n1,k]/np.sum(Map[n1,:]) + Map[n2,p]*Map[n2,k]/np.sum(Map[n2,:]) + CFL*(Map[n2,p]/np.sum(Map[n2,:]) - Map[n1,p]/np.sum(Map[n1,:]) - len(sharing)*Map[n2,p]*Map[n2,k]/(np.sum(Map[n2,:])**2) )
             if t_order==2:
-                H_matrix[p,k] += 0.5*len(sharing)*(CFL**2)*((Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) + (len(sharing)/np.sum(Map[n2,:]))*(Map[n2,k]/np.sum(Map[n2,:])-1.))#+ (Map[n2,p]/np.sum(Map[n2,:]))*(len(sharing)*Map[n2,k]/np.sum(Map[n2,:])-1.)/np.sum(Map[n2,:]))
+                wheight = 0.5*len(sharing)*(CFL**2)
+                H_matrix[p,k] += wheight*(Map[n2,k]/np.sum(Map[n2,:]))*( Map[n1,p]/np.sum(Map[n1,:]) - Map[n2,p]/np.sum(Map[n2,:]) ) 
+                H_matrix[p,k] += wheight*(Map[n2,p]/np.sum(Map[n2,:]))*( ( len(sharing)*Map[n2,k]/np.sum(Map[n2,:]) -1.)/np.sum(Map[n2,:]) )
                 
     Hoperator = lambdify((CFL),H_matrix)
     return H_matrix,Hoperator
@@ -94,6 +98,7 @@ def UpdateStateDiscreteOperator(U,H,BC,CFL,invParent,t_order):
         for k in range(np.shape(U)[0]):
             U_updated[p]+=H[p,k]*U[k]
     ## next, enforce the BC at the left points
+    """
     for p in invParent[0]:
         sharing=invParent[0]
         # index of the left and right nodes
@@ -104,6 +109,7 @@ def UpdateStateDiscreteOperator(U,H,BC,CFL,invParent,t_order):
                 Hpk += 0.5*len(sharing)*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))*(1.-len(sharing)*Map[n2,k]/np.sum(Map[n2,:])) -(Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
                 # Hpk += 0.5*len(sharing)*(CFL**2)*((Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) + (Map[n2,p]/np.sum(Map[n2,:]))*(len(sharing)*Map[n2,k]/np.sum(Map[n2,:])-1.)/np.sum(Map[n2,:]))
             U_updated[p]+=Hpk*BC
+    """
     return U_updated
 
 def gridSearch(function,tol=1.e-7):
@@ -174,7 +180,7 @@ coor=np.zeros(Nn)
 for i in range(Nn):
     coor[i]=(i/2)*dx -dx/(2.*ppc) 
 
-shift=0.*dx
+shift=0.24999*dx
 xp[:,0]+=shift
 #mesh.xn+=0.01
 """
@@ -209,7 +215,7 @@ t_order= 1
 Hsym,HOperator=buildDiscreteOperator(Map,parent,invParent,t_order)
 CFL=computeCriticalCFL(Mp,Hsym,invParent)
 Dt=CFL*dx/c 
-tfinal=1.*L/c
+tfinal=.9*L/c
 tf=2.0*tfinal;
 inc=round(tfinal/Dt)
 tunload=5000*Dt
@@ -255,6 +261,8 @@ limiter = 0 : minmod
 limiter=-1
 
 print '... computing ...'
+U[0]=r0
+Uh[0]=r0
 
 
 while T<tfinal:
@@ -266,7 +274,7 @@ while T<tfinal:
     # Mapping from material points to nodes
     u[Dofs]=np.linalg.solve(mf,np.dot(Map[Dofs,:],np.dot(Md,U)))
     
-    u[0]=r0*(T<tunload)
+    #u[0]=r0*(T<tunload)
     
     # plt.plot(coor,u*rho,'b-+',lw=2.)
     # plt.plot(xp[:,0],U*rho,'r-o',lw=2.)
@@ -312,6 +320,7 @@ while T<tfinal:
     plt.grid()
     plt.show()
     """
+
 ## Compute the error between the two numerical solutions
 error = computeRelativeError(Stress[:,n],Stressh[:,n],dx,2)
 print "Error between the two numerical procedures: ",error

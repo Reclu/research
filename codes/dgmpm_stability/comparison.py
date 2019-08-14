@@ -35,6 +35,8 @@ def residualRK2(point,S,Sp):
         D_mu = S1[p]*S1[point]/Sum1 + S2[p]*S2[point]/Sum2 + CFL*( S2[point]/Sum2 - S1[point]/Sum1 -Nmp*S2[p]*S2[point]/(Sum2**2) )
         ## Second order contributions
         D_mu += 0.5*Nmp*(CFL**2)*((S2[p]/Sum2)*(S1[point]/Sum1-S2[point]/Sum2) + (S2[point]/Sum2)*(Nmp*S2[p]/Sum2-1.)/Sum2)
+        # D_mu += 0.5*Nmp*(CFL**2)*(S2[p]/Sum2)*( S1[point]/Sum1-S2[point]/Sum2 + (Nmp*S2[p]/Sum2-1.)/Sum2)
+        print "changed!"
         Res = Res +np.abs(D_mu)
     # Sum over material points in previous cell
     for p in range(Nmpp):
@@ -106,10 +108,10 @@ print "**************************************************************"
 print "******************  2PPC discretization **********************"
 print "**************************************************************"
 print "   "
-shift=0.25
+shift=-0.25
 shapes=shape_functions(np.array([0.25,0.75]))
 ## Gauss-Legendre integration
-shapes=shape_functions(0.5*np.array([1.-1./np.sqrt(3.),1.+1./np.sqrt(3.)]))
+#shapes=shape_functions(0.5*np.array([1.-1./np.sqrt(3.),1.+1./np.sqrt(3.)]))
 
 eulerSolution=[]
 rk2Solution=[]
@@ -121,7 +123,8 @@ print "RK2 solution, CFL= ",min(rk2Solution)
 pdb.set_trace()
 print "   "
 print "Shifted"
-shapes=shape_functions(np.array([0.25+shift,0.75+shift]))
+X=np.array([0.25+shift,0.75+shift])
+shapes=shape_functions(X)
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
@@ -129,7 +132,7 @@ for i in range(np.shape(shapes)[0]):
     rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
 print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
-
+pdb.set_trace()
 # 3PPC
 print "**************************************************************"
 print "******************  3PPC discretization **********************"

@@ -65,7 +65,7 @@ grad_eta=lambda x:np.array([-(1.-x)/4.,-(1.+x)/4.,(1.+x)/4.,(1.-x)/4.])
 # where Ni(Xj) is the shape function of node i evaluated at the jth particles position
 
 
-def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
+def symbolResidual(point,dx,cx,cy,XC,XB,XL,XBL=0):
     transverse=True
     if XBL==0: transverse=False
     shapesC=shape_functions(XC[0],XC[1])
@@ -113,14 +113,15 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
             D_PI+=wheightings*shapesC[i,P]
             # 1st-order contributions
             for j in range(Nnodes):
-                D_PI+=dt*wheightings*(shapesC[j,P]/np.sum(shapesC[j,:]))*(cx*np.dot(dSxi_C[i,:],shapesC[j,:]) + cy*np.dot(dSeta_C[i,:],shapesC[j,:]))
+                D_PI+=2.*dt*wheightings*(shapesC[j,P]/np.sum(shapesC[j,:]))*(cx*np.dot(dSxi_C[i,:],shapesC[j,:])/dx + cy*np.dot(dSeta_C[i,:],shapesC[j,:])/dx)
             # Contributions of edges 2 and 3
-            D_PI-=0.25*dt*wheightings*shapeOnEdge[i,1]*NmpC*cx*(shapesC[1,P]/np.sum(shapesC[1,:])+shapesC[2,P]/np.sum(shapesC[2,:]))
-            D_PI-=0.25*dt*wheightings*shapeOnEdge[i,2]*NmpC*cx*(shapesC[2,P]/np.sum(shapesC[2,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
+            #pdb.set_trace()
+            D_PI-=0.5*(dt/dx)*wheightings*shapeOnEdge[i,1]*NmpC*cx*(shapesC[1,P]/np.sum(shapesC[1,:])+shapesC[2,P]/np.sum(shapesC[2,:]))
+            D_PI-=0.5*(dt/dx)*wheightings*shapeOnEdge[i,2]*NmpC*cy*(shapesC[2,P]/np.sum(shapesC[2,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
             # Transverse contributions
             if transverse:
-                D_PI+= (0.25*dt)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[1,P]/np.sum(shapesC[1,:]))
-                D_PI+= (0.25*dt)**2*wheightings*shapeOnEdge[i,2]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
+                D_PI+= 0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[1,P]/np.sum(shapesC[1,:]))
+                D_PI+= 0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,2]*NmpC*cx*cy*(shapesC[0,P]/np.sum(shapesC[0,:])+shapesC[3,P]/np.sum(shapesC[3,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of left cell
     for P in range(NmpL):
@@ -128,11 +129,11 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
         for i in range(Nnodes):
             wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 4 contribution
-            D_PI+= 0.25*dt*wheightings*shapeOnEdge[i,3]*NmpC*cx*(shapesL[2,P]/np.sum(shapesL[2,:])+shapesL[3,P]/np.sum(shapesL[3,:]))
+            D_PI+= 0.5*(dt/dx)*wheightings*shapeOnEdge[i,3]*NmpC*cx*(shapesL[1,P]/np.sum(shapesL[1,:])+shapesL[2,P]/np.sum(shapesL[2,:]))
             if transverse:
-                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesL[0,P]/np.sum(shapesL[0,:])+shapesL[1,P]/np.sum(shapesL[1,:]))
+                D_PI-=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesL[0,P]/np.sum(shapesL[0,:])+shapesL[1,P]/np.sum(shapesL[1,:]))
                 ## edge 3 contribution
-                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,2]*NmpC*cy*cx*(shapesL[1,P]/np.sum(shapesL[1,:])+shapesL[2,P]/np.sum(shapesL[2,:]))
+                D_PI-=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,2]*NmpC*cy*cx*(shapesL[1,P]/np.sum(shapesL[1,:])+shapesL[2,P]/np.sum(shapesL[2,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of bottom cell            
     for P in range(NmpB):
@@ -140,11 +141,11 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
         for i in range(Nnodes):
             wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 1 contribution
-            D_PI+= 0.25*dt*wheightings*shapeOnEdge[i,0]*NmpC*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+            D_PI+= 0.5*(dt/dx)*wheightings*shapeOnEdge[i,0]*NmpC*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
             if transverse:
-                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesB[0,P]/np.sum(shapesB[0,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+                D_PI-=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesB[0,P]/np.sum(shapesB[0,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
                 ## edge 2 contribution
-                D_PI-=(0.25*dt)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
+                D_PI-=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,1]*NmpC*cx*cy*(shapesB[2,P]/np.sum(shapesB[2,:])+shapesB[3,P]/np.sum(shapesB[3,:]))
         Res+=np.abs(D_PI)
     ## Contributions of material points of bottom-left cell
     for P in range(NmpBL):
@@ -152,30 +153,31 @@ def symbolResidual(point,cx,cy,XC,XB,XL,XBL=0):
         for i in range(Nnodes):
             wheightings=shapesC[i,point]/np.sum(shapesC[i,:])
             ## edge 1 contribution
-            D_PI+=(0.25*dt)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesBL[1,P]/np.sum(shapesBL[1,:])+shapesBL[2,P]/np.sum(shapesBL[2,:]))
+            D_PI+=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,0]*NmpC*cy*cx*(shapesBL[1,P]/np.sum(shapesBL[1,:])+shapesBL[2,P]/np.sum(shapesBL[2,:]))
             ## edge 4 contribution
-            D_PI+=(0.25*dt)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesBL[2,P]/np.sum(shapesBL[2,:])+shapesBL[3,P]/np.sum(shapesBL[3,:]))
+            D_PI+=0.25*(dt/dx)**2*wheightings*shapeOnEdge[i,3]*NmpC*cx*cy*(shapesBL[2,P]/np.sum(shapesBL[2,:])+shapesBL[3,P]/np.sum(shapesBL[3,:]))
         Res+=np.abs(D_PI)
     Residual = lambdify((dt),Res-1.)
     return Residual
 
-def gridSearch(function,tol=1.e-7):
+def gridSearch(function,dx,cx,tol=1.e-2):
     samples=100000
     # Find the bigest root of the residual by grid search algorithm
     CFL=np.linspace(0.,1.,samples)
-    for i in CFL:
-        if i==samples-1:return i
-        a0=function(i)
+    for i in range(samples):
+        value=CFL[-1-i]
+        a0=function(value*dx/cx)
         if a0<tol:
-            continue
+            return value
         else:
-            return i
-
+            continue
+    return 0.
 
 
 samples=20
 cx=np.linspace(2.,80.,samples)
 cy=cx[0]
+dx=2.
 ############### 1PPC
 print "**************************************************************"
 print "******************  1PPC discretization **********************"
@@ -186,408 +188,243 @@ print "=== Symmetric horizontal ==="
 # DCU=np.zeros(samples)
 # CTU=np.zeros(samples)
 # for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
+#     residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     solution=gridSearch(residual,dx,cx[i])
 #     DCU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+#     residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
 #     solution=optimize.newton(residual,1.)
-#     #solution=gridSearch(residual)
+#     #solution=gridSearch(residual,dx,cx[i])
 #     CTU[i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
 # plt.plot(cx/cy,DCU,'b')
 # plt.plot(cx/cy,CTU,'r')
 # plt.grid()
 # plt.show()
-
+"""
 ############### 2PPC
 print "**************************************************************"
 print "******************  2PPC discretization **********************"
 print "**************************************************************"
 print "=== Symmetric horizontal ==="
-# Xp=np.array([-0.5,0.5])
-# Yp=np.array([0.,0.])
-# Xp2=np.array([-0.25,0.25])
-# Yp2=np.array([0.,0.])
+Xp=np.array([-0.5,0.5])
+Yp=np.array([0.,0.])
+Xp2=np.array([-0.25,0.25])
+Yp2=np.array([0.,0.])
 
-# DCU_natural=np.zeros((2,samples))
-# CTU_natural=np.zeros((2,samples))
-# DCU_shifted=np.zeros((2,samples))
-# CTU_shifted=np.zeros((2,samples))
-# for i in range(samples):
-#     for p in range(2):
-#         residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#         solution=gridSearch(residual)
-#         DCU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#         residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#         solution=gridSearch(residual)
-#         CTU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-
-#         # Shift symmetrically
-#         residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-#         solution=gridSearch(residual)
-#         DCU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#         residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-#         solution=gridSearch(residual)
-#         CTU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-
-# plt.plot(cx/cy,DCU_natural[0,:],'b')
-# plt.plot(cx/cy,DCU_natural[1,:],'b--')
-# plt.plot(cx/cy,CTU_natural[0,:],'r')
-# plt.plot(cx/cy,CTU_natural[1,:],'r--')
-# plt.grid()
-# plt.show()
-
-# plt.plot(cx/cy,DCU_shifted[0,:],'b')
-# plt.plot(cx/cy,DCU_shifted[1,:],'b--')
-# plt.plot(cx/cy,CTU_shifted[0,:],'r')
-# plt.plot(cx/cy,CTU_shifted[1,:],'r--')
-# plt.grid()
-# plt.show()    
-
-# export2DTeXFile('2dCFL_2ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_2ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-# print "=== Symmetric Vertical ==="
-# Yp=np.array([-0.5,0.5])
-# Xp=np.array([0.,0.])
-
-# DCU_natural=[]
-# CTU_natural=[]
-# DCU_shifted=[]
-# CTU_shifted=[]
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=optimize.newton(residual,1.)
-#     DCU_natural.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=optimize.newton(residual,1.)
-#     CTU_natural.append(cx[i]*solution/2.)
-
-# Yp=np.array([-0.25,0.25])
-# Xp=np.array([0.,0.])
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=optimize.newton(residual,1.)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=optimize.newton(residual,1.)
-#     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_2ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_2ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-
-############### 4PPC
-# print "**************************************************************"
-# print "******************  4PPC discretization **********************"
-# print "**************************************************************"
-# print "=== Symmetric ==="
-# Xp=np.array([-0.5,0.5,0.5,-0.5])
-# Yp=np.array([-0.5,-0.5,0.5,0.5])
-
-# Xp2=np.array([-0.25,0.25,0.25,-0.25])
-# Yp2=np.array([-0.25,-0.25,0.25,0.25])
-
-# Xp3=np.array([-1.,1.,1.,-1.])
-# Yp3=np.array([-1.,-1.,1.,1.])
-
-# DCU_natural=np.zeros((1,samples))
-# CTU_natural=np.zeros((1,samples))
-# DCU_shifted=np.zeros((1,samples))
-# CTU_shifted=np.zeros((1,samples))
-# DCU_shifted2=np.zeros((1,samples))
-# CTU_shifted2=np.zeros((1,samples))
-
-# fig = plt.figure()
-# ax1=plt.subplot2grid((1,2),(0,0))
-# ax2=plt.subplot2grid((1,2),(0,1))
-# col=['b','r','g','k','m','y','c']
-
-# for p in range(1):
-#     for i in range(samples):
-#         residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#         solution=gridSearch(residual)
-#         DCU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#         residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#         solution=gridSearch(residual)
-#         CTU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-
-#         # Shift symmetrically
-#         residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-#         solution=gridSearch(residual)
-#         DCU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#         residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-#         solution=gridSearch(residual)
-#         CTU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-
-#     ax1.plot(cx/cy,DCU_natural[p,:],col[p],label='nat'+str(p))
-#     ax1.plot(cx/cy,DCU_shifted[p,:],col[p],label='shift'+str(p))
-#     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
-#     ax2.plot(cx/cy,CTU_shifted[p,:],col[p],linestyle='--',label='shift'+str(p))
-
-# ax1.grid();ax2.grid()
-# ax1.legend();ax2.legend()
-# plt.show()
-
-# # plt.plot(cx/cy,DCU_natural[0,:],'b')
-# # plt.plot(cx/cy,DCU_natural[1,:],'b--')
-# # plt.plot(cx/cy,CTU_natural[0,:],'r')
-# # plt.plot(cx/cy,CTU_natural[1,:],'r--')
-# # plt.grid()
-# # plt.show()
-
-# # plt.plot(cx/cy,DCU_shifted[0,:],'b')
-# # plt.plot(cx/cy,DCU_shifted[1,:],'b--')
-# # plt.plot(cx/cy,CTU_shifted[0,:],'r')
-# # plt.plot(cx/cy,CTU_shifted[1,:],'r--')
-# # plt.grid()
-# # plt.show()    
-
-# # DCU_natural=[]
-# # CTU_natural=[]
-# # DCU_shifted=[]
-# # CTU_shifted=[]
-# # for i in range(samples):
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     DCU_natural.append(cx[i]*solution/2.)
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     CTU_natural.append(cx[i]*solution/2.)
-
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_4ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_4ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-
-# Xp=np.array([-0.5,0.5,0.5,-0.5])
-# Yp=np.array([-0.5,-0.5,0.5,0.5])+0.25
-
-# DCU_natural=[]
-# CTU_natural=[]
-# DCU_shifted=[]
-# CTU_shifted=[]
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_natural.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_natural.append(cx[i]*solution/2.)
-
-# Xp=np.array([-0.5,0.5,0.5,-0.5])
-# Yp=np.array([-0.5,-0.5,0.5,0.5])-0.25
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-
-# Yp=np.array([-0.5,0.5,0.5,-0.5])
-# Xp=np.array([-0.5,-0.5,0.5,0.5])+0.25
-
-# DCU_natural=[]
-# CTU_natural=[]
-# DCU_shifted=[]
-# CTU_shifted=[]
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_natural.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_natural.append(cx[i]*solution/2.)
-
-# Yp=np.array([-0.5,0.5,0.5,-0.5])
-# Xp=np.array([-0.5,-0.5,0.5,0.5])-0.25
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-
-############### 9PPC
-print "**************************************************************"
-print "******************  9PPC discretization **********************"
-print "**************************************************************"
-print "=== Symmetric ==="
-Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])
-Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])
-
-Xp2=np.array([-0.25,0.25,0.25,-0.25,-0.25,0.,0.25,0.,0.])
-Yp2=np.array([-0.25,-0.25,0.25,0.25,0.,0.,0.,-0.25,0.25])
-
-DCU_natural=np.zeros((4,samples))
-CTU_natural=np.zeros((4,samples))
-DCU_shifted=np.zeros((4,samples))
-CTU_shifted=np.zeros((4,samples))
-fig = plt.figure()
-ax1=plt.subplot2grid((1,2),(0,0))
-ax2=plt.subplot2grid((1,2),(0,1))
-col=['b','r','g','k','m','y','c']
-for p in range(1):
-    for i in range(samples):
-        residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-        solution=gridSearch(residual)
+DCU_natural=np.zeros((2,samples))
+CTU_natural=np.zeros((2,samples))
+DCU_shifted=np.zeros((2,samples))
+CTU_shifted=np.zeros((2,samples))
+for i in range(samples):
+    for p in range(2):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
         DCU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-        residual=symbolResidual(p,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-        solution=gridSearch(residual)
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
         CTU_natural[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
 
         # Shift symmetrically
-        residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-        solution=gridSearch(residual)
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
         DCU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-        residual=symbolResidual(p,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-        solution=gridSearch(residual)
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
         CTU_shifted[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#     ax1.plot(cx/cy,DCU_natural[p,:],col[p],label='nat'+str(p))
-#     ax1.plot(cx/cy,DCU_shifted[p,:],col[p],label='shift'+str(p))
-#     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
-#     ax2.plot(cx/cy,CTU_shifted[p,:],col[p],linestyle='--',label='shift'+str(p))
 
-#         # Shift symmetrically on nodes
-#         residual=symbolResidual(p,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
-#         solution=optimize.newton(residual,1.)
-#         DCU_shifted2[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#         residual=symbolResidual(p,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
-#         solution=optimize.newton(residual,1.)
-#         CTU_shifted2[p,i]=cx[i]*solution/2.#.append(cx[i]*solution/2.)
-#     ax1.plot(cx/cy,DCU_natural[p,:],col[p],label='nat'+str(p))
-#     ax1.plot(cx/cy,DCU_shifted[p,:],col[p],label='shift'+str(p))
-#     ax1.plot(cx/cy,DCU_shifted2[p,:],col[p],label='shift2'+str(p))
-#     ax2.plot(cx/cy,CTU_natural[p,:],col[p],label='nat'+str(p))
-#     ax2.plot(cx/cy,CTU_shifted[p,:],col[p],linestyle='--',label='shift'+str(p))
-#     ax2.plot(cx/cy,CTU_shifted2[p,:],col[p],linestyle='-.',label='shift2'+str(p))
+plt.plot(cx/cy,DCU_natural[0,:],'b',label="DCU")
+#plt.plot(cx/cy,DCU_natural[1,:],'b--')
+plt.plot(cx/cy,CTU_natural[0,:],'r',label="CTU")
+plt.plot(cx/cy,np.ones(len(cx))*0.4286,'k--',label="1D")
+#plt.plot(cx/cy,CTU_natural[1,:],'r--')
+plt.legend()
+plt.grid()
+plt.show()
 
-# ax1.grid();ax2.grid()
-# ax1.legend();ax2.legend()
-# plt.show()
-
-# # plt.plot(cx/cy,DCU_natural[0,:],'b')
-# # plt.plot(cx/cy,DCU_natural[1,:],'b--')
-# # plt.plot(cx/cy,CTU_natural[0,:],'r')
-# # plt.plot(cx/cy,CTU_natural[1,:],'r--')
-# # plt.grid()
-# # plt.show()
-
-# # plt.plot(cx/cy,DCU_shifted[0,:],'b')
-# # plt.plot(cx/cy,DCU_shifted[1,:],'b--')
-# # plt.plot(cx/cy,CTU_shifted[0,:],'r')
-# # plt.plot(cx/cy,CTU_shifted[1,:],'r--')
-# # plt.grid()
-# # plt.show()    
-
-# # DCU_natural=[]
-# # CTU_natural=[]
-# # DCU_shifted=[]
-# # CTU_shifted=[]
-# # for i in range(samples):
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     DCU_natural.append(cx[i]*solution/2.)
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     CTU_natural.append(cx[i]*solution/2.)
-
-# # Shift symmetrically
-# # for i in range(samples):
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     DCU_shifted.append(cx[i]*solution/2.)
-# #     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-# #     solution=gridSearch(residual)
-# #     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_4ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted,DCU_shifted2]))
-# export2DTeXFile('2dCFL_4ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted,CTU_shifted2]))
-
-# pdb.set_trace()
-# Xp=np.array([-0.5,0.5,0.5,-0.5])
-# Yp=np.array([-0.5,-0.5,0.5,0.5])+0.25
-
-# DCU_natural=[]
-# CTU_natural=[]
-# DCU_shifted=[]
-# CTU_shifted=[]
-# DCU_shifted2=[]
-# CTU_shifted2=[]
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_natural.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_natural.append(cx[i]*solution/2.)
->>>>>>> a0e57f43a82da56787da6efc10455118e060ad5a
-
-# Xp=np.array([-0.5,0.5,0.5,-0.5])
-# Yp=np.array([-0.5,-0.5,0.5,0.5])-0.25
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_shifted.append(cx[i]*solution/2.)
-
-# export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+plt.plot(cx/cy,DCU_shifted[0,:],'b')
+#plt.plot(cx/cy,DCU_shifted[1,:],'b--')
+plt.plot(cx/cy,CTU_shifted[0,:],'r')
+#plt.plot(cx/cy,CTU_shifted[1,:],'r--')
+plt.grid()
+plt.show()    
 
 
-# Yp=np.array([-0.5,0.5,0.5,-0.5])
-# Xp=np.array([-0.5,-0.5,0.5,0.5])+0.25
+export2DTeXFile('2dCFL_2ppcH_DCU.tex',cx/cy,np.array([DCU_natural[0,:],DCU_shifted[0,:]]))
+export2DTeXFile('2dCFL_2ppcH_CTU.tex',cx/cy,np.array([CTU_natural[0,:],CTU_shifted[0,:]]))
 
-# DCU_natural=[]
-# CTU_natural=[]
-# DCU_shifted=[]
-# CTU_shifted=[]
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_natural.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_natural.append(cx[i]*solution/2.)
+# print "=== Symmetric Vertical ==="
+Yp=np.array([-0.5,0.5])
+Xp=np.array([0.,0.])
 
-# Yp=np.array([-0.5,0.5,0.5,-0.5])
-# Xp=np.array([-0.5,-0.5,0.5,0.5])-0.25
-# # Shift symmetrically
-# for i in range(samples):
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     DCU_shifted.append(cx[i]*solution/2.)
-#     residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-#     solution=gridSearch(residual)
-#     CTU_shifted.append(cx[i]*solution/2.)
+DCU_natural=[]
+CTU_natural=[]
+DCU_shifted=[]
+CTU_shifted=[]
+for i in range(samples):
+    residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=optimize.newton(residual,1.)
+    DCU_natural.append(cx[i]*solution/2.)
+    residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=optimize.newton(residual,1.)
+    CTU_natural.append(cx[i]*solution/2.)
+
+Yp=np.array([-0.25,0.25])
+Xp=np.array([0.,0.])
+# Shift symmetrically
+for i in range(samples):
+    residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=optimize.newton(residual,1.)
+    DCU_shifted.append(cx[i]*solution/2.)
+    residual=symbolResidual(0,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+    solution=optimize.newton(residual,1.)
+    CTU_shifted.append(cx[i]*solution/2.)
+
+export2DTeXFile('2dCFL_2ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
+export2DTeXFile('2dCFL_2ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+"""
+
+############### 4PPC
+print "**************************************************************"
+print "******************  4PPC discretization **********************"
+print "**************************************************************"
+
+"""
+print "=== Symmetric ==="
+Xp=np.array([-0.5,0.5,0.5,-0.5])
+Yp=np.array([-0.5,-0.5,0.5,0.5])
+
+Xp2=np.array([-0.25,0.25,0.25,-0.25])
+Yp2=np.array([-0.25,-0.25,0.25,0.25])
+
+Xp3=np.array([-1.,1.,1.,-1.])
+Yp3=np.array([-1.,-1.,1.,1.])
 
 
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+DCU_shifted2=np.zeros((len(Xp),samples))
+CTU_shifted2=np.zeros((len(Xp),samples))
 
-# export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-# export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+        
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted2[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted2[p,i]=solution
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+DCU3=[]
+CTU3=[]
+for i in range(samples):
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    DCU3.append(min(DCU_shifted2[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
+    CTU3.append(min(CTU_shifted2[:,i]))
+    
+export2DTeXFile('2dCFL_4ppcS_DCU.tex',cx/cy,np.array([DCU1,DCU2,DCU3]))
+export2DTeXFile('2dCFL_4ppcS_CTU.tex',cx/cy,np.array([CTU1,CTU2,CTU3]))
+
+Xp=np.array([-0.5,0.5,0.5,-0.5])
+Yp=np.array([-0.5,-0.5,0.5,0.5])+0.25
+
+Xp2=np.array([-0.5,0.5,0.5,-0.5])
+Yp2=np.array([-0.5,-0.5,0.5,0.5])-0.25
+
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+for i in range(samples):
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
+
+export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
+export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
+
+
+## Shift horizontally
+Xp=np.array([-0.5,0.5,0.5,-0.5])+0.25
+Yp=np.array([-0.5,-0.5,0.5,0.5])
+
+Xp2=np.array([-0.5,0.5,0.5,-0.5])-0.25
+Yp2=np.array([-0.5,-0.5,0.5,0.5])
+
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+for i in range(samples):
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
+
+
+export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
+export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
+"""
+
 
 ############### 9PPC
 print "**************************************************************"
@@ -604,105 +441,136 @@ Yp2=np.array([-1./3.,-1./3.,1./3.,1./3.,0.,0.,0.,-1./3.,1./3.])
 Xp3=np.array([-1.,1.,1.,-1.,-1.,0.,1.,0.,0.])
 Yp3=np.array([-1.,-1.,1.,1.,0.,0.,0.,-1.,1.])
 
-DCU_natural=[]
-CTU_natural=[]
-DCU_shifted=[]
-CTU_shifted=[]
-DCU_shifted2=[]
-CTU_shifted2=[]
 
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+DCU_shifted2=np.zeros((len(Xp),samples))
+CTU_shifted2=np.zeros((len(Xp),samples))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted2[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted2[p,i]=solution
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+DCU3=[]
+CTU3=[]
 for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU_natural.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    CTU_natural.append(cx[i]*solution/2.)
-    
-    # Shift symmetrically
-    residual=symbolResidual(0,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-    solution=gridSearch(residual)
-    DCU_shifted.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
-    solution=gridSearch(residual)
-    CTU_shifted.append(cx[i]*solution/2.)
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    DCU3.append(min(DCU_shifted2[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
+    CTU3.append(min(CTU_shifted2[:,i]))
 
-export2DTeXFile('2dCFL_9ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-export2DTeXFile('2dCFL_9ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+export2DTeXFile('2dCFL_9ppcS_DCU.tex',cx/cy,np.array([DCU1,DCU2,DCU3]))
+export2DTeXFile('2dCFL_9ppcS_CTU.tex',cx/cy,np.array([CTU1,CTU2,CTU3]))
 
-# Shift symmetrically 2
-for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
-    solution=gridSearch(residual)
-    DCU_shifted2.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3),(Xp3,Yp3))
-    solution=gridSearch(residual)
-    CTU_shifted2.append(cx[i]*solution/2.)
-
-export2DTeXFile('2dCFL_9ppcS_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted,DCU_shifted2]))
-export2DTeXFile('2dCFL_9ppcS_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted,CTU_shifted2]))
-
+## Shifted vertically 
 Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
 Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])+0.1
 
+Xp2=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
+Yp2=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])-0.1
 
-DCU_natural=[]
-CTU_natural=[]
-DCU_shifted=[]
-CTU_shifted=[]
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+DCU_shifted2=np.zeros((len(Xp),samples))
+CTU_shifted2=np.zeros((len(Xp),samples))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+DCU3=[]
+CTU3=[]
 for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU_natural.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    CTU_natural.append(cx[i]*solution/2.)
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
 
-# Xp=np.array([-0.5,0.5,0.5,-0.5,-0.5,0.,0.5,0.,0.])
-# Yp=np.array([-0.5,-0.5,0.5,0.5,0.,0.,0.,-0.5,0.5])-0.25
+export2DTeXFile('2dCFL_9ppcV_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
+export2DTeXFile('2dCFL_9ppcV_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
 
-Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])
-Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])-0.1
-
-# Shift symmetrically
-for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU_shifted.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    CTU_shifted.append(cx[i]*solution/2.)
-
-export2DTeXFile('2dCFL_9ppcV_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-export2DTeXFile('2dCFL_9ppcV_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
-
-
+## Shifted horizontally 
 Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])+0.1
 Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
 
-DCU_natural=[]
-CTU_natural=[]
-DCU_shifted=[]
-CTU_shifted=[]
+Xp2=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])-0.1
+Yp2=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
+
+DCU_natural=np.zeros((len(Xp),samples))
+CTU_natural=np.zeros((len(Xp),samples))
+DCU_shifted=np.zeros((len(Xp),samples))
+CTU_shifted=np.zeros((len(Xp),samples))
+DCU_shifted2=np.zeros((len(Xp),samples))
+CTU_shifted2=np.zeros((len(Xp),samples))
+for p in range(len(Xp)):
+    for i in range(samples):
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_natural[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_natural[p,i]=solution
+
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        DCU_shifted[p,i]=solution
+        residual=symbolResidual(p,dx,cx[i],cy,(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2),(Xp2,Yp2))
+        solution=gridSearch(residual,dx,cx[i])
+        CTU_shifted[p,i]=solution
+
+DCU1=[]
+CTU1=[]
+DCU2=[]
+CTU2=[]
+DCU3=[]
+CTU3=[]
 for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU_natural.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    CTU_natural.append(cx[i]*solution/2.)
+    DCU1.append(min(DCU_natural[:,i]))
+    DCU2.append(min(DCU_shifted[:,i]))
+    CTU1.append(min(CTU_natural[:,i]))
+    CTU2.append(min(CTU_shifted[:,i]))
 
-Xp=np.array([-2./3.,2./3.,2./3.,-2./3.,-2./3.,0.,2./3.,0.,0.])-0.1
-Yp=np.array([-2./3.,-2./3.,2./3.,2./3.,0.,0.,0.,-2./3.,2./3.])
-
-# Shift symmetrically
-for i in range(samples):
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    DCU_shifted.append(cx[i]*solution/2.)
-    residual=symbolResidual(0,cx[i],cy,(Xp,Yp),(Xp,Yp),(Xp,Yp),(Xp,Yp))
-    solution=gridSearch(residual)
-    CTU_shifted.append(cx[i]*solution/2.)
-
-export2DTeXFile('2dCFL_9ppcH_DCU.tex',cx/cy,np.array([DCU_natural,DCU_shifted]))
-export2DTeXFile('2dCFL_9ppcH_CTU.tex',cx/cy,np.array([CTU_natural,CTU_shifted]))
+export2DTeXFile('2dCFL_9ppcH_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
+export2DTeXFile('2dCFL_9ppcH_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
