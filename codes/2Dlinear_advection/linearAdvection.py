@@ -395,17 +395,18 @@ def buildDiscreteOperator(mesh,Map,gradx,grady,parent,invParent,neighbors,transv
     Hoperator = lambdify((dt),H_matrix)
     return H_matrix,Hoperator
 
-def gridSearch(function,tol=1.e-7):
+def gridSearch(function,dx,cx,tol=1.e-2):
     samples=100000
     # Find the bigest root of the residual by grid search algorithm
     CFL=np.linspace(0.,1.,samples)
-    for i in CFL:
-        if i==samples-1:return i
-        a0=function(i)
+    for i in range(samples):
+        value=CFL[-1-i]
+        a0=function(value*dx/cx)
         if a0<tol:
-            continue
+            return value
         else:
-            return i
+            continue
+    return 0.
 
 def computeCriticalCFL(Map,H,invParent,parent,neighbor,cx,cy,dx):
     dt=symbols('dt')
@@ -418,10 +419,11 @@ def computeCriticalCFL(Map,H,invParent,parent,neighbor,cx,cy,dx):
                 res+=np.abs(H[p,k])
             # solve the residual
             residual=lambdify((dt),res-1.)
-            solution=gridSearch(residual)
+            solution=gridSearch(residual,dx,max(cx,cy))
+            #pdb.set_trace()
             #solution=optimize.root(residual,1.,method='hybr',options={'xtol':1.e-4}).x[0]
-            if abs(residual(solution))>1.e-3: print "CAUTION: residual norm after solution is", abs(residual(solution))
-            sol.append(solution*max(cx,cy)/dx)
+            if abs(residual(solution*dx/max(cx,cy)))>1.e-3: print "CAUTION: residual norm after solution is", abs(residual(solution*dx/max(cx,cy)))
+            sol.append(solution)
         break
     Courant=min(sol)
     print "Critical Courant number set to ",Courant
@@ -489,6 +491,7 @@ def UpdateStateDiscreteOperator(U,H,BC,dt,dx,cx,cy,parent,invParent,transverse,n
     
     return U_updated
 
+    
 def computeLpNorm(Unum,Uexact,dx,p):
     return (((dx**2*((np.abs(Unum-Uexact))**p)).sum())**(1.0/p))
 
@@ -500,7 +503,7 @@ def computeRelativeError(Unum,Uexact,dx,p):
 # Mesh file
 #############################################
 MeshFile = 'geometry/mesh_4ppc.msh'
-MeshFile = 'geometry/mesh_9ppc.msh'
+#MeshFile = 'geometry/mesh_9ppc.msh'
 #############################################
 
 # Material points file
@@ -517,7 +520,7 @@ LoadFile='domain.dat'
 rho = 1.
 
 cp = 10. # Horizontal wave speed
-cs = 5. # Vertical wave speed
+cs = 10. # Vertical wave speed
 
 
 mesh = DGmesh(MeshFile,MPoints_set,cp,cs,rho)
@@ -528,7 +531,6 @@ print "Building material domain ...",
 xp,MatBoundary = readMaterialPointSet(MPoints_set)
 print "Material domain built !"
 
-#plot_domain(xp,mesh.coor)
 
 
 # LOADING PARAMETERS
@@ -538,7 +540,11 @@ boundary_conditions=readBoundaryConditions(LoadFile)
 dx = np.min(mesh.edgeLength[:,0])
 L = np.max(xp[:,0])-np.min(xp[:,0])
 
+shift_xi = 0.25
+shift= shift_xi*dx/2.
+xp[:,1]+=shift
 
+#plot_domain(xp,mesh.coor)
 
 ## Counters
 T=0.
@@ -567,9 +573,9 @@ neighbors=mesh.findNeighborCells()
 if not os.path.exists("Hsyms_"+str(MeshFile[14:-4])+".npy"):
     print "Building the discrete operators..."
     Hsym,HOperator= buildDiscreteOperator(mesh,Map,Gradx,Grady,cells,invParent,neighbors,transverse,cp,cs,dx)
-    File=open("Hsyms_"+str(MeshFile[14:-4])+".npy","w")
-    pickle.dump(Hsym,File)
-    File.close()
+    # File=open("Hsyms_"+str(MeshFile[14:-4])+".npy","w")
+    # pickle.dump(Hsym,File)
+    # File.close()
     print "Discrete operators built!"
 else:
     print "Reading the discrete operators..."
@@ -605,7 +611,9 @@ u = np.zeros(mesh.ndofs)
 # FIELDS STORAGE ALLOCATION
 Quantity=np.zeros((Mp,int(inc)+2))
 Quantityh=np.zeros((Mp,int(inc)+2))
+Exact=np.zeros((Mp,int(inc)+2))
 iteration=np.zeros(int(inc)+2)
+incError=np.zeros(int(inc)+2)
 
 Quantity[:,0]=rho*U
 Quantityh[:,0]=rho*U
@@ -619,11 +627,10 @@ Ky=np.dot(np.dot(Grady[dofs,:],Md),Map[dofs,:].T)
 # FLUX EVALUATOR CREATION
 mesh.setMapping(Kx,Ky)
 
-left=np.where(neighbors[:,0]==-1)[0]
-for cell in left:
-    matPoints=invParent[cell]
-    U[matPoints]=10.
-    Uh[matPoints]=10.
+# INITIAL CONDITIONS
+U[0]=10.
+Uh[0]=10.
+Exact[0,0]=10.*rho
 nameFile = 'results/dgmpm'+str(n)+'.vtu'
 #exportParaview(nameFile,mesh,stress_11=S11[:,n],stress_22=S22[:,n],stress_12=S12[:,n],velocity_x=V1[:,n],velocity_y=V2[:,n])
 exportDelaunay(nameFile,mesh.exportCoor ,mesh.exportConnec,q=U*rho,error=abs(U-Uh)*rho)
@@ -656,7 +663,7 @@ while T<tfinal:
     U=np.dot(Map[dofs,:].T,u[dofs])
 
 
-    print 'Increment =', n, 't = ', T,' s.'
+    #print 'Time step=', n
     n+=1
     T+=dt
     Quantity[:,n] = rho*U
@@ -666,10 +673,9 @@ while T<tfinal:
     u = np.zeros(mesh.ndofs)
     Error = abs(Quantity[:,n]-Quantityh[:,n])
     nameFile = 'results/dgmpm'+str(n)+'.vtu'
-    #exportPointData(nameFile,xp,q=Quantity[:,n])
-    exportDelaunay(nameFile,mesh.exportCoor ,mesh.exportConnec,q=Quantity[:,n],error=Error)
+    #exportDelaunay(nameFile,mesh.exportCoor ,mesh.exportConnec,q=Quantity[:,n],error=Error)
     nameFile = 'results/dgmpmD'+str(n)+'.vtu'
-    exportDelaunay(nameFile,mesh.exportCoor ,mesh.exportConnec,q=Quantityh[:,n],error=Error)
+    #exportDelaunay(nameFile,mesh.exportCoor ,mesh.exportConnec,q=Quantityh[:,n],error=Error)
 
 ## Compute the error between the two numerical solutions
 error = computeRelativeError(Quantity[:,n],Quantityh[:,n],dx,2)

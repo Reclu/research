@@ -1,6 +1,6 @@
 length = 4.;
 height = 4.;
-Mpoints= 12;
+Mpoints= 6;
 Point(1) = {0, 0, 0, 1.0};
 Point(2) = {length, 0, 0, 1.0};
 Point(3) = {length, height, 0, 1.0};
