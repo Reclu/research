@@ -76,7 +76,7 @@ def buildDiscreteOperator(Map,parent,invParent,t_order):
         for k in previous:
             H_matrix[p,k] = CFL*len(sharing)*Map[n1,p]*Map[np2,k]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))
             if t_order==2:
-                H_matrix[p,k] +=0.5*len(sharing)*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(1.-len(sharing)*Map[np2,k]/np.sum(Map[np2,:])) -(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
+                H_matrix[p,k] +=0.5*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(len(sharing)-(len(previous)**2)*Map[np2,k]/np.sum(Map[np2,:])) -len(previous)*(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
     # Deal with the first element
     for p in invParent[0]:
         sharing=invParent[0]
@@ -98,7 +98,7 @@ def UpdateStateDiscreteOperator(U,H,BC,CFL,invParent,t_order):
         for k in range(np.shape(U)[0]):
             U_updated[p]+=H[p,k]*U[k]
     ## next, enforce the BC at the left points
-    """
+    
     for p in invParent[0]:
         sharing=invParent[0]
         # index of the left and right nodes
@@ -107,9 +107,9 @@ def UpdateStateDiscreteOperator(U,H,BC,CFL,invParent,t_order):
             Hpk = CFL*len(sharing)*Map[n1,p]*Map[n2,k]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))
             if t_order==2:
                 Hpk += 0.5*len(sharing)*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))*(1.-len(sharing)*Map[n2,k]/np.sum(Map[n2,:])) -(Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
-                # Hpk += 0.5*len(sharing)*(CFL**2)*((Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) + (Map[n2,p]/np.sum(Map[n2,:]))*(len(sharing)*Map[n2,k]/np.sum(Map[n2,:])-1.)/np.sum(Map[n2,:]))
+                
             U_updated[p]+=Hpk*BC
-    """
+    
     return U_updated
 
 def gridSearch(function,tol=1.e-7):
@@ -143,10 +143,10 @@ def computeCriticalCFL(Mp,H,invParent):
     return Courant
 
 def computeLpNorm(Unum,Uexact,dx,p):
-    return (((dx*((np.abs(Unum-Uexact))**p)).sum())**(1.0/p))
+    return (((((np.abs(Unum-Uexact))**p)).sum())**(1.0/p))
 
 def computeRelativeError(Unum,Uexact,dx,p):
-    return (computeLpNorm(Unum,Uexact,dx,p)/computeLpNorm(np.zeros(len(Unum)),Uexact,dx,p))
+    return ((dx**(1./p))*computeLpNorm(Unum,Uexact,dx,p)/computeLpNorm(np.zeros(len(Unum)),Uexact,dx,p))
 
 ##########################
 
@@ -154,7 +154,7 @@ def computeRelativeError(Unum,Uexact,dx,p):
 print 'Initializing problem ...'
 # Define geometry of the problem
 L=1.               # Length of the bar
-Mp=100            # Number of Material points
+Mp=6            # Number of Material points
 ppc=2
 Nelem=Mp/ppc             # Number of elements
 
@@ -176,20 +176,19 @@ mesh = DGmesh(Mp,L,ppc,c,rho)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
 
+xp=np.array([[0.1,0.],[0.4,0.],[0.5,0.],[0.8,0.],[0.9,0.],[1.,0.]])
 coor=np.zeros(Nn)
 for i in range(Nn):
     coor[i]=(i/2)*dx -dx/(2.*ppc) 
 
-shift=0.24999*dx
+shift=0.#24999*dx
 xp[:,0]+=shift
 #mesh.xn+=0.01
-"""
 plt.plot(xp[:,0],xp[:,1],'ro',label='Material points')
 plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+',label='Nodes')
 plt.axis('equal')
 plt.legend(loc='best',numpoints=1)
 plt.show()
-"""
 
 mass=rho*dx/ppc
 
@@ -211,9 +210,10 @@ for i in range(Nelem):
 print '       Algorithmic parameters'
 # Time discretization
 # Build the discrete operator
-t_order= 1
+t_order= 2
 Hsym,HOperator=buildDiscreteOperator(Map,parent,invParent,t_order)
-CFL=computeCriticalCFL(Mp,Hsym,invParent)
+#CFL=computeCriticalCFL(Mp,Hsym,invParent)
+CFL=0.1
 Dt=CFL*dx/c 
 tfinal=.9*L/c
 tf=2.0*tfinal;
@@ -224,6 +224,11 @@ n=0
 
 # Material points' fields
 Md=mass*np.eye(Mp,Mp)
+for i in range(Mp):
+    cell=parent[i]
+    friends = len(invParent[cell])
+    Md[i,i] = rho*dx/friends
+print Md
 U = np.zeros(Mp)
 Uh = np.zeros(Mp)
 
@@ -274,7 +279,7 @@ while T<tfinal:
     # Mapping from material points to nodes
     u[Dofs]=np.linalg.solve(mf,np.dot(Map[Dofs,:],np.dot(Md,U)))
     
-    #u[0]=r0*(T<tunload)
+    u[0]=r0*(T<tunload)
     
     # plt.plot(coor,u*rho,'b-+',lw=2.)
     # plt.plot(xp[:,0],U*rho,'r-o',lw=2.)
