@@ -76,7 +76,7 @@ def buildDiscreteOperator(Map,parent,invParent,t_order):
         for k in previous:
             H_matrix[p,k] = CFL*len(sharing)*Map[n1,p]*Map[np2,k]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))
             if t_order==2:
-                H_matrix[p,k] +=0.5*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(len(sharing)-(len(previous)**2)*Map[np2,k]/np.sum(Map[np2,:])) -len(previous)*(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
+                H_matrix[p,k] +=0.5*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(len(sharing)-(len(previous)*len(sharing))*Map[np2,k]/np.sum(Map[np2,:])) -len(previous)*(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
     # Deal with the first element
     for p in invParent[0]:
         sharing=invParent[0]
@@ -176,19 +176,20 @@ mesh = DGmesh(Mp,L,ppc,c,rho)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
 
-xp=np.array([[0.1,0.],[0.4,0.],[0.5,0.],[0.8,0.],[0.9,0.],[1.,0.]])
 coor=np.zeros(Nn)
 for i in range(Nn):
     coor[i]=(i/2)*dx -dx/(2.*ppc) 
 
-shift=0.#24999*dx
-xp[:,0]+=shift
-#mesh.xn+=0.01
-plt.plot(xp[:,0],xp[:,1],'ro',label='Material points')
-plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+',label='Nodes')
-plt.axis('equal')
-plt.legend(loc='best',numpoints=1)
-plt.show()
+    
+xp=np.array([[0.1,0.],[0.4,0.],[0.5,0.],[0.8,0.],[0.9,0.],[1.,0.]])
+# shift=0.#24999*dx
+# xp[:,0]+=shift
+# #mesh.xn+=0.01
+# plt.plot(xp[:,0],xp[:,1],'ro',label='Material points')
+# plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+',label='Nodes')
+# plt.axis('equal')
+# plt.legend(loc='best',numpoints=1)
+# plt.show()
 
 mass=rho*dx/ppc
 
