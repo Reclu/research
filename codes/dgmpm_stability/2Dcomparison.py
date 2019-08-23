@@ -161,7 +161,7 @@ def symbolResidual(point,dx,cx,cy,XC,XB,XL,XBL=0):
     return Residual
 
 def gridSearch(function,dx,cx,tol=1.e-2):
-    samples=100000
+    samples=10000
     # Find the bigest root of the residual by grid search algorithm
     CFL=np.linspace(0.,1.,samples)
     for i in range(samples):
@@ -344,7 +344,7 @@ for i in range(samples):
     
 export2DTeXFile('2dCFL_4ppcS_DCU.tex',cx/cy,np.array([DCU1,DCU2,DCU3]))
 export2DTeXFile('2dCFL_4ppcS_CTU.tex',cx/cy,np.array([CTU1,CTU2,CTU3]))
-
+"""
 Xp=np.array([-0.5,0.5,0.5,-0.5])
 Yp=np.array([-0.5,-0.5,0.5,0.5])+0.25
 
@@ -379,11 +379,11 @@ for i in range(samples):
     DCU2.append(min(DCU_shifted[:,i]))
     CTU1.append(min(CTU_natural[:,i]))
     CTU2.append(min(CTU_shifted[:,i]))
-
+pdb.set_trace()
 export2DTeXFile('2dCFL_4ppcV_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
 export2DTeXFile('2dCFL_4ppcV_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
 
-
+"""
 ## Shift horizontally
 Xp=np.array([-0.5,0.5,0.5,-0.5])+0.25
 Yp=np.array([-0.5,-0.5,0.5,0.5])
@@ -425,7 +425,7 @@ export2DTeXFile('2dCFL_4ppcH_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
 export2DTeXFile('2dCFL_4ppcH_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
 """
 
-
+"""
 ############### 9PPC
 print "**************************************************************"
 print "******************  9PPC discretization **********************"
@@ -574,3 +574,4 @@ for i in range(samples):
 
 export2DTeXFile('2dCFL_9ppcH_DCU.tex',cx/cy,np.array([DCU1,DCU2]))
 export2DTeXFile('2dCFL_9ppcH_CTU.tex',cx/cy,np.array([CTU1,CTU2]))
+"""

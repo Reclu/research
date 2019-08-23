@@ -30,18 +30,18 @@ def residualRK2(point,S,Sp):
         Sump1=np.sum(Sp1) ; Sump2=np.sum(Sp2)
         Nmpp=len(Sp1) 
     # Sum over material points in curent cell
-    for p in range(Nmp):
+    for k in range(Nmp):
         ## First order contributions
-        D_mu = S1[p]*S1[point]/Sum1 + S2[p]*S2[point]/Sum2 + CFL*( S2[point]/Sum2 - S1[point]/Sum1 -Nmp*S2[p]*S2[point]/(Sum2**2) )
+        D_mu = S1[k]*S1[point]/Sum1 + S2[k]*S2[point]/Sum2 + CFL*( S2[point]/Sum2 - S1[point]/Sum1 -Nmp*S2[k]*S2[point]/(Sum2**2) )
         ## Second order contributions
-        D_mu += 0.5*Nmp*(CFL**2)*((S2[p]/Sum2)*(S1[point]/Sum1-S2[point]/Sum2) + (S2[point]/Sum2)*(Nmp*S2[p]/Sum2-1.)/Sum2)
+        D_mu += 0.5*Nmp*(CFL**2)*((S2[k]/Sum2)*(S1[point]/Sum1-S2[point]/Sum2) + (S2[point]/Sum2)*(Nmp*S2[k]/Sum2-1.)/Sum2)
         Res = Res +np.abs(D_mu)
     # Sum over material points in previous cell
-    for p in range(Nmpp):
+    for k in range(Nmpp):
         ## First order contributions
-        D_mu = CFL*Nmp*Sp2[p]*S1[point]/(Sum1*Sump2)
+        D_mu = CFL*Nmp*Sp2[k]*S1[point]/(Sum1*Sump2)
         ## Second order contributions
-        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmp*Sp2[p]/Sump2) -(Sp2[p]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
+        D_mu +=0.5*Nmp*(CFL**2)*( S1[point]/(Sum1*Sump2)*(1.-Nmp*Sp2[k]/Sump2) -(Sp2[k]/Sump2)*(S1[point]/Sum1-S2[point]/Sum2) )
         Res=Res + np.abs(D_mu)    
     Residual = lambdify((CFL),Res-1.)
     return Residual
@@ -70,26 +70,39 @@ def residualEuler(point,S,Sp):
         Sump1=np.sum(Sp1) ; Sump2=np.sum(Sp2)
         Nmpp=len(Sp1) 
     # Sum over material points in curent cell
-    for p in range(Nmp):
-        D_ma = S1[point]*S1[p]/Sum1 + S2[point]*S2[p]/Sum2 + CFL*( S2[point]/Sum2 - S1[point]/Sum1 -Nmp*S2[point]*S2[p]/(Sum2**2) )
+    for k in range(Nmp):
+        D_ma = S1[point]*S1[k]/Sum1 + S2[point]*S2[k]/Sum2 + CFL*( S2[point]/Sum2 - S1[point]/Sum1 -Nmp*S2[point]*S2[k]/(Sum2**2) )
         Res = Res +np.abs(D_ma)
-    for p in range(Nmpp):
-        D_ma = CFL*Nmp*S1[point]*Sp2[p]/(Sum1*Sump2)
+    for k in range(Nmpp):
+        D_ma = CFL*Nmp*S1[point]*Sp2[k]/(Sum1*Sump2)
         Res=Res + np.abs(D_ma)
     Residual = lambdify((CFL),Res-1.)
     return Residual
 
+# def gridSearch(function,tol=1.e-7):
+#     samples=100000
+#     # Find the bigest root of the residual by grid search algorithm
+#     CFL=np.linspace(0.,1.,samples)
+#     for i in CFL:
+#         if i==CFL[samples-1]: return i
+#         a0=function(i)
+#         if a0<tol:
+#             continue
+#         else:
+#             return i
 def gridSearch(function,tol=1.e-7):
     samples=100000
     # Find the bigest root of the residual by grid search algorithm
     CFL=np.linspace(0.,1.,samples)
-    for i in CFL:
-        if i==CFL[samples-1]: return i
-        a0=function(i)
+    for i in range(samples):
+        value=CFL[-1-i]
+        a0=function(value)
         if a0<tol:
-            continue
+            return value
         else:
-            return i
+            continue
+    return 0.
+
 # Symbolic function to evaluate shape functions
 shape_functions=lambda x: np.matrix([(1-x)/DX,x/DX])
 

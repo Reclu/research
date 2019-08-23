@@ -76,7 +76,7 @@ def buildDiscreteOperator(Map,parent,invParent,t_order):
         for k in previous:
             H_matrix[p,k] = CFL*len(sharing)*Map[n1,p]*Map[np2,k]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))
             if t_order==2:
-                H_matrix[p,k] +=0.5*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(len(sharing)-(len(previous)*len(sharing))*Map[np2,k]/np.sum(Map[np2,:])) -len(previous)*(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
+                H_matrix[p,k] +=0.5*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[np2,:]))*(len(sharing)-len(sharing)*len(previous)*Map[np2,k]/np.sum(Map[np2,:])) -len(sharing)*(Map[np2,k]/np.sum(Map[np2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
     # Deal with the first element
     for p in invParent[0]:
         sharing=invParent[0]
@@ -98,18 +98,16 @@ def UpdateStateDiscreteOperator(U,H,BC,CFL,invParent,t_order):
         for k in range(np.shape(U)[0]):
             U_updated[p]+=H[p,k]*U[k]
     ## next, enforce the BC at the left points
-    
     for p in invParent[0]:
         sharing=invParent[0]
         # index of the left and right nodes
         n1 = 1 ; n2 = 2
+        
         for k in sharing:
             Hpk = CFL*len(sharing)*Map[n1,p]*Map[n2,k]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))
             if t_order==2:
-                Hpk += 0.5*len(sharing)*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))*(1.-len(sharing)*Map[n2,k]/np.sum(Map[n2,:])) -(Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )
-                
+                Hpk +=0.5*len(sharing)*(CFL**2)*( Map[n1,p]/(np.sum(Map[n1,:])*np.sum(Map[n2,:]))*(1.-len(sharing)*Map[n2,k]/np.sum(Map[n2,:])) -(Map[n2,k]/np.sum(Map[n2,:]))*(Map[n1,p]/np.sum(Map[n1,:])-Map[n2,p]/np.sum(Map[n2,:])) )    
             U_updated[p]+=Hpk*BC
-    
     return U_updated
 
 def gridSearch(function,tol=1.e-7):
@@ -143,11 +141,31 @@ def computeCriticalCFL(Mp,H,invParent):
     return Courant
 
 def computeLpNorm(Unum,Uexact,dx,p):
-    return (((((np.abs(Unum-Uexact))**p)).sum())**(1.0/p))
+    return (((dx*((np.abs(Unum-Uexact))**p)).sum())**(1.0/p))
 
 def computeRelativeError(Unum,Uexact,dx,p):
-    return ((dx**(1./p))*computeLpNorm(Unum,Uexact,dx,p)/computeLpNorm(np.zeros(len(Unum)),Uexact,dx,p))
+    return (computeLpNorm(Unum,Uexact,dx,p)/computeLpNorm(np.zeros(len(Unum)),Uexact,dx,p))
 
+def computeExact2(time,cx,xp,previous):
+    MP=len(xp)
+    current=np.zeros(MP)
+    pdb.set_trace()
+    point=np.where(previous!=0.)[0][0]
+    dx = xp[point+1]-xp[point]
+    distance = cx*time - xp[point]
+    if distance > dx/2. :
+        current[point+1]=previous[point]
+    else :
+        current=previous
+    return current
+def computeExact(time,cx,xp,load):
+    MP=len(xp)
+    current=np.zeros(MP)
+    for point in range(Mp):
+        distance = cx*time - xp[point]
+        if distance >= 0. :
+            current[point]=R0
+    return current
 ##########################
 
 
@@ -180,16 +198,17 @@ coor=np.zeros(Nn)
 for i in range(Nn):
     coor[i]=(i/2)*dx -dx/(2.*ppc) 
 
-    
+#shift=0.24999*dx
+#xp[:,0]+=shift
+#mesh.xn+=0.01
 xp=np.array([[0.1,0.],[0.4,0.],[0.5,0.],[0.8,0.],[0.9,0.],[1.,0.]])
-# shift=0.#24999*dx
-# xp[:,0]+=shift
-# #mesh.xn+=0.01
-# plt.plot(xp[:,0],xp[:,1],'ro',label='Material points')
-# plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+',label='Nodes')
-# plt.axis('equal')
-# plt.legend(loc='best',numpoints=1)
-# plt.show()
+"""
+plt.plot(xp[:,0],xp[:,1],'ro',label='Material points')
+plt.plot(mesh.xn,np.zeros(len(mesh.xn)),'b+',label='Nodes')
+plt.axis('equal')
+plt.legend(loc='best',numpoints=1)
+plt.show()
+"""
 
 mass=rho*dx/ppc
 
@@ -229,7 +248,6 @@ for i in range(Mp):
     cell=parent[i]
     friends = len(invParent[cell])
     Md[i,i] = rho*dx/friends
-print Md
 U = np.zeros(Mp)
 Uh = np.zeros(Mp)
 
@@ -240,10 +258,16 @@ u = np.zeros(Nn)
 # Storage
 Stress=np.zeros((Mp,int(inc)+2))
 Stressh=np.zeros((Mp,int(inc)+2))
+Exact=np.zeros((Mp,int(inc)+2))
 analytical=np.zeros((Mp,int(inc)+2))
 time=np.zeros(int(inc)+2)
-Stress[:,0]=U[:]
-Stressh[:,0]=U[:]
+
+# U[0]=r0
+# Uh[0]=r0
+
+Stress[:,0]=rho*U[:]
+Stressh[:,0]=rho*U[:]
+Exact[:,0]=rho*U[:]
 time[0]=T
 
 
@@ -267,8 +291,6 @@ limiter = 0 : minmod
 limiter=-1
 
 print '... computing ...'
-U[0]=r0
-Uh[0]=r0
 
 
 while T<tfinal:
@@ -316,17 +338,19 @@ while T<tfinal:
     T+=Dt
     Stress[:,n]=rho*U
     Stressh[:,n]=rho*Uh
+    Exact[:,n]=computeExact(T,c,xp[:,0],R0)
     for i in range(Mp):
         analytical[i,n]=r0*(c*T>xp[i,0] and c*(T-tunload)<xp[i,0])*rho
     
     time[n]=T
+    
     """
     plt.plot(Pos[:,n],Stress[:,n],'r-o',label='DGMPM',lw =2.)
     plt.legend()
     plt.grid()
     plt.show()
     """
-
+Increments=n
 ## Compute the error between the two numerical solutions
 error = computeRelativeError(Stress[:,n],Stressh[:,n],dx,2)
 print "Error between the two numerical procedures: ",error
@@ -362,7 +386,7 @@ def init():
 # animation function.  This is called sequentially
 def animate(i):
     line.set_data(xp[:,0],Stress[:,i])
-    line2.set_data(xp[:,0],analytical[:,i])
+    line2.set_data(xp[:,0],Exact[:,i])
     line3.set_data(xp[:,0],Stressh[:,i])
     #time_text.set_text('Stress (Pa) at time = '+str(time[i]))
     return line,line2,line3,time_text

@@ -36,7 +36,7 @@ def residualRK2(point,S,Sp):
         ## Second order contributions
         D_mu += 0.5*Nmp*(CFL**2)*((S2[p]/Sum2)*(S1[point]/Sum1-S2[point]/Sum2) + (S2[point]/Sum2)*(Nmp*S2[p]/Sum2-1.)/Sum2)
         # D_mu += 0.5*Nmp*(CFL**2)*(S2[p]/Sum2)*( S1[point]/Sum1-S2[point]/Sum2 + (Nmp*S2[p]/Sum2-1.)/Sum2)
-        print "changed!"
+        
         Res = Res +np.abs(D_mu)
     # Sum over material points in previous cell
     for p in range(Nmpp):
@@ -108,7 +108,7 @@ print "**************************************************************"
 print "******************  2PPC discretization **********************"
 print "**************************************************************"
 print "   "
-shift=-0.25
+
 shapes=shape_functions(np.array([0.25,0.75]))
 ## Gauss-Legendre integration
 #shapes=shape_functions(0.5*np.array([1.-1./np.sqrt(3.),1.+1./np.sqrt(3.)]))
@@ -120,9 +120,10 @@ for i in range(np.shape(shapes)[0]):
     rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
 print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
-pdb.set_trace()
+
 print "   "
-print "Shifted"
+shift=0.1
+print "Shifted ++",shift
 X=np.array([0.25+shift,0.75+shift])
 shapes=shape_functions(X)
 eulerSolution=[]
@@ -132,13 +133,67 @@ for i in range(np.shape(shapes)[0]):
     rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
 print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
+
+
+shift=0.25
+print "   "
+print "Shifted --",shift
+X=np.array([0.25-shift,0.75-shift])
+shapes=shape_functions(X)
+eulerSolution=[]
+rk2Solution=[]
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
+print "   "
+print "Shifted ++",shift
+X=np.array([0.25+shift,0.75+shift])
+shapes=shape_functions(X)
+eulerSolution=[]
+rk2Solution=[]
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
 pdb.set_trace()
 # 3PPC
 print "**************************************************************"
 print "******************  3PPC discretization **********************"
 print "**************************************************************"
 print "   "
-shapes=shape_functions(np.array([0.25,0.5,0.75]))
+shapes=shape_functions(np.array([1./3.,0.5,2./3.]))
+eulerSolution=[]
+rk2Solution=[]
+
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
+
+print "   "
+shift=0.1
+print "Shifted ++",shift
+shapes=shape_functions(np.array([1./3.+shift,0.5+shift,2./3.+shift]))
+eulerSolution=[]
+rk2Solution=[]
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
+shift=1./3.
+
+print "   "
+print "Shifted --",shift
+shapes=shape_functions(np.array([1./3.-shift,0.5-shift,2./3.-shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
@@ -148,8 +203,8 @@ print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
 
 print "   "
-print "Shifted"
-shapes=shape_functions(np.array([0.25+shift,0.5+shift,0.75+shift]))
+print "Shifted ++",shift
+shapes=shape_functions(np.array([1./3.+shift,0.5+shift,2./3.+shift]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
@@ -158,12 +213,13 @@ for i in range(np.shape(shapes)[0]):
 print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
 
+pdb.set_trace()
 # 4PPC
 print "**************************************************************"
 print "******************  4PPC discretization **********************"
 print "**************************************************************"
 print "   "
-shapes=shape_functions(np.array([0.2,0.4,0.6,0.8]))
+shapes=shape_functions(np.array([1./8.,3./8.,5./8.,7./8.]))
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
@@ -173,8 +229,32 @@ print "Euler solution, CFL= ",min(eulerSolution)
 print "RK2 solution, CFL= ",min(rk2Solution)
 
 print "   "
-print "Shifted"
-shapes=shape_functions(np.array([0.2+shift,0.4+shift,0.6+shift,0.8+shift]))
+shift=0.1
+print "Shifted ++",shift
+shapes=shape_functions(np.array([1./8.,3./8.,5./8.,7./8.])+shift)
+eulerSolution=[]
+rk2Solution=[]
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
+shift=1/8.
+print "   "
+print "Shifted --",shift
+shapes=shape_functions(np.array([1./8.,3./8.,5./8.,7./8.])-shift)
+eulerSolution=[]
+rk2Solution=[]
+for i in range(np.shape(shapes)[0]):
+    eulerSolution.append(optimize.root(residualEuler(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+    rk2Solution.append(optimize.root(residualRK2(i,shapes,shapes),1.,method='hybr',options={'xtol':1.e-4}).x[0])
+print "Euler solution, CFL= ",min(eulerSolution)
+print "RK2 solution, CFL= ",min(rk2Solution)
+
+print "   "
+print "Shifted ++",shift
+shapes=shape_functions(np.array([1./8.,3./8.,5./8.,7./8.])+shift)
 eulerSolution=[]
 rk2Solution=[]
 for i in range(np.shape(shapes)[0]):
