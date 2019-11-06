@@ -29,6 +29,7 @@ mu = 0.5*E/(1.+nu)
 kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
+H = 100.0e6
 H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
@@ -322,8 +323,12 @@ def computeLodeAngle(sig11,sig22,sig12,sig33):
     sig=computeEigenStresses(np.matrix([[s11,s12,0.],[s12,s22,0.],[0.,0.,s33]]))
     # deviator 2nd and 3rd invariants
     J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(0.5*np.dot(sDev,sDev))
-    tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
-    theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    # tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
+    # theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    # theta=theta*360./(2.*np.pi)
+    Seq = np.sqrt(np.dot(sDev,sDev))
+    X=(3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3)
+    theta = np.arccos(X)/3.
     theta=theta*360./(2.*np.pi)
     return theta
 
@@ -434,9 +439,9 @@ fig = plt.figure()
 ax1=plt.subplot2grid((1,2),(0,0))
 ax2=plt.subplot2grid((1,2),(0,1))
 ax1.set_xlabel(r'$\sigma_{11}$')
-ax1.set_ylabel(r'$\sigma_{12}$')
+#ax1.set_ylabel(r'$\sigma_{12}$')
 ax2.set_xlabel(r'$\sigma_{22}$')
-ax2.set_ylabel(r'$\sigma_{12}$')
+#ax2.set_ylabel(r'$\sigma_{12}$')
 ax1.grid()
 ax2.grid()
      
@@ -456,7 +461,7 @@ for k in range(len(sig22))[1:-1]:
     print "initial yield function ", computeCriterion(sig0,s22,tau0,nu*(sig0+s22),sigy)
 
     if tau_driven:
-        tauM = 0.
+        tauM = 0.#1.e5
         dtau=(tauM-tau0)/Niter
         TAU[:,k]=np.linspace(tau0,tauM,Niter)
         SIG11[0,k]=sig0
@@ -474,7 +479,7 @@ for k in range(len(sig22))[1:-1]:
 
 
     sigma = np.matrix([[SIG11[0,k],TAU[0,k],0.],[TAU[0,k],SIG22[0,k],0.],[0.,0.,sig33]])
-    rcf2[0,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+    rcf2[0,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
             
     sigDev=computeDeviatoricPart(np.array([SIG11[0,k],TAU[0,k],SIG22[0,k],SIG33[0,k]]))
     sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
@@ -502,13 +507,13 @@ for k in range(len(sig22))[1:-1]:
         LodeAngle_F[j+1,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),sig33)
         
         # Eigenvalues of sigma (for deviatoric plane plots)
-        sigma = np.matrix([[SIG11[j+1,k],TAU[j+1,k],0.],[TAU[j+1,k],SIG22[j+1,k],0.],[0.,0.,SIG33[j+1,k]]])
-        rcf2[j+1,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+        sigma = np.matrix([[SIG11[j+1,k],TAU[j+1,k],0.],[TAU[j+1,k],SIG22[j+1,k],0.],[0.,0.,SIG33[j+1,k]]]) 
+        rcf2[j+1,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
         
-        sigDev=computeDeviatoricPart(np.array([SIG11[j+1,k],TAU[j+1,k],SIG22[j+1,k],SIG33[j+1,k]]))
-        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        # sigDev=computeDeviatoricPart(np.array([SIG11[j+1,k],TAU[j+1,k],SIG22[j+1,k],SIG33[j+1,k]]))
+        # sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
         eigsigS[j+1,k,:]=computeEigenStresses(sigma)
-        rcf2[j+1,k]=computeSpeed(sigma,lamb,mu,beta,tangent)
+        rcf2[j+1,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
         Nfinal=Niter
         if rcf2[j+1,k]>rcf2[j,k]:
             print "Simple wave condition violated"
@@ -525,7 +530,7 @@ for k in range(len(sig22))[1:-1]:
         ranging=np.linspace(0,Nfinal-1,Nfinal,True,False,np.int)
     fileName=path+'DPfastStressPlane_Stress'+str(k)+'.pgf'
     pgfFilesList.append(fileName)
-    export2pgfPlotFile(fileName,np.array([TAU[ranging,k],SIG11[ranging,k],SIG22[ranging,k],rcf2[ranging,k],LodeAngle_F[ranging,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+    export2pgfPlotFile(fileName,np.array([TAU[ranging,k],SIG11[ranging,k],SIG22[ranging,k],rcf2[ranging,k],LodeAngle_F[ranging,k],np.sqrt(eigsigS[ranging,k,0]**2 + eigsigS[ranging,k,1]**2 + eigsigS[ranging,k,2]**2)]),'sigma_12','sigma_11','sigma_22','p','Theta','radius')
     fileName=path+'DPfastDevPlane_Stress'+str(k)+'.pgf'
     deviatorPlots.append(fileName)
     dico={"xlabel":r'$\sigma_1$',"ylabel":r'$\sigma_2$',"zlabel":r'$\sigma_3$'}
@@ -547,10 +552,31 @@ for k in range(len(sig22))[1:-1]:
     plt.tight_layout()
     #plt.show()
 
+    radius = np.sqrt(eigsigS[ranging,k,0]**2 + eigsigS[ranging,k,1]**2 + eigsigS[ranging,k,2]**2)
     
-    ax1.plot(SIG11[:,k],TAU[:,k])
-    ax2.plot(SIG22[:,k],TAU[:,k])
+    # ax1.plot(SIG11[:,k],TAU[:,k])
+    # ax2.plot(SIG22[:,k],TAU[:,k])
+    ax1.set_xlabel(r'$p$',size=28.)
+    ax2.set_xlabel(r'$r$',size=28.)
+    ax1.set_ylabel(r'$\eta$',size=28.)
+    ax2.set_ylabel(r'$p$',size=28.)
+    norm_vm = criterionF[:,k]+sigy+H*plast_F[:,k]
+    press = (1./3.)*(eigsigS[:,k,0]+eigsigS[:,k,1]+eigsigS[:,k,2])
+    triax = np.sqrt(1/3.)*press/norm_vm
+    det=eigsigS[:,k,0]*eigsigS[:,k,1]*eigsigS[:,k,2]
+
+    ax1.plot(press[ranging],triax[ranging],linestyle='-.')
+    ax1.plot(press[ranging],np.ones(len(radius))*(2./3.),'k')
+    ax2.plot(radius,press[ranging],linestyle='-.')
     
+
+    # Look at the principal stress with respect to the maximum-shear condition
+    """
+    ax1.set_xlabel(r'$\sigma_1$',size=28.)
+    ax2.set_xlabel(r'$\sigma_2$',size=28.)
+    ax1.plot(eigsigS[ranging,k,0],radius,linestyle='-.')
+    ax2.plot(eigsigS[ranging,k,1],radius,linestyle='-.')
+    """
     
     ## sig22 value will change here
     subtitle=[r'(a) ($\sigma_{11},\sigma_{12}$) plane',r'(b) ($\sigma_{22},\sigma_{12}$) plane',r'(c) Deviatoric plane']
