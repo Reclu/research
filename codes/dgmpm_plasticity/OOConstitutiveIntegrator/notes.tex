@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage[font=normal]{caption}
+\usepackage[font=normal]{subcaption}
+\usepackage[tensorialbold]{userCommands}
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\geometry{hmargin=2.cm,vmargin=3.5cm}
+\captionsetup{margin={1.5cm,1.5cm}}
+\captionsetup[subfigure]{position=top}
+
+\usepackage{tikz} % geometrical figures
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,decorations.pathreplacing,decorations.pathmorphing,shapes,
+    matrix,shapes.symbols,shapes.multipart,patterns,shapes,snakes,pgfplots.groupplots,spy,backgrounds}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=external/]
+\usetikzlibrary{spy,backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+
+\usepackage{pgfplots} % pdf picture declaration
+
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Red}{RGB}{217,33,32}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+\begin{document}
+
+\section{{\'E}crouissage isotrope}
+\label{sec:ecrouissage-isotrope}
+
+\subsection{Variables d'{\'e}tats}
+\label{sec:description}
+
+\begin{itemize}
+\item Variables internes: $\tens{\eps}^p, r$
+\item Forces thermodynamiques associées: $\tens{s}, -R = k p^{\frac{1}{m}}$
+\end{itemize}
+
+\subsection{Surface de charge}
+\label{sec:surface-de-charge}
+
+Pour un solide de Von Mises:
+\begin{equation}
+  \label{eq:isotropic_hardening_yield_surface}
+  f = \sqrt{\frac{3}{2}}\norm{\tens{s}} - \sigma^y - R(p) \equiv 0
+\end{equation}
+
+\subsection{Normalit{\'e}}
+\label{sec:normalite}
+
+\begin{equation}
+  d\tens{\eps}^p = \drond{f}{\tens{\sigma}} d\lambda =\sqrt{\frac{3}{2}}\frac{\tens{s}}{\norm{\tens{s}}} d\lambda= \sqrt{\frac{3}{2}}\tens{N} d\lambda
+  %& dp = \drond{f}{-R} d\lambda = d\lambda
+\end{equation}
+
+\subsection{Conditions d'évolution}
+
+Kuhn-Tucker + plasticité associées...
+\begin{align}
+  & F(\tens{s},R) = f \\
+  &d\tens{\eps}^p = \drond{F}{\tens{s}} d\lambda =\sqrt{\frac{3}{2}} \tens{N} d\lambda\\
+  & dp = \drond{F}{-R} d\lambda = d\lambda
+\end{align}
+
+\subsection{Consistance}
+
+\begin{equation}
+  \label{eq:2}
+  df = \drond{f}{\tens{s}} d\tens{s} - \drond{f}{R}dR = 0 \Rightarrow dR = \sqrt{\frac{3}{2}}\tens{N}:d\tens{s}
+\end{equation}
+
+
+\subsection{Retour radial}
+
+On connait $\tens{\eps}^p_{n},p_n,\tens{\sigma}_n$ et $\tens{\eps}_{n+1}$.
+\begin{itemize}
+\item[1-] Prédiction élastique: $\tens{\sigma}^{\text{trial}}=2\mu (\tens{\eps}_{n+1}-\tens{\eps}^p_{n}) + \lambda \tr{\tens{\eps}_{n+1}}\tens{I} $
+\item[2-] Critère de plasticité: $f^{\text{trial}} = \sqrt{\frac{3}{2}}\norm{\tens{s}^{\text{trial}}} - \sigma^y - R(p_n)$
+\item[3-] Si $f^{\text{trial}}\leq 0$, l'évolution est élastique donc $\tens{\sigma}_{n+1}=\tens{\sigma}{\text{trial}}$. Sinon, on fait la correction élastique:
+  \begin{itemize}
+  \item[(a)] $\tens{s}_{n+1}=\tens{s}^{\text{trial}} - 2\mu \sqrt{\frac{3}{2}} \tens{N} dp$ ???
+  \item[(b)] $(a):\tens{N} \Rightarrow \norm{\tens{s}_{n+1}}=\norm{\tens{s}^{\text{trial}}} - 2\mu \sqrt{\frac{3}{2}} dp$ 
+  \item[(c)] On cherche à vérifier de critère à $t^{n+1} \: \Rightarrow \sqrt{\frac{3}{2}}\norm{\tens{s}_{n+1}} - \sigma^y -R(p+dp) = 0 $
+  \item[(d)] Avec (c), (b) devient:
+    \begin{align}
+      & \norm{\tens{s}^{\text{trial}}} - 2\mu \sqrt{\frac{3}{2}} dp - \sqrt{\frac{2}{3}}(\sigma^y  + R(p+dp)) =0 \\
+      & \sqrt{\frac{3}{2}} \norm{\tens{s}^{\text{trial}}} - 3\mu  dp - (\sigma^y  + R(p+dp)) =0 \\
+      & \sqrt{\frac{3}{2}} \norm{\tens{s}^{\text{trial}}} - 3\mu  dp - \sigma^y  - R(p+dp) +R(p) -R(p) =0 \\
+      & f^{\text{trial}}  - 3\mu  dp   - R(p+dp) +R(p) =0 \\
+      & f^{\text{trial}}  - 3\mu  dp   - \Delta R =0 \\
+      & f^{\text{trial}}  - 3\mu  dp   - R'(p)dp =0 \\
+      & (3\mu +R'(p))dp -f^{\text{trial}}=0
+    \end{align}
+  \item[(e)] Une fois résolue l'équation nonlinéaire ci-dessus pour $dp$, on peut actualiser toutes les quantités:
+    \begin{align}
+      & \tens{\eps}_{n+1}^p = \tens{\eps}_{n}^p + \sqrt{\frac{3}{2}}\tens{N}dp\\
+      & \tens{\sigma}_{n+1}=2\mu (\tens{\eps}_{n+1}-\tens{\eps}^p_{n+1}) + \lambda \tr{\tens{\eps}_{n+1}}\tens{I} 
+    \end{align}
+  \end{itemize}
+\end{itemize}
+
+\section{{\'E}crouissage cinématique (lin{\'e}aire)}
+\label{sec:ecrouissage-isotrope}
+
+\subsection{Variables d'{\'e}tats}
+
+
+\begin{itemize}
+\item Variable interne: $\tens{\eps}^p$
+\item Force thermodynamique associée: $\tens{s}-\tens{X}$, avec $\tens{X}=\frac{2}{3}C\tens{\eps}^p$
+\end{itemize}
+
+\subsection{Surface de charge}
+
+
+Pour un solide de Von Mises:
+\begin{equation}
+  \label{eq:kinematic_hardening_yield_surface}
+  f = \sqrt{\frac{3}{2}}\norm{\tens{s}-\tens{X}} - \sigma^y  \equiv 0
+\end{equation}
+
+\subsection{Normalit{\'e}}
+
+
+\begin{equation}
+  d\tens{\eps}^p = \drond{f}{\tens{\sigma}} d\lambda %= \frac{\tens{s}-\tens{X}}{\norm{\tens{s}-\tens{X}}} d\lambda= \tens{N} d\lambda
+\end{equation}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
