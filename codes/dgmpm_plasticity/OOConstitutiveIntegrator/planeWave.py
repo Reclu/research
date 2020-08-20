@@ -105,7 +105,7 @@ H = 0.18*E
 #H = 10.e9
 IH_power=1.
 rho = 7800.0
-c=np.sqrt((lamb+2.*mu)/rho)
+c = np.sqrt((lamb+2.0*mu)/rho)
 sigd =0.
 HEL = ((lamb+2.0*mu)/(2.0*mu))*Sigy
 v0=3.5*HEL/(rho*c)
@@ -116,11 +116,10 @@ mat=plasticMaterial(E,nu,rho,Sigy)
 hardening = isotropicHardening(mat,H,1./IH_power)
 hardening = kinematicHardening(mat,H)
 integrator=J2Plasticity(mat,kin,hardening)
+
 timeOut = 1.25*length/(np.sqrt(E/rho))
 t_order=1
 timeUnload = 2*timeOut
-limit=-1
-#hardening='isotropic'
 
 # Define geometry of the problem
 L=length 
@@ -129,13 +128,7 @@ Nn=Nelem*2 + 2
 
 
 
-# Material properties
-HT = (lamb+2.0*mu)-8*(mu**2/(3.0*H+6.0*mu))
-c = np.sqrt((lamb+2.0*mu)/rho)
-cp=np.sqrt(HT/rho)
-Sy=Sigy
-
-mesh = DGmesh(Mp,L,ppc,c,cp,rho,Sy,H)
+mesh = DGmesh(Mp,L,ppc,c,rho)
 dx=mesh.xn[1]-mesh.xn[0]
 xp=bar(0.,L,Mp)
 
@@ -191,9 +184,6 @@ Sth=np.zeros((Mp,int(inc)+2))
 EPth = np.zeros((Mp,int(inc)+2))
 p=np.zeros((Mp,int(inc)+2))
 Epsilon=np.zeros((Mp,int(inc)+2))
-dEpsp=np.zeros((Mp,int(inc)+2))
-epspb=np.zeros((Mp))
-pb=np.zeros((Mp))
 
 Velocity=np.zeros((Mp,int(inc)+2))
 pos=np.zeros((Mp,int(inc)+2))

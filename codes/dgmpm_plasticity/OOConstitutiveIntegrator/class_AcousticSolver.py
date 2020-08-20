@@ -5,7 +5,7 @@ import numpy as np
 
 class DGmesh:
     #Constructor
-    def __init__(self,Mp,l,ppc,c,cp,rho,sigy,H):
+    def __init__(self,Mp,l,ppc,c,rho):
         nex = Mp/ppc
         nnx=2*nex+2
         lmp=l/(Mp-1)
@@ -13,13 +13,8 @@ class DGmesh:
         self.xn = np.linspace(-lmp/2,l+lmp/2,nex+1)
         self.connect = np.array([np.arange(1,nnx-1,2),np.arange(2,nnx,2)]).T
         self.c = c
-        self.cp = cp
         self.rho = rho
-        self.sigy=sigy
-        self.H = H
      
-    def set_sigy(self,sigy):
-        self.sigy=sigy
 
     def buildApproximation(self,xp):
         xn =self.xn
