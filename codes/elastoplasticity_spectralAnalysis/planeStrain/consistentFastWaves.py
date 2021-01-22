@@ -30,7 +30,7 @@ kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.0e6
-H = 100.0e8
+#H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
 

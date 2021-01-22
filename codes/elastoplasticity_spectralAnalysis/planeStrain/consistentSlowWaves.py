@@ -554,7 +554,7 @@ for k in range(len(sig22))[bound:-bound]:
     eigsigS[0,k,:]=computeEigenStresses(sigma)
     LodeAngle_F[0,k]=computeLodeAngle(sigma[0,0],SIG22[0,k],sigma[0,1],sig33)
     LodeAngle_F[0,k]=computeLodeAngle(sig0,s22,tau0,sig33)
-    sigma_b[0,k]=SIG11[0,k]*(1.+2.*nu-2.*nu**2)/(2.*nu**2-2.*nu+2.)
+    sigma_b[0,k]=-SIG11[0,k]*(2.*nu**2-1.-2.*nu)/(2.*nu**2-2.*nu+2.)
     
     plast=0.
     epsp33=0.
@@ -572,7 +572,8 @@ for k in range(len(sig22))[bound:-bound]:
         plast_F[j+1,k]=plast
         Epsp33[j+1,k]=epsp33
         LodeAngle_F[j+1,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),sig33)
-        sigma_b[j+1,k]=E*epsp33*(2.*nu-1)/(2.*nu**2-2.*nu+2.) +SIG11[j+1,k]*(1.+2.*nu-2.*nu**2)/(2.*nu**2-2.*nu+2.)
+        sigma_b[j+1,k]=-(SIG11[j+1,k]*(2.*nu**2-1.-2.*nu)+E*epsp33*(1.-2.*nu))/(2.*nu**2-2.*nu+2.)
+        
         
         # Eigenvalues of sigma (for deviatoric plane plots)
         sigma = np.matrix([[SIG11[j+1,k],TAU[j+1,k],0.],[TAU[j+1,k],SIG22[j+1,k],0.],[0.,0.,SIG33[j+1,k]]])
@@ -609,8 +610,9 @@ for k in range(len(sig22))[bound:-bound]:
             plast_F[j+1,k]=plast
             Epsp33[j+1,k]=epsp33
             LodeAngle_F[j+1,k]=computeLodeAngle(sigman[0],sigman[2],sigman[1]/np.sqrt(2.),sig33)
-            sigma_b[j+1,k]=E*epsp33*(2.*nu-1)/(2.*nu**2-2.*nu+2.) +SIG11[j+1,k]*(1.+2.*nu-2.*nu**2)/(2.*nu**2-2.*nu+2.)
-
+            #sigma_b[j+1,k]=-E*epsp33*(2.*nu-1)/(2.*nu**2-2.*nu+2.) +SIG11[j+1,k]*(1.+2.*nu-2.*nu**2)/(2.*nu**2-2.*nu+2.)
+            sigma_b[j+1,k]=-(SIG11[j+1,k]*(2.*nu**2-1.-2.*nu)+E*epsp33*(1.-2.*nu))/(2.*nu**2-2.*nu+2.)
+        
             # Eigenvalues of sigma (for deviatoric plane plots)
             sigma = np.matrix([[SIG11[j+1,k],TAU[j+1,k],0.],[TAU[j+1,k],SIG22[j+1,k],0.],[0.,0.,SIG33[j+1,k]]])
             rcs2[j+1,k]=np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
