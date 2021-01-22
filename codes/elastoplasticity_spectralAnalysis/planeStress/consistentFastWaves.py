@@ -303,9 +303,11 @@ def computeLodeAngle(sig11,sig22,sig12,sig33):
     sig=computeEigenStresses(np.matrix([[s11,s12,0.],[s12,s22,0.],[0.,0.,s33]]))
     # deviator 2nd and 3rd invariants
     J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(0.5*np.dot(sDev,sDev))
-    tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
-    theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
-    theta=theta*360./(2.*np.pi)
+    sqrtJ2=np.sqrt(np.dot(sDev,sDev))
+    #tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
+    #theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    #theta=theta*360./(2.*np.pi)
+    theta=9.*np.sqrt(2./3.)*J3/(sqrtJ2**3)
     return theta
 
 def updateEquivalentPlasticStrain(sig,sign,H):
@@ -395,9 +397,9 @@ fig = plt.figure()
 ax1=plt.subplot2grid((1,2),(0,0))
 ax2=plt.subplot2grid((1,2),(0,1))
 ax1.set_xlabel(r'$\sigma_{11}$',size=28.)
-ax1.set_ylabel(r'$\sigma_{12}$',size=28.)
+#ax1.set_ylabel(r'$\sigma_{12}$',size=28.)
 ax2.set_xlabel(r'$\sigma_{22}$',size=28.)
-ax2.set_ylabel(r'$\sigma_{12}$',size=28.)
+#ax2.set_ylabel(r'$\sigma_{12}$',size=28.)
 ax1.grid()
 ax2.grid()
 
@@ -459,7 +461,8 @@ for k in range(len(sig22))[1:-1]:
             Nfinal=j
             break
     
-    print "Final equivalent plastic strain after fast wave : ",plast
+    print "Final equivalent plastic strain after fast wave: ",plast
+    print "Final value of the shear stress: ",TAU[j+1,k]
     fileName=path+'CPfastStressPlane_Stress'+str(k)+'.pgf'
     # if Nfinal/100>5:
     #     pas=Nfinal/100
@@ -495,8 +498,19 @@ for k in range(len(sig22))[1:-1]:
     #plt.show()
 
     
-    ax1.plot(SIG11[:,k],TAU[:,k])
-    ax2.plot(SIG22[:,k],TAU[:,k])
+    # ax1.plot(SIG11[:,k],TAU[:,k])
+    # ax2.plot(SIG22[:,k],TAU[:,k])
+    ax1.set_xlabel(r'$p$',size=28.)
+    ax2.set_xlabel(r'$cos(3\Theta)$',size=28.)
+    norm_vm = criterionF[:,k]+sigy+H*plast_F[:,k]
+    press = (1./3.)*(eigsigS[:,k,0]+eigsigS[:,k,1]+eigsigS[:,k,2])
+    triax = np.sqrt(1/3.)*press/norm_vm
+    det = (eigsigS[:,k,0]*eigsigS[:,k,1]*eigsigS[:,k,2])
+    ax1.plot(np.arange(0,len(press),1),det)
+    ax2.plot(LodeAngle_F[:,k],2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    #ax2.plot(np.arange(0,len(triax),1),triax,linestyle='-.')
+    #ax4.plot(SIG22[:,k],LodeAngle_F[:,k],linestyle='--')
+
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
     ylabels=['$\sigma_{12} $','$\sigma_{12} $','$s_2 $'] #size=number of .tex files

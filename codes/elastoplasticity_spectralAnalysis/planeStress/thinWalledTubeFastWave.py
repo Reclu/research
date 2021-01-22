@@ -240,6 +240,23 @@ def computecf2(sig11,sig12,lamb,mu,beta):
     eigenf,eigens=acousticEigenStructure(C)
     return eigenf[0]
 
+def computeCliftonTangentFastSig(sig22,sig12,lamb,mu,h):
+    #deviatoric stresses
+    s12=sig12 ; s22 = (2./3.)*sig22 ; s11 = -(1./3.)*sig22
+    sigdnorm2=2.*s12**2 + s22**2 + 2.*s11**2
+    thet = np.sqrt(3.)
+    E = mu*(3.*lamb+2.*mu)/(lamb+mu)
+    H=2./(h*sigdnorm2)
+    M = 1./mu + H*(thet*sig12)**2 ; N = 1./E + H*(sig22/thet)**2
+    L = 1./(mu*E) + (1./mu)*H*(sig22/thet)**2 + (1./E)*H*(thet*sig12)**2
+    rcf2 = 0.5*(M+N+np.sqrt((M-N)**2+4.*(H*sig12*sig22)**2))/L
+    rcs2 = 0.5*(M+N-np.sqrt((M-N)**2+4.*(H*sig12*sig22)**2))/L
+    B = (1./mu)+H*(sig12*thet)**2-1./rcf2
+    A = H*sig22*sig12
+    # B = (1./E)+H*(sig22*thet)**2-1./rcs2
+    # A = -H*sig22*sig12
+    
+    return -A/B
 
 def computeTangentFastSig(sig11,sig12,lamb,mu,beta):
     # sig12 driven
@@ -303,6 +320,22 @@ def integrateODE_sigDriven(dsig,sig0,tau0,lamb,mu,beta):
         sigma = solution
     return solution
 
+def integrateCliftonODE_sigDriven(dsig,sig0,tau0,lamb,mu,H):
+    sigma=tau0
+    # computeTangentSlowTau(sig12,sig11,lamb,mu,beta)
+    # subdivision of time step
+    sub_steps = 1
+    dSIG = dsig/sub_steps
+    theta = 1.0
+    for i in range(sub_steps):
+        ## Nonlinear solution procedure
+        ## R = s^{n+1} - s^{n} - RHS
+        R=lambda x: x - sigma - dSIG*(theta*computeCliftonTangentFastSig(sig0+dSIG,x,lamb,mu,H)+(1.0-theta)*computeCliftonTangentFastSig(sig0,sigma,lamb,mu,H))
+        #solution = scipy.optimize.fsolve(R,sigma)
+        solution = scipy.optimize.root(R,sigma).x[0]
+        sigma = solution
+    return solution
+
 rho = 7800.
 E = 2.e11
 nu = 0.3
@@ -337,11 +370,11 @@ parameter="sig"
 
 
 
-TAU=np.zeros(Niter)    
-SIG=np.zeros(Niter)
-rcf2=np.zeros(Niter)
-TAUC=np.zeros(Niter)    
-SIGC=np.zeros(Niter)    
+TAU=np.zeros(2*Niter)    
+SIG=np.zeros(2*Niter)
+rcf2=np.zeros(2*Niter)
+TAUC=np.zeros(2*Niter)    
+SIGC=np.zeros(2*Niter)    
 
 ## analysis in deviator plane
 sigdev1=np.zeros(np.shape(TAU))
@@ -357,7 +390,7 @@ sigdev3C=np.zeros(np.shape(TAU))
 
    
 if parameter=='tau':
-    sig0=0.*sigy
+    sig0=0.001*sigy
     tau0=np.sqrt((-sig0**2+ sigy**2)/3.)
     tauEnd=0.0*sigy
 
@@ -410,8 +443,9 @@ elif parameter=='sig':
 
     sig0=.0*sigy
     tau0=np.sqrt((-sig0**2+ sigy**2)/3.)
-    sigEnd=1.*sigy
+    sigEnd=1.1*sigy
 
+    
     sigDev=computeDeviatoricPart(np.array([sig0,tau0,0.,0.]))
     sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
     sigma = np.matrix([[sig0,tau0,0.],[tau0,0.,0.],[0.,0.,0.]])
@@ -424,15 +458,49 @@ elif parameter=='sig':
     sigdev2C[0]=eigSigDev[1]
     sigdev3C[0]=eigSigDev[2]
     
-    dsig=(sigEnd-sig0)/Niter
-    SIG=np.linspace(sig0,sigEnd,Niter)
-    TAU[0]=tau0
+    dsig=(sigEnd-sig0)/(Niter-1)
+    #SIG=np.linspace(sig0,sigEnd,2*Niter)
+    SIG[:Niter]=np.linspace(sig0,sigy,Niter)
+    SIG[Niter:]=np.linspace(sigy,1.1*sigy,Niter)
     
-    r = ode(computeTangentFastSig).set_integrator('vode',method='bdf',order=5)
-    r.set_initial_value(TAU[0],SIG[0]).set_f_params(lamb,mu,beta)
+    dsig=SIG[1]-SIG[0]
+    TAU[0]=tau0
+
+    SIGC[:Niter]=np.linspace(sig0,sigy,Niter)
+    SIGC[Niter:]=np.linspace(sigy,1.1*sigy,Niter)
+    TAUC[0]=tau0
+
     rcf2[0]=computecf2(SIG[0],TAU[0],lamb,mu,beta)
         
     for i in range(Niter-1):
+    
+        TAU[i+1]=integrateODE_sigDriven(dsig,SIG[i],TAU[i],lamb,mu,beta)
+        rcf2[i+1]=computecf2(SIG[i+1],TAU[i+1],lamb,mu,beta)
+        sigDev=computeDeviatoricPart(np.array([SIG[i+1],TAU[i+1],0.,0.]))
+        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
+        eigSigDev=computeEigenStresses(sigma)
+
+        sigdev1[i+1]=eigSigDev[0]
+        sigdev2[i+1]=eigSigDev[1]
+        sigdev3[i+1]=eigSigDev[2]
+
+        # Clifton solution
+        TAUC[i+1]=integrateCliftonODE_sigDriven(dsig,SIGC[i],TAUC[i],lamb,mu,H)
+        
+        sigDev=computeDeviatoricPart(np.array([SIGC[i+1],TAUC[i+1],0.,0.]))
+        sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
+        sigma = np.matrix([[SIGC[i+1],TAUC[i+1],0.],[TAUC[i+1],0.,0.],[0.,0.,0.]])
+        eigSigDev=computeEigenStresses(sigma)
+        
+        sigdev1C[i+1]=eigSigDev[0]
+        sigdev2C[i+1]=eigSigDev[1]
+        sigdev3C[i+1]=eigSigDev[2]
+    
+    TAUC[i+1]=0.
+    TAU[i+1]=0.
+    ## Second part of the integration for tau=0
+    for i in range(2*Niter-1)[Niter-1:]:
         # r.set_f_params(TAU[i],lamb,mu,beta)
         # r.integrate(r.t+dsig)
         
@@ -449,33 +517,24 @@ elif parameter=='sig':
         sigdev2[i+1]=eigSigDev[1]
         sigdev3[i+1]=eigSigDev[2]
 
-    # Clifton solution
-    SIGC=np.linspace(sig0,sigEnd,Niter)
-    TAUC[0]=tau0
-
-    r = ode(computeCliftonTangentFastSig).set_integrator('vode',method='bdf',order=5)
-    r.set_initial_value(TAUC[0],SIGC[0]).set_f_params(lamb,mu,H)
-
-    for i in range(Niter-1):
-        r.set_f_params(TAUC[i],lamb,mu,H)
-        r.integrate(r.t+dsig)
+        TAUC[i+1]=integrateCliftonODE_sigDriven(dsig,SIGC[i],TAUC[i],lamb,mu,H)
         
-        TAUC[i+1]=r.y
-    
         sigDev=computeDeviatoricPart(np.array([SIGC[i+1],TAUC[i+1],0.,0.]))
         sigma = np.matrix([[sigDev[0],sigDev[1]/np.sqrt(2.),0.],[sigDev[1]/np.sqrt(2.),sigDev[2],0.],[0.,0.,sigDev[3]]])
-        sigma = np.matrix([[SIG[i+1],TAU[i+1],0.],[TAU[i+1],0.,0.],[0.,0.,0.]])
+        sigma = np.matrix([[SIGC[i+1],TAUC[i+1],0.],[TAUC[i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
         
         sigdev1C[i+1]=eigSigDev[0]
         sigdev2C[i+1]=eigSigDev[1]
         sigdev3C[i+1]=eigSigDev[2]
-
-plt.plot(np.arange(0,Niter,1),rcf2)
-plt.grid()
-plt.show()
     
+#plt.plot(np.arange(0,Niter,1),rcf2)
+#plt.grid()
+#plt.show()
+print "Final value of Tau: ",TAU[-1],TAUC[-1]
+print "Final value of Sigma: ",SIGC[-1]
 fileName=path+'fastStressPlane_Stress.pgf'
+pdb.set_trace()
 export2pgfPlotFile(fileName,np.array([TAU[0:-1:Niter/100],SIG[0:-1:Niter/100]]),'sigma_12','sigma_11')
 
 fileName=path+'TWfastStressPlane_Stress.pgf'

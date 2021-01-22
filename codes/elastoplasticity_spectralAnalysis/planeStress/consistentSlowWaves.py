@@ -25,7 +25,7 @@ kappa = E/(3.*(1.-2.*nu))
 lamb = kappa-2.*mu/3.
 sigy = 100.0e6        
 H = 100.0e6
-#H = 100.0e8
+# H = 100.0e8
 beta=(6.*mu**2)/(3.*mu+H)
 
         
@@ -195,6 +195,18 @@ def computePsiSlow(sig12,sigma,sig33,lamb,mu,beta,tangent):
     psi22=(w2*alpha11/(1.*w1)-alpha12)/alpha22
     return np.array([psi11,psi22])
 
+def computeAlphaCoefficients(sig12,sigma,sig33,lamb,mu,beta,tangent):
+    # sig12 driven
+    n1=1.;n2=0.
+    sig11=sigma[0];sig22=sigma[1]
+    H=tangentModulus(np.array([sig11,sig12,sig22,sig33]),lamb,mu,beta,tangent)
+    C=acousticTensor(H,np.array([n1,n2]))
+    eigenf,eigens=acousticEigenStructure(C)
+    alpha11= (H[0,1]*n1+H[1,1]*n2)*(H[1,2]*n1+H[2,2]*n2) - (H[0,2]*n1+H[1,2]*n2)*(H[1,1]*n1+H[1,2]*n2)
+    alpha12=((H[0,1]*n1+H[0,2]*n2)*(H[0,2]*n1+H[1,2]*n2) - (H[0,0]*n1+H[0,1]*n2)*(H[1,2]*n1+H[2,2]*n2))/2.
+    alpha22= (H[0,0]*n1+H[0,1]*n2)*(H[1,1]*n1+H[1,2]*n2) - (H[0,1]*n1+H[0,2]*n2)*(H[0,1]*n1+H[1,1]*n2)
+    return alpha11,alpha22,alpha12
+
 def computePsiFast(sig12,sigma,sig33,lamb,mu,beta,tangent):
     # sig12 driven
     n1=1.;n2=0.
@@ -315,13 +327,31 @@ def computeLodeAngle(sig11,sig22,sig12,sig33):
     # deviatoric stress
     sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
     s11=sDev[0];s12=sDev[1]/np.sqrt(2.);s22=sDev[2];s33=sDev[3]
+    #s33=abs(s33);s22=abs(s22)#s11=abs(s11);
     sig=computeEigenStresses(np.matrix([[s11,s12,0.],[s12,s22,0.],[0.,0.,s33]]))
+    sig=np.sort(sig)
     # deviator 2nd and 3rd invariants
     J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(0.5*np.dot(sDev,sDev))
     tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
     theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
     theta=theta*360./(2.*np.pi)
-    return theta
+
+    J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(np.dot(sDev,sDev)/2.)
+    # theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    # theta=theta*360./(2.*np.pi)
+    # theta=(3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3)
+    X=(3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3)
+    Seq = np.sqrt(np.dot(sDev,sDev))
+    X=(27./2.)*J3/Seq**3
+    X=9.*np.sqrt(2./3.)*J3/Seq**3
+    
+    # X = (2*sig[1]-sig[0]-sig[2])/(sig[2]-sig[0])
+    # theta = np.arccos(X)/3.
+    # theta=theta*360./(2.*np.pi)
+    # return theta
+
+    return X
+
 
 def updateEquivalentPlasticStrain(sig,sign,H):
     # sig=[sig11^n , sqrt(2)*sig12^n , sig22 , sig33^n]
@@ -374,6 +404,10 @@ Niter=150
 TAU=np.zeros((Niter,Samples))
 SIG11=np.zeros((Niter,Samples))
 SIG22=np.zeros((Niter,Samples))
+a11=np.zeros((Niter,Samples))
+a22=np.zeros((Niter,Samples))
+a12=np.zeros((Niter,Samples))
+
 eigsigS=np.zeros((Niter,Samples,3))
 criterionF=np.zeros((Niter,Samples))
 PsiS=np.zeros((Samples))
@@ -409,12 +443,72 @@ ax3.set_zlabel(r'$\sigma_3$',size=24.)
 fig = plt.figure()
 ax1=plt.subplot2grid((1,2),(0,0))
 ax2=plt.subplot2grid((1,2),(0,1))
-ax1.set_xlabel(r'$\sigma_{11}$',size=28.)
-ax1.set_ylabel(r'$\sigma_{12}$',size=28.)
-ax2.set_xlabel(r'$\sigma_{22}$',size=28.)
-ax2.set_ylabel(r'$\sigma_{12}$',size=28.)
+ax1.set_ylabel(r'$\bar{\sigma}$',size=28.)
+ax2.set_ylabel(r'$\bar{\sigma}$',size=28.)
 ax1.grid()
 ax2.grid()
+
+fig = plt.figure()
+ax4=plt.subplot2grid((1,1),(0,0),projection='3d')
+ax4.set_xlabel(r'$\sigma_{11}$',size=24.)
+ax4.set_ylabel(r'$\sigma_{22}$',size=24.)
+ax4.set_zlabel(r'$\sigma_{12}$',size=24.)
+ax4.grid()
+
+#### PLOTTING THE INITIAL YIELD SURFACE IN STRESS SPACE
+samp=25
+
+# Sample constant stress component sig22
+sigma2=np.linspace(-np.sqrt(4./3.)*sigy,np.sqrt(4./3.)*sigy,25)
+sigma1=np.zeros((50,50))
+sigma3=np.zeros((50,50))
+
+TeXFile=open("yieldSurfaceSingularity.tex","w")
+TeXFile.write(r'\begin{tikzpicture}');TeXFile.write('\n')
+TeXFile.write(r'\begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$\sigma_{11}$,ylabel=$\sigma_{22}$,zlabel=$\sigma_{12}$,every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west}, every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east}, every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north}]');TeXFile.write('\n')
+
+for k in range(len(sigma2)-1)[1:]:
+    s22=sigma2[k]
+    
+    Delta=(4.*sigy**2- 3.*s22**2)
+    sigMax=(s22+np.sqrt(Delta))/2.
+    sigMin=(s22-np.sqrt(Delta))/2.
+
+    # Sample stress component sig11
+    sigma1[:,k]=np.linspace(sigMin,sigMax,50)
+    TeXFile.write(r'\addplot3+[gray,dashed,thin,no markers] coordinates {')
+                    
+    # Compute shear stress satisfying the criterion given sig11 and sig22
+    for i in range(50):
+        s11=sigma1[i,k]
+        delta=(s11*s22 -s11**2-s22**2 + sigy**2)/3.
+        if np.abs(delta)<10. : delta=np.abs(delta)
+        sigma3[i,k]=np.sqrt(delta)
+        TeXFile.write('('+str(s22)+','+str(s11)+','+str(sigma3[i,k])+') ')
+    TeXFile.write('};\n')
+    ax4.plot(np.ones(50)*sigma2[k],sigma1[:,k],sigma3[:,k],'k--',lw=0.5)
+
+TeXFile.write(r'\addplot3+[Red,very thick,no markers] coordinates {')
+for k in range(len(sigma2)-1)[1:]:
+    TeXFile.write('('+str(sigma2[k])+','+str(sigma2[k]/2.)+','+str(np.sqrt(( sigy**2-0.75*sigma2[k]**2)/3.))+') ')
+TeXFile.write('};\n')
+TeXFile.write(r'\end{axis}')
+TeXFile.write('\n')
+TeXFile.write('\end{tikzpicture}')
+TeXFile.write('\n')
+TeXFile.write('%%% Local Variables:')
+TeXFile.write('\n')
+TeXFile.write('%%% mode: latex')
+TeXFile.write('\n')
+TeXFile.write('%%% TeX-master: "../manuscript"')
+TeXFile.write('\n')
+TeXFile.write('%%% End:')
+TeXFile.write('\n')
+TeXFile.close()
+              
+maX=np.sqrt(( sigy**2-0.75*sigma2**2)/3.)
+ax4.plot(sigma2,sigma2/2.,maX,'r')
+##########################################################
 
 tangent='planeStress'
 ## LOADING PATHS PLOTS
@@ -425,7 +519,8 @@ for k in range(len(sig22))[1:-1]:
     sig0=sig[k]
     tau0=tau[k]
 
-    tauM = 1.5*tau0#sigy/np.sqrt(3.)
+    tauM = 1.5*tau0
+    if H==100.e8 : tauM = 50.*tau0#sigy/np.sqrt(3.)
     dtau=(tauM-tau0)/Niter
     print "sig22=",s22,", sig11=",sig0,", tau=",tau0
     print "initial yield function ", computeCriterion(sig0,s22,tau0,0.,sigy)
@@ -435,7 +530,7 @@ for k in range(len(sig22))[1:-1]:
     SIG11[0,k]=sig0
     SIG22[0,k]=s22
     
-    
+    a11[0,k],a22[0,k],a22[0,k]=computeAlphaCoefficients(tau0,[sig0,s22],0,lamb,mu,beta,tangent)
     sigma = np.matrix([[SIG11[0,k],TAU[0,k],0.],[TAU[0,k],SIG22[0,k],0.],[0.,0.,0.]])
     rcf2[0,k] = np.sqrt(computeSpeed(sigma,lamb,mu,beta,tangent)/rho)
     eigsigS[0,k,:]=computeEigenStresses(sigma)
@@ -450,7 +545,8 @@ for k in range(len(sig22))[1:-1]:
         
         sigma = np.array([SIG11[j,k],np.sqrt(2.)*TAU[j,k],SIG22[j,k],0.])
         sigman = np.array([SIG11[j+1,k],np.sqrt(2.)*TAU[j+1,k],SIG22[j+1,k],0.])
-        
+        # a11[j+1,k],a22[j+1,k],a12[j+1,k]=computeAlphaCoefficients(TAU[j+1,k],[SIG11[j+1,k],SIG22[j+1,k]],0,lamb,mu,beta,tangent)
+        # print a11[j+1,k],a22[j+1,k],a12[j+1,k]
         dp=updateEquivalentPlasticStrain(sigma,sigman,H)
         plast+=dp
         
@@ -486,7 +582,7 @@ for k in range(len(sig22))[1:-1]:
         pas=1
         ranging=np.linspace(0,Nfinal-1,Nfinal,True,False,np.int)
     ## color bar of rcf2
-    export2pgfPlotFile(fileName,np.array([TAU[ranging,k],SIG11[ranging,k],SIG22[ranging,k],rcf2[ranging,k],LodeAngle_F[ranging,k]]),'sigma_12','sigma_11','sigma_22','p','Theta')
+    export2pgfPlotFile(fileName,np.array([TAU[ranging,k],SIG11[ranging,k],SIG22[ranging,k],rcf2[ranging,k],LodeAngle_F[ranging,k],np.sqrt(eigsigS[ranging,k,0]**2 + eigsigS[ranging,k,1]**2 + eigsigS[ranging,k,2]**2)]),'sigma_12','sigma_11','sigma_22','p','Theta','radius')
     pgfFilesList.append(fileName)
     fileName=path+'CPslowDevPlane_Stress'+str(k)+'.pgf'
     dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
@@ -508,9 +604,29 @@ for k in range(len(sig22))[1:-1]:
     plt.tight_layout()
     #plt.show()
 
+    ax4.plot(SIG11[ranging,k],SIG22[ranging,k],TAU[ranging,k])
+    plt.tight_layout()
     
-    ax1.plot(SIG11[:,k],TAU[:,k])
-    ax2.plot(SIG22[:,k],TAU[:,k])
+    maxCriterion=sig0/2.
+    #ax1.plot(SIG22[:,k],2.*SIG22[:,k]/SIG11[:,k])
+    ax2.plot(LodeAngle_F[:,k],2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    ax1.set_xlabel(r'$\det{s}$',size=28.)
+    #ax2.set_xlabel(r'$\alpha_{22}$',size=28.)
+    ax2.set_xlabel(r'$cos(3\Theta)$',size=28.)
+    norm_vm = criterionF[:,k]+sigy+H*plast_F[:,k]
+    press = (1./3.)*(eigsigS[:,k,0]+eigsigS[:,k,1]+eigsigS[:,k,2])
+    det = (eigsigS[:,k,0]*eigsigS[:,k,1]*eigsigS[:,k,2])
+    triax = np.sqrt(1/3.)*press/norm_vm
+    ax1.plot(det,2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    
+    #ax2.plot(TAU[:,k],2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    
+    #ax2.plot(triax,2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    #ax2.plot(triax,2.*SIG22[:,k]/SIG11[:,k],linestyle='-.')
+    #ax4.plot(SIG22[:,k],LodeAngle_F[:,k],linestyle='--')
+
+    # ax1.plot(SIG11[:,k],TAU[:,k])
+    # ax2.plot(SIG22[:,k],TAU[:,k])
     ## sig22 value will change here
     xlabels=['$\sigma_{11} $','$\sigma_{22} $','$s_1 $'] #size=number of .tex files
     ylabels=['$\sigma_{12} $','$\sigma_{12} $','$s_2 $'] #size=number of .tex files

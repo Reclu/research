@@ -17,6 +17,34 @@ if not os.path.exists('pgf_'+str(directory)+'/'):
     os.system('mkdir pgf_'+str(directory)+'/')
 path='pgf_'+str(directory)+'/'
 
+def computeLodeAngle(sig11,sig22,sig12,sig33):
+    # deviatoric stress
+    sDev=computeDeviatoricPart(np.array([sig11,sig12,sig22,sig33]))
+    s11=sDev[0];s12=sDev[1]/np.sqrt(2.);s22=sDev[2];s33=sDev[3]
+    #s33=abs(s33);s22=abs(s22)#s11=abs(s11);
+    sig=computeEigenStresses(np.matrix([[s11,s12,0.],[s12,s22,0.],[0.,0.,s33]]))
+    sig=np.sort(sig)
+    # deviator 2nd and 3rd invariants
+    J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(0.5*np.dot(sDev,sDev))
+    tan=(1./np.sqrt(3.))*(2.*(sig[1]-sig[2])/(sig[0]-sig[2])-1.)
+    theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    theta=theta*360./(2.*np.pi)
+
+    J3=s33*(s11*s22-s12**2) ; sqrtJ2=np.sqrt(np.dot(sDev,sDev)/2.)
+    # theta=-np.sign(tan)*np.arccos((3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3))/3.
+    # theta=theta*360./(2.*np.pi)
+    # theta=(3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3)
+    X=(3./2.)*np.sqrt(3.)*J3/(sqrtJ2**3)
+    Seq = np.sqrt(np.dot(sDev,sDev))
+    X=(27./2.)*J3/Seq**3
+    
+    # X = (2*sig[1]-sig[0]-sig[2])/(sig[2]-sig[0])
+    # theta = np.arccos(X)/3.
+    # theta=theta*360./(2.*np.pi)
+    # return theta
+
+    return X
+
 def export2pgfPlot3D(fileName,field1,field2,field3,dico={"xlabel":'x',"ylabel":'y',"zlabel":'z'}):
     #pdb.set_trace()
     dataFile=open(fileName,"w")
@@ -248,6 +276,7 @@ sigdev3=np.zeros((len(sig0),Niter))
 sigdev1C=np.zeros((len(sig0),Niter))
 sigdev2C=np.zeros((len(sig0),Niter))
 sigdev3C=np.zeros((len(sig0),Niter))
+LodeAngleC=np.zeros((len(sig0),Niter))
 
               
 ## LOADING PATHS PLOTS
@@ -312,6 +341,7 @@ for k,s in enumerate(sig0):
     # Clifton solution
     TAUC[k,:]=np.linspace(tau0[k],tauEnd,Niter)
     SIGC[k,0]=s
+    LodeAngleC[k,0]=computeLodeAngle(s,0.,tau0[k],0.)
     
     r = ode(computeCliftonTangentSlowTau).set_integrator('vode',method='bdf',order=5)
     r.set_initial_value(SIGC[k,0],TAUC[k,0]).set_f_params(lamb,mu,H)
@@ -327,11 +357,14 @@ for k,s in enumerate(sig0):
         sigma = np.matrix([[SIG[k,i+1],TAU[k,i+1],0.],[TAU[k,i+1],0.,0.],[0.,0.,0.]])
         eigSigDev=computeEigenStresses(sigma)
 
+        LodeAngleC[k,i+1]=computeLodeAngle(SIG[k,i+1],0.,TAU[k,i+1],0.)
+        
         # sig = np.matrix([[SIGC[k,i+1],TAUC[k,i+1],0.],[TAUC[k,i+1],0.,0.],[0.,0.,0.]])
         # eigSigDev=computeEigenStresses(sig)
         sigdev1C[k,i+1]=eigSigDev[0]
         sigdev2C[k,i+1]=eigSigDev[1]
         sigdev3C[k,i+1]=eigSigDev[2]
+    plt.plot(np.arange(0,Niter,1),LodeAngleC[k,:])
     
     print path
     fileName=path+'slowStressPlane_Stress'+str(k)+'.pgf'
@@ -347,7 +380,8 @@ for k,s in enumerate(sig0):
     dico={"xlabel":r'$s_1$',"ylabel":r'$s_2$',"zlabel":r'$s_3$'}
     export2pgfPlot3D(fileName,sigdev1C[k,0:-1:Niter/100],sigdev2C[k,0:-1:Niter/100],sigdev3C[k,0:-1:Niter/100],dico)
     deviatorPlots.append(fileName)
-
+plt.grid()
+plt.show()
 ###################################### POST PROCESSING
 from mpl_toolkits.mplot3d import proj3d
 def orthogonal_proj(zfront, zback):
