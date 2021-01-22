@@ -1,0 +1,52 @@
+\begin{tikzpicture}[scale=1.] 
+  \newcommand\shift{5.}
+  %% Slow
+  \draw[thick,->] (0,0) -- (4.,0) node[right] {$x_n$};
+  \draw[thick,->] (0,0) -- (0.,4) node[above] {$t$};
+  % Slope = 0.75
+  \draw (0,0) -- (4,3.) node [right] {$c_s^0$};
+  % Slope = 4./3.
+  \draw (0,0) -- (3.,4.) node [right] {$c_s$};
+
+  \fill[black] (1.5,1.5*4./3.) circle (0.05) node [above] {$P$};
+  %% Other characteristics
+  % stationary
+  \draw (1.5,0.75*1.5) -- (1.5,1.5*4./3.);
+  % fast plus (slope =+-0.25)
+  \newcommand\px{1.5}
+  \newcommand\py{1.5*4./3.}
+  \draw (2.*\py-0.5*\px,1.5*\py-3.*\px/8.) node [right] {$c_f$}-- (1.5,1.5*4./3.) ;
+  % fast minus
+  \draw (\py+0.25*\px,0.75*\py+3.*\px/16.) node [right] {$-c_f$} -- (1.5,1.5*4./3.) ;
+  % slow minus (slope=-4./3.)
+  \draw (12.*\py/25.+16.*\px/25.,9.*\py/25.+36.*\px/75.) node [right] {$-c_s$} -- (1.5,1.5*4./3.) ;
+
+  
+  %% Fast
+  \draw[thick,->] (0+\shift,0) -- (4.+\shift,0) node[right] {$x_n$};
+  \draw[thick,->] (0+\shift,0) -- (0.+\shift,4) node[above] {$t$};
+  % Slope = 0.25
+  \draw (0+\shift,0) -- (4+\shift,1.) node [right] {$c_f^0$};
+  % Slope = 5./8.
+  \draw (0+\shift,0) -- (4+\shift,2.5) node [right] {$c_f$};
+  
+  \fill[black] (1.5+\shift,1.5*5./8.) circle (0.05) node [above] {$P$};
+  %% Other characteristics
+  \newcommand\pxx{1.5}
+  \newcommand\pyy{1.5*5./8.}
+  % stationary
+  \draw (1.5+\shift,1.5/4.) -- (\pxx+\shift,\pyy);
+  % fast minus
+  \draw (8.*\pyy/7.+5.*\pxx/7.+\shift,2.*\pyy/7.+10.*\pxx/56.) node [below right] {$c_f$}-- (\pxx+\shift,\pyy);
+  % slow plus
+  \draw (-12.0*\pyy/13.+16.*\pxx/13.+\shift,-3.*\pyy/13.+4.*\pxx/13.)node [below] {$c_s$} -- (\pxx+\shift,\pyy);
+  % slow minus
+  \draw (12.0*\pyy/19.+16.*\pxx/19.+\shift,3.*\pyy/19.+4.*\pxx/19.)node [below] {$-c_s$} -- (\pxx+\shift,\pyy);
+  
+\end{tikzpicture}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../mainManuscript"
+%%% End:

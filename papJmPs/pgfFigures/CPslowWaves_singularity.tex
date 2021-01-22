@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=1 by 1,
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,ylabel=$\frac{2\sigma_{22}}{\sigma_{11}}$,
+axis on top,scale only axis,width=0.5\linewidth%,ymin=0,ymax=63499406.78820015
+, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]
+, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]
+
+\nextgroupplot[xlabel=$\sigma_{12} (Pa)$,
+legend columns=3, legend style={at={(.925,-0.25)}}]
+\addplot[Red,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress1.pgf};
+\addlegendentry{\footnotesize path 1}
+\addplot[Blue,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress2.pgf};
+\addlegendentry{\footnotesize path 2}
+\addplot[Orange,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress3.pgf};
+\addlegendentry{\footnotesize path 3}
+\addplot[Purple,very thick,mark=x,only marks] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress4.pgf};
+\addlegendentry{\footnotesize path 4}
+\addplot[Yellow,very thick,mark=+,only marks] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress5.pgf};
+\addlegendentry{\footnotesize path 5}
+\addplot[Green,very thick,mark=asterisk,only marks] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress6.pgf};
+\addlegendentry{\footnotesize path 6}
+
+% \nextgroupplot[xlabel=$\abs{\frac{\sigma_{22}}{\max \sigma_{22}}}$,
+% legend columns=3, legend style={at={(.925,-0.4)}}]
+% \addplot[Red,very thick] table[x expr ={ \thisrow{sigma_22}/(-45617633.667562775)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress1.pgf};
+% \addlegendentry{\footnotesize path 1}
+% \addplot[Blue,very thick] table[x expr ={ \thisrow{sigma_22}/(-27365159.25501846)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress2.pgf};
+% \addlegendentry{\footnotesize path 2}
+% \addplot[Orange,very thick] table[x expr ={ \thisrow{sigma_22}/(-9119734.778811883)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress3.pgf};
+% \addlegendentry{\footnotesize path 3}
+% \addplot[Purple,very thick,mark=x,only marks] table[x expr ={ \thisrow{sigma_22}/(9119734.778811883)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress4.pgf};
+% \addlegendentry{\footnotesize path 4}
+% \addplot[Yellow,very thick,mark=+,only marks] table[x expr ={ \thisrow{sigma_22}/(27365159.25501846)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress5.pgf};
+% \addlegendentry{\footnotesize path 5}
+% \addplot[Green,very thick,mark=asterisk,only marks] table[x expr ={ \thisrow{sigma_22}/(45617633.667562775)},y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress6.pgf};
+% \addlegendentry{\footnotesize path 6}
+
+
+
+\end{groupplot}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

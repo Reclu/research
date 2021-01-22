@@ -1,0 +1,85 @@
+%% Hyperbolic problems in history-dependent solids
+% A wide variety of engineering problems including acoustics, aerodynamics or impacts, are modeled with hyperbolic systems of conservation laws.
+% Applications such as high-speed metal forming techniques or crash-proof design moreover involve irreversible phenomena and therefore require the accurate assessment of residual stresses and strains. 
+% In order to properly estimate these residual states in elastic-plastic materials undergoing dynamic loads, on which the focus is here, the waves arising in the solutions of hyperbolic systems, as well as their interactions with each other, must be precisely followed.
+A wide variety of engineering problems including acoustics, aerodynamics or impacts, are modeled with hyperbolic systems of conservation laws.
+Applications such as high-speed metal forming techniques or crash-proof design moreover involve elastic-plastic solids, whose response depends on history effects.
+The irreversible deformations occurring in this class of solids, which are related to the evolution of the microstructure of the material, are of primary importance to finally access to residual strains and stresses.
+Therefore, the waves arising in the solutions of hyperbolic systems in elastic-plastic materials, as well as their interactions with each other, must be precisely followed so that the sequence of propagated states can be connected to residual states.
+
+
+Even though calculating the exact solutions of this class of problems is in general not possible for elastic-plastic media, they are known in particular cases.
+%
+Until the 50s, research on dynamic problems in those solids were focused on uni-axial stress or strain, pure bending or pure torsion loading conditions \cite{Taylor,vonKarman}, and were carried out for material characterization purposes.
+Then, \textsc{Rakhmatulin} \cite{Rakhmatulin} and \textsc{Cristescu} \cite{CRISTESCU19591605} investigated the response of linearly hardening solids to combined shear and pressure dynamic loads.
+These early works on plane stress impacts in the plastic regime led to the conclusion that elastic waves, as well as plastic combined-stress simple waves, can propagate in two-dimensional solids. 
+While the former were well-known, the latter were shown to fall into two families: the \textit{fast waves} and the \textit{slow waves}.
+%
+The analysis of the solution to general three-dimensional problems by \textsc{Mandel} \cite{Mandel62} and \textsc{Hill} \cite{Hill62} confirmed the existence of those families by providing a complete characterization of the wave speeds and the formulation of the jump conditions across the elastic-plastic boundaries.
+
+%
+Later, \textsc{Bleich} and \textsc{Nelson} \cite{Bleich} considered superimposed plane and shear waves in an ideally elastic-plastic material submitted to step loads.
+It has then been highlighted that different loading cases yield different characteristic structures of the solution in problems defined in a semi-infinite medium with prescribed traction forces and initial conditions (the so-called Picard problem).
+The results of \textsc{Bleich} and \textsc{Nelson} thus revealed the complexity of plastic flows in multi-dimensional solids undergoing dynamic loadings.
+The same conclusions have been drawn by \textsc{Clifton} \cite{Clifton} for hardening materials under tension-torsion, who furthermore studied the influence of plastic pre-loading on the solution.
+This contribution highlighted the combined-stress wave nature lying in Ordinary Differential Equations (ODEs) that arise from the characteristic analysis of the hyperbolic system and govern the evolution of stress components within the simple waves.
+The integration of these equations allows the building of curves that connect the applied stress state in the Picard problem to the initial state of the medium.
+It has been for instance shown that if a solid is acted upon by a pure shear traction beyond the elastic domain, only an elastic shear discontinuity, followed by a slow simple wave, propagates.
+Conversely, other loading conditions may lead to the combination of an elastic pressure discontinuity and a fast wave, possibly followed by a slow wave.
+Another notable conclusion is that the loading paths followed inside plastic simple waves are not necessarily radial even if a von-Mises flow rule is considered.
+Experimental data collected on a thin-walled tube submitted to a dynamic tensile load \cite{Clifton_exp,Clifton_exp2} confirmed the existence of two distinct families of  simple waves, both involving combined stress paths.
+%% Experimental works
+% Experimental data collected on a thin-walled tube submitted to a dynamic tensile load \cite{Clifton_exp,Clifton_exp2} confirmed the existence of two distinct families of  simple waves, both involving combined stress paths.
+% These works nevertheless exhibited some discrepancies with the theory which have been attributed to the assumption made on the von-Mises yield surface.
+% As a matter of fact, a constant strain region lying between the fast and slow waves that is predicted by the theory \cite{Clifton} could not be seen in experimental results.
+% However, by following the endochronic theory of plasticity \cite{Valanis} which does not require the introduction of a yield surface, \textsc{Wu} and \textsc{Lin} \cite{Wu_experimental} obtained numerical results that better fit the experimental data provided by \textsc{Lipkin} and \textsc{Clifton} \cite{Clifton_exp2}.
+% The good agreement showed between numerical and experimental results \cite{Wu_experimental} therefore confirmed the theory.
+\textsc{Ting} and \textsc{Nan} \cite{Ting68} then generalized the work of \textsc{Bleich} and \textsc{Nelson} to hardening materials and \textsc{Ting} \cite{Ting69} widened that of \textsc{Clifton} to more complex loadings, that is, a superimposition of one plane wave and two shear waves.
+Once again, the mathematical study of the ODE system governing the stress evolution inside fast and slow simple waves led to the construction of loading paths in the stress space.
+A review of the governing equations for all the cases depending on one space dimension considered above can be found in \cite{Nowacki}. % \review{and the application of \textsc{Mandel}'s approach to the thin-walled tube problem is presented in \cite{mandel_book}} .
+
+%% Existence of plastic shocks
+Besides the above works on the simple wave solutions, several authors studied the existence of plastic shocks in solids under plane wave assumptions \cite{Mandel62,Rice,Morland,Germain_shock,Claude,Mandel2,Wang}.
+These references nevertheless consider hydro-elastic-plastic solids for which the hydrostatic part of the behavior follows some particular convex state law for the pressure, which can lead to plastic shock solutions.
+%
+On the contrary, provided a classical Hooke elastic compressibility, only plastic simple waves can occur in the solution of Picard problems.
+
+% Motivations
+Research conducted on plastic waves enable the derivation of exact solutions for problems with simple geometries and loadings.
+For more complex problems however, approximate solutions can be computed through the use of numerical approaches.
+In particular, the family of Godunov's methods \cite{Godunov_method} allows to take into account the characteristic structure of the solution of hyperbolic problems so as to accurately capture waves.
+These methods are based on the solution of a Riemann problem whose construction requires to know the wave pattern \textit{a priori}, which is not possible for elastic-plastic solids.
+% and therefore require to know the wave pattern \textit{a priori}, which is not possible for elastic-plastic solids since the unknown stationary solution dictates the waves involved.
+For the thin-walled tube problem, \textsc{Lin} and \textsc{Ballman} overtook this difficulty by defining elementary stress paths from \textsc{Clifton}'s results \cite{Lin_et_Ballman}.
+Those paths can be used in order to relate some guessed stationary state of the Riemann problem to its initial conditions through the waves involved and hence to deduce the wave pattern.
+By iteratively following that procedure until convergence, the Riemann problem can be solved. 
+% iteratively relate guessed stationary states to the initial conditions of the Riemann problem through the simple waves loading paths until convergence \cite{Lin_et_Ballman}.
+
+% Objectif
+The purpose of the present work is the determination of the loading paths followed inside the plastic simple waves involved in two-dimensional elastic-plastic media.
+This contribution can therefore be seen as an extension of the work of \textsc{Clifton} \cite{Clifton} to more general two-dimensional problems in order to deduce loading paths from the characteristic structure of the hyperbolic system.
+As we shall see, the stress states considered lead to paths that are very different from those observed in one-dimensional problems.
+The long-term goal of that research is the extension to general two-dimensional problems of the approach of \textsc{Lin} and \textsc{Ballman}.
+
+% In this paper, a framework for the study of the propagation of simple waves in multi-dimensional elastic-plastic solids under small strains is first proposed.
+% The formulation is based upon a generic quasi-linear form of the governing hyperbolic system which can easily be particularized to two-dimensional cases. 
+% Therefore the problems already studied in the literature are all gathered within the same set of equations that furthermore enables to study configurations that have been omitted so far.
+% In particular, plane strain and plane stress cases are considered so that the loading paths followed inside slow and fast waves under those conditions are studied.
+% This contribution is then a first step towards the extension of the work of \textsc{Clifton} to more general two-dimensional problems in order to deduce loading paths from the wave structure arising in the characteristic structure of the solution.
+% Thus, the purpose of that research is the identification of typical responses for two-dimensional elastic-plastic media through the characteristic analysis of the corresponding quasi-linear form.
+% The work presented here is motivated by the pioneer works of \textsc{Godunov} \cite{Godunov_method} who allowed to take into account the characteristic structure of the solution of hyperbolic problems within a numerical method so as to accurately capture waves.
+% The long-term goal of the present research is in fact the extension to general two-dimensional problems of the approach proposed by \textsc{Lin} and \textsc{Ballman} \cite{Lin_et_Ballman}.
+% The latter consists in taking into account the results of \textsc{Clifton} within a finite volume scheme by iteratively integrating the loading paths numerically for the thin-walled tube problem.
+
+% In what follows, the governing equations of dynamics in elastic-plastic solids are recalled and the characteristic analysis is carried out in section \ref{sec:charac_plast}.
+% Some important contributions of \cite{Mandel69_thermoWaves} about the plastic wave speeds are also .
+In what follows, the characteristic analysis of the governing equations of dynamics in elastic-plastic solids is carried out and some important results of \textsc{Mandel} \cite{Mandel62} are recalled in section \ref{sec:charac_plast}.
+Then, the equations are particularized to two-dimensional problems so that the method of characteristics is applied in section \ref{sec:integral_curves} in order to derive the equations of integral curves.
+Those curves, once projected into the stress space, correspond to the loading paths that have been already identified for other problems.
+Section \ref{sec:stress_paths} is devoted to the mathematical properties of the aforementioned loading paths which, given the complexity of the equations, is supplemented with numerical results presented in section \ref{sec:numerical_results}.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

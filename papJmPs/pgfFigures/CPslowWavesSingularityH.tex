@@ -1,0 +1,60 @@
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,
+ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+xticklabels at=edge bottom,xlabels at=edge bottom},
+ymajorgrids=true,xmajorgrids=true,ylabel=$\frac{2\sigma_{22}}{\sigma_{11}}$,
+axis on top,scale only axis,width=0.4\linewidth%,ymin=0,ymax=63499406.78820015
+, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis]
+
+\nextgroupplot[xlabel=$\sigma_{22} (Pa)$,title={(a) Evolution with respect to $\sigma_{22}$}]
+
+\addplot[Red,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress1.pgf};
+%\addlegendentry{\footnotesize path 1}
+\addplot[Blue,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress2.pgf};
+%\addlegendentry{\footnotesize path 2}
+\addplot[Orange,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress3.pgf};
+%\addlegendentry{\footnotesize path 3}
+\addplot[Purple,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress4.pgf};
+%\addlegendentry{\footnotesize path 4}
+\addplot[Yellow,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress5.pgf};
+%\addlegendentry{\footnotesize path 5}
+\addplot[Duck,very thick] table[x=sigma_22,y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}}] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress6.pgf};
+%\addlegendentry{\footnotesize path 6}
+
+
+\nextgroupplot[xlabel=$\cos 3\Theta $, ,title={(b) Evolution with respect to the Lode parameter},
+legend columns=3, legend style={at={(.3,-0.2)}}]
+\addplot[Red,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress1.pgf};
+\addlegendentry{\footnotesize path 1}
+\addplot[Blue,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress2.pgf};
+\addlegendentry{\footnotesize path 2}
+\addplot[Orange,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress3.pgf};
+\addlegendentry{\footnotesize path 3}
+\addplot[Purple,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress4.pgf};
+\addlegendentry{\footnotesize path 4}
+\addplot[Yellow,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress5.pgf};
+\addlegendentry{\footnotesize path 5}
+\addplot[Duck,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=Theta] {pgfFigures/pgf_HslowWavesPlaneStres/CPslowStressPlane_Stress6.pgf};
+\addlegendentry{\footnotesize path 6}
+
+% \addplot[Red,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress1.pgf};
+% \addlegendentry{\footnotesize path 1}
+% \addplot[Blue,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress2.pgf};
+% \addlegendentry{\footnotesize path 2}
+% \addplot[Orange,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress3.pgf};
+% \addlegendentry{\footnotesize path 3}
+% \addplot[Purple,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress4.pgf};
+% \addlegendentry{\footnotesize path 4}
+% \addplot[Yellow,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress5.pgf};
+% \addlegendentry{\footnotesize path 5}
+% \addplot[Duck,very thick] table[y expr={(2*\thisrow{sigma_22})/\thisrow{sigma_11}},x=radius] {pgfFigures/pgf_slowWavesPlaneStress/CPslowStressPlane_Stress6.pgf};
+% \addlegendentry{\footnotesize path 6}
+
+
+
+\end{groupplot}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

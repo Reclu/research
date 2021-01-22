@@ -1,0 +1,50 @@
+
+\subsection{Summary of the important contributions}
+\label{sec:summ-import-results}
+
+
+%% Theoretical part: generic formulation
+In this paper, the characteristic structure of the solution of hyperbolic problems in elastic-plastic solids in two space dimensions has been highlighted.
+First, a thermodynamically-consistent formulation leading to the writing of a hyperbolic system involving the fourth-order elastic-plastic stiffness tensor as been proposed.
+The aforementioned tensor can be easily specialized to plane stress and plane strain problems in such a way that the quasi-linear form derived provides a generic framework for the study of all mechanical problems in two space dimensions.
+
+%% Characteristic analysis
+Second, the characteristic analysis of the hyperbolic plane strain and plane stress problems has been carried out.
+As already emphasized for simpler two-dimensional problems in prior works \cite{Rakhmatulin,CRISTESCU19591605} the solutions involve slow and fast simple waves. 
+The characteristic equations governing the evolution of the system inside the simple waves have then been derived as a set of ODEs by applying the method of characteristics.
+
+%% Mathematical properties of the loading paths
+Third, some mathematical properties of these characteristic equations have been highlighted for plane strain and plane stress, despite the complexity of the equations.
+As an interesting result of this work, it has been shown that the loading paths followed inside slow and fast waves are perpendicular in the stress space.
+Although this feature has been already emphasized in \cite{Clifton} for a combined longitudinal and torsional loading, the property is in fact due to the symmetry of the acoustic tensor and is therefore valid for all two-dimensional problems.
+
+%% Numerical results
+At last, to overcome the mathematical complexity of the characteristic equations, numerical investigations have been proposed.
+The loading paths depicted in the stress space or in the deviatoric plane then enable the identification of symmetry properties that are not proofed mathematically.
+Moreover, the integral curves holding inside fast waves are restricted to the initial yield surface for both plane stress and plane strain situations.  
+In the former case, the paths end as soon as a direction of pure shear is reached in the deviatoric plane, whereas in the latter one, the paths appears to be radial once  a direction of pure tension/compression is achieved.
+On the other hand, the loading through the simple waves exhibit rough changes regardless of the kinematic considered for low hardening moduli (\textit{i.e. $C=\mathcal{O}(10^8)$}). 
+It has moreover been shown numerically that this inflection corresponds, for plane stress, to the reaching of the maximum shear stress on the current yield surface for a given longitudinal stress.
+For plane strain, a similar response is also seen but before the \textit{maximum-shear-stress} condition is achieved.
+% Similar conclusions can be drawn for plane strain.
+Nevertheless, increasing the hardening modulus leads to loading paths whose direction changes before the \textit{maximum-shear-stress} condition is achieved for plane stress, and which reach a direction of pure shear at the same time as the maximum shear stress.
+
+
+\subsection{Concluding remarks}
+\label{sec:concludingRemarks}
+
+%% Perspectives
+The results of the present paper allow a better understanding of the physical response of linearly hardening elastic-plastic solids to dynamic loadings.
+However, the singularities that have been highlighted numerically still need to be identified mathematically.
+%It would also be interesting to consider different hardenings (\textit{i.e. kinematic, non-linear etc.}).  
+Notice that kinematic hardening should yield identical results for the monotonic loadings considered here, but would greatly influence the response for unloading or reverse plastic loading.
+  These waves must also be the object of an analysis for two-dimensional problems in order to construct the solution of the Riemann problem. 
+As a more long-term perspective, the elementary loading paths studied here could be used in order to enrich numerical methods based on the use of Riemann solvers.
+In fact, following the idea of \textsc{Lin} and \textsc{Ballman} \cite{Lin_et_Ballman}, a numerical procedure that accounts for both elastic and plastic characteristics can be developed in order to improve the tracking of waves in elastic-plastic solids.
+% Nonetheless, the hyperbolic problems in elastoplastic media may involve not only simple waves but also shocks so that the effects of the latter must be investigated as well. 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

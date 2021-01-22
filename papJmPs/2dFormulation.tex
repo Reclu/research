@@ -1,0 +1,95 @@
+%\subsection{Problems in two space dimensions}
+%The formulation developed in the previous section differs from those of \textsc{Bleich} \cite{Bleich}, \textsc{Clifton} \cite{Clifton}, and hence from these of \textsc{Ting} and \textsc{Nan} \cite{Ting68} and \textsc{Ting} \cite{Ting69}, in that equation  \eqref{eq:quasilinear_normal} is based on the elastoplastic stiffnesses rather than softnesses.
+%As a consequence, it will be seen in what follows that the equations can be easily specialized to plane strain and plane stress cases.
+
+We now focus on the solid domain $(x_1, x_2, x_3) \in [0,\infty[ \times [-h,h] \times [-e,e]$ in a Cartesian coordinate system, where $e$ and $h$ are arbitrary lengths.
+%The solid is subject in the plane $x_1=0$ to a traction force $\vect{T}^1$ restricted to the $(\vect{e}_1,\vect{e}_2)$ plane, that is $T_3=0$.
+It is assumed that all quantities depend solely on $x_1$ and $x_2$ except the velocity component $v_3$ that may depend on $x_3$.
+In particular, this is the case for $e \ll h$.
+% $
+Furthermore, only plastic simple waves are considered from now on.
+
+The solid is under the plane strain condition $\tens{\eps}\cdot\vect{e}_3=\vect{0}$ if the velocity $\vect{v}$ does not depend on $x_3$ and if $v_3$ vanishes.
+Thus, combining the additive partition of the infinitesimal strain tensor: $\tens{\eps}=\tens{\eps}^e+\tens{\eps}^p$, with the elastic law \eqref{eq:elastic_inverse} and the kinematic condition $\eps_{33}=0$, one gets for isotropic materials:
+\begin{equation}
+  \label{eq:plane_strain_stress33}
+  \sigma_{33}=\nu\(\sigma_{11}+\sigma_{22}\) - E\eps^p_{33}
+\end{equation}
+Hence, the quasi-linear form \eqref{eq:quasilinear_normal} reduces for plane strain problems to a system of dimension $5$ for the unknowns $v_1,v_2, \sigma_{11},\sigma_{12}$, and $\sigma_{22}$.
+
+
+The plane stress state $\tens{\sigma}\cdot\vect{e}_3=\vect{0}$ is assumed if the planes $x_3=\pm h$ are traction free and $e\ll h$.
+In that case the stress component $\sigma_{33}$ is removed from system \eqref{eq:quasilinear_normal}.
+Nevertheless, the tangent modulus must account for the vanishing out-of-plane stress component by specializing equation \eqref{eq:elastoplastic_tangent} to $\sigma_{33}$:
+\begin{equation*}
+  \dot{\sigma}_{33}=C^{ep}_{33ij} \dot{\eps}_{ij} =0
+\end{equation*}
+and therefore:
+\begin{equation*}
+  C^{ep}_{3333} \dot{\eps}_{33} = - C^{ep}_{33ij}\dot{\eps}_{ij} \quad i,j=\{1,2\}
+\end{equation*}
+since $\eps_{13}=\eps_{23}=0$ also in plane stress.
+Hence, the constitutive equations are rewritten by means of a two-dimensional tangent modulus $\widetilde{\Cbb}^{ep}$:
+\begin{equation}
+  %\label{eq:CP_constitutive}
+  \dot{\sigma}_{ij}=\(C^{ep}_{ijkl} - \frac{C^{ep}_{ij33}C^{ep}_{33kl}}{C^{ep}_{3333}}\) \dot{\eps}_{kl}= \widetilde{C}^{ep}_{ijkl} \dot{\eps}_{kl}\quad i,j,k,l=\{1,2\}
+\end{equation}
+The characteristic structure of the problem is then governed by the associated acoustic tensor $\tens{\widetilde{A}}^{ep}=\vect{n}\cdot\widetilde{\Cbb}^{ep}\cdot \vect{n}$.
+
+The removal of $\sigma_{33}$ from system \eqref{eq:quasilinear_normal} for both plane strain and plane stress situations allows solving the problem in a two-dimensional setting.
+Then, generically denoting the acoustic tensor by $\tens{A}$, the characteristic structures are given by the eigenvalues:
+\begin{align}
+    \label{eq:eigenAcc1}
+  &\omega_1 = \frac{A_{11}+A_{22} + \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2}}{2} \\
+  \label{eq:eigenAcc2}
+  &\omega_2 = \frac{A_{11}+A_{22} - \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2}}{2}     
+\end{align}
+and the associated left eigenvectors:
+\begin{equation}
+  \label{eq:eigenvectAcc}
+  \vect{l}^1=\[ A_{22}-  \omega_1 \:,\: -A_{12}\] \: ;\:  \vect{l}^2=\[ -A_{12} \:,\:A_{11}- \omega_2 \]
+\end{equation}
+From equation \eqref{eq:left_eigenfields}, we see that two families of waves with celerities $c_f=\pm \sqrt{\omega_1/\rho}$ and $c_s = \pm \sqrt{\omega_2/\rho}$ may travel in the domain.
+These waves are respectively referred to as fast and slow waves.
+One easily shows that property \ref{pr:mandel_inequality} can be particularized to two-dimensional problems and yields: $c_1\geq c_f\geq c_2 \geq c_s$, where $c_1$ and $c_2$ are the speeds of elastic pressure and shear waves respectively.
+% Note that subtracting equations \eqref{eq:eigenAcc1} and \eqref{eq:eigenAcc2} leads to:
+% \begin{equation}
+%   \label{eq:diff_celerities}
+%   \rho c_f^2 - \rho c_s^2 = \sqrt{(A_{11}-A_{22})^2+{4A_{12}}^2} \geq 0
+% \end{equation}
+% Hence, the characteristic speed associated with fast waves is always greater than or equal to that of slow waves.
+
+\begin{remark}
+  % Due to the non-linearity of $\Cbb^{ep}$, the solution may contain shock and/or simple waves.
+  % However, we restrict here to the latter situation by assuming that:
+  Given the non-linearity of $\Cbb^{ep}$ and the mathematical complexity of equations \eqref{eq:eigenAcc1} and \eqref{eq:eigenAcc2}, the following assumptions are made in what follows:
+  \begin{itemize}
+  %\item[(i)] the characteristic speeds satisfy $c_1 \geq c_f \geq c_2 \geq c_s $, where $c_1$ and $c_2$ are the speeds of elastic pressure and shear waves respectively \review{first Mandel's inequality ! \cite{mandel_book}: valid since the focus is here on simple wave solutions.}
+  \item[(i)] $c_f$ and $c_s$ monotonically decrease with the hardening of the material,
+  \item[(ii)] the computational domain is in an initial natural, plastic strain free state. %, since the hardening has an influence on the wave speeds.
+  \end{itemize}
+\end{remark}
+% \review{Note also that property \ref{pr:mandel_inequality} is still valid for $\tens{\widetilde{A}}^{ep}$.}
+
+Given the eigenvalues \eqref{eq:eigenAcc1} and \eqref{eq:eigenAcc2}, the four left eigenfields of the Jacobian matrix read:
+\begin{align}
+  \label{eq:Jac_eigenfield_fast}
+  &\left\lbrace \pm c_f ; \quad \Lcb^{c_f^\pm}=\[\: \pm \rho c_f \vect{l}^1 , -\vect{l}^1\otimes \vect{n} \:\]  \right\rbrace \\
+  \label{eq:Jac_eigenfield_slow}
+  &\left\lbrace \pm c_s ; \quad \Lcb^{c_s^\pm}=\[\: \pm \rho c_s \vect{l}^2 , -\vect{l}^2\otimes \vect{n} \:\]  \right\rbrace
+\end{align}
+where $\Lcb^{c_f^+}$ and $\Lcb^{c_f^-}$ are associated with the right-going and left-going fast waves respectively.
+The same goes for $\Lcb^{c_s^+}$ and $\Lcb^{c_s^-}$.
+Furthermore, one stationary wave associated with the zero eigenvalue of the Jacobian matrix, and whose left eigenvector satisfies equation \eqref{eq:left_null_eigenvectors}, has to be added:
+\begin{equation}
+  \label{eq:null_left_eigen}
+  {\Lcb^0}^T =  \matrice{0 \\[5.pt] 0 \\[5.pt] \(C_{121i}C_{222j}-C_{221i}C_{122j}\)n_in_j \\[5.pt] \(C_{111i}C_{122j}-C_{112i}C_{121j}\)n_in_j \\[5.pt] \(C_{112i}C_{221j}-C_{111i}C_{222j}\)\frac{n_in_j}{2}} = \matrice{0 \\ 0 \\ \alpha_{11} \\ \alpha_{22} \\ \alpha_{12} }
+\end{equation}
+with $\Cbb=\Cbb^{ep}$ for plane strain and $\Cbb=\widetilde{\Cbb}^{ep}$ for plane stress situations.
+The above eigenfields are used in the next section in order to derive the simple wave solutions by means of the method of characteristics \cite{Courant}.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:

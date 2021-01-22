@@ -1,0 +1,315 @@
+In this section, the governing equations of general dynamic problems in elastic-plastic solids are first written with a tensorial formalism based on the fourth-order stiffness tensor.
+This framework leads on the one hand to the same characteristic structure as in \cite{Raniecki,mandel_book}, so that well known results can be used.
+On the other hand, it allows easy specialization to problems involving less than three space dimensions, such as the one-dimensional ones already treated in the literature.
+% This framework is more generic than the works mentioned in the introduction, which are formulated in matrix form based on the elastoplastic compliances, since it can be easily specialized to problems already treated in the literature.
+%
+Second, the spectral analysis of the hyperbolic system written in an arbitrary direction is performed, which is motivated by the solution of Riemann problems in one space dimension in numerical schemes such as the Finite Volume Method (FVM) \cite{Leveque,Toro}.
+That approach furthermore avoids the seeking of bi-characteristics as proposed by \textsc{Clifton} in order to build elastoplastic finite difference schemes \cite{Clifton_thesis}.
+It must be emphasized that the present work aims at highlighting a sufficient amount of information so as to enable numerical schemes to mimic the analytical behavior, and does not require the complete bi-characteristic structure.
+
+\subsection{Governing equations}
+We consider the isothermal deformation of a solid body of mass density $\rho$ in the linearized geometrical framework.
+The balance equation of linear momentum with neglected body forces, and the geometrical balance equations \cite{Plohr,Gil_HE} are:  
+\begin{equation}
+  \label{eq:balance_equations}
+  %\left\lbrace
+    \begin{aligned}
+    & \rho \dot{\vect{v}} - \nablav \cdot \tens{\sigma} = \vect{0} \\
+    &  \dot{\tens{\eps}} - \nablav \cdot \(\frac{\vect{v}\otimes \tens{I} + \tens{I} \boxtimes \vect{v}}{2}\) = \vect{0} 
+  \end{aligned}
+%\right.
+\end{equation}
+where the operator $ \boxtimes $ refers to the transpose on second and third indices of the classical tensor product, namely: $\tens{I} \boxtimes \vect{v} = \delta_{ik} v_j\vect{e}_i \otimes \vect{e}_j \otimes \vect{e}_k$.
+%
+Furthermore, $\tens{I}$, $\vect{v}$, $\tens{\sigma}$ and $\tens{\eps}$ denote respectively the second-order identity tensor, the velocity vector, the Cauchy stress tensor and the linearized strain tensor.
+The latter additively decomposes into an elastic strain $\tens{\eps}^e$ and a plastic strain $\tens{\eps}^p$ in the small strain case.
+Assuming Cartesian coordinates, system \eqref{eq:balance_equations} can be written as:
+\begin{equation}
+  \label{eq:conservative_form}
+  \drond{\Ucb}{t} + \drond{\Fcb\cdot \vect{e}_i}{x_i}=\tens{0}
+\end{equation}
+with the vector of conserved quantities $\Ucb$ and the flux vectors $\Fcb_i=\Fcb\cdot \vect{e}_i$:
+\begin{equation}
+  \label{eq:vectors}
+  \Ucb =\matrice{\rho\vect{v} \\ \tens{\eps}} \quad ; \quad \Fcb_i = \matrice{-\tens{\sigma}\cdot\vect{e}_i\\-\frac{\vect{v}\otimes\vect{e}_i +\vect{e}_i \otimes\vect{v} }{2} }
+\end{equation}
+Alternatively, the introduction of an auxiliary vector of conserved quantities $\Qcb$ allows rewriting equation \eqref{eq:conservative_form} as a quasi-linear form by means of the chain rule \cite{Trangenstein91}:
+\begin{equation}
+  \label{eq:quasi-linear_form}
+  \drond{\Qcb}{t} + \Absf^i \drond{\Qcb}{x_i}=\tens{0}
+\end{equation}
+In particular, by setting $\Qcb=\matrice{\vect{v} \\ \tens{\sigma}}$, one writes:
+\begin{equation}
+  \label{eq:matrix-quasi}
+  \Absf^i = \(\drond{\Ucb}{\Qcb}\)^{-1}\drond{\Fcb_i}{\Qcb} = -\matrice{\tens{0}^2 & \frac{1}{\rho}\(\frac{\tens{I}\otimes\vect{e}_i + \vect{e}_i\otimes \tens{I}}{2}\)\\ \Hbb\cdot \vect{e}_i & \tens{0}^4},
+\end{equation}
+$\tens{0}^q$ being a $q$th-order zero tensor and $\Hbb=\drond{\tens{\sigma}}{\tens{\eps}}$ the fourth-order tangent modulus tensor.
+It then appears that the characteristic structure of the hyperbolic problem, which is driven by the matrices $\Absf^i$, depends on the nature of the deformation (\textit{i.e. elastic or elastic-plastic}) through the tangent modulus.
+
+% On the other hand, following the Generalized Standard Material framework \cite{GSM} a Helmholtz free-energy $\psi$ depending on $\tens{\eps}$ and the set of additional internal variables $\Vcb$ is assumed to  govern the evolution of the microstructure.
+Following the Generalized Standard Material framework \cite{GSM}, the elastic-plastic constitutive response is described by a Helmholtz free-energy $\psi$, convex with respect to $\tens{\eps}$ and the set of additional internal variables $\Vcb$, and a yield surface $f$ in the case of associative plasticity. 
+Assuming elastic isotropy, reversible evolutions are governed by the elastic law derived from Helmholtz's free energy:
+\begin{equation}
+  \label{eq:elastic_law}
+  \tens{\sigma} = \Cbb: \tens{\eps}^e = 2\mu \tens{\eps}^e + \lambda \tr \tens{\eps}^e \: \tens{I} 
+\end{equation}
+in which $(\lambda,\mu)$ are Lam{\'e}'s parameters.
+The inverse constitutive law can also be written based on Young's modulus and Poisson's ratio $(E,\nu)$:
+\begin{equation} 
+  \label{eq:elastic_inverse}
+  \tens{\eps}^e = \Cbb^{-1}:\tens{\sigma} = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma}  \: \tens{I}
+\end{equation}
+
+
+Next, restricting ourselves to isotropic hardening, the set $\Vcb$ consists of the cumulated plastic strain $p$.
+%
+In addition, the von-Mises yield surface is considered:
+\begin{equation}
+  \label{eq:von-Mises_yield}
+  f\(\tens{\sigma},R \)= \sqrt{\frac{3}{2}}\norm{\tens{s}} - \(R(p)+\sigma^y\) \leq 0 \\
+\end{equation}
+where $\tens{s}$ denotes the deviatoric part of the Cauchy stress tensor, $\sigma^y$ is the yield stress in tension, and $-R(p)$ is the thermodynamical force conjugate to the cumulated plastic strain through some hardening law.
+% The evolution of the cumulated plastic strain follows from the consistency condition:
+% \begin{equation}
+%   %\label{eq:consistance}
+%   \dot{f}=0 \quad \Leftrightarrow  \quad  \drond{f}{\tens{\sigma}}:\tens{\dot{\sigma}} - \drond{f}{R}\:\dot{R} =0
+% \end{equation}
+% so that one writes:
+% \begin{equation}
+%   \label{eq:consistance}
+%   \dot{R}=\sqrt{\frac{3}{2}}\:\frac{\tens{s}:\tens{\dot{\sigma}}}{\norm{\tens{s}}}
+% \end{equation}
+% Then, the plastic flow rule:
+% \begin{equation}
+%   \label{eq:plastic_flow_rule}
+%   \tens{\dot{\eps}}^p = \dot{p}\drond{f}{\tens{\sigma}}
+% \end{equation}
+The evolution of the plastic strain tensor and the cumulated plastic strain are governed by the following flow rule and hardening law respectively:
+\begin{align}
+  \label{eq:plastic_flow_rule}
+  & \tens{\dot{\eps}}^p = \lambda \drond{f}{\tens{\sigma}} \\
+  \label{eq:hardening_rule}
+  & \dot{p} = -\lambda \drond{f}{R} %= \lambda
+\end{align}
+where the plastic multiplier $\lambda$ and the yield surface obey the Kuhn-Tucker complementarity conditions:
+\begin{equation}
+  \label{eq:Kuhn-Tucker}
+  \lambda \geq 0 \quad ;\quad f \leq 0 \quad ; \quad \lambda f =0
+\end{equation}
+along with the consistency condition:
+\begin{equation}
+  \label{eq:consistency}
+  \lambda \dot{f}=0 %\quad \Leftrightarrow  \quad  \drond{f}{\tens{\sigma}}:\tens{\dot{\sigma}} - \drond{f}{R}\:\dot{R} =0
+\end{equation}
+% From the above conditions, one deduces:
+% \begin{equation}
+%   %\label{eq:consistance}
+%   \dot{f}=0 \quad \Leftrightarrow  \quad  \drond{f}{\tens{\sigma}}:\tens{\dot{\sigma}} - \drond{f}{R}\:\dot{R} =0
+% \end{equation}
+% in such a way that:
+% \begin{equation}
+%   \label{eq:consistance}
+%   \dot{R}=\sqrt{\frac{3}{2}}\:\frac{\tens{s}:\tens{\dot{\sigma}}}{\norm{\tens{s}}}
+% \end{equation}
+Therefore, combining equations \eqref{eq:plastic_flow_rule} and \eqref{eq:hardening_rule}, the flow rule can be rewritten as:
+\begin{equation}
+  \label{eq:plastic_strain_rate}
+  \tens{\dot{\eps}}^p = \dot{p}\:\sqrt{\frac{3}{2}}\frac{\tens{s}}{\norm{\tens{s}}}
+\end{equation}
+
+Given this description of internal processes, the thermodynamical framework then leads to the elastic-plastic constitutive equations during irreversible deformations by combining the elastic law \eqref{eq:elastic_law}, the additive decomposition of the strain tensor and the plastic flow rule \eqref{eq:plastic_strain_rate} \cite{Simo}:
+\begin{align}
+  \label{eq:elastoplastic_tangent}
+  & \tens{\dot{\sigma}} = \Cbb^{ep}:\tens{\dot{\eps}}=\(\Cbb - \beta\:\tens{s}\otimes\tens{s} \):\tens{\dot{\eps}} \\
+  \label{eq:plastic_flow}
+  % & \beta = \frac{6\mu^2}{3\mu +C}\times\frac{1}{\tens{s}:\tens{s}}
+  & \beta = \frac{6\mu^2}{3\mu +R'}\times\frac{1}{\tens{s}:\tens{s}}
+\end{align}
+where the elastoplastic tangent modulus $\Cbb^{ep}$ can be decomposed into the elasticity tensor $\Cbb$ and another part depending on the direction of the plastic flow.
+Therefore, plastic evolutions involve $\Hbb \equiv \Cbb^{ep}$ while elastic ones involve $\Hbb\equiv\Cbb$.
+%$
+% \begin{remark}
+%   In what follows, only linear isotropic hardening is considered by setting $R(p)=C p$ so that $R'=C$, with $C$ the hardening modulus.
+% \end{remark}
+
+% Given this description of the internal processes, the thermodynamical framework then leads to the elastic-plastic constitutive equations for the components of the Cauchy stress tensor during irreversible deformations \cite{Simo}:
+% \begin{align}
+%   \label{eq:elastoplastic_tangent}
+%   & \tens{\dot{\sigma}} = \Cbb^{ep}:\tens{\dot{\eps}}=\(\Cbb - \beta\:\tens{s}\otimes\tens{s} \):\tens{\dot{\eps}} \\
+%   \label{eq:plastic_flow}
+%   % & \beta = \frac{6\mu^2}{3\mu +C}\times\frac{1}{\tens{s}:\tens{s}}
+%   & \beta = \frac{6\mu^2}{3\mu +R'}\times\frac{1}{\tens{s}:\tens{s}}
+% \end{align}
+% where the elastoplastic tangent modulus $\Cbb^{ep}$ can be decomposed into the elasticity tensor $\Cbb$ and another part depending on the direction of the plastic flow.
+% In addition, the evolution of the cumulated plastic strain follows from the consistency condition:
+% \begin{equation}
+%   %\label{eq:consistance}
+%   \dot{f}=0 \quad \Leftrightarrow  \quad  \drond{f}{\tens{\sigma}}:\tens{\dot{\sigma}} - \drond{f}{R}\:\dot{R} =0
+% \end{equation}
+% so that one writes:
+% \begin{equation}
+%   \label{eq:consistance}
+%   C\dot{p}=\sqrt{\frac{3}{2}}\:\frac{\tens{s}:\tens{\dot{\sigma}}}{\norm{\tens{s}}}
+% \end{equation}
+% %Then, assuming  the existence of a dissipation pseudo-potential $\phi(\tens{\sigma},-R(p))$, the plastic flow rule:
+% Then, the plastic flow rule:
+% \begin{equation}
+%   \label{eq:plastic_flow_rule}
+%   \tens{\dot{\eps}}^p = \dot{p}\drond{f}{\tens{\sigma}}
+% \end{equation}
+% finally leads to the evolution of the plastic part of the strain tensor:
+% \begin{equation}
+%   \label{eq:plastic_strain_rate}
+%   \tens{\dot{\eps}}^p = \dot{p}\:\sqrt{\frac{3}{2}}\frac{\tens{s}}{\norm{\tens{s}}}
+% \end{equation}
+
+% On the other hand, reversible evolutions are governed by the elastic law:
+% \begin{equation}
+%     \label{eq:elastic_law}
+%     \tens{\sigma} = \Cbb: \tens{\eps}^e = 2\mu \tens{\eps}^e + \lambda \tr \tens{\eps}^e \: \tens{I} 
+% \end{equation}
+% in which $(\lambda,\mu)$ are Lam{\'e}'s parameters.
+% The inverse constitutive law also can be written based on Young's modulus and Poisson's ratio $(E,\nu)$:
+% \begin{equation} 
+%   \label{eq:elastic_inverse}
+%   \tens{\eps}^e = \Cbb^{-1}:\tens{\sigma} = \frac{1+\nu}{E} \tens{\sigma} - \frac{\nu}{E} \tr \tens{\sigma}  \: \tens{I}
+% \end{equation}
+% Therefore, plastic evolutions involve $\Hbb \equiv \Cbb^{ep}$ while elastic ones involve $\Hbb\equiv\Cbb$.
+
+\subsection{Spectral analysis}
+\label{sec:spectral-analysis}
+
+Considering an arbitrary direction of space $\vect{n}$, the quasi-linear form \eqref{eq:quasi-linear_form} reads: 
+% The quasi-linear form of the sets of equations \eqref{eq:balance_equations} and \eqref{eq:plasticity_equations} in a Cartesian coordinate system and an arbitrary direction $\vect{n}$ is:
+\begin{equation}
+  \label{eq:quasilinear_normal}
+  \drond{\Qcb}{t} + \Jbsf \drond{\Qcb}{x_n} = \vect{0} 
+\end{equation}
+where $x_n=\vect{x}\cdot\vect{n}$ and $\Jbsf=n_i\Absf^i$ is the Jacobian matrix.
+Simple waves are solutions for which the vector $\Qcb$ is constant along each curve of the one-parameter family $\eta^K(x_n,t)=\text{const}$.
+For such \textit{self-similar} solutions, system \eqref{eq:quasilinear_normal} reads:
+\begin{equation}
+  \label{eq:simple_system}
+  \(\Jbsf -  c_K \Ibsf \vphantom{\Qcb'(\eta^K)}\)\Qcb'(\eta^K)  = \vect{0} 
+\end{equation}
+where $\Ibsf$ is the $9\times 9$ identity matrix and $c_K = -\drond{\eta^K}{t} / \drond{\eta^K}{x_n}$ appears to be the $K$th eigenvalue of the Jacobian matrix.
+The problem therefore admits nontrivial solutions if $\Jbsf$ has real eigenvalues and distinct left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{\sigma}^K \]$ satisfying:
+\begin{equation}
+  \label{eq:eigen_system}
+  \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0} \qquad K=1,\cdots,9
+\end{equation}
+%The characteristic structure of the problem is given by the eigenvalues $c_K$ and the associated left eigenvectors $\Lcb^K= \[ \vect{v}^K \: , \: \tens{\sigma}^K \]$ of the Jacobian matrix satisfying:
+% \begin{equation}
+%   \label{eq:eigen_system}
+%   \vect{\Lc}^K \(\Jbsf - c_K \Ibsf\) = \vect{0} \qquad K=1,\cdots,9
+% \end{equation}
+%with $\Ibsf$, the $9\times 9$ identity matrix.
+Thus, for non-zero eigenvalues one gets:
+\begin{align}
+  \label{eq:eigen_left_stress}
+  & -\tens{\sigma}^K:\(\Hbb\cdot  \vect{n}\) - c_K  \vect{v}^K =\vect{0} \\
+  \label{eq:eigen_left_velo}
+  & -\frac{1}{\rho}\vect{v}^K\otimes\vect{n} - c_K \tens{\sigma}^K = \tens{0}
+\end{align}
+Substitution of $\tens{\sigma}^K$ obtained from \eqref{eq:eigen_left_velo} in \eqref{eq:eigen_left_stress} leads to:
+\begin{equation}
+  \label{eq:acoustic_eigen}
+ (\vect{v}^K\otimes\vect{n}):\(\Hbb\cdot  \vect{n}\) - \rho c_K^2 \vect{v}^K = \tens{0}
+\end{equation}
+which is the left eigensystem of the acoustic tensor $A_{ij}=n_k H_{ik j l}  n_l$.
+Due to the symmetry of $\tens{A}$, system \eqref{eq:acoustic_eigen} is equivalent to the right eigensystem:
+\begin{equation}
+  \label{eq:acoustic_eigen_system_lambda}
+  \(  n_k H_{ik j l}  n_l - \rho c_K^2 \delta_{ij} \) v_j^K =0
+\end{equation}
+or alternatively, with the eigenvalues $\omega_p$ and associated left eigenvectors of the acoustic tensor $\vect{l}^q\: \: (q=1,2,3)$:
+\begin{equation}
+  \label{eq:acoustic_eigen_system}
+  \vect{l}^q \cdot \( \tens{A} - \omega_q \tens{I} \)   = \vect{0}
+\end{equation}
+The condition for system \eqref{eq:quasilinear_normal} to be hyperbolic (real eigenvalues and independent eigenvectors) is thus ensured by the positive definiteness of the acoustic tensor, also known as the \textit{strong ellipticity} condition \cite{Foundation_of_elasticity}:
+\begin{equation}
+  \label{eq:strong_ellipticity}
+  (\vect{m}\otimes \vect{n}): \Hbb: (\vect{n}\otimes \vect{m}) > 0 \quad \forall \vect{n},\vect{m} \in \Rbb^3 \: ; \: \vect{n},\vect{m} \ne \vect{0}
+\end{equation}
+If the condition holds, the acoustic tensor admits $3$ couples of eigenvalue--eigenvector $\{\omega_q,\vect{l}^q\}$ leading to $6$ couples $\{c_K,\Lcb^K\}$ for the Jacobian matrix, the $3$ other eigenvalues being null \cite{Kluth}.
+The couples $\{c_K,\Lcb^K\}$ are referred to as the \textit{left characteristic fields}.
+Notice that since the elastic stiffness tensor $\Cbb$ or the elastoplastic tangent modulus $\Cbb^{ep}$ may be involved in equation \eqref{eq:quasi-linear_form}, three left characteristic fields are obviously associated with elastic and elastic-plastic evolutions respectively.
+The left eigenvectors related to the non-zero eigenvalues of the Jacobian matrix are obtained by using equation \eqref{eq:eigen_left_velo} so that the following $6$ eigenfields of the quasi-linear form \eqref{eq:quasilinear_normal} can be defined:
+\begin{equation}
+  \label{eq:left_eigenfields}
+    \left\lbrace \pm \sqrt{\frac{\omega_q}{\rho_0}} ; \: \[ \pm \rho_0\sqrt{\frac{\omega_q}{\rho_0}} \vect{l}^q , -\vect{l}^q\otimes \vect{n} \]  \right\rbrace ,\: q=1,2,3
+\end{equation}
+At last, three independent left eigenvectors associated with the null eigenvalue of multiplicity $3$ can be found by solving equation \eqref{eq:eigen_left_stress} for the null eigenvalue:
+\begin{equation}
+  \label{eq:left_null_eigenvectors}
+  \tens{\sigma}^K:\(\Hbb\cdot  \vect{n}\) =\vect{0},\quad K=1,...,3
+\end{equation}
+
+Since the above formulation is based on the elastoplastic stiffnesses rather than compliances, it differs from those of \textsc{Bleich} \cite{Bleich}, \textsc{Clifton} \cite{Clifton}, and hence from these of \textsc{Ting} and \textsc{Nan} \cite{Ting68} and \textsc{Ting} \cite{Ting69}.
+%
+The use of the tangent modulus $\Hbb$ enables the specialization of equations \eqref{eq:left_eigenfields} and \eqref{eq:left_null_eigenvectors} to the plane strain and the plane stress cases, as we shall see in section \ref{sec:2dproblem}.
+
+\subsection{Known properties of the plastic waves}
+\label{sec:plastic_speeds}
+
+Let us now recall some of the important results of \textsc{Mandel} \cite{Mandel62,Mandel69_thermoWaves} for which proofs can also be found in \cite{mandel_book}.
+% eq (6.13)
+Denoting the elastic acoustic tensor as $\tens{A}^e = \vect{n} \cdot \Cbb \cdot \vect{n}$, the eigenvalue problem \eqref{eq:acoustic_eigen_system} can be rewritten as:
+\begin{equation}
+  \label{eq:mod_eigen_acoustic}
+  \vect{l}^q \cdot \( \tens{B} - \beta \vect{a}\otimes\vect{a} \)   = \vect{0}
+\end{equation}
+in which $\tens{B}=\tens{A}^e- \omega_q \tens{I}$ and $\vect{a}=\tens{s}\cdot\vect{n}$.
+Then, assuming that the coordinate axes coincide with the eigenbasis of $\tens{A}^e$, the determinant of system \eqref{eq:mod_eigen_acoustic} reads:
+\begin{equation}
+  \label{eq:polynomial_principal}
+  F(\omega_q)=(A^e_1-\omega_q)(A^e_2-\omega_q)(A^e_3-\omega_q) - \beta\[ (A^e_2-\omega_q)(A^e_3-\omega_q){a}^2_1 + (A^e_1-\omega_q)(A^e_3-\omega_q){a}^2_2 + (A^e_1-\omega_q)(A^e_2-\omega_q){a}^2_3 \] =0
+\end{equation}
+With $\beta>0$ and the eigenvalues of $\tens{A^e}$ satisfying $A^e_1 \geq A^e_2 \geq A^e_3$, it comes out that:
+\begin{equation}
+  \label{eq:polynomial_property}
+  F\(A^e_1\) \leq 0\quad ; \quad F\(A^e_2\) \geq 0 \quad ;\quad F(A^e_3)\leq 0 \quad ; \quad F(\infty) < 0
+\end{equation}
+from which the following conclusion is drawn.
+\begin{property}[First Mandel's inequality]
+  \label{pr:mandel_inequality}
+  For a unit normal vector $\vect{n}$, the speeds of plastic waves $c_I^p\geq c_{II}^p \geq c_{III}^p$ are bounded by the elastic speeds $c_I^e\geq c_{II}^e \geq c_{III}^e$ according to:
+  \begin{equation}
+    \label{eq:Mandels_inequality}
+    c_I^e\geq c_I^p\geq c_{II}^e\geq c_{II}^p \geq c_{III}^e \geq c_{III}^p 
+  \end{equation}
+\end{property}
+
+Consider now equation \eqref{eq:simple_system}, from which one gets for plastic evolutions:
+\begin{align}
+  \label{eq:right_eigen1}
+  & \tens{\sigma}' = -\frac{1}{c_K} \Hbb : \( \vect{n}\otimes \vect{v}' \) \\
+  \label{eq:right_eigen2}
+  & \( \tens{A}^{ep}  - \rho c_K^2 \tens{I} \) \vect{v}'  = \vect{0}
+\end{align}
+If one of the plastic speed is equal to an elastic speed, the expansion of equation \eqref{eq:right_eigen2} leads to:
+\begin{equation}
+  \label{eq:zero_dot_prod}
+  \beta \vect{a}\cdot \vect{v}' =0
+\end{equation}
+Then, the projection of the variation $\tens{\sigma}'$ from equation \eqref{eq:right_eigen1} onto the normal to the yield surface is:
+\begin{equation}
+  \label{eq:nutral_wave}
+  % \drond{f}{\tens{\sigma}}:\tens{\sigma}' = -\frac{1}{c_K}\sqrt{\frac{3}{2}} \frac{\tens{s}}{\norm{\tens{s}}} :  \Hbb : \( \vect{n}\otimes \vect{v}' \) = \frac{1}{c_K}\sqrt{\frac{3}{2}} \frac{\mu - \beta \norm{\tens{s}}}{\norm{\tens{s}}} \vect{a}\cdot\vect{v}' = 0
+  \drond{f}{\tens{\sigma}}:\tens{\sigma}'= \frac{1}{c_K}\sqrt{\frac{3}{2}} \frac{\mu - \beta \norm{\tens{s}}}{\norm{\tens{s}}} \vect{a}\cdot\vect{v}' = 0
+\end{equation}
+Hence, if condition \eqref{eq:zero_dot_prod} is satisfied, the stress increment is tangent to the yield surface.
+% Neutral waves
+\begin{property}
+  \label{pr:neutral_wave}
+  A plastic wave traveling with the speed of an elastic wave results in a stress path that is tangent to the yield surface in the stress space.
+  Such a wave is called a \textit{neutral wave}.
+\end{property}
+
+%In what follows, the above equations are specified to plane strain and plane stress cases.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "manuscript"
+%%% End:
