@@ -1,0 +1,192 @@
+Les travaux présentés dans ce qui suit prennent leur source dans les procédés de mise en forme de matériaux métalliques à haute vitesse.
+{\`A} l'instar des problèmes d'impact, ces applications impliquent des ondes propageant des grandes déformations qui sont éventuellement irréversibles.
+L'étude numérique de cette classe de problèmes, modélisés mathématiquement par des équations aux dérivées partielles hyperboliques, nécessite donc l'emploi de méthodes robustes pouvant gérer les grandes transformations et les ondes sans oscillations numériques dans les solutions.
+Ce type d'études peut être mené afin de mieux comprendre la réponse des solides impliqués et d'optimiser les procédés de mise en forme.
+Cette problématique a été déclinée en deux axes qui sont développés dans la suite.
+
+\subsubsection{Extension de la Méthode des Points Matériels à l'approximation de Galerkin Discontinue}
+
+\paragraph{Motivations:}
+$\newline$
+La résolution numérique des problèmes aux valeurs initiales et limites, auxquels les systèmes hyperboliques appartiennent, a été et est toujours principalement menée avec la Méthode des {\'E}léments Finis (FEM) \cite{Belytschko}.
+Néanmoins, les grandes transformations impliquées conduisent à certaines limitations de la méthode:
+\begin{itemize}
+\item perte de précision pour les maillages très déformés si une approche Lagrangienne est utilisée,
+\item nécessité d'utiliser des techniques de suivi d'interface et des étapes de projections diffusives des variables internes pour les approches Eulérienne ou ALE.
+\end{itemize}
+
+La Méthode des Points Matériels (MPM) \cite{Sulsky94}, en proposant une discrétisation du milieu solide basée sur des particules pouvant se déplacer dans une grille de calcul arbitraire, permet de s'affranchir des difficultés liées aux distorsions de maillage.
+% Cependant, des étapes de projection des champs entre les particules et les n\oe uds du maillage conduisent soit à des oscillations parasites, soit à de la diffusion numérique \cite{Mass_Flip}.
+Cependant, des oscillations parasites ou de la diffusion numérique peuvent apparaître selon la manière dont les champs sont projetés des n\oe uds du maillage vers les particules \cite{Mass_Flip}.
+
+Par ailleurs, les intégrateurs temporels explicites couramment utilisés avec la FEM introduisent du bruit de haute fréquence dans le voisinage des fortes variations de champs, comme celles impliquées par des ondes.
+L'introduction de l'approximation de Galerkin Discontinue (DG) \cite{NeutronDG} dans la FEM permet de supprimer ces oscillations en prenant en compte la structure mathématique des solutions des problèmes hyperboliques \cite{Cockburn}.
+Toutefois, la DGFEM est également sujette aux problèmes liés aux grandes transformations.
+
+
+
+L'objectif poursuivi dans cette partie est donc le développement d'une méthode numérique capable de suivre précisément les ondes dans les solides se déformant beaucoup.
+
+\paragraph{Contributions:}
+$\newline$ % formulation de la méthode
+De manière analogue à la MPM, la DGMPM (\textit{Discontinuous Galerkin Material Point Method}) \cite{DGMPM} est basée sur la discrétisation d'un domaine solide en une collection de particules pouvant se déplacer dans une grille de calcul (voir figure \ref{fig:continuum}).
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/continuum}
+  \caption{Discrétisation spatiale employée dans la Méthode des Points Matériels.}
+  \label{fig:continuum}
+\end{figure}
+
+%% forme faible
+La forme faible d'un système hyperbolique composé de la loi de conservation de la quantité de mouvement et des équations de compatibilité géométriques est alors écrite sur la grille.
+La relaxation de la continuité des champs à l'interface entre les éléments, introduite par l'approximation DG, conduit ensuite à une forme faible écrite cellule par cellule\footnote{Les termes ``cellule'' et ``élément'' sont équivalents.}.
+Cette forme intégrale fait intervenir des flux calculés entre les éléments de la grille au moyen d'un solveur de Riemann linéarisé \cite{Toro}. % afin de prendre en compte la structure caractéristique des solutions aux problèmes hyperboliques.
+L'utilisation d'une discrétisation temporelle explicite (Euler avant ou Runge-Kutta d'ordre 2) conduit enfin au système à résoudre à chaque pas de temps sur la grille.
+
+%% particules -- noeuds
+Bien que la grille soit le support des fonctions de forme et que le système discret soit résolu aux n\oe uds, ce sont bien les particules qui ``portent'' l'histoire du chargement.
+Ainsi, des étapes de projection entre les points matériels et les n\oe uds du maillage sont nécessaires.
+La première version de la méthode emploie la même projection des particules vers les n\oe uds que la MPM originale, et une interpolation classique de la solution actualisée vers les points matériels afin d'éviter les oscillations parasites \cite{Mass_Flip}.
+%%% quadrature
+% Il convient par ailleurs de noter que les particules sont utilisées comme points d'intégration de la forme faible, ce qui constitue une autre différence par rapport à la DGFEM basée sur une quadrature de Gauss.
+
+%% Solveur de Riemann transverse
+L'utilisation d'un solveur de Riemann pour le calcul des flux à l'interface entre les éléments de la grille permet de prendre en compte la structure caractéristique des solutions des problèmes hyperboliques dans le schéma numérique.
+Dans le cadre DGFEM, les ondes considérées pour le calcul des flux se propagent uniquement de manière normale à une interface donnée.
+En reformulant le solveur de Riemann transverse utilisé dans la Méthode des Volumes Finis (FVM) \cite{Colella_CTU}, j'ai pu ajouter la contribution des ondes se propageant transversalement à l'interface entre deux éléments.
+La prise en compte de ces ``corrections'' provenant des cellules ne partageant qu'un n\oe ud (en 2D) avec l'interface considérée est très importante pour les problèmes impliquant l'effet de Poisson.
+
+$\newline$ % Analyse numérique
+L'analyse de stabilité de von Neumann de la méthode que j'ai effectuée a conduit à une borne supérieure sur le pas de temps pour les problèmes en une et deux dimensions de l'espace.
+Cette restriction dépend du nombre et de la position des points matériels dans chacune des cellules de la grille de calcul \cite{DGMPM_stab}.
+En particulier, certaines discrétisations conduisent à une condition optimale où le nombre de Courant est égal à 1 et permet de capturer des solutions discontinues.
+C'est par exemple le cas si une particule est présente dans chaque élément.
+Cette dernière configuration correspond par ailleurs à une équivalence entre la DGMPM et la FVM d'ordre 1.
+
+J'ai ensuite mené l'analyse de convergence de la méthode afin de montrer sa consistance ainsi que sa précision d'ordre 1 quelle que soit la discrétisation utilisée.
+Ce résultat constitue une piste d'amélioration de la méthode afin que cette dernière puisse capter précisément à la fois des solutions discontinues et des solutions continues.
+
+
+$\newline$ % résultats numériques
+La formulation Lagrangienne totale a d'abord été illustrée sur des problèmes unidimensionnels.
+La comparaison de la solution DGMPM avec les résultats provenant de la MPM originale et une solution analytique que j'ai développée pour un problème d'onde plane dans un matériau hyperélastique de Saint-Venant-Kirchhoff montre un très bon comportement de la méthode.
+Contrairement à la MPM, la DGMPM délivre des solutions dépourvues d'oscillations et permet de capturer des ondes de choc avec très peu de particules.
+
+Des comparaisons avec la FEM et la MPM ont également été proposées sur des problèmes bidimensionnels.
+La figure \ref{fig:stress_NLHardening} montre les résultats numériques en termes de contraintes d'un problème d'impact en déformations planes sur un matériau hyperélastique-plastique de Hencky à écrouissage isotrope non-linéaire.
+\begin{figure}[ht]
+  \centering
+  \input{pgfFigures/stress_comparison_NLhardening}
+  \caption{Composante normalisée $\bar{\Pi}_{11}=\frac{\Pi_{11}}{\max{\abs{\Pi_{11}}}}$ du premier tenseur de Piola-Kirchhoff dans un domaine soumis à un impact sur une partie de son bord gauche.}
+  \label{fig:stress_NLHardening}
+\end{figure}
+Le domaine carré est soumis à un impact en compression sur la partie inférieure de son bord gauche qui est relâché quand l'onde élastique incidente atteint le bord droit.
+Il en résulte deux ondes de décharge élastique se propageant vers le milieu du domaine.
+Ce type de chargement est par exemple utilisé dans le test d'adhésion par choc laser qui permet de s'assurer de la cohésion d'un assemblage.
+
+Cette illustration de la DGMPM révèle que la méthode permet de calculer avec une diffusion numérique modérée \cite{DGMPM_plast} des solutions sans oscillations dans le cadre de grandes déformations, contrairement à la FEM et la MPM.
+% L'illustration de la DGMPM sur ce type de problème montre également que la méthode permet de calculer des solutions sans oscillations et de suivre de manière précise les ondes se propageant dans des milieux qui se déforment beaucoup.
+
+
+\paragraph{Publications associées:}
+$\newline$ 
+\begin{itemize}
+\item A. Renaud, T. Heuz{\'e} and L. Stainier, ``A Discontinuous Galerkin Material Point Method for the solution of impact problems in solid dynamics'', Journal of Computational Physics \textbf{369}, 80-102 (2018)
+\item A. Renaud, T. Heuz{\'e} and L. Stainier, ``Stability properties of the Discontinuous Galerkin Material Point Method for hyperbolic problems in one and two space dimensions'', International Journal for Numerical Methods in Engineering \textbf{121}, 664-689 (2020)
+\item A. Renaud, T. Heuz{\'e} and L. Stainier, ``The Discontinuous Galerkin Material Point Method for variational hyperelastic-plastic solids'', Computer Methods in Applied Mechanics and Engineering, \textbf{365} (2020)
+\end{itemize}
+
+
+% \paragraph{Conclusions et perspectives: }
+% $\newline$
+% Les illustrations de la DGMPM montrent qu'il s'agit d'une méthode prometteuse capable de suivre précisément des ondes dans des solides se déformant beaucoup, même pour des comportements dépendant de l'histoire.
+
+% \begin{itemize}
+% \item formulation incompressible
+% \item projections des champs
+% \item lagrangien actualisé
+% \item adaptation de la grille
+% \item utilisation de la grille pour d'autres physiques ou problème fluide
+% \item solveur de Riemann élastoplastique
+% \end{itemize}
+
+
+\subsubsection{Analyse de la réponse des solides élasto-plastiques aux chargements dynamiques}
+
+\paragraph{Motivations:}
+$\newline$
+Les méthodes de type Godunov basées sur la structure caractéristique des problèmes hyperboliques (DGMPM, FVM, DGFEM, \textit{etc.}) emploient le plus souvent des solveurs de Riemann approximés pour les lois de comportements non-linéaires.
+Pour les solides hyperélastiques par exemple, le comportement est en général linéarisé autour du dernier état local calculé.
+De même, la résolution de problèmes impliquant des solides élastique-plastiques, même sous l'hypothèse des petites perturbations, ne prend généralement en compte que les caractéristiques élastiques dans le problème de Riemann (l'écoulement plastique n'intervenant qu'au moment de l'intégration de la loi de comportement).
+Néanmoins, des solveurs de Riemann élastoplastiques existent pour des problèmes de barre et d'onde plane \cite{Thomas_EP}, et un solveur itératif a été développé \cite{Lin_et_Ballman} sur l'analyse des trajets de chargement suivis à travers les ondes plastiques dans un tube mince soumis à de la traction/torsion \cite{Clifton}.
+La généralisation de cette dernière approche aux cas des déformations planes et des contraintes planes permettrait d'améliorer de manière significative la résolution numérique de ces problèmes.
+
+Au-delà des aspects numériques, une meilleure connaissance de la réponse des solides élastoplastiques bidimensionnels aux chargements dynamiques présente des intérêts du point de vue théorique.
+En effet, l'étude des trajets de chargement suivis à travers les ondes plastiques peut permettre de mieux comprendre ou de souligner les phénomènes impliqués, et de mieux anticiper les états résiduels.
+
+Cette partie de mes travaux a donc consisté à déterminer la réponse des solides élastoplastiques aux chargements dynamiques à travers l'analyse caractéristique du système hyperbolique en deux dimensions de l'espace.
+
+\paragraph{Contributions:}
+$\newline$
+{\`A} partir de la forme quasi-linéaire du système hyperbolique tridimensionnel régissant le problème, déjà considérée par \textsc{Mandel} \cite{Mandel62} mais pour déterminer les vitesses d'ondes plastiques uniquement, on commence par restreindre l'étude aux cas de déformations et de contraintes planes.
+Ceci en fait en retirant des équations et/ou en particularisant le module tangent $\Hbb = \drond{\tens{\sigma}}{\tens{\eps}}$ de la forme quasi-linéaire (\textit{i.e. pour prendre en compte la contrainte principale nulle pour les contraintes planes}).
+% A partir de la forme quasi-linéaire du système hyperbolique tridimensionnel régissant le problème et impliquant le module tangent $\Hbb = \drond{\tens{\sigma}}{\tens{\eps}}$
+% Tout d'abord, j'ai écrit le système hyperbolique tridimensionnel en coordonnées Cartésiennes comme une forme quasi-linéaire impliquant le module tangent $\Hbb = \drond{\tens{\sigma}}{\tens{\eps}}$. 
+%Dès lors, les cas des déformations planes et des contraintes planes peuvent être considérés en retirant des équations du système et/ou en particularisant le module tangent (\textit{i.e. pour prendre en compte la contrainte principale nulle pour les contraintes planes}).
+Dès lors, le problème du tube mince soumis à un chargement combiné traction/torsion est également compris dans ce cadre, de sorte que les résultats de \cite{Clifton} peuvent être utilisés pour validation.
+
+L'analyse spectrale de ce système m'a ensuite conduit à montrer l'existence de trois familles d'ondes plastiques pour les problèmes bidimensionnels:
+\begin{itemize}
+\item deux ondes rapides se propageant à la vitesse $c_f$ (l'équivalent plastique des ondes de pression),
+\item deux ondes lentes se propageant à la vitesse $c_s\leq c_f$ (l'équivalent plastique des ondes de cisaillement),
+\item une onde stationnaire.
+\end{itemize}
+L'onde stationnaire n'intervient pas dans les problèmes considérés dans la littérature, alors que les deux premiers types d'ondes sont mentionnés depuis les années 50 \cite{Rakhmatulin}.
+
+En appliquant la méthode des caractéristiques \cite{Courant}, je suis arrivé à l'écriture d'un ensemble d'{\'E}quations Différentielles Ordinaires (ODEs) gouvernant l'évolution des champs dans les ondes lentes et rapides.
+En particulier, l'intégration de ces ODEs et leur projection dans l'espace des contraintes correspond aux trajets de chargement.
+L'analyse mathématique de ces équations permet de montrer des propriétés telles que l'orthogonalité des trajets de chargement suivis dans les ondes lentes et les ondes rapides dans l'espace des contraintes de Cauchy.
+Bien que cette propriété ait déjà été soulignée pour le cylindre mince \cite{Clifton}, j'ai montré qu'elle résultait de la symétrie du tenseur acoustique et est donc valable pour tous les problèmes bidimensionnels.
+
+En complément des développements théoriques, et à cause de la complexité des équations, j'ai proposé une construction des trajets de chargement pour les contraintes planes et les déformations planes par intégration numérique des ODEs.
+Les figures \ref{subfig:fastCP} et \ref{subfig:slowCP} montrent, dans le plan déviatorique, quelques trajets de chargement obtenus pour les contraintes planes en considérant un matériau plastique de von Mises avec un écrouissage isotrope linéaire.
+%\tikzexternalenable
+\begin{figure}[h!]
+  \centering
+  \subcaptionbox{Ondes rapides \label{subfig:fastCP}}{\input{pgfFigures/CPfastWaves_deviator0.tex}}
+  \subcaptionbox{Ondes lentes \label{subfig:slowCP}}{\input{pgfFigures/CPslowWaves_deviator1.tex}}
+  \caption{Trajets de chargement suivis à travers les ondes simples rapide et lente en contraintes planes pour un écrouissage isotrope linéaire. La ligne discontinue représente la surface de charge de von Mises initiale.}
+  \label{fig:CP_fast_dev}
+\end{figure}
+On voit alors que les trajets de chargement suivis dans une onde rapide suivent la surface de charge initiale jusqu'à une direction de cisaillement pur.
+Une fois cet état de contrainte atteint, on a égalité entre la vitesse de l'onde rapide et celle des ondes de cisaillement ($c_f = c_2$), de sorte que les trajets s'arrêtent. 
+Par ailleurs, les trajets suivis dans les ondes lentes s'éloignent de la surface de charge et présentent des ruptures de pente que j'ai reliées numériquement (mais pas encore mathématiquement) à l'atteinte de la ligne de \textit{cisaillement maximal}, comme le suggère la figure \ref{fig:CP_slow_sing_yield}.
+\begin{figure}[h!]
+  \centering
+  \input{pgfFigures/yieldSurfaceSingularity}
+  \caption{Trajets de chargement à travers une onde lente en contraintes planes dans l'espace des contraintes. La ligne épaisse correspond à la ligne de cisaillement maximum et les lignes discontinues représentent la surface de charge initiale.}
+  \label{fig:CP_slow_sing_yield}
+\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \subcaptionbox{Ondes rapides}{\input{pgfFigures/DPfastWaves_deviator0H.tex}}
+%   \subcaptionbox{Ondes lentes}{\input{pgfFigures/DPslowWaves_deviatorH.tex}}
+%   \caption{Trajtes de chargement suivis à travers des ondes simples rapides et lentes en déformations planes pour un écrouissage isotrope linéaire. La ligne discontinue représente la surface de charge de von Mises initiale.}
+%   \label{fig:fastDP_devH}
+% \end{figure}
+%\tikzexternaldisable
+
+Cette partie de mes travaux \cite{plastic_waves}, bien qu'à un stade préliminaire, a donc déjà fourni un certain nombre d'informations importantes sur la physique impliquée qui pourraient être utilisées en vue de développer un solveur de Riemann dédié.
+
+
+\paragraph{Publication associée:}
+$\newline$ 
+\begin{itemize}
+\item A. Renaud, T. Heuz{\'e} and L. Stainier, ``A unified framework for simple wave solutions in two-dimensional elastic-plastic solids'', Journal of the Mechanics and Physics of Solids, \textbf{143} (2020)
+\end{itemize}
+
+  
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

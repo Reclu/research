@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=2 by 1,
+      ylabels at=edge left, yticklabels at=edge left,horizontal sep=3.ex,
+      xticklabels at=edge bottom,xlabels at=edge bottom},
+    ymajorgrids=true,xmajorgrids=true,ylabel=$\sigma_{12} \: (\rm Pa)$,
+    axis on top,scale only axis,width=0.4\linewidth,ymin=0,ymax=63499406.78820015
+    , every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},colormap name=viridis,
+    every y tick scale label/.style={at={(yticklabel* cs:1.05,-0.7cm)},anchor=near yticklabel}]
+
+\nextgroupplot[title={(a) Projections in the ($\sigma_{11},\sigma_{12}$) plane},xlabel=$\sigma_{11}  (\rm Pa)$]
+\addplot[arrows along my path,black,thick] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress1.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress2.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress3.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress4.pgf};
+
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress1.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress2.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress3.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_11,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress4.pgf};
+
+\node[below right,black] at (-7.5e7,4.25e7) {$\textbf{1}$};
+\node[above ,black] at (-2.5e7,5.75e7) {$\textbf{2}$};
+\node[above ,black] at (2.5e7,5.75e7) {$\textbf{3}$};
+\node[below left,black] at (7.e7,4.25e7) {$\textbf{4}$};
+
+\nextgroupplot[title={(b) Projections in the ($\sigma_{22},\sigma_{12}$) plane},colorbar,colorbar style={title= {$c_f \: (\rm km/s)$},every y tick scale label/.style={at={(2.,-.1125)}} },xlabel=$\sigma_{22}  (\rm Pa)$,legend columns=2, legend style={at={(.83,0.25)}},scaled y ticks=false]
+\addplot[arrows along my path,black,thick] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress1.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress2.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress3.pgf};
+\addplot[arrows along my path,black,thick] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress4.pgf};
+
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress1.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress2.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress3.pgf};
+\addplot[mesh,point meta = \thisrow{p}/1000,very thick,no markers] table[x=sigma_22,y=sigma_12] {pgfFigures/pgf_fastWavesPlaneStress/CPfastStressPlane_Stress4.pgf};
+
+\node[below left,black] at (-1.5e6,4.25e7) {$\textbf{1}$};
+\node[above left,black] at (-1.e6,5.75e7) {$\textbf{2}$};
+\node[above right,black] at (1.e6,5.75e7) {$\textbf{3}$};
+\node[below right,black] at (1.5e6,4.25e7) {$\textbf{4}$};
+
+\end{groupplot}
+\end{tikzpicture}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

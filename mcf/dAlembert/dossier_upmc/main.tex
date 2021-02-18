@@ -1,0 +1,105 @@
+\documentclass[10pt,a4paper,twoside]{article}
+
+\input{preamble}
+
+\title{\textsc{Dossier de candidature aux fonctions de Maître de conférences \\ Institut Jean le rond d'Alembert UMR 7190} \vskip 0.5cm Non linéarités en Mécanique des Solides, Matériaux et Structures \vskip .5cm
+  \begin{flushleft}
+    \normalsize
+    N$^{\text{o}}$ Galaxie : 289  \\
+    N$^{\text{o}}$ local : 60MCF1163 \\
+    {\'E}tablissement : Sorbonne Université -- Campus Pierre et Marie Curie
+  \end{flushleft}
+} 
+\author{\textsc{Adrien Renaud}\\
+  N$^{\text{o}}$ de qualification : 19260330499 \\
+  5 rue Clisson --  75013 Paris\\
+  \textsc{Mail : }adri.renaud@gmail.com \\
+  \textsc{Téléphone : } 06 79 38 81 43
+}
+
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+\newpage
+
+
+\tikzexternaldisable
+
+%% Section 1 : Présentation brève du parcours (études -- recherche -- enseignement)
+
+%\subsection{Curriculum vit\ae}
+%\renewcommand{\thesection}{\Alph{section}}
+
+%\includepdf[scale=1,pages=-,pagecommand=\section{Présentation}\subsection{Curriculum vit\ae}]{cvFrench.pdf}
+\includepdf[scale=1.,pages=-,pagecommand=\section{Curriculum vit\ae}\vspace{-20cm}]{cvFrench.pdf}
+\includepdf[scale=1,pages=-,pagecommand={}]{publication.pdf}
+
+%\subsection{Profil du candidat}
+%\input{presentation}
+
+%% Section 2 : Activités de recherche
+\section{Activités de recherche} 
+%% Dans quel ordre? du stage vers le postoc ou l'inverse?
+\input{recherche}
+
+%% Section 3 : Projet de recherche
+\section{Projet de recherche}
+\label{sec:projet-de-recherche}
+
+\begin{refsection}[Biblio.bib]
+
+  \input{projet_recherche}
+  \printbibliography[heading=subbibliography]
+\end{refsection}
+
+
+%% Section 4 : Activités d'enseignement
+%% Section 5 : Projet d'enseignement
+\newpage
+\input{enseignement}
+
+%% Activités collectives: participer au conseil de labo ; participer au maintient du cluster
+
+%% Section 6: Documents requis
+
+
+\includepdf[scale=.9,pages=-,pagecommand=\section{Documents joints au dossier}\addcontentsline{toc}{subsection}{Rapport de soutenance}]{../../documents/rapport-soutenance-ARenaud.pdf}
+
+\label{sec:documents}
+
+\addcontentsline{toc}{subsection}{Comptes-rendus des rapporteurs de thèse}
+\includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/Report_Gil.pdf}
+\includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/Report_Sulsky.pdf}
+
+\addcontentsline{toc}{subsection}{Diplôme de doctorat}
+\includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/diplome_aRenaud.pdf}
+
+\addcontentsline{toc}{subsection}{Carte d'identité}
+\includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/carte_ID.pdf}
+
+\addcontentsline{toc}{subsection}{Attestation des charges d'enseignement}
+\includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/Attestation_Enseignement.pdf}
+
+% \addcontentsline{toc}{subsection}{Lettres d'acceptation d'éditeurs des articles soumis}
+% % \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/Mail_CMAME.pdf}
+% \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/CMAME_acceptance.pdf}
+% \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/Mail_JMPS.pdf}
+
+% \addcontentsline{toc}{subsection}{Lettres de recommandation}
+% \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/lettreThomas.pdf}
+% \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/lettreLaurent.pdf}
+% \includepdf[scale=.9,pages=-,pagecommand={}]{../../documents/lettreJH.pdf}
+
+%\addcontentsline{toc}{section}{References}
+%\bibliographystyle{ieeetr}
+%\bibliography{Biblio}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% ispell-local-dictionary: "francais"
+%%% TeX-master: t
+%%% End:

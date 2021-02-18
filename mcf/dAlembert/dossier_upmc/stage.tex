@@ -1,0 +1,44 @@
+\paragraph{Motivations : }
+$\newline$
+Le procédé de soudage par friction et malaxage (\textit{Friction Stir Welding - FSW}) est devenu populaire grâce à sa capacité à assembler à l'état solide, et sans apport de matière, des matériaux réputés difficilement soudables.
+Plus spécifiquement, je me suis concentré sur la configuration ``bout-à-bout'' dans laquelle deux plaques sont placées de façon jointive sur une de leur tranche.
+Un outil en rotation rapide autour de l'axe perpendiculaire aux plaques (de 500 à 2000 tr/min) se déplace alors le long de l'interface, transformant ainsi la matière en pâte malléable par échauffement (températures de l'ordre de 500$^{o}$C) et opérant le mélange des deux pièces initialement disjointes.
+Des études expérimentales du procédé \cite{Krish} ont permis de mettre en évidence la formation de structures en ``oignons'' dans la zone fortement malaxée, c'est-à-dire d’ellipses concentriques observées au niveau du joint soudé dans une coupe transversale.
+La formation des \textit{onion rings} a ensuite été attribuée à un défaut d’excentrement de l’outil lors du soudage \cite{Grat}.
+L'objectif de mes travaux était de mettre en évidence le phénomène de formation des \textit{onion rings} numériquement en proposant une simulation tridimensionnelle du FSW.
+
+\paragraph{Contributions : }
+$\newline$
+\begin{figure}[h!]
+  \centering
+  \input{pgfFigures/FSW_simulation}
+  \caption{Résultats de simulations numériques tridimensionelles du procédé de soudage par friction/malaxage avec un défaut d'excentrement de l'outil rotatif.}
+  \label{fig:FSW}
+\end{figure}
+Afin d'éviter les étapes coûteuses de re-maillage ou de re-zonage impliquées par les forts taux de déformations en jeu pour des approches Lagrangienne ou \textit{Arbitrary-Lagrange-Euler} (ALE) \cite{Bas,Guerdoux,Heuz,Feul2,Fourment}, j'ai proposé une formulation purement Eulérienne du problème.
+L'originalité de la modélisation consiste en la représentation de la géométrie de l'outil au moyen de fonctions de niveau, combinée à l'utilisation de la technologie X-FEM \cite{Moes99}.
+La cinématique de l'outil comprenant le défaut d'excentrement est imposée le long de l'interface outil/matière.
+La matière est modélisée par un fluide très visqueux dont les propriétés mécaniques dépendent de la température, elle-même influencée par la dissipation plastique et le frottement au bord de l'outil.
+%On considère donc un problème thermo-mécanique couplé fortement, résolu de manière étagée dans une librairie développée au GeM et qui prend en compte le formalisme X-FEM.
+La résolution numérique du problème thermo-mécanique couplé fortement était effectuée grâce à deux codes de calcul développés au GeM, l'un gérant l'intégration des lois constitutives par solveurs variationnels, et l'autre prenant en compte le formalisme X-FEM. 
+Le couplage entre les deux librairies était la première étape de mon travail.
+
+Les premières simulations basées sur ce modèle ont conduit à des résultats satisfaisants (voir figure \ref{fig:FSW}).
+L'échauffement dans la zone proche de l'outil est notable et les lignes de courant tracées rendent bien compte de l'entraînement de la matière.
+Toutefois, la mise en évidence des \textit{onion rings} nécessite des travaux supplémentaires portant sur la reconstruction des trajectoires des points matériels et un choix de paramètres matériau favorable.
+
+
+% Problèmes : jeu de paramètres pour le matériau, comportement fluide (Norton-Hoff), reconstruction des trajectoires lourdes avec paraview, prise en compte de la métallurgie?
+
+%Fluide très visqueux (loi de Norton-Hoff) incompressible avec contact normal bilatéral entre l'outil et la matière avec glissement frottant;
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,24 @@
+Comportement dynamique des structures hétérogènes (microstructures, milieux poreux ...) en grandes transformations.
+
+\begin{itemize}
+\item Prise en compte des ondes éventuellement discontinues
+\item Grandes transformations (méthode numérique adaptée)
+\item Plasticité
+  \begin{itemize}
+  \item influence ondes $\rightarrow$ matériau: calcul des états résiduels ; structure caractéristique du problème (slow, fast ; choc plastique ? même en HPP)
+  \item influence matériau $\rightarrow$ ondes: modification des propriétés du milieu (vitesses d'ondes différentes (est-ce que ça ne constitute justement pas une manière de construire des procédure expérimentale?)); instabilités (localisation, PLC, etc.) et influences sur la nature mathématique du problème
+  \end{itemize}
+\item Aspect multi-physique : comportement thermomécanique $\rightarrow$ recristallisation + perte d'hyperbolicité du problème ; stratégie numérique innovante pour problèmes hyperbolique/parabolique ; envisager des couplages avec d'autres physiques (électromagnétisme par exemple)
+\item exemple concret du lasat pour modifier l'état de surface qui est étudié à d'alembert ? avec ensta ou esam
+\item Collaboration avec l'équipe fluide pour le développement de méthodes numériques car la dgmpm est inspirée des FVM
+\item Collaboration avec GeM (Nantes) et IUSTI (Marseille) pour le dialogue fluide/solide en numérique (je ne sais pas si c'est bien de parler du GeM, ça montre que je suis encore un peu là-bas)
+\item Collaboration avec MSSMat
+\end{itemize}
+
+Il y a la rupture aussi qui est traitée à d'alembert
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

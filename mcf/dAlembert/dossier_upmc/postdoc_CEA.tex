@@ -1,0 +1,54 @@
+Depuis mon intégration du CEA au LC2M en Octobre dans le cadre d'un nouveau postdoc, je m'intéresse à l'influence des défauts nanométriques dans les métaux sur le comportement plastique à l'échelle macroscopique.
+Cette étude s'inscrit dans le cadre de la conception des futurs réacteurs à fission et fusion et vise à clarifier les effets de l'irradiation d'aciers sur l'écrouissage, la localisation, la fragilisation, \textit{etc.}
+Dans ce contexte, la Dynamique des Dislocations (DD) \cite{Zbib2012_DDD} est un outil numérique qui permet d'étudier l'interaction des dislocations avec les défauts d'irradiation à l'échelle microscopique et de comprendre l'influence sur le comportement à l'échelle du grain.
+Néanmoins, la DD requiert, en accord avec la théorie des dislocations, le calcul des actions réciproques entre tous les segments des dislocations discrétisées présentes dans le domaine d'étude.
+Il s'en suit que cette méthode est très coûteuse en terme de temps de calcul pour des volumes élémentaires représentatifs contenant un grand nombre de défauts.
+
+
+\paragraph{Motivations:}
+$\newline$
+Le Modèle Discret/Continu (DCM) \cite{lemarchand2001_DCM,jamond2016_DCM} permet de contourner les diffucutlés liées au coût de calcul caractéristiques des simulations DD.
+Dans cette approche, le mouvement des dislocations et les aires que ces dernières balaient sont traduites en terme de déformations plastiques qui sont distribués sur les points de Gauss d'un maillage éléments finis.
+Cet étalement de la déformation plastique permet de régulariser la discontinuité du déplacement résultant du mouvement des dislocations.
+La résolution éléments finis apparaît alors comme une étape de relaxation visant à équilibrer les déformations plastiques en tenant compte des conditions aux limites.
+Toutefois, l'étape de régularisation conduit à une mauvaise estimation du champ de contrainte dans le voisinage des dislocations (pour des distances de l'ordre de la taille du maillage), de sorte qu'une correction provenant de la DD est utilisée localement.
+On note néanmoins que la DCM repose sur un choix de la procédure de régularisation des déformations plastiques qui n'est pas unique.
+Par ailleurs, un certain nombre de paramètres algorithmiques inteviennent, ces derniers permettent de régler la taille du domaine dans lequel la correction DD est calculée.
+
+
+
+% \begin{itemize}
+% \item Défauts d'irradiation à l'échelle atomique
+% \item Influence de ces défauts sur la plasticité (à travers leur interaction avec les dislocations) et modification du comportement plastique à l'échelle mésoscopique
+% \item Le lien entre ces interactions et les comportements macroscopiques (écrouissage, localisation, fragilisation) n'est toutefois pas encore complètement clair. De sorte que ce sujet fait l'objet de beaucoup de recherches mutli-échelle
+% \item Une méthode numérique permettant de simuler ce genre de problème est la méthode des dislocations discrète ... (description)
+% \item Cette dernière est néanmoins limitées pour des raisons de coûts de calcul, à des problèmes impliquant des petites dimensions du domaines d'étude.
+% \item Récemment, une approche couplant la DDD avec des méthodes adaptées à l'échelle macroscopique (FEM, FFT, \textit{etc.}) a été proposée. Parler des aires balayées par les dislocations dont on déduit les déformations plastiques, qui sont étalées dans le maillage afin de régulariser la discontinuité du déplacement résultant du mouvement des dislocation. La résolution éléments finis apparaît alors comme une étape de relaxation visant à relaxer les déformations plastiques en tenant compte des conditions aux limites.
+  % {\`A} cause de la régularisation, le champ de contrainte calculé par la méthode macroscopique peine à capturer la solution analytique dans le voisinage des dislocations (pour des distances de l'ordre de la taille du maillage).
+  % On utilise alors la contrainte calculée par la DDD pour corriger la solution proche des dislocations.
+% \end{itemize}
+
+
+\paragraph{Objectifs:}
+$\newline$
+\begin{itemize}
+\item Terminer et valider le couplage
+\item Optimisation des paramètres de la méthode $\rightarrow$ analyse numérique (illustrer ça par des figures)
+\item Exploitation du modèle sur des simulations à grande échelle pour l'étude de l'effet des défauts d'irradiation sur l'écoulement plastique (modèle de comportement homogénéisé)
+\end{itemize}
+
+
+Marc Fivel SIMaP/Grenoble INP
+Prita Pant
+M.P. Gururajan
+Arjun Varma R. Indian Institute of Technology of Bombay
+
+\begin{itemize}
+\item expliquer le contexte / la problématique
+\item la méthode DCM et ses grands principes
+\item mon travail là-dedans et les objectifs fixés/remplis à ce jour.
+\end{itemize}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

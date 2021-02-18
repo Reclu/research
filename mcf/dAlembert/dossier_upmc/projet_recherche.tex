@@ -1,0 +1,152 @@
+Projet: Propagation des ondes non-linéaires dans les solides
+\begin{itemize}
+\item Approches théorique/numérique (et éventuellement expérimentale)
+\item Ondes plastiques/chocs plastiques
+\item Problèmes multi-physiques (recristallisation, electromagnétique)
+\item Approches multi-échelles (des dislocations à von-Mises)
+\item Analyse inverse (quelle information peut-on tirer de la connaissance que l'on a des ondes ?)
+\item La développement de solveurs de Riemann dédiés, l'analyse inverse (et d'autres ...), sont alors vus comme des exemples d'application de ces recherches à des domaines très variés (calcul de structure, contrôle non-destructif, conception de métamatériaux, ...)
+\end{itemize}
+% Projet: propagation des ondes dans les solides dissipatifs
+% \begin{itemize}
+% \item trajets de chargement à travers les ondes simples, plasticité J2 ou plasticité cristalline.
+% \item existence des chocs plastiques
+% \item rupture dynamique (à plus long terme)
+% \item validations numériques ?
+% \end{itemize}
+
+Ma formation universitaire et les travaux de recherche que j'ai effectués m'amènent à envisager les instabilités dans le cadre de la dynamique des solides.
+Tout en faisant émerger une nouvelle thématique au sein de l'équipe MISES, ce projet de recherche se situe à l'interface avec l'équipe MPIA.
+Ceci va dans le sens de la volonté d'établir des ``ponts'' entre l'acoustique, la mécanique des fluides et la mécanique des solides, manifestée ces dernières années au niveau national (GDR \textit{MecaWave}\footnote{Groupe de Recherche MecaWave: https://mecawave.cnrs.fr/} (aller voir ça)).
+
+% Plus précisément, je souhaite me consacrer à l'étude théorique de la \textit{propagation des ondes dans les solides dissipatifs}.
+Plus précisément, je souhaite me consacrer à l'étude de la \textit{propagation des ondes dans les solides dissipatifs}.
+% L'attention est portée sur les solides élasto-plastiques en petites déformations.
+%%% Barre et onde plane
+Dans le cadre de la plasticité de von Mises en petites déformations, la réponse des solides à un chargement dynamique est bien connue pour les états de contraintes ou de déformations unidimensionnels \cite{Taylor,vonKarman} (problèmes de barre ou d'onde plane).
+La discontinuité du module tangent au passage du seuil plastique donne lieu dans ce cas à une onde plastique discontinue comparable à l'onde élastique.
+%%% Chargement combinés
+Pour des cas de chargement combinés traction/torsion ne dépendant que d'une dimension de l'espace, deux ondes simples dites \textit{rapide} et \textit{lente} conduisent à l'écoulement plastique \cite{Rakhmatulin,CRISTESCU19591605}.
+%%% 
+Ce type de phénomènes de transport influence grandement les hétérogénéités constitutives et l'anisotropie du matériau, de sorte que leur suivi précis est très important. % pour introduire le côté trajet de chargement
+Néanmoins, la littérature portant sur la propagation des ondes plastiques est plutôt clairsemée et s'intéresse uniquement à des problèmes unidimensionnels \cite{Bleich, Clifton, Ting73}.
+
+Ces contributions ont toutefois proposé la construction des trajets de chargement suivis dans les deux familles d'onde en analysant la structure caractéristique du problème hyperbolique.
+%%%
+En étendant cette approche aux cas bidimensionnels lors de mon doctorat \cite{Thesis}, j'ai souligné que l'écoulement plastique peut ne pas être radial même pour un problème à une dimension de l'espace. % pour introduire l'aspect multi-échelle ; en interaction forte avec l'axe micromécanique
+% Par ailleurs, j'ai souligné dans ma thèse de doctorat que la plasticité de von Mises peut conduire à un écoulement plastique non radial pour un solide soumis à des sollicitations dynamiques, même pour des problèmes unidimensionnels. 
+Ceci indique que les mécanismes à l'\oe uvre sont mal compris et que des efforts restent à faire dans cette direction.
+
+%% numérique dans les motivations ?
+{\`A} une échelle plus large, l'estimation des états résiduels dans les structures soumises à des chargements dynamiques requiert la construction et l'utilisation de méthodes numériques suivant précisément les ondes.
+En effet, les multiples interactions des ondes les unes avec les autres et sur les bords d'un domaine solide ne sont possibles qu'à cette condition.
+Dans ce contexte, et en accord avec mes compétences en analyse numérique, des schémas de résolution des équations aux dérivées partielles hyperboliques pourraient être développés pour des problèmes plus complexes (grandes transformations, couplage multi-physiques, \textit{etc.})
+%% Dans un second temps, d'autres problèmes que hyperboliques pourraient être traités
+% des solveurs de Riemann dédiés aux phénomènes évoqués plus haut pourraient être développés pour des méthodes de type Godunov \cite{Godunov_method}.
+
+Ainsi, mon projet de recherche visant à prédire les états résiduels en dynamique des solides s'articule autour de deux activités de recherches qui sont développées dans la suite.
+
+\subsection{Propagation des ondes simples dans les solides élasto-plastiques à écrouissage linéaire}
+\label{sec:structure_caracteristique}
+
+%%%%% Construction du problème de Riemann complet (différent du problème de Picard)
+L'approche initialement suivie par \textsc{Clifton} \cite{Clifton} pour la résolution des problèmes hyperboliques en une dimension spatiale dans les solides élasto-plastiques sous chargements combinés consistait à déterminer les ondes plastiques impliquées dans la solution en fonction des sollicitations extérieures.
+En considérant un milieu semi-infini sujet à un chargement de traction/torsion, ce dernier a pu prédire la structure d'ondes impliquée en fonction des contraintes appliquées.
+Ceci était rendu possible par deux points.
+Premièrement, les composantes de contraintes actives dans le solide étaient les mêmes que celles imposées par les conditions aux limites, ce qui conduit à la résolution d'un problème de Picard \cite{Wang}.
+De plus, les trajets de chargement suivis à travers les ondes lente et rapide déterminés par \textsc{Clifton} permettent de connecter les conditions aux limites et les conditions initiales dudit problème de Picard de manière unique.
+
+En ce qui concerne les cas des contraintes et des déformations planes, mes travaux de doctorat ont conduit à la construction des trajets de chargement suivis à travers les ondes de manière découplée.
+Cette contribution a d'ailleurs fait l'objet d'un article soumis dans \textit{Journal of the Mechanics and Physics of Solids}.
+La détermination de la structure caractéristique, et donc des ondes impliquées, nécessite néanmoins dans ce cas la formulation du problème de Riemann (et pas simplement du problème de Picard).
+Ce point constitue le premier verrou que j'aimerai lever.
+%
+Dans un second temps, j'aimerais étendre l'approche présentée plus haut à l'écrouissage cinématique et aux problèmes tridimensionnels.
+
+
+$\newline$
+En parallèle des précédents développements, un changement d'échelle sera opéré en considérant un modèle de plasticité cristalline.
+Cet aspect est motivé par l'observation d'écoulements plastiques non-radiaux dans le cadre de la plasticité de von Mises, et est susceptible d'intéresser des chercheurs de l'axe ``micromécanique''.
+{\`A} terme, les résultats obtenus sur des monocristaux pourront être élargis aux polycristaux en utilisant des approches numériques telles que celles mentionnées dans la section \ref{sec:numerique}.
+Ceci permettrait notamment la prise en compte de problèmes couplés thermo-mécaniquement et des variations de microstructure influençant en retour la propagation des ondes.
+
+%% Extension aux cristaux
+% pour les polycristaux, on pourra faire appel à des méthodes numériques développées dans l'axe 3. La plasticité conduit à un échauffement, et éventuellement de la recristallisation (simulation)
+
+\subsubsection*{Propagation des chocs plastiques}
+
+%%%%% Activités pour la phénoménologie
+% \textbf{Mettre l'accent sur cet aspect comme une ouverture de la section précédente}
+Au-delà des ondes simples, la question de l'existence des chocs plastiques sous hypothèse d'onde plane a fait l'objet de discussions \cite{Rice,Morland,Mandel1,Germain_shock,Claude,Mandel2,Wang} mais reste encore une question ouverte.
+Ces études considéraient des solides hydro-élastique-plastiques pour lesquels la partie hydrostatique du comportement suit une loi d'état convexe pouvant conduire à des chocs plastiques.
+Lors de ma thèse, j'ai étudié la réponse des solides hyperélastiques pour ce type de problèmes qui peut, même pour une loi de comportement concave, impliquer des ondes de choc.
+%
+%En plus de l'existence de ces ondes, la question de la possibilité de déterminer l'évolution des champs dans le chocs plastiques en construisant des courbes d'Hugoniot \cite{Toro} n'a pas vraiment été tranchée.
+Cet argument m'amène à reconsidérer l'existence des chocs plastiques sous un nouveau jour.
+
+
+\subsection{Développement de méthodes numériques}
+\label{sec:numerique}
+
+%\textbf{Rester général : grandes defs, HPC, X-FEM, volumes finis, DGMPM etc.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La simulation numérique est un outil permettant la mise en évidence de phénomènes observés et/ou la validation d'hypothèses expliquant ces phénomènes.
+%
+Le second axe est motivé par la complexité des modèles mathématiques employés, qui nécessitent une résolution numérique, et par les instabilités numériques pouvant résulter de la non-linéarité de ces modèles. %(distortions de maillage, perte d'hyperbolicité , \textit{etc.}).
+Au cours de mes recherches doctorales et post-doctorales, j'ai développé des compétences en modélisation et analyse numérique ainsi qu'en Calcul Hautes Performances (HPC) qui s'insèrent de manière cohérente dans mon projet de recherche.
+
+%% Etudes sur microstructures -> thermo-méca + ondes et HPC
+Dans le cadre des activités présentées dans la section \ref{sec:structure_caracteristique}, l'étude des ondes plastiques dans les matériaux polycristallins et leur influence sur la recristallisation implique de recourir à des simulations.
+{\`A} ce titre, un code de recristallisation dynamique comme celui développé par Denis Solas (ICMMO\footnote{https://www.icmmo.u-psud.fr/fr/}), avec qui j'ai collaboré durant mon postdoc au MSSMat, pourrait être couplé avec une méthode numérique pour la dynamique des solides capable de capturer des chocs. 
+Toutefois, l'évolution thermique peut conduire à une perte d'hyperbolicité du système mécanique \cite{Truesdell} et donc à une éventuelle difficulté à suivre les ondes précisément. % pour contrecarer la perte d'hyperbolicité, on peut reformuler le problème avec un second membre et faire du splitting par exemple ?
+Ces problèmes nécessitent alors la mise en place de schémas numériques robustes.
+De plus, pour un nombre élevé de grains dont la morphologie ne permet pas, en général, la réduction du problème à un cas bidimensionnel, les aspects HPC sont presque incontournables.
+
+%% Extension des travaux théoriques aux grandes déformations : grandes defs
+L'extension des travaux de la section \ref{sec:structure_caracteristique} au cadre des grandes transformations implique également l'utilisation de méthodes numériques adaptées.
+{\`A} ce titre, la DGMPM que j'ai développée durant mon doctorat serait une bonne candidate.
+
+
+%Mes compétences pourraient par ailleurs être mises au service d'autres recherches effectuées au laboratoire.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsubsection*{Construction de solveurs de Riemann dédiés}
+
+%%%%% Construction de solveurs de Riemann dédiés
+La résolution numérique de systèmes hyperboliques peut être faite par des méthodes de type Godunov \cite{Godunov_method}.
+%
+% En lien avec les activités précédentes, des méthodes de résolution numériques d'équations aux dérivées partielles hyperboliques peuvent être enrichies.
+Ces approches reposent sur la relaxation de la continuité des champs à travers les éléments d'un maillage, à l'aide de l'approximation DG par exemple.
+Il en résulte des termes de flux dans les équations discrètes qui peuvent être calculés par résolution de problèmes de Riemann.
+Ainsi, les résultats des développements présentés dans la section \ref{sec:structure_caracteristique} viendraient nourrir les méthodes numériques pour les problèmes d'élastoplasticité.
+Il serait dès lors possible de prendre en compte les ondes élastiques et plastiques dans le calcul des flux, ce qui ne peut être fait que pour des problèmes unidimensionnels à l'heure actuelle.
+% Ainsi, la formulation explicite du problème résultant des développements présentés dans la section \ref{sec:structure_caracteristique} permettrait de prendre en compte les ondes élastiques et plastiques dans le calcul des flux, ce qui n'est pas possible pour le moment.
+
+\subsection{Perspectives à plus long terme}
+\label{sec:perspective}
+
+Une extension des développements présentés dans la section \ref{sec:structure_caracteristique} à des études expérimentales me semble être une activité intéressante.
+Cependant, cela nécessite la mise en place de collaborations avec des expérimentateurs intéressés par les chargements complexes en dynamique des solides qui restent à définir.
+
+{\`A} plus longue échéance, j'aimerais également interagir avec des chercheurs de l'axe ``mécanique de la rupture'' afin d'étendre ces recherches aux matériaux endommageables. 
+
+
+Par ailleurs, les perspectives offertes par la DGMPM pourraient être mises à profit d'autres recherches menées au laboratoire.
+Parmi ces perspectives, la grille de calcul dans laquelle se déplacent les points matériels représente une piste intéressante pour la résolution de problèmes dont les domaines sont plus vastes que le milieu solide. 
+{\`A} cet effet, la DGMPM se rapprocherait d'une méthode de type ``frontière immergée'' \cite{IBM}. 
+Ce dernier point est susceptible d'intéresser les chercheurs des équipes CEPT et FCIH travaillant sur l'interaction fluide-structure dans l'axe ``biomécanique''.
+
+Enfin, mes compétences en modélisation numérique (couplage multi-physique, simulation Eulérienne ou Lagrangienne, cadre X-FEM, \textit{etc.}) peuvent me permettre de me joindre à d'autres chercheurs afin de mettre en place de nouveaux projets.
+
+
+\textbf{Parler aussi des matériaux dits ``intelligents'' (citer des papiers) pour lesquels un couplage entre les physiques conduits à une modification des propriétés mécaniques. Vu à travers le prisme de la dynamique et des ondes, ceci paraît être une problématique intéressante et prometteuse.}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
+
+
+

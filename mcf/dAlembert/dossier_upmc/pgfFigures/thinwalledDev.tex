@@ -1,0 +1,54 @@
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={2.5pt}}
+\begin{tikzpicture}%[scale=0.9]
+  \begin{axis}[width=.75\textwidth,view={135}{35.2643},xlabel=$s_1 $,
+    ylabel=$s_2 $,zlabel=$s_3$,xmin=-1.e8,xmax=1.e8,ymin=-1.e8,ymax=1.e8,axis equal,axis lines=center,axis on top,xtick=\empty,ytick=\empty,ztick=\empty,
+    every axis y label/.style={at={(rel axis cs:0.,.5,-0.65)}, anchor=west},
+    every axis x label/.style={at={(rel axis cs:0.5,.,-0.65)}, anchor=east},
+    every axis z label/.style={at={(rel axis cs:0.,.0,.18)}, anchor=north}
+    ]
+    %\path[clip] (2.e8,-2.e8,-2.e8) -- (-2.e8,2.e8,-2.e8) -- (-2.e8,2.e8,2.e8) -- (2.e8,-2.e8,2.e8) -- cycle [reverseclip];
+    \node[below] at (1.1e8,0.,0.) {$\sqrt{\frac{2}{3}}\sigma^y$};
+    \node[above] at (-1.1e8,0.,0.) {$-\sqrt{\frac{2}{3}}\sigma^y$};
+    \draw (1.e8,0.,0.) node[cross,rotate=10] {};
+    \draw (-1.e8,0.,0.) node[cross,rotate=10] {};
+    \node[white]  at (0,0.,-1.32e8) {};
+    %%
+    \addplot3[Green,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress0.pgf};
+    \addplot3[Green,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress0.pgf};
+    %%
+    \addplot3[Duck,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress1.pgf};
+    \addplot3[Duck,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress1.pgf};
+    %%
+    \addplot3[Red,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress2.pgf};
+    \addplot3[Red,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress2.pgf};
+    %%
+    \addplot3[Purple,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress3.pgf};
+    \addplot3[Purple,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress3.pgf};
+    %%
+    \addplot3[Blue,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress4.pgf};
+    \addplot3[Blue,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress4.pgf};
+    %% 
+    \addplot3[Orange,mark=x,only marks,mark repeat=20,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress5.pgf};
+    \addplot3[Orange,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress5.pgf};
+    %% 
+    % \addplot3[Yellow,mark=x,only marks,mark repeat=5,very thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress6.pgf};
+    % \addplot3[Yellow,thick,restrict y to domain=0:2.e8] file {pgfFigures/pgf_thinWalledTubeSlowWave/slowDevPlane_Stress6.pgf};
+    %% Yield surface
+    \addplot3[black,dashed] file {pgfFigures/pgf_thinWalledTubeSlowWave/TWCylindreDevPlane.pgf};
+    \newcommand\radius{0.82e8}
+    \addplot3[dotted,thick] coordinates {(0.75*\radius,-0.75*\radius,0.) (-0.75*\radius,0.75*\radius,0.)};
+    \addplot3[dotted,thick] coordinates {(0.,-0.75*\radius,0.75*\radius) (0.,0.75*\radius,-0.75*\radius)};
+    \addplot3[dotted,thick] coordinates {(-0.75*\radius,0.,0.75*\radius) (0.75*\radius,0.,-0.75*\radius)};
+
+    % \newcommand\radius{0.82e8}
+    % \addplot3[dotted,very thick] coordinates {(1.05*\radius,-1.05*\radius,0.) (-1.05*\radius,1.05*\radius,0.)};
+
+  \end{axis}
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

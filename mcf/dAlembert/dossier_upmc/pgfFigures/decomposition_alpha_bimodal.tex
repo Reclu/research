@@ -1,0 +1,72 @@
+\begin{tikzpicture}% ,yticklabels at=edge left,ylabels at=edge left
+  \begin{groupplot}[group style={group size=2 by 1,horizontal sep=3ex,vertical sep=1ex,yticklabels at=edge left,ylabels at=edge left,xticklabels at=edge bottom,xlabels at=edge bottom}
+    % ,ymajorgrids=true,xmajorgrids=true,axis on top%,scale only axis,
+    ,width=0.5\textwidth
+    ,xlabel=$f$(MHz),ylabel=$\alpha$(1/m)
+    ,ymin=0,xmin=0
+    %,xmax=20
+    ,ymax=140
+    % ,ymax=220
+    ]
+    
+    
+    \nextgroupplot[title={(a) Théorique}]
+    %% 240-80
+    
+    
+    \addplot[black!50,thick] table[x expr=\thisrow{f}/1.e6,y=80mm] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=240mm] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    % \addplot[Blue,only marks,mark repeat=3,mark=+,thick] table[x expr=\thisrow{f}/1.e6,y=240_80mm_25] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    \addplot[Blue,thick,densely dotted] table[x expr=\thisrow{f}/1.e6,y expr=0.75*\thisrow{80mm}+0.25*\thisrow{240mm}] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    % \addplot[Green,only marks,mark repeat=3,mark=x,thick] table[x expr=\thisrow{f}/1.e6,y=240_80mm_50] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    \addplot[Green,thick] table[x expr=\thisrow{f}/1.e6,y expr=0.5*\thisrow{80mm}+0.5*\thisrow{240mm}] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    %\addplot[Red,only marks,mark repeat=3,mark=asterisk,thick] table[x expr=\thisrow{f}/1.e6,y=240_80mm_75] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    \addplot[Red,thick, dashed] table[x expr=\thisrow{f}/1.e6,y expr=0.25*\thisrow{80mm}+0.75*\thisrow{240mm}] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    % \node[right,Red] at (15,68) {\scriptsize $\epsilon=3\%$};
+    % \node[right,Green] at (15,84.2) {\scriptsize $\epsilon=4\%$};
+    % \node[right,Blue] at (15,103.52) {\scriptsize $\epsilon=2\%$};
+
+    
+    \nextgroupplot[title={(b) Numérique},legend style={at={($(.75,-0.3)+(0.5cm,0.35cm)$)},legend columns=5}]
+    %% 160-80
+
+    \addplot[black!50,thick] table[x expr=\thisrow{f}/1.e6,y=FLG0] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=FLG100] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+
+    \addplot[Blue,thick,densely dotted] table[x expr=\thisrow{f}/1.e6,y=FLG25] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+    \addplot[Green,thick] table[x expr=\thisrow{f}/1.e6,y=FLG50] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+    \addplot[Red,thick,dashed] table[x expr=\thisrow{f}/1.e6,y=FLG75] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+
+
+    \addlegendentry{ $F_{GG}=0$}
+    \addlegendentry{ $F_{GG}=1$}
+
+    \addlegendentry{ $F_{GG}=0.25$}
+    % \addlegendentry{$\alpha_{Th}$ $F_{GG}=0.25$}
+    % \addlegendentry{Expected $F_{GG}=0.25$}
+
+    \addlegendentry{ $F_{GG}=0.50$}
+    % \addlegendentry{$\alpha_{Th}$ $F_{GG}=0.50$}
+    % \addlegendentry{Expected $F_{GG}=0.50$}
+
+    \addlegendentry{ $F_{GG}=0.75$}
+    %\addlegendentry{$\alpha_{Th}$ $F_{GG}=0.75$}
+    %\addlegendentry{Expected $F_{GG}=0.75$}
+
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

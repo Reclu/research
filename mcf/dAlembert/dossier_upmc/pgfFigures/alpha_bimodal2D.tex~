@@ -1,0 +1,81 @@
+\begin{tikzpicture}% ,yticklabels at=edge left,ylabels at=edge left
+  \begin{groupplot}[group style={group size=3 by 1,horizontal sep=3ex,vertical sep=0ex
+      ,yticklabels at=edge left,ylabels at=edge left
+    }
+    ,ymin=0.,ymax=130
+    ,xmin=0.
+    % ,ymajorgrids=true,xmajorgrids=true,axis on top%,scale only axis,
+    ,width=0.37\textwidth
+    ,xlabel=$f$ (MHz),ylabel=$\alpha$ (1/m)
+    ]
+    
+    \nextgroupplot[title={(a) 240 -- 160$\mu$m}]
+    %% 240-160
+    
+    \addplot[black!50,thick] table[x expr=\thisrow{f}/1.e6,y=FLG0] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+    \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=FLG100] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+
+    % \addplot[black!50,dashed] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{160mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    % \addplot[black,densely dotted] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{240mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    \addplot[Blue,only marks,mark repeat=3,mark=+,thick] table[x expr=\thisrow{f}/1.e6,y=FLG25] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+    
+    \addplot[Green,only marks,mark repeat=3,mark=x,thick] table[x expr=\thisrow{f}/1.e6,y=FLG50] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+    
+    \addplot[Red,only marks,mark repeat=3,mark=asterisk,thick] table[x expr=\thisrow{f}/1.e6,y=FLG75] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+    
+    \nextgroupplot[title={(b) 240 -- 80$\mu$m}]
+    %% 240-80
+    
+    \addplot[black!50,thick] table[x expr=\thisrow{f}/1.e6,y=FLG0] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    % \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=FLG100] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=FLG100] {pgfFigures/pgfFiles/bimodal240_160_2D.pgf};
+
+    % \addplot[black!50,dashed] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{80mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    % \addplot[black,densely dotted] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{240mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    \addplot[Blue,only marks,mark repeat=3,mark=+,thick] table[x expr=\thisrow{f}/1.e6,y=FLG25] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+    \addplot[Green,only marks,mark repeat=3,mark=x,thick] table[x expr=\thisrow{f}/1.e6,y=FLG50] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+    \addplot[Red,only marks,mark repeat=3,mark=asterisk,thick] table[x expr=\thisrow{f}/1.e6,y=FLG75] {pgfFigures/pgfFiles/bimodal240_80_2D.pgf};
+    
+
+    \nextgroupplot[title={(c) 160 -- 80$\mu$m},legend style={at={($(.5,-0.4)+(0.45cm,0.35cm)$)},legend columns=5}]
+    %% 160-80
+    
+    \addplot[black!50,thick] table[x expr=\thisrow{f}/1.e6,y=FLG0] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    \addplot[black,thick] table[x expr=\thisrow{f}/1.e6,y=FLG100] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+
+    % \addplot[black!50,dashed] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{80mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+    % \addplot[black,densely dotted] table[x expr=\thisrow{f}/1.e6,y expr=\thisrow{160mm}/2.] {pgfFigures/pgfFiles/bimodal_analytical2D.pgf};
+
+    \addplot[Blue,only marks,mark repeat=3,mark=+,thick] table[x expr=\thisrow{f}/1.e6,y=FLG25] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    
+    \addplot[Green,only marks,mark repeat=3,mark=x,thick] table[x expr=\thisrow{f}/1.e6,y=FLG50] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    
+    \addplot[Red,only marks,mark repeat=3,mark=asterisk,thick] table[x expr=\thisrow{f}/1.e6,y=FLG75] {pgfFigures/pgfFiles/bimodal160_80_2D.pgf};
+    
+
+    \addlegendentry{$\alpha_{Num} \: F_{LG}$=0}
+    \addlegendentry{$\alpha_{Num} \: F_{LG}$=1}
+
+    % \addlegendentry{$\alpha_{Th} \: F_{LG}$=0}
+    % \addlegendentry{$\alpha_{Th} \: F_{LG}$=1}
+
+    \addlegendentry{$\alpha_{Num} \: F_{LG}$=0.25}
+    
+    \addlegendentry{$\alpha_{Num} \: F_{LG}$=0.50}
+    
+    \addlegendentry{$\alpha_{Num} \: F_{LG}$=0.75}
+
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../manuscript"
+%%% End:

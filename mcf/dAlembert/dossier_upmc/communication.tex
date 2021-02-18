@@ -1,0 +1,55 @@
+% Exemple de CV utilisant la classe moderncv
+% Style classic en bleu
+% Article complet : http://blog.madrzejewski.com/creer-cv-elegant-latex-moderncv/
+
+\documentclass[10pt,a4paper]{moderncv}
+\moderncvtheme[blue]{classic}                
+\usepackage[utf8]{inputenc}
+\usepackage[top=3.5cm, bottom=3.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{geometry}
+%\geometry{hmargin=2.cm,vmargin=3.5cm}
+% Largeur de la colonne pour les dates
+\setlength{\hintscolumnwidth}{2.5cm}
+
+\firstname{\LARGE Adrien}
+\familyname{Renaud}
+\photo[1.4cm][0.cm]{photo.JPG}
+\title{Docteur en mécanique des solides
+  \vskip 0.1cm \footnotesize Méthodes numériques -- Problèmes hyperboliques -- Solides dissipatifs}              
+\address{257 rue des Pyrénées}{75020 Paris}    
+\email{adri.renaud@gmail.com}                      
+\mobile{(+33)6 79 38 81 43} 
+\extrainfo{Né le 12/10/1988 (31 ans)}
+%\extrainfo{Nationalité Française}
+
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
+
+\begin{document}
+        %%%%% COMMUNICATIONS
+        \section{Communications}
+        \subsection{Conférences à comité de lecture}
+        \cventry{\textit{Juillet 2018}}{WCCM}{13th World Congress on Computationl Mechanics}{New York (USA)}{\textbf{A.Renaud}, T.Heuzé and L.Stainier: \textit{The Discontinuous Galerkin Material Point Method for Hyperbolic Problems in Solid Mechanics}}{}
+        \cventry{\textit{Juin 2018}}{ECCM}{6th European Conference on Computational Mechanics}{Glasgow (Ecosse)}{\textbf{A.Renaud}, T.Heuzé and L.Stainier: \textit{The Discontinuous Galerkin Material Point Method for the simulation of hyperbolic problems in finite deforming solids }}{}
+        \cventry{Juin 2017}{COMPDYN}{6th International Conference on Computational Methods in Structural Dynamics and Earthquake Engineering}{Ile de Rhodes (Grèce)}{\textbf{A.Renaud}, T.Heuzé and L.Stainier: \textit{A Discontinuous Galerkin Material Point Method
+        (DGMPM) for the simulation of impact problems in solid mechanics
+        }}{}
+          \cventry{Mai 2017}{CSMA}{13ème colloque national en calcul des structures}{Giens (France)}{\textbf{A.Renaud}, T.Heuzé and L.Stainier: \textit{La Méthode des Points Matériels (MPM) en Galerkin Discontinue (DG) pour la simulation d’impact sur des solides }}{}
+          \subsection{Groupe de travail}
+          \cventry{Mars 2017}{Journées Mécadymat}{}{Cachan (France)}{}{}
+	
+          \section{Publications}
+          \cventry{2018}{Journal of Computational Physics}{A.Renaud,T.Heuzé and L.Stainier}{A Discontinuous Galerkin Material Point Method for the solution of impact problems in solid dynamics}{369,80-102}{doi: j.jcp.2018.05.001}
+          \cventry{2018}{International Journal for Numerical Methods in Engineering}{A.Renaud,T.Heuzé and L.Stainier}{Stability properties of the Discontinuous Galerkin Material Point Method for hyperbolic problems in one and two space dimensions}{}{Under review}
+
+      \end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

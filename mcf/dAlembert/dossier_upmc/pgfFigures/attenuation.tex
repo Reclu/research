@@ -1,0 +1,28 @@
+\begin{tikzpicture}
+  \begin{axis}[width=.45\linewidth,ymajorgrids=true,xmajorgrids=true,ylabel=$\alpha \: \rm (dB/mm)$,xlabel=$f \: \rm (MHz)$,legend style={legend pos=outer north east}]
+    %%
+    \addplot[black,densely dotted,very thick] table [x expr = \thisrow{frequency}/1.e6,y expr=\thisrow{alpha_240mm}/1000] {pgfFigures/attenuation_bimodal.pgf};
+
+    \addlegendentry{unimodale $\left\langle d \right\rangle =240 \mu m$}
+
+    \addplot[black,dashed,very thick] table [x expr = \thisrow{frequency}/1.e6,y expr=\thisrow{alpha_160mm}/1000] {pgfFigures/attenuation_bimodal.pgf};
+    \addlegendentry{unimodale $\left\langle d \right\rangle =160 \mu m$}
+
+    \addplot[Red,thick] table [x expr = \thisrow{frequency}/1.e6,y expr=\thisrow{alpha_FLG40}/1000] {pgfFigures/attenuation_bimodal.pgf};
+    \addlegendentry{bimodale $FGG = 40 \% $}
+        
+    
+    \addplot[Orange,thick] table [x expr = \thisrow{frequency}/1.e6,y expr=\thisrow{alpha_FLG50}/1000] {pgfFigures/attenuation_bimodal.pgf};
+    \addlegendentry{bimodale $FGG = 50 \% $}
+
+    \addplot[Blue,thick] table [x expr = \thisrow{frequency}/1.e6,y expr=\thisrow{alpha_FLG75}/1000] {pgfFigures/attenuation_bimodal.pgf};
+    \addlegendentry{bimodale $FGG = 75 \% $}
+
+    
+  \end{axis}
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

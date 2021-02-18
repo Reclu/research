@@ -1,0 +1,115 @@
+% obligatory package for template
+\usepackage[utf8]{inputenc} % encoding 
+\usepackage[french]{babel}
+\usepackage[backend=biber, style=phys, articletitle=true, biblabel=brackets, pageranges=true]{biblatex}
+\addbibresource{Biblio.bib}
+\usepackage{soulutf8}   % encoding
+\usepackage{lmodern} % front used  
+\usepackage{pdfpages} 
+\usepackage{array, multirow, multicol} % array types
+\usepackage{tikz} % geometrical figures
+\usetikzlibrary{calc,trees,positioning,arrows,chains,shapes.geometric,
+    decorations.pathreplacing,decorations.pathmorphing,shapes,
+    matrix,shapes.symbols,shapes.multipart,patterns,shapes,snakes,pgfplots.groupplots,spy,backgrounds}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=external/]
+%\usetikzlibrary{spy,backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+  arrows along my path/.style={
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=between positions 0.03 and 1 step 24pt with {\arrow{Stealth[length=8pt]}},
+   }}}}
+   
+\usepackage{pgfplots} % pdf picture declaration
+\usepackage{eso-pic} % background picture
+\usepackage{subfiles} % many files used
+\usepackage{amsmath}
+\usepackage[tensorialbold]{userCommands}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage[colorlinks,linkcolor=Blue,citecolor=black]{hyperref}
+\usepackage{empheq}
+
+\usepackage[font=normal]{caption}
+\usepackage[font=normal]{subcaption}
+\usepackage[section]{placeins} % pictures restricted to \section
+\usepackage{geometry}
+\usepackage{fncylab}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{ifpdf}
+
+\ifpdf
+\pdfinfo {
+	/Author (Moi)
+	/Title (Titre du document)
+	/Subject (Titre du document)
+	/Keywords ()
+	/CreationDate (D:20090129171524)
+}
+\fi
+
+\geometry{hmargin=2.cm,vmargin=3.5cm}
+%\geometry{hmargin=1.1cm,vmargin=2.cm}
+\captionsetup{margin={1.5cm,1.5cm}}
+\captionsetup[subfigure]{position=top}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% The paper headers
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[RE]{\small \rightmark}
+% \fancyhead[LO]{\small \leftmark}
+% \fancyfoot[CE,CO]{\small \thepage}
+\newcommand{\thomas}[1]{\color{Red}#1\color{black}}
+\newcommand{\laurent}[1]{\color{Blue}#1\color{black}}
+
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+%\renewcommand{\headrulewidth}{1pt}
+
+
+\pgfplotsset{%compat=1.3,
+  %compat=1.8,
+  compat=newest,
+  grid=both,
+  tick label style={font=\normalsize},
+  label style={font=\normalsize},
+  legend style={font=\normalsize},
+  legend cell align={left},
+  yticklabel style={/pgf/number format/fixed},
+  %scaled y ticks=false,
+  % define user colormap
+  colormap={tol}{[1cm] rgb255(0cm)=(120,28,129) rgb255(1cm)=(63,96,174) rgb255(2cm)=(83,158,182) rgb255(3cm)=(109,179,136) rgb255(4cm)=(202,184,67) rgb255(5cm)=(231,133,50) rgb255(6cm)=(217,33,32)}
+}
+
+%% User colors
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\mathtoolsset{showonlyrefs}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

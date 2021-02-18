@@ -1,0 +1,29 @@
+\begin{tikzpicture}
+\begin{axis}[ymajorgrids=true,xmajorgrids=true,%ylabel=$\frac{2\sigma_{22}}{\bar{\sigma}}$,
+axis on top,scale only axis,width=0.4\linewidth
+, every x tick scale label/.style={at={(xticklabel* cs:1.05,0.75cm)},anchor=near yticklabel},xlabel=$\cos(3 \Theta)$,ylabel=$\frac{2\sigma_{22}}{\bar{\sigma}}$,legend style={at={(0.85,-0.25)}},
+legend columns=3
+]
+
+\addplot[Red,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress2.pgf};
+%\addlegendentry{\footnotesize path 1}
+\addplot[Blue,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress3.pgf};
+%\addlegendentry{\footnotesize path 2}
+\addplot[Orange,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress4.pgf};
+%\addlegendentry{\footnotesize path 3}
+\addplot[Purple,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress5.pgf};
+%\addlegendentry{\footnotesize path 4}
+\addplot[Yellow,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress6.pgf};
+%\addlegendentry{\footnotesize path 5}
+\addplot[Duck,very thick] table[x=Theta,y expr=\thisrow{sigma_22}/\thisrow{sigmab}] {pgfFigures/pgf_HslowWavesPlaneStrai/DPslowStressPlane_Stress7.pgf};
+%\addlegendentry{\footnotesize path 6}
+
+
+\end{axis}
+
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

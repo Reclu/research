@@ -1,0 +1,33 @@
+\begin{tikzpicture}[scale=1]
+  \begin{groupplot}[group style={group size=2 by 1,% columns by rows
+      ylabels at=edge left, yticklabels at=edge left,
+      horizontal sep=2.ex,
+      vertical sep=2ex,},
+    enlargelimits=0,
+    xmin=0.,xmax=1., ymin=-0.,ymax=1.
+    ,axis on top,scale only axis,width=0.45\linewidth
+    ,xtick=\empty,ytick=\empty,
+    colorbar style={
+      title style={
+        font=\footnotesize,
+        at={(1,.5)},
+        anchor=north west
+      },yticklabel style={font=\footnotesize}
+      ,at={(current axis.south east)},anchor=south west
+    },colormap name=tol
+    ]
+    %% FIRST ROW (time 1 = 5.10e-4s)
+    %%% RANGE -8.6e9 -- 0.57e9
+    % \nextgroupplot[title={Température}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/Stationnaire.png};
+    \nextgroupplot[title={Température}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/Stationnaire_croped.png};
+    \nextgroupplot[title={Lignes de courant}]\addplot graphics[xmin=0.,xmax=1., ymin=-0.,ymax=1.] {pngFigures/Streamline_classical.png};
+    
+  \end{groupplot}
+\end{tikzpicture}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../manuscript"
+%%% End:

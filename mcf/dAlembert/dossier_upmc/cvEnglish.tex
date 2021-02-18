@@ -1,0 +1,168 @@
+\documentclass[11pt,a4paper]{moderncv}
+\usepackage{footmisc}
+\definecolor{Purple}{RGB}{120,28,129}
+\definecolor{Blue}{RGB}{63,96,174}
+\definecolor{Duck}{RGB}{83,158,182}
+\definecolor{Green}{RGB}{109,179,136}
+\definecolor{Yellow}{RGB}{202,184,67}
+\definecolor{Orange}{RGB}{231,133,50}
+\definecolor{Red}{RGB}{217,33,32}
+
+%\moderncvtheme[blue]{casual}  % style options are 'casual' (default), 'classic', 'banking', 'oldstyle' and 'fancy'               
+\moderncvstyle{casual}                            
+\moderncvcolor{blue}                              
+
+\usepackage{ragged2e} % used for the command \justify
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc} 
+\usepackage[scale=.8]{geometry}
+% Largeur de la colonne pour les dates
+\setlength{\hintscolumnwidth}{2.75cm}
+\usepackage{academicons}
+
+\AtBeginDocument{\recomputelengths}
+\AtBeginDocument{\definecolor{sectionrectanglecolor}{RGB}{63,96,174}}
+\AtBeginDocument{\definecolor{sectiontitlecolor}{RGB}{63,96,174}}
+\makeatletter
+\renewcommand{\section}[1]
+{ \vspace*{2.5ex \@plus 1ex \@minus .2ex}%
+\phantomsection{}% reset the anchor for hyperrefs
+\addcontentsline{toc}{part}{#1}%
+\parbox[m]{\hintscolumnwidth}{\raggedleft  \hintfont{\color{sectionrectanglecolor}\rule{\hintscolumnwidth}{2pt}}}%<- auf 11pt geaendert
+\hspace{\separatorcolumnwidth}%
+\parbox[m]{\maincolumnwidth}{\sectionstyle{#1}}\\[1ex]}
+\makeatother
+
+\firstname{Adrien}
+\familyname{Renaud}
+\photo[2.cm][0.cm]{photo.JPG}
+%\title{PhD in solid mechanics}              
+\title{Researcher in computational mechanics and applied mathematics} 
+\address{257 rue des Pyrénées}{75020 Paris}    
+\email{adri.renaud@gmail.com}                      
+\mobile{(+33)6~79~38~81~43}
+
+% \social[orcid][orcid.org/0000-0002-3075-4933]{Adrien Renaud}
+% \social[researchgate][www.researchgate.net/profile/Adrien_Renaud2]{Adrien Renaud}
+
+%\extrainfo{Naissance 12/10/1988}
+%\extrainfo{Nationalité Française}
+
+
+
+%% Add academicons logos
+% hlink
+\makeatletter
+\newcommand*{\hlink}[2][]{%
+  \ifthenelse{\equal{#1}{}}%
+    {\href{#2}{#2}}%
+    {\href{#2}{#1}}}
+\makeatother
+
+% social
+% \makeatletter
+% \newcommand*\orcidsocialsymbol{{\aiOrcid}}
+% \newcommand*\researchgatesocialsymbol{{\aiResearchGate}}
+% % \newcommand\faSkype{{\FA\symbol{"F17E}}}
+% % \newcommand*{\skypesocialsymbol}{\faSkype~}
+% \RenewDocumentCommand{\social}{O{}O{}m}{%
+%   \ifthenelse{\equal{#2}{}}%
+%     {%
+%       \ifthenelse{\equal{#1}{linkedin}}{\collectionadd[linkedin]{socials}{\protect\httplink[#3]{www.linkedin.com/in/#3}}}{}%
+%       \ifthenelse{\equal{#1}{github}}  {\collectionadd[github]{socials}  {\protect\httplink[#3]{www.github.com/#3}}}     {}%
+%       \ifthenelse{\equal{#1}{orcid}}   {\collectionadd[orcid]{socials}   {\protect\hlink[#3]{#3}}}              {}%
+%       \ifthenelse{\equal{#1}{researchgate}}   {\collectionadd[researchgate]{socials}   {\protect\hlink[#3]{#3}}}              {}%
+%     }
+%     {\collectionadd[#1]{socials}{\protect\httplink[#3]{#2}}}}
+% \makeatother
+
+\nopagenumbers 
+\renewcommand\thefootnote{\textcolor{Blue}{\arabic{footnote}}}
+\begin{document}
+
+
+\makecvtitle
+
+
+
+\section{\color{Blue}Research experiences}
+% mettre ici le doctorat et le postdoc
+\cventry{\textbf{2019-2020}}{Postdoctoral researcher}{CentraleSup{\'e}lec -- MSSMat (France)}{}{}{
+  \begin{itemize}
+%  \item[-] 3D numerical modeling of ultrasonic wave propagation during heat treating of superalloys
+  \item[-] Three-dimensional numerical modeling of wave propagation in polycrystalline materials,
+  \item[-] Investigation of the effect of the grain morphology on ultrasonic wave scattering.
+  \end{itemize}
+  \vskip 0.1cm Contributors: Bing Tie, Anne-Sophie Mouronval, Jean-Hubert Schmitt, Denis Aubry.}
+\cventry{2015-2018}{PhD thesis}{Ecole centrale de Nantes -- GeM (France)}{}{}{
+  \begin{itemize}
+  \item[-] Development of a numerical method for solving hyperbolic problems in finite deforming dissipative solids: the Discontinuous Galerkin Material Point Method (DGMPM),
+  \item[-] Numerical analysis of the DGMPM,
+  \item[-] Identification of the response of two-dimensional elastic-plastic solids to dynamic loadings under small strains.
+  \end{itemize}
+  \vskip 0.1cm Supervisors: Laurent Stainier, Thomas Heuz{\'e}
+}
+\cventry{2013--2015}{Master research internship}{Ecole centrale de Nantes -- GeM}{}{}{%Thesis: \textit{Numerical simulation of the formation of banded structures in Friction Stir Welding by tool eccentricity}
+  \begin{itemize}
+  \item[-] Numerical simulation of the formation of banded structures in Friction Stir Welding,
+  \item[-] Numerical modeling based on X-FEM technology and thermo-mechanical coupling
+  \end{itemize}
+  \vskip 0.1cm Supervisor: Thomas Heuz{\'e}
+}
+  
+\section{\color{Blue}Education}
+\cventry{2015-2018}{PhD of mechanical engineering}{Ecole centrale de Nantes -- GeM}{}{}{Thesis: \textit{The Discontinuous Galerkin Material Point Method: application to hyperbolic problems in solid mechanics}
+  %\vskip 0.1cm Development of a numerical method for the solution of hyperbolic problems in finite deforming dissipative solids; Identification of the response of two-dimensional elastic-plastic solids to dynamic loadings under small strains
+  %\vskip 0.1cm Supervisors: Laurent Stainier, Thomas Heuz{\'e}
+}
+\cventry{2013--2015}{Master of Computational mechanics (with honors)}{University of Nantes}{}{}{%Thesis: \textit{Numerical simulation of the formation of banded structures in Friction Stir Welding by tool eccentricity}
+  %\vskip 0.1cm Modeling the eccentricity of the tool using X-FEM technology; Eulerian thermofluid simulation
+  %\vskip 0.1cm Supervisor: Thomas Heuz{\'e}
+}
+\cventry{2012--2013}{Bachelor of Mechanics (with honors)}{University of Nantes}{}{}{
+}
+
+
+\section{\color{Blue}Teaching experiences}
+\cventry{2015--2018}{Assistant teacher}{Bachelor students -- Ecole centrale de Nantes}{ Continuum Mechanics (192 hours)}{}{}
+
+% \section{\color{Blue}Research interests}
+% \cvitemwithcomment{Solid mechanics}{Hyperbolic problems -- (Hyper)Elastic-plastic solids}{}
+% \cvitemwithcomment{Simulation}{Numerical analysis -- DG approximation -- FEM -- MPM -- FVM}{}
+
+
+\section{\color{Blue}Academic experiences}
+\cventry{2017--2018}{Elected member of the laboratory concil of GeM}{}{}{}{}
+
+\newpage	
+\section{\color{Blue}Skills}
+\cvitemwithcomment{Languages}{French: native -- English: fluent \textsc{Toeic} 910}{}
+\cvitemwithcomment{Programming}{Object oriented \& template programming: Python, C++}{}
+\cvitemwithcomment{}{Procedural Programming: Python, Matlab, Fortran}{}
+\cvitemwithcomment{}{Parallel computing: MPI, OpenMP}{}
+\cvitemwithcomment{Post-processing}{Gmsh, Paraview}{}
+\cvitemwithcomment{Miscellaneous}{\LaTeX, Emacs, Git, GNU/Linux}{}
+
+
+\section{\color{Blue}Journal publications}
+\cventry{2018}{Journal of Computational Physics}{A. Renaud,T. Heuz{\'e} and L. Stainier}{A Discontinuous Galerkin Material Point Method for the solution of impact problems in solid dynamics}{369,80-102}{doi: j.jcp.2018.05.001}
+\cventry{2020}{International Journal for Numerical Methods in Engineering}{A. Renaud,T. Heuz{\'e} and L. Stainier}{Stability properties of the Discontinuous Galerkin Material Point Method for hyperbolic problems in one and two space dimensions}{121,664-689}{doi: 10.1002/nme.6239}
+\cventry{2019}{Computer Methods in Applied Mechanics and Engineering}{A. Renaud,T. Heuz{\'e} and L. Stainier}{The Discontinuous Galerkin Material Point Method for variational hyperelastic-plastic solids}{}{Under review}
+\cventry{2020}{Journal of the Mechanics and Physics of Solids}{A. Renaud,T. Heuz{\'e} and L. Stainier}{A unified framework for simple wave solutions in two-dimensional elastic-plastic solids}{}{Under review}
+
+\section{\color{Blue}Communications}
+\cventry{September 2019}{LUS4Metals}{4th International Workshop on Laser-Ultrasonics for metals}{Linz (Austria)}{\textbf{A. Renaud}, A.S. Mouronval, J.H. Schmitt, D. Aubry and B. Tie: \textit{Numerical investigation of ultrasonic wave scattering in polycrystalline materials}}{}
+\cventry{July 2018}{WCCM}{13th World Congress on Computationl Mechanics}{New York (USA)}{\textbf{A. Renaud}, T. Heuz{\'e} and L. Stainier: \textit{The Discontinuous Galerkin Material Point Method for Hyperbolic Problems in Solid Mechanics}}{}
+\cventry{June 2018}{ECCM}{6th European Conference on Computational Mechanics}{Glasgow (Scotland)}{\textbf{A. Renaud}, T. Heuz{\'e} and L. Stainier: \textit{The Discontinuous Galerkin Material Point Method for the simulation of hyperbolic problems in finite deforming solids }}{}
+\cventry{June 2017}{COMPDYN}{6th International Conference on Computational Methods in Structural Dynamics and Earthquake Engineering}{Rhodes Island (Greece)}{\textbf{A. Renaud}, T. Heuz{\'e} and L. Stainier: \textit{A Discontinuous Galerkin Material Point Method
+(DGMPM) for the simulation of impact problems in solid mechanics
+}}{}
+\cventry{May 2017}{CSMA}{13ème colloque national en calcul des structures}{Giens (France)}{\textbf{A. Renaud}, T. Heuz{\'e} and L. Stainier: \textit{La M{\'e}thode des Points Mat{\'e}riels (MPM) en Galerkin Discontinue (DG) pour la simulation d’impact sur des solides }}{}
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
